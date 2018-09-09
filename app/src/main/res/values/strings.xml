@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Ecology</string>
+    <string name="google_map_api_key">AIzaSyDwxugiCyvcZY7rQmaZywr6MlOSlgBGlHg</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="title_activity_loading">LoadingActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>

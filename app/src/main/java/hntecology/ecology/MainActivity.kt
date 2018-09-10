@@ -131,8 +131,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             return
         }
 
-        print("onMapReady onMapReady")
-
         googleMap = map
 
         googleMap.uiSettings.isRotateGesturesEnabled = false
@@ -158,7 +156,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         parsed = true
     }
-
 
     // android.os.AsyncTask<Params, Progress, Result>
     private inner class LoadLayerTask(layerName: String) : AsyncTask<LatLngBounds, PolygonOptions, Boolean>() {
@@ -323,10 +320,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     }
 
     fun endDraw() {
-
-        runOnUiThread(Runnable {
-            drawer_view.visibility == View.GONE
-        })
 
         googleMap.uiSettings.isZoomGesturesEnabled = true
         googleMap.uiSettings.setAllGesturesEnabled(true)

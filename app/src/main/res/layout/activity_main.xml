@@ -10,21 +10,50 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="hntecology.ecology.MainActivity" />
+
+    <View
+        android:id="@+id/drawer_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/holo_orange_light"
+        android:alpha="0.6"
+        android:visibility="gone"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_alignParentBottom="true">
-        <Button
-            android:id="@+id/btn_SH_biotop_orig"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SH_biotop_orig"/>
-        <Button
-            android:id="@+id/btn_SH_dummy"
-            android:layout_width="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_SH_biotop_orig"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SH_biotop_orig"/>
+            <Button
+                android:id="@+id/btn_SH_dummy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SH_biotop_orig"/>
+            <Button
+                android:id="@+id/btn_draw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start Draw"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SH_biotop_orig"/>
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_clear_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Clear All"/>
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

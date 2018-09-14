@@ -27,6 +27,7 @@ class BiotopeActivity : Activity() {
 
 
     val SET_DATA1 = 1;
+    var keyId:String?=null;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +55,7 @@ class BiotopeActivity : Activity() {
 
         if(intent.getSerializableExtra("id") !=null){
 
-            val keyId = intent.getSerializableExtra("id")
+            keyId = intent.getStringExtra("id")
             val dataList:Array<String> = arrayOf("*");
 
             val data =  db.query("biotope_Attribute",dataList,"id = '"+keyId+"'",null,null,null,"",null);
@@ -78,6 +79,30 @@ class BiotopeActivity : Activity() {
                 etlumTypeRateET.setText(biotope_attribute.LUM_TYPE_RATE.toString())
                 etstandardHeightET.setText(biotope_attribute.STANDARD_HEIGHT.toString())
                 ETlcmGroupNumET.setText(biotope_attribute.LCM_GROUP_NUM)
+
+                if(biotope_attribute.LUM_GROUP_NUM != null){
+
+                    val dataSelectList:Array<String> = arrayOf("name");
+                    val data =  db.query("biotopeM",dataList,"code = '"+biotope_attribute.LUM_GROUP_NUM+"'",null,null,null,"",null);
+
+
+                    while (data.moveToNext()){
+
+                        TVlumGroupNumTV.setText(data.getString(0))
+                    }
+                }
+
+                if(biotope_attribute.LCM_GROUP_NUM !=null){
+
+                    val dataSelectList:Array<String> = arrayOf("name");
+                    val data =  db.query("biotopeS",dataList,"code = '"+biotope_attribute.LCM_GROUP_NUM+"'",null,null,null,"",null);
+
+
+                    while (data.moveToNext()){
+
+                        TVlcmGroupNumTV.setText(data.getString(0))
+                    }
+                }
 
                 //투수
                 if(biotope_attribute.LCM_TYPE == "P"){
@@ -169,13 +194,13 @@ class BiotopeActivity : Activity() {
 
 
             var intent = Intent();
-
             val biotope_attribute:Biotope_attribute = Biotope_attribute(null,"","","",0,"",0f
-                                                    ,0f,"","","",0f,"","","",""
-                                                    ,"","","","","",0f,0f,0f,"",0f
-                                                    ,0f,0f,"",0f,0f,"",0f,0f,""
-                                                    ,"","","");
-            biotope_attribute.id = getAttrubuteKey();
+                    ,0f,"","","",0f,"","","",""
+                    ,"","","","","",0f,0f,0f,"",0f
+                    ,0f,0f,"",0f,0f,"",0f,0f,""
+                    ,"","","");
+
+
             biotope_attribute.INVES_REGION         =   etinvesRegionET.text.toString()
             biotope_attribute.INVESTIGATOR         =   tvinvestigatorTV.text.toString()
             biotope_attribute.INVES_DATETIME       =   etinvesDatetimeTV.text.toString()
@@ -183,8 +208,6 @@ class BiotopeActivity : Activity() {
             if(tvinvesIndexTV.text.toString() != ""){
 
                 biotope_attribute.INVES_INDEX          =    tvinvesIndexTV.text.toString().toInt()
-
-
             }
 
             biotope_attribute.LUM_GROUP_NUM        =   ETlumGroupNumET.text.toString()
@@ -299,9 +322,17 @@ class BiotopeActivity : Activity() {
 
                 biotope_attribute.LCM_TYPE = etlcmTypewET.text.toString()
             }
+            if(keyId != null){
 
+                biotope_attribute.id = keyId
+                dbManager.updatebiotope_attribute(biotope_attribute)
+            }else {
+
+                biotope_attribute.id = getAttrubuteKey();
+                dbManager.insertbiotope_attribute(biotope_attribute);
+
+            }
             intent.putExtra("bio_attri",biotope_attribute);
-            dbManager.insertbiotope_attribute(biotope_attribute);
 
             setResult(RESULT_OK, intent);
             finish()
@@ -342,12 +373,40 @@ class BiotopeActivity : Activity() {
                     if(biotopeModel.codeType == "biotopeM"){
 
                         TVlumGroupNumTV.setText( biotopeModel.name)
-                        ETlcmGroupNumET.setText(biotopeModel.code)
+                        ETlumGroupNumET.setText(biotopeModel.code)
                         //토지피복현황
                     }else if (biotopeModel.codeType == "biotopeS"){
 
                         TVlcmGroupNumTV.setText( biotopeModel.name)
                         ETlcmGroupNumET.setText(biotopeModel.code)
+
+                        var bioModelParent:BiotopeModel
+                        bioModelParent = data!!.getSerializableExtra("bioModelParent") as BiotopeModel
+
+                        //불투수 투수
+                        etlcmTypeiET.setText("");
+                        etlcmTypepET.setText("")
+                        etlcmTypegET.setText("")
+                        etlcmTypewET.setText("")
+
+                        //불투수
+                        if(bioModelParent.code == "A"){
+
+                            etlcmTypeiET.setText("I")
+                        //투수
+                        }else if(bioModelParent.code == "B"){
+
+                            etlcmTypepET.setText("P")
+                         //녹지
+                        }else if(bioModelParent.code == "C"){
+
+                            etlcmTypegET.setText("G")
+                         //수공간
+                        }else if(bioModelParent.code == "D"){
+
+                            etlcmTypewET.setText("W")
+                        }
+
                         //현존식생현황  아직 테이블 명 코드 미정
                     } else if (biotopeModel.codeType == "biotopeS"){
 

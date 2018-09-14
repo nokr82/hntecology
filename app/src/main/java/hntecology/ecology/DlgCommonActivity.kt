@@ -120,6 +120,17 @@ class DlgCommonActivity : Activity() {
 
             var intent = Intent();
             intent.putExtra("bioModel",listAdapte3.getItem(position))
+
+
+            for ( i in 0..(listAdapte1.count-1)){
+
+                var biotopeModel:BiotopeModel =listAdapte1.getItem(i);
+
+                if(biotopeModel.chkSelect){
+                    intent.putExtra("bioModelParent",listAdapte1.getItem(i))        ;
+                }
+            }
+
             setResult(RESULT_OK, intent);
             finish()
         })

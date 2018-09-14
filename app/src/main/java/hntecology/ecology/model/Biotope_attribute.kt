@@ -82,3 +82,40 @@ class Biotope_attribute(var id:String?,var INVES_REGION:String, var INVESTIGATOR
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

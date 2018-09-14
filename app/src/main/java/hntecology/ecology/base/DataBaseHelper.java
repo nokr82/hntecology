@@ -156,7 +156,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query = "create table if not exists ";
-        query += "biotope_attribute ( id INTEGER PRIMARY KEY AUTOINCREMENT";
+        query += "biotopeattribute ( id String PRIMARY KEY";
         query += ", INVES_REGION String";
         query += ", INVESTIGATOR String";
         query += ", INVES_DATETIME String";
@@ -230,7 +230,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     // to you to create adapters for your views.
     public void insertbiotope_attribute(Biotope_attribute biotope_attribute) {
         //37 column
-        String query = "INSERT INTO biotope_Attribute (id,INVES_REGION,INVESTIGATOR,INVES_DATETIME,INVES_INDEX,LUM_GROUP_NUM,LUM_TYPE_RATE,STANDARD_HEIGHT,LCM_GROUP_NUM,"
+        String query = "INSERT INTO biotopeAttribute (id,INVES_REGION,INVESTIGATOR,INVES_DATETIME,INVES_INDEX,LUM_GROUP_NUM,LUM_TYPE_RATE,STANDARD_HEIGHT,LCM_GROUP_NUM,"
                 +"LCM_TYPE,TYPE_MARK,GV_RATE,GV_STRUCTURE,DIST_RETURN,RESTORE_POT,COMP_INTACT,VP_INTACT,IMP_FORM,BREAST_DIA,FINAL_EST,TREE_SPECIES,TREE_HEIGHT,TREE_BREAST,"
                 +"TREE_COVE,SUB_TREE_SPEC,SUB_TREE_HEIGHT,SUB_TREE_BREAST,SUB_TREE_COVER,SHRUB_SPECIES,SHRUB_HEIGHT,SHRUB_COVER,HERB_SPECIES,HERB_HEIGHT,HERB_COVER,"
                 +"PICTURE_FOLDER,WILD_ANI,REP_BIOTOP_POT,UNUSUAL_NOTE)";
@@ -239,14 +239,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '"+biotope_attribute.getINVES_REGION()+"'";
         query += ", '"+biotope_attribute.getINVESTIGATOR()+"'";
         query += ", '"+biotope_attribute.getINVES_DATETIME()+"'";
-        query += ", '"+biotope_attribute.getINVES_INDEX()+"'";
+        query += ", "+biotope_attribute.getINVES_INDEX()+"";
         query += ", '"+biotope_attribute.getLUM_GROUP_NUM()+"'";
-        query += ", '"+biotope_attribute.getLUM_TYPE_RATE()+"'";
-        query += ", '"+biotope_attribute.getSTANDARD_HEIGHT()+"'";
+        query += ", "+biotope_attribute.getLUM_TYPE_RATE()+"";
+        query += ", "+biotope_attribute.getSTANDARD_HEIGHT()+"";
         query += ", '"+biotope_attribute.getLCM_GROUP_NUM()+"'";
         query += ", '"+biotope_attribute.getLCM_TYPE()+"'";
         query += ", '"+biotope_attribute.getTYPE_MARK()+"'";
-        query += ", '"+biotope_attribute.getGV_RATE()+"'";
+        query += ", "+biotope_attribute.getGV_RATE()+"";
         query += ", '"+biotope_attribute.getGV_STRUCTURE()+"'";
         query += ", '"+biotope_attribute.getDIST_RETURN()+"'";
         query += ", '"+biotope_attribute.getRESTORE_POT()+"'";
@@ -256,19 +256,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '"+biotope_attribute.getBREAST_DIA()+"'";
         query += ", '"+biotope_attribute.getFINAL_EST()+"'";
         query += ", '"+biotope_attribute.getTREE_SPECIES()+"'";
-        query += ", '"+biotope_attribute.getTREE_HEIGHT()+"'";
-        query += ", '"+biotope_attribute.getTREE_BREAST()+"'";
-        query += ", '"+biotope_attribute.getTREE_COVE()+"'";
+        query += ", "+biotope_attribute.getTREE_HEIGHT()+"";
+        query += ", "+biotope_attribute.getTREE_BREAST()+"";
+        query += ", "+biotope_attribute.getTREE_COVE()+"";
         query += ", '"+biotope_attribute.getSUB_TREE_SPEC()+"'";
-        query += ", '"+biotope_attribute.getSUB_TREE_HEIGHT()+"'";
-        query += ", '"+biotope_attribute.getSUB_TREE_BREAST()+"'";
-        query += ", '"+biotope_attribute.getSUB_TREE_COVER()+"'";
+        query += ", "+biotope_attribute.getSUB_TREE_HEIGHT()+"";
+        query += ", "+biotope_attribute.getSUB_TREE_BREAST()+"";
+        query += ", "+biotope_attribute.getSUB_TREE_COVER()+"";
         query += ", '"+biotope_attribute.getSHRUB_SPECIES()+"'";
         query += ", '"+biotope_attribute.getSHRUB_HEIGHT()+"'";
         query += ", '"+biotope_attribute.getSHRUB_COVER()+"'";
         query += ", '"+biotope_attribute.getHERB_SPECIES()+"'";
-        query += ", '"+biotope_attribute.getHERB_HEIGHT()+"'";
-        query += ", '"+biotope_attribute.getHERB_COVER()+"'";
+        query += ", "+biotope_attribute.getHERB_HEIGHT()+"";
+        query += ", "+biotope_attribute.getHERB_COVER()+"";
         query += ", '"+biotope_attribute.getPICTURE_FOLDER()+"'";
         query += ", '"+biotope_attribute.getWILD_ANI()+"'";
         query += ", '"+biotope_attribute.getREP_BIOTOP_POT()+"'";
@@ -305,7 +305,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public void updatebiotope_attribute(Biotope_attribute biotope_attribute) {
 
-        String query = "UPDATE biotope_Attribute SET  " +
+        String query = "UPDATE biotopeAttribute SET  " +
                              "INVES_REGION='"+biotope_attribute.getINVES_REGION()+"'"
                             +",INVESTIGATOR='"+biotope_attribute.getINVESTIGATOR()+"'"
                             +",INVES_DATETIME='"+biotope_attribute.getINVES_DATETIME()+"'"

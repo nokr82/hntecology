@@ -28,6 +28,7 @@ class BiotopeActivity : Activity() {
 
     val SET_DATA1 = 1;
     var keyId:String?=null;
+    var chkdata:Boolean =false;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,11 +59,11 @@ class BiotopeActivity : Activity() {
             keyId = intent.getStringExtra("id")
             val dataList:Array<String> = arrayOf("*");
 
-            val data =  db.query("biotope_Attribute",dataList,"id = '"+keyId+"'",null,null,null,"",null);
+            val data =  db.query("biotopeAttribute",dataList,"id = '"+keyId+"'",null,null,null,"",null);
 
             while (data.moveToNext()){
 
-
+                chkdata = true
                 var biotope_attribute:Biotope_attribute = Biotope_attribute(data.getString(0),data.getString(1),data.getString(2),data.getString(3),data.getInt(4),data.getString(5),data.getFloat(6),
                                                                             data.getFloat(7),data.getString(8),data.getString(9),data.getString(10),data.getFloat(11),data.getString(12),data.getString(13)
                                                                             ,data.getString(14),data.getString(15),data.getString(16),data.getString(17),data.getString(18),data.getString(19),data.getString(20)
@@ -322,13 +323,12 @@ class BiotopeActivity : Activity() {
 
                 biotope_attribute.LCM_TYPE = etlcmTypewET.text.toString()
             }
-            if(keyId != null){
+            biotope_attribute.id = keyId;
+            if(chkdata){
 
-                biotope_attribute.id = keyId
                 dbManager.updatebiotope_attribute(biotope_attribute)
             }else {
 
-                biotope_attribute.id = getAttrubuteKey();
                 dbManager.insertbiotope_attribute(biotope_attribute);
 
             }

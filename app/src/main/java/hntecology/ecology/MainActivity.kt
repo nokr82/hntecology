@@ -34,6 +34,7 @@ import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jtstest.testbuilder.io.shapefile.Shapefile
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnTouchListener {
 
@@ -45,7 +46,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     private lateinit var googleMap: GoogleMap
 
     val PolygonCallBackData = 1;
-    var beforePolygon: Polygon? = null
+    //var beforePolygon: Polygon? = null
+    private lateinit var polygonList:Array<Polygon>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +55,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         setContentView(R.layout.activity_main)
 
         this.context = this
+
 
         mGestureDetector = GestureDetector(this, GestureListener())
 
@@ -79,6 +82,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         })
 
         btn_draw.setOnClickListener(View.OnClickListener {
+
             if(drawer_view.visibility == View.VISIBLE) {
                 endDraw()
             } else {
@@ -129,11 +133,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         //biotopeModel = data!!.getSerializableExtra("bioModel") as BiotopeModel
                         var biotope_atttribute:Biotope_attribute = data!!.getSerializableExtra("bio_attri") as Biotope_attribute
 
-                        if(beforePolygon!!.tag == null){
-
-                            beforePolygon!!.tag = biotope_atttribute.id
-
-                        }
+//                        if(beforePolygon!!.tag == null){
+//
+//                            beforePolygon!!.tag = biotope_atttribute.id
+//
+//                        }
                     }
                 }
 
@@ -327,9 +331,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 mPolylineOptions.width(3.0f)
                 mPolylineOptions.addAll(latlngs)
 
+
                 googleMap.addPolyline(mPolylineOptions)
             }
             MotionEvent.ACTION_UP -> {
+
                 print("Poinnts array size : ${latlngs.size}")
 
                 latlngs.add(firstGeoPoint)
@@ -346,8 +352,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 polygonOptions.strokeColor(Color.TRANSPARENT)
                 polygonOptions.addAll(latlngs)
 
+
                 var polygon:Polygon = googleMap.addPolygon(polygonOptions)
                 polygon.setClickable(true);
+
+
+
+
 
                 //클릭시 태그 데이터 있는지 확인 없으면 바로 넘기고 있으면 있는걸로 호출.
                 //tag 리절트로 가져와서 태그 설정
@@ -355,17 +366,16 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     val intent:Intent = Intent(this,BiotopeActivity::class.java);
 
-                    if(polygon.tag != null){
 
-                        intent.putExtra("id",polygon.tag.toString());
 
-                    }
+                        intent.putExtra("id",polygon.id);
+
           /*          else if (beforePolygon != null && beforePolygon!!.tag != null){
 
                         intent.putExtra("id","1");
                     }*/
 
-                     beforePolygon = polygon ;
+                     //beforePolygon = polygon ;
 
 
                     startActivityForResult(intent, PolygonCallBackData);
@@ -406,6 +416,14 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         val fullTime = SimpleDateFormat("yyyy-MM-dd")
 
         return fullTime.format(date).toString()
+    }
+    fun getAttrubuteKey():String{
+
+        val time = System.currentTimeMillis()
+        val dayTime = SimpleDateFormat("yyyyMMddHHmmssSSS")
+        val strDT = dayTime.format(Date(time))
+
+        return strDT
     }
 
 }

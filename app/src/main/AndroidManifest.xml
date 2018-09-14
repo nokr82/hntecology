@@ -35,9 +35,12 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".MainActivity"
-            android:theme="@style/NoTitleDialog">
-            <intent-filter>
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/NoTitleDialog"
+            android:screenOrientation="landscape"
+            >
+                <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -46,8 +49,22 @@
         <activity
             android:name=".base.LoadingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog" />
+        <activity
+            android:name=".BiotopeActivity"
+            android:theme="@style/full_screen_dialog2"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+            >
+        </activity>
+        <activity android:name=".DlgCommonActivity"
+            android:theme="@style/full_screen_dialog1"
+            android:screenOrientation="landscape"
+            >
+
+
+        </activity>
     </application>
 
 </manifest>

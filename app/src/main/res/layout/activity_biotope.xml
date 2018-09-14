@@ -1,0 +1,1254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/white"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:textColor="#333333"
+                android:textSize="20.2sp"
+                android:textStyle="bold"
+                android:text="비오톱 속성자료 야장"
+                android:gravity="center"
+                style="@style/BiotopeTextView"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="조사지"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:maxLength="50"
+                    android:id="@+id/etinvesRegionET"
+                    style="@style/BiotopeEditText"
+
+                    />
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    android:text="조사자"
+                    style="@style/BiotopeTextView"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/tvinvestigatorTV"
+                    android:gravity="center"
+                    style="@style/BiotopeTextViewDisabled"
+                    />
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    android:text="조사일시"
+                    style="@style/BiotopeTextView"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/etinvesDatetimeTV"
+                    android:gravity="center"
+                    style="@style/BiotopeTextViewDisabled"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp">
+
+                    <TextView
+                        android:layout_width="250dp"
+                        android:layout_height="match_parent"
+                        android:text="조사지 번호"
+                        style="@style/BiotopeTextView"
+                        android:background="@drawable/biotope_textview"
+                        />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/tvinvesIndexTV"
+                        android:gravity="center"
+                        style="@style/BiotopeTextViewDisabled"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:text="토지\n\n이용\n\n현황"
+                        android:layout_gravity="center"
+                        style="@style/BiotopeTextView"
+                        android:background="@drawable/biotope_textview"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="top"
+                        android:layout_weight="1"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            >
+
+                            <TextView
+                                android:layout_width="210dp"
+                                android:layout_height="match_parent"
+                                android:text="유형 분류 기호"
+                                style="@style/BiotopeTextView"
+                                />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="2"
+                                android:id="@+id/TVlumGroupNumTV"
+                                android:gravity="center"
+                                style="@style/BiotopeTextViewDisabled"
+
+                                />
+                            <EditText
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:id="@+id/ETlumGroupNumET"
+                                />
+                            <Button
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:text="유형 분류기호"
+                                android:id="@+id/btn_Dlg1"
+                                style="@style/dlgcommonButton"
+                                />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="210dp"
+                                android:layout_height="match_parent"
+                                android:text="토지이용유형(%)"
+                                style="@style/BiotopeTextView"
+                                />
+
+                            <EditText
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="2"
+                                android:inputType="numberDecimal"
+                                android:maxLength="10"
+                                android:id="@+id/etlumTypeRateET"
+                                style="@style/BiotopeEditText"
+                                />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="210dp"
+                                android:layout_height="match_parent"
+                                android:text="규격(층고)"
+                                style="@style/BiotopeTextView"
+                                />
+
+                           <EditText
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="2"
+                               android:inputType="numberDecimal"
+                               android:maxLength="10"
+                               android:id="@+id/etstandardHeightET"
+                               style="@style/BiotopeEditText"
+                               />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:text="토지\n\n피복\n\n현황"
+                        android:layout_gravity="center"
+                        style="@style/BiotopeTextView"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="top"
+                        android:layout_weight="1"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            >
+
+                            <TextView
+                                android:layout_width="210dp"
+                                android:layout_height="match_parent"
+                                android:text="유형 분류 기호"
+                                style="@style/BiotopeTextView"
+                                />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="2"
+                                android:id="@+id/TVlcmGroupNumTV"
+                                android:gravity="center"
+                                style="@style/BiotopeTextViewDisabled"
+                                />
+                            <EditText
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:id="@+id/ETlcmGroupNumET"
+                                />
+                            <Button
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:text="유형 분류기호"
+                                android:id="@+id/btn_Dlg2"
+                                style="@style/dlgcommonButton"
+                                />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            >
+                            <TextView
+                                android:layout_width="90dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:text="토 지\n피복유형"
+                                style="@style/BiotopeTextView"
+                                />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                >
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="투수"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:maxLength="1"
+                                        android:id="@+id/etlcmTypepET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="불투수"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:maxLength="1"
+                                        android:id="@+id/etlcmTypeiET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="녹지"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:maxLength="1"
+                                        android:id="@+id/etlcmTypegET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="수공간"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                   <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:maxLength="1"
+                                       android:id="@+id/etlcmTypewET"
+                                       style="@style/BiotopeEditText"
+                                       />
+
+
+                                </LinearLayout>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:text="현존\n\n식생\n\n현황"
+                        android:layout_gravity="center"
+                        style="@style/BiotopeTextView"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="top"
+                        android:layout_weight="1"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            >
+
+                            <TextView
+                                android:layout_width="210dp"
+                                android:layout_height="match_parent"
+                                android:text="유형 분류 기호"
+                                style="@style/BiotopeTextView"
+                                />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="2"
+                                android:id="@+id/TVtypeMarkTV"
+                                android:gravity="center"
+                                style="@style/BiotopeTextViewDisabled"
+                                />
+                            <EditText
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:id="@+id/ETtypeMarkET"
+                                />
+                            <Button
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:text="임시버튼"
+                                android:id="@+id/btn_Dlg3"
+                                style="@style/dlgcommonButton"
+                                />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            >
+
+                            <TextView
+                                android:layout_width="210dp"
+                                android:layout_height="match_parent"
+                                android:text="녹 지 율(%)"
+                                style="@style/BiotopeTextView"
+                                />
+
+                            <EditText
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="2"
+                                android:inputType="numberDecimal"
+                                android:maxLength="10"
+                                android:id="@+id/etgvRateET"
+                                style="@style/BiotopeEditText"
+                                />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            >
+
+                            <TextView
+                                android:layout_width="210dp"
+                                android:layout_height="match_parent"
+                                android:text="녹지구조"
+                                style="@style/BiotopeTextView"
+                                />
+
+                            <EditText
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="2"
+                                android:maxLength="30"
+                                android:id="@+id/etgvStructureET"
+                                style="@style/BiotopeEditText"
+                                />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            >
+                            <TextView
+                                android:layout_width="90dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:text="식생보존\등급"
+                                style="@style/BiotopeTextView"
+                                />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        style="@style/BiotopeTextView"
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="분포희귀성" />
+
+                                    <EditText
+                                        android:id="@+id/etdistReturnET"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        style="@style/BiotopeEditText"
+                                        android:maxLength="30" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        style="@style/BiotopeTextView"
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="식생복원잠재성" />
+
+                                    <EditText
+                                        android:id="@+id/etrestorePotET"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        style="@style/BiotopeEditText"
+                                        android:maxLength="30" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        style="@style/BiotopeTextView"
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="구성식물종온전성" />
+
+                                    <EditText
+                                        android:id="@+id/etcompIntactET"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        style="@style/BiotopeEditText"
+                                        android:layout_weight="2"
+                                        android:maxLength="30" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        style="@style/BiotopeTextView"
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="식생구조온전성" />
+
+                                    <EditText
+                                        android:id="@+id/etvpIntactET"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        style="@style/BiotopeEditText"
+                                        android:maxLength="30" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        style="@style/BiotopeTextView"
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="중요종 서식" />
+
+                                    <EditText
+                                        android:id="@+id/etimpFormET"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        style="@style/BiotopeEditText"
+                                        android:maxLength="30" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        style="@style/BiotopeTextView"
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="식재림흉고직경" />
+
+                                    <EditText
+                                        android:id="@+id/etbreastDiaET"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        style="@style/BiotopeEditText"
+                                        android:maxLength="30" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        style="@style/BiotopeTextView"
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="최종평가" />
+
+                                    <EditText
+                                        android:id="@+id/etfinalEstET"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:maxLength="30"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+                            </LinearLayout>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            >
+                            <TextView
+                                android:layout_width="90dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:text="교목층"
+                                style="@style/BiotopeTextView"
+                                />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                >
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="종 명"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:maxLength="30"
+                                        android:id="@+id/ettreeSpeciesET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="수고(m)"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:inputType="numberDecimal"
+                                        android:maxLength="10"
+                                        android:id="@+id/ettreeHeightET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="흉고직경(m)"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:inputType="numberDecimal"
+                                        android:maxLength="10"
+                                        android:id="@+id/ettreeBreastET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="식피율(%)"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:inputType="numberDecimal"
+                                        android:maxLength="10"
+                                        android:id="@+id/ettreeCoveET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            >
+                            <TextView
+                                android:layout_width="90dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:text="아교목층"
+                                style="@style/BiotopeTextView"
+                                />
+
+                           <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                >
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="종 명"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:maxLength="30"
+                                        android:id="@+id/etsubTreeSpecET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="수고(m)"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:inputType="numberDecimal"
+                                        android:maxLength="10"
+                                        android:id="@+id/etsubTreeHeightET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="흉고직경(m)"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:inputType="numberDecimal"
+                                        android:maxLength="10"
+                                        android:id="@+id/etsubTreeBreastET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="식피율(%)"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:inputType="numberDecimal"
+                                        android:maxLength="10"
+                                        android:id="@+id/etsubTreeCoverET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            >
+                            <TextView
+                                android:layout_width="90dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:text="관목층"
+                                style="@style/BiotopeTextView"
+                                />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                >
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="종 명"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:maxLength="30"
+                                        android:id="@+id/etshrubSpeciesET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="수고(m)"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:inputType="numberDecimal"
+                                        android:maxLength="10"
+                                        android:id="@+id/etshrubHeightET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="식피율(%)"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:inputType="numberDecimal"
+                                        android:maxLength="10"
+                                        android:id="@+id/etshrubCoverET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            >
+                            <TextView
+                                android:layout_width="90dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:text="초본층"
+                                style="@style/BiotopeTextView"
+                                />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                >
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="종 명"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:maxLength="30"
+                                        android:id="@+id/etherbSpeciesET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="초장(m)"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:inputType="numberDecimal"
+                                        android:maxLength="10"
+                                        android:id="@+id/etherbHeightET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="35dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="식피율(%)"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:inputType="numberDecimal"
+                                        android:maxLength="10"
+                                        android:id="@+id/etherbCoverET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="250dp"
+                        android:layout_height="match_parent"
+                        android:text="사진번호"
+                        style="@style/BiotopeTextView"
+                        />
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:maxLength="200"
+                        android:id="@+id/etpictureFolderET"
+                        style="@style/BiotopeEditText"
+                        />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="250dp"
+                        android:layout_height="match_parent"
+                        android:text="야생동물"
+                        style="@style/BiotopeTextView"
+                        />
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:maxLength="50"
+                        android:id="@+id/etwildAniET"
+                        style="@style/BiotopeEditText"
+                        />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="250dp"
+                        android:layout_height="match_parent"
+                        android:text="대표·우수비오톱 잠재성"
+                        style="@style/BiotopeTextView"
+                        />
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:maxLength="200"
+                        android:id="@+id/etrepBiotopPotET"
+                        style="@style/BiotopeEditText"
+                        />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="250dp"
+                        android:layout_height="match_parent"
+                        android:text="특이사항"
+                        style="@style/BiotopeTextView"
+                        />
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:maxLength="500"
+                        android:id="@+id/etunusualNoteET"
+                        style="@style/BiotopeEditText"
+                        />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:orientation="horizontal"
+                    >
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="취소"
+                        android:id="@+id/btn_biotopCancle1"
+                        style="@style/dlgcommonButton"
+                        />
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="저장"
+                        android:id="@+id/btn_biotopSave1"
+                        style="@style/dlgcommonButton"
+                        android:layout_marginLeft="2dp"
+                        />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

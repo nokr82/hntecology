@@ -7,6 +7,7 @@ import android.graphics.Point
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
+import android.util.Log
 import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
@@ -20,11 +21,19 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import hntecology.ecology.R.id.btn_draw
+import hntecology.ecology.R.id.drawer_view
+import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.Utils
+import hntecology.ecology.model.BiotopeModel
+import hntecology.ecology.model.Biotope_attribute
+import kotlinx.android.synthetic.main.activity_biotope.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.locationtech.jts.geom.Coordinate
 import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jtstest.testbuilder.io.shapefile.Shapefile
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnTouchListener {
 
@@ -34,6 +43,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     private lateinit var mGestureDetector: GestureDetector
     private lateinit var googleMap: GoogleMap
+
+    val PolygonCallBackData = 1;
+    var beforePolygon: Polygon? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,10 +90,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             googleMap.clear()
         })
 
+
         // Get the SupportMapFragment and request notification
         // when the map is ready to be used.
         startRegistrationService()
 
+        TVtimeTV.setText(getTime())
     }
 
     private fun startRegistrationService() {
@@ -95,14 +110,37 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        when (requestCode) {
-            PLAY_SERVICES_RESOLUTION_REQUEST -> if (resultCode == Activity.RESULT_OK) {
-                initilizeMap()
-            }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
-            else -> super.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(resultCode == Activity.RESULT_OK){
+
+            when (requestCode) {
+
+                PLAY_SERVICES_RESOLUTION_REQUEST ->{
+
+                    initilizeMap()
+                }
+
+                PolygonCallBackData -> {
+
+                    if (resultCode == Activity.RESULT_OK) {
+                        //biotopeModel = data!!.getSerializableExtra("bioModel") as BiotopeModel
+                        var biotope_atttribute:Biotope_attribute = data!!.getSerializableExtra("bio_attri") as Biotope_attribute
+
+                        if(beforePolygon!!.tag == null){
+
+                            beforePolygon!!.tag = biotope_atttribute.id
+
+                        }
+                    }
+                }
+
+                else -> super.onActivityResult(requestCode, resultCode, data)
+            }
         }
+
     }
 
 
@@ -288,6 +326,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 mPolylineOptions.color(Color.RED)
                 mPolylineOptions.width(3.0f)
                 mPolylineOptions.addAll(latlngs)
+
                 googleMap.addPolyline(mPolylineOptions)
             }
             MotionEvent.ACTION_UP -> {
@@ -295,12 +334,42 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 latlngs.add(firstGeoPoint)
 
+//                val polygonOptions = PolygonOptions()
+//                polygonOptions.fillColor(Color.RED)
+//                polygonOptions.strokeColor(Color.TRANSPARENT)
+//                polygonOptions.addAll(latlngs)
+//                googleMap.addPolygon(polygonOptions)
+                //여기서 부터 작업 시작.
+
                 val polygonOptions = PolygonOptions()
                 polygonOptions.fillColor(Color.RED)
                 polygonOptions.strokeColor(Color.TRANSPARENT)
                 polygonOptions.addAll(latlngs)
-                googleMap.addPolygon(polygonOptions)
 
+                var polygon:Polygon = googleMap.addPolygon(polygonOptions)
+                polygon.setClickable(true);
+
+                //클릭시 태그 데이터 있는지 확인 없으면 바로 넘기고 있으면 있는걸로 호출.
+                //tag 리절트로 가져와서 태그 설정
+                googleMap.setOnPolygonClickListener {
+
+                    val intent:Intent = Intent(this,BiotopeActivity::class.java);
+
+                    if(polygon.tag != null){
+
+                        intent.putExtra("id",polygon.tag.toString());
+
+                    }
+          /*          else if (beforePolygon != null && beforePolygon!!.tag != null){
+
+                        intent.putExtra("id","1");
+                    }*/
+
+                     beforePolygon = polygon ;
+
+
+                    startActivityForResult(intent, PolygonCallBackData);
+                }
                 runOnUiThread {
                     endDraw()
                 }
@@ -316,7 +385,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         googleMap.uiSettings.isZoomGesturesEnabled = false
         googleMap.uiSettings.setAllGesturesEnabled(false)
 
-        btn_draw.text = "Stop drawing"
+        btn_draw.text = "비오톱 추가 중"
     }
 
     fun endDraw() {
@@ -329,6 +398,14 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         drawer_view.visibility = View.GONE
 
-        btn_draw.text = "Start Draw"
+        btn_draw.text = "비오톱 추가"
     }
+    fun getTime():String{
+
+        val date = Date()
+        val fullTime = SimpleDateFormat("yyyy-MM-dd")
+
+        return fullTime.format(date).toString()
+    }
+
 }

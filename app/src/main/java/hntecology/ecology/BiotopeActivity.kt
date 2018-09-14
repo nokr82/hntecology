@@ -311,15 +311,15 @@ class BiotopeActivity : Activity() {
 
                 biotope_attribute.LCM_TYPE = etlcmTypepET.text.toString()
                 //불투수
-            } else if (etlcmTypepET.text.toString() != ""){
+            } else if (etlcmTypeiET.text.toString() != ""){
 
                 biotope_attribute.LCM_TYPE = etlcmTypeiET.text.toString()
                 //녹지
-            } else if ( etlcmTypepET.text.toString() != ""){
+            } else if ( etlcmTypegET.text.toString() != ""){
 
                 biotope_attribute.LCM_TYPE = etlcmTypegET.text.toString()
                 //수공간
-            } else if (etlcmTypepET.text.toString() != ""){
+            } else if (etlcmTypewET.text.toString() != ""){
 
                 biotope_attribute.LCM_TYPE = etlcmTypewET.text.toString()
             }

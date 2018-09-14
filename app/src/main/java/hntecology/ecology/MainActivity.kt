@@ -357,9 +357,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 polygon.setClickable(true);
 
 
-
-
-
                 //클릭시 태그 데이터 있는지 확인 없으면 바로 넘기고 있으면 있는걸로 호출.
                 //tag 리절트로 가져와서 태그 설정
                 googleMap.setOnPolygonClickListener {
@@ -368,7 +365,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
 
 
-                        intent.putExtra("id",polygon.id);
+                    intent.putExtra("id",polygon.id);
 
           /*          else if (beforePolygon != null && beforePolygon!!.tag != null){
 

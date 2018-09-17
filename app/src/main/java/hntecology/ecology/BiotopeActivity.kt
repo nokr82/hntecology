@@ -1,9 +1,16 @@
 package hntecology.ecology
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.DownloadManager
+import android.content.ComponentCallbacks
+import android.content.Context
 import android.content.Intent
-import android.os.Bundle
+import android.location.LocationManager
 import android.text.Editable
+import android.util.Log
 import android.view.Gravity
 import android.view.ViewParent
 import android.widget.Switch
@@ -17,33 +24,55 @@ import java.util.*
 import android.view.WindowManager
 import hntecology.ecology.R.style.BiotopeEditText
 import org.locationtech.jts.geom.Dimension.P
+import android.content.Context.LOCATION_SERVICE
+import android.content.DialogInterface
+import android.content.pm.PackageManager
+import android.location.Criteria
+import android.location.Location
+import android.location.LocationListener
+import android.os.*
+import android.preference.PreferenceActivity
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
+import android.widget.Toast
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.fido.u2f.api.common.RequestParams
+import com.google.android.gms.location.*
+import hntecology.ecology.R.id.*
+import hntecology.ecology.base.PrefUtils
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
 
+import android.provider.Settings
+import org.locationtech.jts.linearref.LengthLocationMap.getLocation
 
-class BiotopeActivity : Activity() {
+@Suppress("DEPRECATION")
+class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListener{
 
-    lateinit var biotopeModelList:Array<BiotopeModel>;
-
-
+    //gps 관련
+    private var REQUEST_LOCATION_CODE = 101
+    private var mGoogleApiClient: GoogleApiClient? = null
+    private var mLocation: Location? = null
+    private var mLocationRequest: LocationRequest? = null
+    private val UPDATE_INTERVAL = (2 * 1000).toLong()  /* 10 secs */
+    private val FASTEST_INTERVAL: Long = 2000 /* 2 sec */
 
 
     val SET_DATA1 = 1;
     var keyId:String?=null;
     var chkdata:Boolean =false;
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_biotope)
 
         window.setGravity(Gravity.RIGHT);
+        this.setFinishOnTouchOutside(true);
+        buildGoogleApiClient();
 
-        /*
-        val lp = WindowManager.LayoutParams()
-        lp.copyFrom(getWindow().getAttributes())
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
-        */
-
-        window.setLayout(Utils.dpToPx(700F).toInt(),WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setLayout(Utils.dpToPx(700f).toInt(),WindowManager.LayoutParams.WRAP_CONTENT);
 
         etinvesDatetimeTV.text = getTime()
 
@@ -53,6 +82,9 @@ class BiotopeActivity : Activity() {
         val db = dbManager.createDataBase()
 
         var intent:Intent = getIntent();
+
+
+
 
         if(intent.getSerializableExtra("id") !=null){
 
@@ -69,7 +101,7 @@ class BiotopeActivity : Activity() {
                                                                             ,data.getString(14),data.getString(15),data.getString(16),data.getString(17),data.getString(18),data.getString(19),data.getString(20)
                                                                             ,data.getFloat(21),data.getFloat(22),data.getFloat(23),data.getString(24),data.getFloat(25),data.getFloat(26),data.getFloat(27)
                                                                             ,data.getString(28),data.getFloat(29),data.getFloat(30),data.getString(31),data.getFloat(32),data.getFloat(33),data.getString(34)
-                                                                            ,data.getString(35),data.getString(36),data.getString(37))
+                                                                            ,data.getString(35),data.getString(36),data.getString(37),data.getString(38))
 
 //                etinvesRegionET.text        = biotope_attribute.INVES_REGION
                 etinvesRegionET.setText(biotope_attribute.INVES_REGION);
@@ -155,24 +187,24 @@ class BiotopeActivity : Activity() {
             }
         }
 
-        //토지이용현황 분류 버튼  높이 450F
+        //토지이용현황 분류 버튼  높이 450f
         btn_Dlg1.setOnClickListener {
 
             val intent = Intent(this,DlgCommonActivity::class.java)
             intent.putExtra("title","토지이용유형 분류기준")
             intent.putExtra("table","biotopeM")
-            intent.putExtra("DlgHeight",450F);
+            intent.putExtra("DlgHeight",450f);
 //            startActivity(intent)
             startActivityForResult(intent, SET_DATA1);
 
         }
-        //토지피복현황 분류 버튼 사이즈 높이 600F 줄 것.
+        //토지피복현황 분류 버튼 사이즈 높이 600f 줄 것.
         btn_Dlg2.setOnClickListener {
 
             val intent = Intent(this,DlgCommonActivity::class.java)
             intent.putExtra("title","토지피복현황 분류기준")
             intent.putExtra("table","biotopeS")
-            intent.putExtra("DlgHeight",600F);
+            intent.putExtra("DlgHeight",600f);
             startActivityForResult(intent, SET_DATA1);
 
         }
@@ -193,17 +225,18 @@ class BiotopeActivity : Activity() {
         //sqlite 저장.
         btn_biotopSave1.setOnClickListener {
 
+            getGps()
 
             var intent = Intent();
-            val biotope_attribute:Biotope_attribute = Biotope_attribute(null,"","","",0,"",0f
-                    ,0f,"","","",0f,"","","",""
-                    ,"","","","","",0f,0f,0f,"",0f
-                    ,0f,0f,"",0f,0f,"",0f,0f,""
-                    ,"","","");
+            val biotope_attribute:Biotope_attribute = Biotope_attribute(null,"","","",0,"",null
+                    ,null,"","","",null,"","","",""
+                    ,"","","","","",null,null,null,"",null
+                    ,null,null,"",null,null,"",null,null,""
+                    ,"","","",null);
 
 
             biotope_attribute.INVES_REGION         =   etinvesRegionET.text.toString()
-            biotope_attribute.INVESTIGATOR         =   tvinvestigatorTV.text.toString()
+            biotope_attribute.INVESTIGATOR         =   PrefUtils.getStringPreference(this,"name");
             biotope_attribute.INVES_DATETIME       =   etinvesDatetimeTV.text.toString()
 
             if(tvinvesIndexTV.text.toString() != ""){
@@ -324,11 +357,12 @@ class BiotopeActivity : Activity() {
                 biotope_attribute.LCM_TYPE = etlcmTypewET.text.toString()
             }
             biotope_attribute.id = keyId;
+
             if(chkdata){
 
                 dbManager.updatebiotope_attribute(biotope_attribute)
             }else {
-
+                biotope_attribute.point_gps = etpointGpsET.text.toString();
                 dbManager.insertbiotope_attribute(biotope_attribute);
 
             }
@@ -337,8 +371,52 @@ class BiotopeActivity : Activity() {
             setResult(RESULT_OK, intent);
             finish()
         }
+
+
+        btn_biotopDelete.setOnClickListener {
+
+            var intent = Intent();
+            val biotope_attribute:Biotope_attribute = Biotope_attribute(null,"","","",0,"",null
+                    ,null,"","","",null,"","","",""
+                    ,"","","","","",null,null,null,"",null
+                    ,null,null,"",null,null,"",null,null,""
+                    ,"","","",null);
+
+            biotope_attribute.id = keyId;
+
+
+            dbManager.deletebiotope_attribute(biotope_attribute)
+
+            intent.putExtra("bio_attri",biotope_attribute);
+
+            setResult(RESULT_OK, intent);
+            finish()
+
+        }
+
+
+
+
+
     }
 
+    fun getGps(){
+
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                //Location Permission already granted
+                getLocation();
+            } else {
+                //Request Location Permission
+                checkLocationPermission()
+            }
+
+        } else {
+            getLocation();
+        }
+
+    }
 
     fun getTime() :String{
 
@@ -427,4 +505,120 @@ class BiotopeActivity : Activity() {
         return strDT
     }
 
+        /*
+        *  gps function
+        * */
+
+    override fun onLocationChanged(location: Location?) {
+        // You can now create a LatLng Object for use with maps
+        // val latLng = LatLng(location.latitude, location.longitude)
+    }
+    @SuppressLint("MissingPermission", "SetTextI18n")
+    private fun getLocation() {
+        mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+        if (mLocation == null) {
+            startLocationUpdates();
+        }
+        if (mLocation != null) {
+//            tvLatitude.text =mLocation!!.latitude.toString()
+//            tvLongitude.text = mLocation!!.longitude.toString()
+            etpointGpsET.setText (mLocation!!.latitude.toString() + "," +mLocation!!.longitude.toString());
+//            Toast.makeText(this, "성공"+mLocation!!.latitude.toString(), Toast.LENGTH_SHORT).show();
+        } else {
+//            Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private fun startLocationUpdates() {
+        // Create the location request
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(UPDATE_INTERVAL)
+                .setFastestInterval(FASTEST_INTERVAL)
+        // Request location updates
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this)
+    }
+
+
+    @Synchronized
+    private fun buildGoogleApiClient() {
+        mGoogleApiClient = GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .build()
+
+        mGoogleApiClient!!.connect()
+    }
+
+    private fun checkGPSEnabled(): Boolean {
+        if (!isLocationEnabled())
+            showAlert()
+        return isLocationEnabled()
+    }
+
+    private fun showAlert() {
+        val dialog = android.support.v7.app.AlertDialog.Builder(this)
+        dialog.setTitle("Enable Location")
+                .setMessage("Your Locations Settings is set to 'Off'.\nPlease Enable Location to " + "use this app")
+                .setPositiveButton("Location Settings") { paramDialogInterface, paramInt ->
+                    val myIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    startActivity(myIntent)
+                }
+                .setNegativeButton("Cancel") { paramDialogInterface, paramInt -> }
+        dialog.show()
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        var locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager!!.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+    }
+
+    private fun checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                android.support.v7.app.AlertDialog.Builder(this)
+                        .setTitle("Location Permission Needed")
+                        .setMessage("This app needs the Location permission, please accept to use location functionality")
+                        .setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
+                            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION_CODE)
+                        })
+                        .create()
+                        .show()
+
+            } else ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION_CODE)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            REQUEST_LOCATION_CODE -> {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//                        Toast.makeText(this, "permission granted", Toast.LENGTH_LONG).show()
+                    }
+                } else {
+                    // permission denied, boo! Disable the functionality that depends on this permission.
+//                    Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show()
+                }
+                return
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mGoogleApiClient?.connect()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (mGoogleApiClient!!.isConnected()) {
+            mGoogleApiClient!!.disconnect()
+        }
+    }
 }

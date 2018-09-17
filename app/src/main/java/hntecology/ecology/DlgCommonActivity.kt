@@ -10,6 +10,7 @@ import android.graphics.drawable.PaintDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
+import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import hntecology.ecology.adapter.AreaItem1Adapte
@@ -19,16 +20,20 @@ import hntecology.ecology.model.BiotopeModel
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_dlgcommon.*
 import kotlinx.android.synthetic.main.activity_dlgcommon.view.*
-
+import java.util.*
+import android.R.attr.name
+import android.content.res.Resources
 
 
 class DlgCommonActivity : Activity() {
 
     private lateinit var context:Context;
 
+
     private lateinit var listView1: ListView
     private lateinit var listView2: ListView
     private lateinit var listView3: ListView
+
 
     private lateinit var listdata1 :ArrayList<BiotopeModel>
     private lateinit var listdata2 :ArrayList<BiotopeModel>
@@ -58,6 +63,7 @@ class DlgCommonActivity : Activity() {
         DlgHeight = intent.getFloatExtra("DlgHeight",430F);
 
         window.setLayout(Utils.dpToPx(800F).toInt(), Utils.dpToPx(DlgHeight).toInt());
+        this.setFinishOnTouchOutside(true);
 
         dlgTitle.setText(titleName)
 
@@ -71,12 +77,16 @@ class DlgCommonActivity : Activity() {
         listView3 = findViewById(R.id.recipe_list_view3)
 
         //대분류 중분류 소분류
+
         listdata1 = ArrayList()
         listdata2 = ArrayList()
         listdata3 = ArrayList()
 
         //대분류 데이터 셋팅
         dataList(listdata1,data1);
+
+
+
 
         //대분류 중분류 소분류
         listAdapte1 = AreaItem1Adapte(context, listdata1);
@@ -98,7 +108,11 @@ class DlgCommonActivity : Activity() {
             listAdapte1.setItemSelect(position)
 
             val data2 =  db.query(tableName,dataList,"g_code='B' and code like '%"+biomModel.code+"%'",null,null,null,"code",null);
+
+            dlg_probar.visibility= View.VISIBLE
             dataList(listdata2,data2);
+            dlg_probar.visibility= View.GONE
+
 
         })
 
@@ -151,3 +165,7 @@ class DlgCommonActivity : Activity() {
         }
     }
 }
+
+
+
+

@@ -194,6 +194,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", WILD_ANI String";
         query += ", REP_BIOTOP_POT String";
         query += ", UNUSUAL_NOTE String";
+        query += ", POINT_GPS String";
         query += ");";
         db.execSQL(query);
 //
@@ -233,7 +234,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO biotopeAttribute (id,INVES_REGION,INVESTIGATOR,INVES_DATETIME,INVES_INDEX,LUM_GROUP_NUM,LUM_TYPE_RATE,STANDARD_HEIGHT,LCM_GROUP_NUM,"
                 +"LCM_TYPE,TYPE_MARK,GV_RATE,GV_STRUCTURE,DIST_RETURN,RESTORE_POT,COMP_INTACT,VP_INTACT,IMP_FORM,BREAST_DIA,FINAL_EST,TREE_SPECIES,TREE_HEIGHT,TREE_BREAST,"
                 +"TREE_COVE,SUB_TREE_SPEC,SUB_TREE_HEIGHT,SUB_TREE_BREAST,SUB_TREE_COVER,SHRUB_SPECIES,SHRUB_HEIGHT,SHRUB_COVER,HERB_SPECIES,HERB_HEIGHT,HERB_COVER,"
-                +"PICTURE_FOLDER,WILD_ANI,REP_BIOTOP_POT,UNUSUAL_NOTE)";
+                +"PICTURE_FOLDER,WILD_ANI,REP_BIOTOP_POT,UNUSUAL_NOTE,POINT_GPS)";
         query += " values (";
         query += " '"+biotope_attribute.getId()+"'";
         query += ", '"+biotope_attribute.getINVES_REGION()+"'";
@@ -273,6 +274,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '"+biotope_attribute.getWILD_ANI()+"'";
         query += ", '"+biotope_attribute.getREP_BIOTOP_POT()+"'";
         query += ", '"+biotope_attribute.getUNUSUAL_NOTE()+"'";
+        query += ", '"+biotope_attribute.getPoint_gps()+"'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -292,16 +294,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 //        db.close();
 //    }
 
-//    public void insertMemberLikes(MemberLike memberLike) {
-//        String query = "INSERT INTO member_likes (board_id) ";
-//        query += " values (";
-//        query += memberLike.getBoard_id();
-//        query += " ); ";
-//
-//        SQLiteDatabase db = getWritableDatabase();
-//        db.execSQL(query);
-//        db.close();
-//    }
+    public void deletebiotope_attribute(Biotope_attribute biotope_attribute) {
+        String query = "DELETE FROM biotopeAttribute WHERE id = '"+biotope_attribute.getId()+"'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
 
     public void updatebiotope_attribute(Biotope_attribute biotope_attribute) {
 

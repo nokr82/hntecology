@@ -15,12 +15,10 @@ import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.model.BiotopeModel
 
-class AreaItem1Adapte(var context: Context, var itemList : ArrayList<BiotopeModel>) : BaseAdapter(),View.OnClickListener {
+class AreaItem1Adapte(var context: Context, var itemList : ArrayList<BiotopeModel>) : BaseAdapter() {
 
     var selectIndex:Int = 0;
-    override fun onClick(p0: View?) {
 
-    }
 
     private class ViewHoldar(row:View?){
 
@@ -105,16 +103,24 @@ class AreaItem1Adapte(var context: Context, var itemList : ArrayList<BiotopeMode
     }
     fun setItemSelect(position: Int){
         //전체 선택값 초기화.
-        for(i in 0.. (itemList.size-1)){
+/*        for(i in 0.. (itemList.size-1)){
 
             var bioListModel:BiotopeModel = itemList.get(i);
             bioListModel.chkSelect = false
             itemList.set(i,bioListModel)
-        }
+        }*/
+
+        var bioListModel:BiotopeModel = itemList.get(selectIndex);
+        bioListModel.chkSelect = false
+        itemList.set(selectIndex,bioListModel)
 
         var biotopeModel = getItem(position);
+
         biotopeModel.chkSelect = true
+        selectIndex= position
         itemList.set(position,biotopeModel)
         notifyDataSetChanged()
     }
+
+
 }

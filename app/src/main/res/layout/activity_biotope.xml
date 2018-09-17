@@ -42,13 +42,14 @@
                 android:layout_weight="1"
                 android:text="내용 클리어"
                 style="@style/dlgcommonButton"
+                android:id="@+id/gpsclick"
                 android:visibility="gone"
                 />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="50dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -108,7 +109,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="35dp">
+                    android:layout_height="50dp">
 
                     <TextView
                         android:layout_width="250dp"
@@ -153,7 +154,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
+                            android:layout_height="50dp"
                             android:layout_weight="1"
                             android:orientation="horizontal"
                             >
@@ -172,6 +173,7 @@
                                 android:id="@+id/TVlumGroupNumTV"
                                 android:gravity="center"
                                 style="@style/BiotopeTextViewDisabled"
+
                                 />
                             <EditText
                                 android:layout_width="0dp"
@@ -191,7 +193,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
+                            android:layout_height="50dp"
                             android:layout_weight="1"
                             android:orientation="horizontal">
 
@@ -217,7 +219,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
+                            android:layout_height="50dp"
                             android:layout_weight="1"
                             android:orientation="horizontal">
 
@@ -266,7 +268,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
+                            android:layout_height="50dp"
                             android:layout_weight="1"
                             android:orientation="horizontal"
                             >
@@ -322,7 +324,7 @@
                                 >
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal"
                                     >
@@ -347,7 +349,7 @@
                                 </LinearLayout>
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal"
                                     >
@@ -372,7 +374,7 @@
                                 </LinearLayout>
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal"
                                     >
@@ -396,7 +398,7 @@
                                 </LinearLayout>
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal"
                                     >
@@ -449,7 +451,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
+                            android:layout_height="50dp"
                             android:layout_weight="1"
                             android:orientation="horizontal"
                             >
@@ -485,7 +487,7 @@
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
+                            android:layout_height="50dp"
                             android:layout_weight="1"
                             android:orientation="horizontal"
                             >
@@ -510,7 +512,7 @@
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
+                            android:layout_height="50dp"
                             android:layout_weight="1"
                             android:orientation="horizontal"
                             >
@@ -553,7 +555,7 @@
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
@@ -575,7 +577,7 @@
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
@@ -597,7 +599,7 @@
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
@@ -619,7 +621,7 @@
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
@@ -641,7 +643,7 @@
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
@@ -663,7 +665,7 @@
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
@@ -685,7 +687,7 @@
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
@@ -729,7 +731,7 @@
                                 >
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal"
                                     >
@@ -753,7 +755,7 @@
                                 </LinearLayout>
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal"
                                     >
@@ -778,7 +780,7 @@
                                 </LinearLayout>
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal"
                                     >
@@ -803,7 +805,7 @@
                                 </LinearLayout>
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal"
                                     >
@@ -851,7 +853,7 @@
                                 >
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal"
                                     >
@@ -875,7 +877,7 @@
                                 </LinearLayout>
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal"
                                     >
@@ -900,7 +902,7 @@
                                 </LinearLayout>
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal"
                                     >
@@ -925,7 +927,7 @@
                                 </LinearLayout>
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal"
                                     >
@@ -973,7 +975,7 @@
                                 >
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal"
                                     >
@@ -997,7 +999,7 @@
                                 </LinearLayout>
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal"
                                     >
@@ -1023,7 +1025,7 @@
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal"
                                     >
@@ -1072,7 +1074,7 @@
                                 >
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal"
                                     >
@@ -1096,7 +1098,7 @@
                                 </LinearLayout>
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal"
                                     >
@@ -1122,7 +1124,7 @@
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="35dp"
+                                    android:layout_height="50dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal"
                                     >
@@ -1156,7 +1158,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="50dp"
                     android:orientation="horizontal"
                     >
                     <TextView
@@ -1177,7 +1179,7 @@
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="50dp"
                     android:orientation="horizontal"
                     >
                     <TextView
@@ -1198,7 +1200,7 @@
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="50dp"
                     android:orientation="horizontal"
                     >
                     <TextView
@@ -1219,7 +1221,7 @@
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="50dp"
                     android:orientation="horizontal"
                     >
                     <TextView
@@ -1238,9 +1240,17 @@
                         />
 
                 </LinearLayout>
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:maxLength="500"
+                    android:id="@+id/etpointGpsET"
+                    style="@style/BiotopeEditText"
+                    android:visibility="gone"
+                    />
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="50dp"
                     android:orientation="horizontal"
                     >
 
@@ -1263,6 +1273,14 @@
                         />
 
                 </LinearLayout>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="삭제"
+                    android:id="@+id/btn_biotopDelete"
+                    style="@style/dlgcommonButton"
+                    android:layout_marginTop="2dp"
+                    />
             </LinearLayout>
 
         </LinearLayout>

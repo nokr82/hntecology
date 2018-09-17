@@ -27,11 +27,15 @@
             android:textSize="25.2sp"
             android:textStyle="bold"
             />
-
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
             android:layout_marginTop="15dp"
             >
@@ -65,7 +69,15 @@
 
             </ListView>
 
-        </LinearLayout>
+         </LinearLayout>
+            <ProgressBar
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+
+                android:id="@+id/dlg_probar"
+                />
+        </FrameLayout>
 
     </LinearLayout>
 

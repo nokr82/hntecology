@@ -47,6 +47,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     private val PLAY_SERVICES_RESOLUTION_REQUEST: Int = 1000
 
+
     private lateinit var context: MainActivity
 
     private lateinit var mGestureDetector: GestureDetector

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Zoobenthos">
+    tools:context=".ZoobenthosActivity">
 
 
     <ScrollView
@@ -27,6 +27,7 @@
                 android:textStyle="bold"
                 android:text="저서무척추동물 조사야장"
                 style="@style/BiotopeTextView"
+                android:gravity="center"
                 />
 
             <LinearLayout
@@ -38,6 +39,7 @@
                     android:layout_width="70dp"
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
+
                     android:text="도엽명"/>
 
                 <EditText
@@ -45,6 +47,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
+                    android:gravity="left|center"
+                    android:paddingLeft="5dp"
                     />
                 <TextView
                     android:layout_width="70dp"
@@ -91,6 +95,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
+                    android:inputType="numberDecimal"
                     />
                 <TextView
                     android:layout_width="20dp"
@@ -101,6 +106,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:inputType="numberDecimal"
                     style="@style/BiotopeTextView"
                     />
                 <TextView
@@ -112,6 +118,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:inputType="numberDecimal"
                     style="@style/BiotopeTextView"
                     />
                 <TextView
@@ -130,6 +137,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:inputType="numberDecimal"
                     style="@style/BiotopeTextView"
                     />
                 <TextView
@@ -142,6 +150,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
+                    android:inputType="numberDecimal"
                     />
                 <TextView
                     android:layout_width="20dp"
@@ -153,6 +162,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
+                    android:inputType="numberDecimal"
                     />
                 <TextView
                     android:layout_width="20dp"
@@ -239,6 +249,89 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="하폭"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    android:hint="m"
+                    android:gravity="center|end"
+                    android:inputType="numberDecimal"
+
+                    />
+
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="~"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    android:hint="m"
+                    android:gravity="center|end"
+                    android:inputType="numberDecimal"
+                    />
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="유수폭"/>
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    android:hint="m"
+                    android:gravity="center|end"
+                    android:inputType="numberDecimal"
+                    />
+
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="~"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    android:hint="m"
+                    android:gravity="center|end"
+                    android:inputType="numberDecimal"
+                    />
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="수심"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    android:hint="cm"
+                    android:inputType="numberDecimal"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="100dp">
 
                 <TextView
@@ -252,6 +345,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:layout_weight="4"
+                    style="@style/BiotopeTextView"
                     >
 
                     <LinearLayout
@@ -259,17 +353,17 @@
                         android:layout_height="50dp">
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="하천(상류/중류/하류)"
                             />
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="지류1"
                             />
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="지류2"
                             />
                     </LinearLayout>
@@ -279,33 +373,36 @@
                         android:layout_height="50dp">
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="연못"
                             />
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="둠벙"
                             />
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="배후습지"
                             />
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="소택지"
                             />
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="기타"
                             />
                         <EditText
                             android:layout_width="60dp"
                             android:layout_height="match_parent"
                             style="@style/BiotopeTextView"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="10dp"
                             />
 
                     </LinearLayout>
@@ -330,90 +427,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         style="@style/BiotopeTextView"
+                        android:inputType="numberDecimal"
+                        android:hint="(정수지역 면적)㎡"
                         />
 
 
                 </LinearLayout>
 
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
 
-                <TextView
-                    android:layout_width="70dp"
-                    android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="하폭"/>
-
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:hint="m"
-                    android:gravity="center|end"
-
-                    />
-
-                <TextView
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="~"/>
-
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:hint="m"
-                    android:gravity="center|end"
-                    />
-
-                <TextView
-                    android:layout_width="70dp"
-                    android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="유수폭"/>
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:hint="m"
-                    android:gravity="center|end"
-                    />
-
-                <TextView
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="~"/>
-
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:hint="m"
-                    android:gravity="center|end"
-                    />
-
-                <TextView
-                    android:layout_width="70dp"
-                    android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="수심"/>
-
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:hint="cm"
-                    />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -436,6 +458,7 @@
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
                     android:hint="00.0℃"
+                    android:inputType="numberDecimal"
                     />
                 <TextView
                     android:layout_width="140dp"
@@ -449,6 +472,7 @@
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
                     android:hint="00.0℃"
+                    android:inputType="numberDecimal"
                     />
 
             </LinearLayout>
@@ -573,7 +597,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:layout_weight="1"
+                    android:layout_weight="3"
                     >
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -674,6 +698,7 @@
                             style="@style/BiotopeTextView"
                             android:hint="%"
                             android:gravity="center|end"
+                            android:inputType="numberDecimal"
                             />
                         <EditText
                             android:layout_width="0dp"
@@ -682,6 +707,7 @@
                             style="@style/BiotopeTextView"
                             android:hint="%"
                             android:gravity="center|end"
+                            android:inputType="numberDecimal"
                             />
                         <EditText
                             android:layout_width="0dp"
@@ -690,6 +716,7 @@
                             style="@style/BiotopeTextView"
                             android:hint="%"
                             android:gravity="center|end"
+                            android:inputType="numberDecimal"
                             />
                         <EditText
                             android:layout_width="0dp"
@@ -698,6 +725,7 @@
                             style="@style/BiotopeTextView"
                             android:hint="%"
                             android:gravity="center|end"
+                            android:inputType="numberDecimal"
                             />
                         <EditText
                             android:layout_width="0dp"
@@ -706,6 +734,7 @@
                             style="@style/BiotopeTextView"
                             android:hint="%"
                             android:gravity="center|end"
+                            android:inputType="numberDecimal"
                             />
                         <EditText
                             android:layout_width="0dp"
@@ -714,6 +743,7 @@
                             style="@style/BiotopeTextView"
                             android:hint="%"
                             android:gravity="center|end"
+                            android:inputType="numberDecimal"
                             />
 
                     </LinearLayout>
@@ -755,6 +785,7 @@
                             style="@style/BiotopeTextView"
                             android:hint="%"
                             android:gravity="center|end"
+                            android:inputType="numberDecimal"
                             />
                         <EditText
                             android:layout_width="0dp"
@@ -763,6 +794,7 @@
                             style="@style/BiotopeTextView"
                             android:hint="%"
                             android:gravity="center|end"
+                            android:inputType="numberDecimal"
                             />
 
                     </LinearLayout>
@@ -1044,67 +1076,71 @@
                             android:layout_height="100dp"
                             android:layout_weight="1"
                             android:orientation="vertical"
+                            style="@style/BiotopeTextView"
+
                             >
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp">
 
                         <CheckBox
                                 android:layout_width="wrap_content"
-                                android:layout_height="50dp"
+                                android:layout_height="match_parent"
                                 android:text="자연식생"
                                 />
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="농경지"
                             />
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="거주지"
                             />
 
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="상업지역"
                             />
 
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="공업지역"
                             />
 
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="유원지"
                             />
                             </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="50dp">
-
+                            <CheckBox
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="도로"
+                                />
+                            <CheckBox
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="기타"
+                                />
+                            <EditText
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="10dp"
+                                style="@style/BiotopeTextView"
+                                />
                         </LinearLayout>
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:text="도로"
-                            />
 
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:text="기타"
-                            />
-                        <EditText
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            style="@style/BiotopeTextView"
-                            />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -1116,57 +1152,76 @@
                             android:layout_height="match_parent"
                             style="@style/BiotopeTextView"
                             android:text="우안"/>
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:text="자연식생"
-                            />
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:text="농경지"
-                            />
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:text="거주지"
-                            />
-
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:text="상업지역"
-                            />
-
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:text="공업지역"
-                            />
-
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:text="유원지"
-                            />
-
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:text="도로"
-                            />
-
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:text="기타"
-                            />
-                        <EditText
+                        <LinearLayout
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="100dp"
                             android:layout_weight="1"
+                            android:orientation="vertical"
                             style="@style/BiotopeTextView"
-                            />
+                            >
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp">
+
+                                <CheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="자연식생"
+                                    />
+                                <CheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="농경지"
+                                    />
+                                <CheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="거주지"
+                                    />
+
+                                <CheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="상업지역"
+                                    />
+
+                                <CheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="공업지역"
+                                    />
+
+                                <CheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="유원지"
+                                    />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp">
+                                <CheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="도로"
+                                    />
+                                <CheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="기타"
+                                    />
+                                <EditText
+                                    android:layout_width="60dp"
+                                    android:layout_height="match_parent"
+                                    style="@style/BiotopeTextView"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:layout_marginLeft="10dp"
+                                    />
+                            </LinearLayout>
+
+                        </LinearLayout>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -1189,6 +1244,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical"
+                    style="@style/BiotopeTextView"
                     >
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -1196,43 +1252,43 @@
 
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="산업폐수"
                             />
 
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="농·축산폐수"
                             />
 
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="공사"
                             />
 
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="행락"
                             />
 
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="준설"
                             />
 
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="선박"
                             />
 
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="어로"
                             />
 
@@ -1243,43 +1299,46 @@
                         >
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="홍수"
                             />
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="매립"
                             />
 
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="인공수변"
                             />
 
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="생활하수"
                             />
 
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="없음"
                             />
 
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:text="기타"
                             />
                         <EditText
                             android:layout_width="70dp"
-                            android:layout_height="50dp"
-                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="10dp"
                             style="@style/BiotopeTextView"
+
                             />
                     </LinearLayout>
 
@@ -1305,8 +1364,40 @@
                     style="@style/BiotopeTextView"
                     />
 
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                >
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="취소"
+                    android:id="@+id/btn_biotopCancle1"
+                    style="@style/dlgcommonButton"
+                    />
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="저장"
+                    android:id="@+id/btn_biotopSave1"
+                    style="@style/dlgcommonButton"
+                    android:layout_marginLeft="2dp"
+                    />
 
             </LinearLayout>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="삭제"
+                android:id="@+id/btn_biotopDelete"
+                style="@style/dlgcommonButton"
+                android:layout_marginTop="2dp"
+                />
 
         </LinearLayout>
 

@@ -49,35 +49,9 @@
 
             </ListView>
 
-            <ListView
-                android:id="@+id/recipe_list_view2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:divider="@null">
-
-            </ListView>
-
-            <ListView
-                android:id="@+id/recipe_list_view3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:divider="@null">
-
-            </ListView>
 
          </LinearLayout>
-            <ProgressBar
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
 
-                android:id="@+id/dlg_probar"
-                android:visibility="gone"
-                />
         </FrameLayout>
 
     </LinearLayout>

@@ -1,40 +1,27 @@
 package hntecology.ecology
 
 import android.app.Activity
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Point
 import android.os.AsyncTask
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.support.v4.app.FragmentActivity
-import android.util.Log
 import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
 import android.view.View
-import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.Toast
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesUtil
-import com.google.android.gms.internal.zzahn.runOnUiThread
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import hntecology.ecology.R.id.btn_draw
-import hntecology.ecology.R.id.drawer_view
-import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
-import hntecology.ecology.model.BiotopeModel
-import hntecology.ecology.model.Biotope_attribute
-import kotlinx.android.synthetic.main.activity_biotope.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.locationtech.jts.geom.Coordinate
 import org.locationtech.jts.geom.GeometryFactory
@@ -62,7 +49,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     var longitude:Double = 37.39627
 
 
-    var buttonController = 1;       //1. biotope  , 2. 미정. , 3.
+    var buttonController = 3;       //3. biotope  , 6.birds , 7.Reptilia , 8.mammalia  9. fish, 10.insect, 11.flora , 13. zoobenthos
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,8 +91,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
             LoadLayerTask("SH_dummy").execute(latLngBounds)
         })
+        //비오톱 추가
+        btn_biotope.setOnClickListener(View.OnClickListener {
 
-        btn_draw.setOnClickListener(View.OnClickListener {
+            buttonController = 3
 
             if(drawer_view.visibility == View.VISIBLE) {
                 endDraw()
@@ -113,6 +102,104 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 startDraw()
             }
         })
+
+        //조류 추가
+        btn_birds.setOnClickListener(View.OnClickListener {
+
+            buttonController =6
+
+            if(drawer_view.visibility == View.VISIBLE) {
+                endDraw()
+            } else {
+                startDraw()
+            }
+        })
+
+        //양서ㆍ파충류 추가
+        btn_Reptilia.setOnClickListener(View.OnClickListener {
+
+
+            buttonController = 7
+
+            if(drawer_view.visibility == View.VISIBLE) {
+                endDraw()
+            } else {
+                startDraw()
+            }
+        })
+
+        //포유류 추가
+        btn_mammalia.setOnClickListener(View.OnClickListener {
+
+
+            buttonController = 8
+
+            if(drawer_view.visibility == View.VISIBLE) {
+                endDraw()
+            } else {
+                startDraw()
+            }
+        })
+
+        //어류 추가
+        btn_fish.setOnClickListener(View.OnClickListener {
+
+            buttonController = 9
+
+            if(drawer_view.visibility == View.VISIBLE) {
+                endDraw()
+            } else {
+                startDraw()
+            }
+        })
+
+        //곤충 추가
+        btn_insect.setOnClickListener(View.OnClickListener {
+
+            buttonController = 10
+
+            if(drawer_view.visibility == View.VISIBLE) {
+                endDraw()
+            } else {
+                startDraw()
+            }
+        })
+
+        //식물 추가
+        btn_flora.setOnClickListener(View.OnClickListener {
+
+            buttonController = 11
+
+            if(drawer_view.visibility == View.VISIBLE) {
+                endDraw()
+            } else {
+                startDraw()
+            }
+        })
+
+        //식물2 추가
+        btn_flora2.setOnClickListener(View.OnClickListener {
+
+            if(drawer_view.visibility == View.VISIBLE) {
+                endDraw()
+            } else {
+                startDraw()
+            }
+        })
+
+        //저서무척추동물 추가
+        btn_zoobenthos.setOnClickListener(View.OnClickListener {
+
+
+            buttonController = 13
+
+            if(drawer_view.visibility == View.VISIBLE) {
+                endDraw()
+            } else {
+                startDraw()
+            }
+        })
+
 
         btn_clear_all.setOnClickListener(View.OnClickListener {
             googleMap.clear()
@@ -428,9 +515,51 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     var intent:Intent? = null
                     when(buttonController){
 
-                        1->{
+                        3->{
                             tagName += "biotope"
                             intent = Intent(this,BiotopeActivity::class.java);
+
+                        }
+                        6->{
+                            tagName += "birds"
+                            intent = Intent(this,BirdsActivity::class.java);
+                        }
+
+                        7->{
+                            tagName += "reptilia"
+                            intent = Intent(this,ReptiliaActivity::class.java);
+
+                        }
+                        8->{
+
+                            tagName += "mammalia"
+                            intent = Intent(this,MammaliaActivity::class.java);
+
+                        }
+
+                        9->{
+
+                            tagName += "fish"
+                            intent = Intent(this,FishActivity::class.java);
+                        }
+
+                        10->{
+                            tagName += "insect"
+                            intent = Intent(this,InsectActivity::class.java);
+
+                        }
+
+                        11 ->{
+
+                            tagName += "flora"
+                            intent = Intent(this,FloraActivity::class.java);
+
+                        }
+
+                        13 ->{
+                            tagName += "zoobenthos"
+                            intent = Intent(this,ZoobenthosActivity::class.java);
+
                         }
                     }
 
@@ -465,7 +594,45 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         googleMap.uiSettings.isZoomGesturesEnabled = false
         googleMap.uiSettings.setAllGesturesEnabled(false)
 
-        btn_draw.text = "비오톱 추가 중"
+
+        when(buttonController){
+
+            3->{
+                btn_biotope.text = "비오톱 추가 중"
+            }
+            6->{
+                btn_birds.text = "조류 추가 중"
+            }
+
+            7->{
+
+                btn_Reptilia.text = "양서ㆍ파충류 추가 중"
+            }
+            8->{
+                btn_mammalia.text = "포유류 추가 중"
+            }
+
+            9->{
+
+                btn_fish.text = "어류 추가 중"
+            }
+
+            10->{
+
+                btn_insect.text = "곤충 추가 중"
+            }
+
+            11 ->{
+
+                btn_flora.text = "식물상 추가 중"
+            }
+
+            13 ->{
+
+                btn_zoobenthos.text = "저서무척추동물 추가 중"
+            }
+
+        }
     }
 
     fun endDraw() {
@@ -477,8 +644,45 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         latlngs.clear()
 
         drawer_view.visibility = View.GONE
+        when(buttonController){
 
-        btn_draw.text = "비오톱 추가"
+            3->{
+                btn_biotope.text = "비오톱 추가"
+            }
+            6->{
+                btn_birds.text = "조류 추가"
+            }
+
+            7->{
+
+                btn_Reptilia.text = "양서ㆍ파충류 추가"
+            }
+            8->{
+                btn_mammalia.text = "포유류 추가"
+            }
+
+            9->{
+
+                btn_fish.text = "어류 추가"
+            }
+
+            10->{
+
+                btn_insect.text = "곤충 추가"
+            }
+
+            11 ->{
+
+                btn_flora.text = "식물상 추가"
+            }
+
+            13 ->{
+
+                btn_zoobenthos.text = "저서무척추동물 추가"
+            }
+
+        }
+
     }
     fun getTime():String{
 

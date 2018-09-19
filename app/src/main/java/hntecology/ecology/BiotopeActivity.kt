@@ -83,9 +83,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         var intent:Intent = getIntent();
 
-
-
-
         if(intent.getSerializableExtra("id") !=null){
 
             keyId = intent.getStringExtra("id")

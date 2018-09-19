@@ -240,7 +240,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '"+biotope_attribute.getINVES_REGION()+"'";
         query += ", '"+biotope_attribute.getINVESTIGATOR()+"'";
         query += ", '"+biotope_attribute.getINVES_DATETIME()+"'";
-        query += ", "+biotope_attribute.getINVES_INDEX()+"";
+//        query += ", "+biotope_attribute.getINVES_INDEX()+"";
+
+        query += ", (SELECT strftime(\"%Y%m%d\",'now','localtime') || substr('000'|| IFNULL(MAX(substr(INVES_INDEX ,9,15)),0)+1  ,-15, 15) FROM biotopeAttribute)";
+
         query += ", '"+biotope_attribute.getLUM_GROUP_NUM()+"'";
         query += ", "+biotope_attribute.getLUM_TYPE_RATE()+"";
         query += ", "+biotope_attribute.getSTANDARD_HEIGHT()+"";

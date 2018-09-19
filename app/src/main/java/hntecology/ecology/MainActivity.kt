@@ -61,6 +61,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     var longitude:Double = 37.39627
 
 
+    var buttonController = 1;       //1. biotope  , 2. 미정. , 3.
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,8 +70,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         this.context = this
 
-        PrefUtils.setPreference(this, "latitude", latitude);
-        PrefUtils.setPreference(this, "longitude", longitude);
+/*        PrefUtils.setPreference(this, "latitude", latitude);
+        PrefUtils.setPreference(this, "longitude", longitude);*/
 
         if(PrefUtils.getDoublePreference(this,"latitude") != null &&
                 PrefUtils.getDoublePreference(this,"longitude")!= null) {
@@ -176,16 +178,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 PolygonCallBackData -> {
 
-                    if (resultCode == Activity.RESULT_OK) {
-                        //biotopeModel = data!!.getSerializableExtra("bioModel") as BiotopeModel
-                        var biotope_atttribute:Biotope_attribute = data!!.getSerializableExtra("bio_attri") as Biotope_attribute
 
-//                        if(beforePolygon!!.tag == null){
-//
-//                            beforePolygon!!.tag = biotope_atttribute.id
-//
-//                        }
-                    }
                 }
                 dlg_gpsCallbackData ->{
 
@@ -423,30 +416,39 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 polygonOptions.addAll(latlngs)
 
 
-                var polygon:Polygon = googleMap.addPolygon(polygonOptions)
-                polygon.setClickable(true);
-
+                var polygonNew:Polygon = googleMap.addPolygon(polygonOptions)
+                polygonNew.setClickable(true);
 
                 //클릭시 태그 데이터 있는지 확인 없으면 바로 넘기고 있으면 있는걸로 호출.
                 //tag 리절트로 가져와서 태그 설정
-                googleMap.setOnPolygonClickListener {
+                googleMap.setOnPolygonClickListener(GoogleMap.OnPolygonClickListener { polygon ->
 
-                    val intent:Intent = Intent(this,BiotopeActivity::class.java);
+                    var tagName = getAttrubuteKey();
+                    var intent:Intent? = null
+                    when(buttonController){
+
+                        1->{
+                            tagName += "biotope"
+                            intent = Intent(this,BiotopeActivity::class.java);
+                        }
+                    }
 
 
 
-                    intent.putExtra("id",polygon.id);
 
-          /*          else if (beforePolygon != null && beforePolygon!!.tag != null){
+                    polygon.tag = tagName;
 
-                        intent.putExtra("id","1");
-                    }*/
-
-                     //beforePolygon = polygon ;
+                    intent!!.putExtra("id",polygon.tag.toString());
 
 
                     startActivityForResult(intent, PolygonCallBackData);
-                }
+
+
+                })
+
+
+
+
                 runOnUiThread {
                     endDraw()
                 }
@@ -487,7 +489,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     fun getAttrubuteKey():String{
 
         val time = System.currentTimeMillis()
-        val dayTime = SimpleDateFormat("yyyyMMddHHmmssSSS")
+        val dayTime = SimpleDateFormat("yyyyMM")
         val strDT = dayTime.format(Date(time))
 
         return strDT

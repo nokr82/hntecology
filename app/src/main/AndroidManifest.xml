@@ -37,15 +37,8 @@
 
         <activity
             android:name=".MainActivity"
-            android:theme="@style/NoTitleDialog"
             android:screenOrientation="landscape"
-            >
-                <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/NoTitleDialog" />
         <activity
             android:name=".base.LoadingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -53,16 +46,36 @@
             android:theme="@style/full_screen_dialog" />
         <activity
             android:name=".BiotopeActivity"
+            android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog2"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+        <activity
+            android:name=".DlgCommonActivity"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
-            >
-        </activity>
-        <activity android:name=".DlgCommonActivity"
-            android:theme="@style/full_screen_dialog1"
-            android:screenOrientation="landscape"
-            >
+            android:theme="@style/full_screen_dialog1" />
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Dlg_gps"
+            android:label="@string/title_activity_dlg_gps" />
+        <activity android:name=".Zoobenthos">
+
+<!--
+            <intent-filter>
+
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+
+            </intent-filter>
+-->
 
         </activity>
     </application>

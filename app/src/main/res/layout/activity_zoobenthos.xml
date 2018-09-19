@@ -1,0 +1,1315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Zoobenthos">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:textColor="#333333"
+                android:textSize="20.2sp"
+                android:textStyle="bold"
+                android:text="저서무척추동물 조사야장"
+                style="@style/BiotopeTextView"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="도엽명"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    />
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="조사방법"/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    >
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="정량  /"
+                        />
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="정성"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="좌표"/>
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="N"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    />
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="°"/>
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    />
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="′"/>
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    />
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="″"/>
+
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="E"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    />
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="°"/>
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    />
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="′"/>
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    />
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="″"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="조사일시"/>
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    android:hint="예)2018.01.01"
+                    />
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="날씨"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    android:hint="흐림"
+                    />
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="조사도구"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="행정구역명"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    />
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="조사원"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="서식지 유형"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="4"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="하천(상류/중류/하류)"
+                            />
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="지류1"
+                            />
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="지류2"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="연못"
+                            />
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="둠벙"
+                            />
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="배후습지"
+                            />
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="소택지"
+                            />
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="기타"
+                            />
+                        <EditText
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            />
+
+                    </LinearLayout>
+
+
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        style="@style/BiotopeTextView"
+                        android:text="면적"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        style="@style/BiotopeTextView"
+                        />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="하폭"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    android:hint="m"
+                    android:gravity="center|end"
+
+                    />
+
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="~"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    android:hint="m"
+                    android:gravity="center|end"
+                    />
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="유수폭"/>
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    android:hint="m"
+                    android:gravity="center|end"
+                    />
+
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="~"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    android:hint="m"
+                    android:gravity="center|end"
+                    />
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="수심"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    android:hint="cm"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="온도"/>
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="기온"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    android:hint="00.0℃"
+                    />
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="수온"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    android:hint="00.0℃"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="탁도"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        >
+                        <CheckBox
+                            android:layout_width="120dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:text="매우 탁함"
+                            style="@style/BiotopeTextView"
+                            />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:layout_weight="1"
+                            android:text="수심 30cm이상에서 저상을 볼 수 없다."/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        >
+                        <CheckBox
+                            android:layout_width="120dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            style="@style/BiotopeTextView"
+                            android:text="탁함"
+                            />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:layout_weight="1"
+                            android:text="수심 30~70cm이상에서 저상을 볼 수 있다."/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        >
+                        <CheckBox
+                            android:layout_width="120dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            style="@style/BiotopeTextView"
+                            android:text="맑음"
+                            />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:layout_weight="1"
+                            android:text="수심 75cm이상에서 저상을 볼 수 있다."/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        >
+                        <CheckBox
+                            android:layout_width="120dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            style="@style/BiotopeTextView"
+                            android:text="맑으나 얕음"
+                            />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:layout_weight="1"
+                            android:text="맑으나 저상이 얕아서 탁도를 파악할 수 없다."/>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:orientation="horizontal"
+                >
+
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="하상입자\n합계가 100%가 되어야함"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal"
+                        >
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:layout_weight="1"
+                            android:text="진흙이하"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:layout_weight="1"
+                            android:text="모래"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:layout_weight="1"
+                            android:text="왕모래"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:layout_weight="1"
+                            android:text="자갈"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:layout_weight="1"
+                            android:text="작은돌"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:layout_weight="1"
+                            android:text="큰돌"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+
+                        >
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:layout_weight="1"
+                            android:text="0.063 ㎜"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:layout_weight="1"
+                            android:text="0.063-2 ㎜"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:layout_weight="1"
+                            android:text="2-16 ㎜"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:layout_weight="1"
+                            android:text="16-64 ㎜"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:layout_weight="1"
+                            android:text="64-256 ㎜"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:layout_weight="1"
+                            android:text="256 ㎜"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal"
+                        >
+
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            style="@style/BiotopeTextView"
+                            android:hint="%"
+                            android:gravity="center|end"
+                            />
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            style="@style/BiotopeTextView"
+                            android:hint="%"
+                            android:gravity="center|end"
+                            />
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            style="@style/BiotopeTextView"
+                            android:hint="%"
+                            android:gravity="center|end"
+                            />
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            style="@style/BiotopeTextView"
+                            android:hint="%"
+                            android:gravity="center|end"
+                            />
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            style="@style/BiotopeTextView"
+                            android:hint="%"
+                            android:gravity="center|end"
+                            />
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            style="@style/BiotopeTextView"
+                            android:hint="%"
+                            android:gravity="center|end"
+                            />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:layout_weight="1"
+                            android:text="콘크리트"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:layout_weight="1"
+                            android:text="암반"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            style="@style/BiotopeTextView"
+                            android:hint="%"
+                            android:gravity="center|end"
+                            />
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            style="@style/BiotopeTextView"
+                            android:hint="%"
+                            android:gravity="center|end"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="250dp">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="제방형태"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        style="@style/BiotopeTextView"
+                        android:text="*상류에서 하류를 바라볼 때 좌측을 좌안, 우측을 우안"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:text="좌안"/>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:layout_weight="1"
+                            >
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    style="@style/BiotopeTextView"
+                                    android:layout_weight="1"
+                                    android:text="자연제방"/>
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    style="@style/BiotopeTextView"
+                                    android:layout_weight="1"
+                                    android:text="콘크리트"/>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    style="@style/BiotopeTextView"
+                                    android:layout_weight="1"
+                                    android:text="석축"/>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    style="@style/BiotopeTextView"
+                                    android:layout_weight="1"
+                                    android:text="돌망태"/>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    style="@style/BiotopeTextView"
+                                    android:layout_weight="1"
+                                    android:text="흙"/>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    style="@style/BiotopeTextView"
+                                    android:layout_weight="1"
+                                    android:text="기타"/>
+
+
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp">
+                                <EditText
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    style="@style/BiotopeTextView"
+                                    />
+                                <EditText
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    style="@style/BiotopeTextView"
+                                    />
+                                <EditText
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    style="@style/BiotopeTextView"
+                                    />
+                                <EditText
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    style="@style/BiotopeTextView"
+                                    />
+                                <EditText
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    style="@style/BiotopeTextView"
+                                    />
+                                <EditText
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    style="@style/BiotopeTextView"
+                                    />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:text="우안"/>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:layout_weight="1"
+                            >
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    style="@style/BiotopeTextView"
+                                    android:layout_weight="1"
+                                    android:text="자연제방"/>
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    style="@style/BiotopeTextView"
+                                    android:layout_weight="1"
+                                    android:text="콘크리트"/>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    style="@style/BiotopeTextView"
+                                    android:layout_weight="1"
+                                    android:text="석축"/>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    style="@style/BiotopeTextView"
+                                    android:layout_weight="1"
+                                    android:text="돌망태"/>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    style="@style/BiotopeTextView"
+                                    android:layout_weight="1"
+                                    android:text="흙"/>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    style="@style/BiotopeTextView"
+                                    android:layout_weight="1"
+                                    android:text="기타"/>
+
+
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp">
+                                <EditText
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    style="@style/BiotopeTextView"
+                                    />
+                                <EditText
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    style="@style/BiotopeTextView"
+                                    />
+                                <EditText
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    style="@style/BiotopeTextView"
+                                    />
+                                <EditText
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    style="@style/BiotopeTextView"
+                                    />
+                                <EditText
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    style="@style/BiotopeTextView"
+                                    />
+                                <EditText
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    style="@style/BiotopeTextView"
+                                    />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="유역토지이용"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp">
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:text="좌안"/>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="100dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            >
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp">
+
+                        <CheckBox
+                                android:layout_width="wrap_content"
+                                android:layout_height="50dp"
+                                android:text="자연식생"
+                                />
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="농경지"
+                            />
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="거주지"
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="상업지역"
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="공업지역"
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="유원지"
+                            />
+                            </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp">
+
+                        </LinearLayout>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="도로"
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="기타"
+                            />
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            style="@style/BiotopeTextView"
+                            />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp">
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="match_parent"
+                            style="@style/BiotopeTextView"
+                            android:text="우안"/>
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="자연식생"
+                            />
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="농경지"
+                            />
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="거주지"
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="상업지역"
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="공업지역"
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="유원지"
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="도로"
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="기타"
+                            />
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            style="@style/BiotopeTextView"
+                            />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="교란요인"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp" android:orientation="horizontal">
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="산업폐수"
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="농·축산폐수"
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="공사"
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="행락"
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="준설"
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="선박"
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="어로"
+                            />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        >
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="홍수"
+                            />
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="매립"
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="인공수변"
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="생활하수"
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="없음"
+                            />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:text="기타"
+                            />
+                        <EditText
+                            android:layout_width="70dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="1"
+                            style="@style/BiotopeTextView"
+                            />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="특이사항 및 출현종"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

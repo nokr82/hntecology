@@ -65,7 +65,6 @@
                     android:maxLength="50"
                     android:id="@+id/etinvesRegionET"
                     style="@style/BiotopeEditText"
-
                     />
                 <TextView
                     android:layout_width="70dp"

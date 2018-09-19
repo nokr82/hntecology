@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode ="true"
+    android:background="#41C6FE"
+    tools:context=".Dlg_gps"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            >
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:src="@drawable/logo"
+
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="10dp"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:text="경도 , 위도를 입력해 주세요"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="52dp"
+                android:layout_marginRight="52dp"
+                android:paddingTop="42dp"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/longitudeET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:textColorHint="#FFFFFF"
+                    android:hint="경도"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:inputType="numberDecimal"
+                    android:background="@null"/>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#FFFFFF"
+                    android:layout_marginBottom="40dp"/>
+
+                <EditText
+                    android:id="@+id/latitudeET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:layout_marginTop="5dp"
+                    android:textColorHint="#FFFFFF"
+                    android:hint="위도"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:inputType="numberDecimal"
+                    android:background="@null"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#FFFFFF"
+                    android:layout_marginBottom="40dp"/>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/longitude_ok"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:gravity="center"
+                android:text="확인"
+                android:textSize="14sp"
+                android:textColor="#41C6FE"
+                android:background="@drawable/background_radius24_ffffff"/>
+
+            <TextView
+                android:id="@+id/longitude_cancle"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="취소"
+                android:textSize="14sp"
+                android:textColor="#41C6FE"
+                android:background="@drawable/background_radius24_ffffff"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -28,7 +28,18 @@
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Toast</item>
-        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:windowSoftInputMode">stateHidden|adjustPan</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
+
+    <style name="full_screen_dialog2" parent="AppBaseTheme">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Toast</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
@@ -46,4 +57,36 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
+    <style name="BiotopeTextView"  parent="@android:style/Widget.TextView">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/biotope_textview</item>
+    </style>
+
+    <style name="BiotopeEditText"  parent="@android:style/Widget.EditText">
+        <item name="android:background">@drawable/background_border_radius5_b5b5b5</item>
+        <item name="android:layout_marginLeft">3dp</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:layout_marginRight">3dp</item>
+        <item name="android:layout_marginBottom">3dp</item>
+
+    </style>
+
+    <style name="dlgcommonListView"  parent="@android:style/Widget.ListView">
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="dlgcommonButton" parent="android:style/Widget.Button">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">#004baa</item>
+    </style>
+
+    <style name="BiotopeTextViewDisabled"  parent="@android:style/Widget.TextView">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/biotope_textview_disabled</item>
+        <item name="android:layout_marginLeft">0.2dp</item>
+        <item name="android:layout_marginRight">0.2dp</item>
+        <item name="android:layout_marginBottom">0.2dp</item>
+    </style>
 </resources>

@@ -1,30 +1,47 @@
 package hntecology.ecology
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Point
 import android.os.AsyncTask
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.support.v4.app.FragmentActivity
+import android.util.Log
 import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
 import android.view.View
+import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesUtil
+import com.google.android.gms.internal.zzahn.runOnUiThread
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import hntecology.ecology.R.id.btn_draw
+import hntecology.ecology.R.id.drawer_view
+import hntecology.ecology.base.DataBaseHelper
+import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
+import hntecology.ecology.model.BiotopeModel
+import hntecology.ecology.model.Biotope_attribute
+import kotlinx.android.synthetic.main.activity_biotope.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.locationtech.jts.geom.Coordinate
 import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jtstest.testbuilder.io.shapefile.Shapefile
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnTouchListener {
 
@@ -36,11 +53,33 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     private lateinit var mGestureDetector: GestureDetector
     private lateinit var googleMap: GoogleMap
 
+    val PolygonCallBackData = 1;
+    val dlg_gpsCallbackData = 10;
+    //var beforePolygon: Polygon? = null
+    private lateinit var polygonList:Array<Polygon>
+
+    var latitude:Double = 126.79235
+    var longitude:Double = 37.39627
+
+
+    var buttonController = 1;       //1. biotope  , 2. 미정. , 3.
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         this.context = this
+
+/*        PrefUtils.setPreference(this, "latitude", latitude);
+        PrefUtils.setPreference(this, "longitude", longitude);*/
+
+        if(PrefUtils.getDoublePreference(this,"latitude") != null &&
+                PrefUtils.getDoublePreference(this,"longitude")!= null) {
+
+            latitude = PrefUtils.getDoublePreference(this,"latitude")
+            longitude = PrefUtils.getDoublePreference(this,"longitude")
+        }
 
         mGestureDetector = GestureDetector(this, GestureListener())
 
@@ -67,6 +106,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         })
 
         btn_draw.setOnClickListener(View.OnClickListener {
+
             if(drawer_view.visibility == View.VISIBLE) {
                 endDraw()
             } else {
@@ -78,10 +118,38 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             googleMap.clear()
         })
 
+        //좌표지정 버튼
+        btn_gps_select.setOnClickListener {
+
+
+            val intent:Intent = Intent(this,Dlg_gps::class.java);
+
+
+
+            startActivityForResult(intent, dlg_gpsCallbackData);
+        }
+
+        btn_satellite.setOnClickListener {
+
+
+           var satelite:String = btn_satellite.text.toString();
+
+            if(satelite == "위성 지도"){
+
+                googleMap.mapType = GoogleMap.MAP_TYPE_HYBRID;
+                btn_satellite.text = "일반 지도"
+            }else{
+
+                googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL;
+                btn_satellite.text = "위성 지도"
+            }
+        }
+
         // Get the SupportMapFragment and request notification
         // when the map is ready to be used.
         startRegistrationService()
 
+        TVtimeTV.setText(getTime())
     }
 
     private fun startRegistrationService() {
@@ -96,14 +164,37 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        when (requestCode) {
-            PLAY_SERVICES_RESOLUTION_REQUEST -> if (resultCode == Activity.RESULT_OK) {
-                initilizeMap()
-            }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
-            else -> super.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(resultCode == Activity.RESULT_OK){
+
+            when (requestCode) {
+
+                PLAY_SERVICES_RESOLUTION_REQUEST ->{
+
+                    initilizeMap()
+                }
+
+                PolygonCallBackData -> {
+
+
+                }
+                dlg_gpsCallbackData ->{
+
+                    latitude = data!!.getDoubleExtra("latitude",126.79235)
+                    longitude = data!!.getDoubleExtra("longitude",37.39627)
+
+                    PrefUtils.setPreference(this, "latitude", latitude);
+                    PrefUtils.setPreference(this, "longitude", longitude);
+                    onMapReady(googleMap)
+                }
+
+                else -> super.onActivityResult(requestCode, resultCode, data)
+            }
         }
+
     }
 
 
@@ -140,9 +231,23 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         // Add a marker in Sydney, Australia,
         // and move the map's camera to the same location.
-        val sydney = LatLng(37.39627, 126.79235)
+
+        val sydney = LatLng(longitude, latitude)
+
         googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15f))
+
+
+
+        // 마커클릭 이벤트 처리
+        // GoogleMap 에 마커클릭 이벤트 설정 가능.
+        googleMap.setOnMarkerClickListener(GoogleMap.OnMarkerClickListener {
+            marker ->
+            Toast.makeText(this,marker.title,Toast.LENGTH_LONG).show()
+
+            false
+        })
+
 
 
     }
@@ -289,18 +394,61 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 mPolylineOptions.color(Color.RED)
                 mPolylineOptions.width(3.0f)
                 mPolylineOptions.addAll(latlngs)
+
+
                 googleMap.addPolyline(mPolylineOptions)
             }
             MotionEvent.ACTION_UP -> {
+
                 print("Poinnts array size : ${latlngs.size}")
 
                 latlngs.add(firstGeoPoint)
+
+//                val polygonOptions = PolygonOptions()
+//                polygonOptions.fillColor(Color.RED)
+//                polygonOptions.strokeColor(Color.TRANSPARENT)
+//                polygonOptions.addAll(latlngs)
+//                googleMap.addPolygon(polygonOptions)
+                //여기서 부터 작업 시작.
 
                 val polygonOptions = PolygonOptions()
                 polygonOptions.fillColor(Color.RED)
                 polygonOptions.strokeColor(Color.TRANSPARENT)
                 polygonOptions.addAll(latlngs)
-                googleMap.addPolygon(polygonOptions)
+
+
+                var polygonNew:Polygon = googleMap.addPolygon(polygonOptions)
+                polygonNew.setClickable(true);
+
+                //클릭시 태그 데이터 있는지 확인 없으면 바로 넘기고 있으면 있는걸로 호출.
+                //tag 리절트로 가져와서 태그 설정
+                googleMap.setOnPolygonClickListener(GoogleMap.OnPolygonClickListener { polygon ->
+
+                    var tagName = getAttrubuteKey();
+                    var intent:Intent? = null
+                    when(buttonController){
+
+                        1->{
+                            tagName += "biotope"
+                            intent = Intent(this,BiotopeActivity::class.java);
+                        }
+                    }
+
+
+
+
+                    polygon.tag = tagName;
+
+                    intent!!.putExtra("id",polygon.tag.toString());
+
+
+                    startActivityForResult(intent, PolygonCallBackData);
+
+
+                })
+
+
+
 
                 runOnUiThread {
                     endDraw()
@@ -317,7 +465,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         googleMap.uiSettings.isZoomGesturesEnabled = false
         googleMap.uiSettings.setAllGesturesEnabled(false)
 
-        btn_draw.text = "Stop drawing"
+        btn_draw.text = "비오톱 추가 중"
     }
 
     fun endDraw() {
@@ -330,6 +478,22 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         drawer_view.visibility = View.GONE
 
-        btn_draw.text = "Start Draw"
+        btn_draw.text = "비오톱 추가"
     }
+    fun getTime():String{
+
+        val date = Date()
+        val fullTime = SimpleDateFormat("yyyy-MM-dd")
+
+        return fullTime.format(date).toString()
+    }
+    fun getAttrubuteKey():String{
+
+        val time = System.currentTimeMillis()
+        val dayTime = SimpleDateFormat("yyyyMM")
+        val strDT = dayTime.format(Date(time))
+
+        return strDT
+    }
+
 }

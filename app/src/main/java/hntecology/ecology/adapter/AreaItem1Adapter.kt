@@ -66,7 +66,7 @@ class AreaItem1Adapte(var context: Context, var itemList : ArrayList<BiotopeMode
             viewHoldar.biotope_item.setTextColor(Color.parseColor("#000000"));
         }
 
-        println("hh : " + position)
+        println("hh : " + position + ", " + hashCode())
         return view as View
     }
 

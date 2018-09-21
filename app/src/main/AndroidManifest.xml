@@ -38,7 +38,13 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/NoTitleDialog" />
+            android:theme="@style/NoTitleDialog">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".base.LoadingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -56,28 +62,72 @@
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="landscape">
-            <intent-filter>
+
+  <!--          <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
+
         </activity>
         <activity
             android:name=".Dlg_gps"
             android:label="@string/title_activity_dlg_gps" />
-        <activity android:name=".Zoobenthos">
+        <activity
+            android:name=".ZoobenthosActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/full_screen_dialog2"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
 
-<!--
-            <intent-filter>
+            <!--
+                <intent-filter>
 
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
 
             </intent-filter>
--->
+            -->
 
         </activity>
+        <activity
+            android:name=".BirdsActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/full_screen_dialog2"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+        <activity
+            android:name=".ReptiliaActivity"
+            android:label="@string/title_activity_reptilia"
+            android:screenOrientation="landscape"
+            android:theme="@style/full_screen_dialog2"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+        <activity
+            android:name=".MammaliaActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/full_screen_dialog2"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+        <activity
+            android:name=".InsectActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/full_screen_dialog2"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+        <activity
+            android:name=".FloraActivity"
+            android:label="@string/title_activity_flora"
+            android:screenOrientation="landscape"
+            android:theme="@style/full_screen_dialog2"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+            />
+        <activity android:name=".FishActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/full_screen_dialog2"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+            ></activity>
+
+        <activity
+            android:name=".DlgCommonSubActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/full_screen_dialog1" />
     </application>
 
 </manifest>

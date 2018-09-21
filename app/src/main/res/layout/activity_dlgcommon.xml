@@ -76,6 +76,7 @@
                 android:layout_gravity="center"
 
                 android:id="@+id/dlg_probar"
+                android:visibility="gone"
                 />
         </FrameLayout>
 

@@ -76,7 +76,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         etinvesDatetimeTV.text = getTime()
 
-
         val dbManager:DataBaseHelper = DataBaseHelper(this)
 
         val db = dbManager.createDataBase()

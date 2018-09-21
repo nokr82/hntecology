@@ -96,7 +96,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         //etinvesDatetimeTV 바뀜.
         //etinvesDatetimeTV.text = getTime()
 
-
         val dbManager:DataBaseHelper = DataBaseHelper(this)
 
         val db = dbManager.createDataBase()

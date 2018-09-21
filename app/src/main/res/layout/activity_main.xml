@@ -64,96 +64,103 @@
                 android:visibility="gone"/>
 
         </RelativeLayout>
-        <LinearLayout
+
+        <ScrollView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="right"
-            android:background="#D3D3D3"
-            >
+            android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/btn_SH_biotop_orig"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="SH_biotop_orig"/>
-            <Button
-                android:id="@+id/btn_SH_dummy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="SH_biotop_orig"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="right"
+                android:background="#D3D3D3"
+                >
 
-            <Button
-                android:id="@+id/btn_gps_select"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="좌표 지정" />
+                <Button
+                    android:id="@+id/btn_SH_biotop_orig"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SH_biotop_orig"/>
+                <Button
+                    android:id="@+id/btn_SH_dummy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SH_biotop_orig"/>
 
-            <Button
-                android:id="@+id/btn_satellite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="위성 지도" />
+                <Button
+                    android:id="@+id/btn_gps_select"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="좌표 지정" />
 
-            <Button
-                android:id="@+id/btn_clear_all"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="전체 지우기" />
+                <Button
+                    android:id="@+id/btn_satellite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="위성 지도" />
 
-
-            <Button
-                android:id="@+id/btn_biotope"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="비오톱 추가" />
+                <Button
+                    android:id="@+id/btn_clear_all"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="전체 지우기" />
 
 
-
-            <Button
-                android:id="@+id/btn_birds"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="야생조류 추가" />
-
-            <Button
-                android:id="@+id/btn_Reptilia"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="양서ㆍ파충류 추가" />
-
-            <Button
-                android:id="@+id/btn_mammalia"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="포유류 추가" />
-
-            <Button
-                android:id="@+id/btn_fish"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="어류 추가" />
-
-            <Button
-                android:id="@+id/btn_insect"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="곤충 추가" />
-
-            <Button
-                android:id="@+id/btn_flora"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="식물 추가" />
+                <Button
+                    android:id="@+id/btn_biotope"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="비오톱 추가" />
 
 
-            <Button
-                android:id="@+id/btn_zoobenthos"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="저서무척추동물 추가" />
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/btn_birds"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="야생조류 추가" />
+
+                <Button
+                    android:id="@+id/btn_Reptilia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="양서ㆍ파충류 추가" />
+
+                <Button
+                    android:id="@+id/btn_mammalia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="포유류 추가" />
+
+                <Button
+                    android:id="@+id/btn_fish"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="어류 추가" />
+
+                <Button
+                    android:id="@+id/btn_insect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="곤충 추가" />
+
+                <Button
+                    android:id="@+id/btn_flora"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="식물 추가" />
+
+
+                <Button
+                    android:id="@+id/btn_zoobenthos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="저서무척추동물 추가" />
+
+            </LinearLayout>
+
+        </ScrollView>
 
     </LinearLayout>
 

@@ -36,15 +36,37 @@
                 android:gravity="center"
                 style="@style/BiotopeTextView"
                 />
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="내용 클리어"
-                style="@style/dlgcommonButton"
-                android:id="@+id/gpsclick"
-                android:visibility="gone"
-                />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="1"
+                    >
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/etGPS_LATTV"
+                        android:gravity="center"
+                        style="@style/BiotopeTextViewDisabled"
+                        />
+                    <TextView
+                        android:layout_width="10dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text=","
+                        style="@style/BiotopeTextViewDisabled"
+                        />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/etGPS_LONTV"
+                        android:gravity="center"
+                        style="@style/BiotopeTextViewDisabled"
+                        />
+                    </LinearLayout>
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -63,7 +85,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:maxLength="50"
-                    android:id="@+id/etinvesRegionET"
+                    android:id="@+id/etINV_REGIONET"
                     style="@style/BiotopeEditText"
                     />
                 <TextView
@@ -77,7 +99,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:id="@+id/tvinvestigatorTV"
+                    android:id="@+id/tvINV_PERSONTV"
                     android:gravity="center"
                     style="@style/BiotopeTextViewDisabled"
                     />
@@ -85,7 +107,7 @@
                 <TextView
                     android:layout_width="70dp"
                     android:layout_height="match_parent"
-                    android:text="조사일시"
+                    android:text="조사 일자"
                     style="@style/BiotopeTextView"
                     />
 
@@ -93,17 +115,33 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:id="@+id/etinvesDatetimeTV"
+                    android:id="@+id/etINV_DTTV"
                     android:gravity="center"
                     style="@style/BiotopeTextViewDisabled"
                     />
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    android:text="조사 시간"
+                    style="@style/BiotopeTextView"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/etINV_TMTV"
+                    android:gravity="center"
+                    style="@style/BiotopeTextViewDisabled"
+                    />
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-
                 >
 
                 <LinearLayout
@@ -122,7 +160,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:id="@+id/tvinvesIndexTV"
+                        android:id="@+id/tvINV_IndexTV"
                         android:gravity="center"
                         style="@style/BiotopeTextViewDisabled"
                         />
@@ -169,7 +207,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="2"
-                                android:id="@+id/TVlumGroupNumTV"
+                                android:id="@+id/TVLU_GR_NumTV"
                                 android:gravity="center"
                                 style="@style/BiotopeTextViewDisabled"
 
@@ -177,7 +215,7 @@
                             <EditText
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
-                                android:id="@+id/ETlumGroupNumET"
+                                android:id="@+id/ETLU_GR_NumET"
                                 />
                             <Button
                                 android:layout_width="0dp"
@@ -209,7 +247,7 @@
                                 android:layout_weight="2"
                                 android:inputType="numberDecimal"
                                 android:maxLength="10"
-                                android:id="@+id/etlumTypeRateET"
+                                android:id="@+id/etLU_TY_RATEET"
                                 style="@style/BiotopeEditText"
                                 />
 
@@ -235,7 +273,7 @@
                                 android:layout_weight="2"
                                android:inputType="numberDecimal"
                                android:maxLength="10"
-                               android:id="@+id/etstandardHeightET"
+                               android:id="@+id/etSTAND_HET"
                                style="@style/BiotopeEditText"
                                />
 
@@ -283,14 +321,14 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="2"
-                                android:id="@+id/TVlcmGroupNumTV"
+                                android:id="@+id/TVLC_GR_NUMTV"
                                 android:gravity="center"
                                 style="@style/BiotopeTextViewDisabled"
                                 />
                             <EditText
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
-                                android:id="@+id/ETlcmGroupNumET"
+                                android:id="@+id/ETlcmGR_NumET"
                                 />
                             <Button
                                 android:layout_width="0dp"
@@ -335,7 +373,7 @@
                                         style="@style/BiotopeTextView"
                                         />
 
-                                    <EditText
+                                    <TextView
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
@@ -360,7 +398,7 @@
                                         style="@style/BiotopeTextView"
                                         />
 
-                                    <EditText
+                                    <TextView
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
@@ -385,7 +423,7 @@
                                         style="@style/BiotopeTextView"
                                         />
 
-                                    <EditText
+                                    <TextView
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
@@ -409,7 +447,7 @@
                                         style="@style/BiotopeTextView"
                                         />
 
-                                   <EditText
+                                   <TextView
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
@@ -466,14 +504,14 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="2"
-                                android:id="@+id/TVtypeMarkTV"
+                                android:id="@+id/TVTY_MARKTV"
                                 android:gravity="center"
                                 style="@style/BiotopeTextViewDisabled"
                                 />
                             <EditText
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
-                                android:id="@+id/ETtypeMarkET"
+                                android:id="@+id/ETTY_MARKET"
                                 />
                             <Button
                                 android:layout_width="0dp"
@@ -504,7 +542,7 @@
                                 android:layout_weight="2"
                                 android:inputType="numberDecimal"
                                 android:maxLength="10"
-                                android:id="@+id/etgvRateET"
+                                android:id="@+id/etGV_RATEET"
                                 style="@style/BiotopeEditText"
                                 />
 
@@ -528,7 +566,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="2"
                                 android:maxLength="30"
-                                android:id="@+id/etgvStructureET"
+                                android:id="@+id/etGV_STRUCTET"
                                 style="@style/BiotopeEditText"
                                 />
 
@@ -565,7 +603,7 @@
                                         android:text="분포희귀성" />
 
                                     <EditText
-                                        android:id="@+id/etdistReturnET"
+                                        android:id="@+id/etDIS_RETET"
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
@@ -587,7 +625,7 @@
                                         android:text="식생복원잠재성" />
 
                                     <EditText
-                                        android:id="@+id/etrestorePotET"
+                                        android:id="@+id/etRESTOR_POTET"
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
@@ -609,7 +647,7 @@
                                         android:text="구성식물종온전성" />
 
                                     <EditText
-                                        android:id="@+id/etcompIntactET"
+                                        android:id="@+id/etCOMP_INTAET"
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         style="@style/BiotopeEditText"
@@ -631,7 +669,7 @@
                                         android:text="식생구조온전성" />
 
                                     <EditText
-                                        android:id="@+id/etvpIntactET"
+                                        android:id="@+id/etVP_INTAET"
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
@@ -653,7 +691,7 @@
                                         android:text="중요종 서식" />
 
                                     <EditText
-                                        android:id="@+id/etimpFormET"
+                                        android:id="@+id/etIMP_FORMET"
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
@@ -675,7 +713,7 @@
                                         android:text="식재림흉고직경" />
 
                                     <EditText
-                                        android:id="@+id/etbreastDiaET"
+                                        android:id="@+id/etBREA_DIAET"
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
@@ -697,7 +735,7 @@
                                         android:text="최종평가" />
 
                                     <EditText
-                                        android:id="@+id/etfinalEstET"
+                                        android:id="@+id/etFIN_ESTET"
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
@@ -747,7 +785,55 @@
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
                                         android:maxLength="30"
-                                        android:id="@+id/ettreeSpeciesET"
+                                        android:id="@+id/etTRE_SPECET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="과명"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:maxLength="30"
+                                        android:id="@+id/etTRE_FAMIET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="학명"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:maxLength="30"
+                                        android:id="@+id/etTRE_SCIENET"
                                         style="@style/BiotopeEditText"
                                         />
 
@@ -772,7 +858,7 @@
                                         android:layout_weight="2"
                                         android:inputType="numberDecimal"
                                         android:maxLength="10"
-                                        android:id="@+id/ettreeHeightET"
+                                        android:id="@+id/etTRE_HET"
                                         style="@style/BiotopeEditText"
                                         />
 
@@ -797,7 +883,7 @@
                                         android:layout_weight="2"
                                         android:inputType="numberDecimal"
                                         android:maxLength="10"
-                                        android:id="@+id/ettreeBreastET"
+                                        android:id="@+id/etTRE_BREAET"
                                         style="@style/BiotopeEditText"
                                         />
 
@@ -822,7 +908,7 @@
                                         android:layout_weight="2"
                                         android:inputType="numberDecimal"
                                         android:maxLength="10"
-                                        android:id="@+id/ettreeCoveET"
+                                        android:id="@+id/etTRE_COVEET"
                                         style="@style/BiotopeEditText"
                                         />
 
@@ -869,11 +955,63 @@
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
                                         android:maxLength="30"
-                                        android:id="@+id/etsubTreeSpecET"
+                                        android:id="@+id/etSTRE_SPECET"
                                         style="@style/BiotopeEditText"
                                         />
 
                                 </LinearLayout>
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="50dp"
+                                   android:layout_weight="1"
+                                   android:orientation="horizontal"
+                                   >
+
+                                   <TextView
+                                       android:layout_width="120dp"
+                                       android:layout_height="match_parent"
+                                       android:text="과명"
+                                       style="@style/BiotopeTextView"
+                                       />
+
+                                   <EditText
+                                       android:layout_width="0dp"
+                                       android:layout_height="match_parent"
+                                       android:layout_weight="2"
+                                       android:inputType="numberDecimal"
+                                       android:maxLength="10"
+                                       android:id="@+id/etSTRE_FAMIET"
+                                       style="@style/BiotopeEditText"
+                                       />
+
+                               </LinearLayout>
+
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="50dp"
+                                   android:layout_weight="1"
+                                   android:orientation="horizontal"
+                                   >
+
+                                   <TextView
+                                       android:layout_width="120dp"
+                                       android:layout_height="match_parent"
+                                       android:text="학명"
+                                       style="@style/BiotopeTextView"
+                                       />
+
+                                   <EditText
+                                       android:layout_width="0dp"
+                                       android:layout_height="match_parent"
+                                       android:layout_weight="2"
+                                       android:inputType="numberDecimal"
+                                       android:maxLength="10"
+                                       android:id="@+id/etSTRE_SCIENET"
+                                       style="@style/BiotopeEditText"
+                                       />
+
+                               </LinearLayout>
+
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="50dp"
@@ -894,7 +1032,7 @@
                                         android:layout_weight="2"
                                         android:inputType="numberDecimal"
                                         android:maxLength="10"
-                                        android:id="@+id/etsubTreeHeightET"
+                                        android:id="@+id/etSTRE_HET"
                                         style="@style/BiotopeEditText"
                                         />
 
@@ -919,7 +1057,7 @@
                                         android:layout_weight="2"
                                         android:inputType="numberDecimal"
                                         android:maxLength="10"
-                                        android:id="@+id/etsubTreeBreastET"
+                                        android:id="@+id/etSTRE_BREAET"
                                         style="@style/BiotopeEditText"
                                         />
 
@@ -944,7 +1082,7 @@
                                         android:layout_weight="2"
                                         android:inputType="numberDecimal"
                                         android:maxLength="10"
-                                        android:id="@+id/etsubTreeCoverET"
+                                        android:id="@+id/etSTRE_COVEET"
                                         style="@style/BiotopeEditText"
                                         />
 
@@ -982,7 +1120,7 @@
                                     <TextView
                                         android:layout_width="120dp"
                                         android:layout_height="match_parent"
-                                        android:text="종 명"
+                                        android:text="과 명"
                                         style="@style/BiotopeTextView"
                                         />
 
@@ -991,7 +1129,55 @@
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
                                         android:maxLength="30"
-                                        android:id="@+id/etshrubSpeciesET"
+                                        android:id="@+id/etSHR_SPECET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="과 명"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:maxLength="30"
+                                        android:id="@+id/etSHR_FAMIET"
+                                        style="@style/BiotopeEditText"
+                                        />
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="120dp"
+                                        android:layout_height="match_parent"
+                                        android:text="학 명"
+                                        style="@style/BiotopeTextView"
+                                        />
+
+                                    <EditText
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="2"
+                                        android:maxLength="30"
+                                        android:id="@+id/etSHR_SCIENET"
                                         style="@style/BiotopeEditText"
                                         />
 
@@ -1016,7 +1202,7 @@
                                         android:layout_weight="2"
                                         android:inputType="numberDecimal"
                                         android:maxLength="10"
-                                        android:id="@+id/etshrubHeightET"
+                                        android:id="@+id/etSHR_HET"
                                         style="@style/BiotopeEditText"
                                         />
 
@@ -1042,7 +1228,7 @@
                                         android:layout_weight="2"
                                         android:inputType="numberDecimal"
                                         android:maxLength="10"
-                                        android:id="@+id/etshrubCoverET"
+                                        android:id="@+id/etSTR_COVEET"
                                         style="@style/BiotopeEditText"
                                         />
 
@@ -1090,11 +1276,72 @@
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
                                         android:maxLength="30"
-                                        android:id="@+id/etherbSpeciesET"
+                                        android:id="@+id/etHER_SPECET"
                                         style="@style/BiotopeEditText"
                                         />
 
                                 </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    >
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="50dp"
+                                        android:layout_weight="1"
+                                        android:orientation="horizontal"
+                                        >
+
+                                        <TextView
+                                            android:layout_width="120dp"
+                                            android:layout_height="match_parent"
+                                            android:text="과 명"
+                                            style="@style/BiotopeTextView"
+                                            />
+
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="2"
+                                            android:maxLength="30"
+                                            android:id="@+id/etHER_FAMIET"
+                                            style="@style/BiotopeEditText"
+                                            />
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical"
+                                        >
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="50dp"
+                                            android:layout_weight="1"
+                                            android:orientation="horizontal"
+                                            >
+
+                                            <TextView
+                                                android:layout_width="120dp"
+                                                android:layout_height="match_parent"
+                                                android:text="학 명"
+                                                style="@style/BiotopeTextView"
+                                                />
+
+                                            <EditText
+                                                android:layout_width="0dp"
+                                                android:layout_height="match_parent"
+                                                android:layout_weight="2"
+                                                android:maxLength="30"
+                                                android:id="@+id/etHER_SCIENET"
+                                                style="@style/BiotopeEditText"
+                                                />
+
+                                        </LinearLayout>
+
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="50dp"
@@ -1115,7 +1362,7 @@
                                         android:layout_weight="2"
                                         android:inputType="numberDecimal"
                                         android:maxLength="10"
-                                        android:id="@+id/etherbHeightET"
+                                        android:id="@+id/etHER_HET"
                                         style="@style/BiotopeEditText"
                                         />
 
@@ -1141,7 +1388,7 @@
                                         android:layout_weight="2"
                                         android:inputType="numberDecimal"
                                         android:maxLength="10"
-                                        android:id="@+id/etherbCoverET"
+                                        android:id="@+id/etHER_COVEET"
                                         style="@style/BiotopeEditText"
                                         />
 
@@ -1155,6 +1402,9 @@
 
                 </LinearLayout>
 
+
+            </LinearLayout>
+        </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -1171,7 +1421,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:maxLength="200"
-                        android:id="@+id/etpictureFolderET"
+                        android:id="@+id/etPIC_FOLDERET"
                         style="@style/BiotopeEditText"
                         />
 
@@ -1192,7 +1442,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:maxLength="50"
-                        android:id="@+id/etwildAniET"
+                        android:id="@+id/etWILD_ANIET"
                         style="@style/BiotopeEditText"
                         />
 
@@ -1213,7 +1463,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:maxLength="200"
-                        android:id="@+id/etrepBiotopPotET"
+                        android:id="@+id/etBIOTOP_POTET"
                         style="@style/BiotopeEditText"
                         />
 
@@ -1234,7 +1484,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:maxLength="500"
-                        android:id="@+id/etunusualNoteET"
+                        android:id="@+id/etUNUS_NOTEET"
                         style="@style/BiotopeEditText"
                         />
 
@@ -1280,10 +1530,8 @@
                     style="@style/dlgcommonButton"
                     android:layout_marginTop="2dp"
                     />
-            </LinearLayout>
-
         </LinearLayout>
-
+        </LinearLayout>
     </ScrollView>
 
 </LinearLayout>

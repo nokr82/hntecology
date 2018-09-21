@@ -146,11 +146,6 @@
                 android:layout_height="wrap_content"
                 android:text="식물 추가" />
 
-            <Button
-                android:id="@+id/btn_flora2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="식물2 추가" />
 
             <Button
                 android:id="@+id/btn_zoobenthos"

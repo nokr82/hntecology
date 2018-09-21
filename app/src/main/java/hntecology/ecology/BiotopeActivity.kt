@@ -73,8 +73,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         buildGoogleApiClient();
 
         window.setLayout(Utils.dpToPx(700f).toInt(),WindowManager.LayoutParams.WRAP_CONTENT);
-
-        etinvesDatetimeTV.text = getTime()
+        //etinvesDatetimeTV 바뀜.
+        //etinvesDatetimeTV.text = getTime()
 
 
         val dbManager:DataBaseHelper = DataBaseHelper(this)
@@ -90,97 +90,126 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
             val data =  db.query("biotopeAttribute",dataList,"id = '"+keyId+"'",null,null,null,"",null);
 
+            if(data.count <1){
+
+                tvINV_PERSONTV.setText(PrefUtils.getStringPreference(this,"name"))                    // 조사자
+                etINV_DTTV.setText(getTime());
+                etINV_TMTV.setText(createId())
+            }
+
             while (data.moveToNext()){
 
                 chkdata = true
-                var biotope_attribute:Biotope_attribute = Biotope_attribute(data.getString(0),data.getString(1),data.getString(2),data.getString(3),data.getInt(4),data.getString(5),data.getFloat(6),
-                                                                            data.getFloat(7),data.getString(8),data.getString(9),data.getString(10),data.getFloat(11),data.getString(12),data.getString(13)
+                var biotope_attribute:Biotope_attribute = Biotope_attribute(data.getString(0),data.getString(1),data.getString(2),data.getString(3),data.getString(4),data.getString(5),data.getInt(6),
+                                                                            data.getString(7),data.getFloat(8),data.getFloat(9),data.getString(10),data.getString(11),data.getString(12),data.getFloat(13)
                                                                             ,data.getString(14),data.getString(15),data.getString(16),data.getString(17),data.getString(18),data.getString(19),data.getString(20)
-                                                                            ,data.getFloat(21),data.getFloat(22),data.getFloat(23),data.getString(24),data.getFloat(25),data.getFloat(26),data.getFloat(27)
-                                                                            ,data.getString(28),data.getFloat(29),data.getFloat(30),data.getString(31),data.getFloat(32),data.getFloat(33),data.getString(34)
-                                                                            ,data.getString(35),data.getString(36),data.getString(37),data.getString(38))
+                                                                            ,data.getString(21),data.getString(22),data.getString(23),data.getString(24),data.getFloat(25),data.getFloat(26),data.getFloat(27)
+                                                                            ,data.getString(28),data.getString(29),data.getString(30),data.getFloat(31),data.getFloat(32),data.getFloat(33),data.getString(34)
+                                                                            ,data.getString(35),data.getString(36),data.getFloat(37),data.getFloat(38),data.getString(39),data.getString(40),data.getString(41)
+                                                                            ,data.getFloat(42),data.getFloat(43),data.getString(44),data.getString(45),data.getString(46),data.getString(47),data.getFloat(48)
+                                                                            ,data.getFloat(49),data.getString(50),data.getString(51))
 
 //                etinvesRegionET.text        = biotope_attribute.INVES_REGION
-                etinvesRegionET.setText(biotope_attribute.INVES_REGION);
-                tvinvestigatorTV.setText(biotope_attribute.INVESTIGATOR)
-                etinvesDatetimeTV.setText(biotope_attribute.INVES_DATETIME)
-                tvinvesIndexTV.setText(biotope_attribute.INVES_INDEX.toString())
-                ETlumGroupNumET.setText(biotope_attribute.LUM_GROUP_NUM)
-                etlumTypeRateET.setText(biotope_attribute.LUM_TYPE_RATE.toString())
-                etstandardHeightET.setText(biotope_attribute.STANDARD_HEIGHT.toString())
-                ETlcmGroupNumET.setText(biotope_attribute.LCM_GROUP_NUM)
 
-                if(biotope_attribute.LUM_GROUP_NUM != null){
+                etGPS_LATTV.setText(biotope_attribute.GPS_LAT.toString())
+                etGPS_LONTV.setText(biotope_attribute.GPS_LON.toString())
+
+                etINV_REGIONET.setText(biotope_attribute.INV_REGION);                   // 조사지
+                tvINV_PERSONTV.setText(biotope_attribute.INV_PERSON)                    // 조사자
+
+                etINV_DTTV.setText(biotope_attribute.INV_DT)
+                etINV_TMTV.setText(biotope_attribute.INV_TM)
+                tvINV_IndexTV.setText(biotope_attribute.INV_INDEX.toString())
+
+
+                TVLU_GR_NumTV.setText(biotope_attribute.LU_GR_NUM)
+                etLU_TY_RATEET.setText(biotope_attribute.LU_TY_RATE.toString())
+                etSTAND_HET.setText(biotope_attribute.STAND_H.toString())
+                TVLC_GR_NUMTV.setText(biotope_attribute.LC_GR_NUM)
+
+                if(biotope_attribute.LU_GR_NUM != null){
 
                     val dataSelectList:Array<String> = arrayOf("name");
-                    val data =  db.query("biotopeM",dataList,"code = '"+biotope_attribute.LUM_GROUP_NUM+"'",null,null,null,"",null);
+                    val data =  db.query("biotopeM",dataList,"code = '"+biotope_attribute.LU_GR_NUM+"'",null,null,null,"",null);
 
 
                     while (data.moveToNext()){
 
-                        TVlumGroupNumTV.setText(data.getString(0))
+                        TVLU_GR_NumTV.setText(data.getString(0))
+                        ETLU_GR_NumET.setText(data.getString(1))
                     }
                 }
 
-                if(biotope_attribute.LCM_GROUP_NUM !=null){
+                if(biotope_attribute.LC_GR_NUM !=null){
 
-                    val dataSelectList:Array<String> = arrayOf("name");
-                    val data =  db.query("biotopeS",dataList,"code = '"+biotope_attribute.LCM_GROUP_NUM+"'",null,null,null,"",null);
+                    val dataSelectList:Array<String> = arrayOf("name","code");
+                    val data =  db.query("biotopeS",dataList,"code = '"+biotope_attribute.LC_GR_NUM+"'",null,null,null,"",null);
 
 
                     while (data.moveToNext()){
 
-                        TVlcmGroupNumTV.setText(data.getString(0))
+                        TVLC_GR_NUMTV.setText(data.getString(0))
+                        ETlcmGR_NumET.setText(data.getString(1))
                     }
                 }
 
                 //투수
-                if(biotope_attribute.LCM_TYPE == "P"){
+                if(biotope_attribute.LC_TY == "P"){
 
-                    etlcmTypepET.setText(biotope_attribute.LCM_TYPE)
+                    etlcmTypepET.setText(biotope_attribute.LC_TY)
                 //불투수
-                } else if (biotope_attribute.LCM_TYPE == "I"){
+                } else if (biotope_attribute.LC_TY == "I"){
 
-                    etlcmTypeiET.setText(biotope_attribute.LCM_TYPE)
+                    etlcmTypeiET.setText(biotope_attribute.LC_TY)
                 //녹지
-                } else if ( biotope_attribute.LCM_TYPE == "G"){
+                } else if ( biotope_attribute.LC_TY == "G"){
 
-                    etlcmTypegET.setText(biotope_attribute.LCM_TYPE)
+                    etlcmTypegET.setText(biotope_attribute.LC_TY)
                 //수공간
-                } else if (biotope_attribute.LCM_TYPE == "W"){
+                } else if (biotope_attribute.LC_TY == "W"){
 
-                    etlcmTypewET.setText(biotope_attribute.LCM_TYPE)
+                    etlcmTypewET.setText(biotope_attribute.LC_TY)
                 }
 
 
-                ETtypeMarkET.setText(biotope_attribute.TYPE_MARK)
-                etgvRateET.setText(biotope_attribute.GV_RATE.toString())
-                etgvStructureET.setText(biotope_attribute.GV_STRUCTURE)
-                etdistReturnET.setText(biotope_attribute.DIST_RETURN)
-                etrestorePotET.setText(biotope_attribute.RESTORE_POT)
-                etcompIntactET.setText(biotope_attribute.COMP_INTACT)
-                etvpIntactET.setText(biotope_attribute.VP_INTACT)
-                etimpFormET.setText(biotope_attribute.IMP_FORM)
-                etbreastDiaET.setText(biotope_attribute.BREAST_DIA)
-                etfinalEstET.setText(biotope_attribute.FINAL_EST)
-                ettreeSpeciesET.setText(biotope_attribute.TREE_SPECIES)
-                ettreeHeightET.setText(biotope_attribute.TREE_HEIGHT.toString())
-                ettreeBreastET.setText(biotope_attribute.TREE_BREAST.toString())
-                ettreeCoveET.setText(biotope_attribute.TREE_COVE.toString())
-                etsubTreeSpecET.setText(biotope_attribute.SUB_TREE_SPEC)
-                etsubTreeHeightET.setText(biotope_attribute.SUB_TREE_HEIGHT.toString())
-                etsubTreeBreastET.setText(biotope_attribute.SUB_TREE_BREAST.toString())
-                etsubTreeCoverET.setText(biotope_attribute.SUB_TREE_COVER.toString())
-                etshrubSpeciesET.setText(biotope_attribute.SHRUB_SPECIES)
-                etshrubHeightET.setText(biotope_attribute.SHRUB_HEIGHT.toString())
-                etshrubCoverET.setText(biotope_attribute.SHRUB_COVER.toString())
-                etherbSpeciesET.setText(biotope_attribute.HERB_SPECIES)
-                etherbHeightET.setText(biotope_attribute.HERB_HEIGHT.toString())
-                etherbCoverET.setText(biotope_attribute.HERB_COVER.toString())
-                etpictureFolderET.setText(biotope_attribute.PICTURE_FOLDER)
-                etwildAniET.setText(biotope_attribute.WILD_ANI)
-                etrepBiotopPotET.setText(biotope_attribute.REP_BIOTOP_POT)
-                etunusualNoteET.setText(biotope_attribute.UNUSUAL_NOTE)
+                ETTY_MARKET.setText(biotope_attribute.TY_MARK)
+                etGV_RATEET.setText(biotope_attribute.GV_RATE.toString())
+                etGV_STRUCTET.setText(biotope_attribute.GV_STRUCT)
+                etDIS_RETET.setText(biotope_attribute.DIS_RET)
+                etRESTOR_POTET.setText(biotope_attribute.RESTOR_POT)
+                etCOMP_INTAET.setText(biotope_attribute.COMP_INTA)
+                etVP_INTAET.setText(biotope_attribute.VP_INTA)
+                etBREA_DIAET.setText(biotope_attribute.BREA_DIA)
+                etFIN_ESTET.setText(biotope_attribute.FIN_EST)
+                etTRE_SPECET.setText(biotope_attribute.TRE_SPEC)
+                etTRE_FAMIET.setText(biotope_attribute.TRE_FAMI)
+                etTRE_SCIENET.setText(biotope_attribute.TRE_SCIEN.toString())
+                etTRE_HET.setText(biotope_attribute.TRE_H.toString())
+                etTRE_BREAET.setText(biotope_attribute.TRE_BREA.toString())
+                etTRE_COVEET.setText(biotope_attribute.TRE_COVE.toString())
+                etSTRE_SPECET.setText(biotope_attribute.STRE_SPEC.toString())
+                etSTRE_FAMIET.setText(biotope_attribute.STRE_FAMI.toString())
+                etSTRE_SCIENET.setText(biotope_attribute.STRE_SCIEN.toString())
+                etSTRE_HET.setText(biotope_attribute.STRE_H.toString())
+                etSTRE_BREAET.setText(biotope_attribute.STRE_BREA.toString())
+                etSTRE_COVEET.setText(biotope_attribute.STRE_COVE.toString())
+                etSHR_SPECET.setText(biotope_attribute.SHR_SPEC)
+                etSHR_FAMIET.setText(biotope_attribute.SHR_FAMI.toString())
+                etSHR_SCIENET.setText(biotope_attribute.SHR_SCIEN.toString())
+                etSHR_HET.setText(biotope_attribute.SHR_H.toString())
+                etSTR_COVEET.setText(biotope_attribute.STR_COVE.toString())
+                etHER_SPECET.setText(biotope_attribute.HER_SPEC.toString())
+                etHER_FAMIET.setText(biotope_attribute.HER_FAMI.toString())
+                etHER_SCIENET.setText(biotope_attribute.HER_SCIEN.toString())
+                etHER_HET.setText(biotope_attribute.HER_H.toString())
+                etHER_COVEET.setText(biotope_attribute.HER_COVE.toString())
+                etPIC_FOLDERET.setText(biotope_attribute.SHR_H.toString())
+                etWILD_ANIET.setText(biotope_attribute.WILD_ANI.toString())
+                etBIOTOP_POTET.setText(biotope_attribute.BIOTOP_POT.toString())
+                etUNUS_NOTEET.setText(biotope_attribute.UNUS_NOTE.toString())
+
+                etUNUS_NOTEET.setText(biotope_attribute.UNUS_NOTE.toString())
+
             }
         }
 
@@ -225,133 +254,151 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             getGps()
 
             var intent = Intent();
-            val biotope_attribute:Biotope_attribute = Biotope_attribute(null,"","","",0,"",null
-                    ,null,"","","",null,"","","",""
-                    ,"","","","","",null,null,null,"",null
-                    ,null,null,"",null,null,"",null,null,""
-                    ,"","","",null);
+            val biotope_attribute:Biotope_attribute = Biotope_attribute(null,null,null,null,null,null,null
+                                                                        ,null,null,null,null,null,null,null,null
+                                                                        ,null,null,null,null,null,null,null,null
+                                                                        ,null,null,null,null,null,null,null,null
+                                                                        ,null,null,null,null,null,null,null
+                                                                        ,null,null,null,null,null,null,null,null
+                                                                        ,null,null,null,null,null,null)
 
 
-            biotope_attribute.INVES_REGION         =   etinvesRegionET.text.toString()
-            biotope_attribute.INVESTIGATOR         =   PrefUtils.getStringPreference(this,"name");
-            biotope_attribute.INVES_DATETIME       =   etinvesDatetimeTV.text.toString()
 
-            if(tvinvesIndexTV.text.toString() != ""){
+            biotope_attribute.INV_REGION             =   etINV_REGIONET.text.toString();
+            biotope_attribute.INV_PERSON             =   PrefUtils.getStringPreference(this,"name");
+//            biotope_attribute.INVES_DATETIME        =   etinvesDatetimeTV.text.toString()
 
-                biotope_attribute.INVES_INDEX          =    tvinvesIndexTV.text.toString().toInt()
+            biotope_attribute.INV_DT             =   etINV_DTTV.text.toString();
+            biotope_attribute.INV_TM             =   etINV_TMTV.text.toString();
+
+            if(tvINV_IndexTV.text.isNotEmpty()){
+
+                biotope_attribute.INV_INDEX =    tvINV_IndexTV.text.toString().toInt()
             }
 
-            biotope_attribute.LUM_GROUP_NUM        =   ETlumGroupNumET.text.toString()
+            biotope_attribute.LU_GR_NUM =   ETLU_GR_NumET.text.toString()
 
-            if(etlumTypeRateET.text .toString() != ""){
+            if(etLU_TY_RATEET.text.isNotEmpty()){
 
-                biotope_attribute.LUM_TYPE_RATE        =   Utils.getString(etlumTypeRateET).toFloat();
+                biotope_attribute.LU_TY_RATE =   Utils.getString(etLU_TY_RATEET).toFloat();
             }
-            if(etstandardHeightET.text .toString() != ""){
+            if(etSTAND_HET.text.isNotEmpty()){
 
-                biotope_attribute.STANDARD_HEIGHT      =    Utils.getString(etstandardHeightET).toFloat();
-            }
-
-
-            biotope_attribute.LCM_GROUP_NUM        =   ETlcmGroupNumET.text.toString()
-            biotope_attribute.TYPE_MARK            =   ETtypeMarkET.text.toString()
-
-            if(etgvRateET.text .toString() != ""){
-
-                biotope_attribute.GV_RATE              =  Utils.getString(etgvRateET).toFloat();
-            }
-
-            biotope_attribute.GV_STRUCTURE         =   etgvStructureET.text.toString()
-            biotope_attribute.DIST_RETURN          =   etdistReturnET.text.toString()
-            biotope_attribute.RESTORE_POT          =   etrestorePotET.text.toString()
-            biotope_attribute.COMP_INTACT          =   etcompIntactET.text.toString()
-            biotope_attribute.VP_INTACT            =   etvpIntactET.text.toString()
-            biotope_attribute.IMP_FORM             =   etimpFormET.text.toString()
-            biotope_attribute.BREAST_DIA           =   etbreastDiaET.text.toString()
-            biotope_attribute.FINAL_EST            =   etfinalEstET.text.toString()
-            biotope_attribute.TREE_SPECIES         =   ettreeSpeciesET.text.toString()
-
-            if(ettreeHeightET.text .toString() != ""){
-
-                biotope_attribute.TREE_HEIGHT          = Utils.getString(ettreeHeightET).toFloat();
-            }
-
-            if(ettreeBreastET.text .toString() != ""){
-
-                biotope_attribute.TREE_BREAST          =   Utils.getString(ettreeBreastET).toFloat();
-
-            }
-
-            if(ettreeCoveET.text .toString() != ""){
-
-                biotope_attribute.TREE_COVE            =   Utils.getString(ettreeCoveET).toFloat();
-
-            }
-
-            biotope_attribute.SUB_TREE_SPEC        =   etsubTreeSpecET.text.toString()
-
-            if(etsubTreeHeightET.text .toString() != ""){
-
-                biotope_attribute.SUB_TREE_HEIGHT      =   Utils.getString(etsubTreeHeightET).toFloat();
-            }
-
-            if(etsubTreeBreastET.text .toString() != ""){
-
-                biotope_attribute.SUB_TREE_BREAST      =   Utils.getString(etsubTreeBreastET).toFloat();
-            }
-
-            if(etsubTreeCoverET.text .toString() != ""){
-
-                biotope_attribute.SUB_TREE_COVER       =   Utils.getString(etsubTreeCoverET).toFloat();
-            }
-
-            biotope_attribute.SHRUB_SPECIES        =   etshrubSpeciesET.text.toString()
-
-            if(etshrubHeightET.text .toString() != ""){
-
-                biotope_attribute.SHRUB_HEIGHT         =   Utils.getString(etshrubHeightET).toFloat();
-            }
-
-            if(etshrubCoverET.text .toString() != ""){
-
-                biotope_attribute.SHRUB_COVER          =   Utils.getString(etshrubCoverET).toFloat();
-            }
-
-            biotope_attribute.HERB_SPECIES         =   etherbSpeciesET.text.toString()
-
-            if(etherbHeightET.text .toString() != ""){
-
-                biotope_attribute.HERB_HEIGHT          =   Utils.getString(etherbHeightET).toFloat();
-
-            }
-
-            if(etherbCoverET.text .toString() != ""){
-
-                biotope_attribute.HERB_COVER           =    Utils.getString(etherbCoverET).toFloat();
+                biotope_attribute.STAND_H  = Utils.getString(etSTAND_HET).toFloat();
             }
 
 
-            biotope_attribute.PICTURE_FOLDER       =   etpictureFolderET.text.toString()
-            biotope_attribute.WILD_ANI             =   etwildAniET.text.toString()
-            biotope_attribute.REP_BIOTOP_POT       =   etrepBiotopPotET.text.toString()
-            biotope_attribute.UNUSUAL_NOTE         =   etunusualNoteET.text.toString()
+            biotope_attribute.LC_GR_NUM  =   ETlcmGR_NumET.text.toString()
+            biotope_attribute.TY_MARK    =   ETTY_MARKET.text.toString()
+
+            if(etGV_RATEET.text.isNotEmpty()){
+
+                biotope_attribute.GV_RATE =  Utils.getString(etGV_RATEET).toFloat();
+            }
+
+            biotope_attribute.GV_STRUCT           =   etGV_STRUCTET.text.toString()
+            biotope_attribute.DIS_RET             =   etDIS_RETET.text.toString()
+            biotope_attribute.RESTOR_POT          =   etRESTOR_POTET.text.toString()
+            biotope_attribute.COMP_INTA           =   etCOMP_INTAET.text.toString()
+            biotope_attribute.VP_INTA             =    etVP_INTAET.text.toString()
+            biotope_attribute.IMP_FORM            =   etIMP_FORMET.text.toString()
+            biotope_attribute.BREA_DIA            =   etBREA_DIAET.text.toString()
+            biotope_attribute.FIN_EST             =   etFIN_ESTET.text.toString()
+            biotope_attribute.TRE_SPEC              =   etTRE_SPECET.text.toString()
+
+
+            biotope_attribute.TRE_FAMI              =   etTRE_FAMIET.text.toString()
+            biotope_attribute.TRE_SCIEN             =   etTRE_SCIENET.text.toString()
+
+            if(etTRE_HET.text.isNotEmpty()){
+
+                biotope_attribute.TRE_H                  =   Utils.getString(etTRE_HET).toFloat();
+
+            }
+            if(etTRE_BREAET.text.isNotEmpty()){
+
+                biotope_attribute.TRE_BREA              =   Utils.getString(etTRE_BREAET).toFloat();
+            }
+            if(etTRE_COVEET.text.isNotEmpty()){
+
+                biotope_attribute.TRE_COVE              =   Utils.getString(etTRE_COVEET).toFloat();
+            }
+
+            biotope_attribute.STRE_SPEC             =   etSTRE_SPECET.text.toString()
+            biotope_attribute.STRE_FAMI             =   etSTRE_FAMIET.text.toString()
+            biotope_attribute.STRE_SCIEN            =   etSTRE_SCIENET.text.toString()
+
+            if(etSTRE_HET.text.isNotEmpty()){
+
+                biotope_attribute.STRE_H                 =   Utils.getString(etSTRE_HET).toFloat();
+            }
+
+            if(etSTRE_BREAET.text.isNotEmpty()){
+
+                biotope_attribute.STRE_BREA             =   Utils.getString(etSTRE_BREAET).toFloat();
+            }
+
+            if(etSTRE_COVEET.text.isNotEmpty()){
+
+                biotope_attribute.STRE_COVE             =   Utils.getString(etSTRE_COVEET).toFloat();
+            }
+
+
+
+            biotope_attribute.SHR_SPEC              =   etSHR_SPECET.text.toString()
+
+            biotope_attribute.SHR_FAMI              =   etSHR_FAMIET.text.toString()
+            biotope_attribute.SHR_SCIEN             =   etSHR_SCIENET.text.toString()
+
+            if(etSHR_HET.text.isNotEmpty()){
+
+                biotope_attribute.SHR_H                 =    Utils.getString(etSHR_HET).toFloat();
+            }
+
+            if(etSTR_COVEET.text.isNotEmpty()){
+
+                biotope_attribute.STR_COVE              =   Utils.getString(etSTR_COVEET).toFloat();
+            }
+
+
+
+            biotope_attribute.HER_SPEC              =   etHER_SPECET.text.toString()
+
+            biotope_attribute.HER_FAMI              =   etHER_FAMIET.text.toString()
+            biotope_attribute.HER_SCIEN             =   etHER_SCIENET.text.toString()
+
+            if(etHER_HET.text.isNotEmpty()){
+
+                biotope_attribute.HER_H                  =   Utils.getString(etHER_HET).toFloat();
+            }
+
+            if(etHER_COVEET.text.isNotEmpty()){
+
+                biotope_attribute.HER_COVE              =   Utils.getString(etHER_COVEET).toFloat();
+            }
+
+
+            biotope_attribute.PIC_FOLDER        =   etPIC_FOLDERET.text.toString()
+            biotope_attribute.WILD_ANI             =   etWILD_ANIET.text.toString()
+            biotope_attribute.BIOTOP_POT            =   etBIOTOP_POTET.text.toString()
+            biotope_attribute.UNUS_NOTE             =   etUNUS_NOTEET.text.toString()
 
             //투수
             if(etlcmTypepET.text.toString() != ""){
 
-                biotope_attribute.LCM_TYPE = etlcmTypepET.text.toString()
+                biotope_attribute.LC_TY     = etlcmTypepET.text.toString()
                 //불투수
             } else if (etlcmTypeiET.text.toString() != ""){
 
-                biotope_attribute.LCM_TYPE = etlcmTypeiET.text.toString()
+                biotope_attribute.LC_TY     = etlcmTypeiET.text.toString()
                 //녹지
             } else if ( etlcmTypegET.text.toString() != ""){
 
-                biotope_attribute.LCM_TYPE = etlcmTypegET.text.toString()
+                biotope_attribute.LC_TY     = etlcmTypegET.text.toString()
                 //수공간
             } else if (etlcmTypewET.text.toString() != ""){
 
-                biotope_attribute.LCM_TYPE = etlcmTypewET.text.toString()
+                biotope_attribute.LC_TY     = etlcmTypewET.text.toString()
             }
             biotope_attribute.id = keyId;
 
@@ -359,7 +406,9 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                 dbManager.updatebiotope_attribute(biotope_attribute)
             }else {
-                biotope_attribute.point_gps = etpointGpsET.text.toString();
+
+                biotope_attribute.GPS_LAT   =   etGPS_LATTV.text.toString().toFloat();
+                biotope_attribute.GPS_LON   =   etGPS_LONTV.text.toString().toFloat();
                 dbManager.insertbiotope_attribute(biotope_attribute);
 
             }
@@ -373,11 +422,13 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         btn_biotopDelete.setOnClickListener {
 
             var intent = Intent();
-            val biotope_attribute:Biotope_attribute = Biotope_attribute(null,"","","",0,"",null
-                    ,null,"","","",null,"","","",""
-                    ,"","","","","",null,null,null,"",null
-                    ,null,null,"",null,null,"",null,null,""
-                    ,"","","",null);
+            val biotope_attribute:Biotope_attribute = Biotope_attribute(null,null,null,null,null,null,null
+                    ,null,null,null,null,null,null,null,null
+                    ,null,null,null,null,null,null,null,null
+                    ,null,null,null,null,null,null,null,null
+                    ,null,null,null,null,null,null,null
+                    ,null,null,null,null,null,null,null,null
+                    ,null,null,null,null,null,null)
 
             biotope_attribute.id = keyId;
 
@@ -427,7 +478,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
     fun createId():String{
 
         val date = Date()
-        val fullTime = SimpleDateFormat("yyyyMMddHHmmssSSS")
+//        val fullTime = SimpleDateFormat("yyyyMMddHHmmssSSS")
+        val fullTime = SimpleDateFormat("HH:mm")
 
         return fullTime.format(date).toString()
     }
@@ -447,13 +499,14 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     //토지이용현황
                     if(biotopeModel.codeType == "biotopeM"){
 
-                        TVlumGroupNumTV.setText( biotopeModel.name)
-                        ETlumGroupNumET.setText(biotopeModel.code)
+                        TVLU_GR_NumTV.setText( biotopeModel.name)
+                        ETLU_GR_NumET.setText(biotopeModel.code)
                         //토지피복현황
                     }else if (biotopeModel.codeType == "biotopeS"){
 
-                        TVlcmGroupNumTV.setText( biotopeModel.name)
-                        ETlcmGroupNumET.setText(biotopeModel.code)
+                        TVLC_GR_NUMTV.setText( biotopeModel.name)
+                        ETlcmGR_NumET.setText(biotopeModel.code)
+
 
                         var bioModelParent:BiotopeModel
                         bioModelParent = data!!.getSerializableExtra("bioModelParent") as BiotopeModel
@@ -485,8 +538,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         //현존식생현황  아직 테이블 명 코드 미정
                     } else if (biotopeModel.codeType == "biotopeS"){
 
-                        TVlcmGroupNumTV.setText( biotopeModel.name)
-                        ETlcmGroupNumET.setText(biotopeModel.code)
+                        TVTY_MARKTV.setText( biotopeModel.name)
+                        ETTY_MARKET.setText(biotopeModel.code)
                     }
 
                 };
@@ -520,10 +573,12 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         if (mLocation != null) {
 //            tvLatitude.text =mLocation!!.latitude.toString()
 //            tvLongitude.text = mLocation!!.longitude.toString()
-            etpointGpsET.setText (mLocation!!.latitude.toString() + "," +mLocation!!.longitude.toString());
-//            Toast.makeText(this, "성공"+mLocation!!.latitude.toString(), Toast.LENGTH_SHORT).show();
+
+            etGPS_LATTV.setText(mLocation!!.latitude.toString())
+            etGPS_LONTV.setText(mLocation!!.longitude.toString())
+            Toast.makeText(this, "성공"+mLocation!!.latitude.toString(), Toast.LENGTH_SHORT).show();
         } else {
-//            Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -596,11 +651,11 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the location-related task you need to do.
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//                        Toast.makeText(this, "permission granted", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "permission granted", Toast.LENGTH_LONG).show()
                     }
                 } else {
                     // permission denied, boo! Disable the functionality that depends on this permission.
-//                    Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show()
                 }
                 return
             }

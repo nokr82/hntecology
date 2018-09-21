@@ -177,15 +177,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             }
         })
 
-        //식물2 추가
-        btn_flora2.setOnClickListener(View.OnClickListener {
-
-            if(drawer_view.visibility == View.VISIBLE) {
-                endDraw()
-            } else {
-                startDraw()
-            }
-        })
 
         //저서무척추동물 추가
         btn_zoobenthos.setOnClickListener(View.OnClickListener {

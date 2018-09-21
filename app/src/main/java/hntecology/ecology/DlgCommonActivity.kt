@@ -100,18 +100,20 @@ class DlgCommonActivity : Activity() {
         //대분류
         listView1.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
             //중분류 소분류 리스트 클리어
-            listAdapte2.clearItem()
-            listAdapte3.clearItem()
+            // listAdapte2.clearItem()
+            // listAdapte3.clearItem()
 
             var biomModel =  listAdapte1.getItem(position)
 
             listAdapte1.setItemSelect(position)
 
+            /*
             val data2 =  db.query(tableName,dataList,"g_code='B' and code like '%"+biomModel.code+"%'",null,null,null,"code",null);
 
             dlg_probar.visibility= View.VISIBLE
             dataList(listdata2,data2);
             dlg_probar.visibility= View.GONE
+            */
 
 
         })

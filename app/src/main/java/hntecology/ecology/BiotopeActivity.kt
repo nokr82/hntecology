@@ -63,7 +63,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
     var keyId:String?=null;
     var chkdata:Boolean =false;
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_biotope)

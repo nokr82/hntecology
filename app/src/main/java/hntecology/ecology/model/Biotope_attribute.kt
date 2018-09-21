@@ -2,14 +2,15 @@ package hntecology.ecology.model
 
 import java.io.Serializable
 
-class Biotope_attribute(var id:String?,var INVES_REGION:String, var INVESTIGATOR:String, var INVES_DATETIME:String, var INVES_INDEX:Int, var LUM_GROUP_NUM:String,
-                        var LUM_TYPE_RATE:Float?, var STANDARD_HEIGHT:Float?, var LCM_GROUP_NUM:String, var LCM_TYPE:String, var TYPE_MARK:String,
-                        var GV_RATE:Float?, var GV_STRUCTURE:String, var DIST_RETURN:String, var RESTORE_POT:String, var COMP_INTACT:String,
-                        var VP_INTACT:String, var IMP_FORM:String, var BREAST_DIA:String, var FINAL_EST:String, var TREE_SPECIES:String, var TREE_HEIGHT:Float?,
-                        var TREE_BREAST:Float?, var TREE_COVE:Float?, var SUB_TREE_SPEC:String, var SUB_TREE_HEIGHT:Float?, var SUB_TREE_BREAST:Float?,
-                        var SUB_TREE_COVER:Float?, var SHRUB_SPECIES:String, var SHRUB_HEIGHT:Float?, var SHRUB_COVER:Float?, var HERB_SPECIES:String,
-                        var HERB_HEIGHT:Float?, var HERB_COVER:Float?, var PICTURE_FOLDER:String, var WILD_ANI:String, var REP_BIOTOP_POT:String, var UNUSUAL_NOTE:String,
-                        var point_gps:String?) :Serializable {
+class Biotope_attribute(var id:String?,var PRJ_NAME:String?,var INV_REGION:String?, var INV_PERSON:String?, var INV_DT:String?, var INV_TM:String?, var INV_INDEX:Int?,
+                        var LU_GR_NUM:String?, var LU_TY_RATE:Float?, var STAND_H:Float?, var LC_GR_NUM:String?, var LC_TY:String?, var TY_MARK:String?,
+                        var GV_RATE:Float?, var GV_STRUCT:String?, var DIS_RET:String?, var RESTOR_POT:String?, var COMP_INTA:String?, var VP_INTA:String?,
+                        var IMP_FORM:String?, var BREA_DIA:String?, var FIN_EST:String?, var TRE_SPEC:String?, var TRE_FAMI:String?, var TRE_SCIEN:String?,
+                        var TRE_H:Float?, var TRE_BREA:Float?, var TRE_COVE:Float?, var STRE_SPEC:String?, var STRE_FAMI:String?, var STRE_SCIEN:String?,
+                        var STRE_H:Float?, var STRE_BREA:Float?, var STRE_COVE:Float?, var SHR_SPEC:String?, var SHR_FAMI:String?, var SHR_SCIEN:String?,
+                        var SHR_H:Float?, var STR_COVE:Float?, var HER_SPEC:String?, var HER_FAMI:String?, var HER_SCIEN:String?, var HER_H:Float?, var HER_COVE:Float?,
+                        var PIC_FOLDER:String?, var WILD_ANI:String?, var BIOTOP_POT:String?, var UNUS_NOTE:String?, var GPS_LAT:Float?, var GPS_LON:Float?,var NEED_CONF:String?,
+                        var CONF_MOD:String?) :Serializable {
     
 }
 

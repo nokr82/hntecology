@@ -62,7 +62,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         PrefUtils.setPreference(this, "longitude", longitude);*/
 
         if(PrefUtils.getDoublePreference(this,"latitude") != null &&
-                PrefUtils.getDoublePreference(this,"longitude")!= null) {
+                PrefUtils.getDoublePreference(this,"longitude")!= null
+                    && PrefUtils.getDoublePreference(this,"latitude") != -1.0
+                        &&PrefUtils.getDoublePreference(this,"longitude")!= -1.0) {
 
             latitude = PrefUtils.getDoublePreference(this,"latitude")
             longitude = PrefUtils.getDoublePreference(this,"longitude")

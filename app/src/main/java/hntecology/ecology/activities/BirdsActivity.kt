@@ -1,13 +1,17 @@
 package hntecology.ecology.activities
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.WindowManager
+import android.widget.TextView
 import hntecology.ecology.R
 import hntecology.ecology.adapter.DlgBirdsAdapter
+import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.OpenAlertDialog
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
@@ -46,6 +50,12 @@ class BirdsActivity : Activity() {
         userName = PrefUtils.getStringPreference(context,"name");
         invPersonTV.text = userName;
 
+        val dataBaseHelper = DataBaseHelper(context);
+        val db = dataBaseHelper.createDataBase();
+
+        val num = dataBaseHelper.birdsNextNum();
+        numTV.text = num.toString()
+
         btn1.setOnClickListener {
 
             val intent = Intent(this, DlgCommonSubActivity::class.java)
@@ -82,12 +92,48 @@ class BirdsActivity : Activity() {
         birdsTV.setOnClickListener {
 
             val intent = Intent(context, DlgBirdsActivity::class.java)
-            startActivity(intent);
+            startActivityForResult(intent, SET_BIRDS);
 
         }
 
+        // 이용 층위
+        useLayerTV.setOnClickListener {
+
+            var listItems: ArrayList<String> = ArrayList();
+            listItems.add("교목층");
+            listItems.add("아교목층");
+            listItems.add("관목층");
+            listItems.add("초본층");
+            listItems.add("수면");
+            listItems.add("수변");
+            listItems.add("취소");
+
+            alert(listItems, "이용 층위 선택", useLayerTV);
+
+        }
 
     }
+
+    fun alert(ListItems: ArrayList<String>, title:String, textView: TextView) {
+
+        val items = Array<CharSequence>(ListItems.size, { i -> ListItems.get(i) })
+
+        var size = ListItems.size
+
+        var builder: AlertDialog.Builder = AlertDialog.Builder(this);
+        builder.setTitle(title);
+
+        builder.setItems(items, DialogInterface.OnClickListener { dialogInterface, i ->
+
+            if(ListItems.get(i) != "취소") {
+                textView.text = ListItems.get(i)
+            }
+
+        })
+
+        builder.show();
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -113,7 +159,13 @@ class BirdsActivity : Activity() {
                 };
                 SET_BIRDS -> {
 
-                    btn3.setText(data!!.getStringExtra("selectDlg"))
+                    var name = data!!.getStringExtra("name");
+                    var family_name = data!!.getStringExtra("family_name");
+                    var zoological = data!!.getStringExtra("zoological");
+
+                    birdsTV.text = name
+                    familyNameTV.text = family_name
+                    zoologicalTV.text = zoological
 
                 };
             }

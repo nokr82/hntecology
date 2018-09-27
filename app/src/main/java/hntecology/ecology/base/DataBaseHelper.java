@@ -430,38 +430,23 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ArrayList<JSONObject> selectBirds() {
+    public int birdsNextNum(){
 
-        ArrayList<JSONObject> birds = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
 
-        try {
-            SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(NUM ,9,15)),0)+1 ,-15, 15) FROM birdsAttribute";
 
-            String query = "SELECT name_kr FROM birds";
+        int num = 0;
 
-            Cursor cursor = db.rawQuery(query, null);
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
-
-                    JSONObject birdsObj = new JSONObject();
-                    birdsObj.put("name_kr", cursor.getString(0));
-
-                    birds.add(birdsObj);
-                }
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                num = cursor.getInt(0);
             }
-
-            cursor.close();
-
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
-
-        return birds;
+        cursor.close();
+        return num;
     }
-
-//    public String birdsNextNum(){
-//        String query = "SELECT strftime(\"%Y%m%d\",'now','localtime') || substr('000'|| IFNULL(MAX(substr(INV_INDEX ,9,15)),0)+1  ,-15, 15) FROM biotopeAttribute";
-//    }
 
 
 }

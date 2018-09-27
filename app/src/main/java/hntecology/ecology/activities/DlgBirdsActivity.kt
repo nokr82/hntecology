@@ -6,19 +6,13 @@ import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.os.Bundle
-import android.widget.*
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.Utils
-import kotlinx.android.synthetic.main.activity_dlgcommon.*
-import java.util.*
 import hntecology.ecology.R
-import hntecology.ecology.adapter.ComDlgAdapter
 import hntecology.ecology.adapter.DlgBirdsAdapter
-import hntecology.ecology.model.BiotopeModel
 import kotlinx.android.synthetic.main.dlg_birds.*
 import org.json.JSONObject
 import kotlin.collections.ArrayList
-
 
 class DlgBirdsActivity : Activity() {
 
@@ -28,10 +22,7 @@ class DlgBirdsActivity : Activity() {
 
     private lateinit var apdater: DlgBirdsAdapter;
 
-    var tableName:String = ""
-    var titleName:String=""
     var DlgHeight:Float=430F;
-    var selectDlg:Int = 1
 
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,13 +31,13 @@ class DlgBirdsActivity : Activity() {
 
         context = this;
 
-        val dataBaseHelper = DataBaseHelper(context);
-        val db = dataBaseHelper.createDataBase();
+        window.setLayout(Utils.dpToPx(800F).toInt(), Utils.dpToPx(DlgHeight).toInt());
+        this.setFinishOnTouchOutside(true);
 
         val intent = getIntent()
 
-        window.setLayout(Utils.dpToPx(800F).toInt(), Utils.dpToPx(DlgHeight).toInt());
-        this.setFinishOnTouchOutside(true);
+        val dataBaseHelper = DataBaseHelper(context);
+        val db = dataBaseHelper.createDataBase();
 
         val dataList:Array<String> = arrayOf("name_kr","Family_name_kr","zoological");
 
@@ -64,11 +55,18 @@ class DlgBirdsActivity : Activity() {
 
         listLV.setOnItemClickListener { parent, view, position, id ->
 
-            println("position : " + position);
+            var data = adapterData.get(position)
+            var name = Utils.getString(data, "name_kr");
+            var family_name = Utils.getString(data, "family_name_kr");
+            var zoological = Utils.getString(data, "zoological");
 
-//            intent.putExtra("selectDlg",apdater.getItem(position))
-//            setResult(RESULT_OK, intent);
-//            finish()
+            val intent = Intent();
+            intent.putExtra("name",name)
+            intent.putExtra("family_name",family_name)
+            intent.putExtra("zoological",zoological)
+            setResult(RESULT_OK, intent);
+            finish()
+
         }
 
     }

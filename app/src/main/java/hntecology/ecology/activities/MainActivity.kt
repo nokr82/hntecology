@@ -21,8 +21,9 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import hntecology.ecology.R
-import hntecology.ecology.base.PrefUtils
+import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.Utils
+import hntecology.ecology.model.GpsSet
 import kotlinx.android.synthetic.main.activity_main.*
 import org.locationtech.jts.geom.Coordinate
 import org.locationtech.jts.geom.GeometryFactory
@@ -49,6 +50,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     var latitude:Double = 126.79235
     var longitude:Double = 37.39627
 
+    var dbManager: DataBaseHelper? = null
+
+
 
     var buttonController = 3;       //3. biotope  , 6.birds , 7.Reptilia , 8.mammalia  9. fish, 10.insect, 11.flora , 13. zoobenthos
 
@@ -58,18 +62,22 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         setContentView(R.layout.activity_main)
 
         this.context = this
+        dbManager = DataBaseHelper(this)
+        val db = dbManager!!.createDataBase()
+        val dataList:Array<String> = arrayOf("*");
+        val data =  db.query("gps_set",dataList,null,null,null,null,"id desc","1");
 
 /*        PrefUtils.setPreference(this, "latitude", latitude);
         PrefUtils.setPreference(this, "longitude", longitude);*/
+        while (data.moveToNext()) {
 
-        if(PrefUtils.getDoublePreference(this,"latitude") != null &&
-                PrefUtils.getDoublePreference(this,"longitude")!= null
-                    && PrefUtils.getDoublePreference(this,"latitude") != -1.0
-                        &&PrefUtils.getDoublePreference(this,"longitude")!= -1.0) {
+            var gpsset:GpsSet = GpsSet(data.getInt(0),data.getDouble(1),data.getDouble(2));
 
-            latitude = PrefUtils.getDoublePreference(this,"latitude")
-            longitude = PrefUtils.getDoublePreference(this,"longitude")
+            latitude = gpsset.latitude!!
+            longitude = gpsset.longitude!!
+
         }
+
 
         mGestureDetector = GestureDetector(this, GestureListener())
 
@@ -203,7 +211,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         btn_gps_select.setOnClickListener {
 
 
-            val intent:Intent = Intent(this, Dlg_gps::class.java);
+            val intent:Intent = Intent(this, hntecology.ecology.activities.Dlg_gps::class.java);
 
 
 
@@ -267,8 +275,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     latitude = data!!.getDoubleExtra("latitude",126.79235)
                     longitude = data!!.getDoubleExtra("longitude",37.39627)
 
-                    PrefUtils.setPreference(this, "latitude", latitude);
-                    PrefUtils.setPreference(this, "longitude", longitude);
+                    val gpsSet:GpsSet = GpsSet(null,latitude,longitude)
+                    dbManager!!.insertGpsSet(gpsSet);
                     onMapReady(googleMap)
                 }
 

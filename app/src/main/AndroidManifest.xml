@@ -54,8 +54,9 @@
             android:name=".activities.IntroActivity"
             android:launchMode="singleTop"
             android:noHistory="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/NoTitleDialogTransparent">
+            android:theme="@style/NoTitleDialogTransparent"
+            android:screenOrientation="landscape"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

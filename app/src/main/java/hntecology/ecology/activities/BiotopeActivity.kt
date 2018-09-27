@@ -591,6 +591,30 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     }
                 }
 
+                FROM_ALBUM ->
+                {
+                    if(resultCode == -1){
+
+                        val selectedImageUri = data!!.getData()
+
+                        val filePathColumn = arrayOf(MediaStore.MediaColumns.DATA)
+
+                        val cursor = context!!.getContentResolver().query(selectedImageUri!!, filePathColumn, null, null, null)
+                        if (cursor!!.moveToFirst()) {
+                            val columnIndex = cursor.getColumnIndex(filePathColumn[0])
+                            val picturePath = cursor.getString(columnIndex)
+
+                            cursor.close()
+
+                            imageUri = selectedImageUri
+
+                            var selectedImage:Bitmap = Utils.getImage(context!!.getContentResolver(), picturePath)
+                            etPIC_FOLDERET.setImageBitmap(selectedImage)
+
+                        }
+                    }
+                }
+
             }
         }
     }
@@ -624,9 +648,10 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
             etGPS_LATTV.setText(mLocation!!.latitude.toString())
             etGPS_LONTV.setText(mLocation!!.longitude.toString())
-            Toast.makeText(this, "성공"+mLocation!!.latitude.toString(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "성공"+mLocation!!.latitude.toString(), Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
+
+            //Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
         }
     }
 

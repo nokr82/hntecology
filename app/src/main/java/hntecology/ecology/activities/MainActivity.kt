@@ -1,10 +1,14 @@
 package hntecology.ecology.activities
 
+import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Point
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.view.GestureDetector
@@ -22,6 +26,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
+import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.GpsSet
 import kotlinx.android.synthetic.main.activity_main.*
@@ -239,6 +244,30 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         startRegistrationService()
 
         TVtimeTV.setText(getTime())
+
+        logoutBtn.setOnClickListener{
+
+            var builder:AlertDialog.Builder =  AlertDialog.Builder(context);
+            builder.setMessage("로그아웃 하시겠습니까?");
+            builder.setCancelable(true);
+            builder.setNegativeButton("취소", DialogInterface.OnClickListener{ dialogInterface, i ->
+                dialogInterface.cancel();
+
+            });
+            builder.setPositiveButton("확인", DialogInterface.OnClickListener{ dialogInterface, i ->
+                dialogInterface.cancel();
+
+                PrefUtils.clear(context);
+
+                val intent:Intent = Intent(context, LoginActivity::class.java);
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK;
+                startActivity(intent);
+
+            })
+            builder.show();
+
+        }
+
     }
 
     private fun startRegistrationService() {

@@ -7,12 +7,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Member;
+import java.util.ArrayList;
 
 import hntecology.ecology.model.Biotope_attribute;
 import hntecology.ecology.model.GpsSet;
@@ -42,7 +46,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     /**
      * Creates a empty database on the system and rewrites it with your own database.
-     * */
+     */
     public SQLiteDatabase createDataBase() throws IOException {
         boolean dbExist = checkDataBase();
 
@@ -101,11 +105,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * Copies your database from your local assets-folder to the just created empty database in the
      * system folder, from where it can be accessed and handled.
      * This is done by transfering bytestream.
-     * */
+     */
     private void copyDataBase() throws IOException {
 
         File f = new File(DB_PATH);
-        if(!f.exists()) {
+        if (!f.exists()) {
             f.mkdir();
         }
 
@@ -211,6 +215,28 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ",CONF_MOD	String";
         query += ");";
         db.execSQL(query);
+
+//        query = "create table if not exists ";
+//        query += "birds ( no String";
+//        query += ", taxon String";
+//        query += ", zoological String";
+//        query += ", name_kr String";
+//        query += ", author String";
+//        query += ", year String";
+//        query += ", Phylum_name String";
+//        query += ", Phylum_name_kr String";
+//        query += ", Class_name String";
+//        query += ", Class_name_kr String";
+//        query += ", Order_name String";
+//        query += ", Order_name_kr String";
+//        query += ", Family_name String";
+//        query += ", Family_name_kr String";
+//        query += ", Genus_name String";
+//        query += ", Genus_name_kr String";
+//        query += ", Species_name String";
+//        query += ", Species_name String";
+//        query += ");";
+//        db.execSQL(query);
 //
 //        query = "create table if not exists ";
 //        query += "member_likes ( _id INTEGER PRIMARY KEY AUTOINCREMENT";
@@ -246,64 +272,64 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void insertbiotope_attribute(Biotope_attribute biotope_attribute) {
         //37 column
         String query = "INSERT INTO biotopeAttribute";
-        query +="(id,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,INV_INDEX,LU_GR_NUM,LU_TY_RATE,STAND_H,LC_GR_NUM,LC_TY,TY_MARK,GV_RATE,GV_STRUCT,DIS_RET,RESTOR_POT,COMP_INTA";
-        query   +=",VP_INTA,IMP_FORM,BREA_DIA,FIN_EST,TRE_SPEC,TRE_FAMI,TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_H,STRE_BREA,STRE_COVE,SHR_SPEC,SHR_FAMI";
-        query   +=",SHR_SCIEN,SHR_H,STR_COVE,HER_SPEC,HER_FAMI,HER_SCIEN,HER_H,HER_COVE,PIC_FOLDER,WILD_ANI,BIOTOP_POT,UNUS_NOTE,GPS_LAT,GPS_LON,NEED_CONF,CONF_MOD)";
+        query += "(id,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,INV_INDEX,LU_GR_NUM,LU_TY_RATE,STAND_H,LC_GR_NUM,LC_TY,TY_MARK,GV_RATE,GV_STRUCT,DIS_RET,RESTOR_POT,COMP_INTA";
+        query += ",VP_INTA,IMP_FORM,BREA_DIA,FIN_EST,TRE_SPEC,TRE_FAMI,TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_H,STRE_BREA,STRE_COVE,SHR_SPEC,SHR_FAMI";
+        query += ",SHR_SCIEN,SHR_H,STR_COVE,HER_SPEC,HER_FAMI,HER_SCIEN,HER_H,HER_COVE,PIC_FOLDER,WILD_ANI,BIOTOP_POT,UNUS_NOTE,GPS_LAT,GPS_LON,NEED_CONF,CONF_MOD)";
 
 
         query += " values (";
-        query += " '"+biotope_attribute.getId()+"'";
-        query += ", '"+biotope_attribute.getPRJ_NAME()+"'";
-        query += ", '"+biotope_attribute.getINV_REGION()+"'";
-        query += ", '"+biotope_attribute.getINV_PERSON()+"'";
-        query += ", '"+biotope_attribute.getINV_DT()+"'";
-        query += ", '"+biotope_attribute.getINV_TM()+"'";
+        query += " '" + biotope_attribute.getId() + "'";
+        query += ", '" + biotope_attribute.getPRJ_NAME() + "'";
+        query += ", '" + biotope_attribute.getINV_REGION() + "'";
+        query += ", '" + biotope_attribute.getINV_PERSON() + "'";
+        query += ", '" + biotope_attribute.getINV_DT() + "'";
+        query += ", '" + biotope_attribute.getINV_TM() + "'";
         query += ", (SELECT strftime(\"%Y%m%d\",'now','localtime') || substr('000'|| IFNULL(MAX(substr(INV_INDEX ,9,15)),0)+1  ,-15, 15) FROM biotopeAttribute)";
-        query += ", '"+biotope_attribute.getLU_GR_NUM()+"'";
-        query += ", "+biotope_attribute.getLU_TY_RATE()+"";
-        query += ", "+biotope_attribute.getSTAND_H()+"";
-        query += ", '"+biotope_attribute.getLC_GR_NUM()+"'";
-        query += ", '"+biotope_attribute.getLC_TY()+"'";
-        query += ", '"+biotope_attribute.getTY_MARK()+"'";
-        query += ", "+biotope_attribute.getGV_RATE()+"";
-        query += ", '"+biotope_attribute.getGV_STRUCT()+"'";
-        query += ", '"+biotope_attribute.getDIS_RET()+"'";
-        query += ", '"+biotope_attribute.getRESTOR_POT()+"'";
-        query += ", '"+biotope_attribute.getCOMP_INTA()+"'";
-        query += ", '"+biotope_attribute.getVP_INTA()+"'";
-        query += ", '"+biotope_attribute.getIMP_FORM()+"'";
-        query += ", '"+biotope_attribute.getBREA_DIA()+"'";
-        query += ", '"+biotope_attribute.getFIN_EST()+"'";
-        query += ", '"+biotope_attribute.getTRE_SPEC()+"'";
-        query += ", '"+biotope_attribute.getTRE_FAMI()+"'";
-        query += ", '"+biotope_attribute.getTRE_SCIEN()+"'";
-        query += ", "+biotope_attribute.getTRE_H()+"";
-        query += ", "+biotope_attribute.getTRE_BREA()+"";
-        query += ", "+biotope_attribute.getTRE_COVE()+"";
-        query += ", '"+biotope_attribute.getSTRE_SPEC()+"'";
-        query += ", '"+biotope_attribute.getSTRE_FAMI()+"'";
-        query += ", '"+biotope_attribute.getSTRE_SCIEN()+"'";
-        query += ", "+biotope_attribute.getSTRE_H()+"";
-        query += ", "+biotope_attribute.getSTRE_BREA()+"";
-        query += ", "+biotope_attribute.getSTRE_COVE()+"";
-        query += ", '"+biotope_attribute.getSHR_SPEC()+"'";
-        query += ", '"+biotope_attribute.getSHR_FAMI()+"'";
-        query += ", '"+biotope_attribute.getSHR_SCIEN()+"'";
-        query += ", "+biotope_attribute.getSHR_H()+"";
-        query += ", "+biotope_attribute.getSTR_COVE()+"";
-        query += ", '"+biotope_attribute.getHER_SPEC()+"'";
-        query += ", '"+biotope_attribute.getHER_FAMI()+"'";
-        query += ", '"+biotope_attribute.getHER_SCIEN()+"'";
-        query += ", "+biotope_attribute.getHER_H()+"";
-        query += ", "+biotope_attribute.getHER_COVE()+"";
-        query += ", '"+biotope_attribute.getPIC_FOLDER()+"'";
-        query += ", '"+biotope_attribute.getWILD_ANI()+"'";
-        query += ", '"+biotope_attribute.getBIOTOP_POT()+"'";
-        query += ", '"+biotope_attribute.getUNUS_NOTE()+"'";
-        query += ", "+biotope_attribute.getGPS_LAT()+"";
-        query += ", "+biotope_attribute.getGPS_LON()+"";
-        query += ", '"+biotope_attribute.getNEED_CONF()+"'";
-        query += ", '"+biotope_attribute.getCONF_MOD()+"'";
+        query += ", '" + biotope_attribute.getLU_GR_NUM() + "'";
+        query += ", " + biotope_attribute.getLU_TY_RATE() + "";
+        query += ", " + biotope_attribute.getSTAND_H() + "";
+        query += ", '" + biotope_attribute.getLC_GR_NUM() + "'";
+        query += ", '" + biotope_attribute.getLC_TY() + "'";
+        query += ", '" + biotope_attribute.getTY_MARK() + "'";
+        query += ", " + biotope_attribute.getGV_RATE() + "";
+        query += ", '" + biotope_attribute.getGV_STRUCT() + "'";
+        query += ", '" + biotope_attribute.getDIS_RET() + "'";
+        query += ", '" + biotope_attribute.getRESTOR_POT() + "'";
+        query += ", '" + biotope_attribute.getCOMP_INTA() + "'";
+        query += ", '" + biotope_attribute.getVP_INTA() + "'";
+        query += ", '" + biotope_attribute.getIMP_FORM() + "'";
+        query += ", '" + biotope_attribute.getBREA_DIA() + "'";
+        query += ", '" + biotope_attribute.getFIN_EST() + "'";
+        query += ", '" + biotope_attribute.getTRE_SPEC() + "'";
+        query += ", '" + biotope_attribute.getTRE_FAMI() + "'";
+        query += ", '" + biotope_attribute.getTRE_SCIEN() + "'";
+        query += ", " + biotope_attribute.getTRE_H() + "";
+        query += ", " + biotope_attribute.getTRE_BREA() + "";
+        query += ", " + biotope_attribute.getTRE_COVE() + "";
+        query += ", '" + biotope_attribute.getSTRE_SPEC() + "'";
+        query += ", '" + biotope_attribute.getSTRE_FAMI() + "'";
+        query += ", '" + biotope_attribute.getSTRE_SCIEN() + "'";
+        query += ", " + biotope_attribute.getSTRE_H() + "";
+        query += ", " + biotope_attribute.getSTRE_BREA() + "";
+        query += ", " + biotope_attribute.getSTRE_COVE() + "";
+        query += ", '" + biotope_attribute.getSHR_SPEC() + "'";
+        query += ", '" + biotope_attribute.getSHR_FAMI() + "'";
+        query += ", '" + biotope_attribute.getSHR_SCIEN() + "'";
+        query += ", " + biotope_attribute.getSHR_H() + "";
+        query += ", " + biotope_attribute.getSTR_COVE() + "";
+        query += ", '" + biotope_attribute.getHER_SPEC() + "'";
+        query += ", '" + biotope_attribute.getHER_FAMI() + "'";
+        query += ", '" + biotope_attribute.getHER_SCIEN() + "'";
+        query += ", " + biotope_attribute.getHER_H() + "";
+        query += ", " + biotope_attribute.getHER_COVE() + "";
+        query += ", '" + biotope_attribute.getPIC_FOLDER() + "'";
+        query += ", '" + biotope_attribute.getWILD_ANI() + "'";
+        query += ", '" + biotope_attribute.getBIOTOP_POT() + "'";
+        query += ", '" + biotope_attribute.getUNUS_NOTE() + "'";
+        query += ", " + biotope_attribute.getGPS_LAT() + "";
+        query += ", " + biotope_attribute.getGPS_LON() + "";
+        query += ", '" + biotope_attribute.getNEED_CONF() + "'";
+        query += ", '" + biotope_attribute.getCONF_MOD() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -324,7 +350,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 //    }
 
     public void deletebiotope_attribute(Biotope_attribute biotope_attribute) {
-        String query = "DELETE FROM biotopeAttribute WHERE id = '"+biotope_attribute.getId()+"'";
+        String query = "DELETE FROM biotopeAttribute WHERE id = '" + biotope_attribute.getId() + "'";
 
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -334,56 +360,56 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void updatebiotope_attribute(Biotope_attribute biotope_attribute) {
 
         String query = "UPDATE biotopeAttribute SET  " +
-                          "INV_REGION='"+biotope_attribute.getINV_REGION()+"'"
-                        +",INV_PERSON='"+biotope_attribute.getINV_PERSON()+"'"
-                        +",INV_DT='"+biotope_attribute.getINV_DT()+"'"
-                        +",INV_TM='"+biotope_attribute.getINV_TM()+"'"
-                        +",LU_GR_NUM='"+biotope_attribute.getLU_GR_NUM()+"'"
-                        +",LU_TY_RATE="+biotope_attribute.getLU_TY_RATE()+""
-                        +",STAND_H="+biotope_attribute.getSTAND_H()+""
-                        +",LC_GR_NUM='"+biotope_attribute.getLC_GR_NUM()+"'"
-                        +",LC_TY='"+biotope_attribute.getLC_TY()+"'"
-                        +",TY_MARK='"+biotope_attribute.getTY_MARK()+"'"
-                        +",GV_RATE="+biotope_attribute.getGV_RATE()+""
-                        +",GV_STRUCT='"+biotope_attribute.getGV_STRUCT()+"'"
-                        +",DIS_RET='"+biotope_attribute.getDIS_RET()+"'"
-                        +",RESTOR_POT='"+biotope_attribute.getRESTOR_POT()+"'"
-                        +",COMP_INTA='"+biotope_attribute.getCOMP_INTA()+"'"
-                        +",VP_INTA='"+biotope_attribute.getVP_INTA()+"'"
-                        +",IMP_FORM='"+biotope_attribute.getIMP_FORM()+"'"
-                        +",BREA_DIA='"+biotope_attribute.getBREA_DIA()+"'"
-                        +",FIN_EST='"+biotope_attribute.getFIN_EST()+"'"
-                        +",TRE_SPEC='"+biotope_attribute.getTRE_SPEC()+"'"
-                        +",TRE_FAMI='"+biotope_attribute.getTRE_FAMI()+"'"
-                        +",TRE_SCIEN='"+biotope_attribute.getTRE_SCIEN()+"'"
-                        +",TRE_H="+biotope_attribute.getTRE_H()+""
-                        +",TRE_BREA="+biotope_attribute.getTRE_BREA()+""
-                        +",TRE_COVE="+biotope_attribute.getTRE_COVE()+""
-                        +",STRE_SPEC='"+biotope_attribute.getSTRE_SPEC()+"'"
-                        +",STRE_FAMI='"+biotope_attribute.getSTRE_FAMI()+"'"
-                        +",STRE_SCIEN='"+biotope_attribute.getSTRE_SCIEN()+"'"
-                        +",STRE_H="+biotope_attribute.getSTRE_H()+""
-                        +",STRE_BREA="+biotope_attribute.getSTRE_BREA()+""
-                        +",STRE_COVE="+biotope_attribute.getSTRE_COVE()+""
-                        +",SHR_SPEC='"+biotope_attribute.getSHR_SPEC()+"'"
-                        +",SHR_FAMI='"+biotope_attribute.getSHR_FAMI()+"'"
-                        +",SHR_SCIEN='"+biotope_attribute.getSHR_SCIEN()+"'"
-                        +",SHR_H="+biotope_attribute.getSHR_H()+""
-                        +",STR_COVE="+biotope_attribute.getSTR_COVE()+""
-                        +",HER_SPEC='"+biotope_attribute.getHER_SPEC()+"'"
-                        +",HER_FAMI='"+biotope_attribute.getHER_FAMI()+"'"
-                        +",HER_SCIEN='"+biotope_attribute.getHER_SCIEN()+"'"
-                        +",HER_H="+biotope_attribute.getHER_H()+""
-                        +",HER_COVE="+biotope_attribute.getHER_COVE()+""
-                        +",PIC_FOLDER='"+biotope_attribute.getPIC_FOLDER()+"'"
-                        +",WILD_ANI='"+biotope_attribute.getWILD_ANI()+"'"
-                        +",BIOTOP_POT='"+biotope_attribute.getBIOTOP_POT()+"'"
-                        +",UNUS_NOTE='"+biotope_attribute.getUNUS_NOTE()+"'"
-                        +",GPS_LAT="+biotope_attribute.getGPS_LAT()+""
-                        +",GPS_LON="+biotope_attribute.getGPS_LON()+""
-                        +",NEED_CONF='"+biotope_attribute.getNEED_CONF()+"'"
-                        +",CONF_MOD='"+biotope_attribute.getCONF_MOD()+"'"+
-                        "where id = '" + biotope_attribute.getId() + "'";
+                "INV_REGION='" + biotope_attribute.getINV_REGION() + "'"
+                + ",INV_PERSON='" + biotope_attribute.getINV_PERSON() + "'"
+                + ",INV_DT='" + biotope_attribute.getINV_DT() + "'"
+                + ",INV_TM='" + biotope_attribute.getINV_TM() + "'"
+                + ",LU_GR_NUM='" + biotope_attribute.getLU_GR_NUM() + "'"
+                + ",LU_TY_RATE=" + biotope_attribute.getLU_TY_RATE() + ""
+                + ",STAND_H=" + biotope_attribute.getSTAND_H() + ""
+                + ",LC_GR_NUM='" + biotope_attribute.getLC_GR_NUM() + "'"
+                + ",LC_TY='" + biotope_attribute.getLC_TY() + "'"
+                + ",TY_MARK='" + biotope_attribute.getTY_MARK() + "'"
+                + ",GV_RATE=" + biotope_attribute.getGV_RATE() + ""
+                + ",GV_STRUCT='" + biotope_attribute.getGV_STRUCT() + "'"
+                + ",DIS_RET='" + biotope_attribute.getDIS_RET() + "'"
+                + ",RESTOR_POT='" + biotope_attribute.getRESTOR_POT() + "'"
+                + ",COMP_INTA='" + biotope_attribute.getCOMP_INTA() + "'"
+                + ",VP_INTA='" + biotope_attribute.getVP_INTA() + "'"
+                + ",IMP_FORM='" + biotope_attribute.getIMP_FORM() + "'"
+                + ",BREA_DIA='" + biotope_attribute.getBREA_DIA() + "'"
+                + ",FIN_EST='" + biotope_attribute.getFIN_EST() + "'"
+                + ",TRE_SPEC='" + biotope_attribute.getTRE_SPEC() + "'"
+                + ",TRE_FAMI='" + biotope_attribute.getTRE_FAMI() + "'"
+                + ",TRE_SCIEN='" + biotope_attribute.getTRE_SCIEN() + "'"
+                + ",TRE_H=" + biotope_attribute.getTRE_H() + ""
+                + ",TRE_BREA=" + biotope_attribute.getTRE_BREA() + ""
+                + ",TRE_COVE=" + biotope_attribute.getTRE_COVE() + ""
+                + ",STRE_SPEC='" + biotope_attribute.getSTRE_SPEC() + "'"
+                + ",STRE_FAMI='" + biotope_attribute.getSTRE_FAMI() + "'"
+                + ",STRE_SCIEN='" + biotope_attribute.getSTRE_SCIEN() + "'"
+                + ",STRE_H=" + biotope_attribute.getSTRE_H() + ""
+                + ",STRE_BREA=" + biotope_attribute.getSTRE_BREA() + ""
+                + ",STRE_COVE=" + biotope_attribute.getSTRE_COVE() + ""
+                + ",SHR_SPEC='" + biotope_attribute.getSHR_SPEC() + "'"
+                + ",SHR_FAMI='" + biotope_attribute.getSHR_FAMI() + "'"
+                + ",SHR_SCIEN='" + biotope_attribute.getSHR_SCIEN() + "'"
+                + ",SHR_H=" + biotope_attribute.getSHR_H() + ""
+                + ",STR_COVE=" + biotope_attribute.getSTR_COVE() + ""
+                + ",HER_SPEC='" + biotope_attribute.getHER_SPEC() + "'"
+                + ",HER_FAMI='" + biotope_attribute.getHER_FAMI() + "'"
+                + ",HER_SCIEN='" + biotope_attribute.getHER_SCIEN() + "'"
+                + ",HER_H=" + biotope_attribute.getHER_H() + ""
+                + ",HER_COVE=" + biotope_attribute.getHER_COVE() + ""
+                + ",PIC_FOLDER='" + biotope_attribute.getPIC_FOLDER() + "'"
+                + ",WILD_ANI='" + biotope_attribute.getWILD_ANI() + "'"
+                + ",BIOTOP_POT='" + biotope_attribute.getBIOTOP_POT() + "'"
+                + ",UNUS_NOTE='" + biotope_attribute.getUNUS_NOTE() + "'"
+                + ",GPS_LAT=" + biotope_attribute.getGPS_LAT() + ""
+                + ",GPS_LON=" + biotope_attribute.getGPS_LON() + ""
+                + ",NEED_CONF='" + biotope_attribute.getNEED_CONF() + "'"
+                + ",CONF_MOD='" + biotope_attribute.getCONF_MOD() + "'" +
+                "where id = '" + biotope_attribute.getId() + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();
@@ -403,5 +429,39 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
         db.close();
     }
+
+    public ArrayList<JSONObject> selectBirds() {
+
+        ArrayList<JSONObject> birds = new ArrayList<>();
+
+        try {
+            SQLiteDatabase db = getReadableDatabase();
+
+            String query = "SELECT name_kr FROM birds";
+
+            Cursor cursor = db.rawQuery(query, null);
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+
+                    JSONObject birdsObj = new JSONObject();
+                    birdsObj.put("name_kr", cursor.getString(0));
+
+                    birds.add(birdsObj);
+                }
+            }
+
+            cursor.close();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return birds;
+    }
+
+//    public String birdsNextNum(){
+//        String query = "SELECT strftime(\"%Y%m%d\",'now','localtime') || substr('000'|| IFNULL(MAX(substr(INV_INDEX ,9,15)),0)+1  ,-15, 15) FROM biotopeAttribute";
+//    }
+
 
 }

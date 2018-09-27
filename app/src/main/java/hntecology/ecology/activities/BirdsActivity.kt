@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.WindowManager
 import hntecology.ecology.R
+import hntecology.ecology.adapter.DlgBirdsAdapter
 import hntecology.ecology.base.OpenAlertDialog
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
@@ -21,6 +22,7 @@ class BirdsActivity : Activity() {
     val SET_DATA1 = 1;
     val SET_DATA2 = 2;
     val SET_DATA3 = 3;
+    val SET_BIRDS = 4;
 
     var userName = "";
 
@@ -36,8 +38,10 @@ class BirdsActivity : Activity() {
         window.setLayout(Utils.dpToPx(700f).toInt(), WindowManager.LayoutParams.WRAP_CONTENT);
 
         var today = Utils.todayStr();
+        var time = Utils.timeStr();
 
         invDtTV.text = today;
+        timeTV.text = time;
 
         userName = PrefUtils.getStringPreference(context,"name");
         invPersonTV.text = userName;
@@ -75,6 +79,12 @@ class BirdsActivity : Activity() {
 
         }
 
+        birdsTV.setOnClickListener {
+
+            val intent = Intent(context, DlgBirdsActivity::class.java)
+            startActivity(intent);
+
+        }
 
 
     }
@@ -97,6 +107,11 @@ class BirdsActivity : Activity() {
 
                 };
                 SET_DATA3 -> {
+
+                    btn3.setText(data!!.getStringExtra("selectDlg"))
+
+                };
+                SET_BIRDS -> {
 
                     btn3.setText(data!!.getStringExtra("selectDlg"))
 

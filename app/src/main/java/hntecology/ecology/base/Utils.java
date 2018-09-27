@@ -1028,6 +1028,15 @@ public class Utils {
 
     }
 
+    public static String timeStr() {
+
+        SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm", java.util.Locale.KOREA);
+
+        Date d = new Date();
+        return sdf1.format(d);
+
+    }
+
     public static byte[] getByteArray(InputStream is) {
         try {
             int len;

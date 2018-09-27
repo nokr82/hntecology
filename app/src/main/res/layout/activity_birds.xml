@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BirdsActivity">
+    tools:context=".activities.BirdsActivity">
 
 
     <ScrollView
@@ -53,8 +53,8 @@
                     style="@style/BiotopeTextView"
                     android:text="조사일시"/>
 
-                <EditText
-                    android:id="@+id/invDtET"
+                <TextView
+                    android:id="@+id/invDtTV"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -67,8 +67,8 @@
                     style="@style/BiotopeTextView"
                     android:text="조사자"/>
 
-                <EditText
-                    android:id="@+id/invPersonET"
+                <TextView
+                    android:id="@+id/invPersonTV"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

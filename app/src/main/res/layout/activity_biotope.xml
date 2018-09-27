@@ -1416,7 +1416,15 @@
                         android:text="사진번호"
                         style="@style/BiotopeTextView"
                         />
-                    <EditText
+<!--                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:maxLength="200"
+                        android:id="@+id/etPIC_FOLDERET"
+                        style="@style/BiotopeEditText"
+                        />-->
+                    <ImageView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="2"

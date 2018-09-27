@@ -27,11 +27,14 @@ import org.locationtech.jts.geom.Dimension.P
 import android.content.Context.LOCATION_SERVICE
 import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.location.Criteria
 import android.location.Location
 import android.location.LocationListener
+import android.net.Uri
 import android.os.*
 import android.preference.PreferenceActivity
+import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.widget.Toast
@@ -45,7 +48,13 @@ import org.json.JSONException
 import org.json.JSONObject
 
 import android.provider.Settings
+import android.support.v4.content.ContextCompat.startActivity
+import android.support.v4.content.FileProvider
+import android.widget.ImageView
 import org.locationtech.jts.linearref.LengthLocationMap.getLocation
+import java.io.File
+import java.io.IOException
+import kotlin.collections.ArrayList
 
 @Suppress("DEPRECATION")
 class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListener{
@@ -62,9 +71,21 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
     var keyId:String?=null;
     var chkdata:Boolean =false;
 
+    private val REQUEST_PERMISSION_CAMERA = 3
+    private val REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 1
+    private val REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 2
+    private var absolutePath: String? = null
+    private var imageUri: Uri? = null
+    private val FROM_CAMERA = 100
+    private val FROM_ALBUM = 101
+
+    private var context: Context? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_biotope)
+
+        this.context = this
 
         window.setGravity(Gravity.RIGHT);
         this.setFinishOnTouchOutside(true);
@@ -200,7 +221,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 etHER_SCIENET.setText(biotope_attribute.HER_SCIEN.toString())
                 etHER_HET.setText(biotope_attribute.HER_H.toString())
                 etHER_COVEET.setText(biotope_attribute.HER_COVE.toString())
-                etPIC_FOLDERET.setText(biotope_attribute.SHR_H.toString())
+//                etPIC_FOLDERET.setText(biotope_attribute.SHR_H.toString())
                 etWILD_ANIET.setText(biotope_attribute.WILD_ANI.toString())
                 etBIOTOP_POTET.setText(biotope_attribute.BIOTOP_POT.toString())
                 etUNUS_NOTEET.setText(biotope_attribute.UNUS_NOTE.toString())
@@ -375,7 +396,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             }
 
 
-            biotope_attribute.PIC_FOLDER        =   etPIC_FOLDERET.text.toString()
+//            biotope_attribute.PIC_FOLDER        =   etPIC_FOLDERET.text.toString()
             biotope_attribute.WILD_ANI             =   etWILD_ANIET.text.toString()
             biotope_attribute.BIOTOP_POT            =   etBIOTOP_POTET.text.toString()
             biotope_attribute.UNUS_NOTE             =   etUNUS_NOTEET.text.toString()
@@ -437,6 +458,46 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             setResult(RESULT_OK, intent);
             finish()
 
+        }
+
+        etPIC_FOLDERET.setOnClickListener {
+
+            var ListItems:List<String>
+            ListItems = ArrayList();
+            ListItems.add("카메라");
+            ListItems.add("사진");
+            ListItems.add("취소");
+
+            val items = Array<CharSequence>(ListItems.size,{i -> ListItems.get(i) })
+
+
+            var builder:AlertDialog.Builder =  AlertDialog.Builder(this);
+            builder.setTitle("선택해 주세요");
+
+            builder.setItems(items, DialogInterface.OnClickListener { dialogInterface, i ->
+
+                when(i){
+                        //카메라
+                        0->{
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                                loadPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE)
+                            } else {
+                                takePhoto()
+                            }
+
+                        }
+                        //갤러리
+                        1->{
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                                loadPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
+                            } else {
+                                imageFromGallery();
+                            }
+                        }
+                    }
+
+            })
+            builder.show();
         }
 
 
@@ -539,7 +600,17 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         ETTY_MARKET.setText(biotopeModel.code)
                     }
 
-                };
+                }
+                FROM_CAMERA  ->{
+
+                    if(resultCode == -1){
+
+                        var extras:Bundle = data!!.getExtras();
+                        var imageBitmap:Bitmap = extras.get("data") as Bitmap
+                        etPIC_FOLDERET.setImageBitmap(imageBitmap)
+                    }
+                }
+
             }
         }
     }
@@ -669,5 +740,60 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         if (mGoogleApiClient!!.isConnected()) {
             mGoogleApiClient!!.disconnect()
         }
+    }
+
+    private fun loadPermissions(perm: String, requestCode: Int) {
+        if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(perm), requestCode)
+        } else {
+            if (Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
+                imageFromGallery()
+            } else if (Manifest.permission.WRITE_EXTERNAL_STORAGE == perm) {
+                loadPermissions(Manifest.permission.CAMERA, REQUEST_PERMISSION_CAMERA)
+            } else if (Manifest.permission.CAMERA == perm) {
+                takePhoto()
+            }
+        }
+    }
+
+    private fun takePhoto() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (intent.resolveActivity(packageManager) != null) {
+
+            // File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            val storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+
+
+            // File photo = new File(dir, System.currentTimeMillis() + ".jpg");
+
+            try {
+                val photo = File.createTempFile(
+                        System.currentTimeMillis().toString(), /* prefix */
+                        ".jpg", /* suffix */
+                        storageDir      /* directory */
+                )
+
+/*                absolutePath = photo.absolutePath
+                imageUri = Uri.fromFile(photo)
+                //imageUri = Uri.fromFile(photo);
+                imageUri = FileProvider.getUriForFile(context, context!!.getApplicationContext().getPackageName() + ".provider", photo)
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+                startActivityForResult(intent, FROM_CAMERA)*/
+
+                val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                if (takePictureIntent.resolveActivity(packageManager) != null) {
+                    startActivityForResult(takePictureIntent, FROM_CAMERA)
+                }
+
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+        }
+    }
+
+    private fun imageFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, FROM_ALBUM)
     }
 }

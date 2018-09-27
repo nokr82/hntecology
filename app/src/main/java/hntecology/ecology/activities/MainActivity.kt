@@ -275,6 +275,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     latitude = data!!.getDoubleExtra("latitude",126.79235)
                     longitude = data!!.getDoubleExtra("longitude",37.39627)
 
+
                     val gpsSet:GpsSet = GpsSet(null,latitude,longitude)
                     dbManager!!.insertGpsSet(gpsSet);
                     onMapReady(googleMap)

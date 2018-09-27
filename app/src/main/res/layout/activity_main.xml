@@ -151,12 +151,17 @@
                     android:layout_height="wrap_content"
                     android:text="식물 추가" />
 
-
                 <Button
                     android:id="@+id/btn_zoobenthos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="저서무척추동물 추가" />
+
+                <Button
+                    android:id="@+id/logoutBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="로그아웃" />
 
             </LinearLayout>
 

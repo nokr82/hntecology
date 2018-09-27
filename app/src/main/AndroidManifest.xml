@@ -66,11 +66,11 @@
             android:name=".activities.MainActivity"
             android:screenOrientation="landscape"
             android:theme="@style/NoTitleDialog">
-            <!-- intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter -->
+            </intent-filter>
         </activity>
         <activity
             android:name=".base.LoadingActivity"
@@ -153,6 +153,11 @@
 
         <activity
             android:name=".activities.DlgCommonSubActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/full_screen_dialog1" />
+
+        <activity
+            android:name=".activities.DlgBirdsActivity"
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog1" />
     </application>

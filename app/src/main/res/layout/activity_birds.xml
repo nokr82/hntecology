@@ -199,7 +199,8 @@
                     style="@style/BiotopeTextView"
                     android:text="시간"/>
 
-                <EditText
+                <TextView
+                    android:id="@+id/timeTV"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -217,14 +218,18 @@
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
                     android:text="종 명"/>
-                <EditText
+
+                <TextView
+                    android:id="@+id/birdsTV"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
+
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

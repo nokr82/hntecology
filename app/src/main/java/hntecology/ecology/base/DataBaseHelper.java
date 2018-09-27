@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Member;
 
 import hntecology.ecology.model.Biotope_attribute;
+import hntecology.ecology.model.GpsSet;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -387,6 +388,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
         db.close();
 
+    }
+
+    public void insertGpsSet(GpsSet gpsset) {
+        //37 column
+        String query = "INSERT INTO gps_set";
+        query += " values (";
+        query += " "+gpsset.getId()+"";
+        query += ", '"+gpsset.getLatitude()+"'";
+        query += ", '"+gpsset.getLongitude()+"'";
+        query += " ); ";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
     }
 
 }

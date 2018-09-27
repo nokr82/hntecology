@@ -58,7 +58,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
     private val UPDATE_INTERVAL = (2 * 1000).toLong()  /* 10 secs */
     private val FASTEST_INTERVAL: Long = 2000 /* 2 sec */
 
-
     val SET_DATA1 = 1;
     var keyId:String?=null;
     var chkdata:Boolean =false;

@@ -1,19 +1,13 @@
-package hntecology.ecology
+package hntecology.ecology.activities
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.DownloadManager
-import android.content.ComponentCallbacks
 import android.content.Context
 import android.content.Intent
 import android.location.LocationManager
-import android.text.Editable
-import android.util.Log
 import android.view.Gravity
-import android.view.ViewParent
-import android.widget.Switch
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.BiotopeModel
@@ -22,37 +16,22 @@ import kotlinx.android.synthetic.main.activity_biotope.*
 import java.text.SimpleDateFormat
 import java.util.*
 import android.view.WindowManager
-import hntecology.ecology.R.style.BiotopeEditText
-import org.locationtech.jts.geom.Dimension.P
-import android.content.Context.LOCATION_SERVICE
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.location.Criteria
 import android.location.Location
-import android.location.LocationListener
 import android.net.Uri
 import android.os.*
-import android.preference.PreferenceActivity
 import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.widget.Toast
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.fido.u2f.api.common.RequestParams
 import com.google.android.gms.location.*
-import hntecology.ecology.R.id.*
 import hntecology.ecology.base.PrefUtils
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
 
 import android.provider.Settings
-import android.support.v4.content.ContextCompat.startActivity
-import android.support.v4.content.FileProvider
-import android.view.View
-import android.widget.ImageView
-import org.locationtech.jts.linearref.LengthLocationMap.getLocation
+import hntecology.ecology.R
 import java.io.File
 import java.io.IOException
 import kotlin.collections.ArrayList
@@ -235,7 +214,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         //토지이용현황 분류 버튼  높이 450f
         btn_Dlg1.setOnClickListener {
 
-            val intent = Intent(this,DlgCommonActivity::class.java)
+            val intent = Intent(this, DlgCommonActivity::class.java)
             intent.putExtra("title","토지이용유형 분류기준")
             intent.putExtra("table","biotopeM")
             intent.putExtra("DlgHeight",450f);
@@ -246,7 +225,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         //토지피복현황 분류 버튼 사이즈 높이 600f 줄 것.
         btn_Dlg2.setOnClickListener {
 
-            val intent = Intent(this,DlgCommonActivity::class.java)
+            val intent = Intent(this, DlgCommonActivity::class.java)
             intent.putExtra("title","토지피복현황 분류기준")
             intent.putExtra("table","biotopeS")
             intent.putExtra("DlgHeight",600f);
@@ -612,30 +591,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     }
                 }
 
-                FROM_ALBUM ->
-                {
-                    if(resultCode == -1){
-
-                        val selectedImageUri = data!!.getData()
-
-                        val filePathColumn = arrayOf(MediaStore.MediaColumns.DATA)
-
-                        val cursor = context!!.getContentResolver().query(selectedImageUri!!, filePathColumn, null, null, null)
-                        if (cursor!!.moveToFirst()) {
-                            val columnIndex = cursor.getColumnIndex(filePathColumn[0])
-                            val picturePath = cursor.getString(columnIndex)
-
-                            cursor.close()
-
-                            imageUri = selectedImageUri
-
-                            var selectedImage:Bitmap = Utils.getImage(context!!.getContentResolver(), picturePath)
-                            etPIC_FOLDERET.setImageBitmap(selectedImage)
-
-                        }
-                    }
-                }
-
             }
         }
     }
@@ -669,10 +624,9 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
             etGPS_LATTV.setText(mLocation!!.latitude.toString())
             etGPS_LONTV.setText(mLocation!!.longitude.toString())
-            //Toast.makeText(this, "성공"+mLocation!!.latitude.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "성공"+mLocation!!.latitude.toString(), Toast.LENGTH_SHORT).show();
         } else {
-
-            //Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
         }
     }
 

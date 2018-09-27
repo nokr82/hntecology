@@ -51,14 +51,26 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.IntroActivity"
+            android:launchMode="singleTop"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleDialogTransparent">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activities.MainActivity"
             android:screenOrientation="landscape"
             android:theme="@style/NoTitleDialog">
-            <intent-filter>
+            <!-- intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter -->
         </activity>
         <activity
             android:name=".base.LoadingActivity"
@@ -66,16 +78,16 @@
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog" />
         <activity
-            android:name=".BiotopeActivity"
+            android:name=".activities.BiotopeActivity"
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog2"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
-            android:name=".DlgCommonActivity"
+            android:name=".activities.DlgCommonActivity"
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog1" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".activities.LoginActivity"
             android:screenOrientation="landscape">
 
   <!--          <intent-filter>
@@ -86,10 +98,10 @@
 
         </activity>
         <activity
-            android:name=".Dlg_gps"
+            android:name=".activities.Dlg_gps"
             android:label="@string/title_activity_dlg_gps" />
         <activity
-            android:name=".ZoobenthosActivity"
+            android:name=".activities.ZoobenthosActivity"
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog2"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
@@ -106,41 +118,41 @@
 
         </activity>
         <activity
-            android:name=".BirdsActivity"
+            android:name=".activities.BirdsActivity"
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog2"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
-            android:name=".ReptiliaActivity"
+            android:name=".activities.ReptiliaActivity"
             android:label="@string/title_activity_reptilia"
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog2"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
-            android:name=".MammaliaActivity"
+            android:name=".activities.MammaliaActivity"
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog2"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
-            android:name=".InsectActivity"
+            android:name=".activities.InsectActivity"
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog2"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
-            android:name=".FloraActivity"
+            android:name=".activities.FloraActivity"
             android:label="@string/title_activity_flora"
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog2"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             />
-        <activity android:name=".FishActivity"
+        <activity android:name=".activities.FishActivity"
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog2"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             ></activity>
 
         <activity
-            android:name=".DlgCommonSubActivity"
+            android:name=".activities.DlgCommonSubActivity"
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog1" />
     </application>

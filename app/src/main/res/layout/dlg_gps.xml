@@ -6,7 +6,7 @@
     android:focusable="true"
     android:focusableInTouchMode ="true"
     android:background="@drawable/background_round_border"
-    tools:context=".Dlg_gps"
+    tools:context=".activities.Dlg_gps"
     >
 
     <LinearLayout

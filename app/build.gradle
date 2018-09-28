@@ -64,4 +64,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services:11.8.0'
 
     implementation 'com.joooonho:selectableroundedimageview:1.0.1'
+
+    //  smart location
+    compile('io.nlopez.smartlocation:library:3.3.3') {
+        transitive = false
+    }
 }

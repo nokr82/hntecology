@@ -83,7 +83,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         }
 
-
         mGestureDetector = GestureDetector(this, GestureListener())
 
         drawer_view.setOnTouchListener(this)

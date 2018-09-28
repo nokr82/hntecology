@@ -1411,12 +1411,25 @@
                     android:orientation="horizontal"
 
                     >
+                    <LinearLayout
+                        android:layout_width="250dp"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        >
 
                     <TextView
-                        android:layout_width="180dp"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:text="사진번호"
                         style="@style/BiotopeTextView"
+                        android:id="@+id/tvPIC_FOLDER_TV1"
+                        />
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/tvPIC_FOLDERTV"
+                        style="@style/BiotopeTextViewDisabled"
                         />
                     <Button
                         android:layout_width="70dp"
@@ -1425,6 +1438,8 @@
                         android:id="@+id/btnPIC_FOLDER"
                         style="@style/dlgcommonButton"
                         />
+                    </LinearLayout>
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -1432,7 +1447,11 @@
                         android:id="@+id/etPIC_FOLDERET"
                         style="@style/BiotopeEditText"
                         />
-
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fillViewport="true"
+                        >
                     <LinearLayout
                         android:id="@+id/addPicturesLL"
                         android:layout_width="wrap_content"
@@ -1440,6 +1459,7 @@
                         android:orientation="horizontal"
                         >
                     </LinearLayout>
+                    </HorizontalScrollView>
 
                 </LinearLayout>
                 <LinearLayout

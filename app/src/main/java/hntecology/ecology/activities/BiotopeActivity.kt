@@ -19,6 +19,7 @@ import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Criteria
 import android.location.Location
 import android.net.Uri
 import android.os.*
@@ -38,6 +39,7 @@ import com.joooonho.SelectableRoundedImageView
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.utils.L
 import hntecology.ecology.R
+import hntecology.ecology.base.ImageSaver
 
 import java.io.File
 import java.io.FileOutputStream
@@ -83,6 +85,15 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
     var cameraPath:String? = null
 
+    var finishFlag:Boolean = true
+    //gps 다시 시작.
+
+    //위치정보 객체
+    var lm: LocationManager? = null
+    //위치정보 장치 이름
+    var provider: String? = null
+
+    @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_biotope)
@@ -122,6 +133,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 tvINV_PERSONTV.setText(PrefUtils.getStringPreference(this, "name"))                    // 조사자
                 etINV_DTTV.setText(getTime());
                 etINV_TMTV.setText(createId())
+                tvPIC_FOLDERTV.visibility = View.GONE;
             }
 
             while (data.moveToNext()) {
@@ -234,11 +246,96 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 etWILD_ANIET.setText(biotope_attribute.WILD_ANI.toString())
                 etBIOTOP_POTET.setText(biotope_attribute.BIOTOP_POT.toString())
                 etUNUS_NOTEET.setText(biotope_attribute.UNUS_NOTE.toString())
-
+                tvPIC_FOLDERTV.setText(biotope_attribute.PIC_FOLDER)
                 etUNUS_NOTEET.setText(biotope_attribute.UNUS_NOTE.toString())
 
+                etIMP_FORMET.setText(biotope_attribute.IMP_FORM.toString())
+
+
+
+                if(biotope_attribute.PIC_FOLDER == "null" || biotope_attribute.PIC_FOLDER == "" || biotope_attribute.PIC_FOLDER ==null){
+
+                    tvPIC_FOLDERTV.visibility = View.GONE;
+
+                }else{
+
+                    val file =   File(Environment.getExternalStorageDirectory().getAbsolutePath()+ "/biotope/"+biotope_attribute.PIC_FOLDER)
+
+                    val fileList  = file.listFiles()
+
+                    for(i in 0.. fileList.size-1){
+
+                        val options = BitmapFactory.Options()
+                        options.inJustDecodeBounds = true
+                        options.inJustDecodeBounds = false
+                        options.inSampleSize = 1
+                        if (options.outWidth > 96) {
+                            val ws = options.outWidth / 96 + 1
+                            if (ws > options.inSampleSize) {
+                                options.inSampleSize = ws
+                            }
+                        }
+                        if (options.outHeight > 96) {
+                            val hs = options.outHeight / 96 + 1
+                            if (hs > options.inSampleSize) {
+                                options.inSampleSize = hs
+                            }
+                        }
+                        images_path!!.add(fileList.get(i).path)
+                        val bitmap = BitmapFactory.decodeFile(fileList.get(i).path, options)
+                        val v = View.inflate(context, R.layout.item_add_image, null)
+                        val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                        val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+                        imageIV.setImageBitmap(bitmap)
+                        delIV.setTag(i)
+                        images!!.add(bitmap)
+                        if (imgSeq == 0) {
+                            addPicturesLL!!.addView(v)
+                        }
+                    }
+                }
             }
         }
+
+//        //gps 다시 시작
+//        /**위치정보 객체를 생성한다.*/
+//      lm =  getSystemService(Context.LOCATION_SERVICE) as LocationManager
+//
+//      /** 현재 사용가능한 위치 정보 장치 검색*/
+//      //위치정보 하드웨어 목록
+//      var c =  Criteria();
+//      //최적의 하드웨어 이름을 리턴받는다.
+//      provider = lm!!.getBestProvider(c, true);
+//
+//      // 최적의 값이 없거나, 해당 장치가 사용가능한 상태가 아니라면,
+//      //모든 장치 리스트에서 사용가능한 항목 얻기
+//      if(provider == null || !lm!!.isProviderEnabled(provider)){
+//       // 모든 장치 목록
+//        var list = lm!!.getAllProviders();
+//
+//       for(i in 0..list.size-1){
+//        //장치 이름 하나 얻기
+//        var temp = list.get(i);
+//
+//        //사용 가능 여부 검사
+//        if(lm!!.isProviderEnabled(temp)){
+//         provider = temp;
+//         break;
+//        }
+//       }
+//      }// (end if)위치정보 검색 끝
+//
+//        /**마지막으로  조회했던 위치 얻기*/
+//        val location = lm!!.getLastKnownLocation(provider)
+//
+//        if (location == null) {
+//            Toast.makeText(this, "사용가능한 위치 정보 제공자가 없습니다.", Toast.LENGTH_SHORT).show()
+//        } else {
+//            //최종 위치에서 부터 이어서 GPS 시작...
+//            onLocationChanged(location)
+//
+//        }
+
 
         //토지이용현황 분류 버튼  높이 450f
         btn_Dlg1.setOnClickListener {
@@ -428,40 +525,61 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 biotope_attribute.LC_TY = etlcmTypewET.text.toString()
             }
             biotope_attribute.id = keyId;
+            biotope_attribute.PIC_FOLDER = tvPIC_FOLDERTV.text.toString()
 
             if (chkdata) {
 
+                if(images!!.size > 0 && biotope_attribute.PIC_FOLDER == null){
+
+                    biotope_attribute.PIC_FOLDER = getAttrubuteKey()
+                }
+
                 dbManager.updatebiotope_attribute(biotope_attribute)
+
             } else {
 
-                biotope_attribute.PIC_FOLDER = getAttrubuteKey()
-                biotope_attribute.GPS_LAT = etGPS_LATTV.text.toString().toFloat();
-                biotope_attribute.GPS_LON = etGPS_LONTV.text.toString().toFloat();
+                if(images!!.size > 0){
+
+                    biotope_attribute.PIC_FOLDER = getAttrubuteKey()
+                }
+
+                if(etGPS_LATTV.text.toString() !="" && etGPS_LONTV.text.toString() !=""){
+
+                    biotope_attribute.GPS_LAT = etGPS_LATTV.text.toString().toFloat();
+                    biotope_attribute.GPS_LON = etGPS_LONTV.text.toString().toFloat();
+                }
                 dbManager.insertbiotope_attribute(biotope_attribute);
 
             }
-            if(biotope_attribute.PIC_FOLDER == null){
-                biotope_attribute.PIC_FOLDER = getAttrubuteKey()
-            }
+
 
             var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-            sdPath += "/"+biotope_attribute.PIC_FOLDER;
-            //이미 있다면 삭제. 후 생성
-            setDirEmpty(sdPath)
+            sdPath += "/biotope"
+
+            val biotope = File(sdPath)
+            biotope.mkdir();
+            sdPath +="/"+biotope_attribute.PIC_FOLDER
 
             val file = File(sdPath)
             file.mkdir();
+            //이미 있다면 삭제. 후 생성
+            setDirEmpty(sdPath)
+
+
+
             sdPath+="/"
 
 
             for(i   in 0..images!!.size-1){
 
-                saveVitmapToFile(images!!.get(i),sdPath+i)
+                saveVitmapToFile(images!!.get(i),sdPath+i+".jpg")
+
             }
 
             intent.putExtra("bio_attri", biotope_attribute);
 
             setResult(RESULT_OK, intent);
+            finishFlag = false
             finish()
         }
 
@@ -484,6 +602,13 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
             intent.putExtra("bio_attri", biotope_attribute);
 
+            var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+
+            sdPath +="/biotope/"+biotope_attribute.PIC_FOLDER
+
+            //이미 있다면 삭제. 후 생성
+            setDirEmpty(sdPath)
+
             setResult(RESULT_OK, intent);
             finish()
 
@@ -498,7 +623,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             ListItems.add("취소");
 
             val items = Array<CharSequence>(ListItems.size, { i -> ListItems.get(i) })
-
 
             var builder: AlertDialog.Builder = AlertDialog.Builder(this);
             builder.setTitle("선택해 주세요");
@@ -657,7 +781,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
                         val delIV = v.findViewById<View>(R.id.delIV) as ImageView
                         imageIV.setImageBitmap(bitmap)
-
+                        delIV.setTag(images!!.size)
 
                         if (imgSeq == 0) {
                             addPicturesLL!!.addView(v)
@@ -692,7 +816,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                         val v = addPicturesLL!!.getChildAt(i)
 
-//                        val delIV = v.findViewById(R.id.delIV) as ImageView
+                        val delIV = v.findViewById(R.id.delIV) as ImageView
 
                     }
                 }
@@ -704,6 +828,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
     fun getAttrubuteKey(): String {
 
         val time = System.currentTimeMillis()
+//        val dayTime = SimpleDateFormat("yyyyMMddHHmmssSSS")
         val dayTime = SimpleDateFormat("yyyyMMddHHmmssSSS")
         val strDT = dayTime.format(Date(time))
 
@@ -723,9 +848,10 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
     private fun getLocation() {
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-        if (mLocation == null) {
-            startLocationUpdates();
-        }
+//        if (mLocation == null) {
+//            startLocationUpdates();
+//        }
+        startLocationUpdates();
         if (mLocation != null) {
 //            tvLatitude.text =mLocation!!.latitude.toString()
 //            tvLongitude.text = mLocation!!.longitude.toString()
@@ -1019,7 +1145,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
     fun saveVitmapToFile(bitmap:Bitmap, filePath:String){
 
-        val file = File(filePath)
+        var file = File(filePath)
         var out:OutputStream? =null
         try {
             file.createNewFile()
@@ -1032,6 +1158,29 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         }finally {
 
             out!!.close()
+        }
+
+    }
+    override fun finish() {
+
+        if(finishFlag){
+            val builder = AlertDialog.Builder(context)
+            builder.setMessage("작성을 취소하시겠습니까?").setCancelable(false)
+                    .setPositiveButton("확인", DialogInterface.OnClickListener {
+
+                        dialog, id -> dialog.cancel()
+                        super.finish()
+
+                    })
+                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+            val alert = builder.create()
+            alert.show()
+
+
+        }else{
+
+            super.finish()
+
         }
 
     }

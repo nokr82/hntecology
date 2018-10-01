@@ -284,7 +284,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + biotope_attribute.getINV_PERSON() + "'";
         query += ", '" + biotope_attribute.getINV_DT() + "'";
         query += ", '" + biotope_attribute.getINV_TM() + "'";
-        query += ", (SELECT strftime(\"%Y%m%d\",'now','localtime') || substr('000'|| IFNULL(MAX(substr(INV_INDEX ,9,15)),0)+1  ,-15, 15) FROM biotopeAttribute)";
+        query += ", (SELECT   strftime(\"%Y%m%d\",'now','localtime') || substr('00000' || cast(IFNULL(MAX(substr(INV_INDEX ,9,15)),0)+1 as text), -5, 5) FROM biotopeAttribute)";
         query += ", '" + biotope_attribute.getLU_GR_NUM() + "'";
         query += ", " + biotope_attribute.getLU_TY_RATE() + "";
         query += ", " + biotope_attribute.getSTAND_H() + "";

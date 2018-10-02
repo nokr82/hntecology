@@ -386,6 +386,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
     }
 
+
     private fun stopLocation() {
         SmartLocation.with(context).location().stop()
     }

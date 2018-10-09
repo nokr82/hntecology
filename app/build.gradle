@@ -17,8 +17,8 @@ android {
     // 요기랑
     signingConfigs {
         cfg {
-//            storeFile file("/Users/theclub/CloudStation/android_keystore/ecology/ecology.jks")
-            storeFile file("D:/CloudStation/android_keystore/ecology/ecology.jks")
+            storeFile file("/Users/theclub/CloudStation/android_keystore/ecology/ecology.jks")
+//            storeFile file("D:/CloudStation/android_keystore/ecology/ecology.jks")
             storePassword "123456"
             keyAlias "ecology"
             keyPassword "123456"

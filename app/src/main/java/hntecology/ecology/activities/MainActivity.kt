@@ -1,6 +1,5 @@
 package hntecology.ecology.activities
 
-import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -8,7 +7,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.Point
 import android.os.AsyncTask
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.view.GestureDetector
@@ -37,9 +35,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnTouchListener {
+class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnTouchListener, GoogleMap.OnCameraMoveListener {
 
     private val PLAY_SERVICES_RESOLUTION_REQUEST: Int = 1000
+    private val PolygonCallBackData = 1001
+    private val dlg_gpsCallbackData = 1002
+    private val REQUEST_LAYER = 1003
 
 
     private lateinit var context: MainActivity
@@ -47,8 +48,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     private lateinit var mGestureDetector: GestureDetector
     private lateinit var googleMap: GoogleMap
 
-    val PolygonCallBackData = 1;
-    val dlg_gpsCallbackData = 10;
     //var beforePolygon: Polygon? = null
     private lateinit var polygonList:Array<Polygon>
 
@@ -59,7 +58,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
 
 
-    var buttonController = 3;       //3. biotope  , 6.birds , 7.Reptilia , 8.mammalia  9. fish, 10.insect, 11.flora , 13. zoobenthos
+    var buttonController = 3       //3. biotope  , 6.birds , 7.Reptilia , 8.mammalia  9. fish, 10.insect, 11.flora , 13. zoobenthos
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,14 +68,14 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         this.context = this
         dbManager = DataBaseHelper(this)
         val db = dbManager!!.createDataBase()
-        val dataList:Array<String> = arrayOf("*");
-        val data =  db.query("gps_set",dataList,null,null,null,null,"id desc","1");
+        val dataList:Array<String> = arrayOf("*")
+        val data =  db.query("settings",dataList,null,null,null,null,"id desc","1")
 
 /*        PrefUtils.setPreference(this, "latitude", latitude);
         PrefUtils.setPreference(this, "longitude", longitude);*/
         while (data.moveToNext()) {
 
-            var gpsset:GpsSet = GpsSet(data.getInt(0),data.getDouble(1),data.getDouble(2));
+            var gpsset:GpsSet = GpsSet(data.getInt(0),data.getDouble(1),data.getDouble(2))
 
             latitude = gpsset.latitude!!
             longitude = gpsset.longitude!!
@@ -87,25 +86,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         drawer_view.setOnTouchListener(this)
 
-        btn_SH_biotop_orig.setOnClickListener(View.OnClickListener {
-
-            Utils.showLoading(context)
-
-            val latLngBounds = googleMap.projection.visibleRegion.latLngBounds
-            googleMap.clear()
-
-            LoadLayerTask("SH_biotop_orig").execute(latLngBounds)
+        btn_layer.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this, DlgLayersActivity::class.java)
+            startActivityForResult(intent, REQUEST_LAYER)
         })
 
-        btn_SH_dummy.setOnClickListener(View.OnClickListener {
 
-            Utils.showLoading(context)
-
-            val latLngBounds = googleMap.projection.visibleRegion.latLngBounds
-            googleMap.clear()
-
-            LoadLayerTask("SH_dummy").execute(latLngBounds)
-        })
         //비오톱 추가
         btn_biotope.setOnClickListener(View.OnClickListener {
 
@@ -157,7 +143,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         })
 
         //어류 추가
-        btn_fish.setOnClickListener(View.OnClickListener {
+        btn_fish.setOnClickListener {
 
             buttonController = 9
 
@@ -166,7 +152,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             } else {
                 startDraw()
             }
-        })
+        }
 
         //곤충 추가
         btn_insect.setOnClickListener(View.OnClickListener {
@@ -213,27 +199,22 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         //좌표지정 버튼
         btn_gps_select.setOnClickListener {
-
-
-            val intent:Intent = Intent(this, hntecology.ecology.activities.Dlg_gps::class.java);
-
-
-
-            startActivityForResult(intent, dlg_gpsCallbackData);
+            val intent:Intent = Intent(this, hntecology.ecology.activities.Dlg_gps::class.java)
+            startActivityForResult(intent, dlg_gpsCallbackData)
         }
 
         btn_satellite.setOnClickListener {
 
 
-           var satelite:String = btn_satellite.text.toString();
+           var satelite:String = btn_satellite.text.toString()
 
             if(satelite == "위성 지도"){
 
-                googleMap.mapType = GoogleMap.MAP_TYPE_HYBRID;
+                googleMap.mapType = GoogleMap.MAP_TYPE_HYBRID
                 btn_satellite.text = "일반 지도"
             }else{
 
-                googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL;
+                googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
                 btn_satellite.text = "위성 지도"
             }
         }
@@ -242,29 +223,33 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         // when the map is ready to be used.
         startRegistrationService()
 
-        TVtimeTV.setText(getTime())
+        TVtimeTV.text = getTime()
 
         logoutBtn.setOnClickListener{
 
-            var builder:AlertDialog.Builder =  AlertDialog.Builder(context);
-            builder.setMessage("로그아웃 하시겠습니까?");
-            builder.setCancelable(true);
+            var builder:AlertDialog.Builder =  AlertDialog.Builder(context)
+            builder.setMessage("로그아웃 하시겠습니까?")
+            builder.setCancelable(true)
             builder.setNegativeButton("취소", DialogInterface.OnClickListener{ dialogInterface, i ->
-                dialogInterface.cancel();
-
-            });
-            builder.setPositiveButton("확인", DialogInterface.OnClickListener{ dialogInterface, i ->
-                dialogInterface.cancel();
-
-                PrefUtils.clear(context);
-
-                val intent:Intent = Intent(context, LoginActivity::class.java);
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK;
-                startActivity(intent);
+                dialogInterface.cancel()
 
             })
-            builder.show();
+            builder.setPositiveButton("확인", DialogInterface.OnClickListener{ dialogInterface, i ->
+                dialogInterface.cancel()
 
+                PrefUtils.clear(context)
+
+                val intent:Intent = Intent(context, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+
+            })
+            builder.show()
+
+        }
+
+        layerNameTV.setOnClickListener {
+            loadLayer(currentFileName, currentLayerName)
         }
 
     }
@@ -298,15 +283,22 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
 
                 }
-                dlg_gpsCallbackData ->{
+
+                dlg_gpsCallbackData -> {
 
                     latitude = data!!.getDoubleExtra("latitude",126.79235)
-                    longitude = data!!.getDoubleExtra("longitude",37.39627)
+                    longitude = data.getDoubleExtra("longitude",37.39627)
 
 
                     val gpsSet:GpsSet = GpsSet(null,latitude,longitude)
-                    dbManager!!.insertGpsSet(gpsSet);
+                    dbManager!!.insertGpsSet(gpsSet)
                     onMapReady(googleMap)
+                }
+
+                REQUEST_LAYER -> {
+                    val file_name = data!!.getStringExtra("file_name")
+                    val layer_name = data.getStringExtra("layer_name")
+                    loadLayer(file_name, layer_name)
                 }
 
                 else -> super.onActivityResult(requestCode, resultCode, data)
@@ -327,7 +319,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             val mapFragment = SupportMapFragment.newInstance()
             mapFragment.getMapAsync(this)
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.map, mapFragment).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.map, mapFragment).commit()
 
         } else if (GooglePlayServicesUtil.isUserRecoverableError(status)) {
             // showErrorDialog(status);
@@ -346,6 +338,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         googleMap.uiSettings.isRotateGesturesEnabled = false
 
         googleMap.setOnCameraIdleListener(this)
+        googleMap.setOnCameraMoveListener(this)
 
         // Add a marker in Sydney, Australia,
         // and move the map's camera to the same location.
@@ -359,12 +352,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         // 마커클릭 이벤트 처리
         // GoogleMap 에 마커클릭 이벤트 설정 가능.
-        googleMap.setOnMarkerClickListener(GoogleMap.OnMarkerClickListener {
+        googleMap.setOnMarkerClickListener{
             marker ->
             Toast.makeText(this,marker.title,Toast.LENGTH_LONG).show()
 
             false
-        })
+        }
 
 
 
@@ -381,7 +374,41 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         parsed = true
     }
 
+    override fun onCameraMove() {
+
+        val zoom = googleMap.cameraPosition.zoom
+        zoomTV.text = zoom.toString()
+
+    }
+
     // android.os.AsyncTask<Params, Progress, Result>
+
+    private var currentFileName = ""
+    private var currentLayerName = ""
+
+    private fun loadLayer(fileName: String, layerName: String) {
+
+        if(fileName == null || fileName.length == 0) {
+            return
+        }
+
+        val zoom = googleMap.cameraPosition.zoom
+        if(zoom < 16) {
+            Utils.showNotification(context, "지도 레벨을 16이상으로 확대한 후 이용하세요.")
+            return
+        }
+
+        googleMap.clear()
+
+        currentFileName = fileName
+        currentLayerName = layerName
+
+        layerNameTV.text = currentLayerName
+
+        val bounds = googleMap.projection.visibleRegion.latLngBounds
+        LoadLayerTask(fileName).execute(bounds)
+    }
+
     private inner class LoadLayerTask(layerName: String) : AsyncTask<LatLngBounds, PolygonOptions, Boolean>() {
 
         var layerName = layerName
@@ -412,11 +439,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             val shapeReader = Shapefile(inputStream)
 
             val geometryCollection = shapeReader.read(geometryFactory)
+            val num = geometryCollection.numGeometries
 
-            println("num : " + geometryCollection.numGeometries)
+            println("num : $num")
 
+            var loadedCnt = 0
             // val available = ArrayList<Geometry>()
-            for (i in 0..(geometryCollection.numGeometries - 1)) {
+            for (i in 0..(num - 1)) {
                 val geometry = geometryCollection.getGeometryN(i)
 
                 if(!geometry.intersects(mapBoundary)) {
@@ -436,8 +465,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     publishProgress(polygonOptions)
 
-                    Thread.sleep(20)
+                    Thread.sleep(10)
+
+                    loadedCnt++
                 }
+
+                println("loadedCnt : $loadedCnt / $num")
+
             }
 
             return true
@@ -445,11 +479,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         override fun onProgressUpdate(vararg polygonOptions: PolygonOptions?) {
             val polygon = googleMap.addPolygon(polygonOptions[0])
-            polygon.setTag(layerName)
+            polygon.tag = layerName
         }
 
         override fun onPostExecute(result: Boolean?) {
             Utils.hideLoading(context)
+
+            print("Post........")
         }
     }
 
@@ -490,7 +526,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         point.x = X1
         point.y = Y1
 
-        val firstGeoPoint = googleMap.getProjection().fromScreenLocation(point)
+        val firstGeoPoint = googleMap.projection.fromScreenLocation(point)
 
         when (event.action) {
 
@@ -503,7 +539,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 point = Point()
                 point.x = X1
                 point.y = Y1
-                val geoPoint = googleMap.getProjection().fromScreenLocation(point)
+                val geoPoint = googleMap.projection.fromScreenLocation(point)
 
                 println("geoPoint : $geoPoint")
 
@@ -536,60 +572,60 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
 
                 var polygonNew:Polygon = googleMap.addPolygon(polygonOptions)
-                polygonNew.setClickable(true);
+                polygonNew.isClickable = true
 
                 //클릭시 태그 데이터 있는지 확인 없으면 바로 넘기고 있으면 있는걸로 호출.
                 //tag 리절트로 가져와서 태그 설정
                 googleMap.setOnPolygonClickListener(GoogleMap.OnPolygonClickListener { polygon ->
 
-                    var tagName = getAttrubuteKey();
+                    var tagName = getAttrubuteKey()
                     var intent:Intent? = null
                     when(buttonController){
 
                         3->{
                             tagName += "biotope"
-                            intent = Intent(this, BiotopeActivity::class.java);
+                            intent = Intent(this, BiotopeActivity::class.java)
 
                         }
                         6->{
                             tagName += "birds"
-                            intent = Intent(this, BirdsActivity::class.java);
+                            intent = Intent(this, BirdsActivity::class.java)
                         }
 
                         7->{
                             tagName += "reptilia"
-                            intent = Intent(this, ReptiliaActivity::class.java);
+                            intent = Intent(this, ReptiliaActivity::class.java)
 
                         }
                         8->{
 
                             tagName += "mammalia"
-                            intent = Intent(this, MammaliaActivity::class.java);
+                            intent = Intent(this, MammaliaActivity::class.java)
 
                         }
 
                         9->{
 
                             tagName += "fish"
-                            intent = Intent(this, FishActivity::class.java);
+                            intent = Intent(this, FishActivity::class.java)
                         }
 
                         10->{
                             tagName += "insect"
-                            intent = Intent(this, InsectActivity::class.java);
+                            intent = Intent(this, InsectActivity::class.java)
 
                         }
 
                         11 ->{
 
                             tagName += "flora"
-                            intent = Intent(this, FloraActivity::class.java);
+                            intent = Intent(this, FloraActivity::class.java)
 
                         }
 
                         13 ->{
                             tagName += "zoobenthos"
-                            intent = Intent(this, ZoobenthosActivity::class.java);
+                            intent = Intent(this, ZoobenthosActivity::class.java)
 
                         }
                     }
@@ -597,12 +633,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
 
 
-                    polygon.tag = tagName;
+                    polygon.tag = tagName
 
-                    intent!!.putExtra("id",polygon.tag.toString());
+                    intent!!.putExtra("id",polygon.tag.toString())
 
 
-                    startActivityForResult(intent, PolygonCallBackData);
+                    startActivityForResult(intent, PolygonCallBackData)
 
 
                 })

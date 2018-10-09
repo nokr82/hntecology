@@ -84,7 +84,7 @@ class ImageAdapter(var context:Context,  var itemList:ArrayList<PhotoData>, var 
         }
 
 
-        return view as View
+        return view
     }
 
     override fun getItem(position: Int): Objects? {

@@ -7,16 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Member;
-import java.util.ArrayList;
 
 import hntecology.ecology.model.Biotope_attribute;
 import hntecology.ecology.model.GpsSet;
@@ -73,6 +68,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             String myPath = DB_PATH + DB_NAME;
             return SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
         } catch (SQLiteException e) {
+            e.printStackTrace();
             return null;
         }
 
@@ -135,6 +131,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         myOutput.close();
         myInput.close();
 
+    }
+
+    public void deleteDataBase() {
+        File f = new File(DB_PATH + DB_NAME);
+        if (f.exists()) {
+            f.delete();
+        }
     }
 
     public SQLiteDatabase openDataBase() throws SQLException {

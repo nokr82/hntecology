@@ -4,13 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
-import android.view.MotionEvent
-import android.widget.Toast
 import hntecology.ecology.R
+import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
-import hntecology.ecology.base.Utils
-import kotlinx.android.synthetic.main.activity_login.*
 
 class IntroActivity : Activity() {
 
@@ -24,7 +20,11 @@ class IntroActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro)
 
-        this.context = this;
+        this.context = this
+
+
+        val dataBaseHelper = DataBaseHelper(this)
+        dataBaseHelper.deleteDataBase()
 
         splashThread = object : Thread() {
             override fun run() {

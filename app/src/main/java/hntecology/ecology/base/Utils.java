@@ -86,8 +86,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import hntecology.ecology.R;
-
 public class Utils {
     private static Bitmap noImageBitmap = null;
 
@@ -684,6 +682,10 @@ public class Utils {
         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    public static void showNotification(Context context, String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
     public static void alert(Context context, String msg, final AlertListener alertListener) {

@@ -69,7 +69,7 @@
                     android:alpha="0.6">
                     <TextView
                         android:id="@+id/zoomTV"
-                        android:layout_width="wrap_content"
+                        android:layout_width="80dp"
                         android:layout_height="match_parent"
                         android:text="15.6"
                         android:textColor="#333333"
@@ -92,6 +92,66 @@
                         android:layout_centerInParent="true"
                         android:layout_marginLeft="4dp"
                         android:layout_marginRight="4dp"
+                        android:gravity="center"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <RelativeLayout
+                    android:id="@+id/delPointRL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="4dp"
+                    android:background="@android:color/white"
+                    android:alpha="0.6">
+                    <TextView
+                        android:id="@+id/delPointTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="포인트 취소"
+                        android:textColor="#333333"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:gravity="center"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/splitRL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="4dp"
+                    android:background="@android:color/white"
+                    android:alpha="0.6">
+                    <TextView
+                        android:id="@+id/splitTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="도형 분리"
+                        android:textColor="#333333"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:gravity="center"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/combineRL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="4dp"
+                    android:background="@android:color/white"
+                    android:alpha="0.6">
+                    <TextView
+                        android:id="@+id/combineTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="도형 합치기"
+                        android:textColor="#333333"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
                         android:gravity="center"/>
                 </RelativeLayout>
             </LinearLayout>
@@ -183,6 +243,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="저서무척추동물 추가" />
+
+                <Button
+                    android:id="@+id/exportBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Export" />
 
                 <Button
                     android:id="@+id/logoutBtn"

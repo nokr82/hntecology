@@ -6,8 +6,10 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Point
+import android.graphics.Typeface
 import android.os.AsyncTask
 import android.os.Bundle
+import android.os.Environment
 import android.support.v4.app.FragmentActivity
 import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
@@ -28,9 +30,20 @@ import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.GpsSet
 import kotlinx.android.synthetic.main.activity_main.*
+import org.geotools.data.DataUtilities
+import org.geotools.data.DefaultTransaction
+import org.geotools.data.collection.ListFeatureCollection
+import org.geotools.data.shapefile.ShapefileDataStore
+import org.geotools.data.shapefile.ShapefileDataStoreFactory
+import org.geotools.data.simple.SimpleFeatureStore
+import org.geotools.referencing.crs.DefaultGeographicCRS
 import org.locationtech.jts.geom.Coordinate
+import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jtstest.testbuilder.io.shapefile.Shapefile
+import org.opengis.feature.simple.SimpleFeature
+import java.io.File
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -43,13 +56,23 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     private val REQUEST_LAYER = 1003
 
 
+    private val LAYER_BIOTOPE = 2001
+    private val LAYER_BIRDS = 2002
+    private val LAYER_REPTILIA = 2003
+    private val LAYER_MAMMALIA = 2004
+    private val LAYER_FISH = 2005
+    private val LAYER_INSECT = 2006
+    private val LAYER_FLORA = 2007
+    private val LAYER_ZOOBENTHOS = 2008
+
+
     private lateinit var context: MainActivity
 
     private lateinit var mGestureDetector: GestureDetector
     private lateinit var googleMap: GoogleMap
 
-    //var beforePolygon: Polygon? = null
-    private lateinit var polygonList:Array<Polygon>
+    private var points = ArrayList<Marker>()
+    private var polygonsToUnion = ArrayList<Polygon>()
 
     var latitude:Double = 126.79235
     var longitude:Double = 37.39627
@@ -57,8 +80,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     var dbManager: DataBaseHelper? = null
 
 
-
-    var buttonController = 3       //3. biotope  , 6.birds , 7.Reptilia , 8.mammalia  9. fish, 10.insect, 11.flora , 13. zoobenthos
+    // 3. biotope  , 6.birds , 7.Reptilia , 8.mammalia  9. fish, 10.insect, 11.flora , 13. zoobenthos
+    var currentLayer = -1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +90,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         this.context = this
         dbManager = DataBaseHelper(this)
+
         val db = dbManager!!.createDataBase()
         val dataList:Array<String> = arrayOf("*")
         val data =  db.query("settings",dataList,null,null,null,null,"id desc","1")
@@ -86,66 +110,63 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         drawer_view.setOnTouchListener(this)
 
-        btn_layer.setOnClickListener(View.OnClickListener {
+        btn_layer.setOnClickListener {
             val intent = Intent(this, DlgLayersActivity::class.java)
             startActivityForResult(intent, REQUEST_LAYER)
-        })
+        }
 
+        // 비오톱 추가
+        btn_biotope.setOnClickListener {
 
-        //비오톱 추가
-        btn_biotope.setOnClickListener(View.OnClickListener {
-
-            buttonController = 3
+            currentLayer = LAYER_BIOTOPE
 
             if(drawer_view.visibility == View.VISIBLE) {
                 endDraw()
             } else {
                 startDraw()
             }
-        })
+        }
 
         //조류 추가
-        btn_birds.setOnClickListener(View.OnClickListener {
+        btn_birds.setOnClickListener {
 
-            buttonController =6
+            currentLayer = LAYER_BIRDS
 
             if(drawer_view.visibility == View.VISIBLE) {
                 endDraw()
             } else {
                 startDraw()
             }
-        })
+        }
 
         //양서ㆍ파충류 추가
-        btn_Reptilia.setOnClickListener(View.OnClickListener {
+        btn_Reptilia.setOnClickListener {
 
-
-            buttonController = 7
+            currentLayer = LAYER_REPTILIA
 
             if(drawer_view.visibility == View.VISIBLE) {
                 endDraw()
             } else {
                 startDraw()
             }
-        })
+        }
 
         //포유류 추가
-        btn_mammalia.setOnClickListener(View.OnClickListener {
+        btn_mammalia.setOnClickListener {
 
-
-            buttonController = 8
+            currentLayer = LAYER_MAMMALIA
 
             if(drawer_view.visibility == View.VISIBLE) {
                 endDraw()
             } else {
                 startDraw()
             }
-        })
+        }
 
         //어류 추가
         btn_fish.setOnClickListener {
 
-            buttonController = 9
+            currentLayer = LAYER_FISH
 
             if(drawer_view.visibility == View.VISIBLE) {
                 endDraw()
@@ -155,47 +176,52 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
 
         //곤충 추가
-        btn_insect.setOnClickListener(View.OnClickListener {
+        btn_insect.setOnClickListener {
 
-            buttonController = 10
+            currentLayer = LAYER_INSECT
 
             if(drawer_view.visibility == View.VISIBLE) {
                 endDraw()
             } else {
                 startDraw()
             }
-        })
+        }
 
         //식물 추가
-        btn_flora.setOnClickListener(View.OnClickListener {
+        btn_flora.setOnClickListener {
 
-            buttonController = 11
+            currentLayer = LAYER_FLORA
 
             if(drawer_view.visibility == View.VISIBLE) {
                 endDraw()
             } else {
                 startDraw()
             }
-        })
+        }
 
 
         //저서무척추동물 추가
-        btn_zoobenthos.setOnClickListener(View.OnClickListener {
+        btn_zoobenthos.setOnClickListener {
 
-
-            buttonController = 13
+            currentLayer = LAYER_ZOOBENTHOS
 
             if(drawer_view.visibility == View.VISIBLE) {
                 endDraw()
             } else {
                 startDraw()
             }
-        })
+        }
 
 
-        btn_clear_all.setOnClickListener(View.OnClickListener {
+        btn_clear_all.setOnClickListener {
             googleMap.clear()
-        })
+
+            points.clear()
+            latlngs.clear()
+            polygonsToUnion.clear()
+
+            endDraw()
+        }
 
         //좌표지정 버튼
         btn_gps_select.setOnClickListener {
@@ -252,6 +278,74 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             loadLayer(currentFileName, currentLayerName)
         }
 
+        exportBtn.setOnClickListener {
+            export()
+        }
+
+        delPointRL.setOnClickListener {
+
+            when(currentLayer) {
+                LAYER_BIOTOPE -> {
+                    if(latlngs.size > 0) {
+                        latlngs.removeAt(latlngs.size - 1)
+                        drawPolygon()
+                    }
+                }
+
+                else -> {
+
+                    println("points.size : ${points.size}")
+
+                    if(points.size > 0) {
+                        val lastPoint = points.removeAt(points.size - 1)
+                        lastPoint.remove()
+                    }
+                }
+            }
+
+
+        }
+
+        // 도형 분리
+        splitRL.setOnClickListener {
+            if(splitRL.isSelected) {
+                offSplitBtn()
+            } else {
+                onSplitBtn()
+            }
+        }
+
+        // 도형 합지기
+        combineRL.setOnClickListener {
+
+            endDraw()
+
+            if(combineRL.isSelected) {
+
+                combineRL.isSelected = false
+                combineTV.setTextColor(Color.parseColor("#333333"))
+                combineTV.setTypeface(null, Typeface.NORMAL);
+
+                unionPolygons()
+
+            } else {
+                combineRL.isSelected = true
+
+                combineTV.setTextColor(Color.BLACK)
+                combineTV.setTypeface(null, Typeface.BOLD);
+            }
+
+
+        }
+    }
+
+    private fun onSplitBtn() {
+        splitRL.isSelected = true
+
+        splitTV.setTextColor(Color.BLACK)
+        splitTV.setTypeface(null, Typeface.BOLD);
+
+        drawer_view.visibility = View.VISIBLE
     }
 
     private fun startRegistrationService() {
@@ -343,22 +437,154 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         // Add a marker in Sydney, Australia,
         // and move the map's camera to the same location.
 
-        val sydney = LatLng(longitude, latitude)
+        val initialMapCenter = LatLng(longitude, latitude)
 
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15f))
+        // googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(initialMapCenter, 16f))
 
 
 
         // 마커클릭 이벤트 처리
         // GoogleMap 에 마커클릭 이벤트 설정 가능.
-        googleMap.setOnMarkerClickListener{
+        googleMap.setOnMarkerClickListener {
             marker ->
-            Toast.makeText(this,marker.title,Toast.LENGTH_LONG).show()
+
+            var attrubuteKey = getAttrubuteKey()
+            var intent:Intent? = null
+            when(currentLayer){
+
+                LAYER_BIRDS -> {
+                    attrubuteKey += "birds"
+                    intent = Intent(this, BirdsActivity::class.java)
+                }
+
+                LAYER_REPTILIA -> {
+                    attrubuteKey += "reptilia"
+                    intent = Intent(this, ReptiliaActivity::class.java)
+
+                }
+
+                LAYER_MAMMALIA -> {
+
+                    attrubuteKey += "mammalia"
+                    intent = Intent(this, MammaliaActivity::class.java)
+
+                }
+
+                LAYER_FISH -> {
+
+                    attrubuteKey += "fish"
+                    intent = Intent(this, FishActivity::class.java)
+                }
+
+                LAYER_INSECT -> {
+                    attrubuteKey += "insect"
+                    intent = Intent(this, InsectActivity::class.java)
+
+                }
+
+                LAYER_FLORA -> {
+
+                    attrubuteKey += "flora"
+                    intent = Intent(this, FloraActivity::class.java)
+
+                }
+
+                LAYER_ZOOBENTHOS ->{
+                    attrubuteKey += "zoobenthos"
+                    intent = Intent(this, ZoobenthosActivity::class.java)
+
+                }
+            }
+
+            val layerInfo = LayerInfo()
+            layerInfo.attrubuteKey = attrubuteKey
+            layerInfo.layer = currentLayer
+
+            marker.tag = layerInfo
+
+            intent!!.putExtra("id", attrubuteKey.toString())
+
+            startActivityForResult(intent, PolygonCallBackData)
+
 
             false
         }
 
+        // 클릭시 태그 데이터 있는지 확인 없으면 바로 넘기고 있으면 있는걸로 호출.
+        // tag 리절트로 가져와서 태그 설정
+        googleMap.setOnPolygonClickListener { polygon ->
+
+            val layerInfo = polygon.tag as LayerInfo
+            var myLayer = layerInfo.layer
+
+            var attrubuteKey = getAttrubuteKey()
+            var intent:Intent? = null
+            when(myLayer){
+
+                LAYER_BIOTOPE -> {
+
+                    if(combineRL.isSelected) {
+
+                        polygonsToUnion.add(polygon)
+
+                        polygon.strokeColor = Color.MAGENTA
+
+                        return@setOnPolygonClickListener
+
+                    } else {
+                        attrubuteKey += "biotope"
+                        intent = Intent(this, BiotopeActivity::class.java)
+                    }
+                }
+
+                LAYER_BIRDS -> {
+                    attrubuteKey += "birds"
+                    intent = Intent(this, BirdsActivity::class.java)
+                }
+
+                LAYER_REPTILIA -> {
+                    attrubuteKey += "reptilia"
+                    intent = Intent(this, ReptiliaActivity::class.java)
+
+                }
+
+                LAYER_MAMMALIA -> {
+
+                    attrubuteKey += "mammalia"
+                    intent = Intent(this, MammaliaActivity::class.java)
+
+                }
+
+                LAYER_FISH -> {
+
+                    attrubuteKey += "fish"
+                    intent = Intent(this, FishActivity::class.java)
+                }
+
+                LAYER_INSECT -> {
+                    attrubuteKey += "insect"
+                    intent = Intent(this, InsectActivity::class.java)
+
+                }
+
+                LAYER_FLORA -> {
+
+                    attrubuteKey += "flora"
+                    intent = Intent(this, FloraActivity::class.java)
+
+                }
+
+                LAYER_ZOOBENTHOS ->{
+                    attrubuteKey += "zoobenthos"
+                    intent = Intent(this, ZoobenthosActivity::class.java)
+
+                }
+            }
+
+            intent!!.putExtra("id", attrubuteKey.toString())
+            startActivityForResult(intent, PolygonCallBackData)
+        }
 
 
     }
@@ -480,6 +706,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         override fun onProgressUpdate(vararg polygonOptions: PolygonOptions?) {
             val polygon = googleMap.addPolygon(polygonOptions[0])
             polygon.tag = layerName
+
+            val layerInfo = LayerInfo()
+            layerInfo.layer = currentLayer
+
+            polygon.tag = layerInfo
+
         }
 
         override fun onPostExecute(result: Boolean?) {
@@ -512,6 +744,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     private val latlngs: ArrayList<LatLng> = ArrayList<LatLng>()
 
+    private var startGeoPoint: LatLng? = null
+
     /**
      * Ontouch event will draw poly line along the touch points
      *
@@ -520,20 +754,29 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         var X1 = event.x.toInt()
         var Y1 = event.y.toInt()
 
-        println("${event.action} $X1, $Y1")
+        // println("${event.action} $X1, $Y1")
 
         var point = Point()
         point.x = X1
         point.y = Y1
 
-        val firstGeoPoint = googleMap.projection.fromScreenLocation(point)
-
         when (event.action) {
 
             MotionEvent.ACTION_DOWN -> {
+
+                X1 = event.x.toInt()
+                Y1 = event.y.toInt()
+                point = Point()
+                point.x = X1
+                point.y = Y1
+
+                startGeoPoint = googleMap.projection.fromScreenLocation(point)
+
             }
 
             MotionEvent.ACTION_MOVE -> if (drawer_view.visibility == View.VISIBLE) {
+
+                /*
                 X1 = event.x.toInt()
                 Y1 = event.y.toInt()
                 point = Point()
@@ -551,154 +794,217 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
 
                 googleMap.addPolyline(mPolylineOptions)
+                */
             }
+
             MotionEvent.ACTION_UP -> {
 
-                print("Poinnts array size : ${latlngs.size}")
+                X1 = event.x.toInt()
+                Y1 = event.y.toInt()
+                point = Point()
+                point.x = X1
+                point.y = Y1
+                val geoPoint = googleMap.projection.fromScreenLocation(point)
 
-                latlngs.add(firstGeoPoint)
+                if(splitRL.isSelected) {
 
-//                val polygonOptions = PolygonOptions()
-//                polygonOptions.fillColor(Color.RED)
-//                polygonOptions.strokeColor(Color.TRANSPARENT)
-//                polygonOptions.addAll(latlngs)
-//                googleMap.addPolygon(polygonOptions)
-                //여기서 부터 작업 시작.
+                    if(editingPolygon == null) {
+                        return false
+                    }
 
-                val polygonOptions = PolygonOptions()
-                polygonOptions.fillColor(Color.RED)
-                polygonOptions.strokeColor(Color.TRANSPARENT)
-                polygonOptions.addAll(latlngs)
+                    val myLayer = editingPolygon?.tag as LayerInfo
 
+                    val polylineOptions = PolylineOptions()
+                    polylineOptions.add(startGeoPoint)
+                    polylineOptions.add(geoPoint)
 
-                var polygonNew:Polygon = googleMap.addPolygon(polygonOptions)
-                polygonNew.isClickable = true
+                    polylineOptions.width(5f)
+                    polylineOptions.color(Color.YELLOW);
 
-                //클릭시 태그 데이터 있는지 확인 없으면 바로 넘기고 있으면 있는걸로 호출.
-                //tag 리절트로 가져와서 태그 설정
-                googleMap.setOnPolygonClickListener(GoogleMap.OnPolygonClickListener { polygon ->
+                    val polyline = googleMap.addPolyline(polylineOptions)
 
-                    var tagName = getAttrubuteKey()
-                    var intent:Intent? = null
-                    when(buttonController){
+                    val splited = Utils.splitPolygon(toJTSPolygon(editingPolygon!!), toJTSLineString(polyline!!))
 
-                        3->{
-                            tagName += "biotope"
-                            intent = Intent(this, BiotopeActivity::class.java)
+                    offSplitBtn()
 
-                        }
-                        6->{
-                            tagName += "birds"
-                            intent = Intent(this, BirdsActivity::class.java)
-                        }
+                    polyline.remove()
 
-                        7->{
-                            tagName += "reptilia"
-                            intent = Intent(this, ReptiliaActivity::class.java)
+                    editingPolygon?.remove()
+                    editingPolygon = null
 
-                        }
-                        8->{
+                    for(idx in 0..(splited.numGeometries - 1)) {
+                        var polygon = splited.getGeometryN(idx)
+                        polygon = polygon.buffer(-0.00002)
 
-                            tagName += "mammalia"
-                            intent = Intent(this, MammaliaActivity::class.java)
+                        val polygonOptions = PolygonOptions()
+                        polygonOptions.fillColor(getColor())
+                        polygonOptions.strokeColor(Color.TRANSPARENT)
 
+                        for(coordinate in polygon.coordinates) {
+                            polygonOptions.add(LatLng(coordinate.y, coordinate.x))
                         }
 
-                        9->{
+                        val po = googleMap.addPolygon(polygonOptions)
+                        po.tag = myLayer
+                        po.isClickable = true
+                    }
 
-                            tagName += "fish"
-                            intent = Intent(this, FishActivity::class.java)
-                        }
+                } else {
 
-                        10->{
-                            tagName += "insect"
-                            intent = Intent(this, InsectActivity::class.java)
+                    if(!combineRL.isSelected) {
+                        // print("Poinnts array size : ${latlngs.size}")
 
-                        }
+                        // 3. biotope  , 6.birds , 7.Reptilia , 8.mammalia  9. fish, 10.insect, 11.flora , 13. zoobenthos
+                        when(currentLayer) {
 
-                        11 ->{
+                            LAYER_BIOTOPE -> {
 
-                            tagName += "flora"
-                            intent = Intent(this, FloraActivity::class.java)
+                                latlngs.add(geoPoint)
 
-                        }
+                                if (latlngs.size == 1) {
+                                    initEditingPolygon()
+                                }
 
-                        13 ->{
-                            tagName += "zoobenthos"
-                            intent = Intent(this, ZoobenthosActivity::class.java)
+                                drawPolygon()
+                            }
+
+                            LAYER_BIRDS -> {
+                                drawPoint(geoPoint)
+                            }
+
+                            LAYER_REPTILIA -> {
+                                drawPoint(geoPoint)
+                            }
+
+                            LAYER_MAMMALIA -> {
+                                drawPoint(geoPoint)
+                            }
+
+                            LAYER_FISH -> {
+                                drawPoint(geoPoint)
+                            }
+
+                            LAYER_INSECT -> {
+                                drawPoint(geoPoint)
+                            }
+
+                            LAYER_FLORA -> {
+                                drawPoint(geoPoint)
+                            }
+
+                            LAYER_ZOOBENTHOS -> {
+                                drawPoint(geoPoint)
+                            }
 
                         }
                     }
-
-
-
-
-                    polygon.tag = tagName
-
-                    intent!!.putExtra("id",polygon.tag.toString())
-
-
-                    startActivityForResult(intent, PolygonCallBackData)
-
-
-                })
-
-
-
-
-                runOnUiThread {
-                    endDraw()
                 }
-
             }
         }
         return mGestureDetector.onTouchEvent(event)
     }
 
-    fun startDraw() {
+    private fun offSplitBtn() {
+
+        endDraw()
+
+        splitRL.isSelected = false
+
+        splitTV.setTextColor(Color.parseColor("#333333"))
+        splitTV.setTypeface(null, Typeface.NORMAL);
+
+        drawer_view.visibility = View.GONE
+    }
+
+
+    private var editingPolygon: Polygon? = null
+
+    private fun drawPoint(geoPoint:LatLng) {
+        val markerOptions = MarkerOptions()
+        markerOptions.position(geoPoint)
+        // markerOptions.title("Marker in Sydney")
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+        markerOptions.alpha(1.0f)
+        markerOptions.draggable(true)
+
+        val point = googleMap.addMarker(markerOptions)
+
+        points.add(point)
+
+    }
+
+    fun initEditingPolygon() {
+        val polygonOptions = PolygonOptions()
+        polygonOptions.fillColor(getColor())
+        polygonOptions.strokeColor(Color.TRANSPARENT)
+        polygonOptions.addAll(latlngs)
+
+        editingPolygon = googleMap.addPolygon(polygonOptions)
+
+        editingPolygon?.isClickable = true
+
+        val layerInfo = LayerInfo()
+        layerInfo.attrubuteKey = getAttrubuteKey()
+        layerInfo.layer = currentLayer
+
+        editingPolygon?.tag = layerInfo
+
+    }
+
+    private fun drawPolygon() {
+
+        updateDelPointText()
+
+        if (latlngs.size == 0) {
+
+            editingPolygon = null
+
+            return
+        }
+
+        editingPolygon!!.points = latlngs
+    }
+
+    private fun startDraw() {
         drawer_view.visibility = View.VISIBLE
 
         googleMap.uiSettings.isZoomGesturesEnabled = false
         googleMap.uiSettings.setAllGesturesEnabled(false)
 
+        // 3. biotope  , 6.birds , 7.Reptilia , 8.mammalia  9. fish, 10.insect, 11.flora , 13. zoobenthos
+        when(currentLayer){
 
-        when(buttonController){
-
-            3->{
+            LAYER_BIOTOPE -> {
                 btn_biotope.text = "비오톱 추가 중"
             }
-            6->{
+
+            LAYER_BIRDS -> {
                 btn_birds.text = "조류 추가 중"
             }
 
-            7->{
-
+            LAYER_REPTILIA -> {
                 btn_Reptilia.text = "양서ㆍ파충류 추가 중"
             }
-            8->{
+
+            LAYER_MAMMALIA -> {
                 btn_mammalia.text = "포유류 추가 중"
             }
 
-            9->{
-
+            LAYER_FISH -> {
                 btn_fish.text = "어류 추가 중"
             }
 
-            10->{
-
+            LAYER_INSECT -> {
                 btn_insect.text = "곤충 추가 중"
             }
 
-            11 ->{
-
+            LAYER_FLORA -> {
                 btn_flora.text = "식물상 추가 중"
             }
 
-            13 ->{
-
+            LAYER_ZOOBENTHOS -> {
                 btn_zoobenthos.text = "저서무척추동물 추가 중"
             }
-
         }
     }
 
@@ -709,48 +1015,63 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         googleMap.uiSettings.isRotateGesturesEnabled = false
 
         latlngs.clear()
+        updateDelPointText()
 
         drawer_view.visibility = View.GONE
-        when(buttonController){
+        when(currentLayer){
 
-            3->{
+            LAYER_BIOTOPE -> {
                 btn_biotope.text = "비오톱 추가"
             }
-            6->{
+
+            LAYER_BIRDS -> {
                 btn_birds.text = "조류 추가"
             }
 
-            7->{
+            LAYER_REPTILIA -> {
 
                 btn_Reptilia.text = "양서ㆍ파충류 추가"
             }
-            8->{
+
+            LAYER_MAMMALIA -> {
                 btn_mammalia.text = "포유류 추가"
             }
 
-            9->{
+            LAYER_FISH -> {
 
                 btn_fish.text = "어류 추가"
             }
 
-            10->{
+            LAYER_INSECT -> {
 
                 btn_insect.text = "곤충 추가"
             }
 
-            11 ->{
+            LAYER_FLORA -> {
 
                 btn_flora.text = "식물상 추가"
             }
 
-            13 ->{
+            LAYER_ZOOBENTHOS -> {
 
                 btn_zoobenthos.text = "저서무척추동물 추가"
             }
 
         }
 
+        currentLayer = -1
     }
+
+    private fun updateDelPointText() {
+        delPointTV.text = "포인트 취소 (${latlngs.size})"
+
+        if(latlngs.size == 0) {
+            delPointTV.visibility = View.GONE
+        } else {
+            delPointTV.visibility = View.VISIBLE
+        }
+    }
+
     fun getTime():String{
 
         val date = Date()
@@ -758,6 +1079,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         return fullTime.format(date).toString()
     }
+
     fun getAttrubuteKey():String{
 
         val time = System.currentTimeMillis()
@@ -767,4 +1089,188 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         return strDT
     }
 
+    fun export() {
+
+    }
+
+    fun export2() {
+
+        /*
+         * Get an output file name and create the new shapefile
+         */
+        val newFile = getNewShapeFile()
+
+        val dataStoreFactory = ShapefileDataStoreFactory()
+
+        val params = HashMap<String, Serializable>()
+        params.put("url", newFile.toURI().toURL())
+        params.put("create spatial index", true)
+
+        val newDataStore = dataStoreFactory.createNewDataStore(params) as ShapefileDataStore
+
+        val simpleFeatureType = DataUtilities.createType("test", "geom:Polygon:srid=4326")
+        newDataStore.createSchema(simpleFeatureType)
+
+        /*
+         * You can comment out this line if you are using the createFeatureType method (at end of
+         * class file) rather than DataUtilities.createType
+         */
+        newDataStore.forceSchemaCRS(DefaultGeographicCRS.WGS84)
+
+
+        /*
+         * Write the features to the shapefile
+         */
+        val transaction = DefaultTransaction("create")
+
+        val typeName = newDataStore.typeNames[0]
+        val featureSource = newDataStore.getFeatureSource(typeName)
+        val SHAPE_TYPE = featureSource.schema
+        /*
+         * The Shapefile format has a couple limitations:
+         * - "the_geom" is always first, and used for the geometry attribute name
+         * - "the_geom" must be of type Point, MultiPoint, MuiltiLineString, MultiPolygon
+         * - Attribute names are limited in length
+         * - Not all data types are supported (example Timestamp represented as Date)
+         *
+         * Each data store has different limitations so check the resulting SimpleFeatureType.
+         */
+        System.out.println("SHAPE:" + SHAPE_TYPE)
+
+        if (featureSource is SimpleFeatureStore) {
+            val featureStore = featureSource as SimpleFeatureStore
+
+            /*
+             * SimpleFeatureStore has a method to add features from a
+             * SimpleFeatureCollection object, so we use the ListFeatureCollection
+             * class to wrap our list of features.
+             */
+
+            val features = ArrayList<SimpleFeature>()
+
+            val collection = ListFeatureCollection(SHAPE_TYPE, features)
+            featureStore.transaction = transaction
+
+            featureStore.addFeatures(collection)
+            transaction.commit()
+
+
+            try {
+                featureStore.addFeatures(collection)
+                transaction.commit()
+            } finally {
+                transaction.close()
+            }
+
+            System.exit(0) // success!
+        } else {
+            System.out.println(typeName + " does not support read/write access")
+            System.exit(1)
+        }
+
+    }
+
+    private fun getNewShapeFile():File {
+        val shpFileName = "${System.currentTimeMillis()}.shp"
+        val shpFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), shpFileName)
+
+        return shpFile
+    }
+
+    private fun unionPolygons() {
+
+        val geometries = Array<Geometry?>(polygonsToUnion.size) { null }
+
+        for (idx in 0..(polygonsToUnion.size - 1)) {
+            val polygon = polygonsToUnion.get(idx)
+            var createdPolygon = toJTSPolygon(polygon)
+            if(idx == 0) {
+                createdPolygon = createdPolygon.buffer(0.0006) as org.locationtech.jts.geom.Polygon
+            }
+
+            println("createdPolygon : $createdPolygon")
+
+            geometries[idx] = createdPolygon
+
+        }
+
+        val gc = GeometryFactory().createGeometryCollection(geometries);
+
+        try {
+            val unioned = gc.union()
+
+            println(unioned)
+
+            println("unioned.geometryType : ${unioned.geometryType}")
+
+            if("Polygon" == unioned.geometryType) {
+
+                val layerInfo = polygonsToUnion.first().tag as LayerInfo
+                val myLayer = layerInfo.layer
+
+                // delete
+                for (polygon in polygonsToUnion) {
+                    polygon.remove()
+                }
+
+                val polygonOptions = PolygonOptions()
+                polygonOptions.fillColor(getColor())
+                polygonOptions.strokeColor(Color.TRANSPARENT)
+
+                for(coordinate in unioned.coordinates) {
+                    polygonOptions.add(LatLng(coordinate.y, coordinate.x))
+                }
+
+
+                editingPolygon = googleMap.addPolygon(polygonOptions)
+                editingPolygon?.tag = layerInfo
+                editingPolygon?.isClickable = true
+
+                polygonsToUnion.clear()
+            }
+
+        } catch (e:Exception) {
+            e.printStackTrace()
+        }
+
+    }
+
+    private fun getColor(): Int {
+        val colors = arrayListOf<String>("#fffec1", "#f9d58b", "#fce9c4", "#efdffd", "#eafbf7", "#ea39c1", "#2a73f6")
+
+        val idx = Utils.rand(0, colors.size - 1)
+
+        return Color.parseColor(colors[idx])
+    }
+
+    private fun toJTSPolygon(polygon:Polygon):org.locationtech.jts.geom.Polygon {
+        val points = polygon.points
+
+        val coordinates = Array<Coordinate>(points.size) { Coordinate() }
+
+        for(idx2 in 0..(points.size - 1)) {
+            val point = points.get(idx2)
+            val coordinate = Coordinate(point.longitude, point.latitude)
+            coordinates[idx2] = coordinate
+        }
+
+        val geometryFactory = GeometryFactory()
+        return geometryFactory.createPolygon(coordinates)
+    }
+
+    private fun toJTSLineString(polyline:Polyline):org.locationtech.jts.geom.LineString {
+        val points = polyline.points
+
+        val coordinates = Array<Coordinate>(points.size) { Coordinate() }
+
+        for(idx2 in 0..(points.size - 1)) {
+            val point = points.get(idx2)
+
+            val coordinate = Coordinate(point.longitude, point.latitude)
+            coordinates[idx2] = coordinate
+        }
+
+        val geometryFactory = GeometryFactory()
+        return geometryFactory.createLineString(coordinates)
+    }
 }

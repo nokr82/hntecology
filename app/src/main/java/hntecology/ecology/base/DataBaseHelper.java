@@ -66,7 +66,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         try {
             String myPath = DB_PATH + DB_NAME;
-            return SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+            return SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
         } catch (SQLiteException e) {
             e.printStackTrace();
             return null;

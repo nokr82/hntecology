@@ -124,10 +124,11 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             keyId = intent.getStringExtra("id")
             val dataList: Array<String> = arrayOf("*");
 
-            val data = db.query("biotopeAttribute", dataList, "id = '" + keyId + "'", null, null, null, "", null);
+            println("keyIdkeyId : $keyId")
+
+            val data = db.query("biotopeAttribute", dataList, "id = '$keyId'", null, null, null, "", null);
 
             if (data.count < 1) {
-
                 tvINV_PERSONTV.setText(PrefUtils.getStringPreference(this, "name"))                    // 조사자
                 etINV_DTTV.setText(getTime());
                 etINV_TMTV.setText(createId())

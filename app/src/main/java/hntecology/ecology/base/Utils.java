@@ -1556,4 +1556,19 @@ public class Utils {
         }
         return poly.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(output));
     }
+
+    public static String getToday(String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(new Date());
+    }
+
+    public static Date getDate(String dateStr, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        try {
+            return sdf.parse(dateStr);
+        } catch (ParseException e) {
+            // e.printStackTrace();
+        }
+        return new Date();
+    }
 }

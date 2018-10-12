@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.Typeface
@@ -44,7 +45,6 @@ import org.locationtech.jtstest.testbuilder.io.shapefile.Shapefile
 import org.opengis.feature.simple.SimpleFeature
 import java.io.File
 import java.io.Serializable
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -79,6 +79,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     var dbManager: DataBaseHelper? = null
 
+    private var db:SQLiteDatabase? = null
+
 
     // 3. biotope  , 6.birds , 7.Reptilia , 8.mammalia  9. fish, 10.insect, 11.flora , 13. zoobenthos
     var currentLayer = -1
@@ -91,9 +93,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         this.context = this
         dbManager = DataBaseHelper(this)
 
-        val db = dbManager!!.createDataBase()
+        db = dbManager!!.createDataBase()
         val dataList:Array<String> = arrayOf("*")
-        val data =  db.query("settings",dataList,null,null,null,null,"id desc","1")
+        val data =  db!!.query("settings",dataList,null,null,null,null,"id desc","1")
 
 /*        PrefUtils.setPreference(this, "latitude", latitude);
         PrefUtils.setPreference(this, "longitude", longitude);*/
@@ -249,7 +251,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         // when the map is ready to be used.
         startRegistrationService()
 
-        TVtimeTV.text = getTime()
+        TVtimeTV.text = Utils.getToday("yyyy-MM-dd")
 
         logoutBtn.setOnClickListener{
 
@@ -449,59 +451,42 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         googleMap.setOnMarkerClickListener {
             marker ->
 
-            var attrubuteKey = getAttrubuteKey()
+            val layerInfo = marker.tag as LayerInfo
+            var myLayer = layerInfo.layer
+
+            var attrubuteKey = layerInfo.attrubuteKey
             var intent:Intent? = null
-            when(currentLayer){
+            when(myLayer){
 
                 LAYER_BIRDS -> {
-                    attrubuteKey += "birds"
                     intent = Intent(this, BirdsActivity::class.java)
                 }
 
                 LAYER_REPTILIA -> {
-                    attrubuteKey += "reptilia"
                     intent = Intent(this, ReptiliaActivity::class.java)
 
                 }
 
                 LAYER_MAMMALIA -> {
-
-                    attrubuteKey += "mammalia"
                     intent = Intent(this, MammaliaActivity::class.java)
-
                 }
 
                 LAYER_FISH -> {
-
-                    attrubuteKey += "fish"
                     intent = Intent(this, FishActivity::class.java)
                 }
 
                 LAYER_INSECT -> {
-                    attrubuteKey += "insect"
                     intent = Intent(this, InsectActivity::class.java)
-
                 }
 
                 LAYER_FLORA -> {
-
-                    attrubuteKey += "flora"
                     intent = Intent(this, FloraActivity::class.java)
-
                 }
 
-                LAYER_ZOOBENTHOS ->{
-                    attrubuteKey += "zoobenthos"
+                LAYER_ZOOBENTHOS -> {
                     intent = Intent(this, ZoobenthosActivity::class.java)
-
                 }
             }
-
-            val layerInfo = LayerInfo()
-            layerInfo.attrubuteKey = attrubuteKey
-            layerInfo.layer = currentLayer
-
-            marker.tag = layerInfo
 
             intent!!.putExtra("id", attrubuteKey.toString())
 
@@ -518,7 +503,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             val layerInfo = polygon.tag as LayerInfo
             var myLayer = layerInfo.layer
 
-            var attrubuteKey = getAttrubuteKey()
+            var attrubuteKey = layerInfo.attrubuteKey
             var intent:Intent? = null
             when(myLayer){
 
@@ -528,61 +513,49 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                         polygonsToUnion.add(polygon)
 
+                        println((polygon.tag as LayerInfo).attrubuteKey)
+
                         polygon.strokeColor = Color.MAGENTA
 
                         return@setOnPolygonClickListener
 
                     } else {
-                        attrubuteKey += "biotope"
                         intent = Intent(this, BiotopeActivity::class.java)
                     }
                 }
 
                 LAYER_BIRDS -> {
-                    attrubuteKey += "birds"
                     intent = Intent(this, BirdsActivity::class.java)
                 }
 
                 LAYER_REPTILIA -> {
-                    attrubuteKey += "reptilia"
                     intent = Intent(this, ReptiliaActivity::class.java)
-
                 }
 
                 LAYER_MAMMALIA -> {
-
-                    attrubuteKey += "mammalia"
                     intent = Intent(this, MammaliaActivity::class.java)
-
                 }
 
                 LAYER_FISH -> {
-
-                    attrubuteKey += "fish"
                     intent = Intent(this, FishActivity::class.java)
                 }
 
                 LAYER_INSECT -> {
-                    attrubuteKey += "insect"
                     intent = Intent(this, InsectActivity::class.java)
-
                 }
 
                 LAYER_FLORA -> {
-
-                    attrubuteKey += "flora"
                     intent = Intent(this, FloraActivity::class.java)
-
                 }
 
                 LAYER_ZOOBENTHOS ->{
-                    attrubuteKey += "zoobenthos"
                     intent = Intent(this, ZoobenthosActivity::class.java)
-
                 }
             }
 
-            intent!!.putExtra("id", attrubuteKey.toString())
+            println("aa : $attrubuteKey")
+
+            intent!!.putExtra("id", attrubuteKey)
             startActivityForResult(intent, PolygonCallBackData)
         }
 
@@ -774,29 +747,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
             }
 
-            MotionEvent.ACTION_MOVE -> if (drawer_view.visibility == View.VISIBLE) {
-
-                /*
-                X1 = event.x.toInt()
-                Y1 = event.y.toInt()
-                point = Point()
-                point.x = X1
-                point.y = Y1
-                val geoPoint = googleMap.projection.fromScreenLocation(point)
-
-                println("geoPoint : $geoPoint")
-
-                latlngs.add(geoPoint)
-                val mPolylineOptions = PolylineOptions()
-                mPolylineOptions.color(Color.RED)
-                mPolylineOptions.width(3.0f)
-                mPolylineOptions.addAll(latlngs)
-
-
-                googleMap.addPolyline(mPolylineOptions)
-                */
-            }
-
             MotionEvent.ACTION_UP -> {
 
                 X1 = event.x.toInt()
@@ -812,7 +762,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         return false
                     }
 
-                    val myLayer = editingPolygon?.tag as LayerInfo
+                    val layerInfo = editingPolygon?.tag as LayerInfo
+
+                    val oldAttributeKey = layerInfo.attrubuteKey
 
                     val polylineOptions = PolylineOptions()
                     polylineOptions.add(startGeoPoint)
@@ -845,8 +797,24 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         }
 
                         val po = googleMap.addPolygon(polygonOptions)
-                        po.tag = myLayer
+
+                        val newAttributeKey = getAttributeKey(layerInfo.layer)
+
+                        println("newAttributeKey : $newAttributeKey")
+
+                        layerInfo.attrubuteKey = newAttributeKey
+
+                        val newLayerInfo = LayerInfo()
+                        newLayerInfo.attrubuteKey = newAttributeKey
+                        newLayerInfo.layer = layerInfo.layer
+
+                        po.tag = newLayerInfo
+
                         po.isClickable = true
+
+                        // copy data
+                        copyRow("biotopeAttribute", oldAttributeKey, newAttributeKey)
+
                     }
 
                 } else {
@@ -927,13 +895,20 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         markerOptions.alpha(1.0f)
         markerOptions.draggable(true)
 
-        val point = googleMap.addMarker(markerOptions)
+        val marker = googleMap.addMarker(markerOptions)
 
-        points.add(point)
+        val layerInfo = LayerInfo()
+        layerInfo.attrubuteKey = getAttributeKey(layerInfo.layer)
+        layerInfo.layer = currentLayer
+
+        marker.tag = layerInfo
+
+
+        points.add(marker)
 
     }
 
-    fun initEditingPolygon() {
+    private fun initEditingPolygon() {
         val polygonOptions = PolygonOptions()
         polygonOptions.fillColor(getColor())
         polygonOptions.strokeColor(Color.TRANSPARENT)
@@ -944,7 +919,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         editingPolygon?.isClickable = true
 
         val layerInfo = LayerInfo()
-        layerInfo.attrubuteKey = getAttrubuteKey()
+        layerInfo.attrubuteKey = getAttributeKey(layerInfo.layer)
         layerInfo.layer = currentLayer
 
         editingPolygon?.tag = layerInfo
@@ -1072,21 +1047,53 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
     }
 
-    fun getTime():String{
+    private fun getAttributeKey(layer: Int):String {
 
-        val date = Date()
-        val fullTime = SimpleDateFormat("yyyy-MM-dd")
+        var attributeKey = System.currentTimeMillis().toString()
 
-        return fullTime.format(date).toString()
-    }
+        var myLayer = currentLayer
+        if(myLayer == -1 && layer > 0) {
+            myLayer = layer
+        }
 
-    fun getAttrubuteKey():String{
+        when(myLayer) {
+            LAYER_BIOTOPE -> {
+                attributeKey += "biotope"
+            }
 
-        val time = System.currentTimeMillis()
-        val dayTime = SimpleDateFormat("yyyyMM")
-        val strDT = dayTime.format(Date(time))
+            LAYER_BIRDS -> {
+                attributeKey += "birds"
+            }
 
-        return strDT
+            LAYER_REPTILIA -> {
+                attributeKey += "reptilia"
+            }
+
+            LAYER_MAMMALIA -> {
+                attributeKey += "mammalia"
+
+            }
+
+            LAYER_FISH -> {
+                attributeKey += "fish"
+            }
+
+            LAYER_INSECT -> {
+                attributeKey += "insect"
+            }
+
+            LAYER_FLORA -> {
+                attributeKey += "flora"
+            }
+
+            LAYER_ZOOBENTHOS -> {
+                attributeKey += "zoobenthos"
+            }
+        }
+
+        println("attributeKey : $attributeKey")
+
+        return attributeKey
     }
 
     fun export() {
@@ -1188,10 +1195,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 createdPolygon = createdPolygon.buffer(0.0006) as org.locationtech.jts.geom.Polygon
             }
 
-            println("createdPolygon : $createdPolygon")
-
             geometries[idx] = createdPolygon
-
         }
 
         val gc = GeometryFactory().createGeometryCollection(geometries);
@@ -1199,17 +1203,23 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         try {
             val unioned = gc.union()
 
-            println(unioned)
-
             println("unioned.geometryType : ${unioned.geometryType}")
 
             if("Polygon" == unioned.geometryType) {
 
-                val layerInfo = polygonsToUnion.first().tag as LayerInfo
-                val myLayer = layerInfo.layer
+                val firstLayerInfo = polygonsToUnion.get(0).tag as LayerInfo
 
-                // delete
-                for (polygon in polygonsToUnion) {
+                println("firstLayerInfo : ${firstLayerInfo.attrubuteKey}")
+
+                // delete row
+                for (idx in 1..(polygonsToUnion.size - 1)) {
+                    val polygon = polygonsToUnion.get(idx)
+                    val layerInfo = polygon.tag as LayerInfo
+                    deleteRow("biotopeAttribute", layerInfo.attrubuteKey)
+                }
+
+                for (idx in 0..(polygonsToUnion.size - 1)) {
+                    val polygon = polygonsToUnion.get(idx)
                     polygon.remove()
                 }
 
@@ -1223,7 +1233,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
 
                 editingPolygon = googleMap.addPolygon(polygonOptions)
-                editingPolygon?.tag = layerInfo
+                editingPolygon?.tag = firstLayerInfo
                 editingPolygon?.isClickable = true
 
                 polygonsToUnion.clear()
@@ -1273,4 +1283,51 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         val geometryFactory = GeometryFactory()
         return geometryFactory.createLineString(coordinates)
     }
+
+    private fun copyRow(tableName:String, keyId:String, newKeyId:String) {
+
+        println("keyId : $keyId, newKeyId : $newKeyId")
+
+        val dbCursor = db!!.query(tableName, null, null, null, null, null, null)
+        val columnNames = dbCursor.columnNames
+        val columnNamesStr = columnNames.joinToString(separator = ",")
+
+        val dataList: Array<String> = arrayOf("*");
+
+        val data = db!!.query(tableName, dataList, "id = '$keyId'", null, null, null, "", null);
+
+        val values = ArrayList<Any>()
+        while (data.moveToNext()) {
+
+            for(idx in 0..(data.columnCount - 1)) {
+                var value = data.getString(idx)
+                val columnName = data.getColumnName(idx)
+
+                // println("value : $value")
+
+                if("id" == columnName) {
+                    value = newKeyId
+                }
+
+                values.add("\"$value\"")
+            }
+
+            break
+        }
+
+        val qry = "INSERT INTO $tableName ($columnNamesStr) values(${values.joinToString(separator = ",")})"
+
+        println(qry)
+
+        db!!.execSQL(qry)
+
+    }
+
+    private fun deleteRow(tableName:String, attrubuteKey: String) {
+
+        println("$attrubuteKey deleted..")
+
+        db!!.delete(tableName, "id = '$attrubuteKey'", null)
+    }
+
 }

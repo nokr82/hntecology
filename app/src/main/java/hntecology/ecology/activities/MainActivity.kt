@@ -222,6 +222,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             latlngs.clear()
             polygonsToUnion.clear()
 
+            splitRL.isSelected = false
+            combineRL.isSelected = false
+
             endDraw()
         }
 
@@ -719,6 +722,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     private var startGeoPoint: LatLng? = null
 
+    private var polylineForSplitGuide: Polyline? = null
+
     /**
      * Ontouch event will draw poly line along the touch points
      *
@@ -745,6 +750,34 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 startGeoPoint = googleMap.projection.fromScreenLocation(point)
 
+                if(splitRL.isSelected) {
+
+                    val polylineOptions = PolylineOptions()
+                    polylineOptions.add(startGeoPoint)
+
+                    polylineOptions.width(5f)
+                    polylineOptions.color(Color.YELLOW);
+
+                    polylineForSplitGuide = googleMap.addPolyline(polylineOptions)
+                }
+            }
+
+            MotionEvent.ACTION_MOVE -> {
+                if(splitRL.isSelected) {
+
+                    X1 = event.x.toInt()
+                    Y1 = event.y.toInt()
+                    point = Point()
+                    point.x = X1
+                    point.y = Y1
+                    val geoPoint = googleMap.projection.fromScreenLocation(point)
+
+                    val polylineForSplitGuidePoints = ArrayList<LatLng?>()
+                    polylineForSplitGuidePoints.add(startGeoPoint)
+                    polylineForSplitGuidePoints.add(geoPoint)
+
+                    polylineForSplitGuide?.points = polylineForSplitGuidePoints
+                }
             }
 
             MotionEvent.ACTION_UP -> {
@@ -766,20 +799,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     val oldAttributeKey = layerInfo.attrubuteKey
 
-                    val polylineOptions = PolylineOptions()
-                    polylineOptions.add(startGeoPoint)
-                    polylineOptions.add(geoPoint)
-
-                    polylineOptions.width(5f)
-                    polylineOptions.color(Color.YELLOW);
-
-                    val polyline = googleMap.addPolyline(polylineOptions)
-
-                    val splited = Utils.splitPolygon(toJTSPolygon(editingPolygon!!), toJTSLineString(polyline!!))
+                    val splited = Utils.splitPolygon(toJTSPolygon(editingPolygon!!), toJTSLineString(polylineForSplitGuide!!))
 
                     offSplitBtn()
 
-                    polyline.remove()
+                    polylineForSplitGuide?.remove()
 
                     editingPolygon?.remove()
                     editingPolygon = null
@@ -1049,7 +1073,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     private fun getAttributeKey(layer: Int):String {
 
-        var attributeKey = System.currentTimeMillis().toString()
+        var attributeKey = Utils.getToday("yyyy-MM-dd") + "_" + System.currentTimeMillis()
 
         var myLayer = currentLayer
         if(myLayer == -1 && layer > 0) {
@@ -1313,6 +1337,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             }
 
             break
+        }
+
+        if(values.size == 0) {
+            return
         }
 
         val qry = "INSERT INTO $tableName ($columnNamesStr) values(${values.joinToString(separator = ",")})"

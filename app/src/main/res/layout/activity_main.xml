@@ -137,14 +137,14 @@
                         android:gravity="center"/>
                 </RelativeLayout>
                 <RelativeLayout
-                    android:id="@+id/combineRL"
+                    android:id="@+id/unionRL"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_marginRight="4dp"
                     android:background="@android:color/white"
                     android:alpha="0.6">
                     <TextView
-                        android:id="@+id/combineTV"
+                        android:id="@+id/unionTV"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="도형 합치기"

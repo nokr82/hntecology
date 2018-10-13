@@ -223,7 +223,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             polygonsToUnion.clear()
 
             splitRL.isSelected = false
-            combineRL.isSelected = false
+            unionRL.isSelected = false
 
             endDraw()
         }
@@ -321,27 +321,38 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
 
         // 도형 합지기
-        combineRL.setOnClickListener {
+        unionRL.setOnClickListener {
 
             endDraw()
 
-            if(combineRL.isSelected) {
-
-                combineRL.isSelected = false
-                combineTV.setTextColor(Color.parseColor("#333333"))
-                combineTV.setTypeface(null, Typeface.NORMAL);
-
+            if(unionRL.isSelected) {
                 unionPolygons()
-
             } else {
-                combineRL.isSelected = true
-
-                combineTV.setTextColor(Color.BLACK)
-                combineTV.setTypeface(null, Typeface.BOLD);
+                onUnionBtn()
             }
 
 
         }
+    }
+
+    private fun onUnionBtn() {
+        unionRL.isSelected = true
+        unionTV.setTextColor(Color.BLACK)
+        unionTV.setTypeface(null, Typeface.BOLD)
+    }
+
+    private fun offUnionBtn() {
+        unionRL.isSelected = false
+        unionTV.setTextColor(Color.parseColor("#333333"))
+        unionTV.setTypeface(null, Typeface.NORMAL)
+
+        for(polygon in polygonsToUnion) {
+            polygon.strokeWidth = 2.0f
+            polygon.strokeColor = Color.WHITE
+        }
+
+        polygonsToUnion.clear()
+
     }
 
     private fun onSplitBtn() {
@@ -512,12 +523,22 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 LAYER_BIOTOPE -> {
 
-                    if(combineRL.isSelected) {
+                    if(unionRL.isSelected) {
+
+                        if(polygonsToUnion.contains(polygon)) {
+                            polygonsToUnion.remove(polygon)
+                            polygon.strokeWidth = 2.0f
+                            polygon.strokeColor = Color.WHITE
+                            return@setOnPolygonClickListener
+                        }
+
+                        if(polygonsToUnion.size == 2) {
+                            Utils.alert(context, "2 곳만 선택해서 합칠 수 있습니다.")
+                            return@setOnPolygonClickListener
+                        }
 
                         polygonsToUnion.add(polygon)
-
-                        println((polygon.tag as LayerInfo).attrubuteKey)
-
+                        polygon.strokeWidth = 10.0f
                         polygon.strokeColor = Color.MAGENTA
 
                         return@setOnPolygonClickListener
@@ -843,7 +864,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 } else {
 
-                    if(!combineRL.isSelected) {
+                    if(!unionRL.isSelected) {
                         // print("Poinnts array size : ${latlngs.size}")
 
                         // 3. biotope  , 6.birds , 7.Reptilia , 8.mammalia  9. fish, 10.insect, 11.flora , 13. zoobenthos
@@ -935,7 +956,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     private fun initEditingPolygon() {
         val polygonOptions = PolygonOptions()
         polygonOptions.fillColor(getColor())
-        polygonOptions.strokeColor(Color.TRANSPARENT)
+        polygonOptions.strokeWidth(2.0f)
+        polygonOptions.strokeColor(Color.WHITE)
         polygonOptions.addAll(latlngs)
 
         editingPolygon = googleMap.addPolygon(polygonOptions)
@@ -1210,21 +1232,41 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     private fun unionPolygons() {
 
+        if(polygonsToUnion.size != 2) {
+            Utils.alert(context, "2 곳을 선택하고 합치기를 하세요.")
+            return
+        }
+
         val geometries = Array<Geometry?>(polygonsToUnion.size) { null }
 
         for (idx in 0..(polygonsToUnion.size - 1)) {
             val polygon = polygonsToUnion.get(idx)
-            var createdPolygon = toJTSPolygon(polygon)
-            if(idx == 0) {
-                createdPolygon = createdPolygon.buffer(0.0006) as org.locationtech.jts.geom.Polygon
-            }
+            geometries[idx] = toJTSPolygon(polygon)
+        }
 
-            geometries[idx] = createdPolygon
+        val geometry0 = geometries[0]
+        val geometry1 = geometries[1]
+
+        if(geometry0 == null || geometry1 == null) {
+            Utils.alert(context, "선택한 곳이 이상합니다. 지우고 다시 해 주세요.")
+
+            offUnionBtn()
+
+            return
+        }
+
+        if(!geometry0!!.intersects(geometry1)) {
+            Utils.alert(context, "선택한 2 곳은 겹치지 않아 합칠 수 없습니다.")
+
+            offUnionBtn()
+
+            return
         }
 
         val gc = GeometryFactory().createGeometryCollection(geometries);
 
         try {
+
             val unioned = gc.union()
 
             println("unioned.geometryType : ${unioned.geometryType}")
@@ -1261,6 +1303,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 editingPolygon?.isClickable = true
 
                 polygonsToUnion.clear()
+
+                offUnionBtn()
             }
 
         } catch (e:Exception) {

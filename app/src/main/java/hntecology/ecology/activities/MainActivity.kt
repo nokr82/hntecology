@@ -618,6 +618,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         val zoom = googleMap.cameraPosition.zoom
         if(zoom < 16) {
             Utils.showNotification(context, "지도 레벨을 16이상으로 확대한 후 이용하세요.")
+            // return
+        }
+
+        if(zoom < 13) {
+            Utils.showNotification(context, "지도 레벨을 16이상으로 확대한 후 이용하세요. 정말 안되요 ㅠㅠㅠ")
             return
         }
 

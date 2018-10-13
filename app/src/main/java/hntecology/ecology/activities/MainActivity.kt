@@ -347,7 +347,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         unionTV.setTypeface(null, Typeface.NORMAL)
 
         for(polygon in polygonsToUnion) {
-            polygon.strokeWidth = 2.0f
+            polygon.strokeWidth = 5.0f
             polygon.strokeColor = Color.WHITE
         }
 
@@ -527,7 +527,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                         if(polygonsToUnion.contains(polygon)) {
                             polygonsToUnion.remove(polygon)
-                            polygon.strokeWidth = 2.0f
+                            polygon.strokeWidth = 5.0f
                             polygon.strokeColor = Color.WHITE
                             return@setOnPolygonClickListener
                         }
@@ -702,6 +702,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         override fun onProgressUpdate(vararg polygonOptions: PolygonOptions?) {
             val polygon = googleMap.addPolygon(polygonOptions[0])
+            polygon.zIndex = 0.0f
             polygon.tag = layerName
 
             val layerInfo = LayerInfo()
@@ -835,20 +836,17 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                         val polygonOptions = PolygonOptions()
                         polygonOptions.fillColor(getColor())
-                        polygonOptions.strokeColor(Color.TRANSPARENT)
+                        polygonOptions.strokeWidth(5.0f)
+                        polygonOptions.strokeColor(Color.WHITE)
 
                         for(coordinate in polygon.coordinates) {
                             polygonOptions.add(LatLng(coordinate.y, coordinate.x))
                         }
 
                         val po = googleMap.addPolygon(polygonOptions)
+                        // po.zIndex = 5.0f
 
                         val newAttributeKey = getAttributeKey(layerInfo.layer)
-
-                        println("newAttributeKey : $newAttributeKey")
-
-                        layerInfo.attrubuteKey = newAttributeKey
-
                         val newLayerInfo = LayerInfo()
                         newLayerInfo.attrubuteKey = newAttributeKey
                         newLayerInfo.layer = layerInfo.layer
@@ -956,12 +954,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     private fun initEditingPolygon() {
         val polygonOptions = PolygonOptions()
         polygonOptions.fillColor(getColor())
-        polygonOptions.strokeWidth(2.0f)
+        polygonOptions.strokeWidth(5.0f)
         polygonOptions.strokeColor(Color.WHITE)
         polygonOptions.addAll(latlngs)
 
         editingPolygon = googleMap.addPolygon(polygonOptions)
-
+        // editingPolygon?.zIndex = 5.0f
         editingPolygon?.isClickable = true
 
         val layerInfo = LayerInfo()
@@ -984,6 +982,17 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
 
         editingPolygon!!.points = latlngs
+
+        if(latlngs.size >= 3) {
+            val jtsPolygon = toJTSPolygon(editingPolygon!!)
+            if(!jtsPolygon.isValid) {
+                latlngs.remove(latlngs.last())
+                drawPolygon()
+
+                Utils.showNotification(context, "잘못된 지점입니다. 다른 곳을 선택해주세요.")
+            }
+        }
+
     }
 
     private fun startDraw() {
@@ -1291,7 +1300,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 val polygonOptions = PolygonOptions()
                 polygonOptions.fillColor(getColor())
-                polygonOptions.strokeColor(Color.TRANSPARENT)
+                polygonOptions.strokeWidth(5.0f)
+                polygonOptions.strokeColor(Color.WHITE)
 
                 for(coordinate in unioned.coordinates) {
                     polygonOptions.add(LatLng(coordinate.y, coordinate.x))
@@ -1299,6 +1309,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
 
                 editingPolygon = googleMap.addPolygon(polygonOptions)
+                // editingPolygon?.zIndex = 5.0f
                 editingPolygon?.tag = firstLayerInfo
                 editingPolygon?.isClickable = true
 

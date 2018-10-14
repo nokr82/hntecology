@@ -683,7 +683,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 if (geometry.geometryType.equals("Polygon")) {
                     val polygonOptions = PolygonOptions()
                     polygonOptions.fillColor(Color.parseColor(getLayerColor(layerName)))
-                    polygonOptions.strokeColor(Color.TRANSPARENT)
+                    polygonOptions.strokeWidth(5.0f)
+                    polygonOptions.strokeColor(Color.WHITE)
 
                     val coordinates = geometry.coordinates
                     for (j in 0..(coordinates.size - 1)) {
@@ -837,7 +838,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     for(idx in 0..(splited.numGeometries - 1)) {
                         var polygon = splited.getGeometryN(idx)
-                        polygon = polygon.buffer(-0.00002)
+                        // polygon = polygon.buffer(-0.00002)
 
                         val polygonOptions = PolygonOptions()
                         polygonOptions.fillColor(getColor())

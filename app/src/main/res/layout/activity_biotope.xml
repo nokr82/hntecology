@@ -148,13 +148,50 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
 
-                    <TextView
-                        android:layout_width="250dp"
-                        android:layout_height="match_parent"
-                        android:text="조사지 번호"
-                        style="@style/BiotopeTextView"
+
+                    <LinearLayout
                         android:background="@drawable/biotope_textview"
-                        />
+                        style="@style/BiotopeTextView"
+                        android:layout_width="250dp"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="조사지 번호"
+                            android:gravity="center"
+                            />
+
+                        <LinearLayout
+                            android:id="@+id/leftLL"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                            <TextView
+                                android:layout_marginLeft="20dp"
+                                android:layout_width="50dp"
+                                android:layout_height="match_parent"
+                                android:text="〈 "
+                                android:gravity="center"
+                                />
+                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/pageTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="0 / 0"
+                            android:gravity="center"
+                            />
+                        <LinearLayout
+                            android:id="@+id/rightLL"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                            <TextView
+                                android:layout_width="50dp"
+                                android:layout_height="match_parent"
+                                android:text=" 〉"
+                                android:gravity="center"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="0dp"

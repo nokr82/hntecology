@@ -519,6 +519,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
             var attrubuteKey = layerInfo.attrubuteKey
             var intent:Intent? = null
+
+
+            println("attrubuteKey================================================== : " + attrubuteKey)
+
             when(myLayer){
 
                 LAYER_BIOTOPE -> {
@@ -580,6 +584,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             println("aa : $attrubuteKey")
 
             intent!!.putExtra("id", attrubuteKey)
+
             startActivityForResult(intent, PolygonCallBackData)
         }
 
@@ -972,6 +977,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         layerInfo.attrubuteKey = getAttributeKey(layerInfo.layer)
         layerInfo.layer = currentLayer
 
+
+        println("getAttributeKey(layerInfo.layer) : " + getAttributeKey(layerInfo.layer))
+
         editingPolygon?.tag = layerInfo
 
     }
@@ -1110,7 +1118,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     private fun getAttributeKey(layer: Int):String {
 
-        var attributeKey = Utils.getToday("yyyy-MM-dd") + "_" + System.currentTimeMillis()
+//        var attributeKey = Utils.getToday("yyyy-MM-dd") + "_" + System.currentTimeMillis()
+        var attributeKey:String = System.currentTimeMillis().toString()
 
         var myLayer = currentLayer
         if(myLayer == -1 && layer > 0) {

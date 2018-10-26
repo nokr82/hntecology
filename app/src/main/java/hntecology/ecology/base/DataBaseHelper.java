@@ -275,13 +275,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void insertbiotope_attribute(Biotope_attribute biotope_attribute) {
         //37 column
         String query = "INSERT INTO biotopeAttribute";
-        query += "(id,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,INV_INDEX,LU_GR_NUM,LU_TY_RATE,STAND_H,LC_GR_NUM,LC_TY,TY_MARK,GV_RATE,GV_STRUCT,DIS_RET,RESTOR_POT,COMP_INTA";
+        query += "(id,GROP_ID,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,INV_INDEX,LU_GR_NUM,LU_TY_RATE,STAND_H,LC_GR_NUM,LC_TY,TY_MARK,GV_RATE,GV_STRUCT,DIS_RET,RESTOR_POT,COMP_INTA";
         query += ",VP_INTA,IMP_FORM,BREA_DIA,FIN_EST,TRE_SPEC,TRE_FAMI,TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_H,STRE_BREA,STRE_COVE,SHR_SPEC,SHR_FAMI";
         query += ",SHR_SCIEN,SHR_H,STR_COVE,HER_SPEC,HER_FAMI,HER_SCIEN,HER_H,HER_COVE,PIC_FOLDER,WILD_ANI,BIOTOP_POT,UNUS_NOTE,GPS_LAT,GPS_LON,NEED_CONF,CONF_MOD)";
 
 
         query += " values (";
         query += " '" + biotope_attribute.getId() + "'";
+        query += ", '" + biotope_attribute.getGROP_ID() + "'";
         query += ", '" + biotope_attribute.getPRJ_NAME() + "'";
         query += ", '" + biotope_attribute.getINV_REGION() + "'";
         query += ", '" + biotope_attribute.getINV_PERSON() + "'";
@@ -333,6 +334,28 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", " + biotope_attribute.getGPS_LON() + "";
         query += ", '" + biotope_attribute.getNEED_CONF() + "'";
         query += ", '" + biotope_attribute.getCONF_MOD() + "'";
+        query += " ); ";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void tmpinsertbiotope_attribute(Biotope_attribute biotope_attribute) {
+        //37 column
+        String query = "INSERT INTO biotopeAttribute";
+        query += "(id,GROP_ID,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,INV_INDEX)";
+
+
+        query += " values (";
+        query += " '" + biotope_attribute.getId() + "'";
+        query += ", '" + biotope_attribute.getGROP_ID() + "'";
+        query += ", '" + biotope_attribute.getPRJ_NAME() + "'";
+        query += ", '" + biotope_attribute.getINV_REGION() + "'";
+        query += ", '" + biotope_attribute.getINV_PERSON() + "'";
+        query += ", '" + biotope_attribute.getINV_DT() + "'";
+        query += ", '" + biotope_attribute.getINV_TM() + "'";
+        query += ", (SELECT   strftime(\"%Y%m%d\",'now','localtime') || substr('00000' || cast(IFNULL(MAX(substr(INV_INDEX ,9,15)),0)+1 as text), -5, 5) FROM biotopeAttribute)";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();

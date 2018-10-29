@@ -16,454 +16,510 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <TextView
+                style="@style/BiotopeTextView"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
+                android:gravity="center"
+                android:text="야생조류 조사야장"
                 android:textColor="#333333"
                 android:textSize="20.2sp"
-                android:textStyle="bold"
-                android:text="야생조류 조사야장"
-                style="@style/BiotopeTextView"
-                android:gravity="center"
-                />
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <LinearLayout
+                        android:id="@+id/birdsleftLL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="20dp"
+                            android:gravity="center"
+                            android:text="〈 "
+                            android:textSize="30dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/birdspageTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="0 / 0" />
+
+                    <LinearLayout
+                        android:id="@+id/birdsrightLL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text="〉 "
+                            android:textSize="30dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
+
                 <TextView
+                    style="@style/BiotopeTextView"
                     android:layout_width="70dp"
                     android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="조사지역"/>
+                    android:text="조사지역" />
 
                 <EditText
                     android:id="@+id/invRegionET"
+                    style="@style/BiotopeTextView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
+                    android:gravity="left|center" />
+
                 <TextView
+                    style="@style/BiotopeTextView"
                     android:layout_width="70dp"
                     android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="조사일시"/>
+                    android:text="조사일시" />
 
                 <TextView
                     android:id="@+id/invDtTV"
+                    style="@style/BiotopeTextViewDisabled"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextViewDisabled"
-                    android:gravity="left|center"
-                    />
+                    android:gravity="left|center" />
+
                 <TextView
+                    style="@style/BiotopeTextView"
                     android:layout_width="70dp"
                     android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="조사자"/>
+                    android:text="조사자" />
 
                 <TextView
                     android:id="@+id/invPersonTV"
+                    style="@style/BiotopeTextViewDisabled"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextViewDisabled"
-                    android:gravity="left|center"
-                    />
+                    android:gravity="left|center" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
+                android:orientation="horizontal">
 
-                    android:text="날 씨"/>
+                <TextView
+                    style="@style/BiotopeTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+
+                    android:text="날 씨" />
 
 
                 <TextView
                     android:id="@+id/weatherTV"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
-                    android:text="바 람"/>
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="바 람" />
 
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
-                    android:text="풍 향"/>
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="풍 향" />
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
-                    android:text="기 온"/>
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="기 온" />
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
-                    android:text="기타사항"/>
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="기타사항" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
+
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextViewDisabled"
-                    android:gravity="center"
-                    android:hint="click"
                     android:id="@+id/btn1"
-                    />
-                <TextView
+                    style="@style/BiotopeTextViewDisabled"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextViewDisabled"
-                    android:hint="click"
-                    android:id="@+id/btn2"
-                    />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextViewDisabled"
                     android:gravity="center"
-                    android:hint="click"
+                    android:hint="click" />
+
+                <TextView
+                    android:id="@+id/btn2"
+                    style="@style/BiotopeTextViewDisabled"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="click" />
+
+                <TextView
                     android:id="@+id/btn3"
-                    />
-                <EditText
+                    style="@style/BiotopeTextViewDisabled"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
+                    android:gravity="center"
+                    android:hint="click" />
+
                 <EditText
+                    android:id="@+id/temperatureET"
+                    style="@style/BiotopeTextView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:gravity="left|center" />
+
+                <EditText
+                    android:id="@+id/etcET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="left|center" />
 
             </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-
-            >
-            <TextView
-                android:layout_width="200dp"
-                android:layout_height="match_parent"
-                style="@style/BiotopeTextView"
-                android:text="번호"/>
-
-            <TextView
-                android:id="@+id/numTV"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                style="@style/BiotopeTextViewDisabled"
-                android:gravity="left|center"
-                />
-        </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
 
                 >
+
                 <TextView
+                    style="@style/BiotopeTextView"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
+                    android:text="번호" />
+
+                <TextView
+                    android:id="@+id/numTV"
+                    style="@style/BiotopeTextViewDisabled"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="left|center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                >
+
+                <TextView
                     style="@style/BiotopeTextView"
-                    android:text="시간"/>
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:text="시간" />
 
                 <TextView
                     android:id="@+id/timeTV"
+                    style="@style/BiotopeTextViewDisabled"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextViewDisabled"
-                    android:gravity="left|center"
-                    />
+                    android:gravity="left|center" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                >
+                android:layout_height="50dp">
+
                 <TextView
+                    style="@style/BiotopeTextView"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="종 명"/>
+                    android:text="종 명" />
 
                 <TextView
                     android:id="@+id/birdsTV"
+                    style="@style/BiotopeTextViewDisabled"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextViewDisabled"
-                    android:gravity="left|center"
-                    />
+                    android:gravity="left|center" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                >
+                android:layout_height="50dp">
+
                 <TextView
+                    style="@style/BiotopeTextView"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="과 명"/>
+                    android:text="과 명" />
 
                 <TextView
                     android:id="@+id/familyNameTV"
+                    style="@style/BiotopeTextViewDisabled"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextViewDisabled"
-                    android:gravity="left|center"
-                    />
+                    android:gravity="left|center" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                >
+                android:layout_height="50dp">
+
                 <TextView
+                    style="@style/BiotopeTextView"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="학 명"/>
+                    android:text="학 명" />
 
                 <TextView
                     android:id="@+id/zoologicalTV"
+                    style="@style/BiotopeTextViewDisabled"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextViewDisabled"
-                    android:gravity="left|center"
-                    />
+                    android:gravity="left|center" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                >
+                android:layout_height="50dp">
+
                 <TextView
+                    style="@style/BiotopeTextView"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="개체수"/>
+                    android:text="개체수" />
+
                 <EditText
+                    style="@style/BiotopeTextView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextView"
+                    android:id="@+id/indicntET"
                     android:gravity="left|center"
-                    android:inputType="number"
-                    />
+                    android:inputType="number" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                >
+                android:layout_height="50dp">
+
                 <TextView
+                    style="@style/BiotopeTextView"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="관찰지역현황\n (토지이용유형,군집형,층위구조)"/>
+                    android:text="관찰지역현황\n (토지이용유형,군집형,층위구조)" />
+
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
                     style="@style/BiotopeTextViewDisabled"
-                    android:gravity="left|center"
-                    />
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/obsstatTV"
+                    android:gravity="left|center" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                >
+                android:layout_height="50dp">
+
                 <TextView
+                    style="@style/BiotopeTextView"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="이용대상 \n (종명,대상명)"/>
+                    android:text="이용대상 \n (종명,대상명)" />
+
                 <TextView
                     android:id="@+id/useTarTV"
+                    style="@style/BiotopeTextViewDisabled"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextViewDisabled"
-                    android:gravity="left|center"
-                    />
+                    android:gravity="left|center" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/useTarSpLL"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:visibility="gone"
-                >
+                android:visibility="gone">
+
                 <TextView
+                    style="@style/BiotopeTextView"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="이용대상 \n 수종명 기록"/>
+                    android:text="이용대상 \n 수종명 기록" />
+
                 <EditText
                     android:id="@+id/useTarSpET"
+                    style="@style/BiotopeTextView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
+                    android:gravity="left|center" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                >
+                android:layout_height="50dp">
+
                 <TextView
+                    style="@style/BiotopeTextView"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="이용층위"/>
+                    android:text="이용층위" />
+
                 <TextView
                     android:id="@+id/useLayerTV"
+                    style="@style/BiotopeTextViewDisabled"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextViewDisabled"
-                    android:gravity="left|center"
-                    />
+                    android:gravity="left|center" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                >
+                android:layout_height="50dp">
+
                 <TextView
+                    style="@style/BiotopeTextView"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="주요행위"/>
+                    android:text="주요행위" />
+
                 <TextView
                     android:id="@+id/mjActTV"
+                    style="@style/BiotopeTextViewDisabled"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextViewDisabled"
-                    android:gravity="left|center"
-                    />
+                    android:gravity="left|center" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/mjActPrLL"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:visibility="gone"
-                >
+                android:visibility="gone">
+
                 <TextView
+                    style="@style/BiotopeTextView"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="주요행위\n번식행동"/>
+                    android:text="주요행위\n번식행동" />
 
                 <EditText
                     android:id="@+id/mjActPrET"
+                    style="@style/BiotopeTextView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
+                    android:gravity="left|center" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                >
+                android:layout_height="50dp">
+
                 <TextView
+                    style="@style/BiotopeTextView"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="GPS 좌표"/>
+                    android:text="GPS 좌표" />
 
                 <TextView
-                    android:id="@+id/gpsTV"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:id="@+id/gpslatTV"
                     style="@style/BiotopeTextViewDisabled"
-                    android:gravity="left|center"
-                    />
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center" />
+                <TextView
+                    style="@style/BiotopeTextViewDisabled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text=" / "
+                    android:gravity="left|center" />
+                <TextView
+                    android:id="@+id/gpslonTV"
+                    style="@style/BiotopeTextViewDisabled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
+
                 <Button
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="취소"
                     android:id="@+id/cancelBtn"
                     style="@style/dlgcommonButton"
-                    />
-                <Button
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="저장"
-                    android:id="@+id/saveBtn"
+                    android:text="취소" />
+
+                <Button
+                    android:id="@+id/birdssaveBtn"
                     style="@style/dlgcommonButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="2dp"
-                    />
+                    android:layout_weight="1"
+                    android:text="저장" />
 
             </LinearLayout>
+
             <Button
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="삭제"
                 android:id="@+id/delBtn"
                 style="@style/dlgcommonButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:layout_marginTop="2dp"
-                />
+                android:text="삭제" />
         </LinearLayout>
 
     </ScrollView>

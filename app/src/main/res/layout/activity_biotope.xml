@@ -140,6 +140,49 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:id="@+id/leftLL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:layout_marginRight="20dp"
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:text="〈 "
+                            android:textSize="30dp"
+                            android:gravity="center"
+                            />
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/pageTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="0 / 0"
+                        android:gravity="center"
+                        />
+                    <LinearLayout
+                        android:id="@+id/rightLL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:layout_marginLeft="20dp"
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:text="〉 "
+                            android:textSize="30dp"
+                            android:gravity="center"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 >
@@ -161,36 +204,6 @@
                             android:gravity="center"
                             />
 
-                        <LinearLayout
-                            android:id="@+id/leftLL"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent">
-                            <TextView
-                                android:layout_marginLeft="20dp"
-                                android:layout_width="50dp"
-                                android:layout_height="match_parent"
-                                android:text="〈 "
-                                android:gravity="center"
-                                />
-                        </LinearLayout>
-                        <TextView
-                            android:id="@+id/pageTV"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:text="0 / 0"
-                            android:gravity="center"
-                            />
-                        <LinearLayout
-                            android:id="@+id/rightLL"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent">
-                            <TextView
-                                android:layout_width="50dp"
-                                android:layout_height="match_parent"
-                                android:text=" 〉"
-                                android:gravity="center"
-                                />
-                        </LinearLayout>
                     </LinearLayout>
 
                     <TextView

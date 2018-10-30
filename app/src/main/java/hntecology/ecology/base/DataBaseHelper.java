@@ -14,7 +14,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import hntecology.ecology.model.Biotope_attribute;
+import hntecology.ecology.model.Birds_attribute;
 import hntecology.ecology.model.GpsSet;
+import hntecology.ecology.model.Insect_attribute;
+import hntecology.ecology.model.Mammal_attribute;
+import hntecology.ecology.model.Reptilia_attribute;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -165,6 +169,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String query = "create table if not exists ";
         query += "biotopeattribute ( id String PRIMARY KEY";
+        query += ",GROP_ID	   String";
         query += ",PRJ_NAME	   String";
         query += ",INV_REGION	String";
         query += ",INV_PERSON	String";
@@ -218,6 +223,133 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ",CONF_MOD	String";
         query += ");";
         db.execSQL(query);
+
+
+        String querybrids = "create table if not exists ";
+        querybrids += "birdsAttribute ( id String PRIMARY KEY";
+        querybrids += ",GROP_ID	   String";
+        querybrids += ",PRJ_NAME	   String";
+        querybrids += ",INV_REGION	String";
+        querybrids += ",INV_DT	    String";
+        querybrids += ",INV_PERSON	String";
+        querybrids += ",WEATHER	String";
+        querybrids += ",WIND 	String";
+        querybrids += ",WIND_DIRE	String";
+        querybrids += ",TEMPERATUR	    Float";
+        querybrids += ",ETC	String";
+        querybrids += ",NUM	    Int";
+        querybrids += ",INV_TM	    String";
+        querybrids += ",SPEC_NM	    String";
+        querybrids += ",FAMI_NM	String";
+        querybrids += ",SCIEN_NM	    String";
+        querybrids += ",INDI_CNT	Integer";
+        querybrids += ",OBS_STAT	String";
+        querybrids += ",OBS_ST_ETC	    String";
+        querybrids += ",USE_TAR	String";
+        querybrids += ",USE_TAR_SP	String";
+        querybrids += ",USE_LAYER	    String";
+        querybrids += ",MJ_ACT	String";
+        querybrids += ",MJ_ACT_PR	String";
+        querybrids += ",GPS_LAT	    Float";
+        querybrids += ",GPS_LON	    Float";
+        querybrids += ");";
+        db.execSQL(querybrids);
+
+        String queryreptilia = "create table if not exists ";
+        queryreptilia += "reptiliaAttribute ( id String PRIMARY KEY";
+        queryreptilia += ",GROP_ID	   String";
+        queryreptilia += ",PRJ_NAME	   String";
+        queryreptilia += ",INV_REGION	String";
+        queryreptilia += ",INV_DT	    String";
+        queryreptilia += ",INV_PERSON	String";
+        queryreptilia += ",WEATHER	String";
+        queryreptilia += ",WIND 	String";
+        queryreptilia += ",WIND_DIRE	String";
+        queryreptilia += ",TEMPERATUR	    Float";
+        queryreptilia += ",ETC	String";
+        queryreptilia += ",NUM	    Int";
+        queryreptilia += ",INV_TM	    String";
+        queryreptilia += ",SPEC_NM	    String";
+        queryreptilia += ",FAMI_NM	String";
+        queryreptilia += ",SCIEN_NM	    String";
+        queryreptilia += ",IN_CNT_ADU	Integer";
+        queryreptilia += ",IN_CNT_LAR	Integer";
+        queryreptilia += ",IN_CNT_EGG	Integer";
+        queryreptilia += ",HAB_RIVEER	String";
+        queryreptilia += ",HAB_EDGE	    String";
+        queryreptilia += ",WATER_IN	String";
+        queryreptilia += ",WATER_OUT	String";
+        queryreptilia += ",WATER_CONT	    String";
+        queryreptilia += ",WATER_QUAL	String";
+        queryreptilia += ",WATER_DEPT	Integer";
+        queryreptilia += ",HAB_AREA_W	Integer";
+        queryreptilia += ",HAB_AREA_H	Integer";
+        queryreptilia += ",GPS_LAT	    Float";
+        queryreptilia += ",GPS_LON	    Float";
+        queryreptilia += ");";
+        db.execSQL(queryreptilia);
+
+        String querymammal = "create table if not exists ";
+        querymammal += "mammalAttribute ( id String PRIMARY KEY";
+        querymammal += ",GROP_ID	   String";
+        querymammal += ",PRJ_NAME	   String";
+        querymammal += ",INV_REGION	String";
+        querymammal += ",INV_DT	    String";
+        querymammal += ",INV_PERSON	String";
+        querymammal += ",WEATHER	String";
+        querymammal += ",WIND 	String";
+        querymammal += ",WIND_DIRE	String";
+        querymammal += ",TEMPERATUR	    Float";
+        querymammal += ",ETC	String";
+        querymammal += ",NUM	    Int";
+        querymammal += ",INV_TM	    String";
+        querymammal += ",SPEC_NM	    String";
+        querymammal += ",FAMI_NM	String";
+        querymammal += ",SCIEN_NM	    String";
+        querymammal += ",OBS_TY	String";
+        querymammal += ",OBS_TY_ETC	String";
+        querymammal += ",INDI_CNT	Integer";
+        querymammal += ",OB_PT_CHAR	String";
+        querymammal += ",UNUS_NOTE	    String";
+        querymammal += ",GPS_LAT	Float";
+        querymammal += ",GPS_LON	Float";
+        querymammal += ",UN_SPEC	    String";
+        querymammal += ",UN_SPEC_RE	String";
+        querymammal += ",TR_EASY	Integer";
+        querymammal += ",TR_EASY_RE	Integer";
+        querymammal += ");";
+        db.execSQL(querymammal);
+
+        String queryinsect = "create table if not exists ";
+        querymammal += "insectAttribute ( id String PRIMARY KEY";
+        querymammal += ",GROP_ID	   String";
+        querymammal += ",PRJ_NAME	   String";
+        querymammal += ",INV_REGION	String";
+        querymammal += ",INV_DT	    String";
+        querymammal += ",INV_PERSON	String";
+        querymammal += ",WEATHER	String";
+        querymammal += ",WIND 	String";
+        querymammal += ",WIND_DIRE	String";
+        querymammal += ",TEMPERATUR	    Float";
+        querymammal += ",ETC	String";
+        querymammal += ",NUM	    Int";
+        querymammal += ",INV_TM	    String";
+        querymammal += ",SPEC_NM	    String";
+        querymammal += ",FAMI_NM	String";
+        querymammal += ",SCIEN_NM	    String";
+        querymammal += ",INDI_CNT	Integer";
+        querymammal += ",OBS_STAT	String";
+        querymammal += ",OBS_ST_ETC	String";
+        querymammal += ",USE_TAR	String";
+        querymammal += ",USER_TA_ETC	    String";
+        querymammal += ",MJ_ACT	    String";
+        querymammal += ",MJ_ACT_ETC	    String";
+        querymammal += ",INV_MN_ETC	    String";
+        querymammal += ",UNUS_NOTE	String";
+        querymammal += ",GPS_LAT	Float";
+        querymammal += ",GPS_LON	Float";
+        querymammal += ");";
+        db.execSQL(querymammal);
 
 //        query = "create table if not exists ";
 //        query += "birds ( no String";
@@ -275,7 +407,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void insertbiotope_attribute(Biotope_attribute biotope_attribute) {
         //37 column
         String query = "INSERT INTO biotopeAttribute";
-        query += "(id,GROP_ID,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,INV_INDEX,LU_GR_NUM,LU_TY_RATE,STAND_H,LC_GR_NUM,LC_TY,TY_MARK,GV_RATE,GV_STRUCT,DIS_RET,RESTOR_POT,COMP_INTA";
+        query += "(id,GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,INV_TM,INV_INDEX,LU_GR_NUM,LU_TY_RATE,STAND_H,LC_GR_NUM,LC_TY,TY_MARK,GV_RATE,GV_STRUCT,DIS_RET,RESTOR_POT,COMP_INTA";
         query += ",VP_INTA,IMP_FORM,BREA_DIA,FIN_EST,TRE_SPEC,TRE_FAMI,TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_H,STRE_BREA,STRE_COVE,SHR_SPEC,SHR_FAMI";
         query += ",SHR_SCIEN,SHR_H,STR_COVE,HER_SPEC,HER_FAMI,HER_SCIEN,HER_H,HER_COVE,PIC_FOLDER,WILD_ANI,BIOTOP_POT,UNUS_NOTE,GPS_LAT,GPS_LON,NEED_CONF,CONF_MOD)";
 
@@ -341,27 +473,285 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void tmpinsertbiotope_attribute(Biotope_attribute biotope_attribute) {
-        //37 column
-        String query = "INSERT INTO biotopeAttribute";
-        query += "(id,GROP_ID,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,INV_INDEX)";
 
+    public void insertbirds_attribute(Birds_attribute birds_attribute){
+        String query = "INSERT INTO birdsAttribute";
+        query += "(id,GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
+        query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,OBS_STAT,OBS_ST_ETC";
+        query += ",USE_TAR,USE_TAR_SP,USE_LAYER,MJ_ACT,MJ_ACT_PR,GPS_LAT,GPS_LON)";
 
         query += " values (";
-        query += " '" + biotope_attribute.getId() + "'";
-        query += ", '" + biotope_attribute.getGROP_ID() + "'";
-        query += ", '" + biotope_attribute.getPRJ_NAME() + "'";
-        query += ", '" + biotope_attribute.getINV_REGION() + "'";
-        query += ", '" + biotope_attribute.getINV_PERSON() + "'";
-        query += ", '" + biotope_attribute.getINV_DT() + "'";
-        query += ", '" + biotope_attribute.getINV_TM() + "'";
-        query += ", (SELECT   strftime(\"%Y%m%d\",'now','localtime') || substr('00000' || cast(IFNULL(MAX(substr(INV_INDEX ,9,15)),0)+1 as text), -5, 5) FROM biotopeAttribute)";
+        query += " '" + birds_attribute.getId() + "'";
+        query += ", '" + birds_attribute.getGROP_ID() + "'";
+        query += ", '" + birds_attribute.getPRJ_NAME() + "'";
+        query += ", '" + birds_attribute.getINV_REGION() + "'";
+        query += ", '" + birds_attribute.getINV_DT() + "'";
+        query += ", '" + birds_attribute.getINV_PERSON() + "'";
+        query += ", '" + birds_attribute.getWEATHER() + "'";
+        query += ", '" + birds_attribute.getWIND() + "'";
+        query += ", '" + birds_attribute.getWIND_DIRE() + "'";
+        query += ", '" + birds_attribute.getTEMPERATUR() + "'";
+        query += ", '" + birds_attribute.getETC() + "'";
+        query += ", (SELECT   strftime(\"%Y%m%d\",'now','localtime') || substr('00000' || cast(IFNULL(MAX(substr(NUM ,9,15)),0)+1 as text), -15, 15) FROM birdsAttribute)";
+        query += ", '" + birds_attribute.getINV_TM() + "'";
+        query += ", '" + birds_attribute.getSPEC_NM() + "'";
+        query += ", '" + birds_attribute.getFAMI_NM() + "'";
+        query += ", '" + birds_attribute.getSCIEN_NM() + "'";
+        query += ", '" + birds_attribute.getINDI_CNT() + "'";
+        query += ", '" + birds_attribute.getOBS_STAT() + "'";
+        query += ", '" + birds_attribute.getOBS_ST_ETC() + "'";
+        query += ", '" + birds_attribute.getUSE_TAR() + "'";
+        query += ", '" + birds_attribute.getUSE_TAR_SP() + "'";
+        query += ", '" + birds_attribute.getUSE_LAYER() + "'";
+        query += ", '" + birds_attribute.getMJ_ACT() + "'";
+        query += ", '" + birds_attribute.getMJ_ACT_PR() + "'";
+        query += ", '" + birds_attribute.getGPS_LAT() + "'";
+        query += ", '" + birds_attribute.getGPS_LON() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();
     }
+
+    public void insertreptilia_attribute(Reptilia_attribute reptilia_attribute){
+        String query = "INSERT INTO reptiliaAttribute";
+        query += "(id,GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
+        query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,IN_CNT_ADU,IN_CNT_LAR,IN_CNT_EGG";
+        query += ",HAB_RIVEER,HAB_EDGE,WATER_IN,WATER_OUT,WATER_CONT,WATER_QUAL,WATER_DEPT";
+        query += ",HAB_AREA_W,HAB_AREA_H,GPS_LAT,GPS_LON)";
+
+
+        query += " values (";
+        query += " '" + reptilia_attribute.getId() + "'";
+        query += ", '" + reptilia_attribute.getGROP_ID() + "'";
+        query += ", '" + reptilia_attribute.getPRJ_NAME() + "'";
+        query += ", '" + reptilia_attribute.getINV_REGION() + "'";
+        query += ", '" + reptilia_attribute.getINV_DT() + "'";
+        query += ", '" + reptilia_attribute.getINV_PERSON() + "'";
+        query += ", '" + reptilia_attribute.getWEATHER() + "'";
+        query += ", '" + reptilia_attribute.getWIND() + "'";
+        query += ", '" + reptilia_attribute.getWIND_DIRE() + "'";
+        query += ", '" + reptilia_attribute.getTEMPERATUR() + "'";
+        query += ", '" + reptilia_attribute.getETC() + "'";
+        query += ", (SELECT   strftime(\"%Y%m%d\",'now','localtime') || substr('00000' || cast(IFNULL(MAX(substr(NUM ,9,15)),0)+1 as text), -15, 15) FROM birdsAttribute)";
+        query += ", '" + reptilia_attribute.getINV_TM() + "'";
+        query += ", '" + reptilia_attribute.getSPEC_NM() + "'";
+        query += ", '" + reptilia_attribute.getFAMI_NM() + "'";
+        query += ", '" + reptilia_attribute.getSCIEN_NM() + "'";
+        query += ", '" + reptilia_attribute.getIN_CNT_ADU() + "'";
+        query += ", '" + reptilia_attribute.getIN_CNT_LAR() + "'";
+        query += ", '" + reptilia_attribute.getIN_CNT_EGG() + "'";
+        query += ", '" + reptilia_attribute.getHAB_RIVEER() + "'";
+        query += ", '" + reptilia_attribute.getHAB_EDGE() + "'";
+        query += ", '" + reptilia_attribute.getWATER_IN() + "'";
+        query += ", '" + reptilia_attribute.getWATER_OUT() + "'";
+        query += ", '" + reptilia_attribute.getWATER_CONT() + "'";
+        query += ", '" + reptilia_attribute.getWATER_QUAL() + "'";
+        query += ", '" + reptilia_attribute.getWATER_DEPT() + "'";
+        query += ", '" + reptilia_attribute.getHAB_AREA_W() + "'";
+        query += ", '" + reptilia_attribute.getHAB_AREA_H() + "'";
+        query += ", '" + reptilia_attribute.getGPS_LAT() + "'";
+        query += ", '" + reptilia_attribute.getGPS_LON() + "'";
+        query += " ); ";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void insertmammal_attribute(Mammal_attribute mammal_attribute){
+        String query = "INSERT INTO mammalAttribute";
+        query += "(id,GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
+        query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,OBS_TY,OBS_TY_ETC,INDI_CNT";
+        query += ",OB_PT_CHAR,UNUS_NOTE,GPS_LAT,GPS_LON,UN_SPEC,UN_SPEC_RE,TR_EASY,TR_EASY_RE)";
+
+        query += " values (";
+        query += " '" + mammal_attribute.getId() + "'";
+        query += ", '" + mammal_attribute.getGROP_ID() + "'";
+        query += ", '" + mammal_attribute.getPRJ_NAME() + "'";
+        query += ", '" + mammal_attribute.getINV_REGION() + "'";
+        query += ", '" + mammal_attribute.getINV_DT() + "'";
+        query += ", '" + mammal_attribute.getINV_PERSON() + "'";
+        query += ", '" + mammal_attribute.getWEATHER() + "'";
+        query += ", '" + mammal_attribute.getWIND() + "'";
+        query += ", '" + mammal_attribute.getWIND_DIRE() + "'";
+        query += ", '" + mammal_attribute.getTEMPERATUR() + "'";
+        query += ", '" + mammal_attribute.getETC() + "'";
+        query += ", (SELECT   strftime(\"%Y%m%d\",'now','localtime') || substr('00000' || cast(IFNULL(MAX(substr(NUM ,9,15)),0)+1 as text), -15, 15) FROM birdsAttribute)";
+        query += ", '" + mammal_attribute.getINV_TM() + "'";
+        query += ", '" + mammal_attribute.getSPEC_NM() + "'";
+        query += ", '" + mammal_attribute.getFAMI_NM() + "'";
+        query += ", '" + mammal_attribute.getSCIEN_NM() + "'";
+        query += ", '" + mammal_attribute.getOBS_TY() + "'";
+        query += ", '" + mammal_attribute.getOBS_TY_ETC() + "'";
+        query += ", '" + mammal_attribute.getINDI_CNT() + "'";
+        query += ", '" + mammal_attribute.getOB_PT_CHAR() + "'";
+        query += ", '" + mammal_attribute.getUNUS_NOTE() + "'";
+        query += ", '" + mammal_attribute.getGPS_LAT() + "'";
+        query += ", '" + mammal_attribute.getGPS_LON() + "'";
+        query += ", '" + mammal_attribute.getUN_SPEC() + "'";
+        query += ", '" + mammal_attribute.getUN_SPEC_RE() + "'";
+        query += ", '" + mammal_attribute.getTR_EASY() + "'";
+        query += ", '" + mammal_attribute.getTR_EASY_RE() + "'";
+        query += " ); ";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void insertinsect_attribute(Insect_attribute insect_attribute){
+        String query = "INSERT INTO insectAttribute";
+        query += "(id,GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
+        query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,OBS_STAT,OBS_ST_ETC";
+        query += ",USE_TAR,USER_TA_ETC,MJ_ACT,MJ_ACT_ETC,INV_MEAN,INV_MN_ETC,UNUS_NOTE,GPS_LAT,GPS_LON)";
+
+        query += " values (";
+        query += " '" + insect_attribute.getId() + "'";
+        query += ", '" + insect_attribute.getGROP_ID() + "'";
+        query += ", '" + insect_attribute.getPRJ_NAME() + "'";
+        query += ", '" + insect_attribute.getINV_REGION() + "'";
+        query += ", '" + insect_attribute.getINV_DT() + "'";
+        query += ", '" + insect_attribute.getINV_PERSON() + "'";
+        query += ", '" + insect_attribute.getWEATHER() + "'";
+        query += ", '" + insect_attribute.getWIND() + "'";
+        query += ", '" + insect_attribute.getWIND_DIRE() + "'";
+        query += ", '" + insect_attribute.getTEMPERATUR() + "'";
+        query += ", '" + insect_attribute.getETC() + "'";
+        query += ", (SELECT   strftime(\"%Y%m%d\",'now','localtime') || substr('00000' || cast(IFNULL(MAX(substr(NUM ,9,15)),0)+1 as text), -15, 15) FROM birdsAttribute)";
+        query += ", '" + insect_attribute.getINV_TM() + "'";
+        query += ", '" + insect_attribute.getSPEC_NM() + "'";
+        query += ", '" + insect_attribute.getFAMI_NM() + "'";
+        query += ", '" + insect_attribute.getSCIEN_NM() + "'";
+        query += ", '" + insect_attribute.getINDI_CNT() + "'";
+        query += ", '" + insect_attribute.getOBS_STAT() + "'";
+        query += ", '" + insect_attribute.getOBS_ST_ETC() + "'";
+        query += ", '" + insect_attribute.getUSE_TAR() + "'";
+        query += ", '" + insect_attribute.getUSER_TA_ETC() + "'";
+        query += ", '" + insect_attribute.getMJ_ACT() + "'";
+        query += ", '" + insect_attribute.getMJ_ACT_ETC() + "'";
+        query += ", '" + insect_attribute.getINV_MEAN() + "'";
+        query += ", '" + insect_attribute.getINV_MN_ETC() + "'";
+        query += ", '" + insect_attribute.getUNUS_NOTE() + "'";
+        query += ", '" + insect_attribute.getGPS_LAT() + "'";
+        query += ", '" + insect_attribute.getGPS_LON() + "'";
+        query += " ); ";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+
+    public void deletereptilia_attribute(Reptilia_attribute reptilia_attribute,String page) {
+        String query = "DELETE FROM reptiliaAttribute WHERE id = '" + page + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void deletebirds_attribute(Birds_attribute birds_attribute,String page) {
+        String query = "DELETE FROM birdsAttribute WHERE id = '" + page + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void deletebiotope_attribute(Biotope_attribute biotope_attribute,String page) {
+        String query = "DELETE FROM biotopeAttribute WHERE id = '" + page + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void deletemammal_attribute(Mammal_attribute mammal_attribute,String page) {
+        String query = "DELETE FROM mammalAttribute WHERE id = '" + page + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void deleteinsect_attribute(Insect_attribute insect_attribute,String page) {
+        String query = "DELETE FROM insectAttribute WHERE id = '" + page + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void updatereptilia_attribute(Reptilia_attribute reptilia_attribute,String page) {
+
+        String query = "UPDATE reptiliaAttribute SET  " +
+                "INV_REGION='" + reptilia_attribute.getINV_REGION() + "'"
+                + ",INV_DT='" + reptilia_attribute.getINV_DT() + "'"
+                + ",INV_PERSON='" + reptilia_attribute.getINV_PERSON() + "'"
+                + ",WEATHER='" + reptilia_attribute.getWEATHER() + "'"
+                + ",WIND='" + reptilia_attribute.getWIND() + "'"
+                + ",WIND_DIRE='" + reptilia_attribute.getWIND_DIRE() + "'"
+                + ",TEMPERATUR='" + reptilia_attribute.getTEMPERATUR() + "'"
+                + ",NUM='" + reptilia_attribute.getNUM() + "'"
+                + ",INV_TM='" + reptilia_attribute.getINV_TM() + "'"
+                + ",SPEC_NM='" + reptilia_attribute.getSPEC_NM() + "'"
+                + ",FAMI_NM='" + reptilia_attribute.getFAMI_NM() + "'"
+                + ",SCIEN_NM='" + reptilia_attribute.getSCIEN_NM() + "'"
+                + ",IN_CNT_ADU='" + reptilia_attribute.getIN_CNT_ADU() + "'"
+                + ",IN_CNT_LAR='" + reptilia_attribute.getIN_CNT_LAR() + "'"
+                + ",IN_CNT_EGG='" + reptilia_attribute.getIN_CNT_EGG() + "'"
+                + ",HAB_RIVEER='" + reptilia_attribute.getHAB_RIVEER() + "'"
+                + ",HAB_EDGE='" + reptilia_attribute.getHAB_EDGE() + "'"
+                + ",WATER_IN='" + reptilia_attribute.getWATER_IN() + "'"
+                + ",WATER_OUT='" + reptilia_attribute.getWATER_OUT() + "'"
+                + ",WATER_CONT='" + reptilia_attribute.getWATER_CONT() + "'"
+                + ",WATER_QUAL='" + reptilia_attribute.getWATER_QUAL() + "'"
+                + ",WATER_DEPT='" + reptilia_attribute.getWATER_DEPT() + "'"
+                + ",HAB_AREA_W='" + reptilia_attribute.getHAB_AREA_W() + "'"
+                + ",HAB_AREA_H='" + reptilia_attribute.getHAB_AREA_H() + "'"
+                + ",GPS_LAT='" + reptilia_attribute.getGPS_LAT() + "'"
+                + ",GPS_LON='" + reptilia_attribute.getGPS_LON() + "'" +
+                "where id = '" + page + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+    public void updatebirds_attribute(Birds_attribute birds_attribute,String page) {
+
+        String query = "UPDATE birdsAttribute SET  " +
+                "INV_REGION='" + birds_attribute.getINV_REGION() + "'"
+                + ",INV_DT='" + birds_attribute.getINV_DT() + "'"
+                + ",INV_PERSON='" + birds_attribute.getINV_PERSON() + "'"
+                + ",WEATHER='" + birds_attribute.getWEATHER() + "'"
+                + ",WIND='" + birds_attribute.getWIND() + "'"
+                + ",WIND_DIRE='" + birds_attribute.getWIND_DIRE() + "'"
+                + ",TEMPERATUR='" + birds_attribute.getTEMPERATUR() + "'"
+                + ",NUM='" + birds_attribute.getNUM() + "'"
+                + ",INV_TM='" + birds_attribute.getINV_TM() + "'"
+                + ",SPEC_NM='" + birds_attribute.getSPEC_NM() + "'"
+                + ",FAMI_NM='" + birds_attribute.getFAMI_NM() + "'"
+                + ",SCIEN_NM='" + birds_attribute.getSCIEN_NM() + "'"
+                + ",INDI_CNT='" + birds_attribute.getINDI_CNT() + "'"
+                + ",OBS_STAT='" + birds_attribute.getOBS_STAT() + "'"
+                + ",OBS_ST_ETC='" + birds_attribute.getOBS_ST_ETC() + "'"
+                + ",USE_TAR='" + birds_attribute.getUSE_TAR() + "'"
+                + ",USE_TAR_SP='" + birds_attribute.getUSE_TAR_SP() + "'"
+                + ",USE_LAYER='" + birds_attribute.getUSE_LAYER() + "'"
+                + ",MJ_ACT='" + birds_attribute.getMJ_ACT() + "'"
+                + ",MJ_ACT_PR='" + birds_attribute.getMJ_ACT_PR() + "'"
+                + ",GPS_LAT='" + birds_attribute.getGPS_LAT() + "'"
+                + ",GPS_LON='" + birds_attribute.getGPS_LON() + "'" +
+                 "where id = '" + page + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
 //
 //    public void backupMember(Member member) {
 //        String query = "INSERT INTO members ( member_id, reading ) ";
@@ -375,15 +765,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 //        db.close();
 //    }
 
-    public void deletebiotope_attribute(Biotope_attribute biotope_attribute) {
-        String query = "DELETE FROM biotopeAttribute WHERE id = '" + biotope_attribute.getId() + "'";
 
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL(query);
-        db.close();
-    }
 
-    public void updatebiotope_attribute(Biotope_attribute biotope_attribute) {
+
+    public void updatebiotope_attribute(Biotope_attribute biotope_attribute,String page) {
 
         String query = "UPDATE biotopeAttribute SET  " +
                 "INV_REGION='" + biotope_attribute.getINV_REGION() + "'"
@@ -435,7 +820,74 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",GPS_LON=" + biotope_attribute.getGPS_LON() + ""
                 + ",NEED_CONF='" + biotope_attribute.getNEED_CONF() + "'"
                 + ",CONF_MOD='" + biotope_attribute.getCONF_MOD() + "'" +
-                "where id = '" + biotope_attribute.getId() + "'";
+                "where id = '" + page + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+    public void updatemammal_attribute(Mammal_attribute mammal_attribute,String page) {
+
+        String query = "UPDATE mammalAttribute SET  " +
+                "INV_REGION='" + mammal_attribute.getINV_REGION() + "'"
+                + ",INV_DT='" + mammal_attribute.getINV_DT() + "'"
+                + ",INV_PERSON='" + mammal_attribute.getINV_PERSON() + "'"
+                + ",WEATHER='" + mammal_attribute.getWEATHER() + "'"
+                + ",WIND='" + mammal_attribute.getWIND() + "'"
+                + ",WIND_DIRE='" + mammal_attribute.getWIND_DIRE() + "'"
+                + ",TEMPERATUR='" + mammal_attribute.getTEMPERATUR() + "'"
+                + ",NUM='" + mammal_attribute.getNUM() + "'"
+                + ",INV_TM='" + mammal_attribute.getINV_TM() + "'"
+                + ",SPEC_NM='" + mammal_attribute.getSPEC_NM() + "'"
+                + ",FAMI_NM='" + mammal_attribute.getFAMI_NM() + "'"
+                + ",SCIEN_NM='" + mammal_attribute.getSCIEN_NM() + "'"
+                + ",OBS_TY='" + mammal_attribute.getOBS_TY() + "'"
+                + ",OBS_TY_ETC='" + mammal_attribute.getOBS_TY_ETC() + "'"
+                + ",INDI_CNT='" + mammal_attribute.getINDI_CNT() + "'"
+                + ",OB_PT_CHAR='" + mammal_attribute.getOB_PT_CHAR() + "'"
+                + ",UNUS_NOTE='" + mammal_attribute.getUNUS_NOTE() + "'"
+                + ",GPS_LAT='" + mammal_attribute.getGPS_LAT() + "'"
+                + ",GPS_LON='" + mammal_attribute.getGPS_LON() + "'"
+                + ",UN_SPEC='" + mammal_attribute.getUN_SPEC() + "'"
+                + ",UN_SPEC_RE='" + mammal_attribute.getUN_SPEC_RE() + "'"
+                + ",TR_EASY='" + mammal_attribute.getTR_EASY() + "'"
+                + ",TR_EASY_RE='" + mammal_attribute.getTR_EASY_RE() + "'" +
+                "where id = '" + page + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+    public void updateinsect_attribute(Insect_attribute insect_attribute,String page) {
+
+        String query = "UPDATE insectAttribute SET  " +
+                "INV_REGION='" + insect_attribute.getINV_REGION() + "'"
+                + ",INV_DT='" + insect_attribute.getINV_DT() + "'"
+                + ",INV_PERSON='" + insect_attribute.getINV_PERSON() + "'"
+                + ",WEATHER='" + insect_attribute.getWEATHER() + "'"
+                + ",WIND='" + insect_attribute.getWIND() + "'"
+                + ",WIND_DIRE='" + insect_attribute.getWIND_DIRE() + "'"
+                + ",TEMPERATUR='" + insect_attribute.getTEMPERATUR() + "'"
+                + ",NUM='" + insect_attribute.getNUM() + "'"
+                + ",INV_TM='" + insect_attribute.getINV_TM() + "'"
+                + ",SPEC_NM='" + insect_attribute.getSPEC_NM() + "'"
+                + ",FAMI_NM='" + insect_attribute.getFAMI_NM() + "'"
+                + ",SCIEN_NM='" + insect_attribute.getSCIEN_NM() + "'"
+                + ",INDI_CNT='" + insect_attribute.getINDI_CNT() + "'"
+                + ",OBS_STAT='" + insect_attribute.getOBS_STAT() + "'"
+                + ",OBS_ST_ETC='" + insect_attribute.getOBS_ST_ETC() + "'"
+                + ",USE_TAR='" + insect_attribute.getUSE_TAR() + "'"
+                + ",USER_TA_ETC='" + insect_attribute.getUSER_TA_ETC() + "'"
+                + ",MJ_ACT='" + insect_attribute.getMJ_ACT() + "'"
+                + ",MJ_ACT_ETC='" + insect_attribute.getMJ_ACT_ETC() + "'"
+                + ",INV_MEAN='" + insect_attribute.getINV_MEAN() + "'"
+                + ",INV_MN_ETC='" + insect_attribute.getINV_MN_ETC() + "'"
+                + ",UNUS_NOTE='" + insect_attribute.getUNUS_NOTE() + "'"
+                + ",GPS_LAT='" + insect_attribute.getGPS_LAT() + "'"
+                + ",GPS_LON='" + insect_attribute.getGPS_LON() + "'" +
+                "where id = '" + page + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();

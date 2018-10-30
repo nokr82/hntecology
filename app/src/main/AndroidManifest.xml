@@ -141,12 +141,6 @@
             android:theme="@style/full_screen_dialog2"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
-            android:name=".activities.FloraActivity"
-            android:label="@string/title_activity_flora"
-            android:screenOrientation="landscape"
-            android:theme="@style/full_screen_dialog2"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
-        <activity
             android:name=".activities.FishActivity"
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog2"

@@ -494,7 +494,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 }
 
                 LAYER_FLORA -> {
-                    intent = Intent(this, FloraActivity::class.java)
+                    intent = Intent(this, insert::class.java)
                 }
 
                 LAYER_ZOOBENTHOS -> {
@@ -573,7 +573,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 }
 
                 LAYER_FLORA -> {
-                    intent = Intent(this, FloraActivity::class.java)
+                    intent = Intent(this, insert::class.java)
                 }
 
                 LAYER_ZOOBENTHOS ->{

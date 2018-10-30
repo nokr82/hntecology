@@ -28,6 +28,52 @@
                 style="@style/BiotopeTextView"
                 android:gravity="center"
                 />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <LinearLayout
+                        android:id="@+id/mamleftLL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="20dp"
+                            android:gravity="center"
+                            android:text="〈 "
+                            android:textSize="30dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/mampageTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="0 / 0" />
+
+                    <LinearLayout
+                        android:id="@+id/mamrightLL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text="〉 "
+                            android:textSize="30dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -43,6 +89,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/maminvregionET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -52,10 +99,11 @@
                     style="@style/BiotopeTextView"
                     android:text="조사일시"/>
 
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/maminvdtTV"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -65,10 +113,11 @@
                     style="@style/BiotopeTextView"
                     android:text="조사자"/>
 
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/maminvpersonTV"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -128,6 +177,7 @@
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
+                    android:id="@+id/mamweatherET"
                     android:hint="맑음 흐림 안개 비"
                     />
                 <EditText
@@ -135,6 +185,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
+                    android:id="@+id/mamwindET"
                     android:gravity="left|center"
                     android:hint="강 중 약 무"
                     />
@@ -142,6 +193,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/mamwinddireET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -149,6 +201,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/mamtemperatureET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -156,6 +209,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/mametcET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -176,6 +230,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/mamspecnmET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -193,6 +248,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/mamobstyET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -211,6 +267,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/mamindicntET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -229,6 +286,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/mamobptcharET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -248,6 +306,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/mamunusnoteET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -263,13 +322,27 @@
                     style="@style/BiotopeTextView"
                     android:text="GPS 좌표"/>
 
-                <EditText
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/mamgpslatTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="left|center" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text=" / "
+                        android:gravity="left|center" />
+                    <TextView
+                        android:id="@+id/mamgpslonTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="left|center" />
+
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -287,6 +360,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/mamunspecET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -301,6 +375,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/mamunspecreET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -325,6 +400,7 @@
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
+                    android:id="@+id/mamtreasyET"
                     android:hint="쉬움-----보통-----어려움"
                     />
 
@@ -338,6 +414,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/mamtreasyreET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />

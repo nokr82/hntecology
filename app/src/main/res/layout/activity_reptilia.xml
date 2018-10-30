@@ -30,6 +30,52 @@
                 />
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <LinearLayout
+                        android:id="@+id/reptilialeftLL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="20dp"
+                            android:gravity="center"
+                            android:text="〈 "
+                            android:textSize="30dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/reptiliapageTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="0 / 0" />
+
+                    <LinearLayout
+                        android:id="@+id/reptiliarightLL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text="〉 "
+                            android:textSize="30dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal"
                 >
@@ -43,6 +89,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/invregionET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -70,6 +117,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/invpersonET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -154,6 +202,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/temperaturET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -161,6 +210,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/etcET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -181,6 +231,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/numET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -197,10 +248,11 @@
                     style="@style/BiotopeTextView"
                     android:text="시간"/>
 
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/invtmTV"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -219,6 +271,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/specnmET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -253,6 +306,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:id="@+id/incntaduET"
                             style="@style/BiotopeTextView"
                             android:gravity="left|center"/>
                     </LinearLayout>
@@ -270,6 +324,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:id="@+id/incntlarET"
                             style="@style/BiotopeTextView"
                             android:gravity="left|center"/>
                     </LinearLayout>
@@ -288,6 +343,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:id="@+id/incnteggET"
                             style="@style/BiotopeTextView"
                             android:gravity="left|center"/>
                     </LinearLayout>
@@ -324,6 +380,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:id="@+id/habriveerET"
                             style="@style/BiotopeTextView"
                             android:gravity="left|center"/>
                     </LinearLayout>
@@ -341,6 +398,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:id="@+id/habedgeET"
                             style="@style/BiotopeTextView"
                             android:gravity="left|center"/>
                     </LinearLayout>
@@ -378,6 +436,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:id="@+id/waterinET"
                             style="@style/BiotopeTextView"
                             android:gravity="left|center"/>
                     </LinearLayout>
@@ -395,6 +454,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:id="@+id/wateroutET"
                             style="@style/BiotopeTextView"
                             android:gravity="left|center"/>
                     </LinearLayout>
@@ -431,6 +491,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:id="@+id/watercontET"
                             style="@style/BiotopeTextView"
                             android:gravity="left|center"/>
                     </LinearLayout>
@@ -448,6 +509,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:id="@+id/waterqualET"
                             style="@style/BiotopeTextView"
                             android:gravity="left|center"/>
                     </LinearLayout>
@@ -466,6 +528,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:id="@+id/waterdeptET"
                             style="@style/BiotopeTextView"
                             android:gravity="left|center"/>
                     </LinearLayout>
@@ -483,13 +546,38 @@
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
                     android:text="서식지면적(m×m)"/>
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        style="@style/BiotopeTextView">
+                        <EditText
+                            android:layout_width="300dp"
+                            android:layout_height="match_parent"
+                            android:id="@+id/habareawET"
+                            android:background="@null"
+                            android:hint="M"
+                            style="@style/BiotopeTextView"
+                            android:gravity="center" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text=" X "
+                            android:gravity="left|center" />
+                        <EditText
+                            android:layout_width="300dp"
+                            android:layout_height="match_parent"
+                            android:id="@+id/habareahET"
+                            android:background="@null"
+                            android:hint="M"
+                            style="@style/BiotopeTextView"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -502,13 +590,27 @@
                     style="@style/BiotopeTextView"
                     android:text="GPS 좌표"/>
 
-                <EditText
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/gpslatTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="left|center" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text=" / "
+                        android:gravity="left|center" />
+                    <TextView
+                        android:id="@+id/gpslonTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="left|center" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout

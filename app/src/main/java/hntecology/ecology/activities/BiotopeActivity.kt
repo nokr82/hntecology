@@ -38,6 +38,7 @@ import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.BiotopeModel
 import hntecology.ecology.model.Biotope_attribute
+import hntecology.ecology.model.Birds_attribute
 import kotlinx.android.synthetic.main.activity_biotope.*
 import java.io.File
 import java.io.FileOutputStream
@@ -991,250 +992,275 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
             getGps()
 
-            var intent = Intent();
-            val biotope_attribute: Biotope_attribute = Biotope_attribute(null, null, null, null, null, null, null
-                    , null, null, null, null, null, null, null, null
-                    , null, null, null, null, null, null, null, null
-                    , null, null, null, null, null, null, null, null
-                    , null, null, null, null, null, null, null
-                    , null, null, null, null, null, null, null, null
-                    , null, null, null, null, null, null,null)
+            val builder = AlertDialog.Builder(context)
+            builder.setMessage("저장하시겠습니까 ?").setCancelable(false)
+                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-            biotope_attribute.GROP_ID = keyId
+                        dialog.cancel()
 
-            biotope_attribute.INV_REGION = etINV_REGIONET.text.toString();
-            biotope_attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name");
+                        var intent = Intent();
+                        val biotope_attribute: Biotope_attribute = Biotope_attribute(null, null, null, null, null, null, null
+                                , null, null, null, null, null, null, null, null
+                                , null, null, null, null, null, null, null, null
+                                , null, null, null, null, null, null, null, null
+                                , null, null, null, null, null, null, null
+                                , null, null, null, null, null, null, null, null
+                                , null, null, null, null, null, null,null)
+
+                        biotope_attribute.GROP_ID = keyId
+
+                        biotope_attribute.INV_REGION = etINV_REGIONET.text.toString();
+                        biotope_attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name");
 //            biotope_attribute.INVES_DATETIME        =   etinvesDatetimeTV.text.toString()
 
-            biotope_attribute.INV_DT = etINV_DTTV.text.toString();
-            biotope_attribute.INV_TM = etINV_TMTV.text.toString();
+                        biotope_attribute.INV_DT = etINV_DTTV.text.toString();
+                        biotope_attribute.INV_TM = etINV_TMTV.text.toString();
 
-            if (tvINV_IndexTV.text.isNotEmpty()) {
+                        if (tvINV_IndexTV.text.isNotEmpty()) {
 
-                biotope_attribute.INV_INDEX = tvINV_IndexTV.text.toString().toInt()
-            }
+                            biotope_attribute.INV_INDEX = tvINV_IndexTV.text.toString().toInt()
+                        }
 
-            biotope_attribute.LU_GR_NUM = ETLU_GR_NumET.text.toString()
+                        biotope_attribute.LU_GR_NUM = ETLU_GR_NumET.text.toString()
 
-            if (etLU_TY_RATEET.text.isNotEmpty()) {
+                        if (etLU_TY_RATEET.text.isNotEmpty()) {
 
-                biotope_attribute.LU_TY_RATE = Utils.getString(etLU_TY_RATEET).toFloat();
-            }
-            if (etSTAND_HET.text.isNotEmpty()) {
+                            biotope_attribute.LU_TY_RATE = Utils.getString(etLU_TY_RATEET).toFloat();
+                        }
+                        if (etSTAND_HET.text.isNotEmpty()) {
 
-                biotope_attribute.STAND_H = Utils.getString(etSTAND_HET).toFloat();
-            }
-
-
-            biotope_attribute.LC_GR_NUM = ETlcmGR_NumET.text.toString()
-            biotope_attribute.TY_MARK = ETTY_MARKET.text.toString()
-
-            if (etGV_RATEET.text.isNotEmpty()) {
-
-                biotope_attribute.GV_RATE = Utils.getString(etGV_RATEET).toFloat();
-            }
-
-            biotope_attribute.GV_STRUCT = etGV_STRUCTET.text.toString()
-            biotope_attribute.DIS_RET = etDIS_RETET.text.toString()
-            biotope_attribute.RESTOR_POT = etRESTOR_POTET.text.toString()
-            biotope_attribute.COMP_INTA = etCOMP_INTAET.text.toString()
-            biotope_attribute.VP_INTA = etVP_INTAET.text.toString()
-            biotope_attribute.IMP_FORM = etIMP_FORMET.text.toString()
-            biotope_attribute.BREA_DIA = etBREA_DIAET.text.toString()
-            biotope_attribute.FIN_EST = etFIN_ESTET.text.toString()
-            biotope_attribute.TRE_SPEC = etTRE_SPECET.text.toString()
+                            biotope_attribute.STAND_H = Utils.getString(etSTAND_HET).toFloat();
+                        }
 
 
-            biotope_attribute.TRE_FAMI = etTRE_FAMIET.text.toString()
-            biotope_attribute.TRE_SCIEN = etTRE_SCIENET.text.toString()
+                        biotope_attribute.LC_GR_NUM = ETlcmGR_NumET.text.toString()
+                        biotope_attribute.TY_MARK = ETTY_MARKET.text.toString()
 
-            if (etTRE_HET.text.isNotEmpty()) {
+                        if (etGV_RATEET.text.isNotEmpty()) {
 
-                biotope_attribute.TRE_H = Utils.getString(etTRE_HET).toFloat();
+                            biotope_attribute.GV_RATE = Utils.getString(etGV_RATEET).toFloat();
+                        }
 
-            }
-            if (etTRE_BREAET.text.isNotEmpty()) {
-
-                biotope_attribute.TRE_BREA = Utils.getString(etTRE_BREAET).toFloat();
-            }
-            if (etTRE_COVEET.text.isNotEmpty()) {
-
-                biotope_attribute.TRE_COVE = Utils.getString(etTRE_COVEET).toFloat();
-            }
-
-            biotope_attribute.STRE_SPEC = etSTRE_SPECET.text.toString()
-            biotope_attribute.STRE_FAMI = etSTRE_FAMIET.text.toString()
-            biotope_attribute.STRE_SCIEN = etSTRE_SCIENET.text.toString()
-
-            if (etSTRE_HET.text.isNotEmpty()) {
-
-                biotope_attribute.STRE_H = Utils.getString(etSTRE_HET).toFloat();
-            }
-
-            if (etSTRE_BREAET.text.isNotEmpty()) {
-
-                biotope_attribute.STRE_BREA = Utils.getString(etSTRE_BREAET).toFloat();
-            }
-
-            if (etSTRE_COVEET.text.isNotEmpty()) {
-
-                biotope_attribute.STRE_COVE = Utils.getString(etSTRE_COVEET).toFloat();
-            }
+                        biotope_attribute.GV_STRUCT = etGV_STRUCTET.text.toString()
+                        biotope_attribute.DIS_RET = etDIS_RETET.text.toString()
+                        biotope_attribute.RESTOR_POT = etRESTOR_POTET.text.toString()
+                        biotope_attribute.COMP_INTA = etCOMP_INTAET.text.toString()
+                        biotope_attribute.VP_INTA = etVP_INTAET.text.toString()
+                        biotope_attribute.IMP_FORM = etIMP_FORMET.text.toString()
+                        biotope_attribute.BREA_DIA = etBREA_DIAET.text.toString()
+                        biotope_attribute.FIN_EST = etFIN_ESTET.text.toString()
+                        biotope_attribute.TRE_SPEC = etTRE_SPECET.text.toString()
 
 
+                        biotope_attribute.TRE_FAMI = etTRE_FAMIET.text.toString()
+                        biotope_attribute.TRE_SCIEN = etTRE_SCIENET.text.toString()
 
-            biotope_attribute.SHR_SPEC = etSHR_SPECET.text.toString()
+                        if (etTRE_HET.text.isNotEmpty()) {
 
-            biotope_attribute.SHR_FAMI = etSHR_FAMIET.text.toString()
-            biotope_attribute.SHR_SCIEN = etSHR_SCIENET.text.toString()
+                            biotope_attribute.TRE_H = Utils.getString(etTRE_HET).toFloat();
 
-            if (etSHR_HET.text.isNotEmpty()) {
+                        }
+                        if (etTRE_BREAET.text.isNotEmpty()) {
 
-                biotope_attribute.SHR_H = Utils.getString(etSHR_HET).toFloat();
-            }
+                            biotope_attribute.TRE_BREA = Utils.getString(etTRE_BREAET).toFloat();
+                        }
+                        if (etTRE_COVEET.text.isNotEmpty()) {
 
-            if (etSTR_COVEET.text.isNotEmpty()) {
+                            biotope_attribute.TRE_COVE = Utils.getString(etTRE_COVEET).toFloat();
+                        }
 
-                biotope_attribute.STR_COVE = Utils.getString(etSTR_COVEET).toFloat();
-            }
+                        biotope_attribute.STRE_SPEC = etSTRE_SPECET.text.toString()
+                        biotope_attribute.STRE_FAMI = etSTRE_FAMIET.text.toString()
+                        biotope_attribute.STRE_SCIEN = etSTRE_SCIENET.text.toString()
+
+                        if (etSTRE_HET.text.isNotEmpty()) {
+
+                            biotope_attribute.STRE_H = Utils.getString(etSTRE_HET).toFloat();
+                        }
+
+                        if (etSTRE_BREAET.text.isNotEmpty()) {
+
+                            biotope_attribute.STRE_BREA = Utils.getString(etSTRE_BREAET).toFloat();
+                        }
+
+                        if (etSTRE_COVEET.text.isNotEmpty()) {
+
+                            biotope_attribute.STRE_COVE = Utils.getString(etSTRE_COVEET).toFloat();
+                        }
 
 
 
-            biotope_attribute.HER_SPEC = etHER_SPECET.text.toString()
+                        biotope_attribute.SHR_SPEC = etSHR_SPECET.text.toString()
 
-            biotope_attribute.HER_FAMI = etHER_FAMIET.text.toString()
-            biotope_attribute.HER_SCIEN = etHER_SCIENET.text.toString()
+                        biotope_attribute.SHR_FAMI = etSHR_FAMIET.text.toString()
+                        biotope_attribute.SHR_SCIEN = etSHR_SCIENET.text.toString()
 
-            if (etHER_HET.text.isNotEmpty()) {
+                        if (etSHR_HET.text.isNotEmpty()) {
 
-                biotope_attribute.HER_H = Utils.getString(etHER_HET).toFloat();
-            }
+                            biotope_attribute.SHR_H = Utils.getString(etSHR_HET).toFloat();
+                        }
 
-            if (etHER_COVEET.text.isNotEmpty()) {
+                        if (etSTR_COVEET.text.isNotEmpty()) {
 
-                biotope_attribute.HER_COVE = Utils.getString(etHER_COVEET).toFloat();
-            }
+                            biotope_attribute.STR_COVE = Utils.getString(etSTR_COVEET).toFloat();
+                        }
+
+
+
+                        biotope_attribute.HER_SPEC = etHER_SPECET.text.toString()
+
+                        biotope_attribute.HER_FAMI = etHER_FAMIET.text.toString()
+                        biotope_attribute.HER_SCIEN = etHER_SCIENET.text.toString()
+
+                        if (etHER_HET.text.isNotEmpty()) {
+
+                            biotope_attribute.HER_H = Utils.getString(etHER_HET).toFloat();
+                        }
+
+                        if (etHER_COVEET.text.isNotEmpty()) {
+
+                            biotope_attribute.HER_COVE = Utils.getString(etHER_COVEET).toFloat();
+                        }
 
 
 //            biotope_attribute.PIC_FOLDER        =   etPIC_FOLDERET.text.toString()
-            biotope_attribute.WILD_ANI = etWILD_ANIET.text.toString()
-            biotope_attribute.BIOTOP_POT = etBIOTOP_POTET.text.toString()
-            biotope_attribute.UNUS_NOTE = etUNUS_NOTEET.text.toString()
+                        biotope_attribute.WILD_ANI = etWILD_ANIET.text.toString()
+                        biotope_attribute.BIOTOP_POT = etBIOTOP_POTET.text.toString()
+                        biotope_attribute.UNUS_NOTE = etUNUS_NOTEET.text.toString()
 
-            //투수
-            if (etlcmTypepET.text.toString() != "") {
+                        //투수
+                        if (etlcmTypepET.text.toString() != "") {
 
-                biotope_attribute.LC_TY = etlcmTypepET.text.toString()
-                //불투수
-            } else if (etlcmTypeiET.text.toString() != "") {
+                            biotope_attribute.LC_TY = etlcmTypepET.text.toString()
+                            //불투수
+                        } else if (etlcmTypeiET.text.toString() != "") {
 
-                biotope_attribute.LC_TY = etlcmTypeiET.text.toString()
-                //녹지
-            } else if (etlcmTypegET.text.toString() != "") {
+                            biotope_attribute.LC_TY = etlcmTypeiET.text.toString()
+                            //녹지
+                        } else if (etlcmTypegET.text.toString() != "") {
 
-                biotope_attribute.LC_TY = etlcmTypegET.text.toString()
-                //수공간
-            } else if (etlcmTypewET.text.toString() != "") {
+                            biotope_attribute.LC_TY = etlcmTypegET.text.toString()
+                            //수공간
+                        } else if (etlcmTypewET.text.toString() != "") {
 
-                biotope_attribute.LC_TY = etlcmTypewET.text.toString()
-            }
-            val pk =keyId + page.toString();
+                            biotope_attribute.LC_TY = etlcmTypewET.text.toString()
+                        }
+                        val pk =keyId + page.toString();
 
-            biotope_attribute.id = pk
-            biotope_attribute.PIC_FOLDER = tvPIC_FOLDERTV.text.toString()
+                        biotope_attribute.id = pk
+                        biotope_attribute.PIC_FOLDER = tvPIC_FOLDERTV.text.toString()
 
-            if (chkdata) {
+                        if (chkdata) {
 
-                if(images!!.size > 0 && biotope_attribute.PIC_FOLDER == null){
+                            if(images!!.size > 0 && biotope_attribute.PIC_FOLDER == null){
 
-                    biotope_attribute.PIC_FOLDER = getAttrubuteKey()
-                }
+                                biotope_attribute.PIC_FOLDER = getAttrubuteKey()
+                            }
 
-                val tmppage = page!!-1
-                val updatePage = keyId + tmppage
+                            val tmppage = page!!-1
+                            val updatePage = keyId + tmppage
 
-                dbManager.updatebiotope_attribute(biotope_attribute,updatePage)
-
-
-            } else {
-
-                if(images!!.size > 0){
-
-                    biotope_attribute.PIC_FOLDER = getAttrubuteKey()
-                }
-                if(etGPS_LATTV.text.toString() !="" && etGPS_LONTV.text.toString() !=""){
-
-                    biotope_attribute.GPS_LAT = etGPS_LATTV.text.toString().toFloat();
-                    biotope_attribute.GPS_LON = etGPS_LONTV.text.toString().toFloat();
-                }
-
-                dbManager.insertbiotope_attribute(biotope_attribute);
-                println("biotope_attribute ====== ${biotope_attribute.id}")
-            }
-
-            var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-            sdPath += "/biotope"
-
-            val biotope = File(sdPath)
-            biotope.mkdir();
-            sdPath +="/"+biotope_attribute.PIC_FOLDER
-
-            val file = File(sdPath)
-            file.mkdir();
-            //이미 있다면 삭제. 후 생성
-            setDirEmpty(sdPath)
+                            dbManager.updatebiotope_attribute(biotope_attribute,updatePage)
 
 
+                        } else {
 
-            sdPath+="/"
+                            if(images!!.size > 0){
+
+                                biotope_attribute.PIC_FOLDER = getAttrubuteKey()
+                            }
+                            if(etGPS_LATTV.text.toString() !="" && etGPS_LONTV.text.toString() !=""){
+
+                                biotope_attribute.GPS_LAT = etGPS_LATTV.text.toString().toFloat();
+                                biotope_attribute.GPS_LON = etGPS_LONTV.text.toString().toFloat();
+                            }
+
+                            dbManager.insertbiotope_attribute(biotope_attribute);
+                            println("biotope_attribute ====== ${biotope_attribute.id}")
+                        }
+
+                        var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+                        sdPath += "/biotope"
+
+                        val biotope = File(sdPath)
+                        biotope.mkdir();
+                        sdPath +="/"+biotope_attribute.PIC_FOLDER
+
+                        val file = File(sdPath)
+                        file.mkdir();
+                        //이미 있다면 삭제. 후 생성
+                        setDirEmpty(sdPath)
 
 
-            for(i   in 0..images!!.size-1){
 
-                saveVitmapToFile(images!!.get(i),sdPath+i+".jpg")
+                        sdPath+="/"
 
-            }
 
-            intent.putExtra("bio_attri", biotope_attribute);
+                        for(i   in 0..images!!.size-1){
 
-            setResult(RESULT_OK, intent);
-            finishFlag = false
-            finish()
+                            saveVitmapToFile(images!!.get(i),sdPath+i+".jpg")
+
+                        }
+
+                        intent.putExtra("bio_attri", biotope_attribute);
+
+                        setResult(RESULT_OK, intent);
+                        finishFlag = false
+                        finish()
+
+                    })
+                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+            val alert = builder.create()
+            alert.show()
+
 
         }
 
 
         btn_biotopDelete.setOnClickListener {
 
-            var intent = Intent();
-            val biotope_attribute: Biotope_attribute = Biotope_attribute(null, null, null, null, null, null, null
-                    , null, null, null, null, null, null, null, null
-                    , null, null, null, null, null, null, null, null
-                    , null, null, null, null, null, null, null, null
-                    , null, null, null, null, null, null, null
-                    , null, null, null, null, null, null, null, null
-                    , null, null, null, null, null, null,null)
 
-            val deletePage = page!! - 1
+            val builder = AlertDialog.Builder(context)
+            builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-            val pk= keyId + deletePage.toString();
+                        dialog.cancel()
+                        var intent = Intent();
+                        val biotope_attribute: Biotope_attribute = Biotope_attribute(null, null, null, null, null, null, null
+                                , null, null, null, null, null, null, null, null
+                                , null, null, null, null, null, null, null, null
+                                , null, null, null, null, null, null, null, null
+                                , null, null, null, null, null, null, null
+                                , null, null, null, null, null, null, null, null
+                                , null, null, null, null, null, null,null)
 
-            biotope_attribute.id = pk
+                        val deletePage = page!! - 1
+
+                        val pk= keyId + deletePage.toString();
+
+                        biotope_attribute.id = pk
 
 
-            dbManager.deletebiotope_attribute(biotope_attribute,pk)
+                        dbManager.deletebiotope_attribute(biotope_attribute,pk)
 
-            intent.putExtra("bio_attri", biotope_attribute);
+                        intent.putExtra("bio_attri", biotope_attribute);
 
-            var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+                        var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
 
-            sdPath +="/biotope/"+biotope_attribute.PIC_FOLDER
+                        sdPath +="/biotope/"+biotope_attribute.PIC_FOLDER
 
-            //이미 있다면 삭제. 후 생성
-            setDirEmpty(sdPath)
+                        //이미 있다면 삭제. 후 생성
+                        setDirEmpty(sdPath)
 
-            setResult(RESULT_OK, intent);
-            finish()
+                        setResult(RESULT_OK, intent);
+
+
+                        finish()
+
+                    })
+                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+            val alert = builder.create()
+            alert.show()
 
         }
 

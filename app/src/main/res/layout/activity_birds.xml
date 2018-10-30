@@ -469,24 +469,29 @@
                     android:layout_height="match_parent"
                     android:text="GPS 좌표" />
 
-                <TextView
-                    android:id="@+id/gpslatTV"
+                <LinearLayout
                     style="@style/BiotopeTextViewDisabled"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="left|center" />
-                <TextView
-                    style="@style/BiotopeTextViewDisabled"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text=" / "
-                    android:gravity="left|center" />
-                <TextView
-                    android:id="@+id/gpslonTV"
-                    style="@style/BiotopeTextViewDisabled"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="left|center" />
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/gpslatTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="left|center" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text=" / "
+                        android:gravity="left|center" />
+                    <TextView
+                        android:id="@+id/gpslonTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="left|center" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -494,18 +499,18 @@
                 android:layout_height="50dp"
                 android:orientation="horizontal">
 
-                <Button
+                <TextView
                     android:id="@+id/cancelBtn"
                     style="@style/dlgcommonButton"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="취소" />
+                    android:text="취소"/>
 
-                <Button
+                <TextView
                     android:id="@+id/birdssaveBtn"
                     style="@style/dlgcommonButton"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
@@ -513,7 +518,7 @@
 
             </LinearLayout>
 
-            <Button
+            <TextView
                 android:id="@+id/delBtn"
                 style="@style/dlgcommonButton"
                 android:layout_width="match_parent"

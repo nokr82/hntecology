@@ -28,6 +28,52 @@
                 style="@style/BiotopeTextView"
                 android:gravity="center"
                 />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <LinearLayout
+                        android:id="@+id/insectleftLL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="20dp"
+                            android:gravity="center"
+                            android:text="〈 "
+                            android:textSize="30dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/insectpageTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="0 / 0" />
+
+                    <LinearLayout
+                        android:id="@+id/insectrightLL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text="〉 "
+                            android:textSize="30dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -43,6 +89,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/insectinvregionET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -56,6 +103,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/insectinvdtET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -69,6 +117,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/insectusernameET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -127,6 +176,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
+                    android:id="@+id/insectweatherET"
                     android:gravity="left|center"
                     android:hint="맑음 흐림 안개 비"
                     />
@@ -135,6 +185,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
+                    android:id="@+id/insectwindET"
                     android:gravity="left|center"
                     android:hint="강 중 약 무"
                     />
@@ -142,6 +193,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/insectwinddireET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -149,6 +201,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:inputType="number"
+                    android:id="@+id/insecttemperaturET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -156,6 +210,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/insectetcET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -174,6 +229,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/insectnumET"
+                    android:inputType="number"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -191,6 +248,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/insecttimeET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -208,6 +266,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/insectspecnmET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -225,6 +284,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/insectindicntET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -243,6 +303,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/insectobsstatET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -261,6 +322,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/insectusetarET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -278,6 +340,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/insectmjactET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -296,6 +359,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/insectunusnoteET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -311,13 +375,29 @@
                     style="@style/BiotopeTextView"
                     android:text="GPS 좌표"/>
 
-                <EditText
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/insectgpslatTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="left|center" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text=" / "
+                        android:gravity="left|center" />
+                    <TextView
+                        android:id="@+id/insectgpslonTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="left|center" />
+
+                </LinearLayout>
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -330,7 +410,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="취소"
-                    android:id="@+id/btn_biotopCancle1"
+                    android:id="@+id/insectCancelBT"
                     style="@style/dlgcommonButton"
                     />
                 <Button
@@ -338,7 +418,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="저장"
-                    android:id="@+id/btn_biotopSave1"
+                    android:id="@+id/insectSaveBT"
                     style="@style/dlgcommonButton"
                     android:layout_marginLeft="2dp"
                     />
@@ -348,7 +428,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="삭제"
-                android:id="@+id/btn_biotopDelete"
+                android:id="@+id/insectDeleteBT"
                 style="@style/dlgcommonButton"
                 android:layout_marginTop="2dp"
                 />

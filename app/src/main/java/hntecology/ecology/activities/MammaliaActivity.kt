@@ -32,6 +32,7 @@ import io.nlopez.smartlocation.location.config.LocationAccuracy
 import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
 import kotlinx.android.synthetic.main.activity_birds.*
+import kotlinx.android.synthetic.main.activity_insect.*
 import kotlinx.android.synthetic.main.activity_mammalia.*
 
 class MammaliaActivity : Activity(), OnLocationUpdatedListener {
@@ -67,6 +68,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         this.setFinishOnTouchOutside(true);
 
         maminvdtTV.text = Utils.todayStr()
+        mammaltimeTV.text = Utils.timeStr()
 
         userName = PrefUtils.getStringPreference(context, "name");
 
@@ -108,10 +110,13 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                 mamspecnmET.setText(mammal_attribute.SPEC_NM)
 
+                mammaltimeTV.setText(mammal_attribute.INV_TM)
+                mammalnumTV.setText(mammal_attribute.NUM.toString())
+
 //                faminmTV.setText      view 검토 후
 //                scien_nm.setText      view 검토 후
 
-                mamobstyET.setText(mammal_attribute.OBS_TY)
+                mammalobstyTV.setText(mammal_attribute.OBS_TY)
 
                 mamindicntET.setText(mammal_attribute.INDI_CNT.toString())
 
@@ -209,8 +214,18 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             mammal_attribute.PRJ_NAME = ""
 
             mammal_attribute.INV_REGION = maminvregionET.text.toString()
-            mammal_attribute.INV_DT = maminvdtTV.text.toString()
-            mammal_attribute.INV_PERSON = maminvpersonTV.text.toString()
+
+            if(maminvdtTV.text == null){
+                mammal_attribute.INV_DT = Utils.todayStr()
+            }else {
+                mammal_attribute.INV_DT = maminvdtTV.text.toString()
+            }
+
+            if(maminvpersonTV.text == null){
+                mammal_attribute.INV_PERSON = userName
+            }else {
+                mammal_attribute.INV_PERSON = maminvpersonTV.text.toString()
+            }
 
             mammal_attribute.WEATHER = mamweatherET.text.toString()
             mammal_attribute.WIND = mamwindET.text.toString()
@@ -218,6 +233,12 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             if(mamtemperatureET.text.isNotEmpty()) {
                 mammal_attribute.TEMPERATUR = mamtemperatureET.text.toString().toFloat()
+            }
+
+            mammal_attribute.INV_TM = mammaltimeTV.text.toString()
+
+            if(mammalnumTV.text.isNotEmpty()) {
+                mammal_attribute.NUM = mammalnumTV.text.toString().toInt()
             }
 
             mammal_attribute.ETC = mametcET.text.toString()
@@ -231,7 +252,11 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 //            mammal_attribute.FAMI_NM 화면에 view 검토
 //            mammal_attribute.SCIEN_NM 화면에 view 검토
 
-            mammal_attribute.OBS_TY = mamobstyET.text.toString()
+            if(!mammalobstyET.equals("") && mammalobstyET.text != null){
+                mammal_attribute.OBS_TY = mammalobstyET.text.toString()
+            }else {
+                mammal_attribute.OBS_TY = mammalobstyTV.text.toString()
+            }
 //            mammal_attribute.OBS_TY_ETC 수동입력 view 검토
 
             if(mamindicntET.text.isNotEmpty()) {
@@ -305,8 +330,13 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         mammal_attribute.PRJ_NAME = ""
 
                         mammal_attribute.INV_REGION = maminvregionET.text.toString()
-                        mammal_attribute.INV_DT = maminvdtTV.text.toString()
-                        mammal_attribute.INV_PERSON = maminvpersonTV.text.toString()
+                        mammal_attribute.INV_DT = Utils.todayStr()
+
+                        if(maminvpersonTV.text == null){
+                            mammal_attribute.INV_PERSON = userName
+                        }else {
+                            mammal_attribute.INV_PERSON = maminvpersonTV.text.toString()
+                        }
 
                         mammal_attribute.WEATHER = mamweatherET.text.toString()
                         mammal_attribute.WIND = mamwindET.text.toString()
@@ -327,7 +357,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 //            mammal_attribute.FAMI_NM 화면에 view 검토
 //            mammal_attribute.SCIEN_NM 화면에 view 검토
 
-                        mammal_attribute.OBS_TY = mamobstyET.text.toString()
+                        mammal_attribute.OBS_TY = mammalobstyTV.text.toString()
 //            mammal_attribute.OBS_TY_ETC 수동입력 view 검토
 
                         if(mamindicntET.text.isNotEmpty()) {
@@ -411,6 +441,23 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             alert.show()
         }
 
+        mammalobstyTV.setOnClickListener {
+
+            var listItems: ArrayList<String> = ArrayList();
+
+            listItems.add("목견");
+            listItems.add("울음소리");
+            listItems.add("먹이흔적");
+            listItems.add("발자국");
+            listItems.add("배설물");
+            listItems.add("털");
+            listItems.add("사체");
+            listItems.add("기타");
+
+            alert(listItems, "관찰 유형 선택", mammalobstyTV, "obsty");
+
+        }
+
         }
 
 
@@ -431,7 +478,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 //                faminmTV.setText      view 검토 후
 //                scien_nm.setText      view 검토 후
 
-        mamobstyET.setText("")
+        mammalobstyTV.setText("")
 
         mamindicntET.setText("")
 
@@ -518,9 +565,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 //                faminmTV.setText      view 검토 후
 //                scien_nm.setText      view 검토 후
 
-            mamobstyET.setText(mammal_attribute.OBS_TY)
-            if(mamobstyET.text == null){
-                mamobstyET.setText("")
+            mammalobstyTV.setText(mammal_attribute.OBS_TY)
+            if(mammalobstyTV.text == null){
+                mammalobstyTV.setText("")
             }
 
             mamindicntET.setText(mammal_attribute.INDI_CNT.toString())
@@ -591,19 +638,10 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             }
 
             // 주요행동
-            if ("mjAct" == type) {
-                if (selectItem == "번식 및 번식행동") {
-                    mjActPrLL.visibility = View.VISIBLE
-                } else {
-                    mjActPrLL.visibility = View.GONE
-                    mjActPrET.setText("");
-                }
-            } else if ("useTar" == type) {
-                if (selectItem == "수종명 기록") {
-                    useTarSpLL.visibility = View.VISIBLE
-                } else {
-                    useTarSpLL.visibility = View.GONE
-                    useTarSpET.setText("");
+            if ("obsty" == type) {
+                if (selectItem == "기타") {
+                    mammalobstyET.visibility = View.VISIBLE
+                    mammalobstyTV.visibility = View.GONE
                 }
             }
 

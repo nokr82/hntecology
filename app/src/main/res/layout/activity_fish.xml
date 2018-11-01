@@ -362,7 +362,7 @@
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
-                    android:id="@+id/fishaddistnmET"
+                    android:id="@+id/fishcolltoolET"
                     android:hint="투망 (망목 9 x 9 mm), 족대 (망목 4 x 4 mm)"
                     />
             </LinearLayout>
@@ -450,182 +450,91 @@
                     />
 
             </LinearLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:textColor="#333333"
-                android:textSize="20.2sp"
-                android:textStyle="bold"
-                android:text="하상구조 특성"
-                style="@style/BiotopeTextView"
-                android:gravity="center"
-                />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 >
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_width="200dp"
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
-                    android:text="Boulder \n (256mm↑)"/>
-
+                    android:text="하천 구조"/>
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="Cobble\n (64∼256mm)"/>
-                <TextView
-                    android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="match_parent"
+                    android:hint="click"
+                    android:id="@+id/rivstrTV"
                     style="@style/BiotopeTextView"
-                    android:text="Pebble\n( 16∼64mm )"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="Gravel\n( 2∼16mm )"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="Sand\n( 2mm↓ )"/>
+                    android:gravity="center"
+                    />
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/detailLL"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 >
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="하상구조 상세입력"/>
                 <EditText
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:inputType="number"
+                    android:id="@+id/rivstrdetET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
-
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
 
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
             </LinearLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:textColor="#333333"
-                android:textSize="20.2sp"
-                android:textStyle="bold"
-                android:text="하천 형태 특성"
-                style="@style/BiotopeTextView"
-                android:gravity="center"
-                />
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 >
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_width="200dp"
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
-                    android:text="자연형"/>
-
+                    android:text="하천 형태"/>
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="직강화"/>
-                <TextView
-                    android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="match_parent"
+                    android:hint="click"
+                    android:id="@+id/formTV"
                     style="@style/BiotopeTextView"
-                    android:text="복합형"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="댐 / 보 / 교각"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="하천공사"/>
+                    android:gravity="center"
+                    />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+
                 >
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
 
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                <TextView
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:text="번호" />
 
-                <EditText
+                <TextView
+                    android:id="@+id/fishnumTV"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
+                    android:gravity="center" />
             </LinearLayout>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -639,10 +548,48 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/fishspecnmET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                >
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="과명"/>
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/fishfaminmET"
+                    style="@style/BiotopeTextView"
+                    android:gravity="left|center"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                >
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="학명"/>
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/fishsciennmET"
+                    style="@style/BiotopeTextView"
+                    android:gravity="left|center"
+                    />
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -657,6 +604,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/fishindicntET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -675,6 +623,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/fishunidentET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -693,6 +642,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/fishtivfmchET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -711,6 +661,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/fishunfishchET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />

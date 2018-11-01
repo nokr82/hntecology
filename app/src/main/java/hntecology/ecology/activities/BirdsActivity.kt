@@ -340,12 +340,17 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         birds_attribute.INV_REGION = invRegionET.text.toString()
 
 
-                        birds_attribute.INV_DT = Utils.timeStr()
+                        if(invDtTV.text == null){
+                            birds_attribute.INV_DT = Utils.todayStr()
+                        }else {
+                            birds_attribute.INV_DT = invDtTV.text.toString()
+                        }
 
                         if(invPersonTV.text == null){
-                            invPersonTV.setText("")
+                            birds_attribute.INV_PERSON = userName
+                        }else {
+                            birds_attribute.INV_PERSON = invPersonTV.text.toString()
                         }
-                        birds_attribute.INV_PERSON = invPersonTV.text.toString()
 
                         if(btn1.text == null){
                             btn1.setText("")

@@ -16,7 +16,6 @@ class ZoobenthosActivity : Activity() {
         window.setGravity(Gravity.RIGHT);
         this.setFinishOnTouchOutside(true);
 
-
         window.setLayout(Utils.dpToPx(700f).toInt(), WindowManager.LayoutParams.WRAP_CONTENT);
     }
 }

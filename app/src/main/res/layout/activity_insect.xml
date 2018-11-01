@@ -216,6 +216,8 @@
                     />
 
             </LinearLayout>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -279,6 +281,42 @@
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
+                    android:text="과 명"/>
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/insectfaminmET"
+                    style="@style/BiotopeTextView"
+                    android:gravity="left|center"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                >
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="학 명"/>
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/insectsciennmET"
+                    style="@style/BiotopeTextView"
+                    android:gravity="left|center"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                >
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
                     android:text="개체수"/>
                 <EditText
                     android:layout_width="0dp"
@@ -299,13 +337,23 @@
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
                     android:text="관찰지역현황(토지이용유형)"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/insectobsstatTV"
+                    android:hint="click"
+                    style="@style/BiotopeTextView"
+                    android:gravity="center"
+                    />
                 <EditText
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/insectobsstatET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
 
@@ -318,13 +366,23 @@
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
                     android:text="이용대상"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="click"
+                    android:id="@+id/insectusetarTV"
+                    style="@style/BiotopeTextView"
+                    android:gravity="center"
+                    />
                 <EditText
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/insectusetarET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
             <LinearLayout
@@ -336,13 +394,23 @@
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
                     android:text="주요행동"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="click"
+                    android:id="@+id/insectmjactTV"
+                    style="@style/BiotopeTextView"
+                    android:gravity="center"
+                    />
                 <EditText
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/insectmjactET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
 

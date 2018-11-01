@@ -1013,8 +1013,18 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         biotope_attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name");
 //            biotope_attribute.INVES_DATETIME        =   etinvesDatetimeTV.text.toString()
 
-                        biotope_attribute.INV_DT = etINV_DTTV.text.toString();
-                        biotope_attribute.INV_TM = etINV_TMTV.text.toString();
+
+                        if(etINV_DTTV.text == null){
+                            biotope_attribute.INV_DT = Utils.todayStr()
+                        }else {
+                            biotope_attribute.INV_DT = etINV_DTTV.text.toString();
+                        }
+
+                        if(etINV_TMTV.text == null){
+                            biotope_attribute.INV_TM = Utils.timeStr()
+                        }else {
+                            biotope_attribute.INV_TM = etINV_TMTV.text.toString();
+                        }
 
                         if (tvINV_IndexTV.text.isNotEmpty()) {
 

@@ -89,6 +89,17 @@ class DlgCommonSubActivity : Activity() {
                 listdata1.add("W")
                 listdata1.add("NW")
             }
+
+            100 -> {
+
+                listdata1.add("자연형")
+                listdata1.add("직강화")
+                listdata1.add("복합형")
+                listdata1.add("댐/보/교각")
+                listdata1.add("하천공사")
+
+            }
+
         }
 
         //대분류 데이터 셋팅
@@ -109,6 +120,7 @@ class DlgCommonSubActivity : Activity() {
             intent.putExtra("selectDlg",listAdapte1.getItem(position))
             setResult(RESULT_OK, intent);
             finish()
+
         })
 
 

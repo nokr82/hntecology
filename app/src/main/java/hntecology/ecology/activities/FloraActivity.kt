@@ -56,6 +56,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
     var page:Int? = null
 
+    val SET_FLORA = 1
+
     var dataArray:ArrayList<Flora_Attribute> = ArrayList<Flora_Attribute>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,7 +106,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                 florainvregionET.setText(flora_Attribute.INV_REGION)
                 florainvdvET.setText(flora_Attribute.INV_DT)
-                florainvregionET.setText(flora_Attribute.INV_PERSON)
+                florainvperson.setText(flora_Attribute.INV_PERSON)
 
                 floraweatherTV.setText(flora_Attribute.WEATHER)
                 florawindTV.setText(flora_Attribute.WIND)
@@ -115,7 +117,11 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                 florainvtmET.setText(flora_Attribute.INV_TM)
 
+                floranumET.setText(flora_Attribute.NUM.toString())
+
                 floraspecnmET.setText(flora_Attribute.SPEC_NM)
+                florafaminmTV.setText(flora_Attribute.FAMI_NM)
+                florasciennmTV.setText(flora_Attribute.SCIEN_NM)
 
                 florafloreyynTV.setText(flora_Attribute.FLORE_YN)
                 floraplantynTV.setText(flora_Attribute.PLANT_YN)
@@ -225,6 +231,10 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             flora_Attribute.WIND = florawindTV.text.toString()
             flora_Attribute.WIND_DIRE = florawinddireTV.text.toString()
 
+            if(floranumET.text.isNotEmpty()) {
+                flora_Attribute.NUM = floranumET.text.toString().toInt()
+            }
+
             if(floratemperaturTV.text.isNotEmpty()){
                 flora_Attribute.TEMPERATUR = floratemperaturTV.text.toString().toFloat()
             }
@@ -234,15 +244,15 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             flora_Attribute.INV_TM = florainvtmET.text.toString()
 
             flora_Attribute.SPEC_NM = floraspecnmET.text.toString()
+            flora_Attribute.FAMI_NM = florafaminmTV.text.toString()
+            flora_Attribute.SCIEN_NM = florasciennmTV.text.toString()
 
             flora_Attribute.FLORE_YN = florafloreyynTV.text.toString()
             flora_Attribute.PLANT_YN = floraplantynTV.text.toString()
 
-            if(flora_Attribute.HAB_ETC != null && !flora_Attribute.HAB_ETC.equals("")){
-                florahabstatTV.setText(flora_Attribute.HAB_ETC)
-            }else {
-                florahabstatTV.setText(flora_Attribute.HAB_STAT)
-            }
+
+            flora_Attribute.HAB_STAT = florahabstatTV.text.toString()
+            flora_Attribute.HAB_ETC = florahabstatET.text.toString()
 
             if(floracolincnt.text.isNotEmpty()){
                 flora_Attribute.COL_IN_CNT = floracolincnt.text.toString().toInt()
@@ -312,7 +322,11 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                         flora_Attribute.INV_DT = Utils.todayStr()
 
-                        if(florainvperson.text == null){
+                        if(floranumET.text.isNotEmpty()) {
+                            flora_Attribute.NUM = floranumET.text.toString().toInt()
+                        }
+
+                        if(florainvperson.text == null || florainvperson.text.equals("")){
                             flora_Attribute.INV_PERSON = userName
                         }else {
                             flora_Attribute.INV_PERSON = florainvperson.text.toString()
@@ -329,6 +343,10 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                         flora_Attribute.INV_TM = Utils.timeStr()
 
                         flora_Attribute.ETC = floraetcET.text.toString()
+
+                        if(floranumET.text.isNotEmpty()) {
+                            flora_Attribute.NUM = floranumET.text.toString().toInt()
+                        }
 
                         flora_Attribute.SPEC_NM = floraspecnmET.text.toString()
                         flora_Attribute.FAMI_NM = florafaminmTV.text.toString()
@@ -484,13 +502,23 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
         }
 
+        floraspecnmET.setOnClickListener {
+            startDlgFlora()
+        }
+
+
+
+    }
+
+    fun startDlgFlora(){
+        val intent = Intent(context, DlgFloraActivity::class.java)
+        startActivityForResult(intent, SET_FLORA);
     }
 
     fun clear(){
 
         florainvregionET.setText("")
         florainvdvET.setText("")
-        florainvperson.setText("")
 
         floraweatherTV.setText("")
         florawindTV.setText("")
@@ -502,11 +530,14 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
         florainvtmET.setText("")
 
         floraspecnmET.setText("")
+        florafaminmTV.setText("")
+        florasciennmTV.setText("")
 
         florafloreyynTV.setText("")
         floraplantynTV.setText("")
 
         florahabstatTV.setText("")
+        florahabstatET.setText("")
         floracolincnt.setText("")
 
         florathrecauET.setText("")
@@ -584,6 +615,11 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                 floraetcET.setText("")
             }
 
+            floranumET.setText(flora_Attribute.NUM.toString())
+            if (floranumET.text == null){
+                floranumET.setText("")
+            }
+
             florainvtmET.setText(flora_Attribute.INV_TM)
             if (florainvtmET.text == null){
                 florainvtmET.setText("")
@@ -592,6 +628,16 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             floraspecnmET.setText(flora_Attribute.SPEC_NM)
             if (floraspecnmET.text == null){
                 floraspecnmET.setText("")
+            }
+
+            florafaminmTV.setText(flora_Attribute.FAMI_NM)
+            if (florafaminmTV.text == null){
+                florafaminmTV.setText("")
+            }
+
+            florasciennmTV.setText(flora_Attribute.SCIEN_NM)
+            if (florasciennmTV.text == null){
+                florasciennmTV.setText("")
             }
 
             florafloreyynTV.setText(flora_Attribute.FLORE_YN)
@@ -609,11 +655,22 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                 florahabstatTV.setText("")
             }
 
-            if(flora_Attribute.HAB_ETC != null && !flora_Attribute.HAB_ETC.equals("")){
-                florahabstatTV.setText(flora_Attribute.HAB_ETC)
-            }else if (flora_Attribute.HAB_ETC == null){
+            if (flora_Attribute.HAB_STAT == null){
                 florahabstatTV.setText("")
             }
+
+            if(flora_Attribute.HAB_ETC != null && !flora_Attribute.HAB_ETC.equals("")){
+                florahabstatTV.setText(flora_Attribute.HAB_ETC)
+            }
+
+            if (flora_Attribute.HAB_ETC == null){
+                florahabstatTV.setText("")
+            }
+
+
+
+
+
 
             floracolincnt.setText(flora_Attribute.COL_IN_CNT.toString())
             if (floracolincnt.text == null){
@@ -774,4 +831,26 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
         SmartLocation.with(context).location().stop()
     }
 
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+
+            when (requestCode) {
+
+                SET_FLORA -> {
+
+                    var name = data!!.getStringExtra("name");
+                    var family_name = data!!.getStringExtra("family_name");
+                    var zoological = data!!.getStringExtra("zoological");
+
+                    floraspecnmET.text = name
+                    florafaminmTV.text = family_name
+                    florasciennmTV.text = zoological
+
+                };
+            }
+        }
+    }
 }

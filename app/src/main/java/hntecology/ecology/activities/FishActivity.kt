@@ -49,6 +49,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
     private var progressDialog: ProgressDialog? = null
 
     val SET_FISH = 100
+    val SET_FISHDLG = 101
 
     var chkdata: Boolean = false;
 
@@ -57,6 +58,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
     var page:Int? = null
 
     var dataArray:ArrayList<Fish_attribute> = ArrayList<Fish_attribute>()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,10 +71,13 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         window.setGravity(Gravity.RIGHT);
         this.setFinishOnTouchOutside(true);
 
+        userName = PrefUtils.getStringPreference(context, "name");
+
+        fishinvdtET.setText(Utils.todayStr())
+        fishinvpersonET.setText(userName)
 
         window.setLayout(Utils.dpToPx(700f).toInt(), WindowManager.LayoutParams.WRAP_CONTENT);
 
-        userName = PrefUtils.getStringPreference(context, "name");
 
         val dbmanager = DataBaseHelper(context);
         val db = dbmanager.createDataBase();
@@ -127,14 +132,22 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 rivstrTV.setText(fish_attribute.RIV_STR)
                 rivstrdetET.setText(fish_attribute.RIV_STR_IN)
 
+                if(fish_attribute.RIV_STR_IN == null || fish_attribute.RIV_STR_IN.equals("")){
+                    rivstrdetET.setText("")
+                    detailLL.visibility = View.GONE
+                }
+
+                if(fish_attribute.RIV_STR_IN != null && !fish_attribute.RIV_STR_IN.equals("")){
+                    detailLL.visibility = View.VISIBLE
+                }
+
                 formTV.setText(fish_attribute.RIV_FORM)
 
                 fishnumTV.setText(fish_attribute.NUM.toString())
 
                 fishspecnmET.setText(fish_attribute.SPEC_NM)
-
-//                fishfaminmET.setText(fish_attribute.FAMI_NM) view 검토
-//                fishsciennmET.setText(fish_attribute.SCIEN_NM) view 검토
+                fishfaminmET.setText(fish_attribute.FAMI_NM)
+                fishsciennmET.setText(fish_attribute.SCIEN_NM)
 
                 fishindicntET.setText(fish_attribute.INDI_CNT.toString())
 
@@ -237,11 +250,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             fish_attribute.INV_REGION = fishinvregionET.text.toString()
             fish_attribute.INV_DT = fishinvdtET.text.toString()
 
-            if(fishinvpersonET.text == null){
-                fish_attribute.INV_PERSON = userName
-            }else {
-                fish_attribute.INV_PERSON = fishinvpersonET.text.toString()
-            }
+            fish_attribute.INV_PERSON = fishinvpersonET.text.toString()
 
             fish_attribute.WEATHER = fishweatherET.text.toString()
             fish_attribute.WIND = fishwindET.text.toString()
@@ -309,9 +318,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             }
 
             fish_attribute.SPEC_NM = fishspecnmET.text.toString()
-
-//            fish_attribute.FAMI_NM = fishfaminmET.text.toString() view 확인
-//            fish_attribute.SCIEN_NM = fishsciennmET.text.toString() view확인
+            fish_attribute.FAMI_NM = fishfaminmET.text.toString()
+            fish_attribute.SCIEN_NM = fishsciennmET.text.toString()
 
             if (fishindicntET.text.isNotEmpty()) {
                 fish_attribute.INDI_CNT = fishindicntET.text.toString().toInt()
@@ -322,6 +330,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             fish_attribute.UN_FISH_CH = fishunfishchET.text.toString()
 
             fish_attribute.SPEC_NM = fishspecnmET.text.toString()
+
 
             if(fishgpslonTV.text.toString() != "" && fishgpslatTV.text.toString() != ""){
                 fish_attribute.GPS_LAT = fishgpslatTV.text.toString().toFloat()
@@ -382,11 +391,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         fish_attribute.INV_REGION = fishinvregionET.text.toString()
                         fish_attribute.INV_DT = fishinvdtET.text.toString()
 
-                        if(fishinvpersonET.text == null){
-                            fish_attribute.INV_PERSON = userName
-                        }else {
-                            fish_attribute.INV_PERSON = fishinvpersonET.text.toString()
-                        }
+                        fish_attribute.INV_PERSON = fishinvpersonET.text.toString()
 
                         fish_attribute.WEATHER = fishweatherET.text.toString()
                         fish_attribute.WIND = fishwindET.text.toString()
@@ -454,9 +459,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         }
 
                         fish_attribute.SPEC_NM = fishspecnmET.text.toString()
-
-//            fish_attribute.FAMI_NM = fishfaminmET.text.toString() view 확인
-//            fish_attribute.SCIEN_NM = fishsciennmET.text.toString() view확인
+                        fish_attribute.FAMI_NM = fishfaminmET.text.toString()
+                        fish_attribute.SCIEN_NM = fishsciennmET.text.toString()
 
                         if (fishindicntET.text.isNotEmpty()) {
                             fish_attribute.INDI_CNT = fishindicntET.text.toString().toInt()
@@ -539,6 +543,54 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         }
 
+        fishspecnmET.setOnClickListener {
+            startDlgFish()
+        }
+
+        fishfaminmET.setOnClickListener {
+            startDlgFish()
+        }
+
+        fishsciennmET.setOnClickListener {
+            startDlgFish()
+        }
+
+        fishweatherET.setOnClickListener {
+
+            var listItems: ArrayList<String> = ArrayList();
+            listItems.add("맑음");
+            listItems.add("흐림");
+            listItems.add("안개");
+            listItems.add("비");
+
+            alert(listItems, "날씨", fishweatherET, "weather");
+        }
+
+        fishwindET.setOnClickListener {
+
+            var listItems: ArrayList<String> = ArrayList();
+            listItems.add("강");
+            listItems.add("중");
+            listItems.add("약");
+            listItems.add("무");
+
+            alert(listItems, "바람", fishwindET, "wind");
+        }
+
+        fishwinddireET.setOnClickListener {
+
+            var listItems: ArrayList<String> = ArrayList();
+            listItems.add("N");
+            listItems.add("NE");
+            listItems.add("E");
+            listItems.add("SE");
+            listItems.add("S");
+            listItems.add("SW");
+            listItems.add("W");
+            listItems.add("NW");
+
+            alert(listItems, "풍향", fishwinddireET, "winddire");
+        }
 
 
         formTV.setOnClickListener {
@@ -710,12 +762,18 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 detailLL.visibility = View.GONE
             }
 
-
-
             rivstrdetET.setText(fish_attribute.RIV_STR_IN)
             if(rivstrdetET.text == null){
                 rivstrdetET.setText("")
+                detailLL.visibility = View.GONE
             }
+
+            if(fish_attribute.RIV_STR_IN != null && !fish_attribute.RIV_STR_IN.equals("")){
+                detailLL.visibility = View.VISIBLE
+            }
+
+
+
 
             formTV.setText(fish_attribute.RIV_FORM)
             if(formTV.text == null){
@@ -732,8 +790,15 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 fishspecnmET.setText("")
             }
 
-//                fishfaminmET.setText(fish_attribute.FAMI_NM) view 검토
-//                fishsciennmET.setText(fish_attribute.SCIEN_NM) view 검토
+            fishfaminmET.setText(fish_attribute.FAMI_NM)
+            if(fishfaminmET.text == null){
+                fishfaminmET.setText("")
+            }
+
+            fishsciennmET.setText(fish_attribute.SCIEN_NM)
+            if(fishsciennmET.text == null){
+                fishsciennmET.setText("")
+            }
 
             fishindicntET.setText(fish_attribute.INDI_CNT.toString())
             if(fishindicntET.text == null){
@@ -761,8 +826,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
     fun clear(){
 
         fishinvregionET.setText("")
-        fishinvdtET.setText("")
-        fishinvpersonET.setText("")
 
         fishweatherET.setText("")
         fishwindET.setText("")
@@ -792,12 +855,10 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         formTV.setText("")
 
-        fishnumTV.setText("")
 
         fishspecnmET.setText("")
-
-//                fishfaminmET.setText(fish_attribute.FAMI_NM) view 검토
-//                fishsciennmET.setText(fish_attribute.SCIEN_NM) view 검토
+        fishfaminmET.setText("")
+        fishsciennmET.setText("")
 
         fishindicntET.setText("")
 
@@ -807,6 +868,11 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         fishunfishchET.setText("")
 
+    }
+
+    fun startDlgFish(){
+        val intent = Intent(context, DlgFishActivity::class.java)
+        startActivityForResult(intent, SET_FISHDLG);
     }
 
 
@@ -958,6 +1024,17 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 };
 
 
+                SET_FISHDLG -> {
+
+                    var name = data!!.getStringExtra("name");
+                    var family_name = data!!.getStringExtra("family_name");
+                    var zoological = data!!.getStringExtra("zoological");
+
+                    fishspecnmET.text = name
+                    fishfaminmET.text = family_name
+                    fishsciennmET.text = zoological
+
+                }
 
             }
         }

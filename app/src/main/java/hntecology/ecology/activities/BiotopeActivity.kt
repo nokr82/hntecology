@@ -333,7 +333,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     dataArray.add(biotope_attribute)
                 }
 
-                if(page == dataArray.size || page!! > 1 ){
+                if(page == dataArray.size && page!! > 1 ){
                     page = page!!-1
                     pageTV.text = page.toString() + " / " + dataArray.size
 
@@ -342,6 +342,15 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     resetPage(page!!)
 
                     println("page : $page")
+
+                }else if (page!! < dataArray.size && page!! > 1){
+
+                    page = page!!-1
+                    pageTV.text = page.toString() + " / " + dataArray.size
+
+                    clear()
+
+                    resetPage(page!!)
 
                 }
 
@@ -554,6 +563,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                 if(page == dataArray.size) {
                     dbManager.insertbiotope_attribute(biotope_attribute);
+                    page = page!! + 1
                     println("biotope_attribute ====== ${biotope_attribute.id}")
                 }
 
@@ -727,7 +737,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     dataArray.add(biotope_attribute)
                 }
 
-                if(page!! < data2.count) {
+                if(page!! < dataArray.size) {
                     page = page!! + 1
                 }
 

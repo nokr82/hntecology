@@ -2,16 +2,24 @@ package hntecology.ecology.activities
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.Typeface
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.provider.Settings
 import android.support.v4.app.FragmentActivity
+import android.support.v4.content.ContextCompat
 import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
@@ -20,11 +28,13 @@ import android.widget.Toast
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesUtil
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import hntecology.ecology.Manifest
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
@@ -48,7 +58,7 @@ import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnTouchListener, GoogleMap.OnCameraMoveListener {
+class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnTouchListener, GoogleMap.OnCameraMoveListener{
 
     private val PLAY_SERVICES_RESOLUTION_REQUEST: Int = 1000
     private val PolygonCallBackData = 1001
@@ -81,9 +91,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     private var db:SQLiteDatabase? = null
 
+    val coder:Geocoder = Geocoder(this)
 
     // 3. biotope  , 6.birds , 7.Reptilia , 8.mammalia  9. fish, 10.insect, 11.flora , 13. zoobenthos
     var currentLayer = -1
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,6 +104,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         this.context = this
         dbManager = DataBaseHelper(this)
+
 
         db = dbManager!!.createDataBase()
         val dataList:Array<String> = arrayOf("*")
@@ -285,6 +298,34 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         exportBtn.setOnClickListener {
             export()
+        }
+
+        btn_mygps.setOnClickListener {
+
+            val location: Location = Location(LocationManager.GPS_PROVIDER)
+
+            val long = location.longitude
+            val lat = location.latitude
+
+            println("long:=======$long ================$lat")
+
+            val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+            val locationListener = object : LocationListener {
+                override fun onLocationChanged(location: Location) {
+                    println("latitude ======== $location.latitude")
+                }
+
+                override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
+                }
+
+                override fun onProviderEnabled(provider: String) {
+                }
+
+                override fun onProviderDisabled(provider: String) {
+                }
+            }
+
         }
 
         delPointRL.setOnClickListener {
@@ -1428,5 +1469,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         db!!.delete(tableName, "id = '$attrubuteKey'", null)
     }
+
+
+
 
 }

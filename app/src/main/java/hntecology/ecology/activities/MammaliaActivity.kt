@@ -55,6 +55,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
     var latitude = 0.0f;
     var longitude = 0.0f;
 
+    val SET_MAMMAL = 1
+    val SET_UNSPEC = 2
+
     private var progressDialog: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,13 +111,12 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 mamtemperatureET.setText(mammal_attribute.TEMPERATUR.toString())
                 mametcET.setText(mammal_attribute.ETC)
 
-                mamspecnmET.setText(mammal_attribute.SPEC_NM)
-
                 mammaltimeTV.setText(mammal_attribute.INV_TM)
                 mammalnumTV.setText(mammal_attribute.NUM.toString())
 
-//                faminmTV.setText      view 검토 후
-//                scien_nm.setText      view 검토 후
+                mamspecnmET.setText(mammal_attribute.SPEC_NM)
+                mamfaminmTV.setText(mammal_attribute.FAMI_NM)
+                mamsciennmTV.setText(mammal_attribute.SCIEN_NM)
 
                 mammalobstyTV.setText(mammal_attribute.OBS_TY)
 
@@ -215,11 +217,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             mammal_attribute.INV_REGION = maminvregionET.text.toString()
 
-            if(maminvdtTV.text == null){
-                mammal_attribute.INV_DT = Utils.todayStr()
-            }else {
-                mammal_attribute.INV_DT = maminvdtTV.text.toString()
-            }
+            mammal_attribute.INV_DT = Utils.todayStr()
+
 
             if(maminvpersonTV.text == null){
                 mammal_attribute.INV_PERSON = userName
@@ -248,16 +247,11 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             mammal_attribute.INV_TM = Utils.timeStr()
 
             mammal_attribute.SPEC_NM = mamspecnmET.text.toString()
+            mammal_attribute.FAMI_NM = mamfaminmTV.text.toString()
+            mammal_attribute.SCIEN_NM = mamsciennmTV.text.toString()
 
-//            mammal_attribute.FAMI_NM 화면에 view 검토
-//            mammal_attribute.SCIEN_NM 화면에 view 검토
-
-            if(!mammalobstyET.equals("") && mammalobstyET.text != null){
-                mammal_attribute.OBS_TY = mammalobstyET.text.toString()
-            }else {
-                mammal_attribute.OBS_TY = mammalobstyTV.text.toString()
-            }
-//            mammal_attribute.OBS_TY_ETC 수동입력 view 검토
+            mammal_attribute.OBS_TY = mammalobstyTV.text.toString()
+            mammal_attribute.OBS_TY_ETC = mammalobstyET.text.toString()
 
             if(mamindicntET.text.isNotEmpty()) {
                 mammal_attribute.INDI_CNT = mamindicntET.text.toString().toInt()
@@ -348,17 +342,23 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                         mammal_attribute.ETC = mametcET.text.toString()
 
-                        mammal_attribute.NUM = 0
+                        if(mammalnumTV.text.isNotEmpty()) {
+                            mammal_attribute.NUM = mammalnumTV.text.toString().toInt()
+                        }
 
                         mammal_attribute.INV_TM = Utils.timeStr()
 
                         mammal_attribute.SPEC_NM = mamspecnmET.text.toString()
+                        mammal_attribute.FAMI_NM = mamfaminmTV.text.toString()
+                        mammal_attribute.SCIEN_NM = mamsciennmTV.text.toString()
 
-//            mammal_attribute.FAMI_NM 화면에 view 검토
-//            mammal_attribute.SCIEN_NM 화면에 view 검토
-
-                        mammal_attribute.OBS_TY = mammalobstyTV.text.toString()
-//            mammal_attribute.OBS_TY_ETC 수동입력 view 검토
+                        if(mammalobstyET.text != null && !mammalobstyET.text.equals("")){
+                            mammal_attribute.OBS_TY = mammalobstyET.text.toString()
+                            mammal_attribute.OBS_TY_ETC = mammalobstyET.text.toString()
+                        }else {
+                            mammal_attribute.OBS_TY = mammalobstyTV.text.toString()
+                            mammal_attribute.OBS_TY_ETC = mammalobstyET.text.toString()
+                        }
 
                         if(mamindicntET.text.isNotEmpty()) {
                             mammal_attribute.INDI_CNT = mamindicntET.text.toString().toInt()
@@ -426,6 +426,22 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             alert.show()
         }
 
+        mamspecnmET.setOnClickListener {
+            startDlgMammal()
+        }
+
+        mamfaminmTV.setOnClickListener {
+            startDlgMammal()
+        }
+
+        mamsciennmTV.setOnClickListener {
+            startDlgMammal()
+        }
+
+        mamunspecET.setOnClickListener {
+            startDlgM()
+        }
+
         btn_biotopCancle1.setOnClickListener {
             val builder = AlertDialog.Builder(context)
             builder.setMessage("취소하시겠습니까?").setCancelable(false)
@@ -458,6 +474,56 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         }
 
+        mamweatherET.setOnClickListener {
+
+            var listItems: ArrayList<String> = ArrayList();
+
+            listItems.add("맑음");
+            listItems.add("흐림");
+            listItems.add("안개");
+            listItems.add("비");
+
+            alert(listItems, "날씨", mamweatherET, "weather");
+        }
+
+        mamwindET.setOnClickListener {
+
+            var listItems: ArrayList<String> = ArrayList();
+
+            listItems.add("강");
+            listItems.add("중");
+            listItems.add("약");
+            listItems.add("무");
+
+            alert(listItems, "바람", mamwindET, "wind");
+        }
+
+        mamwinddireET.setOnClickListener {
+
+            var listItems: ArrayList<String> = ArrayList();
+
+            listItems.add("N");
+            listItems.add("NE");
+            listItems.add("E");
+            listItems.add("SE");
+            listItems.add("S");
+            listItems.add("SW");
+            listItems.add("W");
+            listItems.add("NW");
+
+            alert(listItems, "풍향", mamwinddireET, "winddire");
+        }
+
+        mamtreasyET.setOnClickListener {
+            var listItems: ArrayList<String> = ArrayList();
+
+            listItems.add("쉬움");
+            listItems.add("보통");
+            listItems.add("어려움");
+
+            alert(listItems, "풍향", mamtreasyET, "treasy");
+        }
+
         }
 
 
@@ -474,9 +540,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         mametcET.setText("")
 
         mamspecnmET.setText("")
+        mamfaminmTV.setText("")
+        mamsciennmTV.setText("")
 
-//                faminmTV.setText      view 검토 후
-//                scien_nm.setText      view 검토 후
 
         mammalobstyTV.setText("")
 
@@ -562,8 +628,15 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 mamspecnmET.setText("")
             }
 
-//                faminmTV.setText      view 검토 후
-//                scien_nm.setText      view 검토 후
+            mamfaminmTV.setText(mammal_attribute.FAMI_NM)
+            if(mamfaminmTV.text == null){
+                mamfaminmTV.setText("")
+            }
+
+            mamsciennmTV.setText(mammal_attribute.SCIEN_NM)
+            if(mamsciennmTV.text == null){
+                mamsciennmTV.setText("")
+            }
 
             mammalobstyTV.setText(mammal_attribute.OBS_TY)
             if(mammalobstyTV.text == null){
@@ -753,6 +826,45 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
     private fun stopLocation() {
         SmartLocation.with(context).location().stop()
     }
+
+    fun startDlgMammal(){
+        val intent = Intent(context, DlgMammalActivity::class.java)
+        startActivityForResult(intent, SET_MAMMAL);
+    }
+
+    fun startDlgM(){
+        val intent = Intent(context, DlgMammalActivity::class.java)
+        startActivityForResult(intent, SET_UNSPEC);
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+
+            when (requestCode) {
+
+                SET_MAMMAL -> {
+
+                    var name = data!!.getStringExtra("name");
+                    var family_name = data!!.getStringExtra("family_name");
+                    var zoological = data!!.getStringExtra("zoological");
+
+                    mamspecnmET.text = name
+                    mamfaminmTV.text = family_name
+                    mamsciennmTV.text = zoological
+
+                };
+
+                SET_UNSPEC -> {
+                    var name = data!!.getStringExtra("name");
+
+                    mamunspecET.text = name
+                }
+            }
+        }
+    }
+
 
 
 }

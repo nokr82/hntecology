@@ -99,7 +99,7 @@
                     style="@style/BiotopeTextView"
                     android:text="조사일시"/>
 
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -171,31 +171,32 @@
                 android:layout_height="50dp"
                 android:orientation="horizontal"
                 >
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/fishweatherET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    android:hint="맑음 흐림 안개 비"
+                    android:gravity="center"
+                    android:hint="click"
                     />
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/fishwindET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    android:hint="강 중 약 무"
+                    android:gravity="center"
+                    android:hint="click"
                     />
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/fishwinddireET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:hint="click"
+                    android:gravity="center"
                     />
                 <EditText
                     android:layout_width="0dp"
@@ -458,13 +459,22 @@
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
-                    android:text="하천 구조"/>
+                    android:text="하상 구조"/>
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:hint="click"
                     android:id="@+id/rivstrTV"
+                    style="@style/BiotopeTextView"
+                    android:gravity="center"
+                    />
+                <EditText
+                    android:visibility="gone"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/rivstrET"
                     style="@style/BiotopeTextView"
                     android:gravity="center"
                     />
@@ -485,6 +495,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:inputType="number"
+                    android:hint="입력해주세요."
                     android:id="@+id/rivstrdetET"
                     style="@style/BiotopeTextView"
                     android:gravity="center"
@@ -544,13 +555,14 @@
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
                     android:text="종명"/>
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/fishspecnmET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:hint="click"
+                    android:gravity="center"
                     />
             </LinearLayout>
             <LinearLayout
@@ -562,13 +574,13 @@
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
                     android:text="과명"/>
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/fishfaminmET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
             <LinearLayout
@@ -580,13 +592,13 @@
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
                     android:text="학명"/>
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/fishsciennmET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
 
@@ -604,9 +616,10 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:inputType="number"
                     android:id="@+id/fishindicntET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
 
@@ -625,7 +638,7 @@
                     android:layout_weight="1"
                     android:id="@+id/fishunidentET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
 
@@ -644,7 +657,7 @@
                     android:layout_weight="1"
                     android:id="@+id/fishtivfmchET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
 
@@ -663,7 +676,7 @@
                     android:layout_weight="1"
                     android:id="@+id/fishunfishchET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
 

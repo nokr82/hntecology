@@ -158,7 +158,29 @@
             android:theme="@style/full_screen_dialog1" />
         <activity android:name=".activities.FloraActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/full_screen_dialog1" ></activity>
+            android:theme="@style/full_screen_dialog1"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+            ></activity>
+        <activity
+            android:name=".activities.DlgReptiliaActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/full_screen_dialog1" />
+        <activity
+            android:name=".activities.DlgMammalActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/full_screen_dialog1" />
+        <activity
+            android:name=".activities.DlgFishActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/full_screen_dialog1" />
+        <activity
+            android:name=".activities.DlgInsectActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/full_screen_dialog1" />
+        <activity
+            android:name=".activities.DlgFloraActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/full_screen_dialog1" />
     </application>
 
 </manifest>

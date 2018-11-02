@@ -51,6 +51,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
     var chkdata: Boolean = false;
 
+    val SET_INSECT = 4;
 
     var keyId: String? = null;
 
@@ -114,9 +115,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                 insecttimeET.setText(insect_attribute.INV_TM)
 
                 insectspecnmET.setText(insect_attribute.SPEC_NM)
-
-//                insect_attribute.FAMI_NM view 검토
-//                insect_attribute.SCIEN_NM view 검토
+                insectfaminmET.setText(insect_attribute.FAMI_NM)
+                insectsciennmET.setText(insect_attribute.SCIEN_NM)
 
                 insectindicntET.setText(insect_attribute.INDI_CNT.toString())
 
@@ -136,6 +136,12 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                     insectmjactTV.setText(insect_attribute.MJ_ACT_ETC)
                 }else {
                     insectmjactTV.setText(insect_attribute.MJ_ACT)
+                }
+
+                if(insect_attribute.INV_MN_ETC != null && !insect_attribute.INV_MN_ETC.equals("")){
+                    insectinvmeanTV.setText(insect_attribute.INV_MN_ETC)
+                }else {
+                    insectinvmeanTV.setText(insect_attribute.INV_MEAN)
                 }
 
                 insectunusnoteET.setText(insect_attribute.UNUS_NOTE)
@@ -245,10 +251,10 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             }
 
             insect_attribute.INV_TM = insectinvdtET.text.toString()
-            insect_attribute.SPEC_NM = insectspecnmET.text.toString()
 
-//            insect_attribute.FAMI_NM view 확인
-//            insect_attribute.SCIEN_NM view 확인
+            insect_attribute.SPEC_NM = insectspecnmET.text.toString()
+            insect_attribute.FAMI_NM = insectfaminmET.text.toString()
+            insect_attribute.SCIEN_NM = insectsciennmET.text.toString()
 
             if(insectindicntET.text.isNotEmpty()){
                 insect_attribute.INDI_CNT = insectindicntET.text.toString().toInt()
@@ -261,16 +267,13 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             }
 
             insect_attribute.USE_TAR = insectusetarTV.text.toString()
-            if(!insectusetarET.text.equals("") && insectusetarET.text != null){
-                insect_attribute.USER_TA_ETC = insectusetarET.text.toString()
-            }
+            insect_attribute.USER_TA_ETC = insectusetarET.text.toString()
 
             insect_attribute.MJ_ACT = insectmjactTV.text.toString()
-            if(!insectmjactET.text.equals("") && insectmjactET.text != null){
-                insect_attribute.MJ_ACT_ETC = insectmjactET.text.toString()
-            }
+            insect_attribute.MJ_ACT_ETC = insectmjactET.text.toString()
 
-//            insect_attribute.INV_MEAN = insectinvmeanET.text.toString() view 확인 필요
+            insect_attribute.INV_MEAN = insectinvmeanTV.text.toString()
+            insect_attribute.INV_MN_ETC = insectinvmeanTV.text.toString()
 
             insect_attribute.UNUS_NOTE = insectunusnoteET.text.toString()
 
@@ -330,11 +333,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                         insect_attribute.INV_REGION = insectinvregionET.text.toString()
 
-                        if(insectinvdtET.text == null){
-                            insect_attribute.INV_DT = Utils.todayStr()
-                        }else {
-                            insect_attribute.INV_DT = insectinvdtET.text.toString()
-                        }
+                        insect_attribute.INV_DT = Utils.todayStr()
 
                         if(insectusernameET.text == null){
                             insect_attribute.INV_PERSON = userName
@@ -360,9 +359,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                         insect_attribute.INV_TM = Utils.timeStr()
 
                         insect_attribute.SPEC_NM = insectspecnmET.text.toString()
-
-//            insect_attribute.FAMI_NM view 확인
-//            insect_attribute.SCIEN_NM view 확인
+                        insect_attribute.FAMI_NM = insectfaminmET.text.toString()
+                        insect_attribute.SCIEN_NM = insectsciennmET.text.toString()
 
                         if(insectindicntET.text.isNotEmpty()){
                             insect_attribute.INDI_CNT = insectindicntET.text.toString().toInt()
@@ -377,7 +375,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                         insect_attribute.MJ_ACT = insectmjactTV.text.toString()
                         insect_attribute.MJ_ACT_ETC = insectmjactET.text.toString()
 
-//            insect_attribute.INV_MEAN = insectinvmeanET.text.toString() view 확인 필요
+                        insect_attribute.INV_MEAN = insectinvmeanTV.text.toString()
+                        insect_attribute.INV_MN_ETC = insectinvmeanET.text.toString()
 
                         insect_attribute.UNUS_NOTE = insectunusnoteET.text.toString()
 
@@ -466,10 +465,69 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             listItems.add("흙");
             listItems.add("물");
 
-            alert(listItems, "주요 행위 선택", insectusetarTV, "usetar");
+            alert(listItems, "이용 대상 선택", insectusetarTV, "usetar");
         }
 
         insectmjactTV.setOnClickListener {
+
+            var listItems: ArrayList<String> = ArrayList();
+
+            listItems.add("먹이");
+            listItems.add("알낳기");
+            listItems.add("짝짓기");
+            listItems.add("멀리 이동");
+            listItems.add("가까이 이동");
+            listItems.add("물먹기");
+            listItems.add("휴식");
+            listItems.add("기타");
+
+            alert(listItems, "주요 행위", insectmjactTV, "mjact");
+        }
+
+        insectweatherET.setOnClickListener {
+
+            var listItems: ArrayList<String> = ArrayList();
+
+            listItems.add("맑음");
+            listItems.add("흐림");
+            listItems.add("안개");
+            listItems.add("비");
+
+            alert(listItems, "날씨", insectweatherET, "weather");
+        }
+
+        insectwindET.setOnClickListener {
+
+            var listItems: ArrayList<String> = ArrayList();
+
+            listItems.add("강");
+            listItems.add("중");
+            listItems.add("약");
+            listItems.add("무");
+
+            alert(listItems, "바람", insectwindET, "wind");
+        }
+
+        insectwinddireET.setOnClickListener {
+
+
+            var listItems: ArrayList<String> = ArrayList();
+
+            listItems.add("N");
+            listItems.add("NE");
+            listItems.add("E");
+            listItems.add("SE");
+            listItems.add("S");
+            listItems.add("SW");
+            listItems.add("W");
+            listItems.add("NW");
+
+            alert(listItems, "풍향", insectwinddireET, "winddire");
+
+        }
+
+        insectinvmeanTV.setOnClickListener {
+
 
             var listItems: ArrayList<String> = ArrayList();
 
@@ -483,11 +541,32 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             listItems.add("목견");
             listItems.add("기타");
 
-            alert(listItems, "조사 방법 선택", insectmjactTV, "mjact");
+
+            alert(listItems, "조사방법선택", insectinvmeanTV, "invmean");
+
+
+        }
+
+        insectspecnmET.setOnClickListener {
+            startDlgInsect()
+        }
+
+        insectfaminmET.setOnClickListener {
+            startDlgInsect()
+        }
+
+        insectsciennmET.setOnClickListener {
+            startDlgInsect()
         }
 
 
     }
+
+    fun startDlgInsect(){
+        val intent = Intent(context, DlgInsectActivity::class.java)
+        startActivityForResult(intent, SET_INSECT);
+    }
+
 
     fun clear(){
         insectinvregionET.setText("")
@@ -507,15 +586,17 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
         insecttimeET.setText("")
 
         insectspecnmET.setText("")
-
-//                insect_attribute.FAMI_NM view 검토
-//                insect_attribute.SCIEN_NM view 검토
+        insectfaminmET.setText("")
+        insectsciennmET.setText("")
 
         insectindicntET.setText("")
 
         insectobsstatTV.setText("")
 
         insectusetarTV.setText("")
+
+        insectinvmeanET.setText("")
+        insectinvmeanTV.setText("")
 
         insectmjactTV.setText("")
 
@@ -607,8 +688,15 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                 insectspecnmET.setText("")
             }
 
-//                insect_attribute.FAMI_NM view 검토
-//                insect_attribute.SCIEN_NM view 검토
+            insectfaminmET.setText(insect_attribute.FAMI_NM)
+            if(insectfaminmET.text == null){
+                insectfaminmET.setText("")
+            }
+
+            insectsciennmET.setText(insect_attribute.SCIEN_NM)
+            if(insectsciennmET.text == null){
+                insectsciennmET.setText("")
+            }
 
             insectindicntET.setText(insect_attribute.INDI_CNT.toString())
             if(insectindicntET.text == null){
@@ -642,6 +730,16 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
             if(insect_attribute.MJ_ACT_ETC != null && !insect_attribute.MJ_ACT_ETC.equals("")){
                 insectmjactET.setText(insect_attribute.MJ_ACT_ETC)
+            }
+
+            insectinvmeanTV.setText(insect_attribute.INV_MEAN)
+            if(insectinvmeanTV.text == null){
+                insectinvmeanTV.setText("")
+            }
+
+            if(insect_attribute.INV_MN_ETC != null && !insect_attribute.INV_MN_ETC.equals("")){
+                insectinvmeanTV.setText(insect_attribute.INV_MN_ETC)
+                insectinvmeanET.visibility = View.GONE
             }
 
             insectunusnoteET.setText(insect_attribute.UNUS_NOTE)
@@ -695,6 +793,15 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                 }else {
                     insectmjactET.visibility = View.GONE
                     insectmjactTV.visibility = View.VISIBLE
+                }
+            }else if("invmean" == type){
+                if(selectItem == "기타"){
+                    insectinvmeanET.visibility = View.VISIBLE
+                    insectinvmeanTV.visibility = View.GONE
+                }else {
+
+                    insectinvmeanET.visibility = View.GONE
+                    insectinvmeanTV.visibility = View.VISIBLE
                 }
             }
 
@@ -806,5 +913,28 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
     private fun stopLocation() {
         SmartLocation.with(context).location().stop()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+
+            when (requestCode) {
+
+
+                SET_INSECT -> {
+
+                    var name = data!!.getStringExtra("name");
+                    var family_name = data!!.getStringExtra("family_name");
+                    var zoological = data!!.getStringExtra("zoological");
+
+                    insectspecnmET.text = name
+                    insectfaminmET.text = family_name
+                    insectsciennmET.text = zoological
+
+                };
+            }
+        }
     }
 }

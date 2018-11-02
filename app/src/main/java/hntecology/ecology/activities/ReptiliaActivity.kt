@@ -17,11 +17,11 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.view.Gravity
 import android.view.WindowManager
+import android.widget.TextView
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
-import hntecology.ecology.model.Birds_attribute
 import hntecology.ecology.model.Reptilia_attribute
 import io.nlopez.smartlocation.OnLocationUpdatedListener
 import io.nlopez.smartlocation.SmartLocation
@@ -35,6 +35,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
     val SET_WEATHER = 1;
     val SET_WIND = 2;
     val SET_WIND_DIRE = 3;
+    val SET_REPTILIA = 4
 
     lateinit var context: Context;
 
@@ -56,6 +57,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
     var latitude = 0.0f;
     var longitude = 0.0f;
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,9 +111,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                 invtmTV.setText(reptilia_attribute.INV_TM)
 
                 specnmET.setText(reptilia_attribute.SPEC_NM)
-
-//                faminmTV.setText      view 검토 후
-//                scien_nm.setText      view 검토 후
+                famiET.setText(reptilia_attribute.FAMI_NM)
+                scienET.setText(reptilia_attribute.SCIEN_NM)
 
                 incntaduET.setText(reptilia_attribute.IN_CNT_ADU.toString())
                 incntlarET.setText(reptilia_attribute.IN_CNT_LAR.toString())
@@ -122,10 +123,13 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                 waterinET.setText(reptilia_attribute.WATER_IN)
                 wateroutET.setText(reptilia_attribute.WATER_OUT)
-                waterdeptET.setText(reptilia_attribute.WATER_DEPT.toString())
 
                 habareawET.setText(reptilia_attribute.HAB_AREA_W.toString())
                 habareahET.setText(reptilia_attribute.HAB_AREA_H.toString())
+
+                watercontET.setText(reptilia_attribute.WATER_CONT)
+                waterqualET.setText(reptilia_attribute.WATER_QUAL)
+                waterdeptET.setText(reptilia_attribute.WATER_DEPT.toString())
 
                 gpslatTV.setText(reptilia_attribute.GPS_LAT.toString())
                 gpslonTV.setText(reptilia_attribute.GPS_LON.toString())
@@ -217,7 +221,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             reptilia_attribute.PRJ_NAME = ""
 
             reptilia_attribute.INV_REGION = invregionET.text.toString()
-            reptilia_attribute.INV_DT = createdDateTV.text.toString()
+            reptilia_attribute.INV_DT = Utils.todayStr()
             reptilia_attribute.INV_PERSON = invpersonET.text.toString()
 
             reptilia_attribute.WEATHER = weatherTV.text.toString()
@@ -231,16 +235,16 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
             reptilia_attribute.ETC = etcET.text.toString()
 
+
             if(numET.text.isNotEmpty()){
                 reptilia_attribute.NUM = numET.text.toString().toInt()
             }
 
-            reptilia_attribute.INV_TM = invtmTV.text.toString()
+            reptilia_attribute.INV_TM = Utils.timeStr()
 
             reptilia_attribute.SPEC_NM = specnmET.text.toString()
-
-//                        reptilia_attribute.FAMI_NM =   화면에 view 검토
-//                        reptilia_attribute.SCIEN_NM = 화면에 view 검토
+            reptilia_attribute.FAMI_NM = famiET.text.toString()
+            reptilia_attribute.SCIEN_NM = scienET.text.toString()
 
             if(incntaduET.text.isNotEmpty()){
                 reptilia_attribute.IN_CNT_ADU = incntaduET.text.toString().toInt()
@@ -316,6 +320,17 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         }
 
+        specnmET.setOnClickListener {
+            startDlgReptilia()
+        }
+
+        famiET.setOnClickListener {
+            startDlgReptilia()
+        }
+
+        scienET.setOnClickListener {
+            startDlgReptilia()
+        }
 
         weatherTV.setOnClickListener {
 
@@ -345,6 +360,26 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             intent.putExtra("selectDlg", 3);
 
             startActivityForResult(intent, SET_WIND_DIRE);
+        }
+
+        waterqualET.setOnClickListener {
+
+            var listItems: ArrayList<String> = ArrayList();
+            listItems.add("좋음");
+            listItems.add("보통");
+            listItems.add("나쁨");
+
+            alert(listItems, "수질", waterqualET, "waterqual");
+        }
+
+        watercontET.setOnClickListener {
+
+            var listItems: ArrayList<String> = ArrayList();
+            listItems.add("100m이상 연속");
+            listItems.add("100m이상 연속지 중 단절된 웅덩이");
+            listItems.add("단절된 웅덩이");
+
+            alert(listItems, "수계", watercontET, "watercont");
         }
 
         btn_biotopDelete.setOnClickListener {
@@ -407,7 +442,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                         reptilia_attribute.PRJ_NAME = ""
 
                         reptilia_attribute.INV_REGION = invregionET.text.toString()
-                        reptilia_attribute.INV_DT = createdDateTV.text.toString()
+                        reptilia_attribute.INV_DT = Utils.todayStr()
                         reptilia_attribute.INV_PERSON = invpersonET.text.toString()
 
                         reptilia_attribute.WEATHER = weatherTV.text.toString()
@@ -418,7 +453,6 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                             reptilia_attribute.TEMPERATUR = temperaturET.text.toString().toFloat()
                         }
 
-
                         reptilia_attribute.ETC = etcET.text.toString()
 
                         if(numET.text.isNotEmpty()){
@@ -428,9 +462,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                         reptilia_attribute.INV_TM = Utils.timeStr()
 
                         reptilia_attribute.SPEC_NM = specnmET.text.toString()
-
-//                        reptilia_attribute.FAMI_NM =   화면에 view 검토
-//                        reptilia_attribute.SCIEN_NM = 화면에 view 검토
+                        reptilia_attribute.FAMI_NM = famiET.text.toString()
+                        reptilia_attribute.SCIEN_NM = scienET.text.toString()
 
                         if(incntaduET.text.isNotEmpty()){
                             reptilia_attribute.IN_CNT_ADU = incntaduET.text.toString().toInt()
@@ -472,6 +505,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                             reptilia_attribute.GPS_LON = gpslonTV.text.toString().toFloat()
                         }
 
+                        println("ETC : ============= $reptilia_attribute.ETC")
+
                         if (chkdata){
 
                             val tmppage = page!! - 1
@@ -497,6 +532,10 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         initGPS()
 
     }
+    fun startDlgReptilia(){
+        val intent = Intent(context, DlgReptiliaActivity::class.java)
+        startActivityForResult(intent, SET_REPTILIA);
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -520,8 +559,50 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                     windDireTV.text = data!!.getStringExtra("selectDlg")
 
                 }
+
+                SET_REPTILIA -> {
+
+                    var name = data!!.getStringExtra("name");
+                    var family_name = data!!.getStringExtra("family_name");
+                    var zoological = data!!.getStringExtra("zoological");
+
+                    specnmET.text = name
+                    famiET.text = family_name
+                    scienET.text = zoological
+
+                }
             }
         }
+    }
+
+
+    fun alert(ListItems: ArrayList<String>, title: String, textView: TextView, type: String) {
+
+        val items = Array<CharSequence>(ListItems.size, { i -> ListItems.get(i) })
+
+        var size = ListItems.size
+
+        var builder: AlertDialog.Builder = AlertDialog.Builder(this);
+        builder.setTitle(title);
+
+        builder.setItems(items, DialogInterface.OnClickListener { dialogInterface, i ->
+
+
+            var selectItem = ListItems.get(i);
+
+            if (selectItem != "취소") {
+                textView.text = selectItem
+            }
+
+            if ("waterqual" == type){
+
+            }
+
+
+
+        })
+
+        builder.show();
     }
 
     fun clear(){
@@ -539,9 +620,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         invtmTV.setText("")
 
         specnmET.setText("")
-
-//                faminmTV.setText      view 검토 후
-//                scien_nm.setText      view 검토 후
+        famiET.setText("")
+        scienET.setText("")
 
         incntaduET.setText("")
         incntlarET.setText("")
@@ -637,8 +717,15 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                 specnmET.setText("")
             }
 
-//                faminmTV.setText      view 검토 후
-//                scien_nm.setText      view 검토 후
+            famiET.setText(reptilia_attribute.FAMI_NM)
+            if(famiET.text == null){
+                famiET.setText("")
+            }
+
+            scienET.setText(reptilia_attribute.SCIEN_NM)
+            if(scienET.text == null){
+                scienET.setText("")
+            }
 
             incntaduET.setText(reptilia_attribute.IN_CNT_ADU.toString())
             if(incntaduET.text == null){
@@ -672,7 +759,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                 wateroutET.setText("")
             }
 
-            watercontET.setText(reptilia_attribute.WATER_CONT.toString())
+            watercontET.setText(reptilia_attribute.WATER_CONT)
             if(watercontET.text == null){
                 watercontET.setText("")
             }

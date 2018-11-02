@@ -99,7 +99,7 @@
                     style="@style/BiotopeTextView"
                     android:text="조사일시"/>
 
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -171,31 +171,32 @@
                 android:layout_height="50dp"
                 android:orientation="horizontal"
                 >
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
                     android:id="@+id/insectweatherET"
-                    android:gravity="left|center"
-                    android:hint="맑음 흐림 안개 비"
+                    android:gravity="center"
+                    android:hint="click"
                     />
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
                     android:id="@+id/insectwindET"
-                    android:gravity="left|center"
-                    android:hint="강 중 약 무"
+                    android:gravity="center"
+                    android:hint="click"
                     />
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/insectwinddireET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
+                    android:hint="click"
                     />
                 <EditText
                     android:layout_width="0dp"
@@ -234,7 +235,7 @@
                     android:id="@+id/insectnumET"
                     android:inputType="number"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
             <LinearLayout
@@ -252,7 +253,7 @@
                     android:layout_weight="1"
                     android:id="@+id/insecttimeET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
             <LinearLayout
@@ -264,13 +265,14 @@
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
                     android:text="종 명"/>
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/insectspecnmET"
+                    android:hint="click"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
             <LinearLayout
@@ -282,13 +284,13 @@
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
                     android:text="과 명"/>
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/insectfaminmET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
             <LinearLayout
@@ -300,13 +302,13 @@
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
                     android:text="학 명"/>
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/insectsciennmET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
             <LinearLayout
@@ -322,9 +324,10 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:inputType="number"
                     android:id="@+id/insectindicntET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
 
@@ -351,6 +354,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:hint="입력해주세요."
                     android:id="@+id/insectobsstatET"
                     style="@style/BiotopeTextView"
                     android:gravity="center"
@@ -380,6 +384,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:hint="입력해주세요."
                     android:id="@+id/insectusetarET"
                     style="@style/BiotopeTextView"
                     android:gravity="center"
@@ -408,7 +413,38 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:hint="입력해주세요."
                     android:id="@+id/insectmjactET"
+                    style="@style/BiotopeTextView"
+                    android:gravity="center"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                >
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="조사방법"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="click"
+                    android:id="@+id/insectinvmeanTV"
+                    style="@style/BiotopeTextView"
+                    android:gravity="center"
+                    />
+                <EditText
+                    android:visibility="gone"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="입력해주세요."
+                    android:id="@+id/insectinvmeanET"
                     style="@style/BiotopeTextView"
                     android:gravity="center"
                     />
@@ -429,7 +465,7 @@
                     android:layout_weight="1"
                     android:id="@+id/insectunusnoteET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
 

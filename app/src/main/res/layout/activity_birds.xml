@@ -205,6 +205,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:inputType="number"
                     android:gravity="left|center" />
 
                 <EditText
@@ -235,7 +236,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="left|center" />
+                    android:gravity="center" />
             </LinearLayout>
 
             <LinearLayout
@@ -256,7 +257,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="left|center" />
+                    android:gravity="center" />
             </LinearLayout>
 
             <LinearLayout
@@ -275,7 +276,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="left|center" />
+                    android:gravity="center" />
 
             </LinearLayout>
 
@@ -295,7 +296,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="left|center" />
+                    android:gravity="center" />
 
             </LinearLayout>
 
@@ -315,7 +316,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="left|center" />
+                    android:gravity="center" />
 
             </LinearLayout>
 
@@ -335,7 +336,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/indicntET"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     android:inputType="number" />
             </LinearLayout>
 
@@ -355,7 +356,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/obsstatTV"
-                    android:gravity="left|center" />
+                    android:gravity="center" />
             </LinearLayout>
 
             <LinearLayout
@@ -374,7 +375,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="left|center" />
+                    android:gravity="center" />
             </LinearLayout>
 
             <LinearLayout
@@ -395,7 +396,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="left|center" />
+                    android:gravity="center" />
             </LinearLayout>
 
             <LinearLayout
@@ -414,7 +415,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="left|center" />
+                    android:gravity="center" />
 
             </LinearLayout>
 
@@ -434,7 +435,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="left|center" />
+                    android:gravity="center" />
             </LinearLayout>
 
             <LinearLayout
@@ -455,7 +456,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="left|center" />
+                    android:gravity="center" />
 
             </LinearLayout>
 

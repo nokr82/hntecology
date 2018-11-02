@@ -104,7 +104,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
                 <TextView
@@ -212,7 +212,7 @@
                     android:layout_weight="1"
                     android:id="@+id/etcET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
 
             </LinearLayout>
@@ -227,13 +227,13 @@
                     style="@style/BiotopeTextView"
                     android:text="번호"/>
 
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/numET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
 
@@ -254,7 +254,7 @@
                     android:layout_weight="1"
                     android:id="@+id/invtmTV"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
 
@@ -292,7 +292,7 @@
                     android:layout_weight="1"
                     android:id="@+id/famiET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
             <LinearLayout
@@ -310,7 +310,7 @@
                     android:layout_weight="1"
                     android:id="@+id/scienET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
 
@@ -345,7 +345,7 @@
                             android:layout_weight="1"
                             android:id="@+id/incntaduET"
                             style="@style/BiotopeTextView"
-                            android:gravity="left|center"/>
+                            android:gravity="center"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -363,7 +363,7 @@
                             android:layout_weight="1"
                             android:id="@+id/incntlarET"
                             style="@style/BiotopeTextView"
-                            android:gravity="left|center"/>
+                            android:gravity="center"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -382,7 +382,7 @@
                             android:layout_weight="1"
                             android:id="@+id/incnteggET"
                             style="@style/BiotopeTextView"
-                            android:gravity="left|center"/>
+                            android:gravity="center"/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -419,7 +419,7 @@
                             android:layout_weight="1"
                             android:id="@+id/habriveerET"
                             style="@style/BiotopeTextView"
-                            android:gravity="left|center"/>
+                            android:gravity="center"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -437,7 +437,7 @@
                             android:layout_weight="1"
                             android:id="@+id/habedgeET"
                             style="@style/BiotopeTextView"
-                            android:gravity="left|center"/>
+                            android:gravity="center"/>
                     </LinearLayout>
 
 
@@ -475,7 +475,7 @@
                             android:layout_weight="1"
                             android:id="@+id/waterinET"
                             style="@style/BiotopeTextView"
-                            android:gravity="left|center"/>
+                            android:gravity="center"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -493,7 +493,7 @@
                             android:layout_weight="1"
                             android:id="@+id/wateroutET"
                             style="@style/BiotopeTextView"
-                            android:gravity="left|center"/>
+                            android:gravity="center"/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -524,13 +524,14 @@
                             style="@style/BiotopeTextView"
                             android:text="수계연속성"/>
 
-                        <EditText
+                        <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:id="@+id/watercontET"
                             style="@style/BiotopeTextView"
-                            android:gravity="left|center"/>
+                            android:hint="click"
+                            android:gravity="center"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -542,13 +543,14 @@
                             style="@style/BiotopeTextView"
                             android:text="수질"/>
 
-                        <EditText
+                        <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:id="@+id/waterqualET"
+                            android:hint="click"
                             style="@style/BiotopeTextView"
-                            android:gravity="left|center"/>
+                            android:gravity="center"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -567,7 +569,7 @@
                             android:layout_weight="1"
                             android:id="@+id/waterdeptET"
                             style="@style/BiotopeTextView"
-                            android:gravity="left|center"/>
+                            android:gravity="center"/>
                     </LinearLayout>
 
                 </LinearLayout>

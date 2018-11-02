@@ -33,6 +33,7 @@ import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
 import kotlinx.android.synthetic.main.activity_biotope.*
 import kotlinx.android.synthetic.main.activity_birds.*
+import kotlinx.android.synthetic.main.activity_insect.*
 
 class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
@@ -136,8 +137,28 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                 obsstatTV.setText(birds_attribute.OBS_STAT)
                 useTarTV.setText(birds_attribute.USE_TAR)
+                useTarSpET.setText(birds_attribute.USE_TAR_SP)
+                if(birds_attribute.USE_TAR_SP == null || birds_attribute.USE_TAR_SP.equals("")){
+                    useTarSpET.setText("")
+                    useTarSpLL.visibility = View.GONE
+                }
+
+                if(birds_attribute.USE_TAR_SP != null && !birds_attribute.USE_TAR_SP.equals("")){
+                    useTarSpLL.visibility = View.VISIBLE
+                }
+
                 useLayerTV.setText(birds_attribute.USE_LAYER)
                 mjActTV.setText(birds_attribute.MJ_ACT)
+                mjActPrET.setText(birds_attribute.MJ_ACT_PR)
+                if(birds_attribute.MJ_ACT_PR == null || birds_attribute.MJ_ACT_PR.equals("")){
+                    mjActPrET.setText("")
+                    mjActPrLL.visibility = View.GONE
+                }
+
+                if(birds_attribute.MJ_ACT_PR != null && !birds_attribute.MJ_ACT_PR.equals("")){
+                    mjActPrLL.visibility = View.VISIBLE
+                }
+
 
                 dataArray.add(birds_attribute)
 
@@ -225,7 +246,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             birds_attribute.GROP_ID = keyId
 
             birds_attribute.INV_REGION = invRegionET.text.toString()
-            birds_attribute.INV_DT = invDtTV.text.toString()
+            birds_attribute.INV_DT = Utils.todayStr()
 
             birds_attribute.INV_PERSON = invPersonTV.text.toString()
             birds_attribute.WEATHER = weatherTV.text.toString()
@@ -242,7 +263,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
             birds_attribute.NUM = numTV.text.toString().toInt()
 
-            birds_attribute.INV_TM = timeTV.text.toString()
+            birds_attribute.INV_TM = Utils.timeStr()
 
             birds_attribute.SPEC_NM = birdsTV.text.toString()
 
@@ -255,7 +276,11 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
             birds_attribute.OBS_STAT = obsstatTV.text.toString()
             birds_attribute.USE_TAR = useTarTV.text.toString()
+            birds_attribute.USE_TAR_SP = useTarSpET.text.toString()
             birds_attribute.USE_LAYER = useLayerTV.text.toString()
+
+            birds_attribute.MJ_ACT = mjActTV.text.toString()
+            birds_attribute.MJ_ACT_PR = mjActPrET.text.toString()
 
             birds_attribute.GPS_LAT = gpslatTV.text.toString().toFloat()
             birds_attribute.GPS_LON = gpslonTV.text.toString().toFloat()
@@ -331,20 +356,13 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         birds_attribute.GROP_ID = keyId
 
-                        if(invRegionET.text == null){
-                            invRegionET.setText("")
-                        }
-
                         birds_attribute.PRJ_NAME = ""
 
                         birds_attribute.INV_REGION = invRegionET.text.toString()
 
 
-                        if(invDtTV.text == null){
-                            birds_attribute.INV_DT = Utils.todayStr()
-                        }else {
-                            birds_attribute.INV_DT = invDtTV.text.toString()
-                        }
+                        birds_attribute.INV_DT = Utils.todayStr()
+
 
                         if(invPersonTV.text == null){
                             birds_attribute.INV_PERSON = userName
@@ -352,74 +370,41 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                             birds_attribute.INV_PERSON = invPersonTV.text.toString()
                         }
 
-                        if(btn1.text == null){
-                            btn1.setText("")
-                        }
                         birds_attribute.WEATHER = btn1.text.toString()
 
-                        if(btn2.text == null){
-                            btn2.setText("")
-                        }
                         birds_attribute.WIND = btn2.text.toString()
 
-                        if(btn3.text == null){
-                            btn3.setText("")
-                        }
                         birds_attribute.WIND_DIRE = btn3.text.toString()
 
                         if(temperatureET.text.isNotEmpty()){
                             Utils.getString(temperatureET).toFloat();
                         }
 
-
-                        if(etcET.text == null){
-                            etcET.setText("")
-                        }
                         birds_attribute.ETC = etcET.text.toString()
 
-
-                        if(numTV.text == null){
-                            numTV.setText("")
-                        }
                         birds_attribute.NUM = numTV.text.toString().toInt()
-
 
                         birds_attribute.INV_TM = Utils.timeStr()
 
-                        if(birdsTV.text == null){
-                            birdsTV.setText("")
-                        }
                         birds_attribute.SPEC_NM = birdsTV.text.toString()
 
-                        if(familyNameTV.text == null){
-                            familyNameTV.setText("")
-                        }
                         birds_attribute.FAMI_NM = familyNameTV.text.toString()
 
-                        if(zoologicalTV.text == null){
-                            zoologicalTV.setText("")
-                        }
                         birds_attribute.SCIEN_NM = zoologicalTV.text.toString()
 
                         if (indicntET.text.isNotEmpty()) {
                             birds_attribute.INDI_CNT = indicntET.text.toString().toInt()
                         }
 
-                        if(obsstatTV.text == null){
-                            obsstatTV.setText("")
-                        }
                         birds_attribute.OBS_STAT = obsstatTV.text.toString()
 
-                        if(useTarTV.text == null){
-                            useTarTV.setText("")
-                        }
                         birds_attribute.USE_TAR = useTarTV.text.toString()
+                        birds_attribute.USE_TAR_SP = useTarSpET.text.toString()
 
-                        if(useLayerTV.text == null){
-                            useLayerTV.setText("")
-                        }
                         birds_attribute.USE_LAYER = useLayerTV.text.toString()
 
+                        birds_attribute.MJ_ACT = mjActTV.text.toString()
+                        birds_attribute.MJ_ACT_PR = mjActPrET.text.toString()
 
                         if (gpslatTV.text.isNotEmpty()) {
                             birds_attribute.GPS_LAT = gpslatTV.text.toString().toFloat()
@@ -786,8 +771,10 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
         obsstatTV.setText("")
         useTarTV.setText("")
+        useTarSpET.setText("")
         useLayerTV.setText("")
         mjActTV.setText("")
+        mjActPrET.setText("")
     }
 
     fun resetPage(page : Int){
@@ -893,9 +880,26 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 obsstatTV.setText("")
             }
 
+
+
             useTarTV.setText(birds_attribute.USE_TAR)
             if(useTarTV.text == null){
                 useTarTV.setText("")
+                useTarSpLL.visibility = View.GONE
+            }else if(useTarTV.text == "") {
+                useTarSpLL.visibility = View.GONE
+            }
+
+
+
+            useTarSpET.setText(birds_attribute.USE_TAR_SP)
+            if(useTarSpET.text == null){
+                useTarSpET.setText("")
+                useTarSpLL.visibility = View.GONE
+            }
+
+            if(birds_attribute.USE_TAR_SP != null && !birds_attribute.USE_TAR_SP.equals("")){
+                useTarSpLL.visibility = View.VISIBLE
             }
 
             useLayerTV.setText(birds_attribute.USE_LAYER)
@@ -906,7 +910,22 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             mjActTV.setText(birds_attribute.MJ_ACT)
             if(mjActTV.text == null){
                 mjActTV.setText("")
+                mjActPrLL.visibility = View.GONE
+            }else if(mjActTV.text == "") {
+                mjActPrLL.visibility = View.GONE
             }
+
+            mjActPrET.setText(birds_attribute.MJ_ACT_PR)
+            if(mjActPrET.text == null){
+                mjActPrET.setText("")
+                mjActPrLL.visibility = View.GONE
+            }
+
+            if(birds_attribute.MJ_ACT_PR != null && !birds_attribute.MJ_ACT_PR.equals("")){
+                mjActPrLL.visibility = View.VISIBLE
+            }
+
+
 
             gpslatTV.setText(birds_attribute.GPS_LAT.toString())
             gpslonTV.setText(birds_attribute.GPS_LON.toString())

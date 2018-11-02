@@ -171,31 +171,32 @@
                 android:layout_height="50dp"
                 android:orientation="horizontal"
                 >
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     android:id="@+id/mamweatherET"
-                    android:hint="맑음 흐림 안개 비"
+                    android:hint="click"
                     />
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
                     android:id="@+id/mamwindET"
-                    android:gravity="left|center"
-                    android:hint="강 중 약 무"
+                    android:gravity="center"
+                    android:hint="click"
                     />
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/mamwinddireET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
+                    android:hint="click"
                     />
                 <EditText
                     android:layout_width="0dp"
@@ -230,7 +231,7 @@
                     android:layout_weight="1"
                     android:id="@+id/mammalnumTV"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
             <LinearLayout
@@ -248,7 +249,7 @@
                     android:layout_weight="1"
                     android:id="@+id/mammaltimeTV"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
 
@@ -286,7 +287,7 @@
                     android:layout_weight="1"
                     android:id="@+id/mamfaminmTV"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
             <LinearLayout
@@ -304,7 +305,7 @@
                     android:layout_weight="1"
                     android:id="@+id/mamsciennmTV"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
             <LinearLayout
@@ -330,6 +331,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:hint="입력해주세요."
                     android:id="@+id/mammalobstyET"
                     style="@style/BiotopeTextView"
                     android:gravity="center"
@@ -352,7 +354,7 @@
                     android:layout_weight="1"
                     android:id="@+id/mamindicntET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
 
@@ -371,7 +373,7 @@
                     android:layout_weight="1"
                     android:id="@+id/mamobptcharET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
 
@@ -391,7 +393,7 @@
                     android:layout_weight="1"
                     android:id="@+id/mamunusnoteET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
 
@@ -439,13 +441,14 @@
                     style="@style/BiotopeTextView"
                     android:text="서식가능함에도 확인되지 않은 종"/>
 
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/mamunspecET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
+                    android:hint="click"
                     />
 
                 <TextView
@@ -477,14 +480,14 @@
                     style="@style/BiotopeTextView"
                     android:text="흔적 발견 용이도"/>
 
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     android:id="@+id/mamtreasyET"
-                    android:hint="쉬움-----보통-----어려움"
+                    android:hint="click"
                     />
 
                 <TextView

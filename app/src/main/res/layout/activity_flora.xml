@@ -99,7 +99,7 @@
                     style="@style/BiotopeTextView"
                     android:text="조사일시"/>
 
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -198,11 +198,12 @@
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
-                <TextView
+                <EditText
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/floratemperaturTV"
+                    android:inputType="number"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -231,7 +232,7 @@
                     android:layout_weight="1"
                     android:id="@+id/floranumET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
             <LinearLayout
@@ -249,7 +250,7 @@
                     android:layout_weight="1"
                     android:id="@+id/florainvtmET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
             <LinearLayout
@@ -261,13 +262,14 @@
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
                     android:text="종명"/>
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/floraspecnmET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:hint="click"
+                    android:gravity="center"
                     />
             </LinearLayout>
             <LinearLayout
@@ -285,7 +287,7 @@
                     android:layout_weight="1"
                     android:id="@+id/florafaminmTV"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
             <LinearLayout
@@ -303,7 +305,7 @@
                     android:layout_weight="1"
                     android:id="@+id/florasciennmTV"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
             <LinearLayout
@@ -368,6 +370,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:hint="입력해주세요."
                     android:id="@+id/florahabstatET"
                     style="@style/BiotopeTextView"
                     android:gravity="center"
@@ -409,7 +412,7 @@
                     android:layout_weight="1"
                     android:id="@+id/florathrecauET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
             </LinearLayout>
             <LinearLayout

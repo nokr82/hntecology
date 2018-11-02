@@ -232,7 +232,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             insect_attribute.PRJ_NAME = ""
 
             insect_attribute.INV_REGION = insectinvregionET.text.toString()
-            insect_attribute.INV_DT = insectinvdtET.text.toString()
+            insect_attribute.INV_DT = Utils.todayStr()
             insect_attribute.INV_PERSON = userName
 
             insect_attribute.WEATHER = insectweatherET.text.toString()

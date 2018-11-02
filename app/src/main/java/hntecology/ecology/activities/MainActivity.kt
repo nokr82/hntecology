@@ -302,29 +302,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         btn_mygps.setOnClickListener {
 
-            val location: Location = Location(LocationManager.GPS_PROVIDER)
-
-            val long = location.longitude
-            val lat = location.latitude
-
-            println("long:=======$long ================$lat")
-
-            val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-            val locationListener = object : LocationListener {
-                override fun onLocationChanged(location: Location) {
-                    println("latitude ======== $location.latitude")
-                }
-
-                override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
-                }
-
-                override fun onProviderEnabled(provider: String) {
-                }
-
-                override fun onProviderDisabled(provider: String) {
-                }
-            }
 
         }
 

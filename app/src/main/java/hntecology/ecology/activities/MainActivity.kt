@@ -1,23 +1,19 @@
 package hntecology.ecology.activities
 
-import android.app.Activity
-import android.app.AlertDialog
+import android.app.*
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.Typeface
 import android.location.Geocoder
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
-import android.os.AsyncTask
-import android.os.Build
-import android.os.Bundle
-import android.os.Environment
+import android.os.*
 import android.provider.Settings
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.view.GestureDetector
@@ -40,25 +36,41 @@ import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.GpsSet
+import hntecology.ecology.model.LayerModel
+import hntecology.ecology.model.Tracking
+import io.nlopez.smartlocation.OnLocationUpdatedListener
+import io.nlopez.smartlocation.SmartLocation
+import io.nlopez.smartlocation.location.providers.LocationGooglePlayServicesWithFallbackProvider
 import kotlinx.android.synthetic.main.activity_main.*
 import org.geotools.data.DataUtilities
 import org.geotools.data.DefaultTransaction
+import org.geotools.data.Transaction
 import org.geotools.data.collection.ListFeatureCollection
 import org.geotools.data.shapefile.ShapefileDataStore
 import org.geotools.data.shapefile.ShapefileDataStoreFactory
 import org.geotools.data.simple.SimpleFeatureStore
+import org.geotools.geometry.jts.JTS
+import org.geotools.referencing.CRS
+import org.geotools.referencing.GeodeticCalculator
 import org.geotools.referencing.crs.DefaultGeographicCRS
+import org.json.JSONObject
 import org.locationtech.jts.geom.Coordinate
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
+import org.locationtech.jts.operation.distance.DistanceOp
 import org.locationtech.jtstest.testbuilder.io.shapefile.Shapefile
 import org.opengis.feature.simple.SimpleFeature
+import org.opengis.referencing.crs.CRSAuthorityFactory
+import org.opengis.referencing.crs.CoordinateReferenceSystem
 import java.io.File
 import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnTouchListener, GoogleMap.OnCameraMoveListener{
+public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnTouchListener, GoogleMap.OnCameraMoveListener, OnLocationUpdatedListener {
+
+    val REQUEST_FINE_LOCATION = 1
+    val REQUEST_ACCESS_COARSE_LOCATION = 2
 
     private val PLAY_SERVICES_RESOLUTION_REQUEST: Int = 1000
     private val PolygonCallBackData = 1001
@@ -74,9 +86,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     private val LAYER_INSECT = 2006
     private val LAYER_FLORA = 2007
     private val LAYER_ZOOBENTHOS = 2008
+    private val LAYER_MYLOCATION = 2009
 
 
-    private lateinit var context: MainActivity
+    private lateinit var context: Context
 
     private lateinit var mGestureDetector: GestureDetector
     private lateinit var googleMap: GoogleMap
@@ -96,7 +109,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     // 3. biotope  , 6.birds , 7.Reptilia , 8.mammalia  9. fish, 10.insect, 11.flora , 13. zoobenthos
     var currentLayer = -1
 
+    var myLocation: Tracking? = null
 
+    var prevPoint:Geometry? = null
+
+    private var showLoading = false
+
+    var progressDialog: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,6 +128,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         db = dbManager!!.createDataBase()
         val dataList:Array<String> = arrayOf("*")
         val data =  db!!.query("settings",dataList,null,null,null,null,"id desc","1")
+
+        progressDialog = ProgressDialog(this, R.style.progressDialogTheme)
+        progressDialog!!.setProgressStyle(android.R.style.Widget_DeviceDefault_Light_ProgressBar_Large)
+        progressDialog!!.setCancelable(false)
 
 /*        PrefUtils.setPreference(this, "latitude", latitude);
         PrefUtils.setPreference(this, "longitude", longitude);*/
@@ -302,6 +325,30 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         btn_mygps.setOnClickListener {
 
+            currentLayer = LAYER_MYLOCATION
+
+            val latlng = LatLng(this.latitude, this.longitude)
+
+            drawPoint(latlng)
+
+//            val makerOption =MarkerOptions()
+//
+//            makerOption.position(latlng)
+//                    .title("현재 위치")
+//
+//            googleMap.addMarker(makerOption)
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 16f))
+
+            endDraw()
+//
+//            val point = Point()
+//            point.x = latitude.toInt()
+//            point.y = longitude.toInt()
+//            val geoPoint = googleMap.projection.fromScreenLocation(point)
+
+
+
+
 
         }
 
@@ -351,6 +398,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
 
         }
+
+        initGps()
+
+        myLocation = Tracking(null,latitude,longitude)
+
     }
 
     private fun onUnionBtn() {
@@ -426,7 +478,16 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 REQUEST_LAYER -> {
                     val file_name = data!!.getStringExtra("file_name")
                     val layer_name = data.getStringExtra("layer_name")
-                    loadLayer(file_name, layer_name)
+
+                    var jsonOb:ArrayList<LayerModel> = ArrayList<LayerModel>()
+
+                    jsonOb = data.getSerializableExtra("data") as ArrayList<LayerModel>
+
+                    googleMap.clear()
+
+                    for(i in 0 .. jsonOb.size-1) {
+                        loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name)
+                    }
                 }
 
                 else -> super.onActivityResult(requestCode, resultCode, data)
@@ -518,6 +579,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 LAYER_ZOOBENTHOS -> {
                     intent = Intent(this, ZoobenthosActivity::class.java)
                 }
+
+                LAYER_MYLOCATION -> {
+                    intent = Intent(this, MainActivity::class.java)
+                }
+
+
             }
 
             intent!!.putExtra("id", attrubuteKey.toString())
@@ -598,6 +665,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 LAYER_ZOOBENTHOS ->{
                     intent = Intent(this, ZoobenthosActivity::class.java)
                 }
+
+                LAYER_MYLOCATION ->{
+
+                }
             }
 
             println("aa : $attrubuteKey")
@@ -650,12 +721,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             return
         }
 
-        googleMap.clear()
 
         currentFileName = fileName
         currentLayerName = layerName
 
-        layerNameTV.text = currentLayerName
+//        layerNameTV.text = currentLayerName
 
         val bounds = googleMap.projection.visibleRegion.latLngBounds
         LoadLayerTask(fileName).execute(bounds)
@@ -743,7 +813,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
 
         override fun onPostExecute(result: Boolean?) {
-            Utils.hideLoading(context)
+            Utils.hideLoading(this@MainActivity)
 
             print("Post........")
         }
@@ -937,6 +1007,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 drawPoint(geoPoint)
                             }
 
+                            LAYER_MYLOCATION -> {
+                                drawPoint(geoPoint)
+                            }
+
                         }
                     }
                 }
@@ -1068,6 +1142,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             LAYER_ZOOBENTHOS -> {
                 btn_zoobenthos.text = "저서무척추동물 추가 중"
             }
+
+            LAYER_MYLOCATION -> {
+                btn_mygps.text = "내 위치로 이동"
+            }
         }
     }
 
@@ -1118,6 +1196,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             LAYER_ZOOBENTHOS -> {
 
                 btn_zoobenthos.text = "저서무척추동물 추가"
+            }
+
+            LAYER_MYLOCATION -> {
+
+                btn_mygps.text = "내 위치로 이동"
             }
 
         }
@@ -1177,6 +1260,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
             LAYER_ZOOBENTHOS -> {
                 attributeKey += "zoobenthos"
+            }
+
+            LAYER_MYLOCATION -> {
+                attributeKey += "mylocation"
             }
         }
 
@@ -1245,7 +1332,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             val features = ArrayList<SimpleFeature>()
 
             val collection = ListFeatureCollection(SHAPE_TYPE, features)
-            featureStore.transaction = transaction
+            featureStore.transaction = transaction as Transaction?
 
             featureStore.addFeatures(collection)
             transaction.commit()
@@ -1446,6 +1533,126 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         db!!.delete(tableName, "id = '$attrubuteKey'", null)
     }
+
+    protected fun initGps() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            loadPermissions(android.Manifest.permission.ACCESS_FINE_LOCATION, REQUEST_FINE_LOCATION)
+        } else {
+            checkGPs()
+        }
+    }
+
+    private fun loadPermissions(perm: String, requestCode: Int) {
+        if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(perm), requestCode)
+        } else {
+            if (android.Manifest.permission.ACCESS_FINE_LOCATION == perm) {
+                loadPermissions(android.Manifest.permission.ACCESS_COARSE_LOCATION, REQUEST_ACCESS_COARSE_LOCATION)
+            } else if (android.Manifest.permission.ACCESS_COARSE_LOCATION == perm) {
+                checkGPs()
+            }
+        }
+    }
+
+    private fun checkGPs() {
+        if (Utils.availableLocationService(context)) {
+            startLocation()
+        } else {
+            gpsCheckAlert.sendEmptyMessage(0)
+        }
+    }
+
+    private fun startLocation() {
+
+        if (showLoading) {
+            if (progressDialog != null) {
+                progressDialog!!.show()
+            }
+        }
+
+        val smartLocation = SmartLocation.Builder(context).logging(true).build()
+        smartLocation.location(LocationGooglePlayServicesWithFallbackProvider(context)).oneFix().start(this)
+
+        val myLooper = Looper.myLooper()
+        val myHandler = Handler(myLooper)
+        myHandler.postDelayed({
+            if (latitude == -1.0 || longitude == -1.0) {
+                stopLocation()
+            }
+        }, (5 * 1000).toLong())
+    }
+
+    override fun onLocationUpdated(location: Location?) {
+
+        val geometryFactory = GeometryFactory()
+
+        val currentPoint = geometryFactory.createPoint(Coordinate(location!!.latitude, location!!.longitude))
+
+        if (prevPoint != null) {
+            val distance = DistanceOp.distance(prevPoint!!, currentPoint);
+            if(distance > 5) {
+                // insert
+
+                val tracking : Tracking = Tracking(null,location.latitude,location.longitude)
+
+                dbManager!!.inserttracking(tracking)
+            }
+        } else {
+            // insert
+            val tracking : Tracking = Tracking(null,location.latitude,location.longitude)
+
+            dbManager!!.inserttracking(tracking)
+        }
+
+        prevPoint = currentPoint
+
+
+//         System.out.println("onLocationUpdated : " + location);
+
+        if (location != null) {
+            latitude = location.latitude
+            longitude = location.longitude
+
+            System.out.println("latitude ===: " + latitude);
+            System.out.println("longitude ===: " + longitude);
+
+        }
+
+    }
+
+    internal var gpsCheckAlert: Handler = object : Handler() {
+        override fun handleMessage(msg: Message) {
+            val mainGpsSearchCount = PrefUtils.getIntPreference(context, "mainGpsSearchCount", 0)
+
+            if (mainGpsSearchCount == 0) {
+
+                val builder = AlertDialog.Builder(context)
+                builder.setTitle("확인")
+                builder.setMessage("위치 서비스 이용이 제한되어 있습니다.\n설정에서 위치 서비스 이용을 허용해주세요.")
+                builder.setCancelable(true)
+                builder.setNegativeButton("취소") { dialog, id ->
+                    dialog.cancel()
+
+                    latitude = 37.5203175
+                    longitude = 126.9107831
+                }
+                builder.setPositiveButton("설정") { dialog, id ->
+                    dialog.cancel()
+                    startActivity(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                }
+                val alert = builder.create()
+                alert.show()
+            }
+        }
+    }
+
+
+    private fun stopLocation() {
+        SmartLocation.with(context).location().stop()
+    }
+
+
+
 
 
 

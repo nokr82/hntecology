@@ -8,4 +8,5 @@
 
     <color name="white">#ffffff</color>
     <color name="search1SelectItemColor">#004baa</color>
+    <color name="transparent">#00000000</color>
 </resources>

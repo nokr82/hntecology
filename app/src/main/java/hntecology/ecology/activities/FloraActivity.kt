@@ -20,6 +20,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
+import au.com.objectix.jgridshift.Util
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
@@ -224,7 +225,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             flora_Attribute.PRJ_NAME = ""
             flora_Attribute.INV_REGION = florainvregionET.text.toString()
 
-            flora_Attribute.INV_DT = florainvdvET.text.toString()
+            flora_Attribute.INV_DT = Utils.todayStr()
             flora_Attribute.INV_PERSON = florainvperson.text.toString()
 
             flora_Attribute.WEATHER = floraweatherTV.text.toString()

@@ -11,6 +11,7 @@ import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.LayerModel
 import kotlinx.android.synthetic.main.dlg_layers.*
+import org.json.JSONObject
 
 
 class DlgLayersActivity : Activity() {
@@ -22,6 +23,8 @@ class DlgLayersActivity : Activity() {
     private lateinit var apdater: DlgLayerAdapter;
 
     private lateinit var db: SQLiteDatabase
+
+    private var data :ArrayList<LayerModel> = ArrayList<LayerModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,13 +40,31 @@ class DlgLayersActivity : Activity() {
 
         apdater = DlgLayerAdapter(context, R.layout.item_layer, adapterData)
         listView.adapter = apdater
-        listView.setOnItemClickListener { parent, view, position, id ->
-            val data = adapterData.get(position)
+//        listView.setOnItemClickListener { parent, view, position, id ->
+//            val data = adapterData.get(position)
+//
+//            var intent = Intent();
+//            intent.putExtra("file_name", data.file_name);
+//            intent.putExtra("layer_name", data.layer_name);
+//
+//            setResult(RESULT_OK, intent);
+//            finish()
+//        }
+        dlgClick.setOnClickListener {
+            for(i in 0 ..adapterData.size-1){
+                var checkData = adapterData.get(i)
+                var checked = checkData.is_checked
+
+                println("checked : " + checked)
+
+                if(checked) {
+                    data.add(adapterData.get(i))
+                }
+
+            }
 
             var intent = Intent();
-            intent.putExtra("file_name", data.file_name);
-            intent.putExtra("layer_name", data.layer_name);
-
+            intent.putExtra("data", data);
             setResult(RESULT_OK, intent);
             finish()
         }
@@ -61,7 +82,8 @@ class DlgLayersActivity : Activity() {
         //대분류
         val data =  db.query("layers", dataList,null,null,null,null,"id",null);
         while (data.moveToNext()) {
-            val layerModel = LayerModel(data.getString(0), data.getString(1));
+            val layerModel = LayerModel(data.getString(0), data.getString(1), false);
+
             adapterData.add(layerModel)
         }
 

@@ -4,9 +4,12 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.CheckBox
 import android.widget.TextView
 import hntecology.ecology.R
+import hntecology.ecology.base.Utils
 import hntecology.ecology.model.LayerModel
+import org.json.JSONObject
 
 
 open class DlgLayerAdapter(context:Context, view:Int, data:ArrayList<LayerModel>) : ArrayAdapter<LayerModel>(context, view, data) {
@@ -33,9 +36,17 @@ open class DlgLayerAdapter(context:Context, view:Int, data:ArrayList<LayerModel>
             }
         }
 
-        var data:LayerModel =  data.get(position)
+        var layerData:LayerModel =  data.get(position)
 
-        item.layerNameTV.text = data.layer_name
+        item.layerNameTV.text = layerData.layer_name
+
+        item.layerCheckCB.setOnClickListener {
+            var checkBox:CheckBox = it as CheckBox
+            var test = checkBox.isChecked.toString() + "-------------------------"
+            println(test)
+
+            layerData.is_checked = checkBox.isChecked
+        }
 
         return retView
     }
@@ -43,9 +54,11 @@ open class DlgLayerAdapter(context:Context, view:Int, data:ArrayList<LayerModel>
     class ViewHolder(v: View) {
 
         var layerNameTV: TextView
+        var layerCheckCB: CheckBox
 
         init {
             layerNameTV = v.findViewById<View>(R.id.layer_name) as TextView
+            layerCheckCB = v.findViewById<View>(R.id.layer_checkbox) as CheckBox
         }
     }
 }

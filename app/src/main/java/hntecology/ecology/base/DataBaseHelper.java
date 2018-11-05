@@ -21,6 +21,7 @@ import hntecology.ecology.model.GpsSet;
 import hntecology.ecology.model.Insect_attribute;
 import hntecology.ecology.model.Mammal_attribute;
 import hntecology.ecology.model.Reptilia_attribute;
+import hntecology.ecology.model.Tracking;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -352,6 +353,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         queryinsect += ",GPS_LON	Float";
         queryinsect += ");";
         db.execSQL(queryinsect);
+
 
 //        query = "create table if not exists ";
 //        query += "birds ( no String";
@@ -735,6 +737,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
         db.close();
     }
+
+    public void inserttracking(Tracking tracking){
+        String query = "INSERT INTO tracking";
+        query += "(latitude,longitude)";
+
+        query += " values (";
+        query += " '" + tracking.getLATITUDE() + "'";
+        query += ", '" + tracking.getLONGITUDE() + "'";
+
+        query += " ); ";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
 
 
     public void deletereptilia_attribute(Reptilia_attribute reptilia_attribute,String page) {

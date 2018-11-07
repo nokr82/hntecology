@@ -149,7 +149,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         drawer_view.setOnTouchListener(this)
 
         btn_layer.setOnClickListener {
+            val zoom = googleMap.cameraPosition.zoom
             val intent = Intent(this, DlgLayersActivity::class.java)
+
+            intent.putExtra("zoom",zoom)
+
             startActivityForResult(intent, REQUEST_LAYER)
         }
 
@@ -470,6 +474,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     longitude = data.getDoubleExtra("longitude",37.39627)
 
 
+
                     val gpsSet:GpsSet = GpsSet(null,latitude,longitude)
                     dbManager!!.insertGpsSet(gpsSet)
                     onMapReady(googleMap)
@@ -581,6 +586,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 LAYER_MYLOCATION -> {
+
                     intent = Intent(this, MainActivity::class.java)
                 }
 
@@ -604,7 +610,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             var attrubuteKey = layerInfo.attrubuteKey
             var intent:Intent? = null
-
 
             println("attrubuteKey================================================== : " + attrubuteKey)
 
@@ -720,7 +725,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             Utils.showNotification(context, "지도 레벨을 16이상으로 확대한 후 이용하세요. 정말 안되요 ㅠㅠㅠ")
             return
         }
-
 
         currentFileName = fileName
         currentLayerName = layerName

@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 import hntecology.ecology.model.Biotope_attribute;
 import hntecology.ecology.model.Birds_attribute;
@@ -22,6 +23,7 @@ import hntecology.ecology.model.Insect_attribute;
 import hntecology.ecology.model.Mammal_attribute;
 import hntecology.ecology.model.Reptilia_attribute;
 import hntecology.ecology.model.Tracking;
+import hntecology.ecology.model.Vegetation;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -189,7 +191,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query = "create table if not exists ";
-        query += "biotopeattribute ( id String PRIMARY KEY";
+        query += "biotopeAttribute ( id String PRIMARY KEY";
         query += ",GROP_ID	   String";
         query += ",PRJ_NAME	   String";
         query += ",INV_REGION	String";
@@ -242,6 +244,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ",GPS_LON	    Float";
         query += ",NEED_CONF	String";
         query += ",CONF_MOD	String";
+        query += ",TEMP_YN String";
         query += ");";
         db.execSQL(query);
 
@@ -273,6 +276,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         querybrids += ",MJ_ACT_PR	String";
         querybrids += ",GPS_LAT	    Float";
         querybrids += ",GPS_LON	    Float";
+        querybrids += ",TEMP_YN 	String";
         querybrids += ");";
         db.execSQL(querybrids);
 
@@ -307,6 +311,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         queryreptilia += ",HAB_AREA_H	Integer";
         queryreptilia += ",GPS_LAT	    Float";
         queryreptilia += ",GPS_LON	    Float";
+        querybrids += ",TEMP_YN	String";
         queryreptilia += ");";
         db.execSQL(queryreptilia);
 
@@ -338,6 +343,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         querymammal += ",UN_SPEC_RE	String";
         querymammal += ",TR_EASY	Integer";
         querymammal += ",TR_EASY_RE	Integer";
+        querybrids += ",TEMP_YN	String";
         querymammal += ");";
         db.execSQL(querymammal);
 
@@ -369,6 +375,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         queryinsect += ",UNUS_NOTE	String";
         queryinsect += ",GPS_LAT	Float";
         queryinsect += ",GPS_LON	Float";
+        querybrids += ",TEMP_YN	String";
         queryinsect += ");";
         db.execSQL(queryinsect);
 
@@ -431,7 +438,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO biotopeAttribute";
         query += "(id,GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,INV_TM,INV_INDEX,LU_GR_NUM,LU_TY_RATE,STAND_H,LC_GR_NUM,LC_TY,TY_MARK,GV_RATE,GV_STRUCT,DIS_RET,RESTOR_POT,COMP_INTA";
         query += ",VP_INTA,IMP_FORM,BREA_DIA,FIN_EST,TRE_SPEC,TRE_FAMI,TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_H,STRE_BREA,STRE_COVE,SHR_SPEC,SHR_FAMI";
-        query += ",SHR_SCIEN,SHR_H,STR_COVE,HER_SPEC,HER_FAMI,HER_SCIEN,HER_H,HER_COVE,PIC_FOLDER,WILD_ANI,BIOTOP_POT,UNUS_NOTE,GPS_LAT,GPS_LON,NEED_CONF,CONF_MOD)";
+        query += ",SHR_SCIEN,SHR_H,STR_COVE,HER_SPEC,HER_FAMI,HER_SCIEN,HER_H,HER_COVE,PIC_FOLDER,WILD_ANI,BIOTOP_POT,UNUS_NOTE,GPS_LAT,GPS_LON,NEED_CONF,CONF_MOD,TEMP_YN)";
 
 
         query += " values (";
@@ -488,6 +495,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", " + biotope_attribute.getGPS_LON() + "";
         query += ", '" + biotope_attribute.getNEED_CONF() + "'";
         query += ", '" + biotope_attribute.getCONF_MOD() + "'";
+        query += ", '" + biotope_attribute.getTEMP_YN() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -500,7 +508,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO birdsAttribute";
         query += "(id,GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,OBS_STAT,OBS_ST_ETC";
-        query += ",USE_TAR,USE_TAR_SP,USE_LAYER,MJ_ACT,MJ_ACT_PR,GPS_LAT,GPS_LON)";
+        query += ",USE_TAR,USE_TAR_SP,USE_LAYER,MJ_ACT,MJ_ACT_PR,GPS_LAT,GPS_LON,TEMP_YN)";
 
         query += " values (";
         query += " '" + birds_attribute.getId() + "'";
@@ -529,6 +537,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + birds_attribute.getMJ_ACT_PR() + "'";
         query += ", '" + birds_attribute.getGPS_LAT() + "'";
         query += ", '" + birds_attribute.getGPS_LON() + "'";
+        query += ", '" + birds_attribute.getTEMP_YN() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -541,7 +550,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += "(id,GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,IN_CNT_ADU,IN_CNT_LAR,IN_CNT_EGG";
         query += ",HAB_RIVEER,HAB_EDGE,WATER_IN,WATER_OUT,WATER_CONT,WATER_QUAL,WATER_DEPT";
-        query += ",HAB_AREA_W,HAB_AREA_H,GPS_LAT,GPS_LON)";
+        query += ",HAB_AREA_W,HAB_AREA_H,GPS_LAT,GPS_LON,TEMP_YN)";
 
 
         query += " values (";
@@ -573,8 +582,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + reptilia_attribute.getWATER_DEPT() + "'";
         query += ", '" + reptilia_attribute.getHAB_AREA_W() + "'";
         query += ", '" + reptilia_attribute.getHAB_AREA_H() + "'";
-        query += ", '" + reptilia_attribute.getGPS_LAT() + "'";
-        query += ", '" + reptilia_attribute.getGPS_LON() + "'";
+        query += ", " + reptilia_attribute.getGPS_LAT() + "";
+        query += ", " + reptilia_attribute.getGPS_LON() + "";
+        query += ", '" + reptilia_attribute.getTEMP_YN() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -586,7 +596,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO mammalAttribute";
         query += "(id,GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,OBS_TY,OBS_TY_ETC,INDI_CNT";
-        query += ",OB_PT_CHAR,UNUS_NOTE,GPS_LAT,GPS_LON,UN_SPEC,UN_SPEC_RE,TR_EASY,TR_EASY_RE)";
+        query += ",OB_PT_CHAR,UNUS_NOTE,GPS_LAT,GPS_LON,UN_SPEC,UN_SPEC_RE,TR_EASY,TR_EASY_RE,TEMP_YN)";
 
         query += " values (";
         query += " '" + mammal_attribute.getId() + "'";
@@ -616,6 +626,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + mammal_attribute.getUN_SPEC_RE() + "'";
         query += ", '" + mammal_attribute.getTR_EASY() + "'";
         query += ", '" + mammal_attribute.getTR_EASY_RE() + "'";
+        query += ", '" + mammal_attribute.getTEMP_YN() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -627,7 +638,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO insectAttribute";
         query += "(id,GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,OBS_STAT,OBS_ST_ETC";
-        query += ",USE_TAR,USER_TA_ETC,MJ_ACT,MJ_ACT_ETC,INV_MEAN,INV_MN_ETC,UNUS_NOTE,GPS_LAT,GPS_LON)";
+        query += ",USE_TAR,USER_TA_ETC,MJ_ACT,MJ_ACT_ETC,INV_MEAN,INV_MN_ETC,UNUS_NOTE,GPS_LAT,GPS_LON,TEMP_YN)";
 
         query += " values (";
         query += " '" + insect_attribute.getId() + "'";
@@ -658,6 +669,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + insect_attribute.getUNUS_NOTE() + "'";
         query += ", '" + insect_attribute.getGPS_LAT() + "'";
         query += ", '" + insect_attribute.getGPS_LON() + "'";
+        query += ", '" + insect_attribute.getTEMP_YN() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -670,7 +682,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += "(id,GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,MID_RAGE,CODE_NUM,RIVER_NUM,RIVER_NM,NET_CNT,NET_MIN,AD_DIST_NM,GPS_LAT";
         query += ",GPS_LON,COLL_TOOL,STREAM_W,WATER_W,WATER_D,WATER_CUR,RIV_STR,RIV_STR_IN,RIV_FORM";
-        query += ",NUM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,UNIDENT,RIV_FM_CH,UN_FISH_CH)";
+        query += ",NUM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,UNIDENT,RIV_FM_CH,UN_FISH_CH,TEMP_YN)";
 
         query += " values (";
         query += " '" + fish_attribute.getId() + "'";
@@ -709,6 +721,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + fish_attribute.getUNIDENT() + "'";
         query += ", '" + fish_attribute.getRIV_FM_CH() + "'";
         query += ", '" + fish_attribute.getUN_FISH_CH() + "'";
+        query += ", '" + fish_attribute.getTEMP_YN() + "'";
 
         query += " ); ";
 
@@ -721,7 +734,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO floraAttribute";
         query += "(id,GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,FLORE_YN,PLANT_YN,HAB_STAT";
-        query += ",HAB_ETC,COL_IN_CNT,THRE_CAU,GPS_LAT,GPS_LON)";
+        query += ",HAB_ETC,COL_IN_CNT,THRE_CAU,GPS_LAT,GPS_LON,TEMP_YN)";
 
         query += " values (";
         query += " '" + flora_Attribute.getId() + "'";
@@ -748,7 +761,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + flora_Attribute.getTHRE_CAU() + "'";
         query += ", '" + flora_Attribute.getGPS_LAT() + "'";
         query += ", '" + flora_Attribute.getGPS_LON() + "'";
-
+        query += ", '" + flora_Attribute.getTEMP_YN() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -857,7 +870,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",HAB_AREA_W='" + reptilia_attribute.getHAB_AREA_W() + "'"
                 + ",HAB_AREA_H='" + reptilia_attribute.getHAB_AREA_H() + "'"
                 + ",GPS_LAT='" + reptilia_attribute.getGPS_LAT() + "'"
-                + ",GPS_LON='" + reptilia_attribute.getGPS_LON() + "'" +
+                + ",GPS_LON='" + reptilia_attribute.getGPS_LON() + "'"
+                + ",TEMP_YN='" + reptilia_attribute.getTEMP_YN() + "'" +
                 "where id = '" + page + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -889,7 +903,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",MJ_ACT='" + birds_attribute.getMJ_ACT() + "'"
                 + ",MJ_ACT_PR='" + birds_attribute.getMJ_ACT_PR() + "'"
                 + ",GPS_LAT='" + birds_attribute.getGPS_LAT() + "'"
-                + ",GPS_LON='" + birds_attribute.getGPS_LON() + "'" +
+                + ",GPS_LON='" + birds_attribute.getGPS_LON() + "'"
+                + ",TEMP_YN='" + birds_attribute.getTEMP_YN() + "'"+
                  "where id = '" + page + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -964,7 +979,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",GPS_LAT=" + biotope_attribute.getGPS_LAT() + ""
                 + ",GPS_LON=" + biotope_attribute.getGPS_LON() + ""
                 + ",NEED_CONF='" + biotope_attribute.getNEED_CONF() + "'"
-                + ",CONF_MOD='" + biotope_attribute.getCONF_MOD() + "'" +
+                + ",CONF_MOD='" + biotope_attribute.getCONF_MOD() + "'"
+                + ",TEMP_YN='" + biotope_attribute.getTEMP_YN() + "'"+
                 "where id = '" + page + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -997,7 +1013,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",UN_SPEC='" + mammal_attribute.getUN_SPEC() + "'"
                 + ",UN_SPEC_RE='" + mammal_attribute.getUN_SPEC_RE() + "'"
                 + ",TR_EASY='" + mammal_attribute.getTR_EASY() + "'"
-                + ",TR_EASY_RE='" + mammal_attribute.getTR_EASY_RE() + "'" +
+                + ",TR_EASY_RE='" + mammal_attribute.getTR_EASY_RE() + "'"
+                + ",TEMP_YN='" + mammal_attribute.getTEMP_YN() + "'"+
                 "where id = '" + page + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1031,7 +1048,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",INV_MN_ETC='" + insect_attribute.getINV_MN_ETC() + "'"
                 + ",UNUS_NOTE='" + insect_attribute.getUNUS_NOTE() + "'"
                 + ",GPS_LAT='" + insect_attribute.getGPS_LAT() + "'"
-                + ",GPS_LON='" + insect_attribute.getGPS_LON() + "'" +
+                + ",GPS_LON='" + insect_attribute.getGPS_LON() + "'"
+                + ",TEMP_YN='" + insect_attribute.getTEMP_YN() + "'"+
                 "where id = '" + page + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1074,7 +1092,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",INDI_CNT='" + fish_attribute.getINDI_CNT() + "'"
                 + ",UNIDENT='" + fish_attribute.getUNIDENT() + "'"
                 + ",RIV_FM_CH='" + fish_attribute.getRIV_FM_CH() + "'"
-                + ",UN_FISH_CH='" + fish_attribute.getUN_FISH_CH() + "'" +
+                + ",UN_FISH_CH='" + fish_attribute.getUN_FISH_CH() + "'"
+                + ",TEMP_YN='" + fish_attribute.getTEMP_YN() + "'"+
 
                 "where id = '" + page + "'";
         SQLiteDatabase db = getWritableDatabase();
@@ -1106,7 +1125,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",COL_IN_CNT='" + flora_attribute.getCOL_IN_CNT() + "'"
                 + ",THRE_CAU='" + flora_attribute.getTHRE_CAU() + "'"
                 + ",GPS_LAT='" + flora_attribute.getGPS_LAT() + "'"
-                + ",GPS_LON='" + flora_attribute.getGPS_LON() + "'" +
+                + ",GPS_LON='" + flora_attribute.getGPS_LON() + "'"
+                + ",TEMP_YN='" + flora_attribute.getTEMP_YN() + "'"+
 
                 "where id = '" + page + "'";
         SQLiteDatabase db = getWritableDatabase();

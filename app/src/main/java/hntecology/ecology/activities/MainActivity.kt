@@ -36,6 +36,7 @@ import hntecology.ecology.base.Utils
 import hntecology.ecology.model.GpsSet
 import hntecology.ecology.model.LayerModel
 import hntecology.ecology.model.Tracking
+import hntecology.ecology.model.Vegetation
 import io.nlopez.smartlocation.OnLocationUpdatedListener
 import io.nlopez.smartlocation.SmartLocation
 import io.nlopez.smartlocation.location.providers.LocationGooglePlayServicesWithFallbackProvider
@@ -99,6 +100,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     private var db: SQLiteDatabase? = null
 
+
+
     // 3. biotope  , 6.birds , 7.Reptilia , 8.mammalia  9. fish, 10.insect, 11.flora , 13. zoobenthos
     var currentLayer = -1
 
@@ -121,6 +124,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         db = dbManager!!.createDataBase()
         val dataList: Array<String> = arrayOf("*")
         val data = db!!.query("settings", dataList, null, null, null, null, "id desc", "1")
+
 
         progressDialog = ProgressDialog(this, R.style.progressDialogTheme)
         progressDialog!!.setProgressStyle(android.R.style.Widget_DeviceDefault_Light_ProgressBar_Large)
@@ -957,6 +961,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 point = Point()
                 point.x = X1
                 point.y = Y1
+
+
+
                 val geoPoint = googleMap.projection.fromScreenLocation(point)
 
                 if (splitRL.isSelected) {

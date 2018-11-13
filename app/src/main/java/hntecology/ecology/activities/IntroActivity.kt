@@ -67,7 +67,6 @@ class IntroActivity : Activity() {
             startActivity(intent)
         }
 
-
     }
 
     private fun toLogin() {

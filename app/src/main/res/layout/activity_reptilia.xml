@@ -28,6 +28,57 @@
                 style="@style/BiotopeTextView"
                 android:gravity="center"
                 />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="조사지역"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/invregionET"
+                    style="@style/BiotopeTextViewDisabled"
+                    android:gravity="left|center"
+                    />
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="조사일시"/>
+
+                <TextView
+                    android:id="@+id/createdDateTV"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextViewDisabled"
+                    android:gravity="left|center"
+                    />
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="조사자"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/invpersonET"
+                    style="@style/BiotopeTextViewDisabled"
+                    android:gravity="left|center"
+                    />
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp">
@@ -74,54 +125,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:layout_width="70dp"
-                    android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="조사지역"/>
 
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:id="@+id/invregionET"
-                    style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
-                <TextView
-                    android:layout_width="70dp"
-                    android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="조사일시"/>
-
-                <TextView
-                    android:id="@+id/createdDateTV"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
-                <TextView
-                    android:layout_width="70dp"
-                    android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="조사자"/>
-
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:id="@+id/invpersonET"
-                    style="@style/BiotopeTextView"
-                    android:gravity="left|center"
-                    />
-            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

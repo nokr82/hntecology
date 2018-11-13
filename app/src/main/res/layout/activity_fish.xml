@@ -28,51 +28,7 @@
                 style="@style/BiotopeTextView"
                 android:gravity="center"
                 />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center">
-
-                <LinearLayout
-                    android:id="@+id/fishleftLL"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="20dp"
-                        android:gravity="center"
-                        android:text="〈 "
-                        android:textSize="30dp" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/fishpageTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="0 / 0" />
-
-                <LinearLayout
-                    android:id="@+id/fishrightLL"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
-                        android:gravity="center"
-                        android:text="〉 "
-                        android:textSize="30dp" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -90,7 +46,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/fishinvregionET"
-                    style="@style/BiotopeTextView"
+                    style="@style/BiotopeTextViewDisabled"
                     android:gravity="left|center"
                     />
                 <TextView
@@ -104,7 +60,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/fishinvdtET"
-                    style="@style/BiotopeTextView"
+                    style="@style/BiotopeTextViewDisabled"
                     android:gravity="left|center"
                     />
                 <TextView
@@ -118,10 +74,58 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/fishinvpersonET"
-                    style="@style/BiotopeTextView"
+                    style="@style/BiotopeTextViewDisabled"
                     android:gravity="left|center"
                     />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <LinearLayout
+                        android:id="@+id/fishleftLL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="20dp"
+                            android:gravity="center"
+                            android:text="〈 "
+                            android:textSize="30dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/fishpageTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="0 / 0" />
+
+                    <LinearLayout
+                        android:id="@+id/fishrightLL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text="〉 "
+                            android:textSize="30dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -229,7 +233,7 @@
                     android:layout_width="330dp"
                     android:layout_height="match_parent">
 
-                    <EditText
+                    <TextView
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
                         android:id="@+id/fishmidrageET"
@@ -243,7 +247,7 @@
                         android:layout_height="wrap_content"
                         android:text="/"
                         android:textSize="20dp"/>
-                    <EditText
+                    <TextView
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
                         android:id="@+id/fishcodenumET"
@@ -353,7 +357,7 @@
 
                 </LinearLayout>
                 <TextView
-                    android:layout_width="200dp"
+                    android:layout_width="100dp"
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
                     android:text="채집도구"/>

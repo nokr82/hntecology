@@ -96,7 +96,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                 var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                        , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27))
+                        , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27),data.getString(28))
 
                 insectinvregionET.setText(insect_attribute.INV_REGION)
 
@@ -146,7 +146,15 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                 insectunusnoteET.setText(insect_attribute.UNUS_NOTE)
 
-                dataArray.add(insect_attribute)
+                val id = insect_attribute.id
+
+                if(insect_attribute.TEMP_YN.equals("N")){
+                    dbManager.deleteinsect_attribute(insect_attribute,id)
+                }
+
+                if(insect_attribute.TEMP_YN.equals("Y")){
+                    dataArray.add(insect_attribute)
+                }
 
             }
 
@@ -173,7 +181,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                 var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                        , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27))
+                        , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27),data.getString(28))
 
                 dataArray.add(insect_attribute)
             }
@@ -216,14 +224,14 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                 var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                        , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27))
+                        , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27),data.getString(28))
 
                 dataArray.add(insect_attribute)
             }
 
             var insect_attribute: Insect_attribute = Insect_attribute(null,null,null,null,null,null,null,null,null,null
             ,null,null,null,null,null,null,null,null,null,null,null,null,null
-            ,null,null,null,null,null)
+            ,null,null,null,null,null,null)
 
             insect_attribute.id = keyId + page.toString()
 
@@ -277,6 +285,13 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
             insect_attribute.UNUS_NOTE = insectunusnoteET.text.toString()
 
+            insect_attribute.GPS_LAT = 0F
+            insect_attribute.GPS_LON = 0F
+
+            insect_attribute.TEMP_YN = "N"
+
+
+
             if(page == dataArray.size){
                 dbManager.insertinsect_attribute(insect_attribute)
                 page = page!! + 1
@@ -296,7 +311,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                 var insect_attribute: Insect_attribute = Insect_attribute(data2.getString(0), data2.getString(1), data2.getString(2), data2.getString(3), data2.getString(4), data2.getString(5), data2.getString(6), data2.getString(7),
                         data2.getString(8), data2.getFloat(9), data2.getString(10), data2.getInt(11), data2.getString(12), data2.getString(13), data2.getString(14)
                         , data2.getString(15), data2.getInt(16), data2.getString(17), data2.getString(18), data2.getString(19), data2.getString(20), data2.getString(21)
-                        , data2.getString(22), data2.getString(23), data2.getString(24), data2.getString(25), data2.getFloat(26), data2.getFloat(27))
+                        , data2.getString(22), data2.getString(23), data2.getString(24), data2.getString(25), data2.getFloat(26), data2.getFloat(27),data2.getString(28))
 
                 dataArray.add(insect_attribute)
 
@@ -323,7 +338,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                         var insect_attribute: Insect_attribute = Insect_attribute(null,null,null,null,null,null,null,null,null,null
                                 ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                                ,null,null,null,null,null)
+                                ,null,null,null,null,null,null)
 
                         insect_attribute.id = keyId + page.toString()
 
@@ -380,6 +395,11 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                         insect_attribute.UNUS_NOTE = insectunusnoteET.text.toString()
 
+                        insect_attribute.GPS_LAT = latitude
+                        insect_attribute.GPS_LON = longitude
+
+                        insect_attribute.TEMP_YN = "Y"
+
                         if(chkdata){
 
                             val tmppage = page!! - 1
@@ -430,7 +450,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                         var insect_attribute: Insect_attribute = Insect_attribute(null,null,null,null,null,null,null,null,null,null
                                 ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                                ,null,null,null,null,null)
+                                ,null,null,null,null,null,null)
 
                         val tmppage = page!! -1
                         val id = keyId + tmppage.toString()
@@ -629,7 +649,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                    , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27))
+                    , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27),data.getString(28))
 
             dataArray.add(insect_attribute)
 
@@ -746,6 +766,9 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             if(insectunusnoteET.text == null){
                 insectunusnoteET.setText("")
             }
+
+            insectgpslatTV.setText(insect_attribute.GPS_LAT.toString())
+            insectgpslonTV.setText(insect_attribute.GPS_LON.toString())
 
         }
 

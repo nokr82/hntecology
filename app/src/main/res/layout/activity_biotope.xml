@@ -298,6 +298,7 @@
                                 android:inputType="numberDecimal"
                                 android:maxLength="10"
                                 android:id="@+id/etLU_TY_RATEET"
+                                android:gravity="center"
                                 style="@style/BiotopeEditText"
                                 />
 
@@ -325,6 +326,7 @@
                                android:maxLength="10"
                                android:id="@+id/etSTAND_HET"
                                style="@style/BiotopeEditText"
+                               android:gravity="center"
                                />
 
                         </LinearLayout>
@@ -430,7 +432,7 @@
                                         android:maxLength="1"
                                         android:id="@+id/etlcmTypepET"
                                         style="@style/BiotopeTextViewDisabled"
-
+                                        android:gravity="center"
                                         />
 
                                 </LinearLayout>
@@ -455,6 +457,7 @@
                                         android:maxLength="1"
                                         android:id="@+id/etlcmTypeiET"
                                         style="@style/BiotopeTextViewDisabled"
+                                        android:gravity="center"
 
                                         />
 
@@ -480,6 +483,7 @@
                                         android:maxLength="1"
                                         android:id="@+id/etlcmTypegET"
                                         style="@style/BiotopeTextViewDisabled"
+                                        android:gravity="center"
                                         />
 
                                 </LinearLayout>
@@ -504,6 +508,7 @@
                                         android:maxLength="1"
                                        android:id="@+id/etlcmTypewET"
                                        style="@style/BiotopeTextViewDisabled"
+                                       android:gravity="center"
                                        />
 
                                 </LinearLayout>
@@ -555,8 +560,8 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="2"
                                 android:id="@+id/TVTY_MARKTV"
-                                android:gravity="center"
                                 style="@style/BiotopeTextViewDisabled"
+                                android:gravity="center"
                                 />
                             <EditText
                                 android:layout_width="0dp"
@@ -594,6 +599,7 @@
                                 android:maxLength="10"
                                 android:id="@+id/etGV_RATEET"
                                 style="@style/BiotopeEditText"
+                                android:gravity="center"
                                 />
 
                         </LinearLayout>
@@ -618,6 +624,7 @@
                                 android:maxLength="30"
                                 android:id="@+id/etGV_STRUCTET"
                                 style="@style/BiotopeEditText"
+                                android:gravity="center"
                                 />
 
                         </LinearLayout>
@@ -658,6 +665,7 @@
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
                                         style="@style/BiotopeEditText"
+                                        android:gravity="center"
                                         android:maxLength="30" />
 
                                 </LinearLayout>
@@ -680,6 +688,7 @@
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
                                         style="@style/BiotopeEditText"
+                                        android:gravity="center"
                                         android:maxLength="30" />
 
                                 </LinearLayout>
@@ -702,6 +711,7 @@
                                         android:layout_height="match_parent"
                                         style="@style/BiotopeEditText"
                                         android:layout_weight="2"
+                                        android:gravity="center"
                                         android:maxLength="30" />
 
                                 </LinearLayout>
@@ -724,6 +734,7 @@
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
                                         style="@style/BiotopeEditText"
+                                        android:gravity="center"
                                         android:maxLength="30" />
 
                                 </LinearLayout>
@@ -746,6 +757,7 @@
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
                                         style="@style/BiotopeEditText"
+                                        android:gravity="center"
                                         android:maxLength="30" />
 
                                 </LinearLayout>
@@ -768,6 +780,7 @@
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
                                         style="@style/BiotopeEditText"
+                                        android:gravity="center"
                                         android:maxLength="30" />
 
                                 </LinearLayout>
@@ -790,6 +803,7 @@
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
                                         android:maxLength="30"
+                                        android:gravity="center"
                                         style="@style/BiotopeEditText"
                                         />
 
@@ -830,13 +844,15 @@
                                         style="@style/BiotopeTextView"
                                         />
 
-                                    <EditText
+                                    <TextView
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
                                         android:maxLength="30"
                                         android:id="@+id/etTRE_SPECET"
-                                        style="@style/BiotopeEditText"
+                                        android:gravity="center"
+                                        android:hint="click"
+                                        style="@style/BiotopeTextView"
                                         />
 
                                 </LinearLayout>
@@ -854,13 +870,14 @@
                                         style="@style/BiotopeTextView"
                                         />
 
-                                    <EditText
+                                    <TextView
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
                                         android:maxLength="30"
                                         android:id="@+id/etTRE_FAMIET"
-                                        style="@style/BiotopeEditText"
+                                        android:gravity="center"
+                                        style="@style/BiotopeTextViewDisabled"
                                         />
 
                                 </LinearLayout>
@@ -878,13 +895,14 @@
                                         style="@style/BiotopeTextView"
                                         />
 
-                                    <EditText
+                                    <TextView
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
                                         android:maxLength="30"
                                         android:id="@+id/etTRE_SCIENET"
-                                        style="@style/BiotopeEditText"
+                                        android:gravity="center"
+                                        style="@style/BiotopeTextViewDisabled"
                                         />
 
                                 </LinearLayout>
@@ -909,6 +927,7 @@
                                         android:inputType="numberDecimal"
                                         android:maxLength="10"
                                         android:id="@+id/etTRE_HET"
+                                        android:gravity="center"
                                         style="@style/BiotopeEditText"
                                         />
 
@@ -934,6 +953,7 @@
                                         android:inputType="numberDecimal"
                                         android:maxLength="10"
                                         android:id="@+id/etTRE_BREAET"
+                                        android:gravity="center"
                                         style="@style/BiotopeEditText"
                                         />
 
@@ -1000,13 +1020,15 @@
                                         style="@style/BiotopeTextView"
                                         />
 
-                                    <EditText
+                                    <TextView
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
                                         android:maxLength="30"
                                         android:id="@+id/etSTRE_SPECET"
-                                        style="@style/BiotopeEditText"
+                                        android:hint="click"
+                                        android:gravity="center"
+                                        style="@style/BiotopeTextView"
                                         />
 
                                 </LinearLayout>
@@ -1024,14 +1046,15 @@
                                        style="@style/BiotopeTextView"
                                        />
 
-                                   <EditText
+                                   <TextView
                                        android:layout_width="0dp"
                                        android:layout_height="match_parent"
                                        android:layout_weight="2"
                                        android:inputType="numberDecimal"
                                        android:maxLength="10"
                                        android:id="@+id/etSTRE_FAMIET"
-                                       style="@style/BiotopeEditText"
+                                       android:gravity="center"
+                                       style="@style/BiotopeTextViewDisabled"
                                        />
 
                                </LinearLayout>
@@ -1050,14 +1073,15 @@
                                        style="@style/BiotopeTextView"
                                        />
 
-                                   <EditText
+                                   <TextView
                                        android:layout_width="0dp"
                                        android:layout_height="match_parent"
                                        android:layout_weight="2"
                                        android:inputType="numberDecimal"
                                        android:maxLength="10"
                                        android:id="@+id/etSTRE_SCIENET"
-                                       style="@style/BiotopeEditText"
+                                       android:gravity="center"
+                                       style="@style/BiotopeTextViewDisabled"
                                        />
 
                                </LinearLayout>
@@ -1082,6 +1106,7 @@
                                         android:layout_weight="2"
                                         android:inputType="numberDecimal"
                                         android:maxLength="10"
+                                        android:gravity="center"
                                         android:id="@+id/etSTRE_HET"
                                         style="@style/BiotopeEditText"
                                         />
@@ -1132,6 +1157,7 @@
                                         android:layout_weight="2"
                                         android:inputType="numberDecimal"
                                         android:maxLength="10"
+                                        android:gravity="center"
                                         android:id="@+id/etSTRE_COVEET"
                                         style="@style/BiotopeEditText"
                                         />
@@ -1174,13 +1200,15 @@
                                         style="@style/BiotopeTextView"
                                         />
 
-                                    <EditText
+                                    <TextView
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
                                         android:maxLength="30"
                                         android:id="@+id/etSHR_SPECET"
-                                        style="@style/BiotopeEditText"
+                                        android:gravity="center"
+                                        android:hint="click"
+                                        style="@style/BiotopeTextView"
                                         />
 
                                 </LinearLayout>
@@ -1198,13 +1226,14 @@
                                         style="@style/BiotopeTextView"
                                         />
 
-                                    <EditText
+                                    <TextView
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
                                         android:maxLength="30"
                                         android:id="@+id/etSHR_FAMIET"
-                                        style="@style/BiotopeEditText"
+                                        android:gravity="center"
+                                        style="@style/BiotopeTextViewDisabled"
                                         />
 
                                 </LinearLayout>
@@ -1222,13 +1251,14 @@
                                         style="@style/BiotopeTextView"
                                         />
 
-                                    <EditText
+                                    <TextView
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
                                         android:maxLength="30"
                                         android:id="@+id/etSHR_SCIENET"
-                                        style="@style/BiotopeEditText"
+                                        android:gravity="center"
+                                        style="@style/BiotopeTextViewDisabled"
                                         />
 
                                 </LinearLayout>
@@ -1252,6 +1282,7 @@
                                         android:layout_weight="2"
                                         android:inputType="numberDecimal"
                                         android:maxLength="10"
+                                        android:gravity="center"
                                         android:id="@+id/etSHR_HET"
                                         style="@style/BiotopeEditText"
                                         />
@@ -1278,6 +1309,7 @@
                                         android:layout_weight="2"
                                         android:inputType="numberDecimal"
                                         android:maxLength="10"
+                                        android:gravity="center"
                                         android:id="@+id/etSTR_COVEET"
                                         style="@style/BiotopeEditText"
                                         />
@@ -1321,13 +1353,15 @@
                                         style="@style/BiotopeTextView"
                                         />
 
-                                    <EditText
+                                    <TextView
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
                                         android:maxLength="30"
                                         android:id="@+id/etHER_SPECET"
-                                        style="@style/BiotopeEditText"
+                                        android:hint="click"
+                                        android:gravity="center"
+                                        style="@style/BiotopeTextView"
                                         />
 
                                 </LinearLayout>
@@ -1351,13 +1385,14 @@
                                             style="@style/BiotopeTextView"
                                             />
 
-                                        <EditText
+                                        <TextView
                                             android:layout_width="0dp"
                                             android:layout_height="match_parent"
                                             android:layout_weight="2"
                                             android:maxLength="30"
                                             android:id="@+id/etHER_FAMIET"
-                                            style="@style/BiotopeEditText"
+                                            android:gravity="center"
+                                            style="@style/BiotopeTextViewDisabled"
                                             />
 
                                     </LinearLayout>
@@ -1381,13 +1416,14 @@
                                                 style="@style/BiotopeTextView"
                                                 />
 
-                                            <EditText
+                                            <TextView
                                                 android:layout_width="0dp"
                                                 android:layout_height="match_parent"
                                                 android:layout_weight="2"
                                                 android:maxLength="30"
                                                 android:id="@+id/etHER_SCIENET"
-                                                style="@style/BiotopeEditText"
+                                                android:gravity="center"
+                                                style="@style/BiotopeTextViewDisabled"
                                                 />
 
                                         </LinearLayout>
@@ -1413,6 +1449,7 @@
                                         android:inputType="numberDecimal"
                                         android:maxLength="10"
                                         android:id="@+id/etHER_HET"
+                                        android:gravity="center"
                                         style="@style/BiotopeEditText"
                                         />
 
@@ -1438,6 +1475,7 @@
                                         android:layout_weight="2"
                                         android:inputType="numberDecimal"
                                         android:maxLength="10"
+                                        android:gravity="center"
                                         android:id="@+id/etHER_COVEET"
                                         style="@style/BiotopeEditText"
                                         />
@@ -1528,6 +1566,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:maxLength="50"
+                        android:gravity="center"
                         android:id="@+id/etWILD_ANIET"
                         style="@style/BiotopeEditText"
                         />
@@ -1549,6 +1588,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:maxLength="200"
+                        android:gravity="center"
                         android:id="@+id/etBIOTOP_POTET"
                         style="@style/BiotopeEditText"
                         />
@@ -1570,6 +1610,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:maxLength="500"
+                        android:gravity="center"
                         android:id="@+id/etUNUS_NOTEET"
                         style="@style/BiotopeEditText"
                         />
@@ -1580,6 +1621,7 @@
                     android:layout_height="0dp"
                     android:maxLength="500"
                     android:id="@+id/etpointGpsET"
+                    android:gravity="center"
                     style="@style/BiotopeEditText"
                     android:visibility="gone"
                     />

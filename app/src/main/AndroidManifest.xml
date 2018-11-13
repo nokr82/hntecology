@@ -156,11 +156,11 @@
             android:name=".activities.DlgLayersActivity"
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog1" />
-        <activity android:name=".activities.FloraActivity"
+        <activity
+            android:name=".activities.FloraActivity"
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog1"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
-            ></activity>
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".activities.DlgReptiliaActivity"
             android:screenOrientation="landscape"
@@ -181,6 +181,11 @@
             android:name=".activities.DlgFloraActivity"
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog1" />
+        <activity
+            android:name=".activities.DlgvegetationActivity"
+            android:theme="@style/full_screen_dialog1" />
+        <activity android:name=".activities.DlgcomAcitivity"
+            android:theme="@style/full_screen_dialog1"></activity>
     </application>
 
 </manifest>

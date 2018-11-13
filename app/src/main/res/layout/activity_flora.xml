@@ -45,7 +45,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/florainvregionET"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
                 <TextView

@@ -12,7 +12,6 @@ import android.graphics.Typeface
 import android.location.Geocoder
 import android.location.Location
 import android.os.*
-import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
@@ -24,7 +23,6 @@ import android.widget.Toast
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesUtil
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -49,19 +47,13 @@ import org.geotools.data.collection.ListFeatureCollection
 import org.geotools.data.shapefile.ShapefileDataStore
 import org.geotools.data.shapefile.ShapefileDataStoreFactory
 import org.geotools.data.simple.SimpleFeatureStore
-import org.geotools.geometry.jts.JTS
-import org.geotools.referencing.CRS
-import org.geotools.referencing.GeodeticCalculator
 import org.geotools.referencing.crs.DefaultGeographicCRS
-import org.json.JSONObject
 import org.locationtech.jts.geom.Coordinate
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jts.operation.distance.DistanceOp
 import org.locationtech.jtstest.testbuilder.io.shapefile.Shapefile
 import org.opengis.feature.simple.SimpleFeature
-import org.opengis.referencing.crs.CRSAuthorityFactory
-import org.opengis.referencing.crs.CoordinateReferenceSystem
 import java.io.File
 import java.io.Serializable
 import java.util.*
@@ -78,6 +70,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     private val REQUEST_LAYER = 1003
 
 
+    private val LAYER = 2000
     private val LAYER_BIOTOPE = 2001
     private val LAYER_BIRDS = 2002
     private val LAYER_REPTILIA = 2003
@@ -88,6 +81,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     private val LAYER_ZOOBENTHOS = 2008
     private val LAYER_MYLOCATION = 2009
 
+    var types : ArrayList<String> = ArrayList<String>()
+
 
     private lateinit var context: Context
 
@@ -97,21 +92,19 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     private var points = ArrayList<Marker>()
     private var polygonsToUnion = ArrayList<Polygon>()
 
-    var latitude:Double = 126.79235
-    var longitude:Double = 37.39627
+    var latitude: Double = 126.79235
+    var longitude: Double = 37.39627
 
     var dbManager: DataBaseHelper? = null
 
-    private var db:SQLiteDatabase? = null
-
-    val coder:Geocoder = Geocoder(this)
+    private var db: SQLiteDatabase? = null
 
     // 3. biotope  , 6.birds , 7.Reptilia , 8.mammalia  9. fish, 10.insect, 11.flora , 13. zoobenthos
     var currentLayer = -1
 
     var myLocation: Tracking? = null
 
-    var prevPoint:Geometry? = null
+    var prevPoint: Geometry? = null
 
     private var showLoading = false
 
@@ -126,8 +119,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
 
         db = dbManager!!.createDataBase()
-        val dataList:Array<String> = arrayOf("*")
-        val data =  db!!.query("settings",dataList,null,null,null,null,"id desc","1")
+        val dataList: Array<String> = arrayOf("*")
+        val data = db!!.query("settings", dataList, null, null, null, null, "id desc", "1")
 
         progressDialog = ProgressDialog(this, R.style.progressDialogTheme)
         progressDialog!!.setProgressStyle(android.R.style.Widget_DeviceDefault_Light_ProgressBar_Large)
@@ -137,7 +130,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         PrefUtils.setPreference(this, "longitude", longitude);*/
         while (data.moveToNext()) {
 
-            var gpsset:GpsSet = GpsSet(data.getInt(0),data.getDouble(1),data.getDouble(2))
+            var gpsset: GpsSet = GpsSet(data.getInt(0), data.getDouble(1), data.getDouble(2))
 
             latitude = gpsset.latitude!!
             longitude = gpsset.longitude!!
@@ -149,10 +142,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         drawer_view.setOnTouchListener(this)
 
         btn_layer.setOnClickListener {
+            currentLayer = LAYER
+
             val zoom = googleMap.cameraPosition.zoom
             val intent = Intent(this, DlgLayersActivity::class.java)
 
-            intent.putExtra("zoom",zoom)
+            intent.putExtra("zoom", zoom)
 
             startActivityForResult(intent, REQUEST_LAYER)
         }
@@ -162,7 +157,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             currentLayer = LAYER_BIOTOPE
 
-            if(drawer_view.visibility == View.VISIBLE) {
+            if (drawer_view.visibility == View.VISIBLE) {
                 endDraw()
             } else {
                 startDraw()
@@ -174,7 +169,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             currentLayer = LAYER_BIRDS
 
-            if(drawer_view.visibility == View.VISIBLE) {
+            if (drawer_view.visibility == View.VISIBLE) {
                 endDraw()
             } else {
                 startDraw()
@@ -186,7 +181,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             currentLayer = LAYER_REPTILIA
 
-            if(drawer_view.visibility == View.VISIBLE) {
+            if (drawer_view.visibility == View.VISIBLE) {
                 endDraw()
             } else {
                 startDraw()
@@ -198,7 +193,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             currentLayer = LAYER_MAMMALIA
 
-            if(drawer_view.visibility == View.VISIBLE) {
+            if (drawer_view.visibility == View.VISIBLE) {
                 endDraw()
             } else {
                 startDraw()
@@ -210,7 +205,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             currentLayer = LAYER_FISH
 
-            if(drawer_view.visibility == View.VISIBLE) {
+            if (drawer_view.visibility == View.VISIBLE) {
                 endDraw()
             } else {
                 startDraw()
@@ -222,7 +217,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             currentLayer = LAYER_INSECT
 
-            if(drawer_view.visibility == View.VISIBLE) {
+            if (drawer_view.visibility == View.VISIBLE) {
                 endDraw()
             } else {
                 startDraw()
@@ -234,7 +229,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             currentLayer = LAYER_FLORA
 
-            if(drawer_view.visibility == View.VISIBLE) {
+            if (drawer_view.visibility == View.VISIBLE) {
                 endDraw()
             } else {
                 startDraw()
@@ -247,7 +242,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             currentLayer = LAYER_ZOOBENTHOS
 
-            if(drawer_view.visibility == View.VISIBLE) {
+            if (drawer_view.visibility == View.VISIBLE) {
                 endDraw()
             } else {
                 startDraw()
@@ -268,22 +263,24 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             endDraw()
         }
 
+
+
         //좌표지정 버튼
         btn_gps_select.setOnClickListener {
-            val intent:Intent = Intent(this, hntecology.ecology.activities.Dlg_gps::class.java)
+            val intent: Intent = Intent(this, hntecology.ecology.activities.Dlg_gps::class.java)
             startActivityForResult(intent, dlg_gpsCallbackData)
         }
 
         btn_satellite.setOnClickListener {
 
 
-           var satelite:String = btn_satellite.text.toString()
+            var satelite: String = btn_satellite.text.toString()
 
-            if(satelite == "위성 지도"){
+            if (satelite == "위성 지도") {
 
                 googleMap.mapType = GoogleMap.MAP_TYPE_HYBRID
                 btn_satellite.text = "일반 지도"
-            }else{
+            } else {
 
                 googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
                 btn_satellite.text = "위성 지도"
@@ -296,21 +293,21 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         TVtimeTV.text = Utils.getToday("yyyy-MM-dd")
 
-        logoutBtn.setOnClickListener{
+        logoutBtn.setOnClickListener {
 
-            var builder:AlertDialog.Builder =  AlertDialog.Builder(context)
+            var builder: AlertDialog.Builder = AlertDialog.Builder(context)
             builder.setMessage("로그아웃 하시겠습니까?")
             builder.setCancelable(true)
-            builder.setNegativeButton("취소", DialogInterface.OnClickListener{ dialogInterface, i ->
+            builder.setNegativeButton("취소", DialogInterface.OnClickListener { dialogInterface, i ->
                 dialogInterface.cancel()
 
             })
-            builder.setPositiveButton("확인", DialogInterface.OnClickListener{ dialogInterface, i ->
+            builder.setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
                 dialogInterface.cancel()
 
                 PrefUtils.clear(context)
 
-                val intent:Intent = Intent(context, LoginActivity::class.java)
+                val intent: Intent = Intent(context, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
 
@@ -320,7 +317,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
 
         layerNameTV.setOnClickListener {
-            loadLayer(currentFileName, currentLayerName)
+            loadLayer(currentFileName, currentLayerName, "")
         }
 
         exportBtn.setOnClickListener {
@@ -343,24 +340,18 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 //            googleMap.addMarker(makerOption)
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 16f))
 
-            endDraw()
-//
 //            val point = Point()
 //            point.x = latitude.toInt()
 //            point.y = longitude.toInt()
 //            val geoPoint = googleMap.projection.fromScreenLocation(point)
 
-
-
-
-
         }
 
         delPointRL.setOnClickListener {
 
-            when(currentLayer) {
+            when (currentLayer) {
                 LAYER_BIOTOPE -> {
-                    if(latlngs.size > 0) {
+                    if (latlngs.size > 0) {
                         latlngs.removeAt(latlngs.size - 1)
                         drawPolygon()
                     }
@@ -370,19 +361,18 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                     println("points.size : ${points.size}")
 
-                    if(points.size > 0) {
+                    if (points.size > 0) {
                         val lastPoint = points.removeAt(points.size - 1)
                         lastPoint.remove()
                     }
                 }
             }
 
-
         }
 
         // 도형 분리
         splitRL.setOnClickListener {
-            if(splitRL.isSelected) {
+            if (splitRL.isSelected) {
                 offSplitBtn()
             } else {
                 onSplitBtn()
@@ -394,18 +384,18 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             endDraw()
 
-            if(unionRL.isSelected) {
+            if (unionRL.isSelected) {
                 unionPolygons()
             } else {
                 onUnionBtn()
             }
 
-
         }
 
         initGps()
 
-        myLocation = Tracking(null,latitude,longitude)
+        myLocation = Tracking(null, latitude, longitude)
+
 
     }
 
@@ -420,7 +410,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         unionTV.setTextColor(Color.parseColor("#333333"))
         unionTV.setTypeface(null, Typeface.NORMAL)
 
-        for(polygon in polygonsToUnion) {
+        for (polygon in polygonsToUnion) {
             polygon.strokeWidth = 5.0f
             polygon.strokeColor = Color.WHITE
         }
@@ -454,28 +444,25 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(resultCode == Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
 
             when (requestCode) {
 
-                PLAY_SERVICES_RESOLUTION_REQUEST ->{
+                PLAY_SERVICES_RESOLUTION_REQUEST -> {
 
                     initilizeMap()
                 }
 
                 PolygonCallBackData -> {
 
-
                 }
 
                 dlg_gpsCallbackData -> {
 
-                    latitude = data!!.getDoubleExtra("latitude",126.79235)
-                    longitude = data.getDoubleExtra("longitude",37.39627)
+                    latitude = data!!.getDoubleExtra("latitude", 126.79235)
+                    longitude = data.getDoubleExtra("longitude", 37.39627)
 
-
-
-                    val gpsSet:GpsSet = GpsSet(null,latitude,longitude)
+                    val gpsSet: GpsSet = GpsSet(null, latitude, longitude)
                     dbManager!!.insertGpsSet(gpsSet)
                     onMapReady(googleMap)
                 }
@@ -484,14 +471,22 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     val file_name = data!!.getStringExtra("file_name")
                     val layer_name = data.getStringExtra("layer_name")
 
-                    var jsonOb:ArrayList<LayerModel> = ArrayList<LayerModel>()
+
+                    var jsonOb: ArrayList<LayerModel> = ArrayList<LayerModel>()
 
                     jsonOb = data.getSerializableExtra("data") as ArrayList<LayerModel>
 
                     googleMap.clear()
 
-                    for(i in 0 .. jsonOb.size-1) {
-                        loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name)
+                    if(types.size >= 1 && types!=null){
+                        types.clear()
+                    }
+
+                    for (i in 0..jsonOb.size - 1) {
+                        loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name,jsonOb.get(i).type)
+
+                        println("jsonOB . filename ${jsonOb.get(i).file_name}")
+
                     }
                 }
 
@@ -500,7 +495,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
 
     }
-
 
     /**
      * Setting up map
@@ -523,7 +517,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     }
 
     override fun onMapReady(map: GoogleMap?) {
-        if(map == null) {
+        if (map == null) {
             return
         }
 
@@ -540,21 +534,24 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         val initialMapCenter = LatLng(longitude, latitude)
 
         // googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(initialMapCenter, 16f))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(initialMapCenter, 15.6f))
+
+
 
 
 
         // 마커클릭 이벤트 처리
         // GoogleMap 에 마커클릭 이벤트 설정 가능.
-        googleMap.setOnMarkerClickListener {
-            marker ->
+        googleMap.setOnMarkerClickListener { marker ->
+
+            println("click")
 
             val layerInfo = marker.tag as LayerInfo
             var myLayer = layerInfo.layer
 
             var attrubuteKey = layerInfo.attrubuteKey
-            var intent:Intent? = null
-            when(myLayer){
+            var intent: Intent? = null
+            when (myLayer) {
 
                 LAYER_BIRDS -> {
                     intent = Intent(this, BirdsActivity::class.java)
@@ -562,7 +559,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 LAYER_REPTILIA -> {
                     intent = Intent(this, ReptiliaActivity::class.java)
-
                 }
 
                 LAYER_MAMMALIA -> {
@@ -587,16 +583,19 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 LAYER_MYLOCATION -> {
 
-                    intent = Intent(this, MainActivity::class.java)
                 }
 
+                LAYER -> {
+
+                }
 
             }
 
-            intent!!.putExtra("id", attrubuteKey.toString())
+            if(myLayer != LAYER_MYLOCATION && myLayer != LAYER){
+                intent!!.putExtra("id", attrubuteKey.toString())
 
-            startActivityForResult(intent, PolygonCallBackData)
-
+                startActivityForResult(intent, PolygonCallBackData)
+            }
 
             false
         }
@@ -605,28 +604,30 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         // tag 리절트로 가져와서 태그 설정
         googleMap.setOnPolygonClickListener { polygon ->
 
+            println("click")
+
             val layerInfo = polygon.tag as LayerInfo
             var myLayer = layerInfo.layer
 
             var attrubuteKey = layerInfo.attrubuteKey
-            var intent:Intent? = null
+            var intent: Intent? = null
 
             println("attrubuteKey================================================== : " + attrubuteKey)
 
-            when(myLayer){
+            when (myLayer) {
 
                 LAYER_BIOTOPE -> {
 
-                    if(unionRL.isSelected) {
+                    if (unionRL.isSelected) {
 
-                        if(polygonsToUnion.contains(polygon)) {
+                        if (polygonsToUnion.contains(polygon)) {
                             polygonsToUnion.remove(polygon)
                             polygon.strokeWidth = 5.0f
                             polygon.strokeColor = Color.WHITE
                             return@setOnPolygonClickListener
                         }
 
-                        if(polygonsToUnion.size == 2) {
+                        if (polygonsToUnion.size == 2) {
                             Utils.alert(context, "2 곳만 선택해서 합칠 수 있습니다.")
                             return@setOnPolygonClickListener
                         }
@@ -667,22 +668,27 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
 
-                LAYER_ZOOBENTHOS ->{
+                LAYER_ZOOBENTHOS -> {
                     intent = Intent(this, ZoobenthosActivity::class.java)
                 }
 
-                LAYER_MYLOCATION ->{
+                LAYER_MYLOCATION -> {
+
+                }
+
+                LAYER -> {
 
                 }
             }
 
             println("aa : $attrubuteKey")
 
-            intent!!.putExtra("id", attrubuteKey)
+            if(myLayer != LAYER_MYLOCATION && myLayer != LAYER){
+                intent!!.putExtra("id", attrubuteKey.toString())
 
-            startActivityForResult(intent, PolygonCallBackData)
+                startActivityForResult(intent, PolygonCallBackData)
+            }
         }
-
 
     }
 
@@ -690,7 +696,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     override fun onCameraIdle() {
 
-        if(parsed) {
+        if (parsed) {
             return
         }
 
@@ -709,19 +715,19 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     private var currentFileName = ""
     private var currentLayerName = ""
 
-    private fun loadLayer(fileName: String, layerName: String) {
+    private fun loadLayer(fileName: String, layerName: String, Type: String) {
 
-        if(fileName == null || fileName.length == 0) {
+        if (fileName == null || fileName.length == 0) {
             return
         }
 
         val zoom = googleMap.cameraPosition.zoom
-        if(zoom < 16) {
+        if (zoom < 16) {
             Utils.showNotification(context, "지도 레벨을 16이상으로 확대한 후 이용하세요.")
             // return
         }
 
-        if(zoom < 13) {
+        if (zoom < 13) {
             Utils.showNotification(context, "지도 레벨을 16이상으로 확대한 후 이용하세요. 정말 안되요 ㅠㅠㅠ")
             return
         }
@@ -732,14 +738,17 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 //        layerNameTV.text = currentLayerName
 
         val bounds = googleMap.projection.visibleRegion.latLngBounds
-        LoadLayerTask(fileName).execute(bounds)
+        LoadLayerTask(fileName,Type).execute(bounds)
     }
 
-    private inner class LoadLayerTask(layerName: String) : AsyncTask<LatLngBounds, PolygonOptions, Boolean>() {
+    private inner class LoadLayerTask(layerName: String , Type: String) : AsyncTask<LatLngBounds, PolygonOptions, Boolean>() {
 
         var layerName = layerName
 
-        override fun doInBackground(vararg latLngBounds:LatLngBounds): Boolean {
+        var type = Type
+
+
+        override fun doInBackground(vararg latLngBounds: LatLngBounds): Boolean {
 
             val northeast = latLngBounds[0].northeast
             val southwest = latLngBounds[0].southwest
@@ -774,7 +783,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             for (i in 0..(num - 1)) {
                 val geometry = geometryCollection.getGeometryN(i)
 
-                if(!geometry.intersects(mapBoundary)) {
+                if (!geometry.intersects(mapBoundary)) {
                     continue
                 }
 
@@ -809,8 +818,41 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             polygon.zIndex = 0.0f
             polygon.tag = layerName
 
+            println("layerName .layer ===== $layerName")
+            polygon.isClickable = true
+
             val layerInfo = LayerInfo()
-            layerInfo.layer = currentLayer
+
+
+            if(type.equals("biotope")){
+                layerInfo.layer = LAYER_BIOTOPE
+            }
+
+            if (type.equals("birds")){
+                layerInfo.layer = LAYER_BIRDS
+            }
+
+            if (type.equals("reptilia")){
+                layerInfo.layer = LAYER_REPTILIA
+            }
+
+            if (type.equals("mammalia")){
+                layerInfo.layer = LAYER_MAMMALIA
+            }
+
+            if (type.equals("fish")){
+                layerInfo.layer = LAYER_BIRDS
+            }
+
+            if (type.equals("insect")){
+                layerInfo.layer = LAYER_INSECT
+            }
+
+            if (type.equals("flora")){
+                layerInfo.layer = LAYER_FLORA
+            }
+
+            println("layerinfo .layer ===== ${layerInfo.layer}")
 
             polygon.tag = layerInfo
 
@@ -821,12 +863,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             print("Post........")
         }
+
     }
 
     private fun getLayerColor(layerName: String): String? {
-        if("SH_biotop_orig".equals(layerName)) {
+        if ("SH_biotop_orig".equals(layerName)) {
             return "#85b66f"
-        } else if("SH_dummy".equals(layerName)) {
+        } else if ("SH_dummy".equals(layerName)) {
             return "#d5b43c"
         }
 
@@ -858,7 +901,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         var X1 = event.x.toInt()
         var Y1 = event.y.toInt()
 
-        // println("${event.action} $X1, $Y1")
+        println("${event.action} $X1, $Y1")
 
         var point = Point()
         point.x = X1
@@ -876,7 +919,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 startGeoPoint = googleMap.projection.fromScreenLocation(point)
 
-                if(splitRL.isSelected) {
+                if (splitRL.isSelected) {
 
                     val polylineOptions = PolylineOptions()
                     polylineOptions.add(startGeoPoint)
@@ -889,7 +932,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 
             MotionEvent.ACTION_MOVE -> {
-                if(splitRL.isSelected) {
+                if (splitRL.isSelected) {
 
                     X1 = event.x.toInt()
                     Y1 = event.y.toInt()
@@ -908,6 +951,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             MotionEvent.ACTION_UP -> {
 
+
                 X1 = event.x.toInt()
                 Y1 = event.y.toInt()
                 point = Point()
@@ -915,9 +959,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 point.y = Y1
                 val geoPoint = googleMap.projection.fromScreenLocation(point)
 
-                if(splitRL.isSelected) {
+                if (splitRL.isSelected) {
 
-                    if(editingPolygon == null) {
+                    if (editingPolygon == null) {
                         return false
                     }
 
@@ -934,7 +978,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     editingPolygon?.remove()
                     editingPolygon = null
 
-                    for(idx in 0..(splited.numGeometries - 1)) {
+                    for (idx in 0..(splited.numGeometries - 1)) {
                         var polygon = splited.getGeometryN(idx)
                         // polygon = polygon.buffer(-0.00002)
 
@@ -943,7 +987,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         polygonOptions.strokeWidth(5.0f)
                         polygonOptions.strokeColor(Color.WHITE)
 
-                        for(coordinate in polygon.coordinates) {
+                        for (coordinate in polygon.coordinates) {
                             polygonOptions.add(LatLng(coordinate.y, coordinate.x))
                         }
 
@@ -966,11 +1010,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 } else {
 
-                    if(!unionRL.isSelected) {
+                    if (!unionRL.isSelected) {
                         // print("Poinnts array size : ${latlngs.size}")
 
                         // 3. biotope  , 6.birds , 7.Reptilia , 8.mammalia  9. fish, 10.insect, 11.flora , 13. zoobenthos
-                        when(currentLayer) {
+                        when (currentLayer) {
 
                             LAYER_BIOTOPE -> {
 
@@ -1035,10 +1079,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         drawer_view.visibility = View.GONE
     }
 
-
     private var editingPolygon: Polygon? = null
 
-    private fun drawPoint(geoPoint:LatLng) {
+    private fun drawPoint(geoPoint: LatLng) {
         val markerOptions = MarkerOptions()
         markerOptions.position(geoPoint)
         // markerOptions.title("Marker in Sydney")
@@ -1054,8 +1097,62 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         marker.tag = layerInfo
 
+        var myLayer = layerInfo.layer
+
+        var attrubuteKey = layerInfo.attrubuteKey
+
+        var intent: Intent? = null
 
         points.add(marker)
+
+        when (myLayer) {
+
+            LAYER_BIRDS -> {
+                intent = Intent(this, BirdsActivity::class.java)
+            }
+
+            LAYER_REPTILIA -> {
+                intent = Intent(this, ReptiliaActivity::class.java)
+
+            }
+
+            LAYER_MAMMALIA -> {
+                intent = Intent(this, MammaliaActivity::class.java)
+            }
+
+            LAYER_FISH -> {
+                intent = Intent(this, FishActivity::class.java)
+            }
+
+            LAYER_INSECT -> {
+                intent = Intent(this, InsectActivity::class.java)
+            }
+
+            LAYER_FLORA -> {
+                intent = Intent(this, FloraActivity::class.java)
+            }
+
+            LAYER_ZOOBENTHOS -> {
+                intent = Intent(this, ZoobenthosActivity::class.java)
+            }
+
+            LAYER_MYLOCATION -> {
+
+            }
+
+            LAYER -> {
+
+            }
+        }
+
+        if(myLayer != LAYER_MYLOCATION && myLayer != LAYER) {
+
+            intent!!.putExtra("id", attrubuteKey.toString())
+
+            startActivityForResult(intent, PolygonCallBackData)
+
+            endDraw()
+        }
 
     }
 
@@ -1073,7 +1170,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         val layerInfo = LayerInfo()
         layerInfo.attrubuteKey = getAttributeKey(layerInfo.layer)
         layerInfo.layer = currentLayer
-
 
         println("getAttributeKey(layerInfo.layer) : " + getAttributeKey(layerInfo.layer))
 
@@ -1163,6 +1259,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         updateDelPointText()
 
         drawer_view.visibility = View.GONE
+
         when(currentLayer){
 
             LAYER_BIOTOPE -> {
@@ -1268,6 +1365,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             LAYER_MYLOCATION -> {
                 attributeKey += "mylocation"
+            }
+
+            LAYER -> {
+
             }
         }
 
@@ -1431,7 +1532,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 for(coordinate in unioned.coordinates) {
                     polygonOptions.add(LatLng(coordinate.y, coordinate.x))
                 }
-
 
                 editingPolygon = googleMap.addPolygon(polygonOptions)
                 // editingPolygon?.zIndex = 5.0f
@@ -1610,7 +1710,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         prevPoint = currentPoint
 
-
 //         System.out.println("onLocationUpdated : " + location);
 
         if (location != null) {
@@ -1650,15 +1749,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
     }
 
-
     private fun stopLocation() {
         SmartLocation.with(context).location().stop()
     }
-
-
-
-
-
-
 
 }

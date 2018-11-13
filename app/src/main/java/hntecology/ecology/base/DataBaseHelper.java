@@ -66,6 +66,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
             } catch (IOException e) {
 
+                e.printStackTrace();
+
                 throw new Error("Error copying database");
 
             }
@@ -111,9 +113,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      */
     private void copyDataBase() throws IOException {
 
+        System.out.println("1 : " + (new File("/data/data/hntecology.ecology/").exists()));
+        System.out.println("2 : " + (new File("/data/data").exists()));
+
         File f = new File(DB_PATH);
+        if(f.exists()) {
+            boolean deleted = f.delete();
+
+            System.out.println("deleted : " + deleted);
+        }
+
+        f = new File(DB_PATH);
+
+        System.out.println("f.exists() : " + f.exists());
+
         if (!f.exists()) {
-            f.mkdir();
+            boolean made = f.mkdir();
+
+            System.out.println("made : " + f.exists());
+
         }
 
         // Open your local db as the input stream

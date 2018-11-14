@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "hntecology.ecology"
-        minSdkVersion 24
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0.0"
@@ -23,8 +23,8 @@ android {
     // 요기랑
     signingConfigs {
         cfg {
-//            storeFile file("/Users/theclub/CloudStation/android_keystore/ecology/ecology.jks")
-            storeFile file("D:/CloudStation/android_keystore/ecology/ecology.jks")
+            storeFile file("/Users/theclub/CloudStation/android_keystore/ecology/ecology.jks")
+//            storeFile file("D:/CloudStation/android_keystore/ecology/ecology.jks")
             storePassword "123456"
             keyAlias "ecology"
             keyPassword "123456"
@@ -56,6 +56,9 @@ android {
 }
 
 dependencies {
+
+    implementation project(':gdal')
+
     implementation 'com.android.support:multidex:1.0.2'
 
     implementation 'com.android.support:support-v4:26.1.0'

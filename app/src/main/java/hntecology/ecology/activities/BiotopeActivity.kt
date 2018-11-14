@@ -196,8 +196,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         , data2.getString(22), data2.getString(23), data2.getString(24), data2.getString(25), data2.getFloat(26), data2.getFloat(27), data2.getFloat(28)
                         , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
                         , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
-                        , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getFloat(49)
-                        , data2.getFloat(50), data2.getString(51), data2.getString(52),data2.getString(53))
+                        , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
+                        , data2.getDouble(50), data2.getString(51), data2.getString(52),data2.getString(53))
 
 //                etinvesRegionET.text        = biotope_attribute.INVES_REGION
 
@@ -386,8 +386,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             , data2.getString(22), data2.getString(23), data2.getString(24), data2.getString(25), data2.getFloat(26), data2.getFloat(27), data2.getFloat(28)
                             , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
                             , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
-                            , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getFloat(49)
-                            , data2.getFloat(50), data2.getString(51), data2.getString(52),data.getString(53))
+                            , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
+                            , data2.getDouble(50), data2.getString(51), data2.getString(52),data.getString(53))
 
                     dataArray.add(biotope_attribute)
                 }
@@ -439,8 +439,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             , data2.getString(22), data2.getString(23), data2.getString(24), data2.getString(25), data2.getFloat(26), data2.getFloat(27), data2.getFloat(28)
                             , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
                             , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
-                            , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getFloat(49)
-                            , data2.getFloat(50), data2.getString(51), data2.getString(52),data.getString(53))
+                            , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
+                            , data2.getDouble(50), data2.getString(51), data2.getString(52),data.getString(53))
 
                     dataArray.add(biotope_attribute)
                 }
@@ -617,8 +617,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 }
 
                 if (etGPS_LATTV.text.toString() !="" && etGPS_LONTV.text.toString() !=""){
-                    biotope_attribute.GPS_LAT = 0F
-                    biotope_attribute.GPS_LON = 0F
+                    biotope_attribute.GPS_LAT = 0.0
+                    biotope_attribute.GPS_LON = 0.0
                 }
 
                 biotope_attribute.TEMP_YN = "N"
@@ -644,8 +644,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             , data2.getString(22), data2.getString(23), data2.getString(24), data2.getString(25), data2.getFloat(26), data2.getFloat(27), data2.getFloat(28)
                             , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
                             , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
-                            , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getFloat(49)
-                            , data2.getFloat(50), data2.getString(51), data2.getString(52),data2.getString(53))
+                            , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
+                            , data2.getDouble(50), data2.getString(51), data2.getString(52),data2.getString(53))
 
 
 //                etinvesRegionET.text        = biotope_attribute.INVES_REGION
@@ -832,8 +832,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getFloat(28)
                         , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
                         , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
-                        , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49)
-                        , data.getFloat(50), data.getString(51), data.getString(52),data.getString(53))
+                        , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
+                        , data.getDouble(50), data.getString(51), data.getString(52),data.getString(53))
 
 //                etinvesRegionET.text        = biotope_attribute.INVES_REGION
 
@@ -1234,6 +1234,15 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         biotope_attribute.id = pk
                         biotope_attribute.PIC_FOLDER = tvPIC_FOLDERTV.text.toString()
 
+                        if(etGPS_LATTV.text.toString() !="" && etGPS_LONTV.text.toString() !=""){
+
+                            getLocation()
+
+                            biotope_attribute.GPS_LAT = mLocation!!.latitude
+                            biotope_attribute.GPS_LON = mLocation!!.longitude
+
+                        }
+
                         biotope_attribute.TEMP_YN = "Y"
 
                         if (chkdata) {
@@ -1254,11 +1263,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             if(images!!.size > 0){
 
                                 biotope_attribute.PIC_FOLDER = getAttrubuteKey()
-                            }
-                            if(etGPS_LATTV.text.toString() !="" && etGPS_LONTV.text.toString() !=""){
-
-                                biotope_attribute.GPS_LAT = mLocation!!.latitude as Float
-                                biotope_attribute.GPS_LON = mLocation!!.longitude as Float
                             }
 
                             dbManager.insertbiotope_attribute(biotope_attribute);
@@ -2029,8 +2033,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getFloat(28)
                     , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
                     , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
-                    , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49)
-                    , data.getFloat(50), data.getString(51), data.getString(52),data.getString(53))
+                    , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
+                    , data.getDouble(50), data.getString(51), data.getString(52),data.getString(53))
 
 //                etinvesRegionET.text        = biotope_attribute.INVES_REGION
 

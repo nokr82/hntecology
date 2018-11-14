@@ -33,10 +33,7 @@ import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
-import hntecology.ecology.model.GpsSet
-import hntecology.ecology.model.LayerModel
-import hntecology.ecology.model.Tracking
-import hntecology.ecology.model.Vegetation
+import hntecology.ecology.model.*
 import io.nlopez.smartlocation.OnLocationUpdatedListener
 import io.nlopez.smartlocation.SmartLocation
 import io.nlopez.smartlocation.location.providers.LocationGooglePlayServicesWithFallbackProvider
@@ -100,9 +97,26 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     private var db: SQLiteDatabase? = null
 
+    var biotopeData:ArrayList<Biotope_attribute> = ArrayList<Biotope_attribute>()
+    var birdsData:ArrayList<Birds_attribute> = ArrayList<Birds_attribute>()
+    var fishData:ArrayList<Fish_attribute> = ArrayList<Fish_attribute>()
+    var floraData:ArrayList<Flora_Attribute> = ArrayList<Flora_Attribute>()
+    var insectData:ArrayList<Insect_attribute> = ArrayList<Insect_attribute>()
+    var mammaliaData:ArrayList<Mammal_attribute> = ArrayList<Mammal_attribute>()
+    var reptiliaData:ArrayList<Reptilia_attribute> = ArrayList<Reptilia_attribute>()
 
+    var biotopePk:String? = String()
+    var birdsPk:String? = String()
+    var fishPk:String? = String()
+    var floraPk:String? = String()
+    var insectPk:String? = String()
+    var mammaliaPk:String? = String()
+    var reptiliaPk:String? = String()
+
+    val ColumnName:ArrayList<String> = ArrayList<String>()
 
     // 3. biotope  , 6.birds , 7.Reptilia , 8.mammalia  9. fish, 10.insect, 11.flora , 13. zoobenthos
+
     var currentLayer = -1
 
     var myLocation: Tracking? = null
@@ -120,11 +134,17 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         this.context = this
         dbManager = DataBaseHelper(this)
 
-
         db = dbManager!!.createDataBase()
         val dataList: Array<String> = arrayOf("*")
         val data = db!!.query("settings", dataList, null, null, null, null, "id desc", "1")
 
+        ColumnName.add("BIOTOPEATTRIBUTE")
+        ColumnName.add("BIRDSATTRIBUTE")
+        ColumnName.add("REPTILIAATTRIBUTE")
+        ColumnName.add("MAMMALATTRIBUTE")
+        ColumnName.add("FISHATTRIBUTE")
+        ColumnName.add("INSECTATTRIBUTE")
+        ColumnName.add("FLORAATTRIBUTE")
 
         progressDialog = ProgressDialog(this, R.style.progressDialogTheme)
         progressDialog!!.setProgressStyle(android.R.style.Widget_DeviceDefault_Light_ProgressBar_Large)
@@ -1385,6 +1405,174 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     }
 
     fun export() {
+
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+
+        val db = dbManager.createDataBase();
+
+        val dataList: Array<String> = arrayOf("*")
+
+        var biotopedata= db.query("biotopeAttribute", dataList, null, null, "id", null, "", null)
+
+        while (biotopedata.moveToNext()) {
+            var biotope_attribute: Biotope_attribute = Biotope_attribute(biotopedata.getString(0), biotopedata.getString(1), biotopedata.getString(2), biotopedata.getString(3)
+                    , biotopedata.getString(4), biotopedata.getString(5), biotopedata.getString(6), biotopedata.getInt(7),
+                    biotopedata.getString(8), biotopedata.getFloat(9), biotopedata.getFloat(10), biotopedata.getString(11), biotopedata.getString(12), biotopedata.getString(13), biotopedata.getFloat(14)
+                    , biotopedata.getString(15), biotopedata.getString(16), biotopedata.getString(17), biotopedata.getString(18), biotopedata.getString(19), biotopedata.getString(20), biotopedata.getString(21)
+                    , biotopedata.getString(22), biotopedata.getString(23), biotopedata.getString(24), biotopedata.getString(25), biotopedata.getFloat(26), biotopedata.getFloat(27), biotopedata.getFloat(28)
+                    , biotopedata.getString(29), biotopedata.getString(30), biotopedata.getString(31), biotopedata.getFloat(32), biotopedata.getFloat(33), biotopedata.getFloat(34), biotopedata.getString(35)
+                    , biotopedata.getString(36), biotopedata.getString(37), biotopedata.getFloat(38), biotopedata.getFloat(39), biotopedata.getString(40), biotopedata.getString(41), biotopedata.getString(42)
+                    , biotopedata.getFloat(43), biotopedata.getFloat(44), biotopedata.getString(45), biotopedata.getString(46), biotopedata.getString(47), biotopedata.getString(48), biotopedata.getDouble(49)
+                    , biotopedata.getDouble(50), biotopedata.getString(51), biotopedata.getString(52),biotopedata.getString(53))
+
+            biotopeData.add(biotope_attribute)
+        }
+
+        if(biotopeData.size >= 1 && biotopeData.get(0).id != null) {
+
+            for (i in 0..biotopeData.size - 1) {
+                biotopePk += biotopeData.get(i).id + "\n"
+            }
+        }
+
+        val birdsdata= db.query("birdsAttribute", dataList, null, null, "id", null, "", null)
+
+        while (birdsdata.moveToNext()) {
+
+            var birds_attribute: Birds_attribute = Birds_attribute(birdsdata.getString(0), birdsdata.getString(1), birdsdata.getString(2), birdsdata.getString(3)
+                    , birdsdata.getString(4), birdsdata.getString(5), birdsdata.getString(6), birdsdata.getString(7)
+                    , birdsdata.getString(8), birdsdata.getFloat(9), birdsdata.getString(10), birdsdata.getInt(11), birdsdata.getString(12), birdsdata.getString(13), birdsdata.getString(14)
+                    , birdsdata.getString(15), birdsdata.getInt(16), birdsdata.getString(17), birdsdata.getString(18), birdsdata.getString(19), birdsdata.getString(20), birdsdata.getString(21)
+                    , birdsdata.getString(22), birdsdata.getString(23), birdsdata.getFloat(24), birdsdata.getFloat(25) , birdsdata.getString(26))
+
+            birdsData.add(birds_attribute)
+        }
+
+        if(birdsData.size >= 1) {
+
+            println("-----------------------${birdsData.size}")
+
+            for (i in 0..birdsData.size - 1) {
+                birdsPk += birdsData.get(i).id + "\n"
+            }
+
+        }
+
+        val reptiliadata= db.query("reptiliaAttribute", dataList, null, null, "id", null, "", null)
+
+        while (reptiliadata.moveToNext()) {
+
+            var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(reptiliadata.getString(0), reptiliadata.getString(1), reptiliadata.getString(2), reptiliadata.getString(3), reptiliadata.getString(4)
+                    , reptiliadata.getString(5), reptiliadata.getString(6), reptiliadata.getString(7), reptiliadata.getString(8), reptiliadata.getFloat(9), reptiliadata.getString(10), reptiliadata.getInt(11)
+                    , reptiliadata.getString(12), reptiliadata.getString(13), reptiliadata.getString(14), reptiliadata.getString(15), reptiliadata.getInt(16), reptiliadata.getInt(17), reptiliadata.getInt(18)
+                    , reptiliadata.getString(19), reptiliadata.getString(20), reptiliadata.getString(21), reptiliadata.getString(22), reptiliadata.getString(23), reptiliadata.getString(24)
+                    , reptiliadata.getInt(25), reptiliadata.getInt(26), reptiliadata.getInt(27), reptiliadata.getFloat(28), reptiliadata.getFloat(29),reptiliadata.getString(30))
+
+            reptiliaData.add(reptilia_attribute)
+
+        }
+
+        if(reptiliaData.size >= 1 && reptiliaData.get(0).id != null) {
+
+            for (i in 0..reptiliaData.size - 1) {
+                reptiliaPk += reptiliaData.get(i).id + "\n"
+            }
+        }
+
+
+
+
+        val mammaldata = db.query("mammalAttribute", dataList, null, null, "id", null, "", null)
+
+        while (mammaldata.moveToNext()) {
+
+            var mammal_attribute: Mammal_attribute = Mammal_attribute(mammaldata.getString(0), mammaldata.getString(1), mammaldata.getString(2), mammaldata.getString(3), mammaldata.getString(4)
+                    , mammaldata.getString(5), mammaldata.getString(6), mammaldata.getString(7), mammaldata.getString(8), mammaldata.getFloat(9), mammaldata.getString(10), mammaldata.getInt(11)
+                    , mammaldata.getString(12), mammaldata.getString(13), mammaldata.getString(14), mammaldata.getString(15), mammaldata.getString(16), mammaldata.getString(17)
+                    , mammaldata.getInt(18), mammaldata.getString(19), mammaldata.getString(20), mammaldata.getFloat(21), mammaldata.getFloat(22), mammaldata.getString(23), mammaldata.getString(24)
+                    , mammaldata.getString(25), mammaldata.getString(26), mammaldata.getString(27))
+
+            mammaliaData.add(mammal_attribute)
+
+        }
+
+        if(mammaliaData.size >= 1 && mammaliaData.get(0).id != null) {
+
+            for (i in 0..mammaliaData.size - 1) {
+                mammaliaPk += mammaliaData.get(i).id + "\n"
+            }
+        }
+
+        val fishdata = db.query("fishAttribute", dataList, null, null, "id", null, "", null)
+
+        while (fishdata.moveToNext()) {
+
+            var fish_attribute: Fish_attribute = Fish_attribute(fishdata.getString(0), fishdata.getString(1), fishdata.getString(2), fishdata.getString(3), fishdata.getString(4), fishdata.getString(5)
+                    , fishdata.getString(6), fishdata.getString(7), fishdata.getString(8), fishdata.getFloat(9), fishdata.getString(10), fishdata.getString(11), fishdata.getString(12)
+                    , fishdata.getInt(13), fishdata.getString(14), fishdata.getInt(15), fishdata.getInt(16), fishdata.getString(17), fishdata.getFloat(18), fishdata.getFloat(19), fishdata.getString(20)
+                    , fishdata.getInt(21), fishdata.getInt(22), fishdata.getInt(23), fishdata.getInt(24), fishdata.getString(25), fishdata.getString(26), fishdata.getString(27), fishdata.getInt(28)
+                    , fishdata.getString(29), fishdata.getString(30), fishdata.getString(31), fishdata.getInt(32), fishdata.getString(33), fishdata.getString(34), fishdata.getString(35), fishdata.getString(36))
+
+            fishData.add(fish_attribute)
+
+        }
+
+        if(fishData.size >= 1 && fishData.get(0).id != null) {
+
+            for (i in 0..fishData.size - 1) {
+                fishPk += fishData.get(i).id + "\n"
+            }
+        }
+
+        val insectdata = db.query("insectAttribute", dataList, null, null, "id", null, "", null)
+
+        while (insectdata.moveToNext()) {
+
+            var insect_attribute: Insect_attribute = Insect_attribute(insectdata.getString(0), insectdata.getString(1), insectdata.getString(2), insectdata.getString(3), insectdata.getString(4)
+                    , insectdata.getString(5), insectdata.getString(6), insectdata.getString(7), insectdata.getString(8), insectdata.getFloat(9), insectdata.getString(10), insectdata.getInt(11)
+                    , insectdata.getString(12), insectdata.getString(13), insectdata.getString(14), insectdata.getString(15), insectdata.getInt(16), insectdata.getString(17), insectdata.getString(18)
+                    , insectdata.getString(19), insectdata.getString(20), insectdata.getString(21), insectdata.getString(22), insectdata.getString(23), insectdata.getString(24), insectdata.getString(25)
+                    , insectdata.getFloat(26), insectdata.getFloat(27), insectdata.getString(28))
+
+            insectData.add(insect_attribute)
+
+        }
+
+        if(insectData.size >= 1 && insectData.get(0).id != null) {
+
+            for (i in 0..insectData.size - 1) {
+                insectPk += insectData.get(i).id + "\n"
+            }
+        }
+
+        val floradata = db.query("floraAttribute", dataList, null, null, "id", null, "", null)
+
+        while (floradata.moveToNext()) {
+
+            var flora_Attribute: Flora_Attribute = Flora_Attribute(floradata.getString(0), floradata.getString(1), floradata.getString(2), floradata.getString(3), floradata.getString(4)
+                    , floradata.getString(5), floradata.getString(6), floradata.getString(7), floradata.getString(8), floradata.getFloat(9), floradata.getString(10), floradata.getInt(11)
+                    , floradata.getString(12), floradata.getString(13), floradata.getString(14), floradata.getString(15), floradata.getString(16), floradata.getString(17), floradata.getString(18)
+                    , floradata.getString(19), floradata.getInt(20), floradata.getString(21), floradata.getFloat(22), floradata.getFloat(23), floradata.getString(24))
+
+            floraData.add(flora_Attribute)
+
+        }
+
+        if(floraData.size >= 1 && floraData.get(0).id != null) {
+
+            for (i in 0..floraData.size - 1) {
+                floraPk += floraData.get(i).id + "\n"
+            }
+
+        }
+
+        println("biotopePk : $biotopePk  ,  birdsPk : $birdsPk  , reptiliaPk : $reptiliaPk   ,  mammalPk : $mammaliaPk  ,  fishPk : $fishPk   ,   insectPk : $insectPk   , floraPk $floraPk ")
+
+
+
+
+
+
 
     }
 

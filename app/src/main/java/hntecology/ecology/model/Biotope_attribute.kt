@@ -9,7 +9,7 @@ class Biotope_attribute(var id:String?, var GROP_ID:String? ,var PRJ_NAME:String
                         var TRE_H:Float?, var TRE_BREA:Float?, var TRE_COVE:Float?, var STRE_SPEC:String?, var STRE_FAMI:String?, var STRE_SCIEN:String?,
                         var STRE_H:Float?, var STRE_BREA:Float?, var STRE_COVE:Float?, var SHR_SPEC:String?, var SHR_FAMI:String?, var SHR_SCIEN:String?,
                         var SHR_H:Float?, var STR_COVE:Float?, var HER_SPEC:String?, var HER_FAMI:String?, var HER_SCIEN:String?, var HER_H:Float?, var HER_COVE:Float?,
-                        var PIC_FOLDER:String?, var WILD_ANI:String?, var BIOTOP_POT:String?, var UNUS_NOTE:String?, var GPS_LAT:Float?, var GPS_LON:Float?,var NEED_CONF:String?,
+                        var PIC_FOLDER:String?, var WILD_ANI:String?, var BIOTOP_POT:String?, var UNUS_NOTE:String?, var GPS_LAT:Double?, var GPS_LON:Double?,var NEED_CONF:String?,
                         var CONF_MOD:String? ,var TEMP_YN:String?) :Serializable {
 }
 

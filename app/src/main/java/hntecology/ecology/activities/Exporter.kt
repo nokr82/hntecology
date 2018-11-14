@@ -4,6 +4,7 @@ import android.os.Environment
 import com.google.android.gms.maps.model.Polygon
 import org.gdal.ogr.Feature
 import org.gdal.ogr.FieldDefn
+import org.gdal.ogr.Geometry
 import org.gdal.ogr.ogr
 import org.gdal.osr.SpatialReference
 import java.io.File
@@ -13,10 +14,10 @@ import java.util.*
 
 object Exporter {
 
-    class ExportItem constructor(layerInt:Int, columnDefs: ArrayList<ColumnDef>, polygons : ArrayList<Polygon>) {
+    class ExportItem constructor(layerInt:Int, columnDefs: ArrayList<ColumnDef>, polygon : Polygon) {
         val layerInt:Int = -1
         var columnDefs: ArrayList<ColumnDef> = ArrayList<ColumnDef>()
-        var polygons : ArrayList<Polygon> = ArrayList<Polygon>()
+        lateinit var polygon : Polygon
     }
 
     class ColumnDef constructor(columnName: String, columnType: Int, columnValue: Any?) {
@@ -143,16 +144,19 @@ object Exporter {
         }
 
         // create the WKT for the feature using Python string formatting
-        // exportItem.polygons
-        val wkt = "POINT(126.7545308 37.4889683)"
+        val ring = Geometry(ogr.wkbLinearRing)
 
-        // Create the point from the Well Known Txt
-        val point = ogr.CreateGeometryFromWkt(wkt)
+        val points = exportItem.polygon.points
+        for(point in points) {
+            ring.AddPoint(point.longitude, point.latitude)
+        }
 
-        println("point : " + point!!.ExportToWkt())
+        val poly = Geometry(ogr.wkbPolygon)
+        poly.AddGeometry(ring)
 
         // Set the feature geometry using the point
-        feature.SetGeometry(point)
+        feature.SetGeometry(poly)
+
         // Create the feature in the layer (shapefile)
         val created = layer.CreateFeature(feature)
 

@@ -1034,6 +1034,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                         po.isClickable = true
 
+                        polygons.add(po)
+
                         // copy data
                         copyRow("biotopeAttribute", oldAttributeKey, newAttributeKey)
 
@@ -1409,8 +1411,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     }
 
     fun export() {
-
-        googleMap.addPolygon
 
         val dbManager: DataBaseHelper = DataBaseHelper(this)
 

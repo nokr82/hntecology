@@ -143,6 +143,7 @@ object Exporter {
         }
 
         // create the WKT for the feature using Python string formatting
+        // exportItem.polygons
         val wkt = "POINT(126.7545308 37.4889683)"
 
         // Create the point from the Well Known Txt
@@ -156,7 +157,7 @@ object Exporter {
         val created = layer.CreateFeature(feature)
 
         // Dereference the feature
-        feature = null
+        // feature = null
 
         layer = null
 

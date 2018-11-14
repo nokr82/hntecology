@@ -1,6 +1,8 @@
 package hntecology.ecology.activities
 
-import android.app.*
+import android.app.Activity
+import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -9,7 +11,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.Typeface
-import android.location.Geocoder
 import android.location.Location
 import android.os.*
 import android.support.v4.app.ActivityCompat
@@ -28,7 +29,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import hntecology.ecology.Manifest
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils

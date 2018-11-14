@@ -19,7 +19,12 @@ object Exporter {
         val columnType = -1
     }
 
-    fun export(layerInt:Int, columnNames: Array<String>) {
+    class ColumnValue constructor(columnName: String, columnValue: Any?) {
+        val columnName = ""
+        val columnValue:Any? = null
+    }
+
+    fun export(layerInt:Int, columnDefs: Array<ColumnDef>, columnValues: Array<ColumnValue>) {
 
         ogr.RegisterAll()
 
@@ -72,27 +77,25 @@ object Exporter {
 
         println("layer : " + layer!!)
 
-        // Add the fields we're interested in
-        val field_name = FieldDefn("Name", ogr.OFTString)
-        field_name.SetWidth(24)
-        layer.CreateField(field_name)
-
-        val field_region = FieldDefn("Region", ogr.OFTString)
-        field_region.SetWidth(24)
-        layer.CreateField(field_region)
-
-        layer.CreateField(FieldDefn("Latitude", ogr.OFTString))
-        layer.CreateField(FieldDefn("Longitude", ogr.OFTString))
-        layer.CreateField(FieldDefn("Elevation", ogr.OFTString))
+        // column names
+        for (columnDef in columnDefs) {
+            layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
+        }
 
         // create the feature
         var feature: Feature? = Feature(layer.GetLayerDefn())
 
         // Set the attributes using the values from the delimited text file
-        feature!!.SetField("Name", "nam")
-        feature.SetField("Region", "r")
-        feature.SetField("Latitude", "lat")
-        feature.SetField("Longitude", "lon")
+
+        for(columnValue in columnValues) {
+            if(columnValue.columnValue is Double) {
+                feature!!.SetField(columnValue.columnName, columnValue.columnValue)
+            } else if(columnValue.columnValue is Int) {
+                feature!!.SetField(columnValue.columnName, columnValue.columnValue)
+            } else if(columnValue.columnValue is String) {
+                feature!!.SetField(columnValue.columnName, columnValue.columnValue)
+            }
+        }
 
         var euc_kr: String? = null
         try {
@@ -111,7 +114,7 @@ object Exporter {
             e.printStackTrace();
         }
         */
-        feature.SetField("Elevation", euc_kr)
+        feature!!.SetField("Elevation", euc_kr)
 
         // create the WKT for the feature using Python string formatting
         val wkt = "POINT(126.7545308 37.4889683)"

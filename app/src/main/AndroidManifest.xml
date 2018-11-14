@@ -184,7 +184,10 @@
         <activity
             android:name=".activities.DlgvegetationActivity"
             android:theme="@style/full_screen_dialog1" />
-        <activity android:name=".activities.DlgcomAcitivity"
+        <activity
+            android:name=".activities.DlgcomAcitivity"
+            android:theme="@style/full_screen_dialog1" />
+        <activity android:name=".activities.DlgBiotopeClassAcitivity"
             android:theme="@style/full_screen_dialog1"></activity>
     </application>
 

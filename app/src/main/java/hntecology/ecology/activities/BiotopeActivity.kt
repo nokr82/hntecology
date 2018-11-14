@@ -36,10 +36,7 @@ import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
-import hntecology.ecology.model.BiotopeModel
-import hntecology.ecology.model.Biotope_attribute
-import hntecology.ecology.model.Birds_attribute
-import hntecology.ecology.model.Vegetation
+import hntecology.ecology.model.*
 import kotlinx.android.synthetic.main.activity_biotope.*
 import java.io.File
 import java.io.FileOutputStream
@@ -66,6 +63,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
     val SET_DATA3 = 3
     val SET_DATA4 = 4
     val SET_DATA5 = 5
+    val SET_DATA6 = 6
 
     var keyId: String? = null;
     var gropid: ArrayList<Long>? = null
@@ -181,7 +179,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             keyId = intent.getStringExtra("id")
             val dataList: Array<String> = arrayOf("*");
 
-            println("keyIdkeyId : $keyId")
+            println("keyIdkeyId=========================== : $keyId")
 
             var data= db.query("biotopeAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
@@ -1045,16 +1043,19 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             startActivityForResult(intent, SET_DATA1);
 
         }
+
         //현존식생현황 분류 버튼
-/*        btn_Dlg3.setOnClickListener {
+        btn_Dlg3.setOnClickListener {
 
-            val intent = Intent(this,DlgCommonActivity::class.java)
-            intent.putExtra("title","현존식생현황 분류기준")
-            //intent.putExtra("table","biotopeM") 아직 코드 미정.
-            startActivityForResult(intent, SET_DATA1);
+            val intent = Intent(this, DlgBiotopeClassAcitivity::class.java)
+            intent.putExtra("title", "현존식생현황 분류기준")
+            intent.putExtra("table","biotopeClass")
+            intent.putExtra("DlgHeight", 600f);
 
-        }*/
-        //취소버튼
+            startActivityForResult(intent, SET_DATA6);
+
+        }
+
         btn_biotopCancle1.setOnClickListener {
             finish()
         }
@@ -1441,6 +1442,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         var vegetationData : Vegetation
 
+        var biotopeClass: BiotopeClass
+
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 SET_DATA1 -> {
@@ -1532,6 +1535,14 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     etHER_SPECET.setText(vegetationData.CATEGORY)
                     etHER_FAMIET.setText(vegetationData.SIGN)
                     etHER_SCIENET.setText(vegetationData.CORRESPONDINGNAME)
+
+                }
+
+                SET_DATA6 -> {
+
+                    biotopeClass = data!!.getSerializableExtra("classData") as BiotopeClass
+
+
 
                 }
 

@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.Utils
 import hntecology.ecology.R
@@ -21,6 +23,8 @@ class DlgFloraActivity : Activity() {
     private lateinit var context:Context;
 
     private var adapterData :ArrayList<JSONObject> = ArrayList<JSONObject>()
+
+    private var copyadapterData :ArrayList<JSONObject> = ArrayList<JSONObject>()
 
     private lateinit var apdater: DlgFloraAdapter;
 
@@ -48,6 +52,8 @@ class DlgFloraActivity : Activity() {
         val data = db.query("vascular_plant", dataList, null, null, null, null, null, null);
         setDataList(data);
 
+        copyadapterData.addAll(adapterData)
+
         apdater = DlgFloraAdapter(context, R.layout.item_repilia, adapterData)
         listLV.adapter = apdater
 
@@ -73,6 +79,19 @@ class DlgFloraActivity : Activity() {
 
         }
 
+        searchET.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+            }
+
+            override fun afterTextChanged(editable: Editable) {
+                val text = searchET.text.toString()
+                search(text)
+            }
+        });
+
     }
 
     fun setDataList(data: Cursor){
@@ -86,6 +105,39 @@ class DlgFloraActivity : Activity() {
 
             adapterData.add(dataObj)
         }
+
+    }
+
+    fun search(charText: String){
+        adapterData.clear()
+
+        if(charText.length == 0){
+
+            adapterData.addAll(copyadapterData)
+
+        }else {
+
+            var names:ArrayList<String> = ArrayList<String>()
+
+            for (i in 0..copyadapterData.size-1){
+
+                val name =  Utils.getString(copyadapterData.get(i), "name_kr");
+
+                names.add(name)
+
+            }
+
+            for(i in 0..names.size-1){
+
+                if(names.get(i).toLowerCase().contains(charText)){
+                    adapterData.add(copyadapterData.get(i))
+                }
+
+            }
+
+        }
+
+        apdater.notifyDataSetChanged()
 
     }
 

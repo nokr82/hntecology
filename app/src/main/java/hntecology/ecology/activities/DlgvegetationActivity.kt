@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.os.Bundle
+import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
@@ -19,6 +20,9 @@ import hntecology.ecology.model.Vegetation
 import kotlinx.android.synthetic.main.activity_dlgcommon.*
 import kotlinx.android.synthetic.main.activity_dlgvegetation.*
 import java.util.ArrayList
+import android.text.Editable
+
+
 
 class DlgvegetationActivity : Activity() {
 
@@ -29,6 +33,9 @@ class DlgvegetationActivity : Activity() {
 
     private lateinit var listdata1 : ArrayList<Vegetation>
     private lateinit var listdata2 : ArrayList<Vegetation>
+
+    private lateinit var copylistdata1 : ArrayList<Vegetation>
+    private lateinit var copylistdata2 : ArrayList<Vegetation>
 
     private lateinit var listAdapte1: DlgVegeAdapter;
     private lateinit var listAdapte2: DlgVegeAdapter2;
@@ -70,6 +77,9 @@ class DlgvegetationActivity : Activity() {
         listdata1 = ArrayList()
         listdata2 = ArrayList()
 
+        copylistdata1 = ArrayList()
+        copylistdata2 = ArrayList()
+
         listAdapte1 = DlgVegeAdapter(context, listdata1);
         listAdapte2 = DlgVegeAdapter2(context, listdata2);
 
@@ -77,6 +87,33 @@ class DlgvegetationActivity : Activity() {
         listView2.adapter = listAdapte2
 
         dataList(listdata1,data1);
+        copylistdata1.addAll(listdata1)
+
+        leftsearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+            }
+
+            override fun afterTextChanged(editable: Editable) {
+                val text = leftsearch.text.toString()
+                leftSearch(text)
+            }
+        });
+
+        rightsearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+            }
+
+            override fun afterTextChanged(editable: Editable) {
+                val text = rightsearch.text.toString()
+                rightSearch(text)
+            }
+        });
 
         listView1.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
             listAdapte2.clearItem()
@@ -91,6 +128,8 @@ class DlgvegetationActivity : Activity() {
             dlg_probars.visibility= View.VISIBLE
             dataList(listdata2,data2);
             dlg_probars.visibility= View.GONE
+
+            copylistdata2.addAll(listdata2)
 
         })
 
@@ -126,5 +165,67 @@ class DlgvegetationActivity : Activity() {
 
             listdata.add(model)
         }
+    }
+
+    fun leftSearch(charText: String){
+        for(i in 0..listdata1.size-1){
+            listdata1.get(i).chkSelect = false
+        }
+
+        listdata1.clear()
+
+        val dataList:Array<String> = arrayOf("categorycode","category","classcode","sign","correspondingname");
+
+        if(charText.length == 0){
+
+            val data1=  db.query(tableName,dataList,null,null,"CATEGORY",null,null,null);
+
+            dataList(listdata1,data1)
+
+        }else {
+
+            for (i in 0..copylistdata1.size-1){
+
+                if(copylistdata1.get(i).CATEGORY!!.toLowerCase().contains(charText)){
+                    listdata1.add(copylistdata1.get(i))
+                }
+
+            }
+
+        }
+
+        listAdapte1.notifyDataSetChanged()
+
+    }
+
+    fun rightSearch(charText: String){
+        for(i in 0..listdata2.size-1){
+            listdata2.get(i).chkSelect = false
+        }
+
+        listdata2.clear()
+
+        val dataList:Array<String> = arrayOf("categorycode","category","classcode","sign","correspondingname");
+
+        if(charText.length == 0){
+
+            val data2=  db.query(tableName,dataList,null,null,"CATEGORY",null,null,null);
+
+            dataList(listdata2,data2)
+
+        }else {
+
+            for (i in 0..copylistdata2.size-1){
+
+                if(copylistdata2.get(i).CORRESPONDINGNAME!!.toLowerCase().contains(charText)){
+                    listdata2.add(copylistdata2.get(i))
+                }
+
+            }
+
+        }
+
+        listAdapte2.notifyDataSetChanged()
+
     }
 }

@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.Utils
 import hntecology.ecology.R
@@ -21,6 +23,8 @@ class DlgMammalActivity : Activity() {
 
     private var adapterData :ArrayList<JSONObject> = ArrayList<JSONObject>()
 
+    private var copyadapterData :ArrayList<JSONObject> = ArrayList<JSONObject>()
+
     private lateinit var apdater: DlgMammalAdapter;
 
     var DlgHeight:Float=430F;
@@ -28,7 +32,7 @@ class DlgMammalActivity : Activity() {
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.dlg_birds)
+        setContentView(R.layout.dlg_mammal)
 
         context = this;
 
@@ -44,6 +48,8 @@ class DlgMammalActivity : Activity() {
 
         val data = db.query("mammal", dataList, null, null, null, null, null, null);
         setDataList(data);
+
+        copyadapterData.addAll(adapterData)
 
         apdater = DlgMammalAdapter(context, R.layout.item_repilia, adapterData)
         listLV.adapter = apdater
@@ -70,6 +76,19 @@ class DlgMammalActivity : Activity() {
 
         }
 
+        searchET.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+            }
+
+            override fun afterTextChanged(editable: Editable) {
+                val text = searchET.text.toString()
+                search(text)
+            }
+        });
+
     }
 
     fun setDataList(data: Cursor){
@@ -83,6 +102,39 @@ class DlgMammalActivity : Activity() {
 
             adapterData.add(dataObj)
         }
+
+    }
+
+    fun search(charText: String){
+        adapterData.clear()
+
+        if(charText.length == 0){
+
+            adapterData.addAll(copyadapterData)
+
+        }else {
+
+            var names:ArrayList<String> = ArrayList<String>()
+
+            for (i in 0..copyadapterData.size-1){
+
+                val name =  Utils.getString(copyadapterData.get(i), "name_kr");
+
+                names.add(name)
+
+            }
+
+            for(i in 0..names.size-1){
+
+                if(names.get(i).toLowerCase().contains(charText)){
+                    adapterData.add(copyadapterData.get(i))
+                }
+
+            }
+
+        }
+
+        apdater.notifyDataSetChanged()
 
     }
 

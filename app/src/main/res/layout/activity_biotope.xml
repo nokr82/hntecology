@@ -140,7 +140,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="50dp"
+                android:visibility="gone">
                 <LinearLayout
                     android:gravity="center"
                     android:layout_width="match_parent"
@@ -572,7 +573,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:text="임시버튼"
+                                android:text="유형 분류 기준"
                                 android:id="@+id/btn_Dlg3"
                                 style="@style/dlgcommonButton"
                                 />

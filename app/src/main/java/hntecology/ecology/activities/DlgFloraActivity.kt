@@ -43,6 +43,8 @@ class DlgFloraActivity : Activity() {
 
         val dataList:Array<String> = arrayOf("name_kr","Family_name_kr","zoological");
 
+
+
         val data = db.query("vascular_plant", dataList, null, null, null, null, null, null);
         setDataList(data);
 

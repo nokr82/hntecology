@@ -17,7 +17,7 @@ import hntecology.ecology.model.BiotopeClass
 import hntecology.ecology.model.BiotopeModel
 import hntecology.ecology.model.Vegetation
 
-class BiotopeClassAdapter2(var context: Context, var itemList : ArrayList<BiotopeClass>) : BaseAdapter() {
+class BiotopeClassAdapter(var context: Context, var itemList : ArrayList<BiotopeClass>) : BaseAdapter() {
 
     var selectIndex:Int = 0;
 
@@ -55,7 +55,7 @@ class BiotopeClassAdapter2(var context: Context, var itemList : ArrayList<Biotop
 
         var BiotopeClass : BiotopeClass = getItem(position)
 
-        viewHoldar.class_biotope_item.text = BiotopeClass.smallcategory;
+        viewHoldar.class_biotope_item.text = BiotopeClass.middlecategory;
 
         if(BiotopeClass.chkSelect == true){
 
@@ -66,7 +66,6 @@ class BiotopeClassAdapter2(var context: Context, var itemList : ArrayList<Biotop
 
             viewHoldar.class_search1_item.setBackgroundColor(Color.parseColor("#FFFFFF"))
             viewHoldar.class_biotope_item.setTextColor(Color.parseColor("#000000"));
-            
         }
 
         println("hh : " + position + ", " + hashCode())

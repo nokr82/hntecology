@@ -17,7 +17,7 @@ import hntecology.ecology.model.BiotopeClass
 import hntecology.ecology.model.BiotopeModel
 import hntecology.ecology.model.Vegetation
 
-class BiotopeClassAdapter2(var context: Context, var itemList : ArrayList<BiotopeClass>) : BaseAdapter() {
+class BiotopeClassAdapter3(var context: Context, var itemList : ArrayList<Vegetation>) : BaseAdapter() {
 
     var selectIndex:Int = 0;
 
@@ -29,8 +29,8 @@ class BiotopeClassAdapter2(var context: Context, var itemList : ArrayList<Biotop
 
 
         init {
-            this.class_biotope_item = row?.findViewById(R.id.class_biotope_item) as TextView
-            this.class_search1_item = row?.findViewById(R.id.class_search1_item) as LinearLayout
+            this.class_biotope_item = row?.findViewById(R.id.biotope_item) as TextView
+            this.class_search1_item = row?.findViewById(R.id.search1_item) as LinearLayout
         }
     }
 
@@ -53,11 +53,11 @@ class BiotopeClassAdapter2(var context: Context, var itemList : ArrayList<Biotop
             viewHoldar = view.tag as ViewHoldar
         }
 
-        var BiotopeClass : BiotopeClass = getItem(position)
+        var Vegetation : Vegetation = getItem(position)
 
-        viewHoldar.class_biotope_item.text = BiotopeClass.smallcategory;
+        viewHoldar.class_biotope_item.text = Vegetation.CORRESPONDINGNAME;
 
-        if(BiotopeClass.chkSelect == true){
+        if(Vegetation.chkSelect == true){
 
             viewHoldar.class_search1_item.setBackgroundColor(Color.parseColor("#004baa"))
             viewHoldar.class_biotope_item.setTextColor(Color.parseColor("#FFFFFF"));
@@ -66,14 +66,13 @@ class BiotopeClassAdapter2(var context: Context, var itemList : ArrayList<Biotop
 
             viewHoldar.class_search1_item.setBackgroundColor(Color.parseColor("#FFFFFF"))
             viewHoldar.class_biotope_item.setTextColor(Color.parseColor("#000000"));
-            
         }
 
         println("hh : " + position + ", " + hashCode())
         return view as View
     }
 
-    override fun getItem(position: Int): BiotopeClass {
+    override fun getItem(position: Int): Vegetation {
 
         return itemList.get(position)
     }
@@ -93,9 +92,9 @@ class BiotopeClassAdapter2(var context: Context, var itemList : ArrayList<Biotop
         itemList.clear();
         notifyDataSetChanged();
     }
-    fun addItem(BiotopeClass: BiotopeClass){
+    fun addItem(Vegetation: Vegetation){
 
-        itemList.add(BiotopeClass);
+        itemList.add(Vegetation);
         notifyDataSetChanged()
     }
 
@@ -115,9 +114,9 @@ class BiotopeClassAdapter2(var context: Context, var itemList : ArrayList<Biotop
             itemList.set(i,bioListModel)
         }*/
 
-        var BiotopeClass:BiotopeClass = itemList.get(selectIndex);
-        BiotopeClass.chkSelect = false
-        itemList.set(selectIndex,BiotopeClass)
+        var Vegetation:Vegetation = itemList.get(selectIndex);
+        Vegetation.chkSelect = false
+        itemList.set(selectIndex,Vegetation)
 
         var biotopeModel = getItem(position);
 

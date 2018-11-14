@@ -57,36 +57,39 @@ import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
+
 public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnTouchListener, GoogleMap.OnCameraMoveListener, OnLocationUpdatedListener {
 
-    val REQUEST_FINE_LOCATION = 1
-    val REQUEST_ACCESS_COARSE_LOCATION = 2
+    companion object {
+        val REQUEST_FINE_LOCATION = 1
+        val REQUEST_ACCESS_COARSE_LOCATION = 2
 
-    private val PLAY_SERVICES_RESOLUTION_REQUEST: Int = 1000
-    private val PolygonCallBackData = 1001
-    private val dlg_gpsCallbackData = 1002
-    private val REQUEST_LAYER = 1003
+        private val PLAY_SERVICES_RESOLUTION_REQUEST: Int = 1000
+        private val PolygonCallBackData = 1001
+        private val dlg_gpsCallbackData = 1002
+        private val REQUEST_LAYER = 1003
 
+        val LAYER = 2000
+        val LAYER_BIOTOPE = 2001
+        val LAYER_BIRDS = 2002
+        val LAYER_REPTILIA = 2003
+        val LAYER_MAMMALIA = 2004
+        val LAYER_FISH = 2005
+        val LAYER_INSECT = 2006
+        val LAYER_FLORA = 2007
+        val LAYER_ZOOBENTHOS = 2008
+        val LAYER_MYLOCATION = 2009
 
-    private val LAYER = 2000
-    private val LAYER_BIOTOPE = 2001
-    private val LAYER_BIRDS = 2002
-    private val LAYER_REPTILIA = 2003
-    private val LAYER_MAMMALIA = 2004
-    private val LAYER_FISH = 2005
-    private val LAYER_INSECT = 2006
-    private val LAYER_FLORA = 2007
-    private val LAYER_ZOOBENTHOS = 2008
-    private val LAYER_MYLOCATION = 2009
+    }
 
     var types : ArrayList<String> = ArrayList<String>()
-
 
     private lateinit var context: Context
 
     private lateinit var mGestureDetector: GestureDetector
     private lateinit var googleMap: GoogleMap
 
+    private var polygons : ArrayList<Polygon> = ArrayList<Polygon>()
     private var points = ArrayList<Marker>()
     private var polygonsToUnion = ArrayList<Polygon>()
 
@@ -880,6 +883,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             polygon.tag = layerInfo
 
+            polygons.add(polygon)
         }
 
         override fun onPostExecute(result: Boolean?) {
@@ -1405,6 +1409,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     }
 
     fun export() {
+
+        googleMap.addPolygon
 
         val dbManager: DataBaseHelper = DataBaseHelper(this)
 

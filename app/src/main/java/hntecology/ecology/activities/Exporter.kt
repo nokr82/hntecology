@@ -1,30 +1,31 @@
 package hntecology.ecology.activities
 
 import android.os.Environment
+import com.google.android.gms.maps.model.Polygon
 import org.gdal.ogr.Feature
 import org.gdal.ogr.FieldDefn
 import org.gdal.ogr.ogr
 import org.gdal.osr.SpatialReference
 import java.io.File
-import java.io.UnsupportedEncodingException
-import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 object Exporter {
 
-    class ColumnDef constructor(columnName: String, columnType: Int) {
-        val columnName = ""
-        val columnType = -1
+    class ExportItem constructor(layerInt:Int, columnDefs: ArrayList<ColumnDef>, polygons : ArrayList<Polygon>) {
+        val layerInt:Int = -1
+        var columnDefs: ArrayList<ColumnDef> = ArrayList<ColumnDef>()
+        var polygons : ArrayList<Polygon> = ArrayList<Polygon>()
     }
 
-    class ColumnValue constructor(columnName: String, columnValue: Any?) {
+    class ColumnDef constructor(columnName: String, columnType: Int, columnValue: Any?) {
         val columnName = ""
+        val columnType = -1
         val columnValue:Any? = null
     }
 
-    fun export(layerInt:Int, columnDefs: Array<ColumnDef>, columnValues: Array<ColumnValue>) {
+    fun export(exportItem:ExportItem) {
 
         ogr.RegisterAll()
 
@@ -32,13 +33,54 @@ object Exporter {
 
         println("GetDriverCount : $GetDriverCount")
 
+        var layerName = ""
+
+        when(exportItem.layerInt) {
+            MainActivity.LAYER_BIOTOPE -> {
+                layerName = "biotope"
+            }
+
+            MainActivity.LAYER_BIRDS -> {
+                layerName = "birds"
+            }
+
+            MainActivity.LAYER_REPTILIA -> {
+                layerName = "reptilia"
+            }
+
+            MainActivity.LAYER_MAMMALIA -> {
+                layerName = "mammalia"
+
+            }
+
+            MainActivity.LAYER_FISH -> {
+                layerName = "fish"
+            }
+
+            MainActivity.LAYER_INSECT -> {
+                layerName = "insect"
+            }
+
+            MainActivity.LAYER_FLORA -> {
+                layerName = "flora"
+            }
+
+            MainActivity.LAYER_ZOOBENTHOS -> {
+                layerName = "zoobenthos"
+            }
+
+            MainActivity.LAYER_MYLOCATION -> {
+                layerName = "mylocation"
+            }
+        }
+
         // set up the shapefile driver
         val driver = ogr.GetDriverByName("ESRI Shapefile")
 
         // String outPath = "/data/data/com.wshunli.gdal.android.demo/outputs/";
         val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
         val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + timeStamp + File.separator
-        val outPathFile = "$outPath$layerInt.shp"
+        val outPathFile = "$outPath$layerName.shp"
 
 
 
@@ -73,48 +115,32 @@ object Exporter {
         srs.ImportFromWkt("GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]]")
 
         // create the layer
-        var layer = data_source!!.CreateLayer("volcanoes", srs, ogr.wkbPoint)
+        var layerType = ogr.wkbPoint
+        if(exportItem.layerInt == MainActivity.LAYER_BIOTOPE) {
+            layerType = ogr.wkbPolygon
+        }
+        var layer = data_source!!.CreateLayer("volcanoes", srs, layerType)
 
         println("layer : " + layer!!)
 
         // column names
-        for (columnDef in columnDefs) {
+        for (columnDef in exportItem.columnDefs) {
             layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
         }
 
         // create the feature
-        var feature: Feature? = Feature(layer.GetLayerDefn())
+        var feature: Feature = Feature(layer.GetLayerDefn()) ?: return
 
         // Set the attributes using the values from the delimited text file
-
-        for(columnValue in columnValues) {
-            if(columnValue.columnValue is Double) {
-                feature!!.SetField(columnValue.columnName, columnValue.columnValue)
-            } else if(columnValue.columnValue is Int) {
-                feature!!.SetField(columnValue.columnName, columnValue.columnValue)
-            } else if(columnValue.columnValue is String) {
-                feature!!.SetField(columnValue.columnName, columnValue.columnValue)
+        for(columnDef in exportItem.columnDefs) {
+            if(columnDef.columnValue is Double) {
+                feature.SetField(columnDef.columnName, columnDef.columnValue)
+            } else if(columnDef.columnValue is Int) {
+                feature.SetField(columnDef.columnName, columnDef.columnValue)
+            } else if(columnDef.columnValue is String) {
+                feature.SetField(columnDef.columnName, columnDef.columnValue)
             }
         }
-
-        var euc_kr: String? = null
-        try {
-            euc_kr = URLEncoder.encode("핫", "utf-8")
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-        }
-
-
-        /*
-        try {
-            // euc_kr = new String("핫".getBytes("utf-8"), "euc-kr");
-            // euc_kr = new String(euc_kr.getBytes("utf-8"), "euc-kr");
-            // euc_kr = new String(euc_kr.getBytes("euc-kr"), "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        */
-        feature!!.SetField("Elevation", euc_kr)
 
         // create the WKT for the feature using Python string formatting
         val wkt = "POINT(126.7545308 37.4889683)"
@@ -128,10 +154,6 @@ object Exporter {
         feature.SetGeometry(point)
         // Create the feature in the layer (shapefile)
         val created = layer.CreateFeature(feature)
-
-        println("created : $created")
-
-        layer.CommitTransaction()
 
         // Dereference the feature
         feature = null

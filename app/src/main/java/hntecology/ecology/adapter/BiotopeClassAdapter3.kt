@@ -29,8 +29,8 @@ class BiotopeClassAdapter3(var context: Context, var itemList : ArrayList<Vegeta
 
 
         init {
-            this.class_biotope_item = row?.findViewById(R.id.biotope_item) as TextView
-            this.class_search1_item = row?.findViewById(R.id.search1_item) as LinearLayout
+            this.class_biotope_item = row?.findViewById(R.id.class_biotope_item) as TextView
+            this.class_search1_item = row?.findViewById(R.id.class_search1_item) as LinearLayout
         }
     }
 

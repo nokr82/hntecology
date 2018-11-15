@@ -26,6 +26,7 @@ import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.Insect_attribute
 import hntecology.ecology.model.Mammal_attribute
+import hntecology.ecology.model.Region
 import io.nlopez.smartlocation.OnLocationUpdatedListener
 import io.nlopez.smartlocation.SmartLocation
 import io.nlopez.smartlocation.location.config.LocationAccuracy
@@ -43,6 +44,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
     val REQUEST_FINE_LOCATION = 100
     val REQUEST_ACCESS_COARSE_LOCATION = 101
+
+    val SET_DATA = 1
 
     var latitude = 0.0f;
     var longitude = 0.0f;
@@ -468,11 +471,12 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
         insectobsstatTV.setOnClickListener {
 
-            var listItems: ArrayList<String> = ArrayList();
 
-            listItems.add("기타");
-
-            alert(listItems, "관할 지역 선택", insectobsstatTV, "obsstat");
+            val intent = Intent(this, DlgInsectClassActivity::class.java)
+            intent.putExtra("title", "토지이용유형 분류")
+            intent.putExtra("table", "Region")
+            intent.putExtra("DlgHeight", 600f);
+            startActivityForResult(intent, SET_DATA);
 
         }
 
@@ -941,6 +945,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        var region: Region
+
         if (resultCode == Activity.RESULT_OK) {
 
             when (requestCode) {
@@ -957,6 +963,26 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                     insectsciennmET.text = zoological
 
                 };
+
+                SET_DATA -> {
+
+                    if(data!!.getSerializableExtra("Region") != null) {
+                        region = data!!.getSerializableExtra("Region") as Region
+                        insectobsstatET.visibility = View.GONE
+                        insectobsstatTV.visibility = View.VISIBLE
+                        insectobsstatTV.setText(region.SMALLCATEGORY)
+                    }
+
+                    if(data!!.getIntExtra("Other",0) != null){
+                        val count = data!!.getIntExtra("Other",0)
+
+                        if(count == 1000){
+                            insectobsstatET.visibility = View.VISIBLE
+                            insectobsstatTV.visibility = View.GONE
+                        }
+                    }
+
+                }
             }
         }
     }

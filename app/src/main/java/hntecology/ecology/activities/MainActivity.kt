@@ -47,6 +47,7 @@ import org.geotools.data.shapefile.ShapefileDataStore
 import org.geotools.data.shapefile.ShapefileDataStoreFactory
 import org.geotools.data.simple.SimpleFeatureStore
 import org.geotools.referencing.crs.DefaultGeographicCRS
+import org.json.JSONObject
 import org.locationtech.jts.geom.Coordinate
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
@@ -81,6 +82,16 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         val LAYER_ZOOBENTHOS = 2008
         val LAYER_MYLOCATION = 2009
 
+        val BIOTOPE_DATA = 3000
+        val BIRDS_DATA = 3001
+        val REPTILIA_DATA = 3002
+        val MAMMALIA_DATA = 3003
+        val FISH_DATA = 3004
+        val INSECT_DATA = 3005
+        val FLORA_DATA = 3006
+
+
+
     }
 
     var types : ArrayList<String> = ArrayList<String>()
@@ -114,10 +125,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     var fishPk:String? = String()
     var floraPk:String? = String()
     var insectPk:String? = String()
+
     var mammaliaPk:String? = String()
     var reptiliaPk:String? = String()
-
-
 
     val BIOTOPEATTRIBUTE:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
@@ -144,6 +154,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     var progressDialog: ProgressDialog? = null
 
     var exporter:Exporter.ExportItem? = null
+
+    var birdsdataArray:ArrayList<Birds_attribute> = ArrayList<Birds_attribute>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -343,8 +355,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             val zoom = googleMap.cameraPosition.zoom
             val intent = Intent(this, DlgLayersActivity::class.java)
 
-            intent.putExtra("zoom", zoom)
-
+            intent.putExtra("zoom", zoom
+            )
             startActivityForResult(intent, REQUEST_LAYER)
         }
 
@@ -353,8 +365,28 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             currentLayer = LAYER_BIOTOPE
 
+
             if (drawer_view.visibility == View.VISIBLE) {
                 endDraw()
+
+
+//                if(latlngs.size >= 3){
+//
+//                    val intent: Intent = Intent(this, BiotopeActivity::class.java)
+////                    intent.putExtra("latlngs",latlngs)
+//                    intent.putExtra("latlngs",latlngsObj)
+//                    startActivityForResult(intent, BIOTOPE_BASE)
+//
+//                }MarkerOptions
+//                if(latlngs.size < 3){
+//                    latlngs.clear()
+//                }
+
+
+                for(i in 0 ..latlngs.size-1){
+                    println("====================================================${latlngs.get(i).latitude}")
+                }
+
             } else {
                 startDraw()
             }
@@ -747,10 +779,70 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             var attrubuteKey = layerInfo.attrubuteKey
             var intent: Intent? = null
+
+            val dbManager: DataBaseHelper = DataBaseHelper(this)
+
+            val db = dbManager.createDataBase();
+
             when (myLayer) {
 
                 LAYER_BIRDS -> {
-                    intent = Intent(this, BirdsActivity::class.java)
+
+
+                    val dataList: Array<String> = arrayOf("*");
+
+                    val data = db.query("birdsAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+
+                    if (birdsdataArray != null) {
+                        birdsdataArray.clear()
+                    }
+
+                    var title = ""
+
+                    while (data.moveToNext()) {
+
+                        var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+                                , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25), data.getString(26))
+
+                        birdsdataArray.add(birds_attribute)
+
+                    }
+
+                    println("birdsArraysize ${birdsdataArray.size}")
+
+                    for(i in 0..birdsdataArray.size-1){
+                        title += birdsdataArray.get(i).INV_PERSON + ", "
+
+                        marker.title = title
+                    }
+
+
+                    if(birdsdataArray.size == 0){
+                        title = "조류"
+
+                        marker.title = title
+
+                        intent = Intent(this, BirdsActivity::class.java)
+
+                        intent!!.putExtra("GROP_ID", attrubuteKey)
+
+                        println("intent-----------------------------------${attrubuteKey.toString()}")
+
+                        startActivityForResult(intent, PolygonCallBackData)
+                    }
+
+                    if(birdsdataArray.size > 0 ){
+                        val intent = Intent(this, DlgDataListActivity::class.java)
+                        intent.putExtra("title", "야생조류")
+                        intent.putExtra("table", "birdsAttribute")
+                        intent.putExtra("DlgHeight", 600f);
+                        intent.putExtra("GROP_ID",attrubuteKey)
+                        startActivityForResult(intent, BIRDS_DATA);
+                    }
+
                 }
 
                 LAYER_REPTILIA -> {
@@ -787,11 +879,16 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             }
 
-            if(myLayer != LAYER_MYLOCATION && myLayer != LAYER){
+            if(myLayer == LAYER_BIRDS){
+
+            }
+
+            if(myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIRDS){
                 intent!!.putExtra("id", attrubuteKey.toString())
 
                 startActivityForResult(intent, PolygonCallBackData)
             }
+
 
             false
         }
@@ -807,8 +904,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             var attrubuteKey = layerInfo.attrubuteKey
             var intent: Intent? = null
-
-            println("attrubuteKey================================================== : " + attrubuteKey)
 
             when (myLayer) {
 
@@ -879,11 +974,20 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             println("aa : $attrubuteKey")
 
-            if(myLayer != LAYER_MYLOCATION && myLayer != LAYER){
+            if(myLayer == LAYER_BIRDS){
+                intent!!.putExtra("GROP_ID", attrubuteKey.toString())
+
+                println("intent-----------------------------------${attrubuteKey.toString()}")
+
+                startActivityForResult(intent, PolygonCallBackData)
+            }
+            if(myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIRDS){
                 intent!!.putExtra("id", attrubuteKey.toString())
 
                 startActivityForResult(intent, PolygonCallBackData)
             }
+
+
         }
 
     }
@@ -1085,6 +1189,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     }
 
     private val latlngs: ArrayList<LatLng> = ArrayList<LatLng>()
+    private val latlngsObj: ArrayList<JSONObject> = ArrayList<JSONObject>()
 
     private var startGeoPoint: LatLng? = null
 
@@ -1219,7 +1324,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                             LAYER_BIOTOPE -> {
 
+                                var obj: JSONObject = JSONObject()
+                                obj.put("lat", "31231321")
+                                obj.put("lng", "31231321")
+
+                                latlngsObj.add(obj)
+
                                 latlngs.add(geoPoint)
+
+                                println("latlngsssssssssssssssssssssssss${latlngs.size}")
 
                                 if (latlngs.size == 1) {
                                     initEditingPolygon()
@@ -1229,6 +1342,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             }
 
                             LAYER_BIRDS -> {
+                                println("geoPoint ${geoPoint.latitude} : ${geoPoint.longitude}")
                                 drawPoint(geoPoint)
                             }
 
@@ -1261,10 +1375,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             }
 
                         }
+
                     }
                 }
             }
         }
+
         return mGestureDetector.onTouchEvent(event)
     }
 
@@ -1286,6 +1402,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     private fun drawPoint(geoPoint: LatLng) {
         val markerOptions = MarkerOptions()
         markerOptions.position(geoPoint)
+
+        println("geoPoint : ${geoPoint.latitude} ++++++++++=${geoPoint.longitude}")
         // markerOptions.title("Marker in Sydney")
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
         markerOptions.alpha(1.0f)
@@ -1305,37 +1423,66 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         var intent: Intent? = null
 
-        points.add(marker)
+
 
         when (myLayer) {
 
             LAYER_BIRDS -> {
+
                 intent = Intent(this, BirdsActivity::class.java)
+
+                marker.title = "조류"
+
+                points.add(marker)
             }
 
             LAYER_REPTILIA -> {
                 intent = Intent(this, ReptiliaActivity::class.java)
 
+                marker.title = "양서,파충류"
+
+                points.add(marker)
+
             }
 
             LAYER_MAMMALIA -> {
                 intent = Intent(this, MammaliaActivity::class.java)
+
+                marker.title = "포유류"
+
+                points.add(marker)
             }
 
             LAYER_FISH -> {
                 intent = Intent(this, FishActivity::class.java)
+
+                marker.title = "어류"
+
+                points.add(marker)
             }
 
             LAYER_INSECT -> {
                 intent = Intent(this, InsectActivity::class.java)
+
+                marker.title = "곤충"
+
+                points.add(marker)
             }
 
             LAYER_FLORA -> {
                 intent = Intent(this, FloraActivity::class.java)
+
+                marker.title = "식물"
+
+                points.add(marker)
             }
 
             LAYER_ZOOBENTHOS -> {
                 intent = Intent(this, ZoobenthosActivity::class.java)
+
+                marker.title = "저서무척추동물"
+
+                points.add(marker)
             }
 
             LAYER_MYLOCATION -> {
@@ -1347,7 +1494,24 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
         }
 
-        if(myLayer != LAYER_MYLOCATION && myLayer != LAYER) {
+        if(myLayer == LAYER_BIRDS){
+
+            intent!!.putExtra("latitude", geoPoint.latitude.toString())
+            intent!!.putExtra("longitude", geoPoint.longitude.toString())
+
+            intent!!.putExtra("GROP_ID", attrubuteKey.toString())
+
+            println("intent-----------------------------------${attrubuteKey.toString()}")
+
+            startActivityForResult(intent, PolygonCallBackData)
+
+            endDraw()
+        }
+
+        if(myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIRDS) {
+
+            intent!!.putExtra("latitude", geoPoint.latitude.toString())
+            intent!!.putExtra("longitude", geoPoint.longitude.toString())
 
             intent!!.putExtra("id", attrubuteKey.toString())
 
@@ -1355,6 +1519,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             endDraw()
         }
+
+
 
     }
 
@@ -1364,6 +1530,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         polygonOptions.strokeWidth(5.0f)
         polygonOptions.strokeColor(Color.WHITE)
         polygonOptions.addAll(latlngs)
+
 
         editingPolygon = googleMap.addPolygon(polygonOptions)
         // editingPolygon?.zIndex = 5.0f
@@ -1390,13 +1557,20 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             return
         }
 
+
+
         editingPolygon!!.points = latlngs
+
 
         if(latlngs.size >= 3) {
             val jtsPolygon = toJTSPolygon(editingPolygon!!)
             if(!jtsPolygon.isValid) {
                 latlngs.remove(latlngs.last())
                 drawPolygon()
+
+                for(i in 0 ..latlngs.size-1) {
+                    println("latlngs ----- ${latlngs.get(i).longitude}      ======================${latlngs.get(i).latitude}")
+                }
 
                 Utils.showNotification(context, "잘못된 지점입니다. 다른 곳을 선택해주세요.")
 
@@ -1458,7 +1632,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         googleMap.uiSettings.setAllGesturesEnabled(true)
         googleMap.uiSettings.isRotateGesturesEnabled = false
 
-        latlngs.clear()
         updateDelPointText()
 
         drawer_view.visibility = View.GONE
@@ -1474,7 +1647,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 
             LAYER_REPTILIA -> {
-
                 btn_Reptilia.text = "양서ㆍ파충류 추가"
             }
 
@@ -1483,27 +1655,22 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 
             LAYER_FISH -> {
-
                 btn_fish.text = "어류 추가"
             }
 
             LAYER_INSECT -> {
-
                 btn_insect.text = "곤충 추가"
             }
 
             LAYER_FLORA -> {
-
                 btn_flora.text = "식물상 추가"
             }
 
             LAYER_ZOOBENTHOS -> {
-
                 btn_zoobenthos.text = "저서무척추동물 추가"
             }
 
             LAYER_MYLOCATION -> {
-
                 btn_mygps.text = "내 위치로 이동"
             }
 
@@ -1547,7 +1714,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             LAYER_MAMMALIA -> {
                 attributeKey += "mammalia"
-
             }
 
             LAYER_FISH -> {
@@ -1578,6 +1744,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         println("attributeKey : $attributeKey")
 
         return attributeKey
+
     }
 
     fun export() {
@@ -1669,13 +1836,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             }
 
-            exporter = Exporter.ExportItem(LAYER_BIOTOPE,BIOTOPEATTRIBUTE,polygons)
+//            exporter = Exporter.ExportItem(LAYER_BIOTOPE,BIOTOPEATTRIBUTE,polygons)
 
             println("BIOTOPEATTRIBUTE : ================ ${BIOTOPEATTRIBUTE}")
 
             println("polygons : ================ ${polygons}")
 
-            println("=======exporter.columnDefs : ${exporter?.columnDefs}   ,  exporter.layerInt  : ${exporter?.layerInt} ,  exporter.polygons  : ${exporter?.polygons}")
+//            println("=======exporter.columnDefs : ${exporter?.columnDefs}   ,  exporter.layerInt  : ${exporter?.layerInt} ,  exporter.polygons  : ${exporter?.polygons}")
 
         }
 
@@ -1722,9 +1889,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 reptiliaPk += reptiliaData.get(i).id + "\n"
             }
         }
-
-
-
 
         val mammaldata = db.query("mammalAttribute", dataList, null, null, "id", null, "", null)
 
@@ -1811,12 +1975,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
 
         println("biotopePk : $biotopeGrop_id  ,  birdsPk : $birdsPk  , reptiliaPk : $reptiliaPk   ,  mammalPk : $mammaliaPk  ,  fishPk : $fishPk   ,   insectPk : $insectPk   , floraPk $floraPk ")
-
-
-
-
-
-
 
     }
 

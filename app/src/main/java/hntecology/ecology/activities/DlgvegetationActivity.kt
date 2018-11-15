@@ -122,7 +122,6 @@ class DlgvegetationActivity : Activity() {
 
             listAdapte1.setItemSelect(position)
 
-
             val data2 =  db.query(tableName,dataList,"CATEGORYCODE='"+veData.CATEGORYCODE +"'" ,null,null,null,null,null);
 
             dlg_probars.visibility= View.VISIBLE

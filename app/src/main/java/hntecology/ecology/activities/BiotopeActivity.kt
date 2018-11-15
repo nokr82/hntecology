@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Location
@@ -30,6 +29,7 @@ import android.widget.Toast
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 import com.joooonho.SelectableRoundedImageView
 import com.nostra13.universalimageloader.core.ImageLoader
 import hntecology.ecology.R
@@ -37,6 +37,7 @@ import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.*
+import hntecology.ecology.model.Number
 import kotlinx.android.synthetic.main.activity_biotope.*
 import java.io.File
 import java.io.FileOutputStream
@@ -65,9 +66,12 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
     val SET_DATA5 = 5
     val SET_DATA6 = 6
 
+    val BIOTOPE_BASE = 3000
+
     var keyId: String? = null;
     var gropid: ArrayList<Long>? = null
     var chkdata: Boolean = false;
+    var basechkdata: Boolean = false
 
     private val REQUEST_PERMISSION_CAMERA = 3
     private val REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 1
@@ -107,6 +111,12 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
     var dataArray:ArrayList<Biotope_attribute> = ArrayList<Biotope_attribute>()
 
     private var vegetationData:ArrayList<Vegetation> = ArrayList<Vegetation>()
+
+    private var latlngs: ArrayList<LatLng> = ArrayList<LatLng>()
+
+    var GPS_LAT : String = ""
+    var GPS_LON : String = ""
+
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -172,12 +182,72 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         }
 
 
+
+
+
+
         if (intent.getSerializableExtra("id") != null) {
 
             println("intent.getSerializableExtra() : $intent.getSerializableExtra(\"id\")")
 
+
+//                latlngs = intent!!.getSerializableExtra("latlngs") as ArrayList<LatLng>
+//                var biotopeGPS:ArrayList<BiotopeBaseGPS> = intent.getSerializableExtra("biotopeBaseGPS") as ArrayList<BiotopeBaseGPS>
+//
+//                for (i in 0..latlngs.size - 1) {
+//                    println("================latlngs........${biotopeGPS.get(i).GPS_LAT}")
+//                }
+//
+//                for (i in 0..latlngs.size - 1) {
+//                    GPS_LAT += biotopeGPS.get(i).GPS_LAT.toString() + ","
+//                    GPS_LON += biotopeGPS.get(i).GPS_LON.toString() + ","
+//                }
+
+
+                tvINV_PERSONTV.setText(PrefUtils.getStringPreference(this, "name"))                    // 조사자
+                etINV_DTTV.setText(getTime());
+                etINV_TMTV.setText(createId())
+
+
             keyId = intent.getStringExtra("id")
+
+            println("--------GPS_LAT $GPS_LAT")
+
+
             val dataList: Array<String> = arrayOf("*");
+
+            var basedata= db.query("Base", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+
+            while(basedata.moveToNext()){
+
+                basechkdata = true
+
+                var base : Base = Base(basedata.getInt(0) , basedata.getString(1), basedata.getString(2), basedata.getString(3), basedata.getString(4), basedata.getString(5) , basedata.getString(6),basedata.getString(7))
+
+                tvINV_PERSONTV.setText(base.INV_PERSON)
+                etINV_DTTV.setText(base.INV_DT)
+                etINV_TMTV.setText(base.INV_TM)
+
+                GPS_LAT.split(",")
+
+                var baseGPS_LAT =  GPS_LAT.split(",")
+                var baseGPS_LON =  GPS_LON.split(",")
+
+                etGPS_LATTV.setText(baseGPS_LAT.get(0).toString())
+                etGPS_LONTV.setText(baseGPS_LON.get(0).toString())
+
+                if(basechkdata){
+
+                }else {
+                    val base : Base = Base(null,keyId,GPS_LAT,GPS_LON,"",tvINV_PERSONTV.text.toString(),etINV_DTTV.text.toString(),etINV_TMTV.text.toString())
+
+                    dbManager.insertbase(base)
+
+                }
+
+            }
+
+
 
             println("keyIdkeyId=========================== : $keyId")
 
@@ -261,7 +331,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 }
 
 
-                ETTY_MARKET.setText(biotope_attribute.TY_MARK)
+                TVTY_MARKTV.setText(biotope_attribute.TY_MARK)
                 etGV_RATEET.setText(biotope_attribute.GV_RATE.toString())
                 etGV_STRUCTET.setText(biotope_attribute.GV_STRUCT)
                 etDIS_RETET.setText(biotope_attribute.DIS_RET)
@@ -486,7 +556,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
 
                 biotope_attribute.LC_GR_NUM = ETlcmGR_NumET.text.toString()
-                biotope_attribute.TY_MARK = ETTY_MARKET.text.toString()
+                biotope_attribute.TY_MARK = TVTY_MARKTV.text.toString()
 
                 if (etGV_RATEET.text.isNotEmpty()) {
 
@@ -709,7 +779,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     }
 
 
-                    ETTY_MARKET.setText(biotope_attribute.TY_MARK)
+                    TVTY_MARKTV.setText(biotope_attribute.TY_MARK)
                     etGV_RATEET.setText(biotope_attribute.GV_RATE.toString())
                     etGV_STRUCTET.setText(biotope_attribute.GV_STRUCT)
                     etDIS_RETET.setText(biotope_attribute.DIS_RET)
@@ -896,7 +966,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 }
 
 
-                ETTY_MARKET.setText(biotope_attribute.TY_MARK)
+                TVTY_MARKTV.setText(biotope_attribute.TY_MARK)
                 etGV_RATEET.setText(biotope_attribute.GV_RATE.toString())
                 etGV_STRUCTET.setText(biotope_attribute.GV_STRUCT)
                 etDIS_RETET.setText(biotope_attribute.DIS_RET)
@@ -1047,7 +1117,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         //현존식생현황 분류 버튼
         btn_Dlg3.setOnClickListener {
 
-            val intent = Intent(this, DlgBiotopeClassAcitivity::class.java)
+            val intent = Intent(this, DlgBiotopeClassActivity::class.java)
             intent.putExtra("title", "현존식생현황 분류기준")
             intent.putExtra("table","biotopeClass")
             intent.putExtra("DlgHeight", 600f);
@@ -1119,7 +1189,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
 
                         biotope_attribute.LC_GR_NUM = ETlcmGR_NumET.text.toString()
-                        biotope_attribute.TY_MARK = ETTY_MARKET.text.toString()
+                        biotope_attribute.TY_MARK = TVTY_MARKTV.text.toString()
 
                         if (etGV_RATEET.text.isNotEmpty()) {
 
@@ -1444,6 +1514,10 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         var biotopeClass: BiotopeClass
 
+        var vegetation: Vegetation
+
+        var number: Number
+
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 SET_DATA1 -> {
@@ -1493,7 +1567,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     } else if (biotopeModel.codeType == "biotopeS") {
 
                         TVTY_MARKTV.setText(biotopeModel.name)
-                        ETTY_MARKET.setText(biotopeModel.code)
+                        TVTY_MARKTV.setText(biotopeModel.code)
                     }
 
                 }
@@ -1540,8 +1614,28 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                 SET_DATA6 -> {
 
-                    biotopeClass = data!!.getSerializableExtra("classData") as BiotopeClass
+                    if(data!!.getSerializableExtra("biotopeClass") != null) {
+                        biotopeClass = data!!.getSerializableExtra("biotopeClass") as BiotopeClass
 
+                        println("biotopeSize ${biotopeClass.sign}")
+
+                        TVTY_MARKTV.setText(biotopeClass.sign)
+
+                    }
+
+                    if(data!!.getSerializableExtra("Vegetation") != null) {
+                        vegetation = data!!.getSerializableExtra("Vegetation") as Vegetation
+                        if(data!!.getSerializableExtra("Number") != null) {
+                            number = data!!.getSerializableExtra("Number") as Number
+                            TVTY_MARKTV.setText(vegetation.SIGN + number.COUNT)
+                        }
+
+                    }
+
+
+                }
+
+                BIOTOPE_BASE ->{
 
 
                 }
@@ -1972,7 +2066,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         etSTAND_HET.setText("")
         TVLC_GR_NUMTV.setText("")
 
-        ETTY_MARKET.setText("")
+        TVTY_MARKTV.setText("")
         etGV_RATEET.setText("")
         etGV_STRUCTET.setText("")
         etDIS_RETET.setText("")
@@ -2106,7 +2200,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 etlcmTypewET.setText(biotope_attribute.LC_TY)
             }
 
-            ETTY_MARKET.setText(biotope_attribute.TY_MARK)
+            TVTY_MARKTV.setText(biotope_attribute.TY_MARK)
             etGV_RATEET.setText(biotope_attribute.GV_RATE.toString())
             etGV_STRUCTET.setText(biotope_attribute.GV_STRUCT)
             etDIS_RETET.setText(biotope_attribute.DIS_RET)

@@ -275,7 +275,7 @@
                     android:layout_weight="1"
                     android:id="@+id/insectspecnmET"
                     android:hint="click"
-                    style="@style/BiotopeTextView"
+                    style="@style/BiotopeTextViewDisabled"
                     android:gravity="center"
                     />
             </LinearLayout>
@@ -350,7 +350,7 @@
                     android:layout_weight="1"
                     android:id="@+id/insectobsstatTV"
                     android:hint="click"
-                    style="@style/BiotopeTextView"
+                    style="@style/BiotopeTextViewDisabled"
                     android:gravity="center"
                     />
                 <EditText
@@ -380,7 +380,7 @@
                     android:layout_weight="1"
                     android:hint="click"
                     android:id="@+id/insectusetarTV"
-                    style="@style/BiotopeTextView"
+                    style="@style/BiotopeTextViewDisabled"
                     android:gravity="center"
                     />
                 <EditText
@@ -409,7 +409,7 @@
                     android:layout_weight="1"
                     android:hint="click"
                     android:id="@+id/insectmjactTV"
-                    style="@style/BiotopeTextView"
+                    style="@style/BiotopeTextViewDisabled"
                     android:gravity="center"
                     />
                 <EditText
@@ -439,7 +439,7 @@
                     android:layout_weight="1"
                     android:hint="click"
                     android:id="@+id/insectinvmeanTV"
-                    style="@style/BiotopeTextView"
+                    style="@style/BiotopeTextViewDisabled"
                     android:gravity="center"
                     />
                 <EditText

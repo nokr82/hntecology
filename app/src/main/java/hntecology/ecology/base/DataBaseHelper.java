@@ -12,8 +12,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 
+import hntecology.ecology.model.Base;
 import hntecology.ecology.model.Biotope_attribute;
 import hntecology.ecology.model.Birds_attribute;
 import hntecology.ecology.model.Fish_attribute;
@@ -23,7 +23,6 @@ import hntecology.ecology.model.Insect_attribute;
 import hntecology.ecology.model.Mammal_attribute;
 import hntecology.ecology.model.Reptilia_attribute;
 import hntecology.ecology.model.Tracking;
-import hntecology.ecology.model.Vegetation;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -375,9 +374,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         queryinsect += ",UNUS_NOTE	String";
         queryinsect += ",GPS_LAT	Float";
         queryinsect += ",GPS_LON	Float";
-        querybrids += ",TEMP_YN	String";
+        queryinsect += ",TEMP_YN	String";
         queryinsect += ");";
         db.execSQL(queryinsect);
+
+
 
 
 //        query = "create table if not exists ";
@@ -506,13 +507,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public void insertbirds_attribute(Birds_attribute birds_attribute){
         String query = "INSERT INTO birdsAttribute";
-        query += "(id,GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
+        query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,OBS_STAT,OBS_ST_ETC";
         query += ",USE_TAR,USE_TAR_SP,USE_LAYER,MJ_ACT,MJ_ACT_PR,GPS_LAT,GPS_LON,TEMP_YN)";
 
         query += " values (";
-        query += " '" + birds_attribute.getId() + "'";
-        query += ", '" + birds_attribute.getGROP_ID() + "'";
+        query += " '" + birds_attribute.getGROP_ID() + "'";
         query += ", '" + birds_attribute.getPRJ_NAME() + "'";
         query += ", '" + birds_attribute.getINV_REGION() + "'";
         query += ", '" + birds_attribute.getINV_DT() + "'";
@@ -783,6 +783,26 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
         db.close();
     }
+
+    public void insertbase(Base base){
+        String query = "INSERT INTO base";
+        query += "(GROP_ID,GPS_LAT,GPS_LON,PRJ_NAME,INV_PERSON,INV_DT,INV_TM)";
+
+        query += " values (";
+        query += " '" + base.getGROP_ID() + "'";
+        query += ", '" + base.getPRJ_NAME() + "'";
+        query += ", '" + base.getGPS_LAT() + "'";
+        query += ", '" + base.getGPS_LON() + "'";
+        query += ", '" + base.getINV_PERSON() + "'";
+        query += ", '" + base.getINV_DT() + "'";
+        query += ", '" + base.getINV_TM() + "'";
+        query += " ); ";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
 
 
 

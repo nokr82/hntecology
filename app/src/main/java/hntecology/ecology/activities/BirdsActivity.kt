@@ -19,25 +19,27 @@ import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.OpenAlertDialog
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
-import hntecology.ecology.model.Biotope_attribute
-import hntecology.ecology.model.Birds_attribute
+import hntecology.ecology.model.*
 import io.nlopez.smartlocation.OnLocationUpdatedListener
 import io.nlopez.smartlocation.SmartLocation
 import io.nlopez.smartlocation.location.config.LocationAccuracy
 import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
-import kotlinx.android.synthetic.main.activity_biotope.*
 import kotlinx.android.synthetic.main.activity_birds.*
-import kotlinx.android.synthetic.main.activity_insect.*
 
 class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
     lateinit var openAlertDialog: OpenAlertDialog;
+
+    private lateinit var googleMap: GoogleMap
 
     lateinit var context: Context;
 
@@ -45,6 +47,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
     val SET_DATA2 = 2;
     val SET_DATA3 = 3;
     val SET_BIRDS = 4;
+    val SET_DATA4 = 5;
 
     var userName = "";
 
@@ -56,15 +59,22 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
     var latitude = 0.0f;
     var longitude = 0.0f;
 
+    var lat:String = ""
+    var log:String = ""
+
     private var progressDialog: ProgressDialog? = null
 
     var type = "write";
 
     var keyId: String? = null;
 
+    var pk : String? = null
+
     var page:Int? = null
 
     var dataArray:ArrayList<Birds_attribute> = ArrayList<Birds_attribute>()
+
+    var basechkdata = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,31 +106,105 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         val num = dbManager.birdsNextNum();
         numTV.text = num.toString()
 
-        if (intent.getSerializableExtra("id") != null) {
-            keyId = intent.getStringExtra("id")
+        if(intent.getStringExtra("latitude")!= null){
+            lat = intent.getStringExtra("latitude")
+
+            println("==============$lat")
+            gpslatTV.setText(lat)
+        }
+
+        if(intent.getStringExtra("longitude")!= null){
+            log = intent.getStringExtra("longitude")
+            println("==============$log")
+            gpslonTV.setText(log)
+        }
+
+        keyId = intent.getStringExtra("GROP_ID")
+
+        println("birds -------------------$keyId")
+
+        val dataList: Array<String> = arrayOf("*");
+
+        var basedata= db.query("Base", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+
+        while(basedata.moveToNext()){
+
+            basechkdata = true
+
+            var base : Base = Base(basedata.getInt(0) , basedata.getString(1), basedata.getString(2), basedata.getString(3), basedata.getString(4), basedata.getString(5) , basedata.getString(6),basedata.getString(7))
+
+            println("keyid ==== $keyId")
+            println("base ==== ${base.GROP_ID}")
+
+            invPersonTV.setText(base.INV_PERSON)
+            invDtTV.setText(base.INV_DT)
+            timeTV.setText(base.INV_TM)
+
+            gpslatTV.setText(base.GPS_LAT)
+            gpslonTV.setText(base.GPS_LON)
+
+            lat = base.GPS_LAT!!
+            log = base.GPS_LON!!
+
+
+        }
+
+        if(basechkdata){
+
+        }else {
+
+            val base : Base = Base(null,keyId,lat,log,"",invPersonTV.text.toString(),invDtTV.text.toString(),timeTV.text.toString())
+
+            dbManager.insertbase(base)
+
+        }
+
+                if (intent.getSerializableExtra("GROP_ID") != null) {
+                    keyId = intent.getStringExtra("GROP_ID")
+
+                    val dataList: Array<String> = arrayOf("*");
+
+                    val data = db.query("birdsAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+
+
+                    if (dataArray != null) {
+                        dataArray.clear()
+                    }
+
+                    while (data.moveToNext()) {
+
+                        chkdata = true
+
+                        var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+                                , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25), data.getString(26))
+
+                        dataArray.add(birds_attribute)
+
+                    }
+
+                    println("dataArrayList ${dataArray.size}")
+                }
+
+        if (intent.getStringExtra("id") != null) {
+            pk = intent.getStringExtra("id")
 
             val dataList: Array<String> = arrayOf("*");
 
-            println("keyId : $keyId")
-
-            val data= db.query("birdsAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data = db.query("birdsAttribute", dataList, "id = '$pk'", null, null, null, "", null)
 
             while (data.moveToNext()) {
+
                 chkdata = true
+
                 var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                        , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25) , data.getString(26))
+                        , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25), data.getString(26))
 
-                val id = birds_attribute.id
 
-                gpslatTV.setText(birds_attribute.GPS_LAT.toString())
-                gpslonTV.setText(birds_attribute.GPS_LON.toString())
-
-                invDtTV.setText(birds_attribute.INV_DT)
-                invPersonTV.setText(birds_attribute.INV_PERSON)
-
-                timeTV.setText(birds_attribute.INV_TM)
+                                invPersonTV.setText(birds_attribute.INV_PERSON)
 
                 invRegionET.setText(birds_attribute.INV_REGION)
 
@@ -161,184 +245,252 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 }
 
                 if(birds_attribute.TEMP_YN.equals("N")){
-                    dbManager.deletebirds_attribute(birds_attribute,id)
+                    dbManager.deletebirds_attribute(birds_attribute,pk)
                 }
 
                 if(birds_attribute.TEMP_YN.equals("Y")){
                     dataArray.add(birds_attribute)
                 }
 
-
-            }
-
-            page = dataArray.size
-
-            birdspageTV.text = page.toString() + " / " + dataArray.size
-
-        }
-
-        birdsleftLL.setOnClickListener {
-
-            val dataList: Array<String> = arrayOf("*");
-
-            val data= db.query("birdsAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
-
-
-            if (dataArray != null){
-                dataArray.clear()
-            }
-
-            while (data.moveToNext()) {
-
-                chkdata = true
-
-                var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                        data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                        , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25),data.getString(26))
-
-                dataArray.add(birds_attribute)
-
-            }
-
-            if(page == dataArray.size && page!! > 1 ){
-                page = page!! - 1
-                birdspageTV.text = page.toString() + " / " + dataArray.size
-
-                clear()
-
-                resetPage(page!!)
-
-            }else if (page!! < dataArray.size && page!! > 1){
-                page = page!! - 1
-                birdspageTV.text = page.toString() + " / " + dataArray.size
-
-                clear()
-
-                resetPage(page!!)
             }
 
         }
 
-        birdsrightLL.setOnClickListener {
-            clear()
-
-            val dataList: Array<String> = arrayOf("*");
-
-            val data= db.query("birdsAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
-
-            if (dataArray != null){
-                dataArray.clear()
-            }
-
-            while (data.moveToNext()) {
-
-                chkdata = true
-
-                var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                        data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                        , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25), data.getString(26))
-
-                dataArray.add(birds_attribute)
-
-                println("dataArray $$$$$$$$ ${dataArray.size}")
-
-            }
-
-            var birds_attribute: Birds_attribute = Birds_attribute(null,null,null,null,null,null,null,null,null,null,
-                    null,null,null,null,null,null,null,null,null,null,null,null,
-                    null,null,null,null,null)
-
-            birds_attribute.id = keyId + page.toString()
-
-            birds_attribute.GROP_ID = keyId
-
-            birds_attribute.INV_REGION = invRegionET.text.toString()
-            birds_attribute.INV_DT = Utils.todayStr()
-
-            birds_attribute.INV_PERSON = invPersonTV.text.toString()
-            birds_attribute.WEATHER = weatherTV.text.toString()
-
-            birds_attribute.WEATHER = btn1.text.toString()
-            birds_attribute.WIND = btn2.text.toString()
-            birds_attribute.WIND_DIRE = btn3.text.toString()
-
-            if(temperatureET.text.isNotEmpty()){
-                Utils.getString(temperatureET).toFloat();
-            }
-
-            birds_attribute.ETC = etcET.text.toString()
-
-            birds_attribute.NUM = numTV.text.toString().toInt()
-
-            birds_attribute.INV_TM = Utils.timeStr()
-
-            birds_attribute.SPEC_NM = birdsTV.text.toString()
-
-            birds_attribute.FAMI_NM = familyNameTV.text.toString()
-            birds_attribute.SCIEN_NM = zoologicalTV.text.toString()
-
-            if (indicntET.text.isNotEmpty()) {
-                birds_attribute.INDI_CNT = indicntET.text.toString().toInt()
-            }
-
-            birds_attribute.OBS_STAT = obsstatTV.text.toString()
-            birds_attribute.USE_TAR = useTarTV.text.toString()
-            birds_attribute.USE_TAR_SP = useTarSpET.text.toString()
-            birds_attribute.USE_LAYER = useLayerTV.text.toString()
-
-            birds_attribute.MJ_ACT = mjActTV.text.toString()
-            birds_attribute.MJ_ACT_PR = mjActPrET.text.toString()
-
-            birds_attribute.GPS_LAT = 0F
-            birds_attribute.GPS_LON = 0F
-
-            birds_attribute.TEMP_YN = "N"
-
-            if(page == dataArray.size){
-
-                println("insert======")
-
-                dbManager.insertbirds_attribute(birds_attribute)
-                page = page!! + 1
-                println("id : ===== ${birds_attribute.id}")
-            }
-
-
-            val data2= db.query("birdsAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
-
-            if (dataArray != null){
-                dataArray.clear()
-            }
-
-
-            while (data2.moveToNext()) {
-
-                chkdata = true
-
-
-                var birds_attribute: Birds_attribute = Birds_attribute(data2.getString(0), data2.getString(1), data2.getString(2), data2.getString(3), data2.getString(4), data2.getString(5), data2.getString(6), data2.getString(7),
-                        data2.getString(8), data2.getFloat(9), data2.getString(10), data2.getInt(11), data2.getString(12), data2.getString(13), data2.getString(14)
-                        , data2.getString(15), data2.getInt(16), data2.getString(17), data2.getString(18), data2.getString(19), data2.getString(20), data2.getString(21)
-                        , data2.getString(22), data2.getString(23), data2.getFloat(24), data2.getFloat(25), data2.getString(26))
-
-                println("data2 ======= $data2")
-
-                dataArray.add(birds_attribute)
-
-            }
-
-            if(page!! < dataArray.size){
-                page = page!! + 1
-            }
-
-
-            birdspageTV.setText(page.toString() + " / " + dataArray.size)
-
-            resetPage(page!!)
-
-        }
+//        if (intent.getSerializableExtra("GROP_ID") != null) {
+//            keyId = intent.getStringExtra("GROP_ID")
+//
+//            val dataList: Array<String> = arrayOf("*");
+//
+//            println("keyId : $keyId")
+//
+//
+//
+//            val data= db.query("birdsAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+//
+//            while (data.moveToNext()) {
+//                chkdata = true
+//                var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+//                        data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+//                        , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+//                        , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25) , data.getString(26))
+//
+//                val id = birds_attribute.id
+//
+//                invPersonTV.setText(birds_attribute.INV_PERSON)
+//
+//                invRegionET.setText(birds_attribute.INV_REGION)
+//
+//                btn1.setText(birds_attribute.WEATHER)       //날씨
+//                btn2.setText(birds_attribute.WIND)          //바람
+//                btn3.setText(birds_attribute.WIND_DIRE)     //풍향
+//
+//                temperatureET.setText(birds_attribute.TEMPERATUR.toString())       //기온
+//                etcET.setText(birds_attribute.ETC)
+//
+//                birdsTV.setText(birds_attribute.SPEC_NM)
+//                familyNameTV.setText(birds_attribute.FAMI_NM)
+//                zoologicalTV.setText(birds_attribute.SCIEN_NM)
+//                indicntET.setText(birds_attribute.INDI_CNT.toString())
+//
+//                obsstatTV.setText(birds_attribute.OBS_STAT)
+//                useTarTV.setText(birds_attribute.USE_TAR)
+//                useTarSpET.setText(birds_attribute.USE_TAR_SP)
+//                if(birds_attribute.USE_TAR_SP == null || birds_attribute.USE_TAR_SP.equals("")){
+//                    useTarSpET.setText("")
+//                    useTarSpLL.visibility = View.GONE
+//                }
+//
+//                if(birds_attribute.USE_TAR_SP != null && !birds_attribute.USE_TAR_SP.equals("")){
+//                    useTarSpLL.visibility = View.VISIBLE
+//                }
+//
+//                useLayerTV.setText(birds_attribute.USE_LAYER)
+//                mjActTV.setText(birds_attribute.MJ_ACT)
+//                mjActPrET.setText(birds_attribute.MJ_ACT_PR)
+//                if(birds_attribute.MJ_ACT_PR == null || birds_attribute.MJ_ACT_PR.equals("")){
+//                    mjActPrET.setText("")
+//                    mjActPrLL.visibility = View.GONE
+//                }
+//
+//                if(birds_attribute.MJ_ACT_PR != null && !birds_attribute.MJ_ACT_PR.equals("")){
+//                    mjActPrLL.visibility = View.VISIBLE
+//                }
+//
+//                if(birds_attribute.TEMP_YN.equals("N")){
+//                    dbManager.deletebirds_attribute(birds_attribute,id)
+//                }
+//
+//                if(birds_attribute.TEMP_YN.equals("Y")){
+//                    dataArray.add(birds_attribute)
+//                }
+//
+//
+//            }
+//
+//            page = dataArray.size
+//
+//            birdspageTV.text = page.toString() + " / " + dataArray.size
+//
+//        }
+//
+//        birdsleftLL.setOnClickListener {
+//
+//            val dataList: Array<String> = arrayOf("*");
+//
+//            val data= db.query("birdsAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+//
+//
+//            if (dataArray != null){
+//                dataArray.clear()
+//            }
+//
+//            while (data.moveToNext()) {
+//
+//                chkdata = true
+//
+//                var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+//                        data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+//                        , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+//                        , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25),data.getString(26))
+//
+//                dataArray.add(birds_attribute)
+//
+//            }
+//
+//            if(page == dataArray.size && page!! > 1 ){
+//                page = page!! - 1
+//                birdspageTV.text = page.toString() + " / " + dataArray.size
+//
+//                clear()
+//
+//                resetPage(page!!)
+//
+//            }else if (page!! < dataArray.size && page!! > 1){
+//                page = page!! - 1
+//                birdspageTV.text = page.toString() + " / " + dataArray.size
+//
+//                clear()
+//
+//                resetPage(page!!)
+//            }
+//
+//        }
+//
+//        birdsrightLL.setOnClickListener {
+//            clear()
+//
+//            val dataList: Array<String> = arrayOf("*");
+//
+//            val data= db.query("birdsAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+//
+//            if (dataArray != null){
+//                dataArray.clear()
+//            }
+//
+//            while (data.moveToNext()) {
+//
+//                chkdata = true
+//
+//                var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+//                        data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+//                        , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+//                        , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25), data.getString(26))
+//
+//                dataArray.add(birds_attribute)
+//
+//            }
+//
+//            var birds_attribute: Birds_attribute = Birds_attribute(null,null,null,null,null,null,null,null,null,null,
+//                    null,null,null,null,null,null,null,null,null,null,null,null,
+//                    null,null,null,null,null)
+//
+//            birds_attribute.id = keyId + page.toString()
+//
+//            birds_attribute.GROP_ID = keyId
+//
+//            birds_attribute.INV_REGION = invRegionET.text.toString()
+//            birds_attribute.INV_DT = Utils.todayStr()
+//
+//            birds_attribute.INV_PERSON = invPersonTV.text.toString()
+//            birds_attribute.WEATHER = weatherTV.text.toString()
+//
+//            birds_attribute.WEATHER = btn1.text.toString()
+//            birds_attribute.WIND = btn2.text.toString()
+//            birds_attribute.WIND_DIRE = btn3.text.toString()
+//
+//            if(temperatureET.text.isNotEmpty()){
+//                Utils.getString(temperatureET).toFloat();
+//            }
+//
+//            birds_attribute.ETC = etcET.text.toString()
+//
+//            birds_attribute.NUM = numTV.text.toString().toInt()
+//
+//            birds_attribute.INV_TM = Utils.timeStr()
+//
+//            birds_attribute.SPEC_NM = birdsTV.text.toString()
+//
+//            birds_attribute.FAMI_NM = familyNameTV.text.toString()
+//            birds_attribute.SCIEN_NM = zoologicalTV.text.toString()
+//
+//            if (indicntET.text.isNotEmpty()) {
+//                birds_attribute.INDI_CNT = indicntET.text.toString().toInt()
+//            }
+//
+//            birds_attribute.OBS_STAT = obsstatTV.text.toString()
+//            birds_attribute.USE_TAR = useTarTV.text.toString()
+//            birds_attribute.USE_TAR_SP = useTarSpET.text.toString()
+//            birds_attribute.USE_LAYER = useLayerTV.text.toString()
+//
+//            birds_attribute.MJ_ACT = mjActTV.text.toString()
+//            birds_attribute.MJ_ACT_PR = mjActPrET.text.toString()
+//
+//            birds_attribute.GPS_LAT = 0F
+//            birds_attribute.GPS_LON = 0F
+//
+//            birds_attribute.TEMP_YN = "N"
+//
+//            if(page == dataArray.size){
+//
+//                dbManager.insertbirds_attribute(birds_attribute)
+//                page = page!! + 1
+//
+//            }
+//
+//
+//            val data2= db.query("birdsAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+//
+//            if (dataArray != null){
+//                dataArray.clear()
+//            }
+//
+//
+//            while (data2.moveToNext()) {
+//
+//                chkdata = true
+//
+//
+//                var birds_attribute: Birds_attribute = Birds_attribute(data2.getString(0), data2.getString(1), data2.getString(2), data2.getString(3), data2.getString(4), data2.getString(5), data2.getString(6), data2.getString(7),
+//                        data2.getString(8), data2.getFloat(9), data2.getString(10), data2.getInt(11), data2.getString(12), data2.getString(13), data2.getString(14)
+//                        , data2.getString(15), data2.getInt(16), data2.getString(17), data2.getString(18), data2.getString(19), data2.getString(20), data2.getString(21)
+//                        , data2.getString(22), data2.getString(23), data2.getFloat(24), data2.getFloat(25), data2.getString(26))
+//
+//                println("data2 ======= $data2")
+//
+//                dataArray.add(birds_attribute)
+//
+//            }
+//
+//            if(page!! < dataArray.size){
+//                page = page!! + 1
+//            }
+//
+//
+//            birdspageTV.setText(page.toString() + " / " + dataArray.size)
+//
+//            resetPage(page!!)
+//
+//        }
 
 
         cancelBtn.setOnClickListener {
@@ -367,9 +519,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                                 null,null,null,null,null,null,null,null,null,null,null,null,
                                 null,null,null,null,null)
 
-                        val id = keyId + page.toString()
-
-                        birds_attribute.id = id
+                        keyId = intent.getStringExtra("GROP_ID")
 
                         birds_attribute.GROP_ID = keyId
 
@@ -425,11 +575,11 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
 
                         if (gpslatTV.text.isNotEmpty()) {
-                            birds_attribute.GPS_LAT = latitude
+                            birds_attribute.GPS_LAT = lat.toFloat()
                         }
 
                         if (gpslonTV.text.isNotEmpty()) {
-                            birds_attribute.GPS_LON = longitude
+                            birds_attribute.GPS_LON = log.toFloat()
                         }
 
 
@@ -439,8 +589,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                             birds_attribute.TEMP_YN = "Y"
 
-                            val tmppage = page!!-1
-                            val pk = keyId + tmppage.toString()
+                            pk = intent.getStringExtra("id")
+
                             dbManager.updatebirds_attribute(birds_attribute,pk)
 
                         }else {
@@ -476,10 +626,9 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                                 null,null,null,null,null,null,null,null,null,null,null,null,
                                 null,null,null,null,null)
 
-                        val tmppage = page!! - 1 !!
-                        val id = keyId + tmppage.toString()
+                        pk = intent.getStringExtra("id")
 
-                        dbManager.deletebirds_attribute(birds_attribute,id)
+                        dbManager.deletebirds_attribute(birds_attribute,pk)
 
                         finish()
 
@@ -584,9 +733,95 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
         }
 
+        nextTV.setOnClickListener {
+            clear()
 
-        initGPS();
+            var birds_attribute: Birds_attribute = Birds_attribute(null,null,null,null,null,null,null,null,null,null,
+                    null,null,null,null,null,null,null,null,null,null,null,null,
+                    null,null,null,null,null)
 
+            keyId = intent.getStringExtra("GROP_ID")
+
+            birds_attribute.GROP_ID = keyId
+
+            println("next----------------------------------------------------${birds_attribute.GROP_ID}")
+
+            birds_attribute.PRJ_NAME = ""
+
+            birds_attribute.INV_REGION = invRegionET.text.toString()
+
+
+            birds_attribute.INV_DT = Utils.todayStr()
+
+
+            if(invPersonTV.text == null){
+                birds_attribute.INV_PERSON = userName
+            }else {
+                birds_attribute.INV_PERSON = invPersonTV.text.toString()
+            }
+
+            birds_attribute.WEATHER = btn1.text.toString()
+
+            birds_attribute.WIND = btn2.text.toString()
+
+            birds_attribute.WIND_DIRE = btn3.text.toString()
+
+            if(temperatureET.text.isNotEmpty()){
+                Utils.getString(temperatureET).toFloat();
+            }
+
+            birds_attribute.ETC = etcET.text.toString()
+
+            birds_attribute.NUM = numTV.text.toString().toInt()
+
+            birds_attribute.INV_TM = Utils.timeStr()
+
+            birds_attribute.SPEC_NM = birdsTV.text.toString()
+
+            birds_attribute.FAMI_NM = familyNameTV.text.toString()
+
+            birds_attribute.SCIEN_NM = zoologicalTV.text.toString()
+
+            if (indicntET.text.isNotEmpty()) {
+                birds_attribute.INDI_CNT = indicntET.text.toString().toInt()
+            }
+
+            birds_attribute.OBS_STAT = obsstatTV.text.toString()
+
+            birds_attribute.USE_TAR = useTarTV.text.toString()
+            birds_attribute.USE_TAR_SP = useTarSpET.text.toString()
+
+            birds_attribute.USE_LAYER = useLayerTV.text.toString()
+
+            birds_attribute.MJ_ACT = mjActTV.text.toString()
+            birds_attribute.MJ_ACT_PR = mjActPrET.text.toString()
+
+
+            if (gpslatTV.text.isNotEmpty()) {
+                birds_attribute.GPS_LAT = lat.toFloat()
+            }
+
+            if (gpslonTV.text.isNotEmpty()) {
+                birds_attribute.GPS_LON = log.toFloat()
+            }
+
+            birds_attribute.TEMP_YN = "Y"
+
+            dbManager.insertbirds_attribute(birds_attribute)
+
+            finish()
+
+        }
+
+        obsstatTV.setOnClickListener {
+            val intent = Intent(this, DlgBridsClassActivity::class.java)
+            intent.putExtra("title", "토지이용유형 분류")
+            intent.putExtra("table", "Region")
+            intent.putExtra("DlgHeight", 600f);
+            startActivityForResult(intent, SET_DATA4);
+        }
+
+//        initGPS();
 
     }
 
@@ -605,7 +840,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         builder.setTitle(title);
 
         builder.setItems(items, DialogInterface.OnClickListener { dialogInterface, i ->
-
 
             var selectItem = ListItems.get(i);
 
@@ -715,6 +949,10 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        var region: Region
+
+        var vegetation: Vegetation
+
         if (resultCode == Activity.RESULT_OK) {
 
             when (requestCode) {
@@ -745,6 +983,36 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                     zoologicalTV.text = zoological
 
                 };
+
+                SET_DATA4 -> {
+
+                    if(data!!.getSerializableExtra("Region") != null) {
+                        region = data!!.getSerializableExtra("Region") as Region
+                        obsstatET.visibility = View.GONE
+                        obsstatTV.visibility = View.VISIBLE
+                        obsstatTV.setText(region.SMALLCATEGORY)
+                    }
+
+                    if(data!!.getSerializableExtra("Vegetation") != null) {
+                        vegetation = data!!.getSerializableExtra("Vegetation") as Vegetation
+                        obsstatET.visibility = View.GONE
+                        obsstatTV.visibility = View.VISIBLE
+                        obsstatTV.setText(vegetation.CORRESPONDINGNAME)
+
+                    }
+
+                    if(data!!.getIntExtra("Other",0) != null){
+                        val count = data!!.getIntExtra("Other",0)
+
+                        if(count == 1000){
+                        obsstatET.visibility = View.VISIBLE
+                        obsstatTV.visibility = View.GONE
+                        }
+                    }
+
+
+
+                }
             }
         }
     }
@@ -757,8 +1025,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             latitude = p0.getLatitude().toFloat()
             longitude = p0.getLongitude().toFloat()
 
-            gpslatTV.setText(latitude.toString())
-            gpslonTV.setText(longitude.toString())
+            gpslatTV.setText(lat)
+            gpslonTV.setText(log)
 
             if (progressDialog != null) {
                 progressDialog!!.dismiss()
@@ -775,8 +1043,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
 
     fun clear(){
-
-        timeTV.setText("")
 
         invRegionET.setText("")
 
@@ -798,6 +1064,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         useLayerTV.setText("")
         mjActTV.setText("")
         mjActPrET.setText("")
+
     }
 
     fun resetPage(page : Int){
@@ -808,13 +1075,9 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
         val db = dbManager.createDataBase()
 
-        val tmppages = page - 1
+         pk = intent.getStringExtra("id")
 
-        val id = keyId + tmppages.toString()
-
-        println("id : ===== $id")
-
-        val data = db.query("birdsAttribute", dataList, "id = '${id}'", null, null, null, "", null);
+        val data = db.query("birdsAttribute", dataList, "id = '${pk}'", null, null, null, "", null);
 
         while (data.moveToNext()) {
 
@@ -903,8 +1166,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 obsstatTV.setText("")
             }
 
-
-
             useTarTV.setText(birds_attribute.USE_TAR)
             if(useTarTV.text == null){
                 useTarTV.setText("")
@@ -950,8 +1211,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
 
 
-            gpslatTV.setText(birds_attribute.GPS_LAT.toString())
-            gpslonTV.setText(birds_attribute.GPS_LON.toString())
+            gpslatTV.setText(lat)
+            gpslonTV.setText(log)
 
         }
 

@@ -360,7 +360,18 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/obsstatTV"
+                    android:hint="click"
                     android:gravity="center" />
+
+                <EditText
+                    android:visibility="gone"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="입력해주세요."
+                    style="@style/BiotopeTextView"
+                    android:id="@+id/obsstatET"
+                    android:gravity="center"/>
             </LinearLayout>
 
             <LinearLayout
@@ -502,6 +513,8 @@
 
             </LinearLayout>
 
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -516,23 +529,32 @@
                     android:text="취소"/>
 
                 <TextView
-                    android:id="@+id/birdssaveBtn"
+                    android:id="@+id/nextTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    style="@style/dlgcommonButton"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="2dp"
+                    android:text="추가" />
+
+                <TextView
+                    android:id="@+id/delBtn"
                     style="@style/dlgcommonButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
-                    android:text="저장" />
+                    android:text="삭제" />
 
             </LinearLayout>
 
             <TextView
-                android:id="@+id/delBtn"
+                android:id="@+id/birdssaveBtn"
                 style="@style/dlgcommonButton"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="2dp"
-                android:text="삭제" />
+                android:text="저장" />
         </LinearLayout>
 
     </ScrollView>

@@ -187,8 +187,23 @@
         <activity
             android:name=".activities.DlgcomAcitivity"
             android:theme="@style/full_screen_dialog1" />
-        <activity android:name=".activities.DlgBiotopeClassAcitivity"
-            android:theme="@style/full_screen_dialog1"></activity>
+        <activity
+            android:name=".activities.DlgBiotopeClassActivity"
+            android:theme="@style/full_screen_dialog1"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+        <activity
+            android:name=".activities.DlgBridsClassActivity"
+            android:theme="@style/full_screen_dialog1"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+        <activity
+            android:name=".activities.DlgInsectClassActivity"
+            android:theme="@style/full_screen_dialog1"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+        <activity android:name=".activities.DlgDataListActivity"
+            android:theme="@style/full_screen_dialog1">
+
+
+        </activity>
     </application>
 
 </manifest>

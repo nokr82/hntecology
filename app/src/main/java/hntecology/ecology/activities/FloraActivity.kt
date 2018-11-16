@@ -20,11 +20,13 @@ import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
+import android.widget.Toast
 import au.com.objectix.jgridshift.Util
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
+import hntecology.ecology.model.Base
 import hntecology.ecology.model.Flora_Attribute
 import hntecology.ecology.model.Insect_attribute
 import hntecology.ecology.model.Mammal_attribute
@@ -55,11 +57,18 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
     var keyId: String? = null;
 
+    var pk: String? = null
+
     var page:Int? = null
 
     val SET_FLORA = 1
 
     var dataArray:ArrayList<Flora_Attribute> = ArrayList<Flora_Attribute>()
+
+    var lat:String = ""
+    var log:String = ""
+
+    var basechkdata = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,14 +85,11 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
         florainvdvET.setText(Utils.todayStr())
         florainvtmET.setText(Utils.timeStr())
 
-
         userName = PrefUtils.getStringPreference(context, "name");
 
         florainvperson.setText(userName)
 
         window.setLayout(Utils.dpToPx(700f).toInt(), WindowManager.LayoutParams.WRAP_CONTENT);
-
-        initGPS()
 
         val dbManager: DataBaseHelper = DataBaseHelper(this)
 
@@ -91,12 +97,69 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
         var intent: Intent = getIntent();
 
-        if (intent.getSerializableExtra("id") != null) {
-            keyId = intent.getStringExtra("id")
+        val num = dbManager.floraNextNum()
+        floranumET.text = num.toString()
+
+        if(intent.getStringExtra("latitude")!= null){
+            lat = intent.getStringExtra("latitude")
+
+            println("==============$lat")
+            floragpslatTV.setText(lat)
+        }
+
+        if(intent.getStringExtra("longitude")!= null){
+            log = intent.getStringExtra("longitude")
+            println("==============$log")
+            floragpslonTV.setText(log)
+        }
+
+        keyId = intent.getStringExtra("GROP_ID")
+
+        if(intent.getStringExtra("id") != null){
+            pk = intent.getStringExtra("id")
+        }
+
+        val dataList: Array<String> = arrayOf("*");
+
+        var basedata= db.query("Base", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+
+        while(basedata.moveToNext()){
+
+            basechkdata = true
+
+            var base : Base = Base(basedata.getInt(0) , basedata.getString(1), basedata.getString(2), basedata.getString(3), basedata.getString(4), basedata.getString(5) , basedata.getString(6),basedata.getString(7))
+
+            florainvperson.setText(base.INV_PERSON)
+            florainvdvET.setText(base.INV_DT)
+            floranumET.setText(base.INV_TM)
+
+            floragpslatTV.setText(base.GPS_LAT)
+            floragpslonTV.setText(base.GPS_LON)
+
+            lat = base.GPS_LAT!!
+            log = base.GPS_LON!!
+
+        }
+
+        if(basechkdata){
+
+        }else {
+
+            val base : Base = Base(null,keyId,"",lat,log,florainvperson.text.toString(),florainvdvET.text.toString(),floranumET.text.toString())
+
+            dbManager.insertbase(base)
+
+        }
+
+
+
+
+
+        if (intent.getStringExtra("id") != null) {
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data = db.query("floraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data = db.query("floraAttribute", dataList, "id = '$pk'", null, null, null, "", null)
 
             while (data.moveToNext()) {
                 chkdata = true
@@ -152,10 +215,6 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
 
             }
-
-            page = dataArray.size
-
-            fishpageTV.setText(page.toString() + " / " + dataArray.size.toString())
 
         }
 
@@ -314,7 +373,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
         }
 
-        btn_biotopSave1.setOnClickListener {
+        florasaveBT.setOnClickListener {
 
             val builder = AlertDialog.Builder(context)
             builder.setMessage("저장하시겠습니까 ?").setCancelable(false)
@@ -325,7 +384,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                         var flora_Attribute: Flora_Attribute = Flora_Attribute(null,null,null,null,null,null,null,null,null,null
                                 ,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 
-                        flora_Attribute.id = keyId + page.toString()
+                        keyId = intent.getStringExtra("GROP_ID")
 
                         flora_Attribute.GROP_ID = keyId
 
@@ -378,21 +437,25 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                         flora_Attribute.THRE_CAU = florathrecauET.text.toString()
 
                         if(floragpslatTV.text.isNotEmpty()){
-                            flora_Attribute.GPS_LAT = latitude
+                            flora_Attribute.GPS_LAT = lat.toFloat()
                         }
 
                         if(floragpslonTV.text.isNotEmpty()){
-                            flora_Attribute.GPS_LON = longitude
+                            flora_Attribute.GPS_LON = log.toFloat()
                         }
 
                         flora_Attribute.TEMP_YN = "Y"
 
                         if(chkdata){
-                            val tmppage = page!! - 1
-                            val pk = keyId + tmppage.toString()
-                            dbManager.updateflora_attribute(flora_Attribute,pk)
+
+                            if(pk != null){
+                                dbManager.updateflora_attribute(flora_Attribute,pk)
+                            }
+
                         }else {
+
                             dbManager.insertflora_attribute(flora_Attribute)
+
                         }
 
                         finish()
@@ -404,7 +467,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
         }
 
-        btn_biotopCancle1.setOnClickListener {
+        floracancleBT.setOnClickListener {
             val builder = AlertDialog.Builder(context)
             builder.setMessage("취소하시겠습니까 ?").setCancelable(false)
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
@@ -419,7 +482,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             alert.show()
         }
 
-        btn_biotopDelete.setOnClickListener {
+        floradeleteBT.setOnClickListener {
             val builder = AlertDialog.Builder(context)
             builder.setMessage("삭제하시겠습니까?").setCancelable(false)
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
@@ -429,10 +492,12 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                         var flora_Attribute: Flora_Attribute = Flora_Attribute(null,null,null,null,null,null,null,null,null,null
                                 ,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 
-                        val tmppage = page!! - 1
-                        val pk = keyId + tmppage.toString()
-
-                        dbManager.deleteflora_attribute(flora_Attribute,pk)
+                        if(pk != null){
+                            dbManager.deleteflora_attribute(flora_Attribute,pk)
+                            finish()
+                        }else {
+                            Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
+                        }
 
                         finish()
 
@@ -521,6 +586,90 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             startDlgFlora()
         }
 
+        floraaddBT.setOnClickListener {
+            var flora_Attribute: Flora_Attribute = Flora_Attribute(null,null,null,null,null,null,null,null,null,null
+                    ,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+
+            keyId = intent.getStringExtra("GROP_ID")
+
+            flora_Attribute.GROP_ID = keyId
+
+            flora_Attribute.PRJ_NAME = ""
+
+            flora_Attribute.INV_REGION = florainvregionET.text.toString()
+
+            flora_Attribute.INV_DT = Utils.todayStr()
+
+            if(floranumET.text.isNotEmpty()) {
+                flora_Attribute.NUM = floranumET.text.toString().toInt()
+            }
+
+            if(florainvperson.text == null || florainvperson.text.equals("")){
+                flora_Attribute.INV_PERSON = userName
+            }else {
+                flora_Attribute.INV_PERSON = florainvperson.text.toString()
+            }
+
+            flora_Attribute.WEATHER = floraweatherTV.text.toString()
+            flora_Attribute.WIND = florawindTV.text.toString()
+            flora_Attribute.WIND_DIRE = florawinddireTV.text.toString()
+
+            if(floratemperaturTV.text.isNotEmpty()) {
+                flora_Attribute.TEMPERATUR = floratemperaturTV.text.toString().toFloat()
+            }
+
+            flora_Attribute.INV_TM = Utils.timeStr()
+
+            flora_Attribute.ETC = floraetcET.text.toString()
+
+            if(floranumET.text.isNotEmpty()) {
+                flora_Attribute.NUM = floranumET.text.toString().toInt()
+            }
+
+            flora_Attribute.SPEC_NM = floraspecnmET.text.toString()
+            flora_Attribute.FAMI_NM = florafaminmTV.text.toString()
+            flora_Attribute.SCIEN_NM = florasciennmTV.text.toString()
+
+            flora_Attribute.FLORE_YN = florafloreyynTV.text.toString()
+            flora_Attribute.PLANT_YN = floraplantynTV.text.toString()
+
+            flora_Attribute.HAB_STAT = florahabstatTV.text.toString()
+            flora_Attribute.HAB_ETC = florahabstatET.text.toString()
+
+            if(floracolincnt.text.isNotEmpty()){
+                flora_Attribute.COL_IN_CNT = floracolincnt.text.toString().toInt()
+            }
+
+            flora_Attribute.THRE_CAU = florathrecauET.text.toString()
+
+            if(floragpslatTV.text.isNotEmpty()){
+                flora_Attribute.GPS_LAT = lat.toFloat()
+            }
+
+            if(floragpslonTV.text.isNotEmpty()){
+                flora_Attribute.GPS_LON = log.toFloat()
+            }
+
+            flora_Attribute.TEMP_YN = "Y"
+
+            if(chkdata){
+
+                if(pk != null){
+                    dbManager.updateflora_attribute(flora_Attribute,pk)
+                }
+
+            }else {
+
+                dbManager.insertflora_attribute(flora_Attribute)
+
+            }
+
+            clear()
+            chkdata = false
+            pk = null
+
+        }
+
 
 
     }
@@ -532,8 +681,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
     fun clear(){
 
-        florainvregionET.setText("")
-        florainvdvET.setText("")
+        florainvdvET.setText(Utils.todayStr())
 
         floraweatherTV.setText("")
         florawindTV.setText("")
@@ -831,8 +979,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
             var str = latitude.toString() + " / " + longitude.toString()
 
-            floragpslatTV.setText(latitude.toString())
-            floragpslonTV.setText(longitude.toString())
+            floragpslatTV.setText(lat)
+            floragpslonTV.setText(log)
 
             if (progressDialog != null) {
                 progressDialog!!.dismiss()

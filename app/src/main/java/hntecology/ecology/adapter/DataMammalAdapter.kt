@@ -10,9 +10,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import hntecology.ecology.R
 import hntecology.ecology.model.Birds_attribute
+import hntecology.ecology.model.Mammal_attribute
 import hntecology.ecology.model.Vegetation
 
-class DataBirdsAdapter(var context: Context, var itemList : ArrayList<Birds_attribute>) : BaseAdapter() {
+class DataMammalAdapter(var context: Context, var itemList : ArrayList<Mammal_attribute>) : BaseAdapter() {
 
     var selectIndex:Int = 0;
 
@@ -48,15 +49,15 @@ class DataBirdsAdapter(var context: Context, var itemList : ArrayList<Birds_attr
             viewHoldar = view.tag as ViewHoldar
         }
 
-        var Birds_attribute : Birds_attribute = getItem(position)
+        var Mammal_attribute : Mammal_attribute = getItem(position)
 
-        viewHoldar.class_biotope_item.text = Birds_attribute.INV_DT + " / " + Birds_attribute.INV_TM
+        viewHoldar.class_biotope_item.text = Mammal_attribute.INV_DT + " / " + Mammal_attribute.INV_TM
 
         println("hh : " + position + ", " + hashCode())
         return view as View
     }
 
-    override fun getItem(position: Int): Birds_attribute {
+    override fun getItem(position: Int): Mammal_attribute {
 
         return itemList.get(position)
     }
@@ -76,9 +77,9 @@ class DataBirdsAdapter(var context: Context, var itemList : ArrayList<Birds_attr
         itemList.clear();
         notifyDataSetChanged();
     }
-    fun addItem(Birds_attribute: Birds_attribute){
+    fun addItem(Mammal_attribute: Mammal_attribute){
 
-        itemList.add(Birds_attribute);
+        itemList.add(Mammal_attribute);
         notifyDataSetChanged()
     }
 
@@ -98,8 +99,8 @@ class DataBirdsAdapter(var context: Context, var itemList : ArrayList<Birds_attr
             itemList.set(i,bioListModel)
         }*/
 
-        var Birds_attribute:Birds_attribute = itemList.get(selectIndex);
-        itemList.set(selectIndex,Birds_attribute)
+        var Mammal_attribute:Mammal_attribute = itemList.get(selectIndex);
+        itemList.set(selectIndex,Mammal_attribute)
 
         var biotopeModel = getItem(position);
 

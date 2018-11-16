@@ -69,7 +69,7 @@
                     style="@style/BiotopeTextView"
                     android:text="조사자"/>
 
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -702,8 +702,17 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="저장"
-                    android:id="@+id/btn_biotopSave1"
+                    android:text="추가"
+                    android:layout_marginLeft="2dp"
+                    android:id="@+id/btn_add"
+                    style="@style/dlgcommonButton"
+                    />
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="삭제"
+                    android:id="@+id/btn_biotopDelete"
                     style="@style/dlgcommonButton"
                     android:layout_marginLeft="2dp"
                     />
@@ -712,8 +721,8 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="삭제"
-                android:id="@+id/btn_biotopDelete"
+                android:text="저장"
+                android:id="@+id/btn_biotopSave1"
                 style="@style/dlgcommonButton"
                 android:layout_marginTop="2dp"
                 />

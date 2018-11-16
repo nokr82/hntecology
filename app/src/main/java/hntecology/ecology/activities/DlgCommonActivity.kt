@@ -81,9 +81,6 @@ class DlgCommonActivity : Activity() {
         //대분류 데이터 셋팅
         dataList(listdata1,data1);
 
-
-
-
         //대분류 중분류 소분류
         listAdapte1 = AreaItem1Adapte(context, listdata1);
         listAdapte2 = AreaItem1Adapte(context, listdata2);

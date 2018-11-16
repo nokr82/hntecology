@@ -10,9 +10,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import hntecology.ecology.R
 import hntecology.ecology.model.Birds_attribute
+import hntecology.ecology.model.Fish_attribute
 import hntecology.ecology.model.Vegetation
 
-class DataBirdsAdapter(var context: Context, var itemList : ArrayList<Birds_attribute>) : BaseAdapter() {
+class DataFIshAdapter(var context: Context, var itemList : ArrayList<Fish_attribute>) : BaseAdapter() {
 
     var selectIndex:Int = 0;
 
@@ -48,15 +49,15 @@ class DataBirdsAdapter(var context: Context, var itemList : ArrayList<Birds_attr
             viewHoldar = view.tag as ViewHoldar
         }
 
-        var Birds_attribute : Birds_attribute = getItem(position)
+        var Fish_attribute : Fish_attribute = getItem(position)
 
-        viewHoldar.class_biotope_item.text = Birds_attribute.INV_DT + " / " + Birds_attribute.INV_TM
+        viewHoldar.class_biotope_item.text = Fish_attribute.INV_DT
 
         println("hh : " + position + ", " + hashCode())
         return view as View
     }
 
-    override fun getItem(position: Int): Birds_attribute {
+    override fun getItem(position: Int): Fish_attribute {
 
         return itemList.get(position)
     }
@@ -76,9 +77,9 @@ class DataBirdsAdapter(var context: Context, var itemList : ArrayList<Birds_attr
         itemList.clear();
         notifyDataSetChanged();
     }
-    fun addItem(Birds_attribute: Birds_attribute){
+    fun addItem(Fish_attribute: Fish_attribute){
 
-        itemList.add(Birds_attribute);
+        itemList.add(Fish_attribute);
         notifyDataSetChanged()
     }
 
@@ -98,8 +99,8 @@ class DataBirdsAdapter(var context: Context, var itemList : ArrayList<Birds_attr
             itemList.set(i,bioListModel)
         }*/
 
-        var Birds_attribute:Birds_attribute = itemList.get(selectIndex);
-        itemList.set(selectIndex,Birds_attribute)
+        var Fish_attribute:Fish_attribute = itemList.get(selectIndex);
+        itemList.set(selectIndex,Fish_attribute)
 
         var biotopeModel = getItem(position);
 

@@ -20,10 +20,12 @@ import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
+import android.widget.Toast
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
+import hntecology.ecology.model.Base
 import hntecology.ecology.model.Mammal_attribute
 import hntecology.ecology.model.Reptilia_attribute
 import io.nlopez.smartlocation.OnLocationUpdatedListener
@@ -47,6 +49,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
     var page:Int? = null
 
+    var pk:String? = null
+
     var dataArray:ArrayList<Mammal_attribute> = ArrayList<Mammal_attribute>()
 
     val REQUEST_FINE_LOCATION = 100
@@ -58,7 +62,14 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
     val SET_MAMMAL = 1
     val SET_UNSPEC = 2
 
+
+
     private var progressDialog: ProgressDialog? = null
+
+    var lat:String = ""
+    var log:String = ""
+
+    var basechkdata = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,18 +92,73 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         val db = dbManager.createDataBase();
 
+        val num =dbManager.mammalsNextNum()
+        mammalnumTV.text = num.toString()
+
         window.setLayout(Utils.dpToPx(700f).toInt(), WindowManager.LayoutParams.WRAP_CONTENT);
 
-        initGPS()
 
         var intent: Intent = getIntent();
 
-        if (intent.getSerializableExtra("id") != null) {
-            keyId = intent.getStringExtra("id")
+        if(intent.getStringExtra("latitude")!= null){
+            lat = intent.getStringExtra("latitude")
+
+            println("==============$lat")
+            mamgpslatTV.setText(lat)
+        }
+
+        if(intent.getStringExtra("longitude")!= null){
+            log = intent.getStringExtra("longitude")
+            println("==============$log")
+            mamgpslonTV.setText(log)
+        }
+
+        keyId = intent.getStringExtra("GROP_ID")
+
+        if(intent.getStringExtra("id") != null){
+            pk = intent.getStringExtra("id")
+        }
+
+        val dataList: Array<String> = arrayOf("*");
+
+        var basedata= db.query("Base", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+
+        while(basedata.moveToNext()){
+
+            basechkdata = true
+
+            var base : Base = Base(basedata.getInt(0) , basedata.getString(1), basedata.getString(2), basedata.getString(3), basedata.getString(4), basedata.getString(5) , basedata.getString(6),basedata.getString(7))
+
+            println("keyid ==== $keyId")
+            println("base ==== ${base.GROP_ID}")
+
+            maminvpersonTV.setText(base.INV_PERSON)
+            maminvdtTV.setText(base.INV_DT)
+            mammaltimeTV.setText(base.INV_TM)
+
+            mamgpslatTV.setText(base.GPS_LAT)
+            mamgpslonTV.setText(base.GPS_LON)
+
+            lat = base.GPS_LAT!!
+            log = base.GPS_LON!!
+
+        }
+
+        if(basechkdata){
+
+        }else {
+
+            val base : Base = Base(null,keyId,"",lat,log,maminvpersonTV.text.toString(),maminvdtTV.text.toString(),mammaltimeTV.text.toString())
+
+            dbManager.insertbase(base)
+
+        }
+
+        if (intent.getStringExtra("id") != null) {
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data = db.query("mammalAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data = db.query("mammalAttribute", dataList, "id = '$pk'", null, null, null, "", null)
 
             while (data.moveToNext()) {
                 chkdata = true
@@ -143,10 +209,6 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 }
 
             }
-
-            page = dataArray.size
-
-            mampageTV.setText(page.toString() + " / " + dataArray.size.toString())
 
         }
 
@@ -270,8 +332,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             mammal_attribute.UNUS_NOTE = mamunusnoteET.text.toString()
 
             if(mamgpslonTV.text.toString() != "" && mamgpslatTV.text.toString() != ""){
-                mammal_attribute.GPS_LAT = 0F
-                mammal_attribute.GPS_LON = 0F
+                mammal_attribute.GPS_LAT = lat.toFloat()
+                mammal_attribute.GPS_LON = log.toFloat()
             }
 
             mammal_attribute.UN_SPEC = mamunspecET.text.toString()
@@ -327,9 +389,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                                 ,null,null,null,null,null,null,null,null,null,null,null,null,null
                                 ,null,null,null,null,null,null)
 
-                        val id = keyId + page.toString()
 
-                        mammal_attribute.id = keyId + page.toString()
+                        keyId = intent.getStringExtra("GROP_ID")
 
                         mammal_attribute.GROP_ID = keyId
 
@@ -364,8 +425,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         mammal_attribute.FAMI_NM = mamfaminmTV.text.toString()
                         mammal_attribute.SCIEN_NM = mamsciennmTV.text.toString()
 
-                        if(mammalobstyET.text != null && !mammalobstyET.text.equals("")){
-                            mammal_attribute.OBS_TY = mammalobstyET.text.toString()
+                        if(mammalobstyTV.text != null && !mammalobstyET.text.equals("")){
+                            mammal_attribute.OBS_TY = mammalobstyTV.text.toString()
                             mammal_attribute.OBS_TY_ETC = mammalobstyET.text.toString()
                         }else {
                             mammal_attribute.OBS_TY = mammalobstyTV.text.toString()
@@ -380,8 +441,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         mammal_attribute.UNUS_NOTE = mamunusnoteET.text.toString()
 
                         if(mamgpslonTV.text.toString() != "" && mamgpslatTV.text.toString() != ""){
-                            mammal_attribute.GPS_LAT = latitude
-                            mammal_attribute.GPS_LON = longitude
+                            mammal_attribute.GPS_LAT = lat.toFloat()
+                            mammal_attribute.GPS_LON = log.toFloat()
                         }
 
                         mammal_attribute.UN_SPEC = mamunspecET.text.toString()
@@ -394,9 +455,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                         if(chkdata){
 
-                            val tmppage = page!! - 1
-                            val pk = keyId + tmppage.toString()
-                            dbManager.updatemammal_attribute(mammal_attribute,pk)
+                            if(pk != null) {
+                                dbManager.updatemammal_attribute(mammal_attribute, pk)
+                            }
 
                         }else {
 
@@ -427,12 +488,13 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                                 ,null,null,null,null,null,null,null,null,null,null,null,null,null
                                 ,null,null,null,null,null,null)
 
-                        val tmppage = page!! - 1 !!
-                        val id = keyId + tmppage.toString()
+                        if(pk != null){
+                            dbManager.deletemammal_attribute(mammal_attribute,pk)
+                            finish()
+                        }else {
+                            Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
+                        }
 
-                        dbManager.deletemammal_attribute(mammal_attribute,id)
-
-                        finish()
 
                     })
                     .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
@@ -538,13 +600,100 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             alert(listItems, "풍향", mamtreasyET, "treasy");
         }
 
+        btn_add.setOnClickListener {
+
+            var mammal_attribute:Mammal_attribute = Mammal_attribute(null,null,null,null,null,null,null,null,null
+                    ,null,null,null,null,null,null,null,null,null,null,null,null,null
+                    ,null,null,null,null,null,null)
+
+
+            keyId = intent.getStringExtra("GROP_ID")
+
+            mammal_attribute.GROP_ID = keyId
+
+            mammal_attribute.PRJ_NAME = ""
+
+            mammal_attribute.INV_REGION = maminvregionET.text.toString()
+            mammal_attribute.INV_DT = Utils.todayStr()
+
+            if(maminvpersonTV.text == null){
+                mammal_attribute.INV_PERSON = userName
+            }else {
+                mammal_attribute.INV_PERSON = maminvpersonTV.text.toString()
+            }
+
+            mammal_attribute.WEATHER = mamweatherET.text.toString()
+            mammal_attribute.WIND = mamwindET.text.toString()
+            mammal_attribute.WIND_DIRE = mamwinddireET.text.toString()
+
+            if(mamtemperatureET.text.isNotEmpty()) {
+                mammal_attribute.TEMPERATUR = mamtemperatureET.text.toString().toFloat()
+            }
+
+            mammal_attribute.ETC = mametcET.text.toString()
+
+            if(mammalnumTV.text.isNotEmpty()) {
+                mammal_attribute.NUM = mammalnumTV.text.toString().toInt()
+            }
+
+            mammal_attribute.INV_TM = Utils.timeStr()
+
+            mammal_attribute.SPEC_NM = mamspecnmET.text.toString()
+            mammal_attribute.FAMI_NM = mamfaminmTV.text.toString()
+            mammal_attribute.SCIEN_NM = mamsciennmTV.text.toString()
+
+            if(mammalobstyTV.text != null && !mammalobstyET.text.equals("")){
+                mammal_attribute.OBS_TY = mammalobstyTV.text.toString()
+                mammal_attribute.OBS_TY_ETC = mammalobstyET.text.toString()
+            }else {
+                mammal_attribute.OBS_TY = mammalobstyTV.text.toString()
+                mammal_attribute.OBS_TY_ETC = mammalobstyET.text.toString()
+            }
+
+            if(mamindicntET.text.isNotEmpty()) {
+                mammal_attribute.INDI_CNT = mamindicntET.text.toString().toInt()
+            }
+
+            mammal_attribute.OB_PT_CHAR = mamobptcharET.text.toString()
+            mammal_attribute.UNUS_NOTE = mamunusnoteET.text.toString()
+
+            if(mamgpslonTV.text.toString() != "" && mamgpslatTV.text.toString() != ""){
+                mammal_attribute.GPS_LAT = lat.toFloat()
+                mammal_attribute.GPS_LON = log.toFloat()
+            }
+
+            mammal_attribute.UN_SPEC = mamunspecET.text.toString()
+            mammal_attribute.UN_SPEC_RE = mamunspecreET.text.toString()
+
+            mammal_attribute.TR_EASY = mamtreasyET.text.toString()
+            mammal_attribute.TR_EASY_RE = mamtreasyreET.text.toString()
+
+            mammal_attribute.TEMP_YN = "Y"
+
+            if(chkdata){
+
+                if(pk != null) {
+                    dbManager.updatemammal_attribute(mammal_attribute, pk)
+                }
+
+            }else {
+
+                dbManager.insertmammal_attribute(mammal_attribute)
+
+            }
+
+            clear()
+            chkdata = false
+            pk = null
+
+        }
+
         }
 
 
 
     fun clear(){
-        maminvregionET.setText("")
-        maminvdtTV.setText("")
+        maminvdtTV.setText(Utils.todayStr())
 
         mamweatherET.setText("")
         mamwindET.setText("")
@@ -826,8 +975,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             longitude = p0.getLongitude().toFloat()
 
 
-            mamgpslatTV.setText(latitude.toString())
-            mamgpslonTV.setText(longitude.toString())
+            mamgpslatTV.setText(lat)
+            mamgpslonTV.setText(log)
 
             if (progressDialog != null) {
                 progressDialog!!.dismiss()

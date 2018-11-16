@@ -10,10 +10,10 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
 import hntecology.ecology.R
-import hntecology.ecology.adapter.DataBirdsAdapter
+import hntecology.ecology.adapter.*
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.Utils
-import hntecology.ecology.model.Birds_attribute
+import hntecology.ecology.model.*
 import kotlinx.android.synthetic.main.activity_dlg_data_list.*
 
 class DlgDataListActivity : Activity() {
@@ -22,9 +22,22 @@ class DlgDataListActivity : Activity() {
 
     private lateinit var listView1: ListView
 
+    private lateinit var biotopeData: ArrayList<Biotope_attribute>
     private lateinit var birdsData : ArrayList<Birds_attribute>
+    private lateinit var reptiliasData : ArrayList<Reptilia_attribute>
+    private lateinit var mammalsData : ArrayList<Mammal_attribute>
+    private lateinit var fishsData : ArrayList<Fish_attribute>
+    private lateinit var insectData : ArrayList<Insect_attribute>
+    private lateinit var florasData : ArrayList<Flora_Attribute>
 
+    private lateinit var biotopeAdaper : DataBiotopeAdapter
     private lateinit var birdsAadapter: DataBirdsAdapter;
+    private lateinit var reptiliaAdapter : DataReptiliaAdapter
+    private lateinit var mammalAdapter : DataMammalAdapter
+    private lateinit var fishAdapter : DataFIshAdapter
+    private lateinit var insectAdapter : DataInsectAdapter
+    private lateinit var floraAdapter : DataFloraAdapter
+
 
     var tableName:String = ""
     var titleName:String=""
@@ -63,11 +76,36 @@ class DlgDataListActivity : Activity() {
 
         listView1 = findViewById(R.id.listLV)
 
+        biotopeData = ArrayList()
         birdsData = ArrayList()
+        reptiliasData = ArrayList()
+        mammalsData = ArrayList()
+        fishsData = ArrayList()
+        insectData = ArrayList()
+        florasData = ArrayList()
 
+        biotopeAdaper = DataBiotopeAdapter(context,biotopeData)
         birdsAadapter = DataBirdsAdapter(context,birdsData)
+        reptiliaAdapter = DataReptiliaAdapter(context,reptiliasData)
+        mammalAdapter = DataMammalAdapter(context,mammalsData)
+        fishAdapter = DataFIshAdapter(context,fishsData)
+        insectAdapter = DataInsectAdapter(context,insectData)
+        floraAdapter = DataFloraAdapter(context,florasData)
 
-        println("tableName ====== $tableName")
+        if(tableName.equals("biotopeAttribute")) {
+
+            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_PERSON","INV_DT","INV_TM","INV_INDEX","LU_GR_NUM","LU_TY_RATE","STAND_H","LC_GR_NUM","LC_TY","TY_MARK"
+                    ,"GV_RATE" ,"GV_STRUCT" ,"DIS_RET" ,"RESTOR_POT" ,"COMP_INTA" ,"VP_INTA" ,"IMP_FORM" ,"BREA_DIA" ,"FIN_EST" ,"TRE_SPEC","TRE_FAMI" ,"TRE_SCIEN","TRE_H","TRE_BREA"
+                    ,"TRE_COVE","STRE_SPEC","STRE_FAMI","STRE_SCIEN","STRE_H","STRE_BREA","STRE_COVE","SHR_SPEC","SHR_FAMI","SHR_SCIEN","SHR_H","STR_COVE","HER_SPEC","HER_FAMI"
+                    ,"HER_SCIEN","HER_H","HER_COVE","PIC_FOLDER","WILD_ANI","BIOTOP_POT","UNUS_NOTE","GPS_LAT","GPS_LON","NEED_CONF","CONF_MOD","TEMP_YN");
+
+            val biotopsdata=  db.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
+
+            biotopesdataList(biotopeData,biotopsdata)
+
+            listView1.adapter = biotopeAdaper
+
+        }
 
         if(tableName.equals("birdsAttribute")){
 
@@ -82,7 +120,91 @@ class DlgDataListActivity : Activity() {
 
         }
 
+        if(tableName.equals("reptiliaAttribute")){
+
+            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","NUM","INV_TM"
+                    ,"SPEC_NM" ,"FAMI_NM" ,"SCIEN_NM" ,"IN_CNT_ADU" ,"IN_CNT_LAR" ,"IN_CNT_EGG" ,"HAB_RIVEER" ,"HAB_EDGE" ,"WATER_IN" ,"WATER_OUT" ,"WATER_CONT" ,"WATER_QUAL" ,"WATER_DEPT"
+                    ,"HAB_AREA_W","HAB_AREA_H","GPS_LAT","GPS_LON","TEMP_YN");
+
+            val reptiliasdata=  db.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
+
+            reptiliasdataList(reptiliasData,reptiliasdata)
+
+            listView1.adapter = reptiliaAdapter
+
+        }
+
+        if(tableName.equals("mammalAttribute")) {
+
+            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","NUM","INV_TM"
+                    ,"SPEC_NM" ,"FAMI_NM" ,"SCIEN_NM" ,"OBS_TY" ,"OBS_TY_ETC" ,"INDI_CNT" ,"OB_PT_CHAR" ,"UNUS_NOTE" ,"GPS_LAT" ,"GPS_LON" ,"UN_SPEC" ,"UN_SPEC_RE" ,"TR_EASY"
+                    ,"TR_EASY_RE","TEMP_YN");
+
+            val mammalsdata=  db.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
+
+            mammalsdataList(mammalsData,mammalsdata)
+
+            listView1.adapter = mammalAdapter
+
+        }
+
+        if(tableName.equals("fishAttribute")) {
+
+            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","MID_RAGE","CODE_NUM"
+                    ,"RIVER_NUM" ,"RIVER_NM" ,"NET_CNT" ,"NET_MIN" ,"AD_DIST_NM" ,"GPS_LAT" ,"GPS_LON" ,"COLL_TOOL" ,"STREAM_W" ,"WATER_W" ,"WATER_D" ,"WATER_CUR" ,"RIV_STR"
+                    ,"RIV_STR_IN","RIV_FORM","NUM","SPEC_NM","FAMI_NM","SCIEN_NM","INDI_CNT","UNIDENT","RIV_FM_CH","UN_FISH_CH","TEMP_YN");
+
+            val fishsdata=  db.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
+
+            fishsdataList(fishsData,fishsdata)
+
+            listView1.adapter = fishAdapter
+
+        }
+
+        if(tableName.equals("insectAttribute")) {
+
+            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","NUM","INV_TM"
+                    ,"SPEC_NM" ,"FAMI_NM" ,"SCIEN_NM" ,"INDI_CNT" ,"OBS_STAT" ,"OBS_ST_ETC" ,"USE_TAR" ,"USER_TA_ETC" ,"MJ_ACT" ,"MJ_ACT_ETC" ,"INV_MEAN" ,"INV_MN_ETC" ,"UNUS_NOTE"
+                    ,"GPS_LAT","GPS_LON","NUM","TEMP_YN");
+
+            val insectsdata=  db.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
+
+            insectsdataList(insectData,insectsdata)
+
+            listView1.adapter = insectAdapter
+
+        }
+
+        if(tableName.equals("floraAttribute")) {
+
+            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","NUM","INV_TM"
+                    ,"SPEC_NM" ,"FAMI_NM" ,"SCIEN_NM" ,"FLORE_YN" ,"PLANT_YN" ,"HAB_STAT" ,"HAB_ETC" ,"COL_IN_CNT" ,"THRE_CAU" ,"GPS_LAT","GPS_LON" ,"TEMP_YN");
+
+            val florasdata=  db.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
+
+            florasdataList(florasData,florasdata)
+
+            listView1.adapter = floraAdapter
+
+        }
+
         listView1.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
+
+            if(tableName.equals("biotopeAttribute")){
+
+                val biotopedata = biotopeAdaper.getItem(position)
+
+                val intent = Intent(this, BiotopeActivity::class.java)
+
+                intent!!.putExtra("id", biotopedata.id.toString())
+                intent!!.putExtra("GROP_ID",biotopedata.GROP_ID)
+
+                startActivityForResult(intent, BIOTOPE)
+
+                finish()
+
+            }
 
             if(tableName.equals("birdsAttribute")){
 
@@ -98,12 +220,106 @@ class DlgDataListActivity : Activity() {
                 finish()
             }
 
+            if(tableName.equals("reptiliaAttribute")){
+
+                val reptiliadata = reptiliaAdapter.getItem(position)
+
+                val intent = Intent(this, ReptiliaActivity::class.java)
+
+                intent!!.putExtra("id", reptiliadata.id.toString())
+                intent!!.putExtra("GROP_ID",reptiliadata.GROP_ID)
+
+                startActivityForResult(intent, BIRDS)
+
+                finish()
+
+            }
+
+            if(tableName.equals("mammalAttribute")){
+
+                val mammaldata = mammalAdapter.getItem(position)
+
+                val intent = Intent(this, MammaliaActivity::class.java)
+
+                intent!!.putExtra("id", mammaldata.id.toString())
+                intent!!.putExtra("GROP_ID",mammaldata.GROP_ID)
+
+                startActivityForResult(intent, MAMMAL)
+
+                finish()
+
+            }
+
+            if(tableName.equals("fishAttribute")){
+
+                val fishdata = fishAdapter.getItem(position)
+
+                val intent = Intent(this, FishActivity::class.java)
+
+                intent!!.putExtra("id", fishdata.id.toString())
+                intent!!.putExtra("GROP_ID",fishdata.GROP_ID)
+
+                startActivityForResult(intent, FISH)
+
+                finish()
+
+            }
+
+            if(tableName.equals("insectAttribute")){
+
+                val insecthdata = insectAdapter.getItem(position)
+
+                val intent = Intent(this, InsectActivity::class.java)
+
+                intent!!.putExtra("id", insecthdata.id.toString())
+                intent!!.putExtra("GROP_ID",insecthdata.GROP_ID)
+
+                startActivityForResult(intent, INSECT)
+
+                finish()
+
+            }
+
+            if(tableName.equals("floraAttribute")){
+
+                val floradata = floraAdapter.getItem(position)
+
+                val intent = Intent(this, FloraActivity::class.java)
+
+                intent!!.putExtra("id", floradata.id.toString())
+                intent!!.putExtra("GROP_ID",floradata.GROP_ID)
+
+                startActivityForResult(intent, FLORA)
+
+                finish()
+
+            }
+
         })
 
         closeLL.setOnClickListener {
             finish()
         }
 
+    }
+
+    fun biotopesdataList(listdata: java.util.ArrayList<Biotope_attribute>, data: Cursor) {
+
+        while (data.moveToNext()){
+
+            var model : Biotope_attribute;
+
+            model = Biotope_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+            data.getString(8), data.getFloat(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getFloat(14)
+            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+            , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getFloat(28)
+            , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
+            , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
+            , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
+            , data.getDouble(50), data.getString(51), data.getString(52),data.getString(53))
+
+            listdata.add(model)
+        }
     }
 
     fun birdsdataList(listdata: java.util.ArrayList<Birds_attribute>, data: Cursor) {
@@ -116,6 +332,81 @@ class DlgDataListActivity : Activity() {
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
                     , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25), data.getString(26))
+
+            listdata.add(model)
+        }
+    }
+
+    fun reptiliasdataList(listdata: java.util.ArrayList<Reptilia_attribute>, data: Cursor) {
+
+        while (data.moveToNext()){
+
+            var model : Reptilia_attribute;
+
+            model = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                    , data.getString(15), data.getInt(16), data.getInt(17), data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
+                    , data.getString(22), data.getString(23), data.getString(24), data.getInt(25), data.getInt(26), data.getInt(27), data.getFloat(28), data.getFloat(29),data.getString(30))
+
+            listdata.add(model)
+        }
+    }
+
+    fun mammalsdataList(listdata: java.util.ArrayList<Mammal_attribute>, data: Cursor) {
+
+        while (data.moveToNext()){
+
+            var model : Mammal_attribute;
+
+            model = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                    , data.getString(15), data.getString(16), data.getString(17), data.getInt(18), data.getString(19), data.getString(20), data.getFloat(21)
+                    , data.getFloat(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26),data.getString(27))
+
+            listdata.add(model)
+        }
+    }
+
+    fun fishsdataList(listdata: java.util.ArrayList<Fish_attribute>, data: Cursor) {
+
+        while (data.moveToNext()){
+
+            var model : Fish_attribute;
+
+            model = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                    data.getString(8), data.getFloat(9), data.getString(10), data.getString(11), data.getString(12), data.getInt(13), data.getString(14), data.getInt(15), data.getInt(16), data.getString(17),
+                    data.getFloat(18), data.getFloat(19), data.getString(20), data.getInt(21), data.getInt(22), data.getInt(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27),
+                    data.getInt(28) ,data.getString(29), data.getString(30), data.getString(31), data.getInt(32), data.getString(33), data.getString(34), data.getString(35),data.getString(36))
+
+            listdata.add(model)
+        }
+    }
+
+    fun insectsdataList(listdata: java.util.ArrayList<Insect_attribute>, data: Cursor) {
+
+        while (data.moveToNext()){
+
+            var model : Insect_attribute;
+
+            model = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                    , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+                    , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27),data.getString(28))
+
+            listdata.add(model)
+        }
+    }
+
+    fun florasdataList(listdata: java.util.ArrayList<Flora_Attribute>, data: Cursor) {
+
+        while (data.moveToNext()){
+
+            var model : Flora_Attribute;
+
+            model = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
+                    , data.getFloat(22), data.getFloat(23),data.getString(24))
 
             listdata.add(model)
         }

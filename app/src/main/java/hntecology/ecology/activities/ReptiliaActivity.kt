@@ -18,10 +18,12 @@ import android.support.v4.content.ContextCompat
 import android.view.Gravity
 import android.view.WindowManager
 import android.widget.TextView
+import android.widget.Toast
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
+import hntecology.ecology.model.Base
 import hntecology.ecology.model.Reptilia_attribute
 import io.nlopez.smartlocation.OnLocationUpdatedListener
 import io.nlopez.smartlocation.SmartLocation
@@ -45,6 +47,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
     var keyId: String? = null;
 
+    var pk : String? = null
+
     var page:Int? = null
 
     val REQUEST_FINE_LOCATION = 100
@@ -58,6 +62,10 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
     var latitude = 0.0f;
     var longitude = 0.0f;
 
+    var lat:String = ""
+    var log:String = ""
+
+    var basechkdata = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +81,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         createdDateTV.text = Utils.todayStr()
         invtmTV.text = Utils.timeStr()
 
+
+
         userName = PrefUtils.getStringPreference(context, "name");
 
         invpersonET.setText(userName)
@@ -81,14 +91,77 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         val db = dbManager.createDataBase();
 
+        val num = dbManager.reptiliasNextNum()
+        numET.text = num.toString()
+
         var intent: Intent = getIntent();
 
-        if (intent.getSerializableExtra("id") != null) {
-            keyId = intent.getStringExtra("id")
+        if(intent.getStringExtra("latitude")!= null){
+            lat = intent.getStringExtra("latitude")
+
+            println("==============$lat")
+            gpslatTV.setText(lat)
+        }
+
+        if(intent.getStringExtra("longitude")!= null){
+            log = intent.getStringExtra("longitude")
+            println("==============$log")
+            gpslonTV.setText(log)
+        }
+
+        keyId = intent.getStringExtra("GROP_ID")
+
+        if(intent.getStringExtra("id") != null){
+            pk = intent.getStringExtra("id")
+        }
+
+
+
+        val dataList: Array<String> = arrayOf("*");
+
+        var basedata= db.query("Base", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+
+        while(basedata.moveToNext()){
+
+            basechkdata = true
+
+            var base : Base = Base(basedata.getInt(0) , basedata.getString(1), basedata.getString(2), basedata.getString(3), basedata.getString(4), basedata.getString(5) , basedata.getString(6),basedata.getString(7))
+
+            println("keyid ==== $keyId")
+            println("base ==== ${base.GROP_ID}")
+
+            invpersonET.setText(base.INV_PERSON)
+            createdDateTV.setText(base.INV_DT)
+            invtmTV.setText(base.INV_TM)
+
+            gpslatTV.setText(base.GPS_LAT)
+            gpslonTV.setText(base.GPS_LON)
+
+            lat = base.GPS_LAT!!
+            log = base.GPS_LON!!
+
+        }
+
+        if(basechkdata){
+
+        }else {
+
+            val base : Base = Base(null,keyId,"",lat,log,invpersonET.text.toString(),createdDateTV.text.toString(),invtmTV.text.toString())
+
+            dbManager.insertbase(base)
+
+        }
+
+
+
+
+
+
+        if (intent.getStringExtra("id") != null) {
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data= db.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data= db.query("reptiliaAttribute", dataList, "id = '$pk'", null, null, null, "", null)
 
             while (data.moveToNext()) {
                 chkdata = true
@@ -146,10 +219,6 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
 
             }
-
-            page = dataArray.size
-
-            reptiliapageTV.setText(page.toString() + " / " + dataArray.size)
 
         }
 
@@ -288,11 +357,11 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
 
             if(gpslatTV.text.isNotEmpty()){
-                reptilia_attribute.GPS_LAT = 0F
+                reptilia_attribute.GPS_LAT = lat.toFloat()
             }
 
             if(gpslonTV.text.isNotEmpty()){
-                reptilia_attribute.GPS_LON = 0F
+                reptilia_attribute.GPS_LON = log.toFloat()
             }
 
             reptilia_attribute.TEMP_YN = "N"
@@ -405,10 +474,13 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                                 ,null,null,null,null,null,null,null,null,null,null,null,null
                                 ,null,null,null,null,null,null,null,null,null,null)
 
-                        val tmppage = page!! - 1 !!
-                        val id = keyId + tmppage.toString()
+                        if(pk != null){
+                            dbManager.deletereptilia_attribute(reptilia_attribute,pk)
+                            finish()
+                        }else {
+                            Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
+                        }
 
-                        dbManager.deletereptilia_attribute(reptilia_attribute,id)
 
                         finish()
 
@@ -445,9 +517,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                                 ,null,null,null,null,null,null,null,null,null,null,null,null
                         ,null,null,null,null,null,null,null,null,null,null)
 
-                        val id = keyId + page.toString()
+                        keyId = intent.getStringExtra("GROP_ID")
 
-                        reptilia_attribute.id = id
                         reptilia_attribute.GROP_ID = keyId
 
                         reptilia_attribute.PRJ_NAME = ""
@@ -509,11 +580,11 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
 
                         if(gpslatTV.text.isNotEmpty()){
-                            reptilia_attribute.GPS_LAT = latitude
+                            reptilia_attribute.GPS_LAT = lat.toFloat()
                         }
 
                         if(gpslonTV.text.isNotEmpty()){
-                            reptilia_attribute.GPS_LON = longitude
+                            reptilia_attribute.GPS_LON = log.toFloat()
                         }
 
                         reptilia_attribute.TEMP_YN = "Y"
@@ -521,15 +592,13 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                         if (chkdata){
 
-                            val tmppage = page!! - 1
-                            val pk = keyId + tmppage.toString()
-                            dbManager.updatereptilia_attribute(reptilia_attribute,pk)
+                            if(pk != null){
+                                dbManager.updatereptilia_attribute(reptilia_attribute,pk)
+                            }
 
                         } else {
                             dbManager.insertreptilia_attribute(reptilia_attribute)
                         }
-
-
 
                         finish()
 
@@ -541,7 +610,99 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         }
 
-        initGPS()
+        btn_add.setOnClickListener {
+            var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(null,null,null,null,null,null,null,null,null
+                    ,null,null,null,null,null,null,null,null,null,null,null,null
+                    ,null,null,null,null,null,null,null,null,null,null)
+
+            keyId = intent.getStringExtra("GROP_ID")
+
+            reptilia_attribute.GROP_ID = keyId
+
+            reptilia_attribute.PRJ_NAME = ""
+
+            reptilia_attribute.INV_REGION = invregionET.text.toString()
+            reptilia_attribute.INV_DT = Utils.todayStr()
+            reptilia_attribute.INV_PERSON = invpersonET.text.toString()
+
+            reptilia_attribute.WEATHER = weatherTV.text.toString()
+            reptilia_attribute.WIND = windTV.text.toString()
+            reptilia_attribute.WIND_DIRE = windDireTV.text.toString()
+
+            if(temperaturET.text.isNotEmpty()){
+                reptilia_attribute.TEMPERATUR = temperaturET.text.toString().toFloat()
+            }
+
+            reptilia_attribute.ETC = etcET.text.toString()
+
+            if(numET.text.isNotEmpty()){
+                reptilia_attribute.NUM = numET.text.toString().toInt()
+            }
+
+            reptilia_attribute.INV_TM = Utils.timeStr()
+
+            reptilia_attribute.SPEC_NM = specnmET.text.toString()
+            reptilia_attribute.FAMI_NM = famiET.text.toString()
+            reptilia_attribute.SCIEN_NM = scienET.text.toString()
+
+            if(incntaduET.text.isNotEmpty()){
+                reptilia_attribute.IN_CNT_ADU = incntaduET.text.toString().toInt()
+            }
+            if(incntlarET.text.isNotEmpty()){
+                reptilia_attribute.IN_CNT_LAR = incntlarET.text.toString().toInt()
+            }
+            if(incnteggET.text.isNotEmpty()){
+                reptilia_attribute.IN_CNT_EGG = incnteggET.text.toString().toInt()
+            }
+
+            reptilia_attribute.HAB_RIVEER = habriveerET.text.toString()
+            reptilia_attribute.HAB_EDGE = habedgeET.text.toString()
+
+            reptilia_attribute.WATER_IN = waterinET.text.toString()
+            reptilia_attribute.WATER_OUT = wateroutET.text.toString()
+
+            reptilia_attribute.WATER_CONT = watercontET.text.toString()
+            reptilia_attribute.WATER_QUAL = waterqualET.text.toString()
+
+            if(waterdeptET.text.isNotEmpty()){
+                reptilia_attribute.WATER_DEPT = waterdeptET.text.toString().toInt()
+            }
+
+            if(habareawET.text.isNotEmpty()){
+                reptilia_attribute.HAB_AREA_W = habareawET.text.toString().toInt()
+            }
+
+            if(habareahET.text.isNotEmpty()){
+                reptilia_attribute.HAB_AREA_H = habareahET.text.toString().toInt()
+            }
+
+
+            if(gpslatTV.text.isNotEmpty()){
+                reptilia_attribute.GPS_LAT = lat.toFloat()
+            }
+
+            if(gpslonTV.text.isNotEmpty()){
+                reptilia_attribute.GPS_LON = log.toFloat()
+            }
+
+            reptilia_attribute.TEMP_YN = "Y"
+
+
+            if (chkdata){
+
+                if(pk != null){
+                    dbManager.updatereptilia_attribute(reptilia_attribute,pk)
+                }
+
+            } else {
+                dbManager.insertreptilia_attribute(reptilia_attribute)
+            }
+
+            clear()
+            chkdata = false
+            pk = null
+
+        }
 
     }
     fun startDlgReptilia(){
@@ -620,7 +781,6 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
     fun clear(){
 
         invregionET.setText("")
-        createdDateTV.setText("")
 
         weatherTV.setText("")
         windTV.setText("")
@@ -649,6 +809,9 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         habareawET.setText("")
         habareahET.setText("")
 
+        watercontET.setText("")
+        waterqualET.setText("")
+
     }
 
     fun resetPage(page : Int){
@@ -658,9 +821,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         val db = dbManager.createDataBase()
 
-        val tmppages = page - 1
-
-        val id = keyId + tmppages.toString()
+        val id = intent.getStringExtra("id")
 
         val data= db.query("reptiliaAttribute", dataList, "id = '$id'", null, null, null, "", null)
 

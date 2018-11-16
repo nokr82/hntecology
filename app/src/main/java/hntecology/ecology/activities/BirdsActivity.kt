@@ -19,6 +19,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
+import android.widget.Toast
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -121,7 +122,9 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
         keyId = intent.getStringExtra("GROP_ID")
 
-        println("birds -------------------$keyId")
+        if(intent.getStringExtra("id") != null){
+            pk = intent.getStringExtra("id")
+        }
 
         val dataList: Array<String> = arrayOf("*");
 
@@ -153,7 +156,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
         }else {
 
-            val base : Base = Base(null,keyId,lat,log,"",invPersonTV.text.toString(),invDtTV.text.toString(),timeTV.text.toString())
+            val base : Base = Base(null,keyId,"",lat,log,invPersonTV.text.toString(),invDtTV.text.toString(),timeTV.text.toString())
 
             dbManager.insertbase(base)
 
@@ -188,7 +191,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 }
 
         if (intent.getStringExtra("id") != null) {
-            pk = intent.getStringExtra("id")
 
             val dataList: Array<String> = arrayOf("*");
 
@@ -589,17 +591,15 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                             birds_attribute.TEMP_YN = "Y"
 
-                            pk = intent.getStringExtra("id")
-
-                            dbManager.updatebirds_attribute(birds_attribute,pk)
+                            if(pk != null){
+                                dbManager.updatebirds_attribute(birds_attribute,pk)
+                            }
 
                         }else {
 
                             birds_attribute.TEMP_YN = "Y"
 
                             dbManager.insertbirds_attribute(birds_attribute)
-
-                            println("insert=======")
 
                         }
 
@@ -626,11 +626,14 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                                 null,null,null,null,null,null,null,null,null,null,null,null,
                                 null,null,null,null,null)
 
-                        pk = intent.getStringExtra("id")
+                        if(pk != null) {
+                            dbManager.deletebirds_attribute(birds_attribute,pk)
+                            finish()
+                        }else {
+                            Toast.makeText(context, "잘못된 접근입니다..", Toast.LENGTH_SHORT).show()
+                        }
 
-                        dbManager.deletebirds_attribute(birds_attribute,pk)
 
-                        finish()
 
                     })
                     .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
@@ -734,7 +737,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         }
 
         nextTV.setOnClickListener {
-            clear()
 
             var birds_attribute: Birds_attribute = Birds_attribute(null,null,null,null,null,null,null,null,null,null,
                     null,null,null,null,null,null,null,null,null,null,null,null,
@@ -743,8 +745,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             keyId = intent.getStringExtra("GROP_ID")
 
             birds_attribute.GROP_ID = keyId
-
-            println("next----------------------------------------------------${birds_attribute.GROP_ID}")
 
             birds_attribute.PRJ_NAME = ""
 
@@ -805,11 +805,27 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 birds_attribute.GPS_LON = log.toFloat()
             }
 
-            birds_attribute.TEMP_YN = "Y"
 
-            dbManager.insertbirds_attribute(birds_attribute)
 
-            finish()
+
+            if(chkdata){
+
+                birds_attribute.TEMP_YN = "Y"
+
+
+                dbManager.updatebirds_attribute(birds_attribute,pk)
+
+            }else {
+
+                birds_attribute.TEMP_YN = "Y"
+
+                dbManager.insertbirds_attribute(birds_attribute)
+
+            }
+
+            clear()
+            chkdata = false
+            pk = null
 
         }
 
@@ -1044,7 +1060,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
     fun clear(){
 
-        invRegionET.setText("")
+        invDtTV.setText(Utils.todayStr())
 
         btn1.setText("")       //날씨
         btn2.setText("")          //바람

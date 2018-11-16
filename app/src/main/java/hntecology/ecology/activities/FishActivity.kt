@@ -20,14 +20,12 @@ import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
+import android.widget.Toast
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
-import hntecology.ecology.model.CommonDivision
-import hntecology.ecology.model.Fish_attribute
-import hntecology.ecology.model.Mammal_attribute
-import hntecology.ecology.model.common
+import hntecology.ecology.model.*
 import io.nlopez.smartlocation.OnLocationUpdatedListener
 import io.nlopez.smartlocation.SmartLocation
 import io.nlopez.smartlocation.location.config.LocationAccuracy
@@ -60,11 +58,16 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
     var keyId: String? = null;
 
+    var pk: String? = null
+
     var page:Int? = null
 
     var dataArray:ArrayList<Fish_attribute> = ArrayList<Fish_attribute>()
 
+    var lat:String = ""
+    var log:String = ""
 
+    var basechkdata = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,16 +92,71 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         val dbmanager = DataBaseHelper(context);
         val db = dbmanager.createDataBase();
 
-        initGPS()
+        val num = dbmanager.fishsNextNum()
+        fishnumTV.text = num.toString()
 
         var intent: Intent = getIntent();
 
-        if (intent.getSerializableExtra("id") != null) {
-            keyId = intent.getStringExtra("id")
+        if(intent.getStringExtra("latitude")!= null){
+            lat = intent.getStringExtra("latitude")
+
+            println("==============$lat")
+            fishgpslatTV.setText(lat)
+        }
+
+        if(intent.getStringExtra("longitude")!= null){
+            log = intent.getStringExtra("longitude")
+            println("==============$log")
+            fishgpslonTV.setText(log)
+        }
+
+        keyId = intent.getStringExtra("GROP_ID")
+
+        if(intent.getStringExtra("id") != null){
+            pk = intent.getStringExtra("id")
+        }
+
+        val dataList: Array<String> = arrayOf("*");
+
+        var basedata= db.query("Base", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+
+        while(basedata.moveToNext()){
+
+            basechkdata = true
+
+            var base : Base = Base(basedata.getInt(0) , basedata.getString(1), basedata.getString(2), basedata.getString(3), basedata.getString(4), basedata.getString(5) , basedata.getString(6),basedata.getString(7))
+
+            println("keyid ==== $keyId")
+            println("base ==== ${base.GROP_ID}")
+
+            fishinvpersonET.setText(base.INV_PERSON)
+            fishinvdtET.setText(base.INV_DT)
+
+            val time = base.INV_TM
+
+            fishgpslatTV.setText(base.GPS_LAT)
+            fishgpslonTV.setText(base.GPS_LON)
+
+            lat = base.GPS_LAT!!
+            log = base.GPS_LON!!
+
+        }
+
+        if(basechkdata){
+
+        }else {
+
+            val base : Base = Base(null,keyId,"",lat,log,fishinvpersonET.text.toString(),fishinvdtET.text.toString(),Utils.timeStr())
+
+            dbmanager.insertbase(base)
+
+        }
+
+        if (intent.getStringExtra("id") != null) {
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data = db.query("fishAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data = db.query("fishAttribute", dataList, "id = '$pk'", null, null, null, "", null)
 
             while (data.moveToNext()) {
                 chkdata = true
@@ -179,11 +237,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 }
 
             }
-
-
-            page = dataArray.size
-
-            fishpageTV.setText(page.toString() + " / " + dataArray.size.toString())
 
         }
 
@@ -342,8 +395,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             fish_attribute.TEMP_YN = "N"
 
-            fish_attribute.GPS_LAT = 0F
-            fish_attribute.GPS_LON = 0F
+            fish_attribute.GPS_LAT = lat.toFloat()
+            fish_attribute.GPS_LON = log.toFloat()
 
 
             if (page == dataArray.size) {
@@ -401,7 +454,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                                 , null, null, null, null, null, null, null, null, null, null, null, null, null
                                 , null, null, null, null, null, null, null, null, null, null, null, null,null)
 
-                        fish_attribute.id = keyId + page.toString()
+                        keyId = intent.getStringExtra("GROP_ID")
 
                         fish_attribute.GROP_ID = keyId
 
@@ -488,14 +541,14 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                         fish_attribute.TEMP_YN = "Y"
 
-                            fish_attribute.GPS_LAT = latitude
-                            fish_attribute.GPS_LON = longitude
+                            fish_attribute.GPS_LAT = lat.toFloat()
+                            fish_attribute.GPS_LON = log.toFloat()
 
                         if(chkdata){
 
-                            val tmppage = page!! - 1
-                            val pk = keyId + tmppage.toString()
-                            dbmanager.updatefish_attribute(fish_attribute,pk)
+                            if(pk != null) {
+                                dbmanager.updatefish_attribute(fish_attribute,pk)
+                            }
 
                         }else {
 
@@ -543,12 +596,14 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                                 , null, null, null, null, null, null, null, null, null, null, null, null, null
                                 , null, null, null, null, null, null, null, null, null, null, null, null,null)
 
-                        val tmppage = page!! - 1 !!
-                        val id = keyId + tmppage.toString()
 
-                        dbmanager.deletefish_attribute(fish_attribute,id)
+                        if(pk != null) {
+                            dbmanager.deletefish_attribute(fish_attribute,pk)
+                            finish()
+                        }else {
+                            Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
+                        }
 
-                        finish()
 
                     })
                     .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
@@ -632,6 +687,121 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             alert(listItems, "하상 구조 선택", rivstrTV, "rivstr");
 
         }
+
+        btn_add.setOnClickListener {
+            var fish_attribute: Fish_attribute = Fish_attribute(null, null, null, null, null, null, null, null, null, null, null
+                    , null, null, null, null, null, null, null, null, null, null, null, null, null
+                    , null, null, null, null, null, null, null, null, null, null, null, null,null)
+
+            keyId = intent.getStringExtra("GROP_ID")
+
+            fish_attribute.GROP_ID = keyId
+
+            fish_attribute.PRJ_NAME = ""
+
+            fish_attribute.INV_REGION = fishinvregionET.text.toString()
+            fish_attribute.INV_DT = Utils.todayStr()
+
+            fish_attribute.INV_PERSON = fishinvpersonET.text.toString()
+
+            fish_attribute.WEATHER = fishweatherET.text.toString()
+            fish_attribute.WIND = fishwindET.text.toString()
+            fish_attribute.WIND_DIRE = fishwinddireET.text.toString()
+
+            if (fishtemperaturET.text.isNotEmpty()) {
+                fish_attribute.TEMPERATUR = fishtemperaturET.text.toString().toFloat()
+            }
+
+            fish_attribute.ETC = fishetcET.text.toString()
+
+            fish_attribute.MID_RAGE = fishmidrageET.text.toString()
+
+            fish_attribute.CODE_NUM = fishcodenumET.text.toString()
+
+            if (fishrivernumET.text.isNotEmpty()) {
+                fish_attribute.RIVER_NUM = fishrivernumET.text.toString().toInt()
+            }
+
+            fish_attribute.RIVER_NM = fishrivernmET.text.toString()
+
+            if (fishnetcntET.text.isNotEmpty()) {
+                fish_attribute.NET_CNT = fishnetcntET.text.toString().toInt()
+            }
+
+            if (fishnetminet.text.isNotEmpty()) {
+                fish_attribute.NET_MIN = fishnetminet.text.toString().toInt()
+            }
+
+            if (fishgpslatTV.text.isNotEmpty()) {
+                fish_attribute.GPS_LAT = fishgpslatTV.text.toString().toFloat()
+            }
+
+
+            fish_attribute.COLL_TOOL = fishcolltoolET.text.toString()
+
+            if (fishstreamwET.text.isNotEmpty()) {
+                fish_attribute.STREAM_W = fishstreamwET.text.toString().toInt()
+            }
+
+            if (fishwaterwET.text.isNotEmpty()) {
+                fish_attribute.WATER_W = fishwaterwET.text.toString().toInt()
+            }
+
+            if (fishwaterdET.text.isNotEmpty()) {
+                fish_attribute.WATER_D = fishwaterdET.text.toString().toInt()
+            }
+
+            if (fishwatercurET.text.isNotEmpty()) {
+                fish_attribute.WATER_CUR = fishwatercurET.text.toString().toInt()
+            }
+
+            fish_attribute.RIV_STR = rivstrTV.text.toString()
+            fish_attribute.RIV_STR_IN = rivstrdetET.text.toString()
+
+            fish_attribute.RIV_FORM = formTV.text.toString()
+
+            if (fishnumTV.text.isNotEmpty()) {
+                fish_attribute.NUM = fishnumTV.text.toString().toInt()
+            }
+
+            fish_attribute.SPEC_NM = fishspecnmET.text.toString()
+            fish_attribute.FAMI_NM = fishfaminmET.text.toString()
+            fish_attribute.SCIEN_NM = fishsciennmET.text.toString()
+
+            if (fishindicntET.text.isNotEmpty()) {
+                fish_attribute.INDI_CNT = fishindicntET.text.toString().toInt()
+            }
+
+            fish_attribute.UNIDENT = fishunidentET.text.toString()
+            fish_attribute.RIV_FM_CH = fishtivfmchET.text.toString()
+            fish_attribute.UN_FISH_CH = fishunfishchET.text.toString()
+
+            fish_attribute.SPEC_NM = fishspecnmET.text.toString()
+
+            fish_attribute.TEMP_YN = "Y"
+
+            fish_attribute.GPS_LAT = lat.toFloat()
+            fish_attribute.GPS_LON = log.toFloat()
+
+            if(chkdata){
+
+                if(pk != null) {
+                    dbmanager.updatefish_attribute(fish_attribute,pk)
+                }
+
+            }else {
+
+                dbmanager.insertfish_attribute(fish_attribute)
+
+            }
+
+            clear()
+            chkdata = false
+            pk = null
+
+        }
+
+
 
 
 

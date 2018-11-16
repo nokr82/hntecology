@@ -141,6 +141,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     var INSECTATTRIBUTE:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
+    private val latlngs: ArrayList<LatLng> = ArrayList<LatLng>()
+    private val latlngsGPS: ArrayList<BiotopeBaseGPS> = ArrayList<BiotopeBaseGPS>()
+
     // 3. biotope  , 6.birds , 7.Reptilia , 8.mammalia  9. fish, 10.insect, 11.flora , 13. zoobenthos
 
     var currentLayer = -1
@@ -153,9 +156,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     var progressDialog: ProgressDialog? = null
 
-    var exporter:Exporter.ExportItem? = null
-
+    var biotopedataArray:ArrayList<Biotope_attribute> = ArrayList<Biotope_attribute>()
     var birdsdataArray:ArrayList<Birds_attribute> = ArrayList<Birds_attribute>()
+    var reptiliadataArray:ArrayList<Reptilia_attribute> = ArrayList<Reptilia_attribute>()
+    var mammaldataArray:ArrayList<Mammal_attribute> = ArrayList<Mammal_attribute>()
+    var fishdataArray:ArrayList<Fish_attribute> = ArrayList<Fish_attribute>()
+    var insectdataArray:ArrayList<Insect_attribute> = ArrayList<Insect_attribute>()
+    var floradataArray:ArrayList<Flora_Attribute> = ArrayList<Flora_Attribute>()
+
+    var mygps = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -367,8 +376,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
 
             if (drawer_view.visibility == View.VISIBLE) {
-                endDraw()
 
+                endDraw()
 
 //                if(latlngs.size >= 3){
 //
@@ -382,10 +391,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 //                    latlngs.clear()
 //                }
 
-
-                for(i in 0 ..latlngs.size-1){
-                    println("====================================================${latlngs.get(i).latitude}")
-                }
 
             } else {
                 startDraw()
@@ -477,8 +482,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
         }
 
-
         btn_clear_all.setOnClickListener {
+
             googleMap.clear()
 
             points.clear()
@@ -489,9 +494,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             unionRL.isSelected = false
 
             endDraw()
+
         }
-
-
 
         //좌표지정 버튼
         btn_gps_select.setOnClickListener {
@@ -558,6 +562,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val latlng = LatLng(this.latitude, this.longitude)
 
+            mygps = true
+
             drawPoint(latlng)
 
 //            val makerOption =MarkerOptions()
@@ -623,7 +629,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         initGps()
 
         myLocation = Tracking(null, latitude, longitude)
-
 
     }
 
@@ -764,10 +769,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         // googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(initialMapCenter, 15.6f))
 
-
-
-
-
         // 마커클릭 이벤트 처리
         // GoogleMap 에 마커클릭 이벤트 설정 가능.
         googleMap.setOnMarkerClickListener { marker ->
@@ -785,6 +786,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             val db = dbManager.createDataBase();
 
             when (myLayer) {
+
 
                 LAYER_BIRDS -> {
 
@@ -811,10 +813,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                     }
 
-                    println("birdsArraysize ${birdsdataArray.size}")
 
                     for(i in 0..birdsdataArray.size-1){
-                        title += birdsdataArray.get(i).INV_PERSON + ", "
+                        title += birdsdataArray.get(i).INV_PERSON + " "
 
                         marker.title = title
                     }
@@ -846,23 +847,247 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 LAYER_REPTILIA -> {
-                    intent = Intent(this, ReptiliaActivity::class.java)
+                    val dataList: Array<String> = arrayOf("*");
+
+                    val data = db.query("reptiliaAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                    if (reptiliadataArray != null) {
+                        reptiliadataArray.clear()
+                    }
+
+                    var title = ""
+
+                    while (data.moveToNext()) {
+                        var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                , data.getString(15), data.getInt(16), data.getInt(17), data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
+                                , data.getString(22), data.getString(23), data.getString(24), data.getInt(25), data.getInt(26), data.getInt(27), data.getFloat(28), data.getFloat(29), data.getString(30))
+                        reptiliadataArray.add(reptilia_attribute)
+                    }
+
+                    for(i in 0..reptiliadataArray.size-1){
+                        title += reptiliadataArray.get(i).INV_PERSON + " "
+
+                        marker.title = title
+                    }
+
+                    if(reptiliadataArray.size == 0){
+                        title = "양서,파충류"
+
+                        marker.title = title
+
+                        intent = Intent(this, ReptiliaActivity::class.java)
+
+                        intent!!.putExtra("GROP_ID", attrubuteKey)
+
+                        startActivityForResult(intent, PolygonCallBackData)
+                    }
+
+                    if(reptiliadataArray.size > 0 ){
+                        val intent = Intent(this, DlgDataListActivity::class.java)
+                        intent.putExtra("title", "양서,파충류")
+                        intent.putExtra("table", "reptiliaAttribute")
+                        intent.putExtra("DlgHeight", 600f);
+                        intent.putExtra("GROP_ID",attrubuteKey)
+                        startActivityForResult(intent, REPTILIA_DATA);
+                    }
+
                 }
 
                 LAYER_MAMMALIA -> {
-                    intent = Intent(this, MammaliaActivity::class.java)
+
+                    val dataList: Array<String> = arrayOf("*");
+
+                    val data = db.query("mammalAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                    if (mammaldataArray != null) {
+                        mammaldataArray.clear()
+                    }
+
+                    var title = ""
+
+                    while (data.moveToNext()) {
+                        var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                , data.getString(15), data.getString(16), data.getString(17), data.getInt(18), data.getString(19), data.getString(20), data.getFloat(21)
+                                , data.getFloat(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26),data.getString(27))
+                        mammaldataArray.add(mammal_attribute)
+                    }
+
+                    for(i in 0..mammaldataArray.size-1){
+                        title += mammaldataArray.get(i).INV_PERSON + " "
+
+                        marker.title = title
+                    }
+
+                    if(mammaldataArray.size == 0){
+                        title = "포유류"
+
+                        marker.title = title
+
+                        intent = Intent(this, MammaliaActivity::class.java)
+
+                        intent!!.putExtra("GROP_ID", attrubuteKey)
+
+                        startActivityForResult(intent, PolygonCallBackData)
+                    }
+
+                    if(mammaldataArray.size > 0 ){
+                        val intent = Intent(this, DlgDataListActivity::class.java)
+                        intent.putExtra("title", "포유류")
+                        intent.putExtra("table", "mammalAttribute")
+                        intent.putExtra("DlgHeight", 600f);
+                        intent.putExtra("GROP_ID",attrubuteKey)
+                        startActivityForResult(intent, MAMMALIA_DATA);
+                    }
+
                 }
 
                 LAYER_FISH -> {
-                    intent = Intent(this, FishActivity::class.java)
+
+                    val dataList: Array<String> = arrayOf("*");
+
+                    val data = db.query("fishAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                    if (fishdataArray != null) {
+                        fishdataArray.clear()
+                    }
+
+                    var title = ""
+
+                    while (data.moveToNext()) {
+                        var  fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                data.getString(8), data.getFloat(9), data.getString(10), data.getString(11), data.getString(12), data.getInt(13), data.getString(14), data.getInt(15), data.getInt(16), data.getString(17),
+                                data.getFloat(18), data.getFloat(19), data.getString(20), data.getInt(21), data.getInt(22), data.getInt(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27),
+                                data.getInt(28) ,data.getString(29), data.getString(30), data.getString(31), data.getInt(32), data.getString(33), data.getString(34), data.getString(35),data.getString(36))
+                        fishdataArray.add(fish_attribute)
+                    }
+
+                    for(i in 0..fishdataArray.size-1){
+                        title += fishdataArray.get(i).INV_PERSON + " "
+
+                        marker.title = title
+                    }
+
+                    if(fishdataArray.size == 0){
+                        title = "어류"
+
+                        marker.title = title
+
+                        intent = Intent(this, FishActivity::class.java)
+
+                        intent!!.putExtra("GROP_ID", attrubuteKey)
+
+                        startActivityForResult(intent, PolygonCallBackData)
+                    }
+
+                    if(fishdataArray.size > 0 ){
+                        val intent = Intent(this, DlgDataListActivity::class.java)
+                        intent.putExtra("title", "어류")
+                        intent.putExtra("table", "fishAttribute")
+                        intent.putExtra("DlgHeight", 600f);
+                        intent.putExtra("GROP_ID",attrubuteKey)
+                        startActivityForResult(intent, FISH_DATA);
+                    }
+
                 }
 
                 LAYER_INSECT -> {
-                    intent = Intent(this, InsectActivity::class.java)
+
+                    val dataList: Array<String> = arrayOf("*");
+
+                    val data = db.query("insectAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                    if (insectdataArray != null) {
+                        insectdataArray.clear()
+                    }
+
+                    var title = ""
+
+                    while (data.moveToNext()) {
+                        var  insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+                                , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27),data.getString(28))
+                        insectdataArray.add(insect_attribute)
+                    }
+
+                    println(insectdataArray.size.toString() + "----------------------")
+
+                    for(i in 0..insectdataArray.size-1){
+                        title += insectdataArray.get(i).INV_PERSON + " "
+
+                        marker.title = title
+                    }
+
+                    if(insectdataArray.size == 0){
+                        title = "곤충"
+
+                        marker.title = title
+
+                        intent = Intent(this, InsectActivity::class.java)
+
+                        intent!!.putExtra("GROP_ID", attrubuteKey)
+
+                        startActivityForResult(intent, PolygonCallBackData)
+                    }
+
+                    if(insectdataArray.size > 0 ){
+                        val intent = Intent(this, DlgDataListActivity::class.java)
+                        intent.putExtra("title", "곤충")
+                        intent.putExtra("table", "insectAttribute")
+                        intent.putExtra("DlgHeight", 600f);
+                        intent.putExtra("GROP_ID",attrubuteKey)
+                        startActivityForResult(intent, INSECT_DATA);
+                    }
                 }
 
                 LAYER_FLORA -> {
-                    intent = Intent(this, FloraActivity::class.java)
+
+                    val dataList: Array<String> = arrayOf("*");
+
+                    val data = db.query("floraAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                    if (floradataArray != null) {
+                        floradataArray.clear()
+                    }
+
+                    var title = ""
+
+                    while (data.moveToNext()) {
+                        var  flora_attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
+                                , data.getFloat(22), data.getFloat(23),data.getString(24))
+                        floradataArray.add(flora_attribute)
+                    }
+
+                    for(i in 0..floradataArray.size-1){
+                        title += floradataArray.get(i).INV_PERSON + " "
+
+                        marker.title = title
+                    }
+
+                    if(floradataArray.size == 0){
+                        title = "식물"
+
+                        marker.title = title
+
+                        intent = Intent(this, FloraActivity::class.java)
+
+                        intent!!.putExtra("GROP_ID", attrubuteKey)
+
+                        startActivityForResult(intent, PolygonCallBackData)
+                    }
+
+                    if(floradataArray.size > 0 ){
+                        val intent = Intent(this, DlgDataListActivity::class.java)
+                        intent.putExtra("title", "식물")
+                        intent.putExtra("table", "floraAttribute")
+                        intent.putExtra("DlgHeight", 600f);
+                        intent.putExtra("GROP_ID",attrubuteKey)
+                        startActivityForResult(intent, FLORA_DATA);
+                    }
                 }
 
                 LAYER_ZOOBENTHOS -> {
@@ -879,11 +1104,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             }
 
-            if(myLayer == LAYER_BIRDS){
+            if(myLayer == LAYER_BIRDS || myLayer == LAYER_REPTILIA || myLayer == LAYER_MAMMALIA || myLayer == LAYER_FISH || myLayer == LAYER_INSECT || myLayer == LAYER_FLORA){
 
             }
 
-            if(myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIRDS){
+            if(myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIRDS && myLayer != LAYER_REPTILIA && myLayer != LAYER_MAMMALIA && myLayer != LAYER_FISH && myLayer != LAYER_INSECT
+            && myLayer != LAYER_FLORA){
                 intent!!.putExtra("id", attrubuteKey.toString())
 
                 startActivityForResult(intent, PolygonCallBackData)
@@ -897,13 +1123,19 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         // tag 리절트로 가져와서 태그 설정
         googleMap.setOnPolygonClickListener { polygon ->
 
-            println("click")
-
             val layerInfo = polygon.tag as LayerInfo
+            println("=================== polygon.points --------${polygon.points}")
+
             var myLayer = layerInfo.layer
 
             var attrubuteKey = layerInfo.attrubuteKey
+
+            println("=========================================attrubuteKey $attrubuteKey")
             var intent: Intent? = null
+
+            val dbManager: DataBaseHelper = DataBaseHelper(this)
+
+            val db = dbManager.createDataBase();
 
             when (myLayer) {
 
@@ -930,7 +1162,84 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         return@setOnPolygonClickListener
 
                     } else {
-                        intent = Intent(this, BiotopeActivity::class.java)
+
+                        val dataList: Array<String> = arrayOf("*");
+
+                        val data = db.query("biotopeAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                        if (biotopedataArray != null) {
+                            biotopedataArray.clear()
+                        }
+
+                        var title = ""
+
+                        while (data.moveToNext()) {
+                            var  biotope_attribute: Biotope_attribute = Biotope_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                                    data.getString(8), data.getFloat(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getFloat(14)
+                                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+                                    , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getFloat(28)
+                                    , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
+                                    , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
+                                    , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
+                                    , data.getDouble(50), data.getString(51), data.getString(52),data.getString(53))
+                            biotopedataArray.add(biotope_attribute)
+                        }
+
+
+                        if(biotopedataArray.size == 0){
+
+                            intent = Intent(this, BiotopeActivity::class.java)
+
+                            intent!!.putExtra("GROP_ID", attrubuteKey.toString())
+
+                            if(latlngs.size >= 3) {
+                                intent!!.putExtra("latitude", latlngsGPS.get(0).GPS_LAT)
+                                intent!!.putExtra("longitude", latlngsGPS.get(0).GPS_LON)
+                            }
+
+                            if(latlngs != null){
+                                latlngs.clear()
+                            }
+
+                            if(latlngsGPS != null){
+                                latlngsGPS.clear()
+                            }
+
+                            for(i in 0..polygons.size-1) {
+                                if(polygons.get(i).id != polygon.id){
+                                    polygons.add(polygon)
+                                }
+                            }
+
+                            if(polygons.size == 0){
+                                polygons.add(polygon)
+                            }
+
+                            endDraw()
+
+
+                            startActivityForResult(intent, PolygonCallBackData)
+
+
+                        }
+
+                        if(biotopedataArray.size > 0 ){
+                            val intent = Intent(this, DlgDataListActivity::class.java)
+                            intent.putExtra("title", "비오톱")
+                            intent.putExtra("table", "biotopeAttribute")
+                            intent.putExtra("DlgHeight", 600f);
+                            intent.putExtra("GROP_ID",attrubuteKey)
+                            startActivityForResult(intent, BIOTOPE_DATA);
+
+                            if(latlngs != null){
+                                latlngs.clear()
+                            }
+
+                            if(latlngsGPS != null){
+                                latlngsGPS.clear()
+                            }
+                        }
+
                     }
                 }
 
@@ -974,19 +1283,20 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             println("aa : $attrubuteKey")
 
-            if(myLayer == LAYER_BIRDS){
+            if(myLayer != LAYER_BIOTOPE || myLayer == LAYER_BIRDS || myLayer == LAYER_REPTILIA || myLayer == LAYER_MAMMALIA || myLayer == LAYER_FISH || myLayer == LAYER_INSECT
+                    || myLayer == LAYER_FLORA){
                 intent!!.putExtra("GROP_ID", attrubuteKey.toString())
 
                 println("intent-----------------------------------${attrubuteKey.toString()}")
 
                 startActivityForResult(intent, PolygonCallBackData)
             }
-            if(myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIRDS){
+            if(myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIOTOPE && myLayer != LAYER_BIRDS && myLayer != LAYER_REPTILIA && myLayer != LAYER_MAMMALIA && myLayer != LAYER_FISH
+                    && myLayer != LAYER_INSECT && myLayer != LAYER_FLORA){
                 intent!!.putExtra("id", attrubuteKey.toString())
 
                 startActivityForResult(intent, PolygonCallBackData)
             }
-
 
         }
 
@@ -1123,7 +1433,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val layerInfo = LayerInfo()
 
-
             if(type.equals("biotope")){
                 layerInfo.layer = LAYER_BIOTOPE
             }
@@ -1152,11 +1461,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 layerInfo.layer = LAYER_FLORA
             }
 
-            println("layerinfo .layer ===== ${layerInfo.layer}")
-
             polygon.tag = layerInfo
 
             polygons.add(polygon)
+
         }
 
         override fun onPostExecute(result: Boolean?) {
@@ -1188,8 +1496,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
     }
 
-    private val latlngs: ArrayList<LatLng> = ArrayList<LatLng>()
-    private val latlngsObj: ArrayList<JSONObject> = ArrayList<JSONObject>()
 
     private var startGeoPoint: LatLng? = null
 
@@ -1324,25 +1630,26 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                             LAYER_BIOTOPE -> {
 
-                                var obj: JSONObject = JSONObject()
-                                obj.put("lat", "31231321")
-                                obj.put("lng", "31231321")
-
-                                latlngsObj.add(obj)
-
                                 latlngs.add(geoPoint)
+                                val GPS = BiotopeBaseGPS(geoPoint.latitude.toString(),geoPoint.longitude.toString())
+                                latlngsGPS.add(GPS)
 
-                                println("latlngsssssssssssssssssssssssss${latlngs.size}")
 
                                 if (latlngs.size == 1) {
                                     initEditingPolygon()
                                 }
 
-                                drawPolygon()
+                                    drawPolygon()
+
+                                if(latlngs.size >= 3){
+                                    endDraw()
+                                    latlngs.clear()
+                                }
+
                             }
 
+
                             LAYER_BIRDS -> {
-                                println("geoPoint ${geoPoint.latitude} : ${geoPoint.longitude}")
                                 drawPoint(geoPoint)
                             }
 
@@ -1411,6 +1718,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         val marker = googleMap.addMarker(markerOptions)
 
+        if(mygps){
+            marker.title = "현재 위치"
+            mygps = false
+        }
+
         val layerInfo = LayerInfo()
         layerInfo.attrubuteKey = getAttributeKey(layerInfo.layer)
         layerInfo.layer = currentLayer
@@ -1422,8 +1734,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         var attrubuteKey = layerInfo.attrubuteKey
 
         var intent: Intent? = null
-
-
 
         when (myLayer) {
 
@@ -1494,7 +1804,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
         }
 
-        if(myLayer == LAYER_BIRDS){
+        if(myLayer == LAYER_BIOTOPE || myLayer == LAYER_BIRDS || myLayer == LAYER_REPTILIA || myLayer == LAYER_MAMMALIA || myLayer == LAYER_FISH || myLayer == LAYER_INSECT || myLayer == LAYER_FLORA){
 
             intent!!.putExtra("latitude", geoPoint.latitude.toString())
             intent!!.putExtra("longitude", geoPoint.longitude.toString())
@@ -1508,7 +1818,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             endDraw()
         }
 
-        if(myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIRDS) {
+        if(myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIOTOPE && myLayer != LAYER_BIRDS && myLayer != LAYER_REPTILIA && myLayer != LAYER_MAMMALIA && myLayer != LAYER_FISH
+                && myLayer != LAYER_INSECT && myLayer != LAYER_FLORA) {
 
             intent!!.putExtra("latitude", geoPoint.latitude.toString())
             intent!!.putExtra("longitude", geoPoint.longitude.toString())
@@ -1557,8 +1868,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             return
         }
 
-
-
         editingPolygon!!.points = latlngs
 
 
@@ -1568,11 +1877,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 latlngs.remove(latlngs.last())
                 drawPolygon()
 
-                for(i in 0 ..latlngs.size-1) {
-                    println("latlngs ----- ${latlngs.get(i).longitude}      ======================${latlngs.get(i).latitude}")
-                }
-
                 Utils.showNotification(context, "잘못된 지점입니다. 다른 곳을 선택해주세요.")
+
+                latlngs.clear()
 
             }
         }
@@ -1771,76 +2078,103 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,biotope_attribute.id))
             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString,biotope_attribute.GROP_ID))
             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString,biotope_attribute.PRJ_NAME))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTInteger,biotope_attribute.INV_REGION))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTReal,biotope_attribute.INV_PERSON))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString,biotope_attribute.INV_DT))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString,biotope_attribute.INV_TM))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_INDEX", ogr.OFTInteger,biotope_attribute.INV_INDEX))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LU_GR_NUM", ogr.OFTString,biotope_attribute.LU_GR_NUM))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LU_TY_RATE", ogr.OFTReal,biotope_attribute.LU_TY_RATE))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STAND_H", ogr.OFTReal,biotope_attribute.STAND_H))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LC_GR_NUM", ogr.OFTString,biotope_attribute.LC_GR_NUM))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LC_TY", ogr.OFTString,biotope_attribute.LC_TY))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TY_MARK", ogr.OFTString,biotope_attribute.TY_MARK))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GV_RATE", ogr.OFTReal,biotope_attribute.GV_RATE))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GV_STRUCT", ogr.OFTString,biotope_attribute.GV_STRUCT))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("DIS_RET", ogr.OFTString,biotope_attribute.DIS_RET))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("RESTOR_POT", ogr.OFTString,biotope_attribute.RESTOR_POT))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("COMP_INTA", ogr.OFTString,biotope_attribute.COMP_INTA))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("VP_INTA", ogr.OFTString,biotope_attribute.VP_INTA))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("IMP_FORM", ogr.OFTString,biotope_attribute.IMP_FORM))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("BREA_DIA", ogr.OFTString,biotope_attribute.BREA_DIA))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("FIN_EST", ogr.OFTString,biotope_attribute.FIN_EST))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SPEC", ogr.OFTString,biotope_attribute.TRE_SPEC))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_FAMI", ogr.OFTString,biotope_attribute.TRE_FAMI))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SCIEN", ogr.OFTString,biotope_attribute.TRE_SCIEN))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_H", ogr.OFTReal,biotope_attribute.TRE_H))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_BREA", ogr.OFTReal,biotope_attribute.TRE_BREA))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_COVE", ogr.OFTReal,biotope_attribute.TRE_COVE))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_SPEC", ogr.OFTString,biotope_attribute.STRE_SPEC))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_FAMI", ogr.OFTString,biotope_attribute.STRE_FAMI))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_SCIEN", ogr.OFTString,biotope_attribute.STRE_SCIEN))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_H", ogr.OFTReal,biotope_attribute.STRE_H))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_BREA", ogr.OFTReal,biotope_attribute.STRE_BREA))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_COVE", ogr.OFTReal,biotope_attribute.STRE_COVE))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_SPEC", ogr.OFTString,biotope_attribute.SHR_SPEC))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_FAMI", ogr.OFTString,biotope_attribute.SHR_FAMI))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_SCIEN", ogr.OFTString,biotope_attribute.SHR_SCIEN))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_H", ogr.OFTReal,biotope_attribute.SHR_H))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STR_COVE", ogr.OFTReal,biotope_attribute.STR_COVE))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_SPEC", ogr.OFTString,biotope_attribute.HER_SPEC))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_FAMI", ogr.OFTString,biotope_attribute.HER_FAMI))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_SCIEN", ogr.OFTString,biotope_attribute.HER_SCIEN))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_H", ogr.OFTReal,biotope_attribute.HER_H))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_COVE", ogr.OFTReal,biotope_attribute.HER_COVE))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("PIC_FOLDER", ogr.OFTString,biotope_attribute.PIC_FOLDER))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("WILD_ANI", ogr.OFTString,biotope_attribute.WILD_ANI))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("BIOTOP_POT", ogr.OFTString,biotope_attribute.BIOTOP_POT))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("UNUS_NOTE", ogr.OFTString,biotope_attribute.UNUS_NOTE))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal,biotope_attribute.GPS_LAT))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal,biotope_attribute.GPS_LON))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("NEED_CONF", ogr.OFTString,biotope_attribute.NEED_CONF))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString,biotope_attribute.CONF_MOD))
-            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString,biotope_attribute.TEMP_YN))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTInteger,0))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTReal,0.0))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_INDEX", ogr.OFTInteger,0))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LU_GR_NUM", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LU_TY_RATE", ogr.OFTReal,0.0))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STAND_H", ogr.OFTReal,0.0))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LC_GR_NUM", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LC_TY", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TY_MARK", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GV_RATE", ogr.OFTReal,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GV_STRUCT", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("DIS_RET", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("RESTOR_POT", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("COMP_INTA", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("VP_INTA", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("IMP_FORM", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("BREA_DIA", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("FIN_EST", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SPEC", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_FAMI", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SCIEN", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_H", ogr.OFTReal,0.0))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_BREA", ogr.OFTReal,0.0))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_COVE", ogr.OFTReal,0.0))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_SPEC", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_FAMI", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_SCIEN", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_H", ogr.OFTReal,0.0))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_BREA", ogr.OFTReal,0.0))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_COVE", ogr.OFTReal,0.0))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_SPEC", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_FAMI", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_SCIEN", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_H", ogr.OFTReal,0.0))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STR_COVE", ogr.OFTReal,0.0))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_SPEC", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_FAMI", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_SCIEN", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_H", ogr.OFTReal,0.0))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_COVE", ogr.OFTReal,0.0))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("PIC_FOLDER", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("WILD_ANI", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("BIOTOP_POT", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("UNUS_NOTE", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal,0.0))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal,0.0))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("NEED_CONF", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString,""))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString,""))
 
             biotopeData.add(biotope_attribute)
+
         }
 
-        if(biotopeData.size >= 1 && biotopeData.get(0).id != null) {
+        if(biotopeData.size > 0 ) {
 
             for (i in 0..biotopeData.size - 1) {
 
                 biotopeGrop_id += biotopeData.get(i).GROP_ID + "\n"
 
+
+                val grop_id = biotopeData.get(i).GROP_ID
+
+                println("=======================================biotopeData.get(i).GROP_ID : $grop_id")
+
+                println("=======================================polygons.size : ${polygons.size}")
+
+                for(j in 0..polygons.size-1) {
+
+                    val layerInfo = polygons.get(i).tag as LayerInfo
+
+                    println("=======================================polygons.get(i).tag : $layerInfo")
+
+                    var attrubuteKey = layerInfo.attrubuteKey
+
+                    println("=======================================attrubuteKey : $attrubuteKey")
+                    println("=======================================gropid : $grop_id")
+
+                    if(attrubuteKey.equals(grop_id)){
+
+                        val exporter = Exporter.ExportItem(LAYER_BIOTOPE,BIOTOPEATTRIBUTE,polygons.get(i))
+
+                        println("LAYER_BIOTOPE : $LAYER_BIOTOPE  ----------${polygons.get(i).points}")
+
+                        Exporter.export(exporter)
+
+                        println("=======================================exporter : $exporter")
+
+                    }
+                }
+
                 println("biotopeId : ================ ${biotopeGrop_id}")
 
             }
 
-//            exporter = Exporter.ExportItem(LAYER_BIOTOPE,BIOTOPEATTRIBUTE,polygons)
-
-            println("BIOTOPEATTRIBUTE : ================ ${BIOTOPEATTRIBUTE}")
-
-            println("polygons : ================ ${polygons}")
 
 //            println("=======exporter.columnDefs : ${exporter?.columnDefs}   ,  exporter.layerInt  : ${exporter?.layerInt} ,  exporter.polygons  : ${exporter?.polygons}")
 

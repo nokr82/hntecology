@@ -68,7 +68,7 @@
                     style="@style/BiotopeTextView"
                     android:text="조사자"/>
 
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -232,7 +232,7 @@
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
                     android:text="번호"/>
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -525,8 +525,17 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="저장"
-                    android:id="@+id/insectSaveBT"
+                    android:text="추가"
+                    android:id="@+id/insectaddBT"
+                    style="@style/dlgcommonButton"
+                    android:layout_marginLeft="2dp"
+                    />
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="삭제"
+                    android:id="@+id/insectDeleteBT"
                     style="@style/dlgcommonButton"
                     android:layout_marginLeft="2dp"
                     />
@@ -535,8 +544,8 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="삭제"
-                android:id="@+id/insectDeleteBT"
+                android:text="저장"
+                android:id="@+id/insectSaveBT"
                 style="@style/dlgcommonButton"
                 android:layout_marginTop="2dp"
                 />

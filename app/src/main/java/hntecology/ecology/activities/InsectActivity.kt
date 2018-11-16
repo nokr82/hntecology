@@ -20,10 +20,12 @@ import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
+import android.widget.Toast
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
+import hntecology.ecology.model.Base
 import hntecology.ecology.model.Insect_attribute
 import hntecology.ecology.model.Mammal_attribute
 import hntecology.ecology.model.Region
@@ -58,9 +60,16 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
     var keyId: String? = null;
 
+    var pk: String? = null
+
     var page:Int? = null
 
     var dataArray:ArrayList<Insect_attribute> = ArrayList<Insect_attribute>()
+
+    var lat:String = ""
+    var log:String = ""
+
+    var basechkdata = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,16 +92,70 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
         val db = dbManager.createDataBase();
 
-        initGPS()
-
         var intent: Intent = getIntent();
 
-        if (intent.getSerializableExtra("id") != null) {
-            keyId = intent.getStringExtra("id")
+        val num = dbManager.insectsNextNum()
+        insectnumET.text = num.toString()
+
+        if(intent.getStringExtra("latitude")!= null){
+            lat = intent.getStringExtra("latitude")
+
+            println("==============$lat")
+            insectgpslatTV.setText(lat)
+        }
+
+        if(intent.getStringExtra("longitude")!= null){
+            log = intent.getStringExtra("longitude")
+            println("==============$log")
+            insectgpslonTV.setText(log)
+        }
+
+        keyId = intent.getStringExtra("GROP_ID")
+
+        if(intent.getStringExtra("id") != null){
+            pk = intent.getStringExtra("id")
+        }
+
+        val dataList: Array<String> = arrayOf("*");
+
+        var basedata= db.query("Base", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+
+        while(basedata.moveToNext()){
+
+            basechkdata = true
+
+            var base : Base = Base(basedata.getInt(0) , basedata.getString(1), basedata.getString(2), basedata.getString(3), basedata.getString(4), basedata.getString(5) , basedata.getString(6),basedata.getString(7))
+
+            insectusernameET.setText(base.INV_PERSON)
+            insectinvdtET.setText(base.INV_DT)
+            insectnumET.setText(base.INV_TM)
+
+            insectgpslatTV.setText(base.GPS_LAT)
+            insectgpslonTV.setText(base.GPS_LON)
+
+            lat = base.GPS_LAT!!
+            log = base.GPS_LON!!
+
+        }
+
+        if(basechkdata){
+
+        }else {
+
+            val base : Base = Base(null,keyId,"",lat,log,insectusernameET.text.toString(),insectinvdtET.text.toString(),insectnumET.text.toString())
+
+            dbManager.insertbase(base)
+
+        }
+
+
+
+
+        if (intent.getStringExtra("id") != null) {
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data = db.query("insectAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data = db.query("insectAttribute", dataList, "id = '$pk'", null, null, null, "", null)
 
             while (data.moveToNext()) {
                 chkdata = true
@@ -160,10 +223,6 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                 }
 
             }
-
-            page = dataArray.size
-
-            insectpageTV.setText(page.toString() + " / " + dataArray.size.toString())
 
         }
 
@@ -261,7 +320,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                 insect_attribute.NUM = insectnumET.text.toString().toInt()
             }
 
-            insect_attribute.INV_TM = insectinvdtET.text.toString()
+            insect_attribute.INV_TM = Utils.todayStr()
 
             insect_attribute.SPEC_NM = insectspecnmET.text.toString()
             insect_attribute.FAMI_NM = insectfaminmET.text.toString()
@@ -288,8 +347,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
             insect_attribute.UNUS_NOTE = insectunusnoteET.text.toString()
 
-            insect_attribute.GPS_LAT = 0F
-            insect_attribute.GPS_LON = 0F
+            insect_attribute.GPS_LAT = lat.toFloat()
+            insect_attribute.GPS_LON = log.toFloat()
 
             insect_attribute.TEMP_YN = "N"
 
@@ -343,7 +402,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                                 ,null,null,null,null,null,null,null,null,null,null,null,null,null
                                 ,null,null,null,null,null,null)
 
-                        insect_attribute.id = keyId + page.toString()
+                        keyId = intent.getStringExtra("GROP_ID")
 
                         insect_attribute.GROP_ID = keyId
 
@@ -368,7 +427,6 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                         }
 
                         insect_attribute.ETC = insectetcET.text.toString()
-                        println("ETC : ${insect_attribute.ETC}")
 
                         if(insectnumET.text.isNotEmpty()){
                             insect_attribute.NUM = insectnumET.text.toString().toInt()
@@ -398,16 +456,16 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                         insect_attribute.UNUS_NOTE = insectunusnoteET.text.toString()
 
-                        insect_attribute.GPS_LAT = latitude
-                        insect_attribute.GPS_LON = longitude
+                        insect_attribute.GPS_LAT = lat.toFloat()
+                        insect_attribute.GPS_LON = log.toFloat()
 
                         insect_attribute.TEMP_YN = "Y"
 
                         if(chkdata){
 
-                            val tmppage = page!! - 1
-                            val pk = keyId + tmppage.toString()
-                            dbManager.updateinsect_attribute(insect_attribute,pk)
+                            if(pk != null) {
+                                dbManager.updateinsect_attribute(insect_attribute,pk)
+                            }
 
                         }else {
 
@@ -455,12 +513,14 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                                 ,null,null,null,null,null,null,null,null,null,null,null,null,null
                                 ,null,null,null,null,null,null)
 
-                        val tmppage = page!! -1
-                        val id = keyId + tmppage.toString()
 
-                        dbManager.deleteinsect_attribute(insect_attribute,id)
+                        if(pk != null) {
+                            dbManager.deleteinsect_attribute(insect_attribute,pk)
+                            finish()
+                        }else {
+                            Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
+                        }
 
-                        finish()
 
                     })
                     .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
@@ -583,6 +643,88 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             startDlgInsect()
         }
 
+        insectaddBT.setOnClickListener {
+            var insect_attribute: Insect_attribute = Insect_attribute(null,null,null,null,null,null,null,null,null,null
+                    ,null,null,null,null,null,null,null,null,null,null,null,null,null
+                    ,null,null,null,null,null,null)
+
+            keyId = intent.getStringExtra("GROP_ID")
+
+            insect_attribute.GROP_ID = keyId
+
+            insect_attribute.PRJ_NAME = ""
+
+            insect_attribute.INV_REGION = insectinvregionET.text.toString()
+
+            insect_attribute.INV_DT = Utils.todayStr()
+
+            if(insectusernameET.text == null){
+                insect_attribute.INV_PERSON = userName
+            }else {
+                insect_attribute.INV_PERSON = insectusernameET.text.toString()
+            }
+
+            insect_attribute.WEATHER = insectweatherET.text.toString()
+            insect_attribute.WIND = insectwindET.text.toString()
+            insect_attribute.WIND_DIRE = insectwinddireET.text.toString()
+
+            if(insecttemperaturET.text.isNotEmpty()){
+                insect_attribute.TEMPERATUR = insecttemperaturET.text.toString().toFloat()
+            }
+
+            insect_attribute.ETC = insectetcET.text.toString()
+
+            if(insectnumET.text.isNotEmpty()){
+                insect_attribute.NUM = insectnumET.text.toString().toInt()
+            }
+
+            insect_attribute.INV_TM = Utils.timeStr()
+
+            insect_attribute.SPEC_NM = insectspecnmET.text.toString()
+            insect_attribute.FAMI_NM = insectfaminmET.text.toString()
+            insect_attribute.SCIEN_NM = insectsciennmET.text.toString()
+
+            if(insectindicntET.text.isNotEmpty()){
+                insect_attribute.INDI_CNT = insectindicntET.text.toString().toInt()
+            }
+
+            insect_attribute.OBS_STAT = insectobsstatTV.text.toString()
+            insect_attribute.OBS_ST_ETC = insectobsstatET.text.toString()
+
+            insect_attribute.USE_TAR = insectusetarTV.text.toString()
+            insect_attribute.USER_TA_ETC = insectusetarET.text.toString()
+
+            insect_attribute.MJ_ACT = insectmjactTV.text.toString()
+            insect_attribute.MJ_ACT_ETC = insectmjactET.text.toString()
+
+            insect_attribute.INV_MEAN = insectinvmeanTV.text.toString()
+            insect_attribute.INV_MN_ETC = insectinvmeanET.text.toString()
+
+            insect_attribute.UNUS_NOTE = insectunusnoteET.text.toString()
+
+            insect_attribute.GPS_LAT = lat.toFloat()
+            insect_attribute.GPS_LON = log.toFloat()
+
+            insect_attribute.TEMP_YN = "Y"
+
+            if(chkdata){
+
+                if(pk != null) {
+                    dbManager.updateinsect_attribute(insect_attribute,pk)
+                }
+
+            }else {
+
+                dbManager.insertinsect_attribute(insect_attribute)
+
+            }
+
+            clear()
+            chkdata = false
+            pk = null
+
+        }
+
 
     }
 
@@ -593,11 +735,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
 
     fun clear(){
-        insectinvregionET.setText("")
 
-        insectinvdtET.setText("")
-
-        insectusernameET.setText("")
+        insectinvdtET.setText(Utils.todayStr())
 
         insectweatherET.setText("")
         insectwindET.setText("")
@@ -926,8 +1065,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             longitude = p0.getLongitude().toFloat()
 
 
-            insectgpslatTV.setText(latitude.toString())
-            insectgpslonTV.setText(longitude.toString())
+            insectgpslatTV.setText(lat)
+            insectgpslonTV.setText(log)
 
 
             if (progressDialog != null) {

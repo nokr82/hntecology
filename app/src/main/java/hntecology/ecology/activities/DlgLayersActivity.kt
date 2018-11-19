@@ -53,6 +53,22 @@ class DlgLayersActivity : Activity() {
 //            finish()
 //        }
 
+
+        listView.setOnItemClickListener { adapterView, view, position, l ->
+            var data  = adapterData.get(position)
+
+            if(data.is_checked == false){
+                data.is_checked = true
+                apdater.notifyDataSetChanged()
+            }else {
+                data.is_checked = false
+                apdater.notifyDataSetChanged()
+            }
+
+
+
+        }
+
         dlgClick.setOnClickListener {
             for(i in 0 ..adapterData.size-1){
                 var checkData = adapterData.get(i)

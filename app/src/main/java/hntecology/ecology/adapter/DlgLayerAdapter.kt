@@ -40,6 +40,17 @@ open class DlgLayerAdapter(context:Context, view:Int, data:ArrayList<LayerModel>
 
         item.layerNameTV.text = layerData.layer_name
 
+        item.layerNameTV.setOnClickListener {
+            if(item.layerCheckCB.isChecked == false){
+                item.layerCheckCB.isChecked = true
+                notifyDataSetChanged()
+            }else {
+                item.layerCheckCB.isChecked = false
+                notifyDataSetChanged()
+            }
+
+        }
+
         item.layerCheckCB.setOnClickListener {
             var checkBox:CheckBox = it as CheckBox
             var test = checkBox.isChecked.toString() + "-------------------------"

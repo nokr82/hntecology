@@ -15,15 +15,15 @@ import java.util.*
 object Exporter {
 
     class ExportItem constructor(layerInt:Int, columnDefs: ArrayList<ColumnDef>, polygon : Polygon) {
-        val layerInt:Int = -1
-        var columnDefs: ArrayList<ColumnDef> = ArrayList<ColumnDef>()
-        lateinit var polygon : Polygon
+        val layerInt:Int = layerInt
+        var columnDefs: ArrayList<ColumnDef> = columnDefs
+        var polygon : Polygon = polygon
     }
 
     class ColumnDef constructor(columnName: String, columnType: Int, columnValue: Any?) {
-        val columnName = ""
-        val columnType = -1
-        val columnValue:Any? = null
+        val columnName = columnName
+        val columnType = columnType
+        val columnValue:Any? = columnValue
     }
 
     fun export(exportItem:ExportItem) {
@@ -104,7 +104,6 @@ object Exporter {
 
             println("made : $made")
         }
-
 
         // create the data source
         val data_source = driver!!.CreateDataSource(outPathFile)

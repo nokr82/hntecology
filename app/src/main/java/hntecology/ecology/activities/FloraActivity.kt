@@ -670,8 +670,6 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
         }
 
-
-
     }
 
     fun startDlgFlora(){

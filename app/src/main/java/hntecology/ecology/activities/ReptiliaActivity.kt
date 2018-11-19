@@ -1,7 +1,6 @@
 package hntecology.ecology.activities
 
 import android.Manifest
-import android.os.Bundle
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog
@@ -9,16 +8,22 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.location.Location
-import android.os.Build
-import android.os.Handler
-import android.os.Message
+import android.os.*
+import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.view.Gravity
+import android.view.View
 import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.joooonho.SelectableRoundedImageView
+import com.nostra13.universalimageloader.core.ImageLoader
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
@@ -31,6 +36,8 @@ import io.nlopez.smartlocation.location.config.LocationAccuracy
 import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
 import kotlinx.android.synthetic.main.activity_reptilia.*
+import java.io.File
+import java.io.IOException
 
 class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
@@ -67,6 +74,24 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
     var basechkdata = false
 
+    private val REQUEST_PERMISSION_CAMERA = 3
+    private val REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 1
+    private val REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 2
+
+    private val FROM_CAMERA = 100
+    private val FROM_ALBUM = 101
+
+    var cameraPath:String? = null
+
+    private var addPicturesLL: LinearLayout? = null
+    private val imgSeq = 0
+
+    var images_path: ArrayList<String>? = null
+    var images: ArrayList<Bitmap>? = null
+    var images_url: ArrayList<String>? = null
+    var images_url_remove: ArrayList<String>? = null
+    var images_id: ArrayList<Int>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reptilia)
@@ -81,7 +106,11 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         createdDateTV.text = Utils.todayStr()
         invtmTV.text = Utils.timeStr()
 
+        addPicturesLL = findViewById(R.id.addPicturesLL)
 
+        images_path = ArrayList();
+        images = ArrayList()
+        images_url = ArrayList()
 
         userName = PrefUtils.getStringPreference(context, "name");
 
@@ -114,8 +143,6 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         if(intent.getStringExtra("id") != null){
             pk = intent.getStringExtra("id")
         }
-
-
 
         val dataList: Array<String> = arrayOf("*");
 
@@ -704,6 +731,92 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         }
 
+        btnPIC_FOLDER.setOnClickListener {
+
+            var ListItems: List<String>
+            ListItems = ArrayList();
+            ListItems.add("카메라");
+            ListItems.add("사진");
+            ListItems.add("취소");
+
+            val items = Array<CharSequence>(ListItems.size, { i -> ListItems.get(i) })
+
+            var builder: AlertDialog.Builder = AlertDialog.Builder(this);
+            builder.setTitle("선택해 주세요");
+
+            builder.setItems(items, DialogInterface.OnClickListener { dialogInterface, i ->
+
+                when (i) {
+                    //카메라
+                    0 -> {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                            loadPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE)
+                        } else {
+                            takePhoto()
+                        }
+
+                    }
+                    //갤러리
+                    1 -> {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                            loadPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
+                        } else {
+                            imageFromGallery();
+                        }
+                    }
+                }
+
+            })
+            builder.show();
+
+        }
+
+    }
+
+    private fun imageFromGallery() {
+
+        val intent1 = Intent(context, WriteAlbumActivity::class.java)
+//        startActivity(intent1);
+        startActivityForResult(intent1, FROM_ALBUM)
+
+    }
+
+    private fun takePhoto() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (intent.resolveActivity(packageManager) != null) {
+
+            // File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            val storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+
+
+            // File photo = new File(dir, System.currentTimeMillis() + ".jpg");
+
+            try {
+                val photo = File.createTempFile(
+                        System.currentTimeMillis().toString(), /* prefix */
+                        ".jpg", /* suffix */
+                        storageDir      /* directory */
+                )
+
+/*                absolutePath = photo.absolutePath
+                imageUri = Uri.fromFile(photo)
+                //imageUri = Uri.fromFile(photo);
+                imageUri = FileProvider.getUriForFile(context, context!!.getApplicationContext().getPackageName() + ".provider", photo)
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+                startActivityForResult(intent, FROM_CAMERA)*/
+
+                val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                if (takePictureIntent.resolveActivity(packageManager) != null) {
+
+                    startActivityForResult(takePictureIntent, FROM_CAMERA)
+                    cameraPath = photo.absolutePath;
+                }
+
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+        }
     }
     fun startDlgReptilia(){
         val intent = Intent(context, DlgReptiliaActivity::class.java)
@@ -744,7 +857,107 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                     scienET.text = zoological
 
                 }
+
+                FROM_CAMERA -> {
+
+                    if (resultCode == -1) {
+
+                        /*  val options = BitmapFactory.Options()
+                          options.inJustDecodeBounds = true
+
+                          options.inJustDecodeBounds = false
+                          options.inSampleSize = 1
+                          if (options.outWidth > 96) {
+                              val ws = options.outWidth / 96 + 1
+                              if (ws > options.inSampleSize) {
+                                  options.inSampleSize = ws
+                              }
+                          }
+                          if (options.outHeight > 96) {
+                              val hs = options.outHeight / 96 + 1
+                              if (hs > options.inSampleSize) {
+                                  options.inSampleSize = hs
+                              }
+                          }*/
+
+                        var extras: Bundle = data!!.getExtras();
+                        val bitmap = extras.get("data") as Bitmap
+
+                        val v = View.inflate(context, R.layout.item_add_image, null)
+                        val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                        val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+                        imageIV.setImageBitmap(bitmap)
+                        delIV.setTag(images!!.size)
+
+                        if (imgSeq == 0) {
+                            addPicturesLL!!.addView(v)
+                        }
+
+                    }
+                }
+
+                FROM_ALBUM -> {
+                    val result = data!!.getStringArrayExtra("result")
+                    for (i in result.indices) {
+                        val str = result[i]
+                        images_path!!.add(str);
+                        val add_file = Utils.getImage(context!!.getContentResolver(), str)
+                        if (images!!.size == 0) {
+                            images!!.add(add_file)
+                        } else {
+                            try {
+                                images!!.set(images!!.size, add_file)
+                            } catch (e: IndexOutOfBoundsException) {
+                                images!!.add(add_file)
+                            }
+
+                        }
+                        reset(str, i)
+
+                    }
+                    val child = addPicturesLL!!.getChildCount()
+                    for (i in 0 until child) {
+
+                        println("test : $i")
+
+                        val v = addPicturesLL!!.getChildAt(i)
+
+                        val delIV = v.findViewById(R.id.delIV) as ImageView
+
+                    }
+                }
             }
+        }
+    }
+
+
+    fun reset(str: String, i: Int) {
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+        BitmapFactory.decodeFile(str, options)
+        options.inJustDecodeBounds = false
+        options.inSampleSize = 1
+        if (options.outWidth > 96) {
+            val ws = options.outWidth / 96 + 1
+            if (ws > options.inSampleSize) {
+                options.inSampleSize = ws
+            }
+        }
+        if (options.outHeight > 96) {
+            val hs = options.outHeight / 96 + 1
+            if (hs > options.inSampleSize) {
+                options.inSampleSize = hs
+            }
+        }
+        val bitmap = BitmapFactory.decodeFile(str, options)
+        val v = View.inflate(context, R.layout.item_add_image, null)
+        val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+        val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+        imageIV.setImageBitmap(bitmap)
+        delIV.tag = i
+
+        if (imgSeq == 0) {
+            addPicturesLL!!.addView(v)
         }
     }
 
@@ -776,6 +989,79 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         })
 
         builder.show();
+    }
+
+    fun clickMethod(v: View) {
+        addPicturesLL!!.removeAllViews()
+        images!!.clear()
+        val tag = v.tag as Int
+        images_path!!.removeAt(tag)
+
+        for (k in images_url!!.indices) {
+            val vv = View.inflate(context, R.layout.item_add_image, null)
+            val imageIV = vv.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+            val delIV = vv.findViewById<View>(R.id.delIV) as ImageView
+            delIV.visibility = View.GONE
+            val del2IV = vv.findViewById<View>(R.id.del2IV) as ImageView
+            del2IV.visibility = View.VISIBLE
+            del2IV.tag = k
+            ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
+            if (imgSeq == 0) {
+                addPicturesLL!!.addView(vv)
+            }
+        }
+        for (j in images_path!!.indices) {
+            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+            if (images!!.size == 0) {
+                images!!.add(add_file)
+            } else {
+                try {
+                    images!!.set(images!!.size, add_file)
+                } catch (e: IndexOutOfBoundsException) {
+                    images!!.add(add_file)
+                }
+
+            }
+            reset(images_path!!.get(j), j)
+        }
+    }
+
+    fun clickMethod2(v: View) {
+        addPicturesLL!!.removeAllViews()
+        val tag = v.tag as Int
+        images_url!!.removeAt(tag)
+        images_url_remove!!.add(images_id!!.get(tag).toString())
+        images_id!!.removeAt(tag)
+
+        for (k in images_url!!.indices) {
+            val vv = View.inflate(context, R.layout.item_add_image, null)
+            val imageIV = vv.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+            val delIV = vv.findViewById<View>(R.id.delIV) as ImageView
+            delIV.visibility = View.GONE
+            val del2IV = vv.findViewById<View>(R.id.del2IV) as ImageView
+            del2IV.visibility = View.VISIBLE
+            del2IV.tag = k
+            ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
+            if (imgSeq == 0) {
+                addPicturesLL!!.addView(vv)
+            }
+        }
+        for (j in images_path!!.indices) {
+            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+            if (images!!.size == 0) {
+                images!!.add(add_file)
+            } else {
+                try {
+                    images!!.set(images!!.size, add_file)
+                } catch (e: IndexOutOfBoundsException) {
+                    images!!.add(add_file)
+                }
+
+            }
+            reset(images_path!!.get(j), j)
+        }
+
+
     }
 
     fun clear(){
@@ -982,6 +1268,12 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                 loadPermissions(Manifest.permission.ACCESS_COARSE_LOCATION, REQUEST_ACCESS_COARSE_LOCATION)
             } else if (Manifest.permission.ACCESS_COARSE_LOCATION == perm) {
                 checkGPs()
+            }else if (Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
+                imageFromGallery()
+            } else if (Manifest.permission.WRITE_EXTERNAL_STORAGE == perm) {
+                loadPermissions(Manifest.permission.CAMERA, REQUEST_PERMISSION_CAMERA)
+            } else if (Manifest.permission.CAMERA == perm) {
+                takePhoto()
             }
         }
     }

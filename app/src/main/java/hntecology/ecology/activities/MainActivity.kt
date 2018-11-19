@@ -66,6 +66,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         val REQUEST_FINE_LOCATION = 1
         val REQUEST_ACCESS_COARSE_LOCATION = 2
 
+        val WRITE_EXTERNAL_STORAGE = 3
+        val READ_EXTERNAL_STORAGE = 4
+
+
+
         private val PLAY_SERVICES_RESOLUTION_REQUEST: Int = 1000
         private val PolygonCallBackData = 1001
         private val dlg_gpsCallbackData = 1002
@@ -553,7 +558,17 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
 
         exportBtn.setOnClickListener {
-            export()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+            } else {
+                export()
+
+                println("test 123===================================")
+
+            }
+
+            println("test 1234567890===================================")
+
         }
 
         btn_mygps.setOnClickListener {
@@ -2060,6 +2075,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     fun export() {
 
+        println("====export")
+
+        var biotopeArray: ArrayList<Exporter.ExportItem> = ArrayList<Exporter.ExportItem>()
+
         val dbManager: DataBaseHelper = DataBaseHelper(this)
 
         val db = dbManager.createDataBase();
@@ -2138,12 +2157,17 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         }
 
+
+        if(biotopeData.size == 0){
+            Toast.makeText(this, "데이터를 등록해주세요.", Toast.LENGTH_LONG).show()
+            return
+        }
+
         if(biotopeData.size > 0 ) {
 
             for (i in 0..biotopeData.size - 1) {
 
                 biotopeGrop_id += biotopeData.get(i).GROP_ID + "\n"
-
 
                 val grop_id = biotopeData.get(i).GROP_ID
 
@@ -2153,7 +2177,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 for(j in 0..polygons.size-1) {
 
-                    val layerInfo = polygons.get(i).tag as LayerInfo
+                    val layerInfo = polygons.get(j).tag as LayerInfo
 
                     var attrubuteKey = layerInfo.attrubuteKey
 
@@ -2162,11 +2186,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                     if(attrubuteKey.equals(grop_id)){
 
-                        val exporter = Exporter.ExportItem(LAYER_BIOTOPE,BIOTOPEATTRIBUTE,polygons.get(i))
+                        val exporter = Exporter.ExportItem(LAYER_BIOTOPE,BIOTOPEATTRIBUTE,polygons.get(j))
 
-                        println("LAYER_BIOTOPE : $LAYER_BIOTOPE  ----------${polygons.get(i).points}")
+                        biotopeArray.add(exporter)
 
-                        Exporter.export(exporter)
+                        println("LAYER_BIOTOPE : $LAYER_BIOTOPE  ----------${polygons.get(j).points}")
+
 
                         println("=======================================exporter : $exporter")
 
@@ -2174,6 +2199,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 println("biotopeId : ================ ${biotopeGrop_id}")
+                Exporter.export(biotopeArray)
+                biotopeData.clear()
 
             }
 
@@ -2587,6 +2614,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 loadPermissions(android.Manifest.permission.ACCESS_COARSE_LOCATION, REQUEST_ACCESS_COARSE_LOCATION)
             } else if (android.Manifest.permission.ACCESS_COARSE_LOCATION == perm) {
                 checkGPs()
+            } else if(android.Manifest.permission.WRITE_EXTERNAL_STORAGE == perm){
+                loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE )
+            } else if(android.Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
+                export()
             }
         }
     }
@@ -2682,8 +2713,44 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
     }
 
+
+
     private fun stopLocation() {
         SmartLocation.with(context).location().stop()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            REQUEST_FINE_LOCATION -> if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                loadPermissions(android.Manifest.permission.ACCESS_COARSE_LOCATION, REQUEST_ACCESS_COARSE_LOCATION)
+            }
+            REQUEST_ACCESS_COARSE_LOCATION -> if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                checkGPs()
+            }
+            WRITE_EXTERNAL_STORAGE -> {
+                    if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    println("test ========================================= ")
+                    loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE)
+
+    //                export()
+                }else {
+                    Toast.makeText(this,"권한사용을 동의해주셔야 이용이 가능합니다.",Toast.LENGTH_SHORT).show()
+                }
+            }
+            READ_EXTERNAL_STORAGE -> {
+                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    println("test =========================================123 ")
+
+                    export()
+                }
+            }
+        }
+
+
     }
 
 }

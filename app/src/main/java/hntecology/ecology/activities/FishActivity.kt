@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
@@ -19,6 +20,7 @@ import android.support.v4.content.ContextCompat
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import hntecology.ecology.R
@@ -31,7 +33,6 @@ import io.nlopez.smartlocation.SmartLocation
 import io.nlopez.smartlocation.location.config.LocationAccuracy
 import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
-import kotlinx.android.synthetic.main.activity_birds.*
 import kotlinx.android.synthetic.main.activity_fish.*
 
 class FishActivity : Activity() , OnLocationUpdatedListener {
@@ -68,6 +69,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
     var log:String = ""
 
     var basechkdata = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -803,10 +805,10 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
 
 
-
-
-
     }
+
+
+
 
     fun resetPage(page : Int){
         val dataList: Array<String> = arrayOf("*");

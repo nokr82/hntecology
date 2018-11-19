@@ -26,7 +26,7 @@ object Exporter {
         val columnValue:Any? = columnValue
     }
 
-    fun export(exportItems:Array<ExportItem>) {
+    fun export(exportItems:ArrayList<ExportItem>) {
 
         if(exportItems.isEmpty()) {
             return
@@ -85,12 +85,9 @@ object Exporter {
         val driver = ogr.GetDriverByName("ESRI Shapefile")
 
         // String outPath = "/data/data/com.wshunli.gdal.android.demo/outputs/";
-        val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
-        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + timeStamp + File.separator
-        val outPathFile = "$outPath$layerName.shp"
-
-
-
+//        val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
+        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + layerName + File.separator
+        val outPathFile = "$layerName.shp"
 
         println("outPathFile : $outPathFile")
 

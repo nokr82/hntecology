@@ -39,15 +39,17 @@ open class DlgLayerAdapter(context:Context, view:Int, data:ArrayList<LayerModel>
         var layerData:LayerModel =  data.get(position)
 
         item.layerNameTV.text = layerData.layer_name
+        item.layerCheckCB.isChecked = layerData.is_checked
 
         item.layerNameTV.setOnClickListener {
-            if(item.layerCheckCB.isChecked == false){
-                item.layerCheckCB.isChecked = true
-                notifyDataSetChanged()
+
+            if(layerData.is_checked == false){
+                layerData.is_checked = true
             }else {
-                item.layerCheckCB.isChecked = false
-                notifyDataSetChanged()
+                layerData.is_checked = false
             }
+
+            notifyDataSetChanged()
 
         }
 
@@ -57,6 +59,8 @@ open class DlgLayerAdapter(context:Context, view:Int, data:ArrayList<LayerModel>
             println(test)
 
             layerData.is_checked = checkBox.isChecked
+
+            notifyDataSetChanged()
         }
 
         return retView

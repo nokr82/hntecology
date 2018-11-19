@@ -1159,6 +1159,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                         val biotope = File(sdPath)
                         biotope.mkdir();
+//                        sdPath +="/imgs"
                         sdPath +="/"+biotope_attribute.PIC_FOLDER
 
                         val file = File(sdPath)
@@ -1168,9 +1169,30 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                         sdPath+="/"
 
+                        var pathArray:ArrayList<String> = ArrayList<String>()
+
                         for(i   in 0..images!!.size-1){
 
-                            saveVitmapToFile(images!!.get(i),sdPath+i+".jpg")
+                            val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "/biotope/imgs" + File.separator
+                            val outputsDir = File(outPath)
+
+                            if (outputsDir.exists()) {
+                                println("Exit : $outPath")
+
+                                val files = outputsDir.listFiles()
+                                if (files != null) {
+                                    for (i in files.indices) {
+                                        println("f : " + files[i])
+                                    }
+                                }
+
+                            } else {
+                                val made = outputsDir.mkdirs()
+
+                                println("made : $made")
+                            }
+
+                            saveVitmapToFile(images!!.get(i),outPath+i+".png")
 
                         }
 
@@ -1189,7 +1211,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         }
 
         btn_biotopDelete.setOnClickListener {
-
 
             val builder = AlertDialog.Builder(context)
             builder.setMessage("삭제하시겠습니까?").setCancelable(false)
@@ -1223,8 +1244,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         }else {
                             Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
                         }
-
-
 
                     })
                     .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
@@ -1372,8 +1391,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 biotope_attribute.STRE_COVE = Utils.getString(etSTRE_COVEET).toFloat();
             }
 
-
-
             biotope_attribute.SHR_SPEC = etSHR_SPECET.text.toString()
 
             biotope_attribute.SHR_FAMI = etSHR_FAMIET.text.toString()
@@ -1450,7 +1467,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     dbManager.updatebiotope_attribute(biotope_attribute,pk)
                 }
 
-
             } else {
 
                 if(images!!.size > 0){
@@ -1476,9 +1492,31 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
             sdPath+="/"
 
+
+            var pathArray:ArrayList<String> = ArrayList<String>()
+
             for(i   in 0..images!!.size-1){
 
-                saveVitmapToFile(images!!.get(i),sdPath+i+".jpg")
+                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "/biotope/imgs" + File.separator
+                val outputsDir = File(outPath)
+
+                if (outputsDir.exists()) {
+                    println("Exit : $outPath")
+
+                    val files = outputsDir.listFiles()
+                    if (files != null) {
+                        for (i in files.indices) {
+                            println("f : " + files[i])
+                        }
+                    }
+
+                } else {
+                    val made = outputsDir.mkdirs()
+
+                    println("made : $made")
+                }
+
+                saveVitmapToFile(images!!.get(i),sdPath+i+".png")
 
             }
 
@@ -1496,8 +1534,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
     fun getGps() {
 
-
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 //Location Permission already granted
                 getLocation();
@@ -1793,7 +1831,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this)
     }
 
-
     @Synchronized
     private fun buildGoogleApiClient() {
         mGoogleApiClient = GoogleApiClient.Builder(this)
@@ -1929,6 +1966,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         val intent1 = Intent(context, WriteAlbumActivity::class.java)
 //        startActivity(intent1);
         startActivityForResult(intent1, FROM_ALBUM)
+
     }
 
     fun reset(str: String, i: Int) {

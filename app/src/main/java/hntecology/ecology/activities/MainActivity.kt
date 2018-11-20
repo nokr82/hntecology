@@ -971,10 +971,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     var title = ""
 
                     while (data.moveToNext()) {
-                        var  fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                data.getString(8), data.getFloat(9), data.getString(10), data.getString(11), data.getString(12), data.getInt(13), data.getString(14), data.getInt(15), data.getInt(16), data.getString(17),
-                                data.getFloat(18), data.getFloat(19), data.getString(20), data.getInt(21), data.getInt(22), data.getInt(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27),
-                                data.getInt(28) ,data.getString(29), data.getString(30), data.getString(31), data.getInt(32), data.getString(33), data.getString(34), data.getString(35),data.getString(36))
+                        var  fish_attribute: Fish_attribute =  Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                data.getString(8),data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
+                                data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getString(26), data.getString(27), data.getString(28),
+                                data.getInt(29) ,data.getString(30), data.getString(31), data.getString(32), data.getInt(33), data.getString(33), data.getString(35), data.getString(36),data.getString(37))
                         fishdataArray.add(fish_attribute)
                     }
 
@@ -1200,17 +1200,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             biotopedataArray.add(biotope_attribute)
                         }
 
-
                         if(biotopedataArray.size == 0){
 
                             intent = Intent(this, BiotopeActivity::class.java)
 
                             intent!!.putExtra("GROP_ID", attrubuteKey.toString())
 
-                            if(latlngs.size >= 3) {
-                                intent!!.putExtra("latitude", latlngsGPS.get(0).GPS_LAT)
-                                intent!!.putExtra("longitude", latlngsGPS.get(0).GPS_LON)
-                            }
+                            intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
+                            intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
 
                             if(latlngs != null){
                                 latlngs.clear()
@@ -1232,9 +1229,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                             endDraw()
 
-
                             startActivityForResult(intent, PolygonCallBackData)
-
 
                         }
 
@@ -2278,11 +2273,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         while (fishdata.moveToNext()) {
 
-            var fish_attribute: Fish_attribute = Fish_attribute(fishdata.getString(0), fishdata.getString(1), fishdata.getString(2), fishdata.getString(3), fishdata.getString(4), fishdata.getString(5)
-                    , fishdata.getString(6), fishdata.getString(7), fishdata.getString(8), fishdata.getFloat(9), fishdata.getString(10), fishdata.getString(11), fishdata.getString(12)
-                    , fishdata.getInt(13), fishdata.getString(14), fishdata.getInt(15), fishdata.getInt(16), fishdata.getString(17), fishdata.getFloat(18), fishdata.getFloat(19), fishdata.getString(20)
-                    , fishdata.getInt(21), fishdata.getInt(22), fishdata.getInt(23), fishdata.getInt(24), fishdata.getString(25), fishdata.getString(26), fishdata.getString(27), fishdata.getInt(28)
-                    , fishdata.getString(29), fishdata.getString(30), fishdata.getString(31), fishdata.getInt(32), fishdata.getString(33), fishdata.getString(34), fishdata.getString(35), fishdata.getString(36))
+            var fish_attribute: Fish_attribute = Fish_attribute(fishdata.getString(0), fishdata.getString(1), fishdata.getString(2), fishdata.getString(3), fishdata.getString(4), fishdata.getString(5), fishdata.getString(6), fishdata.getString(7),
+                    fishdata.getString(8),fishdata.getString(9), fishdata.getFloat(10), fishdata.getString(11), fishdata.getString(12), fishdata.getString(13), fishdata.getInt(14), fishdata.getString(15), fishdata.getInt(16), fishdata.getInt(17), fishdata.getString(18),
+                    fishdata.getFloat(19), fishdata.getFloat(20), fishdata.getString(21), fishdata.getInt(22), fishdata.getInt(23), fishdata.getInt(24), fishdata.getInt(25), fishdata.getString(26), fishdata.getString(27), fishdata.getString(28),
+                    fishdata.getInt(29) ,fishdata.getString(30), fishdata.getString(31), fishdata.getString(32), fishdata.getInt(33), fishdata.getString(33), fishdata.getString(35), fishdata.getString(36),fishdata.getString(37))
 
             fishData.add(fish_attribute)
 

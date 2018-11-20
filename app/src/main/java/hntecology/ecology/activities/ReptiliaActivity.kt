@@ -37,7 +37,11 @@ import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
 import kotlinx.android.synthetic.main.activity_reptilia.*
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
+import java.io.OutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
@@ -58,8 +62,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
     var page:Int? = null
 
-    val REQUEST_FINE_LOCATION = 100
-    val REQUEST_ACCESS_COARSE_LOCATION = 101
+    val REQUEST_FINE_LOCATION = 50
+    val REQUEST_ACCESS_COARSE_LOCATION = 51
 
 
     var dataArray:ArrayList<Reptilia_attribute> = ArrayList<Reptilia_attribute>()
@@ -120,9 +124,6 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         val db = dbManager.createDataBase();
 
-        val num = dbManager.reptiliasNextNum()
-        numET.text = num.toString()
-
         var intent: Intent = getIntent();
 
         if(intent.getStringExtra("latitude")!= null){
@@ -179,11 +180,6 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         }
 
-
-
-
-
-
         if (intent.getStringExtra("id") != null) {
 
             val dataList: Array<String> = arrayOf("*");
@@ -207,7 +203,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                 temperaturET.setText(reptilia_attribute.TEMPERATUR.toString())
                 etcET.setText(reptilia_attribute.ETC)
 
-                numET.setText(reptilia_attribute.NUM.toString())
+                numET.setText(reptilia_attribute.id)
                 invtmTV.setText(reptilia_attribute.INV_TM)
 
                 specnmET.setText(reptilia_attribute.SPEC_NM)
@@ -242,6 +238,84 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                 if(reptilia_attribute.TEMP_YN.equals("Y")){
                     dataArray.add(reptilia_attribute)
+                }
+
+                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + reptilia_attribute.INV_DT + "." + reptilia_attribute.INV_TM + "/imges")
+                val fileList = file.listFiles()
+                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia/imges/")
+                var tmpfileList = tmpfiles.listFiles()
+
+                if (fileList != null) {
+                    for (i in 0..fileList.size - 1) {
+                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia/imges/"
+                        val outputsDir = File(outPath)
+
+                        if (outputsDir.exists()) {
+                            println("Exit : $outPath")
+
+                            val files = outputsDir.listFiles()
+                            if (files != null) {
+                                for (i in files.indices) {
+                                    println("f : " + files[i])
+                                }
+                            }
+
+                        } else {
+                            val made = outputsDir.mkdirs()
+
+                            println("made : $made")
+                        }
+
+                        val tmpfile = fileList.get(i)
+                        val tmpfile2 = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/reptilia/imges" ,   pk +"_" + (i+1) + ".png")
+
+                        if(tmpfile.exists()){
+                            tmpfile.renameTo(tmpfile2)
+                        }
+
+                        tmpfileList = tmpfiles.listFiles()
+
+                    }
+                }
+
+                if(tmpfileList != null){
+                    for (i in 0..tmpfileList.size - 1) {
+
+                        val options = BitmapFactory.Options()
+                        options.inJustDecodeBounds = true
+                        options.inJustDecodeBounds = false
+                        options.inSampleSize = 1
+                        if (options.outWidth > 96) {
+                            val ws = options.outWidth / 96 + 1
+                            if (ws > options.inSampleSize) {
+                                options.inSampleSize = ws
+                            }
+                        }
+                        if (options.outHeight > 96) {
+                            val hs = options.outHeight / 96 + 1
+                            if (hs > options.inSampleSize) {
+                                options.inSampleSize = hs
+                            }
+                        }
+
+                        images_path!!.add(tmpfileList.get(i).path)
+
+                        for(j in 0..tmpfileList.size - 1) {
+
+                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/reptilia/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
+                                val v = View.inflate(context, R.layout.item_add_image, null)
+                                val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                                val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+                                imageIV.setImageBitmap(bitmap)
+                                delIV.setTag(i)
+                                images!!.add(bitmap)
+                                if (imgSeq == 0) {
+                                    addPicturesLL!!.addView(v)
+                                }
+                            }
+                        }
+                    }
                 }
 
 
@@ -337,9 +411,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                 reptilia_attribute.TEMPERATUR = temperaturET.text.toString().toFloat()
             }
 
-
             reptilia_attribute.ETC = etcET.text.toString()
-
 
             if(numET.text.isNotEmpty()){
                 reptilia_attribute.NUM = numET.text.toString().toInt()
@@ -502,6 +574,27 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                                 ,null,null,null,null,null,null,null,null,null,null)
 
                         if(pk != null){
+
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia/imges/")
+                            val pathdir = path.listFiles()
+
+                            if(pathdir != null) {
+                                for (i in 0..pathdir.size-1) {
+
+                                    for(j in 0..pathdir.size-1) {
+
+                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/reptilia/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+
+                                            pathdir.get(i).canonicalFile.delete()
+
+                                            println("delete ===============")
+
+                                        }
+                                    }
+
+                                }
+                            }
+
                             dbManager.deletereptilia_attribute(reptilia_attribute,pk)
                             finish()
                         }else {
@@ -617,15 +710,106 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                         reptilia_attribute.TEMP_YN = "Y"
 
 
-                        if (chkdata){
+
+
+                        if (chkdata) {
 
                             if(pk != null){
                                 dbManager.updatereptilia_attribute(reptilia_attribute,pk)
                             }
 
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia/imges/")
+                            val pathdir = path.listFiles()
+
+                            if(pathdir != null) {
+                                for (i in 0..pathdir.size-1) {
+
+                                    for(j in 0..pathdir.size-1) {
+
+                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/reptilia/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+
+                                            pathdir.get(i).canonicalFile.delete()
+
+                                            println("delete ===============")
+
+                                        }
+                                    }
+
+                                }
+                            }
+
+                            for(i   in 0..images!!.size-1){
+
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia/imges/"
+                                val outputsDir = File(outPath)
+
+                                if (outputsDir.exists()) {
+                                    println("Exit : $outPath")
+
+                                    val files = outputsDir.listFiles()
+                                    if (files != null) {
+                                        for (i in files.indices) {
+                                            println("f : " + files[i])
+                                        }
+                                    }
+
+                                } else {
+                                    val made = outputsDir.mkdirs()
+
+                                    println("made : $made")
+                                }
+
+                                saveVitmapToFile(images!!.get(i),outPath+pk+"_"+i+".png")
+
+                            }
+
                         } else {
-                            dbManager.insertreptilia_attribute(reptilia_attribute)
+
+                            dbManager.insertreptilia_attribute(reptilia_attribute);
+
+                            var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+                            sdPath += "/ecology/tmps/" + reptilia_attribute.INV_DT +"."+ reptilia_attribute.INV_TM + "/imges"
+                            val reptilia = File(sdPath)
+                            reptilia.mkdir();
+//                          sdPath +="/imgs"
+//                          sdPath +="/"+biotope_attribute.PIC_FOLDER
+
+                            val file = File(sdPath)
+                            file.mkdir();
+                            //이미 있다면 삭제. 후 생성
+                            setDirEmpty(sdPath)
+
+                            sdPath+="/"
+
+                            var pathArray:ArrayList<String> = ArrayList<String>()
+
+                            for(i   in 0..images!!.size-1){
+
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + reptilia_attribute.INV_DT +"."+ reptilia_attribute.INV_TM + "/imges/"
+                                val outputsDir = File(outPath)
+
+                                if (outputsDir.exists()) {
+                                    println("Exit : $outPath")
+
+                                    val files = outputsDir.listFiles()
+                                    if (files != null) {
+                                        for (i in files.indices) {
+                                            println("f : " + files[i])
+                                        }
+                                    }
+
+                                } else {
+                                    val made = outputsDir.mkdirs()
+
+                                    println("made : $made")
+                                }
+
+                                saveVitmapToFile(images!!.get(i),outPath+i+".png")
+
+                            }
+
                         }
+
 
                         finish()
 
@@ -715,15 +899,105 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             reptilia_attribute.TEMP_YN = "Y"
 
 
-            if (chkdata){
+            if (chkdata) {
 
                 if(pk != null){
                     dbManager.updatereptilia_attribute(reptilia_attribute,pk)
                 }
 
+                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia/imges/")
+                val pathdir = path.listFiles()
+
+                if(pathdir != null) {
+                    for (i in 0..pathdir.size-1) {
+
+                        for(j in 0..pathdir.size-1) {
+
+                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/reptilia/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+
+                                pathdir.get(i).canonicalFile.delete()
+
+                                println("delete ===============")
+
+                            }
+                        }
+
+                    }
+                }
+
+                for(i   in 0..images!!.size-1){
+
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia/imges/"
+                    val outputsDir = File(outPath)
+
+                    if (outputsDir.exists()) {
+                        println("Exit : $outPath")
+
+                        val files = outputsDir.listFiles()
+                        if (files != null) {
+                            for (i in files.indices) {
+                                println("f : " + files[i])
+                            }
+                        }
+
+                    } else {
+                        val made = outputsDir.mkdirs()
+
+                        println("made : $made")
+                    }
+
+                    saveVitmapToFile(images!!.get(i),outPath+pk+"_"+i+".png")
+
+                }
+
             } else {
-                dbManager.insertreptilia_attribute(reptilia_attribute)
+
+                dbManager.insertreptilia_attribute(reptilia_attribute);
+
+                var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+                sdPath += "/ecology/tmps/" + reptilia_attribute.INV_DT +"."+ reptilia_attribute.INV_TM + "/imges"
+                val reptilia = File(sdPath)
+                reptilia.mkdir();
+//                          sdPath +="/imgs"
+//                          sdPath +="/"+biotope_attribute.PIC_FOLDER
+
+                val file = File(sdPath)
+                file.mkdir();
+                //이미 있다면 삭제. 후 생성
+                setDirEmpty(sdPath)
+
+                sdPath+="/"
+
+                var pathArray:ArrayList<String> = ArrayList<String>()
+
+                for(i   in 0..images!!.size-1){
+
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + reptilia_attribute.INV_DT +"."+ reptilia_attribute.INV_TM + "/imges/"
+                    val outputsDir = File(outPath)
+
+                    if (outputsDir.exists()) {
+                        println("Exit : $outPath")
+
+                        val files = outputsDir.listFiles()
+                        if (files != null) {
+                            for (i in files.indices) {
+                                println("f : " + files[i])
+                            }
+                        }
+
+                    } else {
+                        val made = outputsDir.mkdirs()
+
+                        println("made : $made")
+                    }
+
+                    saveVitmapToFile(images!!.get(i),outPath+i+".png")
+
+                }
+
             }
+
+
 
             clear()
             chkdata = false
@@ -1098,6 +1372,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         watercontET.setText("")
         waterqualET.setText("")
 
+        addPicturesLL!!.removeAllViews()
+
     }
 
     fun resetPage(page : Int){
@@ -1357,6 +1633,59 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
     private fun stopLocation() {
         SmartLocation.with(context).location().stop()
+    }
+
+    fun saveVitmapToFile(bitmap:Bitmap, filePath:String){
+
+        var file = File(filePath)
+        var out: OutputStream? =null
+        try {
+            file.createNewFile()
+            out = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
+
+        }catch (e:Exception){
+
+            e.printStackTrace()
+        }finally {
+
+            out!!.close()
+        }
+
+    }
+
+    fun setDirEmpty( dirName:String){
+
+        var path = Environment.getExternalStorageDirectory().toString() + dirName;
+
+        val dir:File    =  File(path);
+        var childFileList = dir.listFiles()
+
+        if(dir.exists()){
+            for(childFile:File in childFileList){
+
+                if(childFile.isDirectory()){
+
+                    setDirEmpty(childFile.absolutePath); //하위디렉토리
+
+                } else{
+
+                    childFile.delete(); // 하위파일
+                }
+
+            }
+            dir.delete();
+        }
+    }
+
+    fun getAttrubuteKey(): String {
+
+        val time = System.currentTimeMillis()
+//        val dayTime = SimpleDateFormat("yyyyMMddHHmmssSSS")
+        val dayTime = SimpleDateFormat("yyyyMMddHHmmssSSS")
+        val strDT = dayTime.format(Date(time))
+
+        return strDT
     }
 
 

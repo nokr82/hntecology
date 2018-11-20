@@ -310,7 +310,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         queryreptilia += ",HAB_AREA_H	Integer";
         queryreptilia += ",GPS_LAT	    Float";
         queryreptilia += ",GPS_LON	    Float";
-        querybrids += ",TEMP_YN	String";
+        queryreptilia += ",TEMP_YN	String";
         queryreptilia += ");";
         db.execSQL(queryreptilia);
 
@@ -342,7 +342,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         querymammal += ",UN_SPEC_RE	String";
         querymammal += ",TR_EASY	Integer";
         querymammal += ",TR_EASY_RE	Integer";
-        querybrids += ",TEMP_YN	String";
+        querymammal += ",TEMP_YN	String";
         querymammal += ");";
         db.execSQL(querymammal);
 
@@ -379,35 +379,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(queryinsect);
 
 
-
-
-//        query = "create table if not exists ";
-//        query += "birds ( no String";
-//        query += ", taxon String";
-//        query += ", zoological String";
-//        query += ", name_kr String";
-//        query += ", author String";
-//        query += ", year String";
-//        query += ", Phylum_name String";
-//        query += ", Phylum_name_kr String";
-//        query += ", Class_name String";
-//        query += ", Class_name_kr String";
-//        query += ", Order_name String";
-//        query += ", Order_name_kr String";
-//        query += ", Family_name String";
-//        query += ", Family_name_kr String";
-//        query += ", Genus_name String";
-//        query += ", Genus_name_kr String";
-//        query += ", Species_name String";
-//        query += ", Species_name String";
-//        query += ");";
-//        db.execSQL(query);
-//
-//        query = "create table if not exists ";
-//        query += "member_likes ( _id INTEGER PRIMARY KEY AUTOINCREMENT";
-//        query += ", board_id INTEGER";
-//        query += ");";
-//        db.execSQL(query);
     }
 
     @Override
@@ -449,7 +420,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + biotope_attribute.getINV_PERSON() + "'";
         query += ", '" + biotope_attribute.getINV_DT() + "'";
         query += ", '" + biotope_attribute.getINV_TM() + "'";
-        query += ", (SELECT   strftime(\"%Y%m%d\",'now','localtime') || substr('00000' || cast(IFNULL(MAX(substr(INV_INDEX ,9,15)),0)+1 as text), -5, 5) FROM biotopeAttribute)";
+        query += ", '" + biotope_attribute.getINV_INDEX() + "'";
         query += ", '" + biotope_attribute.getLU_GR_NUM() + "'";
         query += ", " + biotope_attribute.getLU_TY_RATE() + "";
         query += ", " + biotope_attribute.getSTAND_H() + "";
@@ -521,7 +492,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + birds_attribute.getWIND_DIRE() + "'";
         query += ", '" + birds_attribute.getTEMPERATUR() + "'";
         query += ", '" + birds_attribute.getETC() + "'";
-        query += ", (SELECT   strftime(\"%Y%m%d\",'now','localtime') || substr('00000' || cast(IFNULL(MAX(substr(NUM ,9,15)),0)+1 as text), -5, 5) FROM birdsAttribute)";
+        query += ", '" + birds_attribute.getNUM() + "'";
         query += ", '" + birds_attribute.getINV_TM() + "'";
         query += ", '" + birds_attribute.getSPEC_NM() + "'";
         query += ", '" + birds_attribute.getFAMI_NM() + "'";
@@ -563,7 +534,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + reptilia_attribute.getWIND_DIRE() + "'";
         query += ", '" + reptilia_attribute.getTEMPERATUR() + "'";
         query += ", '" + reptilia_attribute.getETC() + "'";
-        query += ", (SELECT   strftime(\"%Y%m%d\",'now','localtime') || substr('00000' || cast(IFNULL(MAX(substr(NUM ,9,15)),0)+1 as text), -5, 5) FROM reptiliaAttribute)";
+        query += ",  '" + reptilia_attribute.getNUM() + "'";
         query += ", '" + reptilia_attribute.getINV_TM() + "'";
         query += ", '" + reptilia_attribute.getSPEC_NM() + "'";
         query += ", '" + reptilia_attribute.getFAMI_NM() + "'";
@@ -607,7 +578,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + mammal_attribute.getWIND_DIRE() + "'";
         query += ", '" + mammal_attribute.getTEMPERATUR() + "'";
         query += ", '" + mammal_attribute.getETC() + "'";
-        query += ", (SELECT   strftime(\"%Y%m%d\",'now','localtime') || substr('00000' || cast(IFNULL(MAX(substr(NUM ,9,15)),0)+1 as text), -5, 5) FROM mammalAttribute)";
+        query += ", '" + mammal_attribute.getNUM() + "'";
         query += ", '" + mammal_attribute.getINV_TM() + "'";
         query += ", '" + mammal_attribute.getSPEC_NM() + "'";
         query += ", '" + mammal_attribute.getFAMI_NM() + "'";
@@ -648,7 +619,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + insect_attribute.getWIND_DIRE() + "'";
         query += ", '" + insect_attribute.getTEMPERATUR() + "'";
         query += ", '" + insect_attribute.getETC() + "'";
-        query += ", (SELECT   strftime(\"%Y%m%d\",'now','localtime') || substr('00000' || cast(IFNULL(MAX(substr(NUM ,9,15)),0)+1 as text), -5, 5) FROM insectAttribute)";
+        query += ", '" + insect_attribute.getNUM() + "'";
         query += ", '" + insect_attribute.getINV_TM() + "'";
         query += ", '" + insect_attribute.getSPEC_NM() + "'";
         query += ", '" + insect_attribute.getFAMI_NM() + "'";
@@ -675,7 +646,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public void insertfish_attribute(Fish_attribute fish_attribute){
         String query = "INSERT INTO fishAttribute";
-        query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
+        query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_TM,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,MID_RAGE,CODE_NUM,RIVER_NUM,RIVER_NM,NET_CNT,NET_MIN,AD_DIST_NM,GPS_LAT";
         query += ",GPS_LON,COLL_TOOL,STREAM_W,WATER_W,WATER_D,WATER_CUR,RIV_STR,RIV_STR_IN,RIV_FORM";
         query += ",NUM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,UNIDENT,RIV_FM_CH,UN_FISH_CH,TEMP_YN)";
@@ -685,6 +656,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + fish_attribute.getPRJ_NAME() + "'";
         query += ", '" + fish_attribute.getINV_REGION() + "'";
         query += ", '" + fish_attribute.getINV_DT() + "'";
+        query += ", '" + fish_attribute.getINV_TM() + "'";
         query += ", '" + fish_attribute.getINV_PERSON() + "'";
         query += ", '" + fish_attribute.getWEATHER() + "'";
         query += ", '" + fish_attribute.getWIND() + "'";
@@ -708,7 +680,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + fish_attribute.getRIV_STR() + "'";
         query += ", '" + fish_attribute.getRIV_STR_IN() + "'";
         query += ", '" + fish_attribute.getRIV_FORM() + "'";
-        query += ", (SELECT   strftime(\"%Y%m%d\",'now','localtime') || substr('00000' || cast(IFNULL(MAX(substr(NUM ,9,15)),0)+1 as text), -5, 5) FROM fishAttribute)";
+        query += ", '" + fish_attribute.getNUM() + "'";
         query += ", '" + fish_attribute.getSPEC_NM() + "'";
         query += ", '" + fish_attribute.getFAMI_NM() + "'";
         query += ", '" + fish_attribute.getSCIEN_NM() + "'";
@@ -742,7 +714,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + flora_Attribute.getWIND_DIRE() + "'";
         query += ", '" + flora_Attribute.getTEMPERATUR() + "'";
         query += ", '" + flora_Attribute.getETC() + "'";
-        query += ", (SELECT   strftime(\"%Y%m%d\",'now','localtime') || substr('00000' || cast(IFNULL(MAX(substr(NUM ,9,15)),0)+1 as text), -5, 5) FROM floraAttribute)";
+        query += ", '" + flora_Attribute.getNUM() + "'";
         query += ", '" + flora_Attribute.getINV_TM() + "'";
         query += ", '" + flora_Attribute.getSPEC_NM() + "'";
         query += ", '" + flora_Attribute.getFAMI_NM() + "'";
@@ -1076,6 +1048,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "UPDATE fishAttribute SET  " +
                 "INV_REGION='" + fish_attribute.getINV_REGION() + "'"
                 + ",INV_DT='" + fish_attribute.getINV_DT() + "'"
+                + ",INV_DT='" + fish_attribute.getINV_TM() + "'"
                 + ",INV_PERSON='" + fish_attribute.getINV_PERSON() + "'"
                 + ",WEATHER='" + fish_attribute.getWEATHER() + "'"
                 + ",WIND='" + fish_attribute.getWIND() + "'"
@@ -1161,132 +1134,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();
-    }
-
-    public int biotopesNextNum(){
-
-        SQLiteDatabase db = getReadableDatabase();
-
-        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(INV_INDEX\n ,9,15)),0)+1 ,-15, 15) FROM biotopeAttribute";
-
-        int num = 0;
-
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                num = cursor.getInt(0);
-            }
-        }
-        cursor.close();
-        return num;
-    }
-
-    public int birdsNextNum(){
-
-        SQLiteDatabase db = getReadableDatabase();
-
-        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(NUM ,9,15)),0)+1 ,-15, 15) FROM birdsAttribute";
-
-        int num = 0;
-
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                num = cursor.getInt(0);
-            }
-        }
-        cursor.close();
-        return num;
-    }
-
-    public int reptiliasNextNum(){
-
-        SQLiteDatabase db = getReadableDatabase();
-
-        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(NUM ,9,15)),0)+1 ,-15, 15) FROM reptiliaAttribute";
-
-        int num = 0;
-
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                num = cursor.getInt(0);
-            }
-        }
-        cursor.close();
-        return num;
-    }
-
-    public int mammalsNextNum(){
-
-        SQLiteDatabase db = getReadableDatabase();
-
-        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(NUM ,9,15)),0)+1 ,-15, 15) FROM mammalAttribute";
-
-        int num = 0;
-
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                num = cursor.getInt(0);
-            }
-        }
-        cursor.close();
-        return num;
-    }
-
-    public int fishsNextNum(){
-
-        SQLiteDatabase db = getReadableDatabase();
-
-        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(NUM ,9,15)),0)+1 ,-15, 15) FROM fishAttribute";
-
-        int num = 0;
-
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                num = cursor.getInt(0);
-            }
-        }
-        cursor.close();
-        return num;
-    }
-
-    public int insectsNextNum(){
-
-        SQLiteDatabase db = getReadableDatabase();
-
-        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(NUM ,9,15)),0)+1 ,-15, 15) FROM insectAttribute";
-
-        int num = 0;
-
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                num = cursor.getInt(0);
-            }
-        }
-        cursor.close();
-        return num;
-    }
-
-    public int floraNextNum(){
-
-        SQLiteDatabase db = getReadableDatabase();
-
-        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(NUM ,9,15)),0)+1 ,-15, 15) FROM floraAttribute";
-
-        int num = 0;
-
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                num = cursor.getInt(0);
-            }
-        }
-        cursor.close();
-        return num;
     }
 
 

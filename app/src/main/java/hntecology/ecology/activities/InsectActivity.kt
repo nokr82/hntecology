@@ -8,35 +8,42 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.location.Location
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
-import android.os.Message
+import android.os.*
+import android.provider.MediaStore
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.joooonho.SelectableRoundedImageView
+import com.nostra13.universalimageloader.core.ImageLoader
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.Base
 import hntecology.ecology.model.Insect_attribute
-import hntecology.ecology.model.Mammal_attribute
 import hntecology.ecology.model.Region
 import io.nlopez.smartlocation.OnLocationUpdatedListener
 import io.nlopez.smartlocation.SmartLocation
 import io.nlopez.smartlocation.location.config.LocationAccuracy
 import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
-import kotlinx.android.synthetic.main.activity_birds.*
-import kotlinx.android.synthetic.main.activity_fish.*
 import kotlinx.android.synthetic.main.activity_insect.*
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 class InsectActivity : Activity() , OnLocationUpdatedListener{
 
@@ -44,8 +51,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
     var userName = "";
 
-    val REQUEST_FINE_LOCATION = 100
-    val REQUEST_ACCESS_COARSE_LOCATION = 101
+    val REQUEST_FINE_LOCATION = 50
+    val REQUEST_ACCESS_COARSE_LOCATION = 51
 
     val SET_DATA = 1
 
@@ -71,6 +78,24 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
     var basechkdata = false
 
+    private val REQUEST_PERMISSION_CAMERA = 3
+    private val REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 1
+    private val REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 2
+
+    private val FROM_CAMERA = 100
+    private val FROM_ALBUM = 101
+
+    var cameraPath:String? = null
+
+    private var addPicturesLL: LinearLayout? = null
+    private val imgSeq = 0
+
+    var images_path: ArrayList<String>? = null
+    var images: ArrayList<Bitmap>? = null
+    var images_url: ArrayList<String>? = null
+    var images_url_remove: ArrayList<String>? = null
+    var images_id: ArrayList<Int>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_insect)
@@ -82,6 +107,13 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
         this.setFinishOnTouchOutside(true);
 
         userName = PrefUtils.getStringPreference(context, "name");
+
+        addPicturesLL = findViewById(R.id.addPicturesLL)
+
+        images_path = ArrayList();
+        images = ArrayList()
+        images_url = ArrayList()
+
         insectusernameET.setText(userName)
         insectinvdtET.setText(Utils.todayStr().toString())
         insecttimeET.setText(Utils.timeStr().toString())
@@ -94,8 +126,6 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
         var intent: Intent = getIntent();
 
-        val num = dbManager.insectsNextNum()
-        insectnumET.text = num.toString()
 
         if(intent.getStringExtra("latitude")!= null){
             lat = intent.getStringExtra("latitude")
@@ -176,7 +206,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                 insecttemperaturET.setText(insect_attribute.TEMPERATUR.toString())
                 insectetcET.setText(insect_attribute.ETC)
 
-                insectnumET.setText(insect_attribute.NUM.toString())
+                insectnumET.setText(insect_attribute.id)
 
                 insecttimeET.setText(insect_attribute.INV_TM)
 
@@ -220,6 +250,84 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                 if(insect_attribute.TEMP_YN.equals("Y")){
                     dataArray.add(insect_attribute)
+                }
+
+                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + insect_attribute.INV_DT + "." + insect_attribute.INV_TM + "/imges")
+                val fileList = file.listFiles()
+                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect/imges/")
+                var tmpfileList = tmpfiles.listFiles()
+
+                if (fileList != null) {
+                    for (i in 0..fileList.size - 1) {
+                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect/imges/"
+                        val outputsDir = File(outPath)
+
+                        if (outputsDir.exists()) {
+                            println("Exit : $outPath")
+
+                            val files = outputsDir.listFiles()
+                            if (files != null) {
+                                for (i in files.indices) {
+                                    println("f : " + files[i])
+                                }
+                            }
+
+                        } else {
+                            val made = outputsDir.mkdirs()
+
+                            println("made : $made")
+                        }
+
+                        val tmpfile = fileList.get(i)
+                        val tmpfile2 = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/insect/imges" ,   pk +"_" + (i+1) + ".png")
+
+                        if(tmpfile.exists()){
+                            tmpfile.renameTo(tmpfile2)
+                        }
+
+                        tmpfileList = tmpfiles.listFiles()
+
+                    }
+                }
+
+                if(tmpfileList != null){
+                    for (i in 0..tmpfileList.size - 1) {
+
+                        val options = BitmapFactory.Options()
+                        options.inJustDecodeBounds = true
+                        options.inJustDecodeBounds = false
+                        options.inSampleSize = 1
+                        if (options.outWidth > 96) {
+                            val ws = options.outWidth / 96 + 1
+                            if (ws > options.inSampleSize) {
+                                options.inSampleSize = ws
+                            }
+                        }
+                        if (options.outHeight > 96) {
+                            val hs = options.outHeight / 96 + 1
+                            if (hs > options.inSampleSize) {
+                                options.inSampleSize = hs
+                            }
+                        }
+
+                        images_path!!.add(tmpfileList.get(i).path)
+
+                        for(j in 0..tmpfileList.size - 1) {
+
+                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/insect/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
+                                val v = View.inflate(context, R.layout.item_add_image, null)
+                                val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                                val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+                                imageIV.setImageBitmap(bitmap)
+                                delIV.setTag(i)
+                                images!!.add(bitmap)
+                                if (imgSeq == 0) {
+                                    addPicturesLL!!.addView(v)
+                                }
+                            }
+                        }
+                    }
                 }
 
             }
@@ -461,15 +569,101 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                         insect_attribute.TEMP_YN = "Y"
 
-                        if(chkdata){
+                        if (chkdata) {
 
-                            if(pk != null) {
+                            if(pk != null){
                                 dbManager.updateinsect_attribute(insect_attribute,pk)
                             }
 
-                        }else {
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect/imges/")
+                            val pathdir = path.listFiles()
 
-                            dbManager.insertinsect_attribute(insect_attribute)
+                            if(pathdir != null) {
+                                for (i in 0..pathdir.size-1) {
+
+                                    for(j in 0..pathdir.size-1) {
+
+                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/insect/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+
+                                            pathdir.get(i).canonicalFile.delete()
+
+                                            println("delete ===============")
+
+                                        }
+                                    }
+
+                                }
+                            }
+
+                            for(i   in 0..images!!.size-1){
+
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect/imges/"
+                                val outputsDir = File(outPath)
+
+                                if (outputsDir.exists()) {
+                                    println("Exit : $outPath")
+
+                                    val files = outputsDir.listFiles()
+                                    if (files != null) {
+                                        for (i in files.indices) {
+                                            println("f : " + files[i])
+                                        }
+                                    }
+
+                                } else {
+                                    val made = outputsDir.mkdirs()
+
+                                    println("made : $made")
+                                }
+
+                                saveVitmapToFile(images!!.get(i),outPath+pk+"_"+i+".png")
+
+                            }
+
+                        } else {
+
+                            dbManager.insertinsect_attribute(insect_attribute);
+
+                            var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+                            sdPath += "/ecology/tmps/" + insect_attribute.INV_DT +"."+ insect_attribute.INV_TM + "/imges"
+                            val insect = File(sdPath)
+                            insect.mkdir();
+//                          sdPath +="/imgs"
+//                          sdPath +="/"+biotope_attribute.PIC_FOLDER
+
+                            val file = File(sdPath)
+                            file.mkdir();
+                            //이미 있다면 삭제. 후 생성
+                            setDirEmpty(sdPath)
+
+                            sdPath+="/"
+
+                            var pathArray:ArrayList<String> = ArrayList<String>()
+
+                            for(i   in 0..images!!.size-1){
+
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + insect_attribute.INV_DT +"."+ insect_attribute.INV_TM + "/imges/"
+                                val outputsDir = File(outPath)
+
+                                if (outputsDir.exists()) {
+                                    println("Exit : $outPath")
+
+                                    val files = outputsDir.listFiles()
+                                    if (files != null) {
+                                        for (i in files.indices) {
+                                            println("f : " + files[i])
+                                        }
+                                    }
+
+                                } else {
+                                    val made = outputsDir.mkdirs()
+
+                                    println("made : $made")
+                                }
+
+                                saveVitmapToFile(images!!.get(i),outPath+i+".png")
+
+                            }
 
                         }
 
@@ -515,6 +709,28 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
 
                         if(pk != null) {
+
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect/imges/")
+                            val pathdir = path.listFiles()
+
+                            if(pathdir != null) {
+                                for (i in 0..pathdir.size-1) {
+
+                                    for(j in 0..pathdir.size-1) {
+
+                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/insect/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+
+                                            pathdir.get(i).canonicalFile.delete()
+
+                                            println("delete ===============")
+
+                                        }
+                                    }
+
+                                }
+                            }
+
+
                             dbManager.deleteinsect_attribute(insect_attribute,pk)
                             finish()
                         }else {
@@ -707,15 +923,101 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
             insect_attribute.TEMP_YN = "Y"
 
-            if(chkdata){
+            if (chkdata) {
 
-                if(pk != null) {
+                if(pk != null){
                     dbManager.updateinsect_attribute(insect_attribute,pk)
                 }
 
-            }else {
+                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect/imges/")
+                val pathdir = path.listFiles()
 
-                dbManager.insertinsect_attribute(insect_attribute)
+                if(pathdir != null) {
+                    for (i in 0..pathdir.size-1) {
+
+                        for(j in 0..pathdir.size-1) {
+
+                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/insect/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+
+                                pathdir.get(i).canonicalFile.delete()
+
+                                println("delete ===============")
+
+                            }
+                        }
+
+                    }
+                }
+
+                for(i   in 0..images!!.size-1){
+
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect/imges/"
+                    val outputsDir = File(outPath)
+
+                    if (outputsDir.exists()) {
+                        println("Exit : $outPath")
+
+                        val files = outputsDir.listFiles()
+                        if (files != null) {
+                            for (i in files.indices) {
+                                println("f : " + files[i])
+                            }
+                        }
+
+                    } else {
+                        val made = outputsDir.mkdirs()
+
+                        println("made : $made")
+                    }
+
+                    saveVitmapToFile(images!!.get(i),outPath+pk+"_"+i+".png")
+
+                }
+
+            } else {
+
+                dbManager.insertinsect_attribute(insect_attribute);
+
+                var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+                sdPath += "/ecology/tmps/" + insect_attribute.INV_DT +"."+ insect_attribute.INV_TM + "/imges"
+                val insect = File(sdPath)
+                insect.mkdir();
+//                          sdPath +="/imgs"
+//                          sdPath +="/"+biotope_attribute.PIC_FOLDER
+
+                val file = File(sdPath)
+                file.mkdir();
+                //이미 있다면 삭제. 후 생성
+                setDirEmpty(sdPath)
+
+                sdPath+="/"
+
+                var pathArray:ArrayList<String> = ArrayList<String>()
+
+                for(i   in 0..images!!.size-1){
+
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + insect_attribute.INV_DT +"."+ insect_attribute.INV_TM + "/imges/"
+                    val outputsDir = File(outPath)
+
+                    if (outputsDir.exists()) {
+                        println("Exit : $outPath")
+
+                        val files = outputsDir.listFiles()
+                        if (files != null) {
+                            for (i in files.indices) {
+                                println("f : " + files[i])
+                            }
+                        }
+
+                    } else {
+                        val made = outputsDir.mkdirs()
+
+                        println("made : $made")
+                    }
+
+                    saveVitmapToFile(images!!.get(i),outPath+i+".png")
+
+                }
 
             }
 
@@ -725,6 +1027,90 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
         }
 
+        btnPIC_FOLDER.setOnClickListener {
+
+            var ListItems: List<String>
+            ListItems = ArrayList();
+            ListItems.add("카메라");
+            ListItems.add("사진");
+            ListItems.add("취소");
+
+            val items = Array<CharSequence>(ListItems.size, { i -> ListItems.get(i) })
+
+            var builder: AlertDialog.Builder = AlertDialog.Builder(this);
+            builder.setTitle("선택해 주세요");
+
+            builder.setItems(items, DialogInterface.OnClickListener { dialogInterface, i ->
+
+                when (i) {
+                    //카메라
+                    0 -> {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                            loadPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE)
+                        } else {
+                            takePhoto()
+                        }
+
+                    }
+                    //갤러리
+                    1 -> {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                            loadPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
+                        } else {
+                            imageFromGallery();
+                        }
+                    }
+                }
+
+            })
+            builder.show();
+
+        }
+
+    }
+
+    private fun takePhoto() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (intent.resolveActivity(packageManager) != null) {
+
+            // File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            val storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+
+            // File photo = new File(dir, System.currentTimeMillis() + ".jpg");
+
+            try {
+                val photo = File.createTempFile(
+                        System.currentTimeMillis().toString(), /* prefix */
+                        ".jpg", /* suffix */
+                        storageDir      /* directory */
+                )
+
+/*                absolutePath = photo.absolutePath
+                imageUri = Uri.fromFile(photo)
+                //imageUri = Uri.fromFile(photo);
+                imageUri = FileProvider.getUriForFile(context, context!!.getApplicationContext().getPackageName() + ".provider", photo)
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+                startActivityForResult(intent, FROM_CAMERA)*/
+
+                val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                if (takePictureIntent.resolveActivity(packageManager) != null) {
+
+                    startActivityForResult(takePictureIntent, FROM_CAMERA)
+                    cameraPath = photo.absolutePath;
+                }
+
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+        }
+    }
+
+    private fun imageFromGallery() {
+
+        val intent1 = Intent(context, WriteAlbumActivity::class.java)
+//        startActivity(intent1);
+        startActivityForResult(intent1, FROM_ALBUM)
 
     }
 
@@ -764,6 +1150,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
         insectmjactTV.setText("")
 
         insectunusnoteET.setText("")
+
+        addPicturesLL!!.removeAllViews()
 
     }
 
@@ -992,6 +1380,12 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                 loadPermissions(Manifest.permission.ACCESS_COARSE_LOCATION, REQUEST_ACCESS_COARSE_LOCATION)
             } else if (Manifest.permission.ACCESS_COARSE_LOCATION == perm) {
                 checkGPs()
+            } else if (Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
+                imageFromGallery()
+            } else if (Manifest.permission.WRITE_EXTERNAL_STORAGE == perm) {
+                loadPermissions(Manifest.permission.CAMERA, REQUEST_PERMISSION_CAMERA)
+            } else if (Manifest.permission.CAMERA == perm) {
+                takePhoto()
             }
         }
     }
@@ -1122,7 +1516,231 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                     }
 
                 }
+
+                FROM_CAMERA -> {
+
+                    if (resultCode == -1) {
+
+                        /*  val options = BitmapFactory.Options()
+                          options.inJustDecodeBounds = true
+
+                          options.inJustDecodeBounds = false
+                          options.inSampleSize = 1
+                          if (options.outWidth > 96) {
+                              val ws = options.outWidth / 96 + 1
+                              if (ws > options.inSampleSize) {
+                                  options.inSampleSize = ws
+                              }
+                          }
+                          if (options.outHeight > 96) {
+                              val hs = options.outHeight / 96 + 1
+                              if (hs > options.inSampleSize) {
+                                  options.inSampleSize = hs
+                              }
+                          }*/
+
+                        var extras: Bundle = data!!.getExtras();
+                        val bitmap = extras.get("data") as Bitmap
+
+                        val v = View.inflate(context, R.layout.item_add_image, null)
+                        val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                        val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+                        imageIV.setImageBitmap(bitmap)
+                        delIV.setTag(images!!.size)
+
+                        if (imgSeq == 0) {
+                            addPicturesLL!!.addView(v)
+                        }
+
+                    }
+                }
+
+                FROM_ALBUM -> {
+                    val result = data!!.getStringArrayExtra("result")
+                    for (i in result.indices) {
+                        val str = result[i]
+                        images_path!!.add(str);
+                        val add_file = Utils.getImage(context!!.getContentResolver(), str)
+                        if (images!!.size == 0) {
+                            images!!.add(add_file)
+                        } else {
+                            try {
+                                images!!.set(images!!.size, add_file)
+                            } catch (e: IndexOutOfBoundsException) {
+                                images!!.add(add_file)
+                            }
+
+                        }
+                        reset(str, i)
+
+                    }
+                    val child = addPicturesLL!!.getChildCount()
+                    for (i in 0 until child) {
+
+                        println("test : $i")
+
+                        val v = addPicturesLL!!.getChildAt(i)
+
+                        val delIV = v.findViewById(R.id.delIV) as ImageView
+
+                    }
+                }
             }
         }
     }
+
+    fun reset(str: String, i: Int) {
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+        BitmapFactory.decodeFile(str, options)
+        options.inJustDecodeBounds = false
+        options.inSampleSize = 1
+        if (options.outWidth > 96) {
+            val ws = options.outWidth / 96 + 1
+            if (ws > options.inSampleSize) {
+                options.inSampleSize = ws
+            }
+        }
+        if (options.outHeight > 96) {
+            val hs = options.outHeight / 96 + 1
+            if (hs > options.inSampleSize) {
+                options.inSampleSize = hs
+            }
+        }
+        val bitmap = BitmapFactory.decodeFile(str, options)
+        val v = View.inflate(context, R.layout.item_add_image, null)
+        val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+        val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+        imageIV.setImageBitmap(bitmap)
+        delIV.tag = i
+
+        if (imgSeq == 0) {
+            addPicturesLL!!.addView(v)
+        }
+    }
+
+    fun clickMethod(v: View) {
+        addPicturesLL!!.removeAllViews()
+        images!!.clear()
+        val tag = v.tag as Int
+        images_path!!.removeAt(tag)
+
+        for (k in images_url!!.indices) {
+            val vv = View.inflate(context, R.layout.item_add_image, null)
+            val imageIV = vv.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+            val delIV = vv.findViewById<View>(R.id.delIV) as ImageView
+            delIV.visibility = View.GONE
+            val del2IV = vv.findViewById<View>(R.id.del2IV) as ImageView
+            del2IV.visibility = View.VISIBLE
+            del2IV.tag = k
+            ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
+            if (imgSeq == 0) {
+                addPicturesLL!!.addView(vv)
+            }
+        }
+        for (j in images_path!!.indices) {
+            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+            if (images!!.size == 0) {
+                images!!.add(add_file)
+            } else {
+                try {
+                    images!!.set(images!!.size, add_file)
+                } catch (e: IndexOutOfBoundsException) {
+                    images!!.add(add_file)
+                }
+
+            }
+            reset(images_path!!.get(j), j)
+        }
+    }
+
+    fun clickMethod2(v: View) {
+        addPicturesLL!!.removeAllViews()
+        val tag = v.tag as Int
+        images_url!!.removeAt(tag)
+        images_url_remove!!.add(images_id!!.get(tag).toString())
+        images_id!!.removeAt(tag)
+
+        for (k in images_url!!.indices) {
+            val vv = View.inflate(context, R.layout.item_add_image, null)
+            val imageIV = vv.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+            val delIV = vv.findViewById<View>(R.id.delIV) as ImageView
+            delIV.visibility = View.GONE
+            val del2IV = vv.findViewById<View>(R.id.del2IV) as ImageView
+            del2IV.visibility = View.VISIBLE
+            del2IV.tag = k
+            ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
+            if (imgSeq == 0) {
+                addPicturesLL!!.addView(vv)
+            }
+        }
+        for (j in images_path!!.indices) {
+            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+            if (images!!.size == 0) {
+                images!!.add(add_file)
+            } else {
+                try {
+                    images!!.set(images!!.size, add_file)
+                } catch (e: IndexOutOfBoundsException) {
+                    images!!.add(add_file)
+                }
+
+            }
+            reset(images_path!!.get(j), j)
+        }
+    }
+
+    fun saveVitmapToFile(bitmap:Bitmap, filePath:String){
+
+        var file = File(filePath)
+        var out: OutputStream? =null
+        try {
+            file.createNewFile()
+            out = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
+
+        }catch (e:Exception){
+
+            e.printStackTrace()
+        }finally {
+
+            out!!.close()
+        }
+
+    }
+
+    fun setDirEmpty( dirName:String){
+
+        var path = Environment.getExternalStorageDirectory().toString() + dirName;
+
+        val dir:File    =  File(path);
+        var childFileList = dir.listFiles()
+
+        if(dir.exists()){
+            for(childFile:File in childFileList){
+
+                if(childFile.isDirectory()){
+
+                    setDirEmpty(childFile.absolutePath); //하위디렉토리
+
+                } else{
+
+                    childFile.delete(); // 하위파일
+                }
+
+            }
+            dir.delete();
+        }
+    }
+
+    fun getAttrubuteKey(): String {
+
+        val time = System.currentTimeMillis()
+//        val dayTime = SimpleDateFormat("yyyyMMddHHmmssSSS")
+        val dayTime = SimpleDateFormat("yyyyMMddHHmmssSSS")
+        val strDT = dayTime.format(Date(time))
+
+        return strDT
+    }
+
 }

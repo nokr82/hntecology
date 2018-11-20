@@ -482,6 +482,7 @@
                     style="@style/BiotopeTextView"
                     android:text="GPS 좌표"/>
                 <LinearLayout
+                    style="@style/BiotopeTextView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center">

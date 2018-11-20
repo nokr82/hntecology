@@ -52,9 +52,8 @@ class DataFloraAdapter(var context: Context, var itemList : ArrayList<Flora_Attr
 
         var Flora_Attribute : Flora_Attribute = getItem(position)
 
-        viewHoldar.class_biotope_item.text = Flora_Attribute.INV_DT
+        viewHoldar.class_biotope_item.text = Flora_Attribute.INV_DT  + " / " + Flora_Attribute.INV_TM
 
-        println("hh : " + position + ", " + hashCode())
         return view as View
     }
 

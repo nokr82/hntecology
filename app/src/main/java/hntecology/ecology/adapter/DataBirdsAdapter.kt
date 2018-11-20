@@ -42,7 +42,6 @@ class DataBirdsAdapter(var context: Context, var itemList : ArrayList<Birds_attr
             viewHoldar = ViewHoldar(view)
             view.tag = viewHoldar
 
-
         }else {
             view =  convertView
             viewHoldar = view.tag as ViewHoldar

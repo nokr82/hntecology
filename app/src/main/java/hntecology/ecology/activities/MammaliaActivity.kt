@@ -38,7 +38,11 @@ import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
 import kotlinx.android.synthetic.main.activity_mammalia.*
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
+import java.io.OutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
@@ -117,11 +121,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         val db = dbManager.createDataBase();
 
-        val num =dbManager.mammalsNextNum()
-        mammalnumTV.text = num.toString()
-
         window.setLayout(Utils.dpToPx(700f).toInt(), WindowManager.LayoutParams.WRAP_CONTENT);
-
 
         var intent: Intent = getIntent();
 
@@ -203,7 +203,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 mametcET.setText(mammal_attribute.ETC)
 
                 mammaltimeTV.setText(mammal_attribute.INV_TM)
-                mammalnumTV.setText(mammal_attribute.NUM.toString())
+                mammalnumTV.setText(mammal_attribute.id)
 
                 mamspecnmET.setText(mammal_attribute.SPEC_NM)
                 mamfaminmTV.setText(mammal_attribute.FAMI_NM)
@@ -231,6 +231,84 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                 if(mammal_attribute.TEMP_YN.equals("Y")){
                     dataArray.add(mammal_attribute)
+                }
+
+                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + mammal_attribute.INV_DT + "." + mammal_attribute.INV_TM + "/imges")
+                val fileList = file.listFiles()
+                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia/imges/")
+                var tmpfileList = tmpfiles.listFiles()
+
+                if (fileList != null) {
+                    for (i in 0..fileList.size - 1) {
+                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia/imges/"
+                        val outputsDir = File(outPath)
+
+                        if (outputsDir.exists()) {
+                            println("Exit : $outPath")
+
+                            val files = outputsDir.listFiles()
+                            if (files != null) {
+                                for (i in files.indices) {
+                                    println("f : " + files[i])
+                                }
+                            }
+
+                        } else {
+                            val made = outputsDir.mkdirs()
+
+                            println("made : $made")
+                        }
+
+                        val tmpfile = fileList.get(i)
+                        val tmpfile2 = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/mammalia/imges" ,   pk +"_" + (i+1) + ".png")
+
+                        if(tmpfile.exists()){
+                            tmpfile.renameTo(tmpfile2)
+                        }
+
+                        tmpfileList = tmpfiles.listFiles()
+
+                    }
+                }
+
+                if(tmpfileList != null){
+                    for (i in 0..tmpfileList.size - 1) {
+
+                        val options = BitmapFactory.Options()
+                        options.inJustDecodeBounds = true
+                        options.inJustDecodeBounds = false
+                        options.inSampleSize = 1
+                        if (options.outWidth > 96) {
+                            val ws = options.outWidth / 96 + 1
+                            if (ws > options.inSampleSize) {
+                                options.inSampleSize = ws
+                            }
+                        }
+                        if (options.outHeight > 96) {
+                            val hs = options.outHeight / 96 + 1
+                            if (hs > options.inSampleSize) {
+                                options.inSampleSize = hs
+                            }
+                        }
+
+                        images_path!!.add(tmpfileList.get(i).path)
+
+                        for(j in 0..tmpfileList.size - 1) {
+
+                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/mammalia/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
+                                val v = View.inflate(context, R.layout.item_add_image, null)
+                                val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                                val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+                                imageIV.setImageBitmap(bitmap)
+                                delIV.setTag(i)
+                                images!!.add(bitmap)
+                                if (imgSeq == 0) {
+                                    addPicturesLL!!.addView(v)
+                                }
+                            }
+                        }
+                    }
                 }
 
             }
@@ -414,7 +492,6 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                                 ,null,null,null,null,null,null,null,null,null,null,null,null,null
                                 ,null,null,null,null,null,null)
 
-
                         keyId = intent.getStringExtra("GROP_ID")
 
                         mammal_attribute.GROP_ID = keyId
@@ -478,17 +555,105 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                         mammal_attribute.TEMP_YN = "Y"
 
-                        if(chkdata){
+                        if (chkdata) {
 
-                            if(pk != null) {
-                                dbManager.updatemammal_attribute(mammal_attribute, pk)
+                            if(pk != null){
+                                dbManager.updatemammal_attribute(mammal_attribute,pk)
                             }
 
-                        }else {
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia/imges/")
+                            val pathdir = path.listFiles()
 
-                            dbManager.insertmammal_attribute(mammal_attribute)
+                            if(pathdir != null) {
+                                for (i in 0..pathdir.size-1) {
+
+                                    for(j in 0..pathdir.size-1) {
+
+                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/mammalia/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+
+                                            pathdir.get(i).canonicalFile.delete()
+
+                                            println("delete ===============")
+
+                                        }
+                                    }
+
+                                }
+                            }
+
+                            for(i   in 0..images!!.size-1){
+
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia/imges/"
+                                val outputsDir = File(outPath)
+
+                                if (outputsDir.exists()) {
+                                    println("Exit : $outPath")
+
+                                    val files = outputsDir.listFiles()
+                                    if (files != null) {
+                                        for (i in files.indices) {
+                                            println("f : " + files[i])
+                                        }
+                                    }
+
+                                } else {
+                                    val made = outputsDir.mkdirs()
+
+                                    println("made : $made")
+                                }
+
+                                saveVitmapToFile(images!!.get(i),outPath+pk+"_"+i+".png")
+
+                            }
+
+                        } else {
+
+                            dbManager.insertmammal_attribute(mammal_attribute);
+
+                            var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+                            sdPath += "/ecology/tmps/" + mammal_attribute.INV_DT +"."+ mammal_attribute.INV_TM + "/imges"
+                            val mammalia = File(sdPath)
+                            mammalia.mkdir();
+//                          sdPath +="/imgs"
+//                          sdPath +="/"+biotope_attribute.PIC_FOLDER
+
+                            val file = File(sdPath)
+                            file.mkdir();
+                            //이미 있다면 삭제. 후 생성
+                            setDirEmpty(sdPath)
+
+                            sdPath+="/"
+
+                            var pathArray:ArrayList<String> = ArrayList<String>()
+
+                            for(i   in 0..images!!.size-1){
+
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + mammal_attribute.INV_DT +"."+ mammal_attribute.INV_TM + "/imges/"
+                                val outputsDir = File(outPath)
+
+                                if (outputsDir.exists()) {
+                                    println("Exit : $outPath")
+
+                                    val files = outputsDir.listFiles()
+                                    if (files != null) {
+                                        for (i in files.indices) {
+                                            println("f : " + files[i])
+                                        }
+                                    }
+
+                                } else {
+                                    val made = outputsDir.mkdirs()
+
+                                    println("made : $made")
+                                }
+
+                                saveVitmapToFile(images!!.get(i),outPath+i+".png")
+
+                            }
 
                         }
+
+
 
                         dialog.cancel()
 
@@ -514,6 +679,27 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                                 ,null,null,null,null,null,null)
 
                         if(pk != null){
+
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia/imges/")
+                            val pathdir = path.listFiles()
+
+                            if(pathdir != null) {
+                                for (i in 0..pathdir.size-1) {
+
+                                    for(j in 0..pathdir.size-1) {
+
+                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/mammalia/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+
+                                            pathdir.get(i).canonicalFile.delete()
+
+                                            println("delete ===============")
+
+                                        }
+                                    }
+
+                                }
+                            }
+
                             dbManager.deletemammal_attribute(mammal_attribute,pk)
                             finish()
                         }else {
@@ -695,15 +881,101 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             mammal_attribute.TEMP_YN = "Y"
 
-            if(chkdata){
+            if (chkdata) {
 
-                if(pk != null) {
-                    dbManager.updatemammal_attribute(mammal_attribute, pk)
+                if(pk != null){
+                    dbManager.updatemammal_attribute(mammal_attribute,pk)
                 }
 
-            }else {
+                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia/imges/")
+                val pathdir = path.listFiles()
 
-                dbManager.insertmammal_attribute(mammal_attribute)
+                if(pathdir != null) {
+                    for (i in 0..pathdir.size-1) {
+
+                        for(j in 0..pathdir.size-1) {
+
+                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/mammalia/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+
+                                pathdir.get(i).canonicalFile.delete()
+
+                                println("delete ===============")
+
+                            }
+                        }
+
+                    }
+                }
+
+                for(i   in 0..images!!.size-1){
+
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia/imges/"
+                    val outputsDir = File(outPath)
+
+                    if (outputsDir.exists()) {
+                        println("Exit : $outPath")
+
+                        val files = outputsDir.listFiles()
+                        if (files != null) {
+                            for (i in files.indices) {
+                                println("f : " + files[i])
+                            }
+                        }
+
+                    } else {
+                        val made = outputsDir.mkdirs()
+
+                        println("made : $made")
+                    }
+
+                    saveVitmapToFile(images!!.get(i),outPath+pk+"_"+i+".png")
+
+                }
+
+            } else {
+
+                dbManager.insertmammal_attribute(mammal_attribute);
+
+                var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+                sdPath += "/ecology/tmps/" + mammal_attribute.INV_DT +"."+ mammal_attribute.INV_TM + "/imges"
+                val mammalia = File(sdPath)
+                mammalia.mkdir();
+//                          sdPath +="/imgs"
+//                          sdPath +="/"+biotope_attribute.PIC_FOLDER
+
+                val file = File(sdPath)
+                file.mkdir();
+                //이미 있다면 삭제. 후 생성
+                setDirEmpty(sdPath)
+
+                sdPath+="/"
+
+                var pathArray:ArrayList<String> = ArrayList<String>()
+
+                for(i   in 0..images!!.size-1){
+
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + mammal_attribute.INV_DT +"."+ mammal_attribute.INV_TM + "/imges/"
+                    val outputsDir = File(outPath)
+
+                    if (outputsDir.exists()) {
+                        println("Exit : $outPath")
+
+                        val files = outputsDir.listFiles()
+                        if (files != null) {
+                            for (i in files.indices) {
+                                println("f : " + files[i])
+                            }
+                        }
+
+                    } else {
+                        val made = outputsDir.mkdirs()
+
+                        println("made : $made")
+                    }
+
+                    saveVitmapToFile(images!!.get(i),outPath+i+".png")
+
+                }
 
             }
 
@@ -752,8 +1024,6 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             builder.show();
         }
 
-
-
         }
 
     private fun takePhoto() {
@@ -762,7 +1032,6 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             // File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
             val storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-
 
             // File photo = new File(dir, System.currentTimeMillis() + ".jpg");
 
@@ -805,6 +1074,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
 
     fun clear(){
+
+        mammalnumTV.setText("")
         maminvdtTV.setText(Utils.todayStr())
 
         mamweatherET.setText("")
@@ -832,6 +1103,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         mamtreasyET.setText("")
         mamtreasyreET.setText("")
+
+        addPicturesLL!!.removeAllViews()
+
     }
 
 
@@ -1319,6 +1593,59 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         }
 
 
+    }
+
+    fun saveVitmapToFile(bitmap:Bitmap, filePath:String){
+
+        var file = File(filePath)
+        var out: OutputStream? =null
+        try {
+            file.createNewFile()
+            out = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
+
+        }catch (e:Exception){
+
+            e.printStackTrace()
+        }finally {
+
+            out!!.close()
+        }
+
+    }
+
+    fun setDirEmpty( dirName:String){
+
+        var path = Environment.getExternalStorageDirectory().toString() + dirName;
+
+        val dir:File    =  File(path);
+        var childFileList = dir.listFiles()
+
+        if(dir.exists()){
+            for(childFile:File in childFileList){
+
+                if(childFile.isDirectory()){
+
+                    setDirEmpty(childFile.absolutePath); //하위디렉토리
+
+                } else{
+
+                    childFile.delete(); // 하위파일
+                }
+
+            }
+            dir.delete();
+        }
+    }
+
+    fun getAttrubuteKey(): String {
+
+        val time = System.currentTimeMillis()
+//        val dayTime = SimpleDateFormat("yyyyMMddHHmmssSSS")
+        val dayTime = SimpleDateFormat("yyyyMMddHHmmssSSS")
+        val strDT = dayTime.format(Date(time))
+
+        return strDT
     }
 
 

@@ -37,6 +37,7 @@ open class DlgFloraAdapter(context:Context, view:Int, data:ArrayList<JSONObject>
 
         item.nameTV.text = Utils.getString(data, "name_kr");
 
+
         return retView
     }
 

@@ -92,6 +92,7 @@ object Exporter {
         println("outPathFile : $outPathFile")
 
         val outputsDir = File(outPath)
+
         if (outputsDir.exists()) {
             println("Exit : $outPath")
 

@@ -43,6 +43,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
@@ -136,9 +138,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         val db = dbManager.createDataBase();
 
         var intent: Intent = getIntent();
-
-        val num = dbManager.birdsNextNum();
-        numTV.text = num.toString()
 
         if(intent.getStringExtra("latitude")!= null){
             lat = intent.getStringExtra("latitude")
@@ -249,6 +248,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 temperatureET.setText(birds_attribute.TEMPERATUR.toString())       //기온
                 etcET.setText(birds_attribute.ETC)
 
+                numTV.setText(birds_attribute.id)
+
                 birdsTV.setText(birds_attribute.SPEC_NM)
                 familyNameTV.setText(birds_attribute.FAMI_NM)
                 zoologicalTV.setText(birds_attribute.SCIEN_NM)
@@ -286,246 +287,87 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                     dataArray.add(birds_attribute)
                 }
 
+                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + birds_attribute.INV_DT + "." + birds_attribute.INV_TM + "/imges")
+                val fileList = file.listFiles()
+                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds/imges/")
+                var tmpfileList = tmpfiles.listFiles()
+
+                if (fileList != null) {
+                    for (i in 0..fileList.size - 1) {
+                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds/imges/"
+                        val outputsDir = File(outPath)
+
+                        if (outputsDir.exists()) {
+                            println("Exit : $outPath")
+
+                            val files = outputsDir.listFiles()
+                            if (files != null) {
+                                for (i in files.indices) {
+                                    println("f : " + files[i])
+                                }
+                            }
+
+                        } else {
+                            val made = outputsDir.mkdirs()
+
+                            println("made : $made")
+                        }
+
+                        val tmpfile = fileList.get(i)
+                        val tmpfile2 = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/birds/imges" ,   pk +"_" + (i+1) + ".png")
+
+                        if(tmpfile.exists()){
+                            tmpfile.renameTo(tmpfile2)
+                        }
+
+                        tmpfileList = tmpfiles.listFiles()
+
+                    }
+                }
+
+                if(tmpfileList != null){
+                    for (i in 0..tmpfileList.size - 1) {
+
+                        val options = BitmapFactory.Options()
+                        options.inJustDecodeBounds = true
+                        options.inJustDecodeBounds = false
+                        options.inSampleSize = 1
+                        if (options.outWidth > 96) {
+                            val ws = options.outWidth / 96 + 1
+                            if (ws > options.inSampleSize) {
+                                options.inSampleSize = ws
+                            }
+                        }
+                        if (options.outHeight > 96) {
+                            val hs = options.outHeight / 96 + 1
+                            if (hs > options.inSampleSize) {
+                                options.inSampleSize = hs
+                            }
+                        }
+
+                        images_path!!.add(tmpfileList.get(i).path)
+
+                        for(j in 0..tmpfileList.size - 1) {
+
+                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/birds/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
+                                val v = View.inflate(context, R.layout.item_add_image, null)
+                                val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                                val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+                                imageIV.setImageBitmap(bitmap)
+                                delIV.setTag(i)
+                                images!!.add(bitmap)
+                                if (imgSeq == 0) {
+                                    addPicturesLL!!.addView(v)
+                                }
+                            }
+                        }
+                    }
+                }
+
             }
 
         }
-
-//        if (intent.getSerializableExtra("GROP_ID") != null) {
-//            keyId = intent.getStringExtra("GROP_ID")
-//
-//            val dataList: Array<String> = arrayOf("*");
-//
-//            println("keyId : $keyId")
-//
-//
-//
-//            val data= db.query("birdsAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
-//
-//            while (data.moveToNext()) {
-//                chkdata = true
-//                var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-//                        data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-//                        , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-//                        , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25) , data.getString(26))
-//
-//                val id = birds_attribute.id
-//
-//                invPersonTV.setText(birds_attribute.INV_PERSON)
-//
-//                invRegionET.setText(birds_attribute.INV_REGION)
-//
-//                btn1.setText(birds_attribute.WEATHER)       //날씨
-//                btn2.setText(birds_attribute.WIND)          //바람
-//                btn3.setText(birds_attribute.WIND_DIRE)     //풍향
-//
-//                temperatureET.setText(birds_attribute.TEMPERATUR.toString())       //기온
-//                etcET.setText(birds_attribute.ETC)
-//
-//                birdsTV.setText(birds_attribute.SPEC_NM)
-//                familyNameTV.setText(birds_attribute.FAMI_NM)
-//                zoologicalTV.setText(birds_attribute.SCIEN_NM)
-//                indicntET.setText(birds_attribute.INDI_CNT.toString())
-//
-//                obsstatTV.setText(birds_attribute.OBS_STAT)
-//                useTarTV.setText(birds_attribute.USE_TAR)
-//                useTarSpET.setText(birds_attribute.USE_TAR_SP)
-//                if(birds_attribute.USE_TAR_SP == null || birds_attribute.USE_TAR_SP.equals("")){
-//                    useTarSpET.setText("")
-//                    useTarSpLL.visibility = View.GONE
-//                }
-//
-//                if(birds_attribute.USE_TAR_SP != null && !birds_attribute.USE_TAR_SP.equals("")){
-//                    useTarSpLL.visibility = View.VISIBLE
-//                }
-//
-//                useLayerTV.setText(birds_attribute.USE_LAYER)
-//                mjActTV.setText(birds_attribute.MJ_ACT)
-//                mjActPrET.setText(birds_attribute.MJ_ACT_PR)
-//                if(birds_attribute.MJ_ACT_PR == null || birds_attribute.MJ_ACT_PR.equals("")){
-//                    mjActPrET.setText("")
-//                    mjActPrLL.visibility = View.GONE
-//                }
-//
-//                if(birds_attribute.MJ_ACT_PR != null && !birds_attribute.MJ_ACT_PR.equals("")){
-//                    mjActPrLL.visibility = View.VISIBLE
-//                }
-//
-//                if(birds_attribute.TEMP_YN.equals("N")){
-//                    dbManager.deletebirds_attribute(birds_attribute,id)
-//                }
-//
-//                if(birds_attribute.TEMP_YN.equals("Y")){
-//                    dataArray.add(birds_attribute)
-//                }
-//
-//
-//            }
-//
-//            page = dataArray.size
-//
-//            birdspageTV.text = page.toString() + " / " + dataArray.size
-//
-//        }
-//
-//        birdsleftLL.setOnClickListener {
-//
-//            val dataList: Array<String> = arrayOf("*");
-//
-//            val data= db.query("birdsAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
-//
-//
-//            if (dataArray != null){
-//                dataArray.clear()
-//            }
-//
-//            while (data.moveToNext()) {
-//
-//                chkdata = true
-//
-//                var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-//                        data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-//                        , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-//                        , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25),data.getString(26))
-//
-//                dataArray.add(birds_attribute)
-//
-//            }
-//
-//            if(page == dataArray.size && page!! > 1 ){
-//                page = page!! - 1
-//                birdspageTV.text = page.toString() + " / " + dataArray.size
-//
-//                clear()
-//
-//                resetPage(page!!)
-//
-//            }else if (page!! < dataArray.size && page!! > 1){
-//                page = page!! - 1
-//                birdspageTV.text = page.toString() + " / " + dataArray.size
-//
-//                clear()
-//
-//                resetPage(page!!)
-//            }
-//
-//        }
-//
-//        birdsrightLL.setOnClickListener {
-//            clear()
-//
-//            val dataList: Array<String> = arrayOf("*");
-//
-//            val data= db.query("birdsAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
-//
-//            if (dataArray != null){
-//                dataArray.clear()
-//            }
-//
-//            while (data.moveToNext()) {
-//
-//                chkdata = true
-//
-//                var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-//                        data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-//                        , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-//                        , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25), data.getString(26))
-//
-//                dataArray.add(birds_attribute)
-//
-//            }
-//
-//            var birds_attribute: Birds_attribute = Birds_attribute(null,null,null,null,null,null,null,null,null,null,
-//                    null,null,null,null,null,null,null,null,null,null,null,null,
-//                    null,null,null,null,null)
-//
-//            birds_attribute.id = keyId + page.toString()
-//
-//            birds_attribute.GROP_ID = keyId
-//
-//            birds_attribute.INV_REGION = invRegionET.text.toString()
-//            birds_attribute.INV_DT = Utils.todayStr()
-//
-//            birds_attribute.INV_PERSON = invPersonTV.text.toString()
-//            birds_attribute.WEATHER = weatherTV.text.toString()
-//
-//            birds_attribute.WEATHER = btn1.text.toString()
-//            birds_attribute.WIND = btn2.text.toString()
-//            birds_attribute.WIND_DIRE = btn3.text.toString()
-//
-//            if(temperatureET.text.isNotEmpty()){
-//                Utils.getString(temperatureET).toFloat();
-//            }
-//
-//            birds_attribute.ETC = etcET.text.toString()
-//
-//            birds_attribute.NUM = numTV.text.toString().toInt()
-//
-//            birds_attribute.INV_TM = Utils.timeStr()
-//
-//            birds_attribute.SPEC_NM = birdsTV.text.toString()
-//
-//            birds_attribute.FAMI_NM = familyNameTV.text.toString()
-//            birds_attribute.SCIEN_NM = zoologicalTV.text.toString()
-//
-//            if (indicntET.text.isNotEmpty()) {
-//                birds_attribute.INDI_CNT = indicntET.text.toString().toInt()
-//            }
-//
-//            birds_attribute.OBS_STAT = obsstatTV.text.toString()
-//            birds_attribute.USE_TAR = useTarTV.text.toString()
-//            birds_attribute.USE_TAR_SP = useTarSpET.text.toString()
-//            birds_attribute.USE_LAYER = useLayerTV.text.toString()
-//
-//            birds_attribute.MJ_ACT = mjActTV.text.toString()
-//            birds_attribute.MJ_ACT_PR = mjActPrET.text.toString()
-//
-//            birds_attribute.GPS_LAT = 0F
-//            birds_attribute.GPS_LON = 0F
-//
-//            birds_attribute.TEMP_YN = "N"
-//
-//            if(page == dataArray.size){
-//
-//                dbManager.insertbirds_attribute(birds_attribute)
-//                page = page!! + 1
-//
-//            }
-//
-//
-//            val data2= db.query("birdsAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
-//
-//            if (dataArray != null){
-//                dataArray.clear()
-//            }
-//
-//
-//            while (data2.moveToNext()) {
-//
-//                chkdata = true
-//
-//
-//                var birds_attribute: Birds_attribute = Birds_attribute(data2.getString(0), data2.getString(1), data2.getString(2), data2.getString(3), data2.getString(4), data2.getString(5), data2.getString(6), data2.getString(7),
-//                        data2.getString(8), data2.getFloat(9), data2.getString(10), data2.getInt(11), data2.getString(12), data2.getString(13), data2.getString(14)
-//                        , data2.getString(15), data2.getInt(16), data2.getString(17), data2.getString(18), data2.getString(19), data2.getString(20), data2.getString(21)
-//                        , data2.getString(22), data2.getString(23), data2.getFloat(24), data2.getFloat(25), data2.getString(26))
-//
-//                println("data2 ======= $data2")
-//
-//                dataArray.add(birds_attribute)
-//
-//            }
-//
-//            if(page!! < dataArray.size){
-//                page = page!! + 1
-//            }
-//
-//
-//            birdspageTV.setText(page.toString() + " / " + dataArray.size)
-//
-//            resetPage(page!!)
-//
-//        }
-
 
         cancelBtn.setOnClickListener {
             val builder = AlertDialog.Builder(context)
@@ -561,9 +403,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         birds_attribute.INV_REGION = invRegionET.text.toString()
 
-
                         birds_attribute.INV_DT = Utils.todayStr()
-
 
                         if(invPersonTV.text == null){
                             birds_attribute.INV_PERSON = userName
@@ -582,8 +422,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         }
 
                         birds_attribute.ETC = etcET.text.toString()
-
-                        birds_attribute.NUM = numTV.text.toString().toInt()
 
                         birds_attribute.INV_TM = Utils.timeStr()
 
@@ -616,24 +454,106 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                             birds_attribute.GPS_LON = log.toFloat()
                         }
 
+                        birds_attribute.TEMP_YN = "Y"
 
-
-
-                        if(chkdata){
-
-                            birds_attribute.TEMP_YN = "Y"
+                        if (chkdata) {
 
                             if(pk != null){
                                 dbManager.updatebirds_attribute(birds_attribute,pk)
                             }
 
-                        }else {
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds/imges/")
+                            val pathdir = path.listFiles()
 
-                            birds_attribute.TEMP_YN = "Y"
+                            if(pathdir != null) {
+                                for (i in 0..pathdir.size-1) {
 
-                            dbManager.insertbirds_attribute(birds_attribute)
+                                    for(j in 0..pathdir.size-1) {
+
+                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/birds/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+
+                                            pathdir.get(i).canonicalFile.delete()
+
+                                            println("delete ===============")
+
+                                        }
+                                    }
+
+                                }
+                            }
+
+                            for(i   in 0..images!!.size-1){
+
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds/imges/"
+                                val outputsDir = File(outPath)
+
+                                if (outputsDir.exists()) {
+                                    println("Exit : $outPath")
+
+                                    val files = outputsDir.listFiles()
+                                    if (files != null) {
+                                        for (i in files.indices) {
+                                            println("f : " + files[i])
+                                        }
+                                    }
+
+                                } else {
+                                    val made = outputsDir.mkdirs()
+
+                                    println("made : $made")
+                                }
+
+                                saveVitmapToFile(images!!.get(i),outPath+pk+"_"+i+".png")
+
+                            }
+
+                        } else {
+
+                            dbManager.insertbirds_attribute(birds_attribute);
+
+                            var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+                            sdPath += "/ecology/tmps/" + birds_attribute.INV_DT +"."+ birds_attribute.INV_TM + "/imges"
+                            val birds = File(sdPath)
+                            birds.mkdir();
+//                          sdPath +="/imgs"
+//                          sdPath +="/"+biotope_attribute.PIC_FOLDER
+
+                            val file = File(sdPath)
+                            file.mkdir();
+                            //이미 있다면 삭제. 후 생성
+                            setDirEmpty(sdPath)
+
+                            sdPath+="/"
+
+                            var pathArray:ArrayList<String> = ArrayList<String>()
+
+                            for(i   in 0..images!!.size-1){
+
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + birds_attribute.INV_DT +"."+ birds_attribute.INV_TM + "/imges/"
+                                val outputsDir = File(outPath)
+
+                                if (outputsDir.exists()) {
+                                    println("Exit : $outPath")
+
+                                    val files = outputsDir.listFiles()
+                                    if (files != null) {
+                                        for (i in files.indices) {
+                                            println("f : " + files[i])
+                                        }
+                                    }
+
+                                } else {
+                                    val made = outputsDir.mkdirs()
+
+                                    println("made : $made")
+                                }
+
+                                saveVitmapToFile(images!!.get(i),outPath+i+".png")
+
+                            }
 
                         }
+
 
                         finish()
 
@@ -659,8 +579,30 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                                 null,null,null,null,null)
 
                         if(pk != null) {
+
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds/imges/")
+                            val pathdir = path.listFiles()
+
+                            if(pathdir != null) {
+                                for (i in 0..pathdir.size-1) {
+
+                                    for(j in 0..pathdir.size-1) {
+
+                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/birds/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+
+                                            pathdir.get(i).canonicalFile.delete()
+
+                                            println("delete ===============")
+
+                                        }
+                                    }
+
+                                }
+                            }
+
                             dbManager.deletebirds_attribute(birds_attribute,pk)
                             finish()
+
                         }else {
                             Toast.makeText(context, "잘못된 접근입니다..", Toast.LENGTH_SHORT).show()
                         }
@@ -837,23 +779,108 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 birds_attribute.GPS_LON = log.toFloat()
             }
 
+            birds_attribute.TEMP_YN = "Y"
+
+            if (chkdata) {
+
+                if(pk != null){
+                    dbManager.updatebirds_attribute(birds_attribute,pk)
+                }
+
+                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds/imges/")
+                val pathdir = path.listFiles()
+
+                if(pathdir != null) {
+                    for (i in 0..pathdir.size-1) {
+
+                        for(j in 0..pathdir.size-1) {
+
+                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/birds/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+
+                                pathdir.get(i).canonicalFile.delete()
+
+                                println("delete ===============")
+
+                            }
+                        }
+
+                    }
+                }
+
+                for(i   in 0..images!!.size-1){
+
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds/imges/"
+                    val outputsDir = File(outPath)
+
+                    if (outputsDir.exists()) {
+                        println("Exit : $outPath")
+
+                        val files = outputsDir.listFiles()
+                        if (files != null) {
+                            for (i in files.indices) {
+                                println("f : " + files[i])
+                            }
+                        }
+
+                    } else {
+                        val made = outputsDir.mkdirs()
+
+                        println("made : $made")
+                    }
+
+                    saveVitmapToFile(images!!.get(i),outPath+pk+"_"+i+".png")
+
+                }
 
 
-
-            if(chkdata){
-
-                birds_attribute.TEMP_YN = "Y"
+            } else {
 
 
-                dbManager.updatebirds_attribute(birds_attribute,pk)
+                dbManager.insertbirds_attribute(birds_attribute);
 
-            }else {
+                var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+                sdPath += "/ecology/tmps/" + birds_attribute.INV_DT +"."+ birds_attribute.INV_TM + "/imges"
+                val birds = File(sdPath)
+                birds.mkdir();
+//                          sdPath +="/imgs"
+//                          sdPath +="/"+biotope_attribute.PIC_FOLDER
 
-                birds_attribute.TEMP_YN = "Y"
+                val file = File(sdPath)
+                file.mkdir();
+                //이미 있다면 삭제. 후 생성
+                setDirEmpty(sdPath)
 
-                dbManager.insertbirds_attribute(birds_attribute)
+                sdPath+="/"
+
+                var pathArray:ArrayList<String> = ArrayList<String>()
+
+                for(i   in 0..images!!.size-1){
+
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + birds_attribute.INV_DT +"."+ birds_attribute.INV_TM + "/imges/"
+                    val outputsDir = File(outPath)
+
+                    if (outputsDir.exists()) {
+                        println("Exit : $outPath")
+
+                        val files = outputsDir.listFiles()
+                        if (files != null) {
+                            for (i in files.indices) {
+                                println("f : " + files[i])
+                            }
+                        }
+
+                    } else {
+                        val made = outputsDir.mkdirs()
+
+                        println("made : $made")
+                    }
+
+                    saveVitmapToFile(images!!.get(i),outPath+i+".png")
+
+                }
 
             }
+
 
             clear()
             chkdata = false
@@ -1002,7 +1029,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         startActivityForResult(intent1, FROM_ALBUM)
 
     }
-
 
     private fun initGPS() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -1249,6 +1275,17 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         }
     }
 
+    fun getAttrubuteKey(): String {
+
+        val time = System.currentTimeMillis()
+//        val dayTime = SimpleDateFormat("yyyyMMddHHmmssSSS")
+        val dayTime = SimpleDateFormat("yyyyMMddHHmmssSSS")
+        val strDT = dayTime.format(Date(time))
+
+        return strDT
+
+    }
+
     fun saveVitmapToFile(bitmap:Bitmap, filePath:String){
 
         var file = File(filePath)
@@ -1368,7 +1405,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             reset(images_path!!.get(j), j)
         }
 
-
     }
 
     override fun onLocationUpdated(p0: Location?) {
@@ -1389,16 +1425,15 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
     }
 
-
     private fun stopLocation() {
         SmartLocation.with(context).location().stop()
     }
 
-
-
     fun clear(){
 
         invDtTV.setText(Utils.todayStr())
+
+        numTV.setText("")
 
         btn1.setText("")       //날씨
         btn2.setText("")          //바람
@@ -1418,6 +1453,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         useLayerTV.setText("")
         mjActTV.setText("")
         mjActPrET.setText("")
+
+        addPicturesLL!!.removeAllViews()
 
     }
 
@@ -1569,6 +1606,5 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         }
 
     }
-
 
 }

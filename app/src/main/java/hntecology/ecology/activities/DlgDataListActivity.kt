@@ -109,7 +109,7 @@ class DlgDataListActivity : Activity() {
 
         if(tableName.equals("birdsAttribute")){
 
-            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_PERSON","WEATHER","WIND","INV_DT","WIND_DIRE","TEMPERATUR","ETC","NUM","INV_TM"
+            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","NUM","INV_TM"
             ,"SPEC_NM" ,"FAMI_NM" ,"SCIEN_NM" ,"INDI_CNT" ,"OBS_STAT" ,"OBS_ST_ETC" ,"USE_TAR" ,"USE_TAR_SP" ,"USE_LAYER" ,"MJ_ACT" ,"MJ_ACT_PR" ,"GPS_LAT" ,"GPS_LON" ,"TEMP_YN");
 
             val birdsdata=  db.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
@@ -150,7 +150,7 @@ class DlgDataListActivity : Activity() {
 
         if(tableName.equals("fishAttribute")) {
 
-            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","MID_RAGE","CODE_NUM"
+            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_TM","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","MID_RAGE","CODE_NUM"
                     ,"RIVER_NUM" ,"RIVER_NM" ,"NET_CNT" ,"NET_MIN" ,"AD_DIST_NM" ,"GPS_LAT" ,"GPS_LON" ,"COLL_TOOL" ,"STREAM_W" ,"WATER_W" ,"WATER_D" ,"WATER_CUR" ,"RIV_STR"
                     ,"RIV_STR_IN","RIV_FORM","NUM","SPEC_NM","FAMI_NM","SCIEN_NM","INDI_CNT","UNIDENT","RIV_FM_CH","UN_FISH_CH","TEMP_YN");
 
@@ -373,12 +373,13 @@ class DlgDataListActivity : Activity() {
 
             var model : Fish_attribute;
 
-            model = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                    data.getString(8), data.getFloat(9), data.getString(10), data.getString(11), data.getString(12), data.getInt(13), data.getString(14), data.getInt(15), data.getInt(16), data.getString(17),
-                    data.getFloat(18), data.getFloat(19), data.getString(20), data.getInt(21), data.getInt(22), data.getInt(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27),
-                    data.getInt(28) ,data.getString(29), data.getString(30), data.getString(31), data.getInt(32), data.getString(33), data.getString(34), data.getString(35),data.getString(36))
+            model =  Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                    data.getString(8),data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
+                    data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getString(26), data.getString(27), data.getString(28),
+                    data.getInt(29) ,data.getString(30), data.getString(31), data.getString(32), data.getInt(33), data.getString(33), data.getString(35), data.getString(36),data.getString(37))
 
             listdata.add(model)
+
         }
     }
 

@@ -9,16 +9,24 @@ import org.gdal.ogr.Geometry
 import org.gdal.ogr.ogr
 import org.gdal.osr.SpatialReference
 import java.io.File
-import java.text.SimpleDateFormat
 import java.util.*
 
 
 object Exporter {
 
+    lateinit var exportItem:ExportItem
+    lateinit var exportPointItem:ExportPointItem
+
     class ExportItem constructor(layerInt:Int, columnDefs: ArrayList<ColumnDef>, polygon : Polygon) {
         val layerInt:Int = layerInt
         var columnDefs: ArrayList<ColumnDef> = columnDefs
         var polygon : Polygon = polygon
+    }
+
+    class ExportPointItem constructor(layerInt:Int, columnDefs: ArrayList<ColumnDef>, point : Marker) {
+        val layerInt:Int = layerInt
+        var columnDefs: ArrayList<ColumnDef> = columnDefs
+        var point : Marker = point
     }
 
     class ColumnDef constructor(columnName: String, columnType: Int, columnValue: Any?) {
@@ -28,9 +36,25 @@ object Exporter {
     }
 
     fun export(exportItems:ArrayList<ExportItem>) {
+        export(exportItems, null)
+    }
 
-        if(exportItems.isEmpty()) {
-            return
+    fun exportPoint(exportPointItems:ArrayList<ExportPointItem>) {
+        export(null, exportPointItems)
+    }
+
+    private fun export(exportItems:ArrayList<ExportItem>?, exportPointItems:ArrayList<ExportPointItem>?) {
+
+        if (exportItems != null) {
+            if (exportItems.isEmpty()) {
+                return
+            }
+        }
+
+        if (exportPointItems != null) {
+            if (exportPointItems.isEmpty()) {
+                return
+            }
         }
 
         ogr.RegisterAll()
@@ -41,44 +65,89 @@ object Exporter {
 
         var layerName = ""
 
-        val exportItem = exportItems.get(0)
+        if (exportItems != null){
+            exportItem = exportItems!!.get(0)
 
-        when(exportItem.layerInt) {
-            MainActivity.LAYER_BIOTOPE -> {
-                layerName = "biotope"
+            when (exportItem.layerInt) {
+                MainActivity.LAYER_BIOTOPE -> {
+                    layerName = "biotope"
+                }
+
+                MainActivity.LAYER_BIRDS -> {
+                    layerName = "birds"
+                }
+
+                MainActivity.LAYER_REPTILIA -> {
+                    layerName = "reptilia"
+                }
+
+                MainActivity.LAYER_MAMMALIA -> {
+                    layerName = "mammalia"
+                }
+
+                MainActivity.LAYER_FISH -> {
+                    layerName = "fish"
+                }
+
+                MainActivity.LAYER_INSECT -> {
+                    layerName = "insect"
+                }
+
+                MainActivity.LAYER_FLORA -> {
+                    layerName = "flora"
+                }
+
+                MainActivity.LAYER_ZOOBENTHOS -> {
+                    layerName = "zoobenthos"
+                }
+
+                MainActivity.LAYER_MYLOCATION -> {
+                    layerName = "mylocation"
+                }
+            }
+        }
+
+        if (exportPointItems != null){
+            exportPointItem = exportPointItems.get(0)
+
+            when (exportPointItem.layerInt) {
+                MainActivity.LAYER_BIOTOPE -> {
+                    layerName = "biotope"
+                }
+
+                MainActivity.LAYER_BIRDS -> {
+                    layerName = "birds"
+                }
+
+                MainActivity.LAYER_REPTILIA -> {
+                    layerName = "reptilia"
+                }
+
+                MainActivity.LAYER_MAMMALIA -> {
+                    layerName = "mammalia"
+                }
+
+                MainActivity.LAYER_FISH -> {
+                    layerName = "fish"
+                }
+
+                MainActivity.LAYER_INSECT -> {
+                    layerName = "insect"
+                }
+
+                MainActivity.LAYER_FLORA -> {
+                    layerName = "flora"
+                }
+
+                MainActivity.LAYER_ZOOBENTHOS -> {
+                    layerName = "zoobenthos"
+                }
+
+                MainActivity.LAYER_MYLOCATION -> {
+                    layerName = "mylocation"
+                }
             }
 
-            MainActivity.LAYER_BIRDS -> {
-                layerName = "birds"
-            }
-
-            MainActivity.LAYER_REPTILIA -> {
-                layerName = "reptilia"
-            }
-
-            MainActivity.LAYER_MAMMALIA -> {
-                layerName = "mammalia"
-            }
-
-            MainActivity.LAYER_FISH -> {
-                layerName = "fish"
-            }
-
-            MainActivity.LAYER_INSECT -> {
-                layerName = "insect"
-            }
-
-            MainActivity.LAYER_FLORA -> {
-                layerName = "flora"
-            }
-
-            MainActivity.LAYER_ZOOBENTHOS -> {
-                layerName = "zoobenthos"
-            }
-
-            MainActivity.LAYER_MYLOCATION -> {
-                layerName = "mylocation"
-            }
         }
 
         // set up the shapefile driver
@@ -119,50 +188,103 @@ object Exporter {
         srs.ImportFromWkt("GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]]")
 
         // create the layer
-        var layerType = ogr.wkbPoint
+        var layerType = ogr.wkbPolygon
+        if (exportPointItems != null) {
+            layerType = ogr.wkbPoint
+        }
 
-        if(exportItem.layerInt == MainActivity.LAYER_BIOTOPE) {
-            layerType = ogr.wkbPolygon
+        if(exportItems != null) {
+            val exportitem = exportItems.get(0)
+            if (exportitem.layerInt == MainActivity.LAYER_BIOTOPE) {
+                layerType = ogr.wkbPolygon
+            }
         }
 
         var layer = data_source!!.CreateLayer("volcanoes", srs, layerType)
 
         // column names
-        for (columnDef in exportItem.columnDefs) {
-            layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
+        if(exportItems != null){
+            val exportitem = exportItems.get(0)
+            for (columnDef in exportitem.columnDefs) {
+                layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
+            }
         }
 
-        for (exportItem in exportItems) {
-            // create the feature
-            var feature: Feature = Feature(layer.GetLayerDefn()) ?: return
+        if(exportPointItems != null){
+            val exportPointitem = exportPointItems.get(0)
+            for (columnDef in exportPointitem.columnDefs) {
+                layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
+            }
+        }
 
-            // Set the attributes using the values from the delimited text file
-            for(columnDef in exportItem.columnDefs) {
-                if(columnDef.columnValue is Double) {
-                    feature.SetField(columnDef.columnName, columnDef.columnValue)
-                } else if(columnDef.columnValue is Int) {
-                    feature.SetField(columnDef.columnName, columnDef.columnValue)
-                } else if(columnDef.columnValue is String) {
-                    feature.SetField(columnDef.columnName, columnDef.columnValue)
+        if(exportItems != null) {
+            for (exportItem in exportItems) {
+                // create the feature
+                var feature: Feature = Feature(layer.GetLayerDefn()) ?: return
+
+                // Set the attributes using the values from the delimited text file
+                for(columnDef in exportItem.columnDefs) {
+                    if(columnDef.columnValue is Double) {
+                        feature.SetField(columnDef.columnName, columnDef.columnValue)
+                    } else if(columnDef.columnValue is Int) {
+                        feature.SetField(columnDef.columnName, columnDef.columnValue)
+                    } else if(columnDef.columnValue is String) {
+                        feature.SetField(columnDef.columnName, columnDef.columnValue)
+                    }
+                }
+
+                // create the WKT for the feature using Python string formatting
+                val ring = Geometry(ogr.wkbLinearRing)
+
+                val points = exportItem.polygon.points
+                for(point in points) {
+                    ring.AddPoint(point.longitude, point.latitude)
+                }
+
+                val poly = Geometry(ogr.wkbPolygon)
+                poly.AddGeometry(ring)
+
+                // Set the feature geometry using the point
+                feature.SetGeometry(poly)
+
+                // Create the feature in the layer (shapefile)
+                val created = layer.CreateFeature(feature)
+            }
+        } else {
+            if(exportPointItems != null) {
+                for (exportPointItem in exportPointItems) {
+                    // create the feature
+                    var feature: Feature = Feature(layer.GetLayerDefn()) ?: return
+
+                    // Set the attributes using the values from the delimited text file
+                    for(columnDef in exportPointItem.columnDefs) {
+                        if(columnDef.columnValue is Double) {
+                            feature.SetField(columnDef.columnName, columnDef.columnValue)
+                        } else if(columnDef.columnValue is Int) {
+                            feature.SetField(columnDef.columnName, columnDef.columnValue)
+                        } else if(columnDef.columnValue is String) {
+                            feature.SetField(columnDef.columnName, columnDef.columnValue)
+                        }
+                    }
+
+                    // create the WKT for the feature using Python string formatting
+                    val ring = Geometry(ogr.wkbLinearRing)
+
+//                    val points = exportItem.polygon.points
+//                    for(point in points) {
+//                        ring.AddPoint(point.longitude, point.latitude)
+//                    }
+
+                    val point = Geometry(ogr.wkbPoint)
+                    point.AddPoint(exportPointItem.point.position.longitude, exportPointItem.point.position.latitude)
+
+                    // Set the feature geometry using the point
+                    feature.SetGeometry(point)
+
+                    // Create the feature in the layer (shapefile)
+                    val created = layer.CreateFeature(feature)
                 }
             }
-
-            // create the WKT for the feature using Python string formatting
-            val ring = Geometry(ogr.wkbLinearRing)
-
-            val points = exportItem.polygon.points
-            for(point in points) {
-                ring.AddPoint(point.longitude, point.latitude)
-            }
-
-            val poly = Geometry(ogr.wkbPolygon)
-            poly.AddGeometry(ring)
-
-            // Set the feature geometry using the point
-            feature.SetGeometry(poly)
-
-            // Create the feature in the layer (shapefile)
-            val created = layer.CreateFeature(feature)
         }
 
         // Dereference the feature

@@ -2231,9 +2231,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                         var attrubuteKey = layerInfo.attrubuteKey
 
-                        if (attrubuteKey.equals(grop_id)){
-                            val exporter = Exporter.ExportMarkerItem(LAYER_BIRDS,BIRDSATTRIBUTE,points.get(i))
-                        }
 
                     }
 

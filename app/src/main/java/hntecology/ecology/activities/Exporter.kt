@@ -1,6 +1,7 @@
 package hntecology.ecology.activities
 
 import android.os.Environment
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.Polygon
 import org.gdal.ogr.Feature
 import org.gdal.ogr.FieldDefn
@@ -57,7 +58,6 @@ object Exporter {
 
             MainActivity.LAYER_MAMMALIA -> {
                 layerName = "mammalia"
-
             }
 
             MainActivity.LAYER_FISH -> {
@@ -87,7 +87,7 @@ object Exporter {
         // String outPath = "/data/data/com.wshunli.gdal.android.demo/outputs/";
 //        val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
         val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + layerName + File.separator
-        val outPathFile = "$layerName.shp"
+        val outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + layerName + File.separator + layerName + ".shp"
 
         println("outPathFile : $outPathFile")
 
@@ -120,12 +120,12 @@ object Exporter {
 
         // create the layer
         var layerType = ogr.wkbPoint
+
         if(exportItem.layerInt == MainActivity.LAYER_BIOTOPE) {
             layerType = ogr.wkbPolygon
         }
-        var layer = data_source!!.CreateLayer("volcanoes", srs, layerType)
 
-        println("layer : " + layer!!)
+        var layer = data_source!!.CreateLayer("volcanoes", srs, layerType)
 
         // column names
         for (columnDef in exportItem.columnDefs) {
@@ -164,8 +164,6 @@ object Exporter {
             // Create the feature in the layer (shapefile)
             val created = layer.CreateFeature(feature)
         }
-
-
 
         // Dereference the feature
         // feature = null

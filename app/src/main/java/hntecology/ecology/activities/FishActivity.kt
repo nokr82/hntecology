@@ -126,7 +126,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         val SET_DATA1 = 1;
 
-
         val dbmanager = DataBaseHelper(context);
         val db = dbmanager.createDataBase();
 
@@ -167,7 +166,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             fishinvpersonET.setText(base.INV_PERSON)
             fishinvdtET.setText(base.INV_DT)
 
-            val time = base.INV_TM
+            val time = Utils.timeStr()
 
             fishgpslatTV.setText(base.GPS_LAT)
             fishgpslonTV.setText(base.GPS_LON)
@@ -252,7 +251,9 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 fishindicntET.setText(fish_attribute.INDI_CNT.toString())
 
                 fishunidentET.setText(fish_attribute.UNIDENT)
-
+                if(fishunidentET.text == null){
+                    fishunidentET.setText("")
+                }
                 fishtivfmchET.setText(fish_attribute.RIV_FM_CH)
 
                 fishunfishchET.setText(fish_attribute.UN_FISH_CH)
@@ -349,12 +350,9 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                     }
                 }
 
-
-
             }
 
         }
-
 
         fishleftLL.setOnClickListener {
 
@@ -559,7 +557,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         }
 
-        btn_biotopSave1.setOnClickListener {
+        btn_fishSave1.setOnClickListener {
 
             val builder = AlertDialog.Builder(context)
             builder.setMessage("저장하시겠습니까 ?").setCancelable(false)
@@ -576,6 +574,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         fish_attribute.PRJ_NAME = ""
 
                         fish_attribute.INV_REGION = fishinvregionET.text.toString()
+
                         fish_attribute.INV_DT = Utils.todayStr()
 
                         fish_attribute.INV_TM = Utils.timeStr()
@@ -613,7 +612,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         if (fishgpslatTV.text.isNotEmpty()) {
                             fish_attribute.GPS_LAT = fishgpslatTV.text.toString().toFloat()
                         }
-
 
                         fish_attribute.COLL_TOOL = fishcolltoolET.text.toString()
 
@@ -708,7 +706,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                                     println("made : $made")
                                 }
 
-                                saveVitmapToFile(images!!.get(i),outPath+pk+"_"+i+".png")
+                                saveVitmapToFile(images!!.get(i),outPath+pk+"_"+(i+1)+".png")
 
                             }
 
@@ -771,13 +769,19 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         }
 
-        btn_biotopCancle1.setOnClickListener {
+        btn_fishCancle1.setOnClickListener {
 
             val builder = AlertDialog.Builder(context)
             builder.setMessage("취소하시겠습니까 ?").setCancelable(false)
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
                         dialog.cancel()
+
+
+
+
+
+
 
                         finish()
 
@@ -788,7 +792,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         }
 
-        btn_biotopDelete.setOnClickListener {
+        btn_fishDelete.setOnClickListener {
 
             val builder = AlertDialog.Builder(context)
             builder.setMessage("삭제하시겠습니까?").setCancelable(false)
@@ -926,6 +930,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             fish_attribute.INV_REGION = fishinvregionET.text.toString()
             fish_attribute.INV_DT = Utils.todayStr()
+
+            println("inv_dt ===============${fish_attribute.INV_DT}")
             fish_attribute.INV_TM = Utils.timeStr()
 
             fish_attribute.INV_PERSON = fishinvpersonET.text.toString()
@@ -961,7 +967,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             if (fishgpslatTV.text.isNotEmpty()) {
                 fish_attribute.GPS_LAT = fishgpslatTV.text.toString().toFloat()
             }
-
 
             fish_attribute.COLL_TOOL = fishcolltoolET.text.toString()
 
@@ -1056,7 +1061,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         println("made : $made")
                     }
 
-                    saveVitmapToFile(images!!.get(i),outPath+pk+"_"+i+".png")
+                    saveVitmapToFile(images!!.get(i),outPath+pk+"_"+(i+1)+".png")
 
                 }
 
@@ -1244,7 +1249,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             fishinvdtET.setText(fish_attribute.INV_DT)
             if(fishinvdtET.text == null){
-                fishinvdtET.setText("")
+                fishinvdtET.setText(Utils.todayStr())
             }
 
             fishinvpersonET.setText(fish_attribute.INV_PERSON)

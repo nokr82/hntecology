@@ -209,7 +209,7 @@
                     android:inputType="number"
                     android:id="@+id/insecttemperaturET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
                 <EditText
                     android:layout_width="0dp"
@@ -217,7 +217,7 @@
                     android:layout_weight="1"
                     android:id="@+id/insectetcET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
 
             </LinearLayout>
@@ -275,7 +275,7 @@
                     android:layout_weight="1"
                     android:id="@+id/insectspecnmET"
                     android:hint="click"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:gravity="center"
                     />
             </LinearLayout>
@@ -293,7 +293,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/insectfaminmET"
-                    style="@style/BiotopeTextView"
+                    style="@style/BiotopeTextViewDisabled"
                     android:gravity="center"
                     />
             </LinearLayout>
@@ -311,7 +311,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/insectsciennmET"
-                    style="@style/BiotopeTextView"
+                    style="@style/BiotopeTextViewDisabled"
                     android:gravity="center"
                     />
             </LinearLayout>
@@ -350,7 +350,7 @@
                     android:layout_weight="1"
                     android:id="@+id/insectobsstatTV"
                     android:hint="click"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:gravity="center"
                     />
                 <EditText
@@ -380,7 +380,7 @@
                     android:layout_weight="1"
                     android:hint="click"
                     android:id="@+id/insectusetarTV"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:gravity="center"
                     />
                 <EditText
@@ -409,7 +409,7 @@
                     android:layout_weight="1"
                     android:hint="click"
                     android:id="@+id/insectmjactTV"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:gravity="center"
                     />
                 <EditText
@@ -439,7 +439,7 @@
                     android:layout_weight="1"
                     android:hint="click"
                     android:id="@+id/insectinvmeanTV"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:gravity="center"
                     />
                 <EditText
@@ -545,7 +545,8 @@
                         android:id="@+id/insectgpslatTV"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="left|center" />
+                        android:gravity="center"
+                        android:maxLength="7"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -555,7 +556,8 @@
                         android:id="@+id/insectgpslonTV"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="left|center" />
+                        android:gravity="center"
+                        android:maxLength="8"/>
 
                 </LinearLayout>
 

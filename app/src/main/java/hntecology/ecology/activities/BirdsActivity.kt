@@ -503,7 +503,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                                     println("made : $made")
                                 }
 
-                                saveVitmapToFile(images!!.get(i),outPath+pk+"_"+i+".png")
+                                saveVitmapToFile(images!!.get(i),outPath+pk+"_"+(i+1)+".png")
 
                             }
 
@@ -828,7 +828,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         println("made : $made")
                     }
 
-                    saveVitmapToFile(images!!.get(i),outPath+pk+"_"+i+".png")
+                    saveVitmapToFile(images!!.get(i),outPath+pk+"_"+(i+1)+".png")
 
                 }
 

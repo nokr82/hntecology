@@ -825,7 +825,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         etlcmTypewET.setText(biotope_attribute.LC_TY)
                     }
 
-
                     TVTY_MARKTV.setText(biotope_attribute.TY_MARK)
                     etGV_RATEET.setText(biotope_attribute.GV_RATE.toString())
                     etGV_STRUCTET.setText(biotope_attribute.GV_STRUCT)
@@ -865,8 +864,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     etUNUS_NOTEET.setText(biotope_attribute.UNUS_NOTE.toString())
 
                     etIMP_FORMET.setText(biotope_attribute.IMP_FORM.toString())
-
-
 
                     if(biotope_attribute.PIC_FOLDER == "null" || biotope_attribute.PIC_FOLDER == "" || biotope_attribute.PIC_FOLDER ==null){
 
@@ -909,7 +906,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             }
                         }
                     }
-
 
                     dataArray.add(biotope_attribute)
                 }
@@ -1165,7 +1161,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             biotope_attribute.LC_TY = etlcmTypewET.text.toString()
                         }
 
-
                         if(etGPS_LATTV.text.toString() !="" && etGPS_LONTV.text.toString() !=""){
 
                             biotope_attribute.GPS_LAT = lat.toDouble()
@@ -1228,10 +1223,9 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                     println("made : $made")
                                 }
 
-                                saveVitmapToFile(images!!.get(i),outPath+pk+"_"+i+".png")
+                                saveVitmapToFile(images!!.get(i),outPath+pk+"_"+(i+1)+".png")
 
                             }
-
 
                         } else {
 
@@ -1284,7 +1278,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             }
 
                         }
-
 
                         intent.putExtra("bio_attri", biotope_attribute);
 
@@ -1614,10 +1607,9 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         println("made : $made")
                     }
 
-                    saveVitmapToFile(images!!.get(i),outPath+pk+"_"+i+".png")
+                    saveVitmapToFile(images!!.get(i),outPath+pk+"_"+(i+1)+".png")
 
                 }
-
 
             } else {
 
@@ -1675,7 +1667,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
             setResult(RESULT_OK, intent);
             finishFlag = false
-
 
             clear()
             chkdata = false

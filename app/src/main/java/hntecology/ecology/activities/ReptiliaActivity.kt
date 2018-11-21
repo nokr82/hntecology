@@ -561,7 +561,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             alert(listItems, "수계", watercontET, "watercont");
         }
 
-        btn_biotopDelete.setOnClickListener {
+        btn_reptiliaDelete.setOnClickListener {
 
             val builder = AlertDialog.Builder(context)
             builder.setMessage("삭제하시겠습니까?").setCancelable(false)
@@ -611,7 +611,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         }
 
-        btn_biotopCancle1.setOnClickListener {
+        btn_reptiliaCancle1.setOnClickListener {
             val builder = AlertDialog.Builder(context)
             builder.setMessage("취소하시겠습니까?").setCancelable(false)
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
@@ -626,7 +626,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             alert.show()
         }
 
-        btn_biotopSave1.setOnClickListener {
+        btn_reptiliaSave1.setOnClickListener {
             val builder = AlertDialog.Builder(context)
             builder.setMessage("저장하시겠습니까?").setCancelable(false)
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
@@ -710,8 +710,6 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                         reptilia_attribute.TEMP_YN = "Y"
 
 
-
-
                         if (chkdata) {
 
                             if(pk != null){
@@ -759,7 +757,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                                     println("made : $made")
                                 }
 
-                                saveVitmapToFile(images!!.get(i),outPath+pk+"_"+i+".png")
+                                saveVitmapToFile(images!!.get(i),outPath+pk+"_"+(i+1)+".png")
 
                             }
 
@@ -946,7 +944,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                         println("made : $made")
                     }
 
-                    saveVitmapToFile(images!!.get(i),outPath+pk+"_"+i+".png")
+                    saveVitmapToFile(images!!.get(i),outPath+pk+"_"+(i+1)+".png")
 
                 }
 

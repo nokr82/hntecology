@@ -208,7 +208,8 @@
                     android:layout_weight="1"
                     android:id="@+id/mamtemperatureET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
+                    android:inputType="number"
                     />
                 <EditText
                     android:layout_width="0dp"
@@ -216,7 +217,7 @@
                     android:layout_weight="1"
                     android:id="@+id/mametcET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
 
             </LinearLayout>
@@ -290,7 +291,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/mamfaminmTV"
-                    style="@style/BiotopeTextView"
+                    style="@style/BiotopeTextViewDisabled"
                     android:gravity="center"
                     />
             </LinearLayout>
@@ -308,7 +309,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/mamsciennmTV"
-                    style="@style/BiotopeTextView"
+                    style="@style/BiotopeTextViewDisabled"
                     android:gravity="center"
                     />
             </LinearLayout>
@@ -356,6 +357,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:inputType="number"
                     android:id="@+id/mamindicntET"
                     style="@style/BiotopeTextView"
                     android:gravity="center"
@@ -473,7 +475,8 @@
                         android:id="@+id/mamgpslatTV"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="left|center" />
+                        android:gravity="center"
+                        android:maxLength="7"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -483,7 +486,8 @@
                         android:id="@+id/mamgpslonTV"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="left|center" />
+                        android:gravity="center"
+                        android:maxLength="8"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -504,7 +508,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/mamunspecET"
-                    style="@style/BiotopeTextView"
+                    style="@style/BiotopeTextViewDisabled"
                     android:gravity="center"
                     android:hint="click"
                     />
@@ -542,7 +546,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextView"
+                    style="@style/BiotopeTextViewDisabled"
                     android:gravity="center"
                     android:id="@+id/mamtreasyET"
                     android:hint="click"
@@ -579,7 +583,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="취소"
-                    android:id="@+id/btn_biotopCancle1"
+                    android:id="@+id/btn_mammalCancle1"
                     style="@style/dlgcommonButton"
                     />
                 <Button
@@ -596,7 +600,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="삭제"
-                    android:id="@+id/btn_biotopDelete"
+                    android:id="@+id/btn_mammalDelete"
                     style="@style/dlgcommonButton"
                     android:layout_marginLeft="2dp"
                     />
@@ -606,7 +610,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="저장"
-                android:id="@+id/btn_biotopSave1"
+                android:id="@+id/btn_mammalSave1"
                 style="@style/dlgcommonButton"
                 android:layout_marginTop="2dp"
                 />

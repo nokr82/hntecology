@@ -483,7 +483,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         }
 
-        btn_biotopSave1.setOnClickListener {
+        btn_mammalSave1.setOnClickListener {
             val builder = AlertDialog.Builder(context)
             builder.setMessage("저장하시겠습니까 ?").setCancelable(false)
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
@@ -602,7 +602,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                                     println("made : $made")
                                 }
 
-                                saveVitmapToFile(images!!.get(i),outPath+pk+"_"+i+".png")
+                                saveVitmapToFile(images!!.get(i),outPath+pk+"_"+(i+1)+".png")
 
                             }
 
@@ -667,7 +667,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         }
 
 
-        btn_biotopDelete.setOnClickListener {
+        btn_mammalDelete.setOnClickListener {
             val builder = AlertDialog.Builder(context)
             builder.setMessage("삭제하시겠습니까?").setCancelable(false)
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
@@ -729,7 +729,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             startDlgM()
         }
 
-        btn_biotopCancle1.setOnClickListener {
+        btn_mammalCancle1.setOnClickListener {
             val builder = AlertDialog.Builder(context)
             builder.setMessage("취소하시겠습니까?").setCancelable(false)
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
@@ -928,7 +928,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         println("made : $made")
                     }
 
-                    saveVitmapToFile(images!!.get(i),outPath+pk+"_"+i+".png")
+                    saveVitmapToFile(images!!.get(i),outPath+pk+"_"+(i+1)+".png")
 
                 }
 

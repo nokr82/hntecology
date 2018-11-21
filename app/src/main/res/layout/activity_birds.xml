@@ -178,7 +178,7 @@
 
                 <TextView
                     android:id="@+id/btn1"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -187,15 +187,16 @@
 
                 <TextView
                     android:id="@+id/btn2"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:hint="click" />
 
                 <TextView
                     android:id="@+id/btn3"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -209,7 +210,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:inputType="number"
-                    android:gravity="left|center" />
+                    android:gravity="center" />
 
                 <EditText
                     android:id="@+id/etcET"
@@ -217,7 +218,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="left|center" />
+                    android:gravity="center" />
 
             </LinearLayout>
 
@@ -235,7 +236,7 @@
 
                 <TextView
                     android:id="@+id/numTV"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -256,7 +257,7 @@
 
                 <TextView
                     android:id="@+id/timeTV"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -275,7 +276,7 @@
 
                 <TextView
                     android:id="@+id/birdsTV"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -355,7 +356,7 @@
                     android:text="관찰지역현황\n (토지이용유형,군집형,층위구조)" />
 
                 <TextView
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -386,7 +387,7 @@
 
                 <TextView
                     android:id="@+id/useTarTV"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -427,7 +428,7 @@
 
                 <TextView
                     android:id="@+id/useLayerTV"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -448,7 +449,7 @@
 
                 <TextView
                     android:id="@+id/mjActTV"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -542,7 +543,7 @@
                     android:text="GPS 좌표" />
 
                 <LinearLayout
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center">
@@ -550,7 +551,8 @@
                         android:id="@+id/gpslatTV"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="left|center" />
+                        android:gravity="center"
+                        android:maxLength="7"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -560,7 +562,8 @@
                         android:id="@+id/gpslonTV"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="left|center" />
+                        android:gravity="center"
+                        android:maxLength="8"/>
 
                 </LinearLayout>
 

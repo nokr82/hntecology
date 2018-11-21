@@ -181,7 +181,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:gravity="center"
                     android:hint="click"
                     />
@@ -190,7 +190,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:gravity="center"
                     android:hint="click"
                     />
@@ -199,7 +199,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:gravity="center"
                     android:hint="click"
                     />
@@ -209,7 +209,8 @@
                     android:layout_weight="1"
                     android:id="@+id/temperaturET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:inputType="number"
+                    android:gravity="center"
                     />
                 <EditText
                     android:layout_width="0dp"
@@ -296,7 +297,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/famiET"
-                    style="@style/BiotopeTextView"
+                    style="@style/BiotopeTextViewDisabled"
                     android:gravity="center"
                     />
             </LinearLayout>
@@ -314,7 +315,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/scienET"
-                    style="@style/BiotopeTextView"
+                    style="@style/BiotopeTextViewDisabled"
                     android:gravity="center"
                     />
             </LinearLayout>
@@ -573,6 +574,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:id="@+id/waterdeptET"
+                            android:inputType="number"
                             style="@style/BiotopeTextView"
                             android:gravity="center"/>
                     </LinearLayout>
@@ -604,6 +606,7 @@
                             android:id="@+id/habareawET"
                             android:background="@null"
                             android:hint="M"
+                            android:inputType="number"
                             style="@style/BiotopeTextView"
                             android:gravity="center" />
                         <TextView
@@ -617,6 +620,7 @@
                             android:id="@+id/habareahET"
                             android:background="@null"
                             android:hint="M"
+                            android:inputType="number"
                             style="@style/BiotopeTextView"
                             android:gravity="center" />
 
@@ -697,7 +701,8 @@
                         android:id="@+id/gpslatTV"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="left|center" />
+                        android:gravity="center"
+                        android:maxLength="7"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -707,7 +712,8 @@
                         android:id="@+id/gpslonTV"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="left|center" />
+                        android:gravity="center"
+                        android:maxLength="8"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -722,7 +728,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="취소"
-                    android:id="@+id/btn_biotopCancle1"
+                    android:id="@+id/btn_reptiliaCancle1"
                     style="@style/dlgcommonButton"
                     />
                 <Button
@@ -739,7 +745,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="삭제"
-                    android:id="@+id/btn_biotopDelete"
+                    android:id="@+id/btn_reptiliaDelete"
                     style="@style/dlgcommonButton"
                     android:layout_marginLeft="2dp"
                     />
@@ -749,7 +755,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="저장"
-                android:id="@+id/btn_biotopSave1"
+                android:id="@+id/btn_reptiliaSave1"
                 style="@style/dlgcommonButton"
                 android:layout_marginTop="2dp"
                 />

@@ -180,7 +180,7 @@
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
                     android:id="@+id/floraweatherTV"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     android:hint="click"
                     />
                 <TextView
@@ -189,7 +189,7 @@
                     android:layout_weight="1"
                     android:id="@+id/florawindTV"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     android:hint="click"
                     />
                 <TextView
@@ -199,7 +199,7 @@
                     android:id="@+id/florawinddireTV"
                     android:hint="click"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
                 <EditText
                     android:layout_width="0dp"
@@ -208,7 +208,7 @@
                     android:id="@+id/floratemperaturTV"
                     android:inputType="number"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
                 <EditText
                     android:layout_width="0dp"
@@ -216,7 +216,7 @@
                     android:layout_weight="1"
                     android:id="@+id/floraetcET"
                     style="@style/BiotopeTextView"
-                    android:gravity="left|center"
+                    android:gravity="center"
                     />
 
             </LinearLayout>
@@ -289,7 +289,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/florafaminmTV"
-                    style="@style/BiotopeTextView"
+                    style="@style/BiotopeTextViewDisabled"
                     android:gravity="center"
                     />
             </LinearLayout>
@@ -307,7 +307,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/florasciennmTV"
-                    style="@style/BiotopeTextView"
+                    style="@style/BiotopeTextViewDisabled"
                     android:gravity="center"
                     />
             </LinearLayout>
@@ -490,7 +490,8 @@
                         android:id="@+id/floragpslatTV"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="left|center" />
+                        android:gravity="center"
+                        android:maxLength="7"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -500,7 +501,8 @@
                         android:id="@+id/floragpslonTV"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="left|center" />
+                        android:gravity="center"
+                        android:maxLength="8"/>
 
                 </LinearLayout>
             </LinearLayout>

@@ -1048,7 +1048,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "UPDATE fishAttribute SET  " +
                 "INV_REGION='" + fish_attribute.getINV_REGION() + "'"
                 + ",INV_DT='" + fish_attribute.getINV_DT() + "'"
-                + ",INV_DT='" + fish_attribute.getINV_TM() + "'"
+                + ",INV_TM='" + fish_attribute.getINV_TM() + "'"
                 + ",INV_PERSON='" + fish_attribute.getINV_PERSON() + "'"
                 + ",WEATHER='" + fish_attribute.getWEATHER() + "'"
                 + ",WIND='" + fish_attribute.getWIND() + "'"

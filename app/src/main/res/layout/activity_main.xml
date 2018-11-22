@@ -188,6 +188,7 @@
                     android:text="위성 지도" />
 
                 <Button
+                    android:visibility="gone"
                     android:id="@+id/btn_clear_all"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -257,6 +258,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Export" />
+
+                <Button
+                    android:id="@+id/trackingBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tracking 켜기"/>
+
+                <Button
+                    android:visibility="gone"
+                    android:id="@+id/markerdeleteBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="마커 삭제" />
+
+                <Button
+                    android:visibility="gone"
+                    android:id="@+id/polygondeleteBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="비오톱 삭제" />
 
                 <Button
                     android:id="@+id/logoutBtn"

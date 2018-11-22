@@ -89,7 +89,7 @@ class DlgInsectClassActivity : Activity() {
 
                 listAdapte1.setItemSelect(position)
 
-                val data2 =  db.query(tableName,dataList,null ,null,"MAINCATEGORY='"+veData.MAINCATEGORY +"'",null,null,null);
+                val data2 =  db.query(tableName,dataList,"MAINCATEGORY='"+veData.MAINCATEGORY +"'" ,null,"MIDDLECATEGORY",null,null,null);
 
                 class_probar.visibility= View.VISIBLE
                 dataList(listdata2,data2);

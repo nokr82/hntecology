@@ -65,7 +65,6 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
     val REQUEST_FINE_LOCATION = 50
     val REQUEST_ACCESS_COARSE_LOCATION = 51
 
-
     var dataArray:ArrayList<Reptilia_attribute> = ArrayList<Reptilia_attribute>()
 
     private var progressDialog: ProgressDialog? = null
@@ -96,6 +95,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
     var images_url_remove: ArrayList<String>? = null
     var images_id: ArrayList<Int>? = null
 
+    var markerid : String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reptilia)
@@ -125,6 +126,10 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         val db = dbManager.createDataBase();
 
         var intent: Intent = getIntent();
+
+        if(intent.getStringExtra("markerid") != null){
+            markerid = intent.getStringExtra("markerid")
+        }
 
         if(intent.getStringExtra("latitude")!= null){
             lat = intent.getStringExtra("latitude")
@@ -563,51 +568,150 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         btn_reptiliaDelete.setOnClickListener {
 
-            val builder = AlertDialog.Builder(context)
-            builder.setMessage("삭제하시겠습니까?").setCancelable(false)
-                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                        dialog.cancel()
+            if(pk != null) {
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                        var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(null,null,null,null,null,null,null,null,null
-                                ,null,null,null,null,null,null,null,null,null,null,null,null
-                                ,null,null,null,null,null,null,null,null,null,null)
+                            dialog.cancel()
 
-                        if(pk != null){
+                            var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(null, null, null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null, null, null, null)
 
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia/imges/")
-                            val pathdir = path.listFiles()
+                            if (pk != null) {
 
-                            if(pathdir != null) {
-                                for (i in 0..pathdir.size-1) {
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia/imges/")
+                                val pathdir = path.listFiles()
 
-                                    for(j in 0..pathdir.size-1) {
+                                if (pathdir != null) {
+                                    for (i in 0..pathdir.size - 1) {
 
-                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/reptilia/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                        for (j in 0..pathdir.size - 1) {
 
-                                            pathdir.get(i).canonicalFile.delete()
+                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/reptilia/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
 
-                                            println("delete ===============")
+                                                pathdir.get(i).canonicalFile.delete()
 
+                                                println("delete ===============")
+
+                                            }
                                         }
+
+                                    }
+                                }
+
+
+                                if (intent.getStringExtra("GROP_ID") != null) {
+                                    val GROP_ID = intent.getStringExtra("GROP_ID")
+
+                                    val dataList: Array<String> = arrayOf("*");
+
+                                    val data= db.query("reptiliaAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+
+                                    if (dataArray != null) {
+                                        dataArray.clear()
                                     }
 
+                                    while (data.moveToNext()) {
+
+                                        chkdata = true
+
+                                        var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                                , data.getString(15), data.getInt(16), data.getInt(17), data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
+                                                , data.getString(22), data.getString(23), data.getString(24), data.getInt(25), data.getInt(26), data.getInt(27), data.getFloat(28), data.getFloat(29),data.getString(30))
+
+                                        dataArray.add(reptilia_attribute)
+
+                                    }
+
+                                    var intent = Intent()
+
+                                    if(dataArray.size > 1) {
+                                        dbManager.deletereptilia_attribute(reptilia_attribute, pk)
+
+                                        intent.putExtra("reset", 100)
+
+                                        setResult(RESULT_OK, intent);
+                                        finish()
+
+                                    }
+
+                                    if(dataArray.size == 1) {
+                                        dbManager.deletereptilia_attribute(reptilia_attribute, pk)
+
+                                        intent.putExtra("markerpk", markerid)
+
+                                        setResult(RESULT_OK, intent);
+                                        finish()
+                                    }
                                 }
+
+                            } else {
+                                Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+            }
+
+            if(pk == null){
+
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인", { dialog, id ->
+
+                            dialog.cancel()
+
+                            if (intent.getStringExtra("id") != null) {
+                                val id = intent.getStringExtra("id")
+
+                                val dataList: Array<String> = arrayOf("*");
+
+                                val data= db.query("reptiliaAttribute", dataList, "id = '$id'", null, null, null, "", null)
+
+                                if (dataArray != null) {
+                                    dataArray.clear()
+                                }
+
+                                while (data.moveToNext()) {
+
+                                    chkdata = true
+
+                                    var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                            , data.getString(15), data.getInt(16), data.getInt(17), data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
+                                            , data.getString(22), data.getString(23), data.getString(24), data.getInt(25), data.getInt(26), data.getInt(27), data.getFloat(28), data.getFloat(29),data.getString(30))
+                                }
+
+                                if (chkdata == true) {
+                                    Toast.makeText(context, "추가하신 데이터가 있습니다.", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    intent.putExtra("markerid", markerid)
+
+                                    setResult(RESULT_OK, intent);
+                                    finish()
+                                }
+
                             }
 
-                            dbManager.deletereptilia_attribute(reptilia_attribute,pk)
-                            finish()
-                        }else {
-                            Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
-                        }
+                            if (intent.getStringExtra("id") == null) {
+                                intent.putExtra("markerid", markerid)
+
+                                setResult(RESULT_OK, intent);
+                                finish()
+                            }
 
 
-                        finish()
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
 
-                    })
-                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
-            val alert = builder.create()
-            alert.show()
+            }
 
         }
 
@@ -995,6 +1099,11 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
             }
 
+            if(intent.getStringExtra("id") != null){
+                intent.putExtra("reset", 100)
+
+                setResult(RESULT_OK, intent);
+            }
 
 
             clear()

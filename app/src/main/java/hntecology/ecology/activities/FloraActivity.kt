@@ -93,6 +93,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
     var images_url_remove: ArrayList<String>? = null
     var images_id: ArrayList<Int>? = null
 
+    var markerid : String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_flora)
@@ -126,6 +128,9 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
         var intent: Intent = getIntent();
 
+        if(intent.getStringExtra("markerid") != null){
+            markerid = intent.getStringExtra("markerid")
+        }
 
         if(intent.getStringExtra("latitude")!= null){
             lat = intent.getStringExtra("latitude")
@@ -675,49 +680,150 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
         }
 
         floradeleteBT.setOnClickListener {
-            val builder = AlertDialog.Builder(context)
-            builder.setMessage("삭제하시겠습니까?").setCancelable(false)
-                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
+            if (pk != null) {
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                        dialog.cancel()
+                            dialog.cancel()
 
-                        var flora_Attribute: Flora_Attribute = Flora_Attribute(null,null,null,null,null,null,null,null,null,null
-                                ,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+                            var flora_Attribute: Flora_Attribute = Flora_Attribute(null, null, null, null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
 
-                        if(pk != null){
+                            if (pk != null) {
 
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora/imges/")
-                            val pathdir = path.listFiles()
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora/imges/")
+                                val pathdir = path.listFiles()
 
-                            if(pathdir != null) {
-                                for (i in 0..pathdir.size-1) {
+                                if (pathdir != null) {
+                                    for (i in 0..pathdir.size - 1) {
 
-                                    for(j in 0..pathdir.size-1) {
+                                        for (j in 0..pathdir.size - 1) {
 
-                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/flora/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/flora/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
 
-                                            pathdir.get(i).canonicalFile.delete()
+                                                pathdir.get(i).canonicalFile.delete()
 
-                                            println("delete ===============")
+                                                println("delete ===============")
 
+                                            }
                                         }
+
+                                    }
+                                }
+
+                                if (intent.getStringExtra("GROP_ID") != null) {
+                                    val GROP_ID = intent.getStringExtra("GROP_ID")
+
+                                    val dataList: Array<String> = arrayOf("*");
+
+                                    val data = db.query("floraAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+
+                                    if (dataArray != null) {
+                                        dataArray.clear()
                                     }
 
+                                    while (data.moveToNext()) {
+
+                                        chkdata = true
+
+                                        var flora_Attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                                , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
+                                                , data.getFloat(22), data.getFloat(23),data.getString(24))
+
+                                        dataArray.add(flora_Attribute)
+
+                                    }
+
+                                    var intent = Intent()
+
+                                    if (dataArray.size > 1) {
+                                        dbManager.deleteflora_attribute(flora_Attribute, pk)
+
+                                        intent.putExtra("reset", 100)
+
+                                        setResult(RESULT_OK, intent);
+                                        finish()
+
+                                    }
+
+                                    if (dataArray.size == 1) {
+                                        dbManager.deleteflora_attribute(flora_Attribute, pk)
+
+                                        intent.putExtra("markerpk", markerid)
+
+                                        setResult(RESULT_OK, intent);
+                                        finish()
+                                    }
                                 }
+
+
+                            } else {
+                                Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
                             }
 
-                            dbManager.deleteflora_attribute(flora_Attribute,pk)
                             finish()
-                        }else {
-                            Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
-                        }
 
-                        finish()
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+            }
 
-                    })
-                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
-            val alert = builder.create()
-            alert.show()
+            if (pk == null) {
+
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인",  DialogInterface.OnClickListener{ dialog, id ->
+
+                            dialog.cancel()
+
+                            if (intent.getStringExtra("id") != null) {
+                                val id = intent.getStringExtra("id")
+
+                                val dataList: Array<String> = arrayOf("*");
+
+                                val data = db.query("floraAttribute", dataList, "id = '$id'", null, null, null, "", null)
+
+                                if (dataArray != null) {
+                                    dataArray.clear()
+                                }
+
+                                while (data.moveToNext()) {
+
+                                    chkdata = true
+
+                                    var flora_Attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
+                                            , data.getFloat(22), data.getFloat(23),data.getString(24))
+                                }
+
+                                if (chkdata == true) {
+                                    Toast.makeText(context, "추가하신 데이터가 있습니다.", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    intent.putExtra("markerid", markerid)
+
+                                    setResult(RESULT_OK, intent);
+                                    finish()
+                                }
+
+                            }
+
+                            if (intent.getStringExtra("id") == null) {
+                                intent.putExtra("markerid", markerid)
+
+                                setResult(RESULT_OK, intent);
+                                finish()
+                            }
+
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+
+            }
         }
 
         florafloreyynTV.setOnClickListener {
@@ -961,6 +1067,12 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                 }
 
+            }
+
+            if(intent.getStringExtra("id") != null){
+                intent.putExtra("reset", 100)
+
+                setResult(RESULT_OK, intent);
             }
 
             clear()

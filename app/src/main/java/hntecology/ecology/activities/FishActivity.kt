@@ -100,6 +100,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
     var images_url_remove: ArrayList<String>? = null
     var images_id: ArrayList<Int>? = null
 
+    var markerid : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -130,6 +131,10 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         val db = dbmanager.createDataBase();
 
         var intent: Intent = getIntent();
+
+        if(intent.getStringExtra("markerid") != null){
+            markerid = intent.getStringExtra("markerid")
+        }
 
         if(intent.getStringExtra("latitude")!= null){
             lat = intent.getStringExtra("latitude")
@@ -794,52 +799,157 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         btn_fishDelete.setOnClickListener {
 
-            val builder = AlertDialog.Builder(context)
-            builder.setMessage("삭제하시겠습니까?").setCancelable(false)
-                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
+            if (pk != null) {
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                        dialog.cancel()
+                            dialog.cancel()
 
-                        var fish_attribute: Fish_attribute = Fish_attribute(null, null, null, null, null, null, null, null, null, null, null
-                                , null, null, null, null, null, null, null, null, null, null, null, null, null
-                                , null, null, null, null, null, null, null,null, null, null, null, null, null,null)
+                            var fish_attribute: Fish_attribute = Fish_attribute(null, null, null, null, null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null, null, null, null, null, null, null, null)
 
 
-                        if(pk != null) {
+                            if (pk != null) {
 
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish/imges/")
-                            val pathdir = path.listFiles()
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish/imges/")
+                                val pathdir = path.listFiles()
 
-                            if(pathdir != null) {
-                                for (i in 0..pathdir.size-1) {
+                                if (pathdir != null) {
+                                    for (i in 0..pathdir.size - 1) {
 
-                                    for(j in 0..pathdir.size-1) {
+                                        for (j in 0..pathdir.size - 1) {
 
-                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/fish/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/fish/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
 
-                                            pathdir.get(i).canonicalFile.delete()
+                                                pathdir.get(i).canonicalFile.delete()
 
-                                            println("delete ===============")
+                                                println("delete ===============")
 
+                                            }
                                         }
+
+                                    }
+                                }
+
+
+                                if (intent.getStringExtra("GROP_ID") != null) {
+                                    val GROP_ID = intent.getStringExtra("GROP_ID")
+
+                                    val dataList: Array<String> = arrayOf("*");
+
+                                    val data = db.query("fishAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+
+                                    if (dataArray != null) {
+                                        dataArray.clear()
                                     }
 
+                                    while (data.moveToNext()) {
+
+                                        chkdata = true
+
+                                        var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                                data.getString(8),data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
+                                                data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getString(26), data.getString(27), data.getString(28),
+                                                data.getInt(29) ,data.getString(30), data.getString(31), data.getString(32), data.getInt(33), data.getString(33), data.getString(35), data.getString(36),data.getString(37))
+
+                                        dataArray.add(fish_attribute)
+
+                                    }
+
+                                    var intent = Intent()
+
+                                    if (dataArray.size > 1) {
+                                        dbmanager.deletefish_attribute(fish_attribute, pk)
+
+                                        intent.putExtra("reset", 100)
+
+                                        setResult(RESULT_OK, intent);
+                                        finish()
+
+                                    }
+
+                                    if (dataArray.size == 1) {
+                                        dbmanager.deletefish_attribute(fish_attribute, pk)
+
+                                        intent.putExtra("markerpk", markerid)
+
+                                        setResult(RESULT_OK, intent);
+                                        finish()
+                                    }
                                 }
+
+                            } else {
+                                Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
                             }
 
-                            dbmanager.deletefish_attribute(fish_attribute,pk)
-                            finish()
-                        }else {
-                            Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
-                        }
+
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+
+            }
+
+            if(pk == null){
+
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인", { dialog, id ->
+
+                            dialog.cancel()
+
+                            if (intent.getStringExtra("id") != null) {
+                                val id = intent.getStringExtra("id")
+
+                                val dataList: Array<String> = arrayOf("*");
+
+                                val data= db.query("fishAttribute", dataList, "id = '$id'", null, null, null, "", null)
+
+                                if (dataArray != null) {
+                                    dataArray.clear()
+                                }
+
+                                while (data.moveToNext()) {
+
+                                    chkdata = true
+
+                                    var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                            data.getString(8),data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
+                                            data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getString(26), data.getString(27), data.getString(28),
+                                            data.getInt(29) ,data.getString(30), data.getString(31), data.getString(32), data.getInt(33), data.getString(33), data.getString(35), data.getString(36),data.getString(37))
+                                }
+
+                                if (chkdata == true) {
+                                    Toast.makeText(context, "추가하신 데이터가 있습니다.", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    intent.putExtra("markerid", markerid)
+
+                                    setResult(RESULT_OK, intent);
+                                    finish()
+                                }
+
+                            }
+
+                            if (intent.getStringExtra("id") == null) {
+                                intent.putExtra("markerid", markerid)
+
+                                setResult(RESULT_OK, intent);
+                                finish()
+                            }
 
 
-                    })
-                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
-            val alert = builder.create()
-            alert.show()
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+
+            }
 
         }
+
+
 
         fishspecnmET.setOnClickListener {
             startDlgFish()
@@ -1110,6 +1220,12 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                 }
 
+            }
+
+            if(intent.getStringExtra("id") != null){
+                intent.putExtra("reset", 100)
+
+                setResult(RESULT_OK, intent);
             }
 
             clear()
@@ -1647,7 +1763,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                     fishmidrageET.setText(common.title)
 
-                    fishcodenumET.setText(commonDivision.title)
+                    fishcodenumET.setText(commonDivision.title + " / " + commonDivision.code)
 
                 }
 

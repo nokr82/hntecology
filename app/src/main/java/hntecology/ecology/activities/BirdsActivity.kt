@@ -87,7 +87,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
     var basechkdata = false
 
-
     private val REQUEST_PERMISSION_CAMERA = 3
     private val REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 1
     private val REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 2
@@ -105,6 +104,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
     var images_url: ArrayList<String>? = null
     var images_url_remove: ArrayList<String>? = null
     var images_id: ArrayList<Int>? = null
+
+    var markerid : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -138,6 +139,11 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         val db = dbManager.createDataBase();
 
         var intent: Intent = getIntent();
+
+        if(intent.getStringExtra("markerid") != null){
+            markerid = intent.getStringExtra("markerid")
+            println("markerid ---birds $markerid")
+        }
 
         if(intent.getStringExtra("latitude")!= null){
             lat = intent.getStringExtra("latitude")
@@ -568,51 +574,154 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
         delBtn.setOnClickListener {
 
-            val builder = AlertDialog.Builder(context)
-            builder.setMessage("삭제하시겠습니까?").setCancelable(false)
-                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
+            if(pk != null) {
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                        dialog.cancel()
+                            val intent = getIntent()
 
-                        var birds_attribute: Birds_attribute = Birds_attribute(null,null,null,null,null,null,null,null,null,null,
-                                null,null,null,null,null,null,null,null,null,null,null,null,
-                                null,null,null,null,null)
+                            dialog.cancel()
 
-                        if(pk != null) {
+                            var birds_attribute: Birds_attribute = Birds_attribute(null, null, null, null, null, null, null, null, null, null,
+                                    null, null, null, null, null, null, null, null, null, null, null, null,
+                                    null, null, null, null, null)
 
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds/imges/")
-                            val pathdir = path.listFiles()
+                            if (pk != null) {
 
-                            if(pathdir != null) {
-                                for (i in 0..pathdir.size-1) {
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds/imges/")
+                                val pathdir = path.listFiles()
 
-                                    for(j in 0..pathdir.size-1) {
+                                if (pathdir != null) {
+                                    for (i in 0..pathdir.size - 1) {
 
-                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/birds/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                        for (j in 0..pathdir.size - 1) {
 
-                                            pathdir.get(i).canonicalFile.delete()
+                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/birds/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
 
-                                            println("delete ===============")
+                                                pathdir.get(i).canonicalFile.delete()
 
+                                                println("delete ===============")
+
+                                            }
                                         }
+
+                                    }
+                                }
+
+                                if (intent.getSerializableExtra("GROP_ID") != null) {
+                                    val GROP_ID = intent.getStringExtra("GROP_ID")
+
+                                    val dataList: Array<String> = arrayOf("*");
+
+                                    val data = db.query("birdsAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+
+                                    if (dataArray != null) {
+                                        dataArray.clear()
                                     }
 
+                                    while (data.moveToNext()) {
+
+                                        chkdata = true
+
+                                        var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                                , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+                                                , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25), data.getString(26))
+
+                                        dataArray.add(birds_attribute)
+
+                                    }
+
+                                    println("dataArrayList.size ${dataArray.size}")
+
+                                    var intent = Intent()
+
+                                    if(dataArray.size > 1) {
+
+                                        dbManager.deletebirds_attribute(birds_attribute, pk)
+
+                                        intent.putExtra("reset", 100)
+
+                                        setResult(RESULT_OK, intent);
+                                        finish()
+
+                                    }
+
+                                    if(dataArray.size == 1){
+
+                                        intent.putExtra("markerpk", markerid)
+
+                                        dbManager.deletebirds_attribute(birds_attribute, pk)
+
+                                        setResult(RESULT_OK, intent);
+                                        finish()
+
+                                    }
                                 }
+
+                            } else {
+                                Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+            }
+
+            if (pk == null){
+
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
+
+                            if (intent.getSerializableExtra("id") != null) {
+                                val id = intent.getStringExtra("id")
+
+                                val dataList: Array<String> = arrayOf("*");
+
+                                val data = db.query("birdsAttribute", dataList, "id = '$id'", null, null, null, "", null)
+
+                                if (dataArray != null) {
+                                    dataArray.clear()
+                                }
+
+                                while (data.moveToNext()) {
+
+                                    chkdata = true
+
+                                    var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                            , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+                                            , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25), data.getString(26))
+                                }
+
+                                if (chkdata == true) {
+                                    Toast.makeText(context, "추가하신 데이터가 있습니다.", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    intent.putExtra("markerid", markerid)
+
+                                    setResult(RESULT_OK, intent);
+                                    finish()
+                                }
+
                             }
 
-                            dbManager.deletebirds_attribute(birds_attribute,pk)
-                            finish()
+                            if (intent.getSerializableExtra("id") == null) {
+                                intent.putExtra("markerid", markerid)
 
-                        }else {
-                            Toast.makeText(context, "잘못된 접근입니다..", Toast.LENGTH_SHORT).show()
-                        }
+                                setResult(RESULT_OK, intent);
+                                finish()
+                            }
 
+                            dialog.cancel()
 
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
 
-                    })
-                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
-            val alert = builder.create()
-            alert.show()
+                }
 
         }
 
@@ -746,8 +855,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
             birds_attribute.ETC = etcET.text.toString()
 
-            birds_attribute.NUM = numTV.text.toString().toInt()
-
             birds_attribute.INV_TM = Utils.timeStr()
 
             birds_attribute.SPEC_NM = birdsTV.text.toString()
@@ -879,6 +986,12 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                 }
 
+            }
+
+            if(intent.getStringExtra("id") != null){
+                intent.putExtra("reset", 100)
+
+                setResult(RESULT_OK, intent);
             }
 
 

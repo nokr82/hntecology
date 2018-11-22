@@ -373,13 +373,14 @@
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
                     android:text="관찰지점 특성\n(비오톱 유형 및 현황)"/>
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/mamobptcharET"
                     style="@style/BiotopeTextView"
                     android:gravity="center"
+                    android:hint="click"
                     />
             </LinearLayout>
 

@@ -30,6 +30,7 @@ import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.Base
+import hntecology.ecology.model.BiotopeType
 import hntecology.ecology.model.Mammal_attribute
 import io.nlopez.smartlocation.OnLocationUpdatedListener
 import io.nlopez.smartlocation.SmartLocation
@@ -69,6 +70,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
     val SET_MAMMAL = 1
     val SET_UNSPEC = 2
 
+    val SET_DATA = 1000
+
     private val REQUEST_PERMISSION_CAMERA = 3
     private val REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 1
     private val REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 2
@@ -93,6 +96,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
     var log:String = ""
 
     var basechkdata = false
+
+    var markerid : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,6 +129,10 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         window.setLayout(Utils.dpToPx(700f).toInt(), WindowManager.LayoutParams.WRAP_CONTENT);
 
         var intent: Intent = getIntent();
+
+        if(intent.getStringExtra("markerid") != null){
+            markerid = intent.getStringExtra("markerid")
+        }
 
         if(intent.getStringExtra("latitude")!= null){
             lat = intent.getStringExtra("latitude")
@@ -210,6 +219,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 mamsciennmTV.setText(mammal_attribute.SCIEN_NM)
 
                 mammalobstyTV.setText(mammal_attribute.OBS_TY)
+                if(mammal_attribute.OBS_TY_ETC != null){
+                    mammalobstyTV.setText(mammal_attribute.OBS_TY_ETC)
+                }
 
                 mamindicntET.setText(mammal_attribute.INDI_CNT.toString())
 
@@ -668,49 +680,152 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
 
         btn_mammalDelete.setOnClickListener {
-            val builder = AlertDialog.Builder(context)
-            builder.setMessage("삭제하시겠습니까?").setCancelable(false)
-                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                        dialog.cancel()
+            if (pk != null) {
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인",  DialogInterface.OnClickListener{ dialog, id ->
 
-                        var mammal_attribute:Mammal_attribute = Mammal_attribute(null,null,null,null,null,null,null,null,null
-                                ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                                ,null,null,null,null,null,null)
+                            dialog.cancel()
 
-                        if(pk != null){
+                            var mammal_attribute: Mammal_attribute = Mammal_attribute(null, null, null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null)
 
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia/imges/")
-                            val pathdir = path.listFiles()
+                            if (pk != null) {
 
-                            if(pathdir != null) {
-                                for (i in 0..pathdir.size-1) {
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia/imges/")
+                                val pathdir = path.listFiles()
 
-                                    for(j in 0..pathdir.size-1) {
+                                if (pathdir != null) {
+                                    for (i in 0..pathdir.size - 1) {
 
-                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/mammalia/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                        for (j in 0..pathdir.size - 1) {
 
-                                            pathdir.get(i).canonicalFile.delete()
+                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/mammalia/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
 
-                                            println("delete ===============")
+                                                pathdir.get(i).canonicalFile.delete()
 
+                                                println("delete ===============")
+
+                                            }
                                         }
+
+                                    }
+                                }
+
+                                if (intent.getStringExtra("GROP_ID") != null) {
+                                    val GROP_ID = intent.getStringExtra("GROP_ID")
+
+                                    val dataList: Array<String> = arrayOf("*");
+
+                                    val data = db.query("mammalAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+
+                                    if (dataArray != null) {
+                                        dataArray.clear()
                                     }
 
+                                    while (data.moveToNext()) {
+
+                                        chkdata = true
+
+                                        var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                                , data.getString(15), data.getString(16), data.getString(17), data.getInt(18), data.getString(19), data.getString(20), data.getFloat(21)
+                                                , data.getFloat(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27))
+
+                                        dataArray.add(mammal_attribute)
+
+                                    }
+
+                                    var intent = Intent()
+
+                                    if (dataArray.size > 1) {
+                                        dbManager.deletemammal_attribute(mammal_attribute, pk)
+
+                                        intent.putExtra("reset", 100)
+
+                                        setResult(RESULT_OK, intent);
+                                        finish()
+
+                                    }
+
+                                    if (dataArray.size == 1) {
+                                        dbManager.deletemammal_attribute(mammal_attribute, pk)
+
+                                        intent.putExtra("markerpk", markerid)
+
+                                        setResult(RESULT_OK, intent);
+                                        finish()
+                                    }
                                 }
+
+                            } else {
+                                Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
                             }
 
-                            dbManager.deletemammal_attribute(mammal_attribute,pk)
-                            finish()
-                        }else {
-                            Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
-                        }
+
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+            }
+
+            if(pk == null){
+
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인",  DialogInterface.OnClickListener{ dialog, id ->
+
+                            dialog.cancel()
+
+                            if (intent.getStringExtra("id") != null) {
+                                val id = intent.getStringExtra("id")
+
+                                val dataList: Array<String> = arrayOf("*");
+
+                                val data = db.query("mammalAttribute", dataList, "id = '$id'", null, null, null, "", null)
+
+                                if (dataArray != null) {
+                                    dataArray.clear()
+                                }
+
+                                while (data.moveToNext()) {
+
+                                    chkdata = true
+
+                                    var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                            , data.getString(15), data.getString(16), data.getString(17), data.getInt(18), data.getString(19), data.getString(20), data.getFloat(21)
+                                            , data.getFloat(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27))
+                                }
+
+                                if (chkdata == true) {
+                                    Toast.makeText(context, "추가하신 데이터가 있습니다.", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    intent.putExtra("markerid", markerid)
+
+                                    setResult(RESULT_OK, intent);
+                                    finish()
+                                }
+
+                            }
+
+                            if (intent.getStringExtra("id") == null) {
+                                intent.putExtra("markerid", markerid)
+
+                                setResult(RESULT_OK, intent);
+                                finish()
+                            }
 
 
-                    })
-                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
-            val alert = builder.create()
-            alert.show()
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+        }
+
+
         }
 
         mamspecnmET.setOnClickListener {
@@ -728,6 +843,17 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         mamunspecET.setOnClickListener {
             startDlgM()
         }
+
+        mamobptcharET.setOnClickListener {
+
+            val intent = Intent(this, DlgBiotopeTypeActivity::class.java)
+            intent.putExtra("title", "비오톱유형 분류")
+            intent.putExtra("table", "biotopeType")
+            intent.putExtra("DlgHeight", 600f);
+            startActivityForResult(intent, SET_DATA);
+
+        }
+
 
         btn_mammalCancle1.setOnClickListener {
             val builder = AlertDialog.Builder(context)
@@ -977,6 +1103,12 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                 }
 
+            }
+
+            if(intent.getStringExtra("id") != null){
+                intent.putExtra("reset", 100)
+
+                setResult(RESULT_OK, intent);
             }
 
             clear()
@@ -1395,9 +1527,21 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        var biotopeType : BiotopeType
+
         if (resultCode == Activity.RESULT_OK) {
 
             when (requestCode) {
+
+                SET_DATA -> {
+
+                    if(data!!.getSerializableExtra("biotopeType") != null){
+                        biotopeType = data!!.getSerializableExtra("biotopeType") as BiotopeType
+
+                        mamobptcharET.setText(biotopeType.CONTENT)
+                    }
+
+                }
 
                 SET_MAMMAL -> {
 

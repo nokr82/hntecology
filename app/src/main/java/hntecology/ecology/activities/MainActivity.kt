@@ -69,12 +69,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         val WRITE_EXTERNAL_STORAGE = 3
         val READ_EXTERNAL_STORAGE = 4
 
-
-
         private val PLAY_SERVICES_RESOLUTION_REQUEST: Int = 1000
         private val PolygonCallBackData = 1001
         private val dlg_gpsCallbackData = 1002
         private val REQUEST_LAYER = 1003
+        private val MarkerCallBackData = 1004
 
         val LAYER = 2000
         val LAYER_BIOTOPE = 2001
@@ -94,8 +93,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         val FISH_DATA = 3004
         val INSECT_DATA = 3005
         val FLORA_DATA = 3006
-
-
 
     }
 
@@ -157,6 +154,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     var myLocation: Tracking? = null
 
+    var trackingdiv = false
+
     var prevPoint: Geometry? = null
 
     private var showLoading = false
@@ -172,6 +171,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     var floradataArray:ArrayList<Flora_Attribute> = ArrayList<Flora_Attribute>()
 
     var mygps = false
+
+    var markerRemove = false
+
+    var polygonRemove = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -222,20 +225,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             if (drawer_view.visibility == View.VISIBLE) {
 
-                endPolygonDraw(polygon!!)
+                if(polygon != null) {
+                    endPolygonDraw(polygon!!)
+                }
 
-//                if(latlngs.size >= 3){
-//
-//                    val intent: Intent = Intent(this, BiotopeActivity::class.java)
-////                    intent.putExtra("latlngs",latlngs)
-//                    intent.putExtra("latlngs",latlngsObj)
-//                    startActivityForResult(intent, BIOTOPE_BASE)
-//
-//                }MarkerOptions
-//                if(latlngs.size < 3){
-//                    latlngs.clear()
-//                }
-
+                if(polygon == null){
+                    endDraw()
+                }
 
             } else {
                 startDraw()
@@ -479,6 +475,47 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         initGps()
 
+        trackingBtn.setOnClickListener {
+
+            val title = trackingBtn.text.toString()
+
+            if( title.equals("Tracking 켜기")){
+                trackingBtn.setText("Tracking 끄기")
+                trackingdiv = true
+            }else if(title.equals("Tracking 끄기")){
+                trackingBtn.setText("Tracking 켜기")
+                trackingdiv = false
+            }
+        }
+
+        markerdeleteBtn.setOnClickListener {
+
+            val title = markerdeleteBtn.text.toString()
+
+            if(title.equals("마커 삭제")){
+                markerRemove = true
+                markerdeleteBtn.setText("마커 삭제중")
+            }else if(title.equals("마커 삭제중")){
+                markerRemove = false
+                markerdeleteBtn.setText("마커 삭제")
+            }
+
+        }
+
+        polygondeleteBtn.setOnClickListener {
+
+            val title = polygondeleteBtn.text.toString()
+
+            if(title.equals("비오톱 삭제")){
+                polygonRemove = true
+                polygondeleteBtn.setText("비오톱 삭제중")
+            }else if(title.equals("비오톱 삭제중")){
+                polygonRemove = false
+                polygondeleteBtn.setText("비오톱 삭제")
+            }
+
+        }
+
         myLocation = Tracking(null, latitude, longitude)
 
     }
@@ -541,6 +578,17 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 }
 
+                MarkerCallBackData -> {
+                    if(data!!.getStringExtra("markerid") != null){
+                        val markerid = data!!.getStringExtra("markerid")
+                        for(i in 0..points.size -1){
+                            if(points.get(i).id == markerid){
+                                points.get(i).remove()
+                            }
+                        }
+                    }
+                }
+
                 dlg_gpsCallbackData -> {
 
                     latitude = data!!.getDoubleExtra("latitude", 126.79235)
@@ -551,6 +599,96 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     onMapReady(googleMap)
                 }
 
+                BIOTOPE_DATA -> {
+                    if(data!!.getStringExtra("polygonid") != null){
+                        val polygonid = data!!.getStringExtra("polygonid")
+                        println("biotope_data  $polygonid")
+
+                        println(polygons.size.toString()  + "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+                        for(i in 0..polygons.size -1){
+
+                            println("id---------------------------------------------------${polygons.get(i).id}")
+                            if((polygons.get(i).id).equals(polygonid)){
+                                println("ssssssssssssss")
+                                polygons.removeAt(i)
+//                                polygons.get(i).remove()
+//                                polygons.remove(polygons.get(i))
+                            }
+                        }
+
+                        println("polygons : " + polygons)
+                        println("polygons.size : " + polygons.size)
+                    }
+                }
+
+                BIRDS_DATA ->{
+                    if(data!!.getStringExtra("markerid") != null){
+                        val markerid = data!!.getStringExtra("markerid")
+                        for(i in 0..points.size -1){
+                            if(points.get(i).id == markerid){
+                                points.get(i).remove()
+                            }
+                        }
+                    }
+                }
+
+                REPTILIA_DATA ->{
+                    if(data!!.getStringExtra("markerid") != null){
+                        val markerid = data!!.getStringExtra("markerid")
+                        for(i in 0..points.size -1){
+                            if(points.get(i).id == markerid){
+                                points.get(i).remove()
+                            }
+                        }
+                    }
+                }
+
+                MAMMALIA_DATA -> {
+                    if(data!!.getStringExtra("markerid") != null){
+                        val markerid = data!!.getStringExtra("markerid")
+                        for(i in 0..points.size -1){
+                            if(points.get(i).id == markerid){
+                                points.get(i).remove()
+                            }
+                        }
+                    }
+                }
+
+                FISH_DATA -> {
+                    if(data!!.getStringExtra("markerid") != null){
+                        val markerid = data!!.getStringExtra("markerid")
+                        for(i in 0..points.size -1){
+                            if(points.get(i).id == markerid){
+                                points.get(i).remove()
+                            }
+                        }
+                    }
+                }
+
+                INSECT_DATA -> {
+                    if(data!!.getStringExtra("markerid") != null){
+                        val markerid = data!!.getStringExtra("markerid")
+                        for(i in 0..points.size -1){
+                            if(points.get(i).id == markerid){
+                                points.get(i).remove()
+                            }
+                        }
+                    }
+                }
+
+                FLORA_DATA -> {
+                    if(data!!.getStringExtra("markerid") != null){
+                        val markerid = data!!.getStringExtra("markerid")
+                        for(i in 0..points.size -1){
+                            if(points.get(i).id == markerid){
+                                points.get(i).remove()
+                            }
+                        }
+                    }
+                }
+
+
+
                 REQUEST_LAYER -> {
                     val file_name = data!!.getStringExtra("file_name")
                     val layer_name = data.getStringExtra("layer_name")
@@ -559,8 +697,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     var jsonOb: ArrayList<LayerModel> = ArrayList<LayerModel>()
 
                     jsonOb = data.getSerializableExtra("data") as ArrayList<LayerModel>
-
-                    googleMap.clear()
 
                     if(types.size >= 1 && types!=null){
                         types.clear()
@@ -573,6 +709,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                     }
                 }
+
+
 
                 else -> super.onActivityResult(requestCode, resultCode, data)
             }
@@ -625,346 +763,374 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         googleMap.setOnMarkerClickListener { marker ->
 
             println("click")
+            val builder = AlertDialog.Builder(context)
+            if(markerRemove == true) {
 
-            val layerInfo = marker.tag as LayerInfo
-            var myLayer = layerInfo.layer
+                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-            var attrubuteKey = layerInfo.attrubuteKey
-            var intent: Intent? = null
+                            dialog.cancel()
+                            marker.remove()
 
-            val dbManager: DataBaseHelper = DataBaseHelper(this)
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+            }
 
-            val db = dbManager.createDataBase();
+            if(markerRemove == false) {
 
-            when (myLayer) {
+                val layerInfo = marker.tag as LayerInfo
+                var myLayer = layerInfo.layer
+
+                var attrubuteKey = layerInfo.attrubuteKey
+                var intent: Intent? = null
+
+                val dbManager: DataBaseHelper = DataBaseHelper(this)
+
+                val db = dbManager.createDataBase();
+
+                when (myLayer) {
 
 
-                LAYER_BIRDS -> {
+                    LAYER_BIRDS -> {
 
 
-                    val dataList: Array<String> = arrayOf("*");
+                        val dataList: Array<String> = arrayOf("*");
 
-                    val data = db.query("birdsAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+                        val data = db.query("birdsAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
 
 
-                    if (birdsdataArray != null) {
-                        birdsdataArray.clear()
+                        if (birdsdataArray != null) {
+                            birdsdataArray.clear()
+                        }
+
+                        var title = ""
+
+                        while (data.moveToNext()) {
+
+                            var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                    , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+                                    , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25), data.getString(26))
+
+                            birdsdataArray.add(birds_attribute)
+
+                        }
+
+                        for (i in 0..birdsdataArray.size - 1) {
+                            title += birdsdataArray.get(i).INV_PERSON + " "
+
+                            marker.title = title
+                        }
+
+                        if (birdsdataArray.size == 0) {
+                            title = "조류"
+
+                            marker.title = title
+
+                            intent = Intent(this, BirdsActivity::class.java)
+
+                            intent!!.putExtra("GROP_ID", attrubuteKey)
+                            intent!!.putExtra("markerid", marker.id)
+
+                            println("intent-----------------------------------${attrubuteKey.toString()}")
+
+                            startActivityForResult(intent, BIRDS_DATA)
+                        }
+
+                        if (birdsdataArray.size > 0) {
+                            val intent = Intent(this, DlgDataListActivity::class.java)
+                            intent.putExtra("title", "야생조류")
+                            intent.putExtra("table", "birdsAttribute")
+                            intent.putExtra("DlgHeight", 600f);
+                            intent!!.putExtra("markerid", marker.id)
+                            intent.putExtra("GROP_ID", attrubuteKey)
+                            startActivityForResult(intent, BIRDS_DATA);
+                        }
+
                     }
 
-                    var title = ""
+                    LAYER_REPTILIA -> {
+                        val dataList: Array<String> = arrayOf("*");
 
-                    while (data.moveToNext()) {
+                        val data = db.query("reptiliaAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
 
-                        var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                                , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25), data.getString(26))
+                        if (reptiliadataArray != null) {
+                            reptiliadataArray.clear()
+                        }
 
-                        birdsdataArray.add(birds_attribute)
+                        var title = ""
+
+                        while (data.moveToNext()) {
+                            var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                    , data.getString(15), data.getInt(16), data.getInt(17), data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
+                                    , data.getString(22), data.getString(23), data.getString(24), data.getInt(25), data.getInt(26), data.getInt(27), data.getFloat(28), data.getFloat(29), data.getString(30))
+                            reptiliadataArray.add(reptilia_attribute)
+                        }
+
+                        for (i in 0..reptiliadataArray.size - 1) {
+                            title += reptiliadataArray.get(i).INV_PERSON + " "
+
+                            marker.title = title
+                        }
+
+                        if (reptiliadataArray.size == 0) {
+                            title = "양서,파충류"
+
+                            marker.title = title
+
+                            intent = Intent(this, ReptiliaActivity::class.java)
+
+                            intent!!.putExtra("GROP_ID", attrubuteKey)
+                            intent!!.putExtra("markerid", marker.id)
+
+                            startActivityForResult(intent, REPTILIA_DATA)
+                        }
+
+                        if (reptiliadataArray.size > 0) {
+                            val intent = Intent(this, DlgDataListActivity::class.java)
+                            intent.putExtra("title", "양서,파충류")
+                            intent.putExtra("table", "reptiliaAttribute")
+                            intent.putExtra("DlgHeight", 600f);
+                            intent!!.putExtra("markerid", marker.id)
+                            intent.putExtra("GROP_ID", attrubuteKey)
+                            startActivityForResult(intent, REPTILIA_DATA);
+                        }
 
                     }
 
-                    for(i in 0..birdsdataArray.size-1){
-                        title += birdsdataArray.get(i).INV_PERSON + " "
+                    LAYER_MAMMALIA -> {
 
-                        marker.title = title
+                        val dataList: Array<String> = arrayOf("*");
+
+                        val data = db.query("mammalAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                        if (mammaldataArray != null) {
+                            mammaldataArray.clear()
+                        }
+
+                        var title = ""
+
+                        while (data.moveToNext()) {
+                            var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                    , data.getString(15), data.getString(16), data.getString(17), data.getInt(18), data.getString(19), data.getString(20), data.getFloat(21)
+                                    , data.getFloat(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27))
+                            mammaldataArray.add(mammal_attribute)
+                        }
+
+                        for (i in 0..mammaldataArray.size - 1) {
+                            title += mammaldataArray.get(i).INV_PERSON + " "
+
+                            marker.title = title
+                        }
+
+                        if (mammaldataArray.size == 0) {
+                            title = "포유류"
+
+                            marker.title = title
+
+                            intent = Intent(this, MammaliaActivity::class.java)
+
+                            intent!!.putExtra("GROP_ID", attrubuteKey)
+                            intent!!.putExtra("markerid", marker.id)
+
+                            startActivityForResult(intent, MAMMALIA_DATA)
+                        }
+
+                        if (mammaldataArray.size > 0) {
+                            val intent = Intent(this, DlgDataListActivity::class.java)
+                            intent.putExtra("title", "포유류")
+                            intent.putExtra("table", "mammalAttribute")
+                            intent.putExtra("DlgHeight", 600f);
+                            intent!!.putExtra("markerid", marker.id)
+                            intent.putExtra("GROP_ID", attrubuteKey)
+                            startActivityForResult(intent, MAMMALIA_DATA);
+                        }
+
                     }
 
-                    if(birdsdataArray.size == 0){
-                        title = "조류"
+                    LAYER_FISH -> {
 
-                        marker.title = title
+                        val dataList: Array<String> = arrayOf("*");
 
-                        intent = Intent(this, BirdsActivity::class.java)
+                        val data = db.query("fishAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
 
-                        intent!!.putExtra("GROP_ID", attrubuteKey)
+                        if (fishdataArray != null) {
+                            fishdataArray.clear()
+                        }
 
-                        println("intent-----------------------------------${attrubuteKey.toString()}")
+                        var title = ""
 
-                        startActivityForResult(intent, PolygonCallBackData)
+                        while (data.moveToNext()) {
+                            var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                    data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
+                                    data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getString(26), data.getString(27), data.getString(28),
+                                    data.getInt(29), data.getString(30), data.getString(31), data.getString(32), data.getInt(33), data.getString(33), data.getString(35), data.getString(36), data.getString(37))
+                            fishdataArray.add(fish_attribute)
+                        }
+
+                        for (i in 0..fishdataArray.size - 1) {
+                            title += fishdataArray.get(i).INV_PERSON + " "
+
+                            marker.title = title
+                        }
+
+                        if (fishdataArray.size == 0) {
+                            title = "어류"
+
+                            marker.title = title
+
+                            intent = Intent(this, FishActivity::class.java)
+
+                            intent!!.putExtra("GROP_ID", attrubuteKey)
+                            intent!!.putExtra("markerid", marker.id)
+
+                            startActivityForResult(intent, FISH_DATA)
+                        }
+
+                        if (fishdataArray.size > 0) {
+                            val intent = Intent(this, DlgDataListActivity::class.java)
+                            intent.putExtra("title", "어류")
+                            intent.putExtra("table", "fishAttribute")
+                            intent.putExtra("DlgHeight", 600f);
+                            intent!!.putExtra("markerid", marker.id)
+                            intent.putExtra("GROP_ID", attrubuteKey)
+                            startActivityForResult(intent, FISH_DATA);
+                        }
+
                     }
 
-                    if(birdsdataArray.size > 0 ){
-                        val intent = Intent(this, DlgDataListActivity::class.java)
-                        intent.putExtra("title", "야생조류")
-                        intent.putExtra("table", "birdsAttribute")
-                        intent.putExtra("DlgHeight", 600f);
-                        intent.putExtra("GROP_ID",attrubuteKey)
-                        startActivityForResult(intent, BIRDS_DATA);
+                    LAYER_INSECT -> {
+
+                        val dataList: Array<String> = arrayOf("*");
+
+                        val data = db.query("insectAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                        if (insectdataArray != null) {
+                            insectdataArray.clear()
+                        }
+
+                        var title = ""
+
+                        while (data.moveToNext()) {
+                            var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                    , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+                                    , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getString(28))
+                            insectdataArray.add(insect_attribute)
+                        }
+
+                        println(insectdataArray.size.toString() + "----------------------")
+
+                        for (i in 0..insectdataArray.size - 1) {
+                            title += insectdataArray.get(i).INV_PERSON + " "
+
+                            marker.title = title
+                        }
+
+                        if (insectdataArray.size == 0) {
+                            title = "곤충"
+
+                            marker.title = title
+
+                            intent = Intent(this, InsectActivity::class.java)
+
+                            intent!!.putExtra("GROP_ID", attrubuteKey)
+                            intent!!.putExtra("markerid", marker.id)
+
+                            startActivityForResult(intent, INSECT_DATA)
+                        }
+
+                        if (insectdataArray.size > 0) {
+                            val intent = Intent(this, DlgDataListActivity::class.java)
+                            intent.putExtra("title", "곤충")
+                            intent.putExtra("table", "insectAttribute")
+                            intent.putExtra("DlgHeight", 600f);
+                            intent!!.putExtra("markerid", marker.id)
+                            intent.putExtra("GROP_ID", attrubuteKey)
+                            startActivityForResult(intent, INSECT_DATA);
+                        }
+                    }
+
+                    LAYER_FLORA -> {
+
+                        val dataList: Array<String> = arrayOf("*");
+
+                        val data = db.query("floraAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                        if (floradataArray != null) {
+                            floradataArray.clear()
+                        }
+
+                        var title = ""
+
+                        while (data.moveToNext()) {
+                            var flora_attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
+                                    , data.getFloat(22), data.getFloat(23), data.getString(24))
+                            floradataArray.add(flora_attribute)
+                        }
+
+                        for (i in 0..floradataArray.size - 1) {
+                            title += floradataArray.get(i).INV_PERSON + " "
+
+                            marker.title = title
+                        }
+
+                        if (floradataArray.size == 0) {
+                            title = "식물"
+
+                            marker.title = title
+
+                            intent = Intent(this, FloraActivity::class.java)
+
+                            intent!!.putExtra("GROP_ID", attrubuteKey)
+                            intent!!.putExtra("markerid", marker.id)
+
+                            startActivityForResult(intent, FLORA_DATA)
+                        }
+
+                        if (floradataArray.size > 0) {
+                            val intent = Intent(this, DlgDataListActivity::class.java)
+                            intent.putExtra("title", "식물")
+                            intent.putExtra("table", "floraAttribute")
+                            intent.putExtra("DlgHeight", 600f);
+                            intent!!.putExtra("markerid", marker.id)
+                            intent.putExtra("GROP_ID", attrubuteKey)
+                            startActivityForResult(intent, FLORA_DATA);
+                        }
+                    }
+
+                    LAYER_ZOOBENTHOS -> {
+                        intent = Intent(this, ZoobenthosActivity::class.java)
+                    }
+
+                    LAYER_MYLOCATION -> {
+
+                    }
+
+                    LAYER -> {
+
                     }
 
                 }
 
-                LAYER_REPTILIA -> {
-                    val dataList: Array<String> = arrayOf("*");
-
-                    val data = db.query("reptiliaAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                    if (reptiliadataArray != null) {
-                        reptiliadataArray.clear()
-                    }
-
-                    var title = ""
-
-                    while (data.moveToNext()) {
-                        var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                , data.getString(15), data.getInt(16), data.getInt(17), data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
-                                , data.getString(22), data.getString(23), data.getString(24), data.getInt(25), data.getInt(26), data.getInt(27), data.getFloat(28), data.getFloat(29), data.getString(30))
-                        reptiliadataArray.add(reptilia_attribute)
-                    }
-
-                    for(i in 0..reptiliadataArray.size-1){
-                        title += reptiliadataArray.get(i).INV_PERSON + " "
-
-                        marker.title = title
-                    }
-
-                    if(reptiliadataArray.size == 0){
-                        title = "양서,파충류"
-
-                        marker.title = title
-
-                        intent = Intent(this, ReptiliaActivity::class.java)
-
-                        intent!!.putExtra("GROP_ID", attrubuteKey)
-
-                        startActivityForResult(intent, PolygonCallBackData)
-                    }
-
-                    if(reptiliadataArray.size > 0 ){
-                        val intent = Intent(this, DlgDataListActivity::class.java)
-                        intent.putExtra("title", "양서,파충류")
-                        intent.putExtra("table", "reptiliaAttribute")
-                        intent.putExtra("DlgHeight", 600f);
-                        intent.putExtra("GROP_ID",attrubuteKey)
-                        startActivityForResult(intent, REPTILIA_DATA);
-                    }
+                if (myLayer == LAYER_BIRDS || myLayer == LAYER_REPTILIA || myLayer == LAYER_MAMMALIA || myLayer == LAYER_FISH || myLayer == LAYER_INSECT || myLayer == LAYER_FLORA) {
 
                 }
 
-                LAYER_MAMMALIA -> {
+                if (myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIRDS && myLayer != LAYER_REPTILIA && myLayer != LAYER_MAMMALIA && myLayer != LAYER_FISH && myLayer != LAYER_INSECT
+                        && myLayer != LAYER_FLORA) {
+                    intent!!.putExtra("id", attrubuteKey.toString())
 
-                    val dataList: Array<String> = arrayOf("*");
-
-                    val data = db.query("mammalAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                    if (mammaldataArray != null) {
-                        mammaldataArray.clear()
-                    }
-
-                    var title = ""
-
-                    while (data.moveToNext()) {
-                        var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                , data.getString(15), data.getString(16), data.getString(17), data.getInt(18), data.getString(19), data.getString(20), data.getFloat(21)
-                                , data.getFloat(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26),data.getString(27))
-                        mammaldataArray.add(mammal_attribute)
-                    }
-
-                    for(i in 0..mammaldataArray.size-1){
-                        title += mammaldataArray.get(i).INV_PERSON + " "
-
-                        marker.title = title
-                    }
-
-                    if(mammaldataArray.size == 0){
-                        title = "포유류"
-
-                        marker.title = title
-
-                        intent = Intent(this, MammaliaActivity::class.java)
-
-                        intent!!.putExtra("GROP_ID", attrubuteKey)
-
-                        startActivityForResult(intent, PolygonCallBackData)
-                    }
-
-                    if(mammaldataArray.size > 0 ){
-                        val intent = Intent(this, DlgDataListActivity::class.java)
-                        intent.putExtra("title", "포유류")
-                        intent.putExtra("table", "mammalAttribute")
-                        intent.putExtra("DlgHeight", 600f);
-                        intent.putExtra("GROP_ID",attrubuteKey)
-                        startActivityForResult(intent, MAMMALIA_DATA);
-                    }
-
-                }
-
-                LAYER_FISH -> {
-
-                    val dataList: Array<String> = arrayOf("*");
-
-                    val data = db.query("fishAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                    if (fishdataArray != null) {
-                        fishdataArray.clear()
-                    }
-
-                    var title = ""
-
-                    while (data.moveToNext()) {
-                        var  fish_attribute: Fish_attribute =  Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                data.getString(8),data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
-                                data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getString(26), data.getString(27), data.getString(28),
-                                data.getInt(29) ,data.getString(30), data.getString(31), data.getString(32), data.getInt(33), data.getString(33), data.getString(35), data.getString(36),data.getString(37))
-                        fishdataArray.add(fish_attribute)
-                    }
-
-                    for(i in 0..fishdataArray.size-1){
-                        title += fishdataArray.get(i).INV_PERSON + " "
-
-                        marker.title = title
-                    }
-
-                    if(fishdataArray.size == 0){
-                        title = "어류"
-
-                        marker.title = title
-
-                        intent = Intent(this, FishActivity::class.java)
-
-                        intent!!.putExtra("GROP_ID", attrubuteKey)
-
-                        startActivityForResult(intent, PolygonCallBackData)
-                    }
-
-                    if(fishdataArray.size > 0 ){
-                        val intent = Intent(this, DlgDataListActivity::class.java)
-                        intent.putExtra("title", "어류")
-                        intent.putExtra("table", "fishAttribute")
-                        intent.putExtra("DlgHeight", 600f);
-                        intent.putExtra("GROP_ID",attrubuteKey)
-                        startActivityForResult(intent, FISH_DATA);
-                    }
-
-                }
-
-                LAYER_INSECT -> {
-
-                    val dataList: Array<String> = arrayOf("*");
-
-                    val data = db.query("insectAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                    if (insectdataArray != null) {
-                        insectdataArray.clear()
-                    }
-
-                    var title = ""
-
-                    while (data.moveToNext()) {
-                        var  insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                                , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27),data.getString(28))
-                        insectdataArray.add(insect_attribute)
-                    }
-
-                    println(insectdataArray.size.toString() + "----------------------")
-
-                    for(i in 0..insectdataArray.size-1){
-                        title += insectdataArray.get(i).INV_PERSON + " "
-
-                        marker.title = title
-                    }
-
-                    if(insectdataArray.size == 0){
-                        title = "곤충"
-
-                        marker.title = title
-
-                        intent = Intent(this, InsectActivity::class.java)
-
-                        intent!!.putExtra("GROP_ID", attrubuteKey)
-
-                        startActivityForResult(intent, PolygonCallBackData)
-                    }
-
-                    if(insectdataArray.size > 0 ){
-                        val intent = Intent(this, DlgDataListActivity::class.java)
-                        intent.putExtra("title", "곤충")
-                        intent.putExtra("table", "insectAttribute")
-                        intent.putExtra("DlgHeight", 600f);
-                        intent.putExtra("GROP_ID",attrubuteKey)
-                        startActivityForResult(intent, INSECT_DATA);
-                    }
-                }
-
-                LAYER_FLORA -> {
-
-                    val dataList: Array<String> = arrayOf("*");
-
-                    val data = db.query("floraAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                    if (floradataArray != null) {
-                        floradataArray.clear()
-                    }
-
-                    var title = ""
-
-                    while (data.moveToNext()) {
-                        var  flora_attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                                , data.getFloat(22), data.getFloat(23),data.getString(24))
-                        floradataArray.add(flora_attribute)
-                    }
-
-                    for(i in 0..floradataArray.size-1){
-                        title += floradataArray.get(i).INV_PERSON + " "
-
-                        marker.title = title
-                    }
-
-                    if(floradataArray.size == 0){
-                        title = "식물"
-
-                        marker.title = title
-
-                        intent = Intent(this, FloraActivity::class.java)
-
-                        intent!!.putExtra("GROP_ID", attrubuteKey)
-
-                        startActivityForResult(intent, PolygonCallBackData)
-                    }
-
-                    if(floradataArray.size > 0 ){
-                        val intent = Intent(this, DlgDataListActivity::class.java)
-                        intent.putExtra("title", "식물")
-                        intent.putExtra("table", "floraAttribute")
-                        intent.putExtra("DlgHeight", 600f);
-                        intent.putExtra("GROP_ID",attrubuteKey)
-                        startActivityForResult(intent, FLORA_DATA);
-                    }
-                }
-
-                LAYER_ZOOBENTHOS -> {
-                    intent = Intent(this, ZoobenthosActivity::class.java)
-                }
-
-                LAYER_MYLOCATION -> {
-
-                }
-
-                LAYER -> {
-
+                    startActivityForResult(intent, MarkerCallBackData)
                 }
 
             }
-
-            if(myLayer == LAYER_BIRDS || myLayer == LAYER_REPTILIA || myLayer == LAYER_MAMMALIA || myLayer == LAYER_FISH || myLayer == LAYER_INSECT || myLayer == LAYER_FLORA){
-
-            }
-
-            if(myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIRDS && myLayer != LAYER_REPTILIA && myLayer != LAYER_MAMMALIA && myLayer != LAYER_FISH && myLayer != LAYER_INSECT
-            && myLayer != LAYER_FLORA){
-                intent!!.putExtra("id", attrubuteKey.toString())
-
-                startActivityForResult(intent, PolygonCallBackData)
-            }
-
-
             false
         }
 
@@ -972,178 +1138,197 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         // tag 리절트로 가져와서 태그 설정
         googleMap.setOnPolygonClickListener { polygon ->
 
-            val layerInfo = polygon.tag as LayerInfo
-            println("=================== polygon.points --------${polygon.points}")
+            val builder = AlertDialog.Builder(context)
+            if (polygonRemove == true) {
+                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-            var myLayer = layerInfo.layer
+                            dialog.cancel()
+                            polygon.remove()
 
-            var attrubuteKey = layerInfo.attrubuteKey
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+            }
 
-            println("=========================================attrubuteKey $attrubuteKey")
-            var intent: Intent? = null
-
-            val dbManager: DataBaseHelper = DataBaseHelper(this)
-
-            val db = dbManager.createDataBase();
-
-            when (myLayer) {
-
-                LAYER_BIOTOPE -> {
-
-                    if (unionRL.isSelected) {
-
-                        if (polygonsToUnion.contains(polygon)) {
-                            polygonsToUnion.remove(polygon)
-                            polygon.strokeWidth = 5.0f
-                            polygon.strokeColor = Color.WHITE
-                            return@setOnPolygonClickListener
-                        }
-
-                        if (polygonsToUnion.size == 2) {
-                            Utils.alert(context, "2 곳만 선택해서 합칠 수 있습니다.")
-                            return@setOnPolygonClickListener
-                        }
-
-                        polygonsToUnion.add(polygon)
-                        polygon.strokeWidth = 10.0f
-                        polygon.strokeColor = Color.MAGENTA
-
-                        return@setOnPolygonClickListener
-
-                    } else {
-
-                        val dataList: Array<String> = arrayOf("*");
-
-                        val data = db.query("biotopeAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                        if (biotopedataArray != null) {
-                            biotopedataArray.clear()
-                        }
-
-                        var title = ""
-
-                        while (data.moveToNext()) {
-                            var  biotope_attribute: Biotope_attribute = Biotope_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                    data.getString(8), data.getFloat(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getFloat(14)
-                                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                                    , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getFloat(28)
-                                    , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
-                                    , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
-                                    , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
-                                    , data.getDouble(50), data.getString(51), data.getString(52),data.getString(53))
-                            biotopedataArray.add(biotope_attribute)
-                        }
-
-                        if(biotopedataArray.size == 0){
-
-                            intent = Intent(this, BiotopeActivity::class.java)
-
-                            intent!!.putExtra("GROP_ID", attrubuteKey.toString())
-
-                            intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
-                            intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
+            if (polygonRemove == false) {
 
 
-                            if(latlngs != null){
-                                latlngs.clear()
+                val layerInfo = polygon.tag as LayerInfo
+
+                var myLayer = layerInfo.layer
+
+                var attrubuteKey = layerInfo.attrubuteKey
+
+                println("=========================================attrubuteKey $attrubuteKey")
+                var intent: Intent? = null
+
+                val dbManager: DataBaseHelper = DataBaseHelper(this)
+
+                val db = dbManager.createDataBase();
+
+                when (myLayer) {
+
+                    LAYER_BIOTOPE -> {
+
+                        if (unionRL.isSelected) {
+
+                            if (polygonsToUnion.contains(polygon)) {
+                                polygonsToUnion.remove(polygon)
+                                polygon.strokeWidth = 5.0f
+                                polygon.strokeColor = Color.WHITE
+                                return@setOnPolygonClickListener
                             }
 
-                            if(latlngsGPS != null){
-                                latlngsGPS.clear()
+                            if (polygonsToUnion.size == 2) {
+                                Utils.alert(context, "2 곳만 선택해서 합칠 수 있습니다.")
+                                return@setOnPolygonClickListener
                             }
 
-                            for(i in 0..polygons.size-1) {
-                                if(polygons.get(i).id != polygon.id){
+                            polygonsToUnion.add(polygon)
+                            polygon.strokeWidth = 10.0f
+                            polygon.strokeColor = Color.MAGENTA
+
+                            return@setOnPolygonClickListener
+
+                        } else {
+
+                            val dataList: Array<String> = arrayOf("*");
+
+                            val data = db.query("biotopeAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                            if (biotopedataArray != null) {
+                                biotopedataArray.clear()
+                            }
+
+                            var title = ""
+
+                            while (data.moveToNext()) {
+                                var biotope_attribute: Biotope_attribute = Biotope_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                                        data.getString(8), data.getFloat(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getFloat(14)
+                                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+                                        , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getFloat(28)
+                                        , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
+                                        , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
+                                        , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
+                                        , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53))
+                                biotopedataArray.add(biotope_attribute)
+                            }
+
+                            if (biotopedataArray.size == 0) {
+
+                                intent = Intent(this, BiotopeActivity::class.java)
+
+                                intent!!.putExtra("GROP_ID", attrubuteKey.toString())
+                                intent!!.putExtra("polygonid",polygon.id)
+
+                                intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
+                                intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
+
+
+                                if (latlngs != null) {
+                                    latlngs.clear()
+                                }
+
+                                if (latlngsGPS != null) {
+                                    latlngsGPS.clear()
+                                }
+
+                                for (i in 0..polygons.size - 1) {
+                                    if (polygons.get(i).id != polygon.id) {
+                                        polygons.add(polygon)
+                                    }
+                                }
+
+                                if (polygons.size == 0) {
                                     polygons.add(polygon)
+                                }
+
+                                endDraw()
+
+                                startActivityForResult(intent, BIOTOPE_DATA)
+
+                            }
+
+                            if (biotopedataArray.size > 0) {
+                                val intent = Intent(this, DlgDataListActivity::class.java)
+                                intent.putExtra("title", "비오톱")
+                                intent.putExtra("table", "biotopeAttribute")
+                                intent.putExtra("DlgHeight", 600f);
+                                intent.putExtra("GROP_ID", attrubuteKey)
+                                intent.putExtra("polygonid",polygon.id)
+                                startActivityForResult(intent, BIOTOPE_DATA);
+
+                                if (latlngs != null) {
+                                    latlngs.clear()
+                                }
+
+                                if (latlngsGPS != null) {
+                                    latlngsGPS.clear()
                                 }
                             }
 
-                            if(polygons.size == 0){
-                                polygons.add(polygon)
-                            }
-
-                            endDraw()
-
-                            startActivityForResult(intent, PolygonCallBackData)
-
                         }
+                    }
 
-                        if(biotopedataArray.size > 0 ){
-                            val intent = Intent(this, DlgDataListActivity::class.java)
-                            intent.putExtra("title", "비오톱")
-                            intent.putExtra("table", "biotopeAttribute")
-                            intent.putExtra("DlgHeight", 600f);
-                            intent.putExtra("GROP_ID",attrubuteKey)
-                            startActivityForResult(intent, BIOTOPE_DATA);
+                    LAYER_BIRDS -> {
+                        intent = Intent(this, BirdsActivity::class.java)
+                    }
 
-                            if(latlngs != null){
-                                latlngs.clear()
-                            }
+                    LAYER_REPTILIA -> {
+                        intent = Intent(this, ReptiliaActivity::class.java)
+                    }
 
-                            if(latlngsGPS != null){
-                                latlngsGPS.clear()
-                            }
-                        }
+                    LAYER_MAMMALIA -> {
+                        intent = Intent(this, MammaliaActivity::class.java)
+                    }
+
+                    LAYER_FISH -> {
+                        intent = Intent(this, FishActivity::class.java)
+                    }
+
+                    LAYER_INSECT -> {
+                        intent = Intent(this, InsectActivity::class.java)
+                    }
+
+                    LAYER_FLORA -> {
+                        intent = Intent(this, FloraActivity::class.java)
+                    }
+
+
+                    LAYER_ZOOBENTHOS -> {
+                        intent = Intent(this, ZoobenthosActivity::class.java)
+                    }
+
+                    LAYER_MYLOCATION -> {
 
                     }
-                }
 
-                LAYER_BIRDS -> {
-                    intent = Intent(this, BirdsActivity::class.java)
-                }
+                    LAYER -> {
 
-                LAYER_REPTILIA -> {
-                    intent = Intent(this, ReptiliaActivity::class.java)
-                }
-
-                LAYER_MAMMALIA -> {
-                    intent = Intent(this, MammaliaActivity::class.java)
-                }
-
-                LAYER_FISH -> {
-                    intent = Intent(this, FishActivity::class.java)
-                }
-
-                LAYER_INSECT -> {
-                    intent = Intent(this, InsectActivity::class.java)
-                }
-
-                LAYER_FLORA -> {
-                    intent = Intent(this, FloraActivity::class.java)
-                }
-
-
-                LAYER_ZOOBENTHOS -> {
-                    intent = Intent(this, ZoobenthosActivity::class.java)
-                }
-
-                LAYER_MYLOCATION -> {
+                    }
 
                 }
 
-                LAYER -> {
+                println("aa : $attrubuteKey")
 
+                if (myLayer != LAYER_BIOTOPE || myLayer == LAYER_BIRDS || myLayer == LAYER_REPTILIA || myLayer == LAYER_MAMMALIA || myLayer == LAYER_FISH || myLayer == LAYER_INSECT
+                        || myLayer == LAYER_FLORA) {
+                    intent!!.putExtra("GROP_ID", attrubuteKey.toString())
+
+                    println("intent-----------------------------------${attrubuteKey.toString()}")
+
+                    startActivityForResult(intent, PolygonCallBackData)
+                }
+                if (myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIOTOPE && myLayer != LAYER_BIRDS && myLayer != LAYER_REPTILIA && myLayer != LAYER_MAMMALIA && myLayer != LAYER_FISH
+                        && myLayer != LAYER_INSECT && myLayer != LAYER_FLORA) {
+                    intent!!.putExtra("id", attrubuteKey.toString())
+
+                    startActivityForResult(intent, PolygonCallBackData)
                 }
 
             }
-
-            println("aa : $attrubuteKey")
-
-            if(myLayer != LAYER_BIOTOPE || myLayer == LAYER_BIRDS || myLayer == LAYER_REPTILIA || myLayer == LAYER_MAMMALIA || myLayer == LAYER_FISH || myLayer == LAYER_INSECT
-                    || myLayer == LAYER_FLORA){
-                intent!!.putExtra("GROP_ID", attrubuteKey.toString())
-
-                println("intent-----------------------------------${attrubuteKey.toString()}")
-
-                startActivityForResult(intent, PolygonCallBackData)
-            }
-            if(myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIOTOPE && myLayer != LAYER_BIRDS && myLayer != LAYER_REPTILIA && myLayer != LAYER_MAMMALIA && myLayer != LAYER_FISH
-                    && myLayer != LAYER_INSECT && myLayer != LAYER_FLORA){
-                intent!!.putExtra("id", attrubuteKey.toString())
-
-                startActivityForResult(intent, PolygonCallBackData)
-            }
-
         }
 
     }
@@ -1574,6 +1759,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         layerInfo.layer = currentLayer
 
         marker.tag = layerInfo
+        println("marker.tag ${marker.id}")
 
         var myLayer = layerInfo.layer
 
@@ -1585,12 +1771,22 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             LAYER_BIRDS -> {
 
-                intent = Intent(this, BirdsActivity::class.java)
+                var intent = Intent(this, BirdsActivity::class.java)
 
                 marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                 marker.title = "조류"
 
                 points.add(marker)
+
+                intent.putExtra("latitude", geoPoint.latitude.toString())
+                intent.putExtra("longitude", geoPoint.longitude.toString())
+                intent.putExtra("markerid",marker.id)
+
+                intent.putExtra("GROP_ID", attrubuteKey.toString())
+
+                startActivityForResult(intent, BIRDS_DATA)
+
+                endDraw()
             }
 
             LAYER_REPTILIA -> {
@@ -1601,6 +1797,16 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 points.add(marker)
 
+                intent!!.putExtra("latitude", geoPoint.latitude.toString())
+                intent!!.putExtra("longitude", geoPoint.longitude.toString())
+                intent!!.putExtra("markerid",marker.id)
+
+                intent!!.putExtra("GROP_ID", attrubuteKey.toString())
+
+                startActivityForResult(intent, REPTILIA_DATA)
+
+                endDraw()
+
             }
 
             LAYER_MAMMALIA -> {
@@ -1610,6 +1816,16 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 marker.title = "포유류"
 
                 points.add(marker)
+
+                intent!!.putExtra("latitude", geoPoint.latitude.toString())
+                intent!!.putExtra("longitude", geoPoint.longitude.toString())
+                intent!!.putExtra("markerid",marker.id)
+
+                intent!!.putExtra("GROP_ID", attrubuteKey.toString())
+
+                startActivityForResult(intent, MAMMALIA_DATA)
+
+                endDraw()
             }
 
             LAYER_FISH -> {
@@ -1619,6 +1835,16 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 marker.title = "어류"
 
                 points.add(marker)
+
+                intent!!.putExtra("latitude", geoPoint.latitude.toString())
+                intent!!.putExtra("longitude", geoPoint.longitude.toString())
+                intent!!.putExtra("markerid",marker.id)
+
+                intent!!.putExtra("GROP_ID", attrubuteKey.toString())
+
+                startActivityForResult(intent, FISH_DATA)
+
+                endDraw()
             }
 
             LAYER_INSECT -> {
@@ -1628,6 +1854,16 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 marker.title = "곤충"
 
                 points.add(marker)
+
+                intent!!.putExtra("latitude", geoPoint.latitude.toString())
+                intent!!.putExtra("longitude", geoPoint.longitude.toString())
+                intent!!.putExtra("markerid",marker.id)
+
+                intent!!.putExtra("GROP_ID", attrubuteKey.toString())
+
+                startActivityForResult(intent, INSECT_DATA)
+
+                endDraw()
             }
 
             LAYER_FLORA -> {
@@ -1637,6 +1873,16 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 marker.title = "식물"
 
                 points.add(marker)
+
+                intent!!.putExtra("latitude", geoPoint.latitude.toString())
+                intent!!.putExtra("longitude", geoPoint.longitude.toString())
+                intent!!.putExtra("markerid",marker.id)
+
+                intent!!.putExtra("GROP_ID", attrubuteKey.toString())
+
+                startActivityForResult(intent, FLORA_DATA)
+
+                endDraw()
             }
 
             LAYER_ZOOBENTHOS -> {
@@ -1645,6 +1891,16 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 marker.title = "저서무척추동물"
 
                 points.add(marker)
+
+                intent!!.putExtra("latitude", geoPoint.latitude.toString())
+                intent!!.putExtra("longitude", geoPoint.longitude.toString())
+                intent!!.putExtra("markerid",marker.id)
+
+                intent!!.putExtra("GROP_ID", attrubuteKey.toString())
+
+                startActivityForResult(intent, FLORA_DATA)
+
+                endDraw()
             }
 
             LAYER_MYLOCATION -> {
@@ -1656,30 +1912,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
         }
 
-        if(myLayer == LAYER_BIOTOPE || myLayer == LAYER_BIRDS || myLayer == LAYER_REPTILIA || myLayer == LAYER_MAMMALIA || myLayer == LAYER_FISH || myLayer == LAYER_INSECT || myLayer == LAYER_FLORA){
-
-            intent!!.putExtra("latitude", geoPoint.latitude.toString())
-            intent!!.putExtra("longitude", geoPoint.longitude.toString())
-
-            intent!!.putExtra("GROP_ID", attrubuteKey.toString())
-
-            startActivityForResult(intent, PolygonCallBackData)
-
-            endDraw()
-        }
-
-        if(myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIOTOPE && myLayer != LAYER_BIRDS && myLayer != LAYER_REPTILIA && myLayer != LAYER_MAMMALIA && myLayer != LAYER_FISH
-                && myLayer != LAYER_INSECT && myLayer != LAYER_FLORA) {
-
-            intent!!.putExtra("latitude", geoPoint.latitude.toString())
-            intent!!.putExtra("longitude", geoPoint.longitude.toString())
-
-            intent!!.putExtra("id", attrubuteKey.toString())
-
-            startActivityForResult(intent, PolygonCallBackData)
-
-            endDraw()
-        }
 
     }
 
@@ -1796,6 +2028,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         if(latlngs.size >= 3 && polygon != null) {
 
+            polygons.add(polygon)
+
             val layerInfo = polygon.tag as LayerInfo
 
             var myLayer = layerInfo.layer
@@ -1806,8 +2040,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             intent!!.putExtra("GROP_ID", attrubuteKey.toString())
 
+            println("main____gropid ------------------------------$attrubuteKey")
+
             intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
             intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
+            intent!!.putExtra("polygonid",polygon.id)
+
+            println("polygoniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii${polygon.id}")
 
             startActivityForResult(intent, BIOTOPE_DATA);
 
@@ -1857,7 +2096,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 
             currentLayer = -1
-            
+
         }
     }
 
@@ -2873,18 +3112,22 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         if (prevPoint != null) {
             val distance = DistanceOp.distance(prevPoint!!, currentPoint);
-            if(distance > 5) {
+            if(distance > 3) {
                 // insert
+                if(trackingdiv == true) {
+                    val tracking: Tracking = Tracking(null, location.latitude, location.longitude)
 
-                val tracking : Tracking = Tracking(null,location.latitude,location.longitude)
-
-                dbManager!!.inserttracking(tracking)
+                    dbManager!!.inserttracking(tracking)
+                }
             }
         } else {
             // insert
-            val tracking : Tracking = Tracking(null,location.latitude,location.longitude)
 
-            dbManager!!.inserttracking(tracking)
+            if(trackingdiv == true) {
+                val tracking: Tracking = Tracking(null, location.latitude, location.longitude)
+
+                dbManager!!.inserttracking(tracking)
+            }
         }
 
         prevPoint = currentPoint

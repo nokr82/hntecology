@@ -96,6 +96,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
     var images_url_remove: ArrayList<String>? = null
     var images_id: ArrayList<Int>? = null
 
+    var markerid : String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_insect)
@@ -126,6 +128,9 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
         var intent: Intent = getIntent();
 
+        if(intent.getStringExtra("markerid") != null){
+            markerid = intent.getStringExtra("markerid")
+        }
 
         if(intent.getStringExtra("latitude")!= null){
             lat = intent.getStringExtra("latitude")
@@ -697,51 +702,150 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
         insectDeleteBT.setOnClickListener {
 
-            val builder = AlertDialog.Builder(context)
-            builder.setMessage("삭제하시겠습니까?").setCancelable(false)
-                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
+            if(pk != null) {
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                        dialog.cancel()
+                            dialog.cancel()
 
-                        var insect_attribute: Insect_attribute = Insect_attribute(null,null,null,null,null,null,null,null,null,null
-                                ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                                ,null,null,null,null,null,null)
+                            var insect_attribute: Insect_attribute = Insect_attribute(null, null, null, null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null)
 
 
-                        if(pk != null) {
+                            if (pk != null) {
 
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect/imges/")
-                            val pathdir = path.listFiles()
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect/imges/")
+                                val pathdir = path.listFiles()
 
-                            if(pathdir != null) {
-                                for (i in 0..pathdir.size-1) {
+                                if (pathdir != null) {
+                                    for (i in 0..pathdir.size - 1) {
 
-                                    for(j in 0..pathdir.size-1) {
+                                        for (j in 0..pathdir.size - 1) {
 
-                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/insect/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/insect/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
 
-                                            pathdir.get(i).canonicalFile.delete()
+                                                pathdir.get(i).canonicalFile.delete()
 
-                                            println("delete ===============")
+                                                println("delete ===============")
 
+                                            }
                                         }
+
+                                    }
+                                }
+                                if (intent.getStringExtra("GROP_ID") != null) {
+                                    val GROP_ID = intent.getStringExtra("GROP_ID")
+
+                                    val dataList: Array<String> = arrayOf("*");
+
+                                    val data = db.query("insectAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+
+                                    if (dataArray != null) {
+                                        dataArray.clear()
                                     }
 
+                                    while (data.moveToNext()) {
+
+                                        chkdata = true
+
+
+
+                                        var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                                , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+                                                , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27),data.getString(28))
+
+                                        dataArray.add(insect_attribute)
+
+                                    }
+
+                                    var intent = Intent()
+
+                                    if (dataArray.size > 1) {
+                                        dbManager.deleteinsect_attribute(insect_attribute, pk)
+
+                                        intent.putExtra("reset", 100)
+
+                                        setResult(RESULT_OK, intent);
+                                        finish()
+
+                                    }
+
+                                    if (dataArray.size == 1) {
+                                        dbManager.deleteinsect_attribute(insect_attribute, pk)
+
+                                        intent.putExtra("markerpk", markerid)
+
+                                        setResult(RESULT_OK, intent);
+                                        finish()
+                                    }
                                 }
+
+                            } else {
+                                Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
                             }
 
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+            }
 
-                            dbManager.deleteinsect_attribute(insect_attribute,pk)
-                            finish()
-                        }else {
-                            Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
-                        }
+            if(pk == null){
 
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인",  DialogInterface.OnClickListener{ dialog, id ->
 
-                    })
-                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
-            val alert = builder.create()
-            alert.show()
+                            dialog.cancel()
+
+                            if (intent.getStringExtra("id") != null) {
+                                val id = intent.getStringExtra("id")
+
+                                val dataList: Array<String> = arrayOf("*");
+
+                                val data = db.query("insectAttribute", dataList, "id = '$id'", null, null, null, "", null)
+
+                                if (dataArray != null) {
+                                    dataArray.clear()
+                                }
+
+                                while (data.moveToNext()) {
+
+                                    chkdata = true
+
+                                    var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                            , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+                                            , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27),data.getString(28))
+                                }
+
+                                if (chkdata == true) {
+                                    Toast.makeText(context, "추가하신 데이터가 있습니다.", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    intent.putExtra("markerid", markerid)
+
+                                    setResult(RESULT_OK, intent);
+                                    finish()
+                                }
+
+                            }
+
+                            if (intent.getStringExtra("id") == null) {
+                                intent.putExtra("markerid", markerid)
+
+                                setResult(RESULT_OK, intent);
+                                finish()
+                            }
+
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+
+            }
 
         }
 
@@ -1019,6 +1123,12 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                 }
 
+            }
+
+            if(intent.getStringExtra("id") != null){
+                intent.putExtra("reset", 100)
+
+                setResult(RESULT_OK, intent);
             }
 
             clear()

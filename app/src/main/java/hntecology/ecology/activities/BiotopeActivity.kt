@@ -116,6 +116,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
     var lat:String = ""
     var log:String = ""
 
+    var polygonid : String? = null
+
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -149,6 +151,12 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         etINV_DTTV.setText(Utils.todayStr())
 
         etINV_TMTV.setText(Utils.timeStr())
+
+        if(intent.getStringExtra("polygonid") != null){
+            polygonid = intent.getStringExtra("polygonid")
+
+            println("polygonid ---------$polygonid")
+        }
 
         if(intent.getStringExtra("latitude")!= null){
             lat = intent.getStringExtra("latitude")
@@ -280,7 +288,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                 if (biotope_attribute.LU_GR_NUM != null) {
 
-                    val dataSelectList: Array<String> = arrayOf("name");
+                    val dataSelectList: Array<String> = arrayOf("name")
                     val data = db.query("biotopeM", dataList, "code = '" + biotope_attribute.LU_GR_NUM + "'", null, null, null, "", null);
 
                     while (data.moveToNext()) {
@@ -1295,65 +1303,175 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         btn_biotopDelete.setOnClickListener {
 
-            val builder = AlertDialog.Builder(context)
-            builder.setMessage("삭제하시겠습니까?").setCancelable(false)
-                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
+            println("pk---------------$pk")
 
-                        dialog.cancel()
-                        var intent = Intent();
-                        val biotope_attribute: Biotope_attribute = Biotope_attribute(null, null, null, null, null, null, null
-                                , null, null, null, null, null, null, null, null
-                                , null, null, null, null, null, null, null, null
-                                , null, null, null, null, null, null, null, null
-                                , null, null, null, null, null, null, null
-                                , null, null, null, null, null, null, null, null
-                                , null, null, null, null, null, null,null,null)
+            if (pk != null) {
 
-                        if(pk != null){
-                            dbManager.deletebiotope_attribute(biotope_attribute,pk)
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                            intent.putExtra("bio_attri", biotope_attribute);
+                            dialog.cancel()
+                            val biotope_attribute: Biotope_attribute = Biotope_attribute(null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null, null)
 
-                            var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-                            sdPath +="/ecology/tmps/"+biotope_attribute.INV_DT +"."+ biotope_attribute.INV_TM + "/images/"
+                            if (pk != null) {
 
-                            //이미 있다면 삭제. 후 생성
-                            setDirEmpty(sdPath)
+                                var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+                                sdPath += "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "/images/"
 
-                            setResult(RESULT_OK, intent);
+                                //이미 있다면 삭제. 후 생성
+                                setDirEmpty(sdPath)
 
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope/imges/")
-                            val pathdir = path.listFiles()
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope/imges/")
+                                val pathdir = path.listFiles()
 
-                            if(pathdir != null) {
-                                for (i in 0..pathdir.size-1) {
+                                if (pathdir != null) {
+                                    for (i in 0..pathdir.size - 1) {
 
-                                    for(j in 0..pathdir.size-1) {
+                                        for (j in 0..pathdir.size - 1) {
 
-                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/biotope/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/biotope/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
 
-                                            pathdir.get(i).canonicalFile.delete()
+                                                pathdir.get(i).canonicalFile.delete()
 
-                                            println("delete ===============")
+                                                println("delete ===============")
 
+                                            }
                                         }
+
+                                    }
+                                }
+
+                                if (intent.getStringExtra("GROP_ID") != null) {
+                                    val GROP_ID = intent.getStringExtra("GROP_ID")
+
+                                    println("GROP_ID---------------$GROP_ID")
+
+                                    val dataList: Array<String> = arrayOf("*");
+
+                                    val data2 = db.query("biotopeAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+
+                                    if (dataArray != null) {
+                                        dataArray.clear()
                                     }
 
+                                    while (data2.moveToNext()) {
+
+                                        chkdata = true
+
+                                        var biotope_attribute: Biotope_attribute = Biotope_attribute(data2.getString(0), data2.getString(1), data2.getString(2), data2.getString(3), data2.getString(4), data2.getString(5), data2.getString(6), data2.getInt(7),
+                                                data2.getString(8), data2.getFloat(9), data2.getFloat(10), data2.getString(11), data2.getString(12), data2.getString(13), data2.getFloat(14)
+                                                , data2.getString(15), data2.getString(16), data2.getString(17), data2.getString(18), data2.getString(19), data2.getString(20), data2.getString(21)
+                                                , data2.getString(22), data2.getString(23), data2.getString(24), data2.getString(25), data2.getFloat(26), data2.getFloat(27), data2.getFloat(28)
+                                                , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
+                                                , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
+                                                , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
+                                                , data2.getDouble(50), data2.getString(51), data2.getString(52),data2.getString(53))
+
+                                        dataArray.add(biotope_attribute)
+
+                                    }
+
+                                    var intent = Intent()
+
+                                    if (dataArray.size > 1) {
+
+                                        println("pk $pk =============================================")
+
+                                        dbManager.deletebiotope_attribute(biotope_attribute, pk)
+
+                                        intent.putExtra("reset", 100)
+
+                                        setResult(RESULT_OK, intent);
+                                        finish()
+
+                                    }
+
+                                    if (dataArray.size == 1) {
+                                        dbManager.deletebiotope_attribute(biotope_attribute, pk)
+
+                                        intent.putExtra("polygonid", polygonid)
+
+                                        setResult(RESULT_OK, intent);
+                                        finish()
+                                    }
                                 }
+
+                            } else {
+                                Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
                             }
 
-                            finish()
-                        }else {
-                            Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
-                        }
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
 
-                    })
-                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
-            val alert = builder.create()
-            alert.show()
+            }
 
+            if (pk == null){
+
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인",  DialogInterface.OnClickListener{ dialog, id ->
+
+                            dialog.cancel()
+
+                            if (intent.getStringExtra("id") != null) {
+                                val id = intent.getStringExtra("id")
+
+                                val dataList: Array<String> = arrayOf("*");
+
+                                val data2 = db.query("biotopeAttribute", dataList, "id = '$id'", null, null, null, "", null)
+
+                                if (dataArray != null) {
+                                    dataArray.clear()
+                                }
+
+                                while (data2.moveToNext()) {
+
+                                    chkdata = true
+
+                                    var biotope_attribute: Biotope_attribute = Biotope_attribute(data2.getString(0), data2.getString(1), data2.getString(2), data2.getString(3), data2.getString(4), data2.getString(5), data2.getString(6), data2.getInt(7),
+                                            data2.getString(8), data2.getFloat(9), data2.getFloat(10), data2.getString(11), data2.getString(12), data2.getString(13), data2.getFloat(14)
+                                            , data2.getString(15), data2.getString(16), data2.getString(17), data2.getString(18), data2.getString(19), data2.getString(20), data2.getString(21)
+                                            , data2.getString(22), data2.getString(23), data2.getString(24), data2.getString(25), data2.getFloat(26), data2.getFloat(27), data2.getFloat(28)
+                                            , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
+                                            , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
+                                            , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
+                                            , data2.getDouble(50), data2.getString(51), data2.getString(52),data2.getString(53))
+
+                                }
+
+                                if (chkdata == true) {
+                                    Toast.makeText(context, "추가하신 데이터가 있습니다.", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    intent.putExtra("polygonid", polygonid)
+                                    setResult(RESULT_OK, intent);
+                                    finish()
+                                }
+
+                            }
+
+                            if (intent.getStringExtra("id") == null) {
+                                var intent = Intent()
+                                intent.putExtra("polygonid", polygonid)
+                                setResult(RESULT_OK, intent);
+                                finish()
+                            }
+
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+
+            }
         }
-
         btnPIC_FOLDER.setOnClickListener {
 
             var ListItems: List<String>
@@ -1663,10 +1781,13 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
             }
 
-            intent.putExtra("bio_attri", biotope_attribute);
-
-            setResult(RESULT_OK, intent);
             finishFlag = false
+
+            if(intent.getStringExtra("id") != null){
+                intent.putExtra("reset", 100)
+
+                setResult(RESULT_OK, intent);
+            }
 
             clear()
             chkdata = false

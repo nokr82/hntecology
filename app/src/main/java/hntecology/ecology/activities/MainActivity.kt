@@ -310,7 +310,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
         }
 
-
         //저서무척추동물 추가
         btn_zoobenthos.setOnClickListener {
 
@@ -385,6 +384,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 startActivity(intent)
 
             })
+
             builder.show()
 
         }
@@ -610,8 +610,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             println("id---------------------------------------------------${polygons.get(i).id}")
                             if((polygons.get(i).id).equals(polygonid)){
                                 println("ssssssssssssss")
-                                polygons.removeAt(i)
-//                                polygons.get(i).remove()
+                                runOnUiThread(Runnable {
+                                    polygons.get(i).remove()
+                                    polygons.removeAt(i)
+                                })
 //                                polygons.remove(polygons.get(i))
                             }
                         }
@@ -1154,6 +1156,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             if (polygonRemove == false) {
 
+                println("click -------------------------${polygon.id}")
 
                 val layerInfo = polygon.tag as LayerInfo
 

@@ -242,8 +242,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
                         , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25), data.getString(26))
 
-
-                                invPersonTV.setText(birds_attribute.INV_PERSON)
+                invPersonTV.setText(birds_attribute.INV_PERSON)
 
                 invRegionET.setText(birds_attribute.INV_REGION)
 
@@ -378,9 +377,38 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         cancelBtn.setOnClickListener {
             val builder = AlertDialog.Builder(context)
             builder.setMessage("작성을 취소하시겠습니까?").setCancelable(false)
-                    .setPositiveButton("확인", DialogInterface.OnClickListener {
+                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                        dialog, id -> dialog.cancel()
+                            val dbManager: DataBaseHelper = DataBaseHelper(this)
+
+                            val db = dbManager.createDataBase()
+
+                            val dataList: Array<String> = arrayOf("*");
+
+                            val data = db.query("birdsAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+
+                            if (dataArray != null) {
+                                dataArray.clear()
+                            }
+
+                            while (data.moveToNext()) {
+
+                                var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                    , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+                                    , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25), data.getString(26))
+
+                            dataArray.add(birds_attribute)
+
+                        }
+
+                        if (dataArray.size == 0 ){
+
+                            intent.putExtra("markerid", markerid)
+                            setResult(RESULT_OK, intent);
+
+                        }
+
                         finish()
 
                     })
@@ -560,15 +588,12 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         }
 
-
                         finish()
 
                     })
                     .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
             val alert = builder.create()
             alert.show()
-
-
 
         }
 
@@ -650,7 +675,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                                     if(dataArray.size == 1){
 
-                                        intent.putExtra("markerpk", markerid)
+                                        intent.putExtra("markerid", markerid)
 
                                         dbManager.deletebirds_attribute(birds_attribute, pk)
 
@@ -833,9 +858,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
             birds_attribute.INV_REGION = invRegionET.text.toString()
 
-
             birds_attribute.INV_DT = Utils.todayStr()
-
 
             if(invPersonTV.text == null){
                 birds_attribute.INV_PERSON = userName
@@ -910,7 +933,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                             }
                         }
-
                     }
                 }
 
@@ -939,9 +961,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                 }
 
-
             } else {
-
 
                 dbManager.insertbirds_attribute(birds_attribute);
 
@@ -988,12 +1008,11 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
             }
 
-            if(intent.getStringExtra("id") != null){
+            if(intent.getStringExtra("set") != null){
                 intent.putExtra("reset", 100)
 
                 setResult(RESULT_OK, intent);
             }
-
 
             clear()
             chkdata = false
@@ -1543,6 +1562,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
     }
 
     fun clear(){
+
 
         invDtTV.setText(Utils.todayStr())
 

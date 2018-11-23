@@ -46,7 +46,7 @@ class DlgBirdsActivity : Activity() {
 
         val dataList:Array<String> = arrayOf("name_kr","Family_name_kr","zoological");
 
-        val data = db.query("birds", dataList, null, null, null, null, null, null);
+        val data = db.query("birds", dataList, null, null, null, null, "name_kr", null);
         setDataList(data);
 
         copyadapterData.addAll(adapterData)

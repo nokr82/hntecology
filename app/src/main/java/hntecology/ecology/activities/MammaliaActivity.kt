@@ -753,7 +753,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                                     if (dataArray.size == 1) {
                                         dbManager.deletemammal_attribute(mammal_attribute, pk)
 
-                                        intent.putExtra("markerpk", markerid)
+                                        intent.putExtra("markerid", markerid)
 
                                         setResult(RESULT_OK, intent);
                                         finish()
@@ -860,7 +860,32 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             builder.setMessage("취소하시겠습니까?").setCancelable(false)
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                        dialog.cancel()
+
+                        val dataList: Array<String> = arrayOf("*");
+
+                        val data= db.query("mammalAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+
+                        if (dataArray != null){
+                            dataArray.clear()
+                        }
+
+                        while (data.moveToNext()) {
+
+                            var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                    , data.getString(15), data.getString(16), data.getString(17), data.getInt(18), data.getString(19), data.getString(20), data.getFloat(21)
+                                    , data.getFloat(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26),data.getString(27))
+
+                            dataArray.add(mammal_attribute)
+
+                        }
+
+                        if (dataArray.size == 0 ){
+
+                            intent.putExtra("markerid", markerid)
+                            setResult(RESULT_OK, intent);
+
+                        }
 
                         finish()
 
@@ -1105,7 +1130,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             }
 
-            if(intent.getStringExtra("id") != null){
+            if(intent.getStringExtra("set") != null){
                 intent.putExtra("reset", 100)
 
                 setResult(RESULT_OK, intent);

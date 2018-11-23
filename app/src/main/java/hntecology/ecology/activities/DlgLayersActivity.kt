@@ -95,12 +95,12 @@ class DlgLayersActivity : Activity() {
     fun loadData() {
 
         // select
-        val dataList:Array<String> = arrayOf("file_name", "layer_name","min_scale","max_scale","type");
+        val dataList:Array<String> = arrayOf("file_name", "layer_name","min_scale","max_scale","type","added");
 
         //대분류
         val data =  db.query("layers", dataList,null,null,null,null,"id",null);
         while (data.moveToNext()) {
-            val layerModel = LayerModel(data.getString(0), data.getString(1), data.getInt(2),data.getInt(3),data.getString(4),false);
+            val layerModel = LayerModel(data.getString(0), data.getString(1), data.getInt(2),data.getInt(3),data.getString(4),data.getString(5),false);
 
             val zoom = intent.getFloatExtra("zoom", 0.0F)
 

@@ -769,6 +769,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void insertlayers(String file_name , String layer_name , String type,String Y){
+        String query = "INSERT INTO layers";
+        query += "(file_name,layer_name,min_scale,max_scale,type,added)";
+
+        query += " values (";
+        query += " '" + file_name + "'";
+        query += ", '" + layer_name + "'";
+        query += ", '" + 10 + "'";
+        query += ", '" + 19 + "'";
+        query += ", '" + type + "'";
+        query += ", '" + Y + "'";
+        query += " ); ";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
 
 
 
@@ -820,8 +838,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+
+
     public void deleteflora_attribute(Flora_Attribute flora_attribute,String page) {
         String query = "DELETE FROM floraAttribute WHERE id = '" + page + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void deletetracking() {
+        String query = "DELETE FROM tracking ";
 
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);

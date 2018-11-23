@@ -187,6 +187,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         if (intent.getStringExtra("id") != null) {
 
+
+
             val dataList: Array<String> = arrayOf("*");
 
             val data= db.query("reptiliaAttribute", dataList, "id = '$pk'", null, null, null, "", null)
@@ -642,7 +644,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                                     if(dataArray.size == 1) {
                                         dbManager.deletereptilia_attribute(reptilia_attribute, pk)
 
-                                        intent.putExtra("markerpk", markerid)
+                                        intent.putExtra("markerid", markerid)
 
                                         setResult(RESULT_OK, intent);
                                         finish()
@@ -720,7 +722,35 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             builder.setMessage("취소하시겠습니까?").setCancelable(false)
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                        dialog.cancel()
+                        val dbManager: DataBaseHelper = DataBaseHelper(this)
+
+                        val db = dbManager.createDataBase();
+
+                        val dataList: Array<String> = arrayOf("*");
+
+                        val data= db.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+
+                        if (dataArray != null){
+                            dataArray.clear()
+                        }
+
+                        while (data.moveToNext()) {
+
+                            var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                                    , data.getString(15), data.getInt(16), data.getInt(17), data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
+                                    , data.getString(22), data.getString(23), data.getString(24), data.getInt(25), data.getInt(26), data.getInt(27), data.getFloat(28), data.getFloat(29),data.getString(30))
+
+                            dataArray.add(reptilia_attribute)
+
+                        }
+
+                        if (dataArray.size == 0 ){
+
+                            intent.putExtra("markerid", markerid)
+                            setResult(RESULT_OK, intent);
+
+                        }
 
                         finish()
 
@@ -1099,7 +1129,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
             }
 
-            if(intent.getStringExtra("id") != null){
+            if(intent.getStringExtra("set") != null){
                 intent.putExtra("reset", 100)
 
                 setResult(RESULT_OK, intent);
@@ -1442,10 +1472,11 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             reset(images_path!!.get(j), j)
         }
 
-
     }
 
     fun clear(){
+
+        numET.setText("")
 
         invregionET.setText("")
 

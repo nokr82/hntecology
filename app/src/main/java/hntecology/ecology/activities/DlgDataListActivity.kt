@@ -217,6 +217,7 @@ class DlgDataListActivity : Activity() {
                 val intent = Intent(this, BiotopeActivity::class.java)
 
                 intent!!.putExtra("id", biotopedata.id.toString())
+                intent.putExtra("set",3)
                 intent!!.putExtra("GROP_ID",biotopedata.GROP_ID)
 
                 println("gropid_-------------------------------------------------------------${biotopedata.GROP_ID} ----")
@@ -233,6 +234,7 @@ class DlgDataListActivity : Activity() {
                 val intent = Intent(this, BirdsActivity::class.java)
 
                 intent.putExtra("id", birdsdata.id.toString())
+                intent.putExtra("set",3)
                 intent.putExtra("GROP_ID",birdsdata.GROP_ID)
                 intent.putExtra("markerid",markerid)
 
@@ -249,6 +251,7 @@ class DlgDataListActivity : Activity() {
                 val intent = Intent(this, ReptiliaActivity::class.java)
 
                 intent!!.putExtra("id", reptiliadata.id.toString())
+                intent.putExtra("set",3)
                 intent!!.putExtra("GROP_ID",reptiliadata.GROP_ID)
                 intent!!.putExtra("markerid",markerid)
 
@@ -263,6 +266,7 @@ class DlgDataListActivity : Activity() {
                 val intent = Intent(this, MammaliaActivity::class.java)
 
                 intent!!.putExtra("id", mammaldata.id.toString())
+                intent.putExtra("set",3)
                 intent!!.putExtra("GROP_ID",mammaldata.GROP_ID)
                 intent!!.putExtra("markerid",markerid)
 
@@ -277,6 +281,7 @@ class DlgDataListActivity : Activity() {
                 val intent = Intent(this, FishActivity::class.java)
 
                 intent!!.putExtra("id", fishdata.id.toString())
+                intent.putExtra("set",3)
                 intent!!.putExtra("GROP_ID",fishdata.GROP_ID)
                 intent!!.putExtra("markerid",markerid)
 
@@ -291,6 +296,7 @@ class DlgDataListActivity : Activity() {
                 val intent = Intent(this, InsectActivity::class.java)
 
                 intent!!.putExtra("id", insecthdata.id.toString())
+                intent.putExtra("set",3)
                 intent!!.putExtra("GROP_ID",insecthdata.GROP_ID)
                 intent!!.putExtra("markerid",markerid)
 
@@ -305,6 +311,7 @@ class DlgDataListActivity : Activity() {
                 val intent = Intent(this, FloraActivity::class.java)
 
                 intent!!.putExtra("id", floradata.id.toString())
+                intent.putExtra("set",3)
                 intent!!.putExtra("GROP_ID",floradata.GROP_ID)
                 intent!!.putExtra("markerid",markerid)
 
@@ -507,9 +514,9 @@ class DlgDataListActivity : Activity() {
 
                     }
 
-                    if (data!!.getStringExtra("markerpk") != null){
+                    if (data!!.getStringExtra("markerid") != null){
 
-                        val markerpk = data!!.getStringExtra("markerpk")
+                        val markerpk = data!!.getStringExtra("markerid")
                         println("datalist --------markerpk $markerpk")
 
                         var intent = Intent()
@@ -548,9 +555,9 @@ class DlgDataListActivity : Activity() {
 
                     }
 
-                    if (data!!.getStringExtra("markerpk") != null){
+                    if (data!!.getStringExtra("markerid") != null){
 
-                        val markerpk = data!!.getStringExtra("markerpk")
+                        val markerpk = data!!.getStringExtra("markerid")
                         println("datalist --------markerpk $markerpk")
 
                         var intent = Intent()
@@ -589,9 +596,9 @@ class DlgDataListActivity : Activity() {
 
                     }
 
-                    if (data!!.getStringExtra("markerpk") != null){
+                    if (data!!.getStringExtra("markerid") != null){
 
-                        val markerpk = data!!.getStringExtra("markerpk")
+                        val markerpk = data!!.getStringExtra("markerid")
                         println("datalist --------markerpk $markerpk")
 
                         var intent = Intent()
@@ -631,9 +638,9 @@ class DlgDataListActivity : Activity() {
 
                     }
 
-                    if (data!!.getStringExtra("markerpk") != null){
+                    if (data!!.getStringExtra("markerid") != null){
 
-                        val markerpk = data!!.getStringExtra("markerpk")
+                        val markerpk = data!!.getStringExtra("markerid")
                         println("datalist --------markerpk $markerpk")
 
                         var intent = Intent()
@@ -673,9 +680,9 @@ class DlgDataListActivity : Activity() {
 
                     }
 
-                    if (data!!.getStringExtra("markerpk") != null){
+                    if (data!!.getStringExtra("markerid") != null){
 
-                        val markerpk = data!!.getStringExtra("markerpk")
+                        val markerpk = data!!.getStringExtra("markerid")
                         println("datalist --------markerpk $markerpk")
 
                         var intent = Intent()
@@ -714,9 +721,9 @@ class DlgDataListActivity : Activity() {
 
                     }
 
-                    if (data!!.getStringExtra("markerpk") != null){
+                    if (data!!.getStringExtra("markerid") != null){
 
-                        val markerpk = data!!.getStringExtra("markerpk")
+                        val markerpk = data!!.getStringExtra("markerid")
                         println("datalist --------markerpk $markerpk")
 
                         var intent = Intent()

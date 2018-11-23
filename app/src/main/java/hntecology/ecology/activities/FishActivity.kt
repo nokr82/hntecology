@@ -61,7 +61,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
     val SET_FISH = 80
     val SET_FISHDLG = 81
 
-
     val SET_DATA1 = 1
 
     var chkdata: Boolean = false;
@@ -247,7 +246,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                 formTV.setText(fish_attribute.RIV_FORM)
 
-                fishnumTV.setText(fish_attribute.NUM.toString())
+                fishnumTV.setText(fish_attribute.id)
 
                 fishspecnmET.setText(fish_attribute.SPEC_NM)
                 fishfaminmET.setText(fish_attribute.FAMI_NM)
@@ -259,6 +258,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 if(fishunidentET.text == null){
                     fishunidentET.setText("")
                 }
+
                 fishtivfmchET.setText(fish_attribute.RIV_FM_CH)
 
                 fishunfishchET.setText(fish_attribute.UN_FISH_CH)
@@ -431,7 +431,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                     , null, null, null, null, null, null, null, null, null, null, null, null, null
                     , null, null, null, null, null, null, null, null, null, null, null, null,null,null)
 
-            fish_attribute.id = keyId + page.toString()
 
             fish_attribute.GROP_ID = keyId
 
@@ -762,7 +761,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                         }
 
-
                         dialog.cancel()
 
                         finish()
@@ -780,13 +778,31 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             builder.setMessage("취소하시겠습니까 ?").setCancelable(false)
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                        dialog.cancel()
+                        val dataList: Array<String> = arrayOf("*");
 
+                        val data = db.query("fishAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
+                        if (dataArray != null) {
+                            dataArray.clear()
+                        }
 
+                        while (data.moveToNext()) {
 
+                            var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                                    data.getString(8),data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
+                                    data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getString(26), data.getString(27), data.getString(28),
+                                    data.getInt(29) ,data.getString(30), data.getString(31), data.getString(32), data.getInt(33), data.getString(33), data.getString(35), data.getString(36),data.getString(37))
 
+                            dataArray.add(fish_attribute)
 
+                        }
+
+                        if (dataArray.size == 0 ){
+
+                            intent.putExtra("markerid", markerid)
+                            setResult(RESULT_OK, intent);
+
+                        }
 
                         finish()
 
@@ -833,7 +849,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                                     }
                                 }
 
-
                                 if (intent.getStringExtra("GROP_ID") != null) {
                                     val GROP_ID = intent.getStringExtra("GROP_ID")
 
@@ -873,7 +888,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                                     if (dataArray.size == 1) {
                                         dbmanager.deletefish_attribute(fish_attribute, pk)
 
-                                        intent.putExtra("markerpk", markerid)
+                                        intent.putExtra("markerid", markerid)
 
                                         setResult(RESULT_OK, intent);
                                         finish()
@@ -1222,7 +1237,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             }
 
-            if(intent.getStringExtra("id") != null){
+            if(intent.getStringExtra("set") != null){
                 intent.putExtra("reset", 100)
 
                 setResult(RESULT_OK, intent);

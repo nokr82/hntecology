@@ -1287,9 +1287,9 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                         }
 
-                        intent.putExtra("bio_attri", biotope_attribute);
-
-                        setResult(RESULT_OK, intent);
+//                        intent.putExtra("bio_attri", biotope_attribute);
+//
+//                        setResult(RESULT_OK, intent);
                         finishFlag = false
 
                         finish()
@@ -1783,7 +1783,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
             finishFlag = false
 
-            if(intent.getStringExtra("id") != null){
+            if(intent.getStringExtra("set") != null){
                 intent.putExtra("reset", 100)
 
                 setResult(RESULT_OK, intent);
@@ -2339,7 +2339,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             }
             reset(images_path!!.get(j), j)
         }
-
 
     }
 

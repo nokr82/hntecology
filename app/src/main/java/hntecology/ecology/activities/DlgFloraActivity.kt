@@ -49,7 +49,7 @@ class DlgFloraActivity : Activity() {
 
 
 
-        val data = db.query("vascular_plant", dataList, null, null, null, null, null, null);
+        val data = db.query("vascular_plant", dataList, null, null, null, null, "name_kr", null);
         setDataList(data);
 
         copyadapterData.addAll(adapterData)

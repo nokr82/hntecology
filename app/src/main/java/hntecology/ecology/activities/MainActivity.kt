@@ -20,6 +20,7 @@ import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
 import android.view.View
+import android.widget.SeekBar
 import android.widget.Toast
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -109,6 +110,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     private var allPolygons: ArrayList<Polygon> = ArrayList<Polygon>()
     private var polygons : ArrayList<Polygon> = ArrayList<Polygon>()
     private var points = ArrayList<Marker>()
+    private var allpoints = ArrayList<Marker>()
     private var polygonsToUnion = ArrayList<Polygon>()
     private var trackpoints = ArrayList<Marker>()
     private var getTrackingPoints = ArrayList<Marker>()
@@ -119,6 +121,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     var dbManager: DataBaseHelper? = null
 
     private var db: SQLiteDatabase? = null
+
+    var layerFileName:ArrayList<String> = ArrayList<String>()
 
     var biotopeDatas:ArrayList<Biotope_attribute> = ArrayList<Biotope_attribute>()
     var birdsDatas:ArrayList<Birds_attribute> = ArrayList<Birds_attribute>()
@@ -222,8 +226,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             val zoom = googleMap.cameraPosition.zoom
             val intent = Intent(this, DlgLayersActivity::class.java)
 
-            intent.putExtra("zoom", zoom
-            )
+            intent.putExtra("zoom", zoom)
+            if(layerFileName != null){
+                intent.putExtra("layerFileName",layerFileName)
+            }
             startActivityForResult(intent, REQUEST_LAYER)
         }
 
@@ -257,6 +263,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             } else {
                 startDraw()
             }
+
         }
 
         //양서ㆍ파충류 추가
@@ -343,7 +350,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             unionRL.isSelected = false
 
             endDraw()
-
         }
 
         //좌표지정 버튼
@@ -426,7 +432,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 //
 //            makerOption.position(latlng)
 //                    .title("현재 위치")
-//
+
 //            googleMap.addMarker(makerOption)
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 16f))
 
@@ -457,7 +463,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     }
                 }
             }
-
         }
 
         // 도형 분리
@@ -497,6 +502,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if ( title.equals("Tracking 켜기")){
                 dbManager.deletetracking()
                 trackingBtn.setText("Tracking 끄기")
+
+//                val tracking = Tracking(null,37.4954,126.7720)
+//                val tracking1 = Tracking(null,37.4947,126.7723)
+//                val tracking2= Tracking(null,37.4943,126.7723)
+//                dbManager.inserttracking(tracking)
+//                dbManager.inserttracking(tracking1)
+//                dbManager.inserttracking(tracking2)
+
                 trackingdiv = true
             } else if(title.equals("Tracking 끄기")){
                 trackingBtn.setText("Tracking 켜기")
@@ -560,11 +573,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     drawPoint(latlng)
                 }
 
-
             }
 
             if(title == "이동경로 숨기기"){
                 mytrackingBtn.setText("이동경로 보기")
+
+
 
                 trackingPointChk = false
 
@@ -576,6 +590,29 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 
         }
+
+        transparentRL.setOnClickListener {
+            seekbarSB.visibility = View.VISIBLE
+        }
+
+        seekbarSB.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                if(allPolygons != null) {
+                    for (i in 0..allPolygons.size - 1) {
+                        allPolygons.get(i)
+                    }
+                }
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+
+            }
+        })
+
 
         myLocation = Tracking(null, latitude, longitude)
 
@@ -681,7 +718,20 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                         println("polygons : " + allPolygons)
                         println("polygons.size : " + allPolygons.size)
+
                     }
+
+                    if(data!!.getIntExtra("export" , 0) != null){
+
+                        val export = data!!.getIntExtra("export",0)
+
+                        println("----------------$export")
+
+                        if(export == 70){
+                            exportBiotope()
+                        }
+                    }
+
                 }
 
                 BIRDS_DATA ->{
@@ -689,16 +739,25 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     if(data!!.getStringExtra("markerid") != null){
                         val markerid = data!!.getStringExtra("markerid")
                         for(i in 0..points.size -1){
+                            println("------------remove-------${points.size}")
                             if(points.get(i).id == markerid){
                                 points.get(i).remove()
                             }
                         }
+                        println("------------removeiiiiii-------${points.size}")
                     }
 
                     if(data!!.getStringExtra("reset") != null){
 
                     }
 
+                    if(data!!.getIntExtra("export", 0 ) != null){
+                        val export = data!!.getIntExtra("export",0)
+
+                        if(export == 70){
+                            exportBirds()
+                        }
+                    }
 
                 }
 
@@ -715,6 +774,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     if(data!!.getStringExtra("reset") != null){
 
                     }
+
+                    if(data!!.getIntExtra("export", 0 ) != null){
+                        val export = data!!.getIntExtra("export",0)
+
+                        if(export == 70){
+                            exportReptilia()
+                        }
+                    }
+
                 }
 
                 MAMMALIA_DATA -> {
@@ -729,6 +797,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                     if(data!!.getStringExtra("reset") != null){
 
+                    }
+
+                    if(data!!.getIntExtra("export", 0 ) != null){
+                        val export = data!!.getIntExtra("export",0)
+
+                        if(export == 70){
+                            exportMammal()
+                        }
                     }
                 }
 
@@ -745,6 +821,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     if(data!!.getStringExtra("reset") != null){
 
                     }
+
+                    if(data!!.getIntExtra("export", 0 ) != null){
+                        val export = data!!.getIntExtra("export",0)
+
+                        if(export == 70){
+                            exportFish()
+                        }
+                    }
                 }
 
                 INSECT_DATA -> {
@@ -759,6 +843,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                     if(data!!.getStringExtra("reset") != null){
 
+                    }
+
+                    if(data!!.getIntExtra("export", 0 ) != null){
+                        val export = data!!.getIntExtra("export",0)
+
+                        if(export == 70){
+                            exportInsects()
+                        }
                     }
                 }
 
@@ -775,6 +867,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     if(data!!.getStringExtra("reset") != null){
 
                     }
+
+                    if(data!!.getIntExtra("export", 0 ) != null){
+                        val export = data!!.getIntExtra("export",0)
+
+                        if(export == 70){
+                            exportFlora()
+                        }
+                    }
                 }
 
                 REQUEST_LAYER -> {
@@ -782,24 +882,34 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     val layer_name = data.getStringExtra("layer_name")
                     val added = data.getStringExtra("added")
 
-
                     var jsonOb: ArrayList<LayerModel> = ArrayList<LayerModel>()
 
                     jsonOb = data.getSerializableExtra("data") as ArrayList<LayerModel>
 
-                    if(types.size >= 1 && types!=null){
+                    if(types.size != null){
                         types.clear()
                     }
+
+                    if(layerFileName != null){
+                        layerFileName.clear()
+                    }
+
+                    if(jsonOb.size == 0){
+                        println("000000")
+                        loadLayer("","","","")
+                    }
+
+                    googleMap.clear()
 
                     for (i in 0..jsonOb.size - 1) {
                         loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name,jsonOb.get(i).type, jsonOb.get(i).added)
 
                         println("jsonOB . filename ${jsonOb.get(i).file_name}")
 
+                        layerFileName.add(jsonOb.get(i).file_name)
                     }
+
                 }
-
-
 
                 else -> super.onActivityResult(requestCode, resultCode, data)
             }
@@ -818,6 +928,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             val mapFragment = SupportMapFragment.newInstance()
             mapFragment.getMapAsync(this)
 
+            supportFragmentManager.beginTransaction().replace(R.id.map, mapFragment).commit()
             supportFragmentManager.beginTransaction().replace(R.id.map, mapFragment).commit()
 
         } else if (GooglePlayServicesUtil.isUserRecoverableError(status)) {
@@ -881,9 +992,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 when (myLayer) {
 
-
                     LAYER_BIRDS -> {
-
 
                         val dataList: Array<String> = arrayOf("*");
 
@@ -901,7 +1010,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                                    , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25), data.getString(26))
+                                    , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25), data.getString(26), data.getString(27))
 
                             birdsdataArray.add(birds_attribute)
 
@@ -967,7 +1076,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getInt(16), data.getInt(17), data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
-                                    , data.getString(22), data.getString(23), data.getString(24), data.getInt(25), data.getInt(26), data.getInt(27), data.getFloat(28), data.getFloat(29), data.getString(30))
+                                    , data.getString(22), data.getString(23), data.getString(24), data.getInt(25), data.getInt(26), data.getInt(27), data.getFloat(28), data.getFloat(29), data.getString(30),data.getString(31))
                             reptiliadataArray.add(reptilia_attribute)
                         }
 
@@ -1030,7 +1139,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getString(16), data.getString(17), data.getInt(18), data.getString(19), data.getString(20), data.getFloat(21)
-                                    , data.getFloat(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27))
+                                    , data.getFloat(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28))
                             mammaldataArray.add(mammal_attribute)
                         }
 
@@ -1091,7 +1200,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
                                     data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getString(26), data.getString(27), data.getString(28),
-                                    data.getInt(29), data.getString(30), data.getString(31), data.getString(32), data.getInt(33), data.getString(33), data.getString(35), data.getString(36), data.getString(37))
+                                    data.getInt(29), data.getString(30), data.getString(31), data.getString(32), data.getInt(33), data.getString(33), data.getString(35), data.getString(36), data.getString(37),data.getString(38))
                             fishdataArray.add(fish_attribute)
                         }
 
@@ -1154,11 +1263,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                                    , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getString(28))
+                                    , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getString(28), data.getString(29))
                             insectdataArray.add(insect_attribute)
                         }
 
-                        println(insectdataArray.size.toString() + "----------------------")
 
                         for (i in 0..insectdataArray.size - 1) {
                             title += insectdataArray.get(i).INV_PERSON + " "
@@ -1218,7 +1326,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             var flora_attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                                    , data.getFloat(22), data.getFloat(23), data.getString(24))
+                                    , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25))
                             floradataArray.add(flora_attribute)
                         }
 
@@ -1386,7 +1494,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 intent!!.putExtra("GROP_ID", attrubuteKey.toString())
                                 intent!!.putExtra("polygonid",polygon.id)
-
                                 intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
                                 intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
 
@@ -1551,7 +1658,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             return
         }
 
-
         val zoom = googleMap.cameraPosition.zoom
         if (zoom < 16) {
             Utils.showNotification(context, "지도 레벨을 16이상으로 확대한 후 이용하세요.")
@@ -1580,8 +1686,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         var added = added
 
-
-
         override fun doInBackground(vararg latLngBounds: LatLngBounds): Boolean {
 
             val northeast = latLngBounds[0].northeast
@@ -1603,15 +1707,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             var linearRing = geometryFactory.createLinearRing(coordinates)
             val mapBoundary = geometryFactory.createPolygon(linearRing)
 
-
-            if(added == "N") {
+            if (added == "N") {
               inputStream = assets.open("$layerName.shp")
             }
 
-            if(added == "Y"){
+            if (added == "Y"){
               inputStream = FileInputStream("$layerName.shp")
             }
-
 
             println(layerName + "===============================")
 
@@ -1649,13 +1751,38 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     Thread.sleep(10)
 
                     loadedCnt++
+
                 }
 
-                println("loadedCnt : $loadedCnt / $num")
+                println("geometry.type ${geometry.geometryType}")
+
+                if (geometry.geometryType.equals("Point")){
+
+                    val coordinates = geometry.coordinates
+
+                    for (j in 0..(coordinates.size - 1)) {
+                        val coordinate = coordinates[j]
+
+                        println("coordinate ${coordinate.x}     ---- ${coordinate.y}")
+                        val latlng = LatLng(coordinate.y, coordinate.x)
+
+                        val markerOptions = MarkerOptions()
+                        markerOptions.position(latlng)
+
+                        // markerOptions.title("Marker in Sydney")
+                        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                        markerOptions.alpha(1.0f)
+
+                        val marker = googleMap.addMarker(markerOptions)
+
+                    }
+
+                }
 
             }
 
             return true
+
         }
 
         override fun onProgressUpdate(vararg polygonOptions: PolygonOptions?) {
@@ -1987,6 +2114,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 marker.title = "조류"
 
                 points.add(marker)
+                allpoints.add(marker)
 
                 intent.putExtra("latitude", geoPoint.latitude.toString())
                 intent.putExtra("longitude", geoPoint.longitude.toString())
@@ -2005,11 +2133,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 marker.title = "양서,파충류"
 
                 points.add(marker)
+                allpoints.add(marker)
 
                 intent!!.putExtra("latitude", geoPoint.latitude.toString())
                 intent!!.putExtra("longitude", geoPoint.longitude.toString())
                 intent!!.putExtra("markerid",marker.id)
-
                 intent!!.putExtra("GROP_ID", attrubuteKey.toString())
 
                 startActivityForResult(intent, REPTILIA_DATA)
@@ -2025,11 +2153,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 marker.title = "포유류"
 
                 points.add(marker)
+                allpoints.add(marker)
 
                 intent!!.putExtra("latitude", geoPoint.latitude.toString())
                 intent!!.putExtra("longitude", geoPoint.longitude.toString())
                 intent!!.putExtra("markerid",marker.id)
-
                 intent!!.putExtra("GROP_ID", attrubuteKey.toString())
 
                 startActivityForResult(intent, MAMMALIA_DATA)
@@ -2044,11 +2172,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 marker.title = "어류"
 
                 points.add(marker)
+                allpoints.add(marker)
 
                 intent!!.putExtra("latitude", geoPoint.latitude.toString())
                 intent!!.putExtra("longitude", geoPoint.longitude.toString())
                 intent!!.putExtra("markerid",marker.id)
-
                 intent!!.putExtra("GROP_ID", attrubuteKey.toString())
 
                 startActivityForResult(intent, FISH_DATA)
@@ -2063,11 +2191,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 marker.title = "곤충"
 
                 points.add(marker)
+                allpoints.add(marker)
 
                 intent!!.putExtra("latitude", geoPoint.latitude.toString())
                 intent!!.putExtra("longitude", geoPoint.longitude.toString())
                 intent!!.putExtra("markerid",marker.id)
-
                 intent!!.putExtra("GROP_ID", attrubuteKey.toString())
 
                 startActivityForResult(intent, INSECT_DATA)
@@ -2082,11 +2210,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 marker.title = "식물"
 
                 points.add(marker)
+                allpoints.add(marker)
 
                 intent!!.putExtra("latitude", geoPoint.latitude.toString())
                 intent!!.putExtra("longitude", geoPoint.longitude.toString())
                 intent!!.putExtra("markerid",marker.id)
-
                 intent!!.putExtra("GROP_ID", attrubuteKey.toString())
 
                 startActivityForResult(intent, FLORA_DATA)
@@ -2100,11 +2228,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 marker.title = "저서무척추동물"
 
                 points.add(marker)
+                allpoints.add(marker)
 
                 intent!!.putExtra("latitude", geoPoint.latitude.toString())
                 intent!!.putExtra("longitude", geoPoint.longitude.toString())
                 intent!!.putExtra("markerid",marker.id)
-
                 intent!!.putExtra("GROP_ID", attrubuteKey.toString())
 
                 startActivityForResult(intent, FLORA_DATA)
@@ -2124,6 +2252,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 marker.title = "이동 경로"
 
                 points.add(marker)
+                allpoints.add(marker)
             }
         }
 
@@ -2367,11 +2496,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 btn_mygps.text = "내 위치로 이동"
             }
 
-
-
         }
 
         currentLayer = -1
+
     }
 
     private fun updateDelPointText() {
@@ -2443,6 +2571,838 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         return attributeKey
 
     }
+
+    fun exportBiotope() {
+        var biotopeArray: ArrayList<Exporter.ExportItem> = ArrayList<Exporter.ExportItem>()
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase();
+        val dataList: Array<String> = arrayOf("*")
+        var biotopedata = db.query("biotopeAttribute", dataList, null, null, "GROP_ID", null, "", null)
+
+        while (biotopedata.moveToNext()) {
+            var biotope_attribute: Biotope_attribute = Biotope_attribute(biotopedata.getString(0), biotopedata.getString(1), biotopedata.getString(2), biotopedata.getString(3)
+                    , biotopedata.getString(4), biotopedata.getString(5), biotopedata.getString(6), biotopedata.getInt(7),
+                    biotopedata.getString(8), biotopedata.getFloat(9), biotopedata.getFloat(10), biotopedata.getString(11), biotopedata.getString(12), biotopedata.getString(13), biotopedata.getFloat(14)
+                    , biotopedata.getString(15), biotopedata.getString(16), biotopedata.getString(17), biotopedata.getString(18), biotopedata.getString(19), biotopedata.getString(20), biotopedata.getString(21)
+                    , biotopedata.getString(22), biotopedata.getString(23), biotopedata.getString(24), biotopedata.getString(25), biotopedata.getFloat(26), biotopedata.getFloat(27), biotopedata.getFloat(28)
+                    , biotopedata.getString(29), biotopedata.getString(30), biotopedata.getString(31), biotopedata.getFloat(32), biotopedata.getFloat(33), biotopedata.getFloat(34), biotopedata.getString(35)
+                    , biotopedata.getString(36), biotopedata.getString(37), biotopedata.getFloat(38), biotopedata.getFloat(39), biotopedata.getString(40), biotopedata.getString(41), biotopedata.getString(42)
+                    , biotopedata.getFloat(43), biotopedata.getFloat(44), biotopedata.getString(45), biotopedata.getString(46), biotopedata.getString(47), biotopedata.getString(48), biotopedata.getDouble(49)
+                    , biotopedata.getDouble(50), biotopedata.getString(51), biotopedata.getString(52), biotopedata.getString(53))
+
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString, biotope_attribute.id))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, biotope_attribute.GROP_ID))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, biotope_attribute.PRJ_NAME))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTInteger, biotope_attribute.INV_REGION))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTReal, biotope_attribute.INV_PERSON))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, biotope_attribute.INV_DT))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, biotope_attribute.INV_TM))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_INDEX", ogr.OFTInteger, biotope_attribute.INV_INDEX))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LU_GR_NUM", ogr.OFTString, biotope_attribute.LU_GR_NUM))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LU_TY_RATE", ogr.OFTReal, biotope_attribute.LU_TY_RATE))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STAND_H", ogr.OFTReal, biotope_attribute.STAND_H))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LC_GR_NUM", ogr.OFTString, biotope_attribute.LC_GR_NUM))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LC_TY", ogr.OFTString, biotope_attribute.LC_TY))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TY_MARK", ogr.OFTString, biotope_attribute.TY_MARK))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GV_RATE", ogr.OFTReal, biotope_attribute.GV_RATE))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GV_STRUCT", ogr.OFTString, biotope_attribute.GV_STRUCT))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("DIS_RET", ogr.OFTString, biotope_attribute.DIS_RET))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("RESTOR_POT", ogr.OFTString, biotope_attribute.RESTOR_POT))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("COMP_INTA", ogr.OFTString, biotope_attribute.COMP_INTA))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("VP_INTA", ogr.OFTString, biotope_attribute.VP_INTA))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("IMP_FORM", ogr.OFTString, biotope_attribute.IMP_FORM))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("BREA_DIA", ogr.OFTString, biotope_attribute.BREA_DIA))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("FIN_EST", ogr.OFTString, biotope_attribute.FIN_EST))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SPEC", ogr.OFTString, biotope_attribute.TRE_SPEC))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_FAMI", ogr.OFTString, biotope_attribute.TRE_FAMI))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SCIEN", ogr.OFTString, biotope_attribute.TRE_SCIEN))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_H", ogr.OFTReal, biotope_attribute.TRE_H))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_BREA", ogr.OFTReal, biotope_attribute.TRE_BREA))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_COVE", ogr.OFTReal, biotope_attribute.TRE_COVE))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_SPEC", ogr.OFTString, biotope_attribute.STRE_SPEC))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_FAMI", ogr.OFTString, biotope_attribute.STRE_FAMI))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_SCIEN", ogr.OFTString, biotope_attribute.STRE_SCIEN))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_H", ogr.OFTReal, biotope_attribute.STRE_H))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_BREA", ogr.OFTReal, biotope_attribute.STRE_BREA))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_COVE", ogr.OFTReal, biotope_attribute.STRE_COVE))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_SPEC", ogr.OFTString, biotope_attribute.SHR_SPEC))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_FAMI", ogr.OFTString, biotope_attribute.SHR_FAMI))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_SCIEN", ogr.OFTString, biotope_attribute.SHR_SCIEN))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_H", ogr.OFTReal, biotope_attribute.SHR_H))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STR_COVE", ogr.OFTReal, biotope_attribute.STR_COVE))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_SPEC", ogr.OFTString, biotope_attribute.HER_SPEC))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_FAMI", ogr.OFTString, biotope_attribute.HER_FAMI))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_SCIEN", ogr.OFTString, biotope_attribute.HER_SCIEN))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_H", ogr.OFTReal, biotope_attribute.HER_H))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_COVE", ogr.OFTReal, biotope_attribute.HER_COVE))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("PIC_FOLDER", ogr.OFTString, biotope_attribute.PIC_FOLDER))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("WILD_ANI", ogr.OFTString, biotope_attribute.WILD_ANI))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("BIOTOP_POT", ogr.OFTString, biotope_attribute.BIOTOP_POT))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("UNUS_NOTE", ogr.OFTString, biotope_attribute.UNUS_NOTE))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal, biotope_attribute.GPS_LAT))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal, biotope_attribute.GPS_LON))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("NEED_CONF", ogr.OFTString, biotope_attribute.NEED_CONF))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, biotope_attribute.CONF_MOD))
+            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString, biotope_attribute.TEMP_YN))
+
+            biotopeDatas.add(biotope_attribute)
+
+        }
+
+        if (biotopeDatas.size > 0) {
+
+            println("biotopeDatas.size ${biotopeDatas.size}")
+
+            for (i in 0..biotopeDatas.size - 1) {
+
+                biotopeGrop_id += biotopeDatas.get(i).GROP_ID
+
+                val grop_id = biotopeDatas.get(i).GROP_ID
+
+                if (allPolygons.size > 0) {
+
+                    for (k in 0..allPolygons.size - 1) {
+                        println("layerinfo ---- ${allPolygons.get(k).tag}")
+                    }
+
+                    println(allPolygons.size.toString() + "----------------------------")
+
+                    for (j in 0..allPolygons.size - 1) {
+
+                        println("layerinfo ---- ${allPolygons.get(j).tag}")
+                        val layerInfo = allPolygons.get(j).tag as LayerInfo
+
+                        var attrubuteKey = layerInfo.attrubuteKey
+
+                        println("attrubutekey $attrubuteKey")
+                        if (attrubuteKey.equals(grop_id)) {
+
+                            val exporter = Exporter.ExportItem(LAYER_BIOTOPE, BIOTOPEATTRIBUTE, allPolygons.get(j))
+
+                            biotopeArray.add(exporter)
+
+                            println("adddddddddddd")
+
+                        }
+                    }
+                }
+
+                Exporter.export(biotopeArray)
+                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope" + File.separator + "biotope", "비오톱", "biotope", "Y")
+                biotopeDatas.clear()
+
+            }
+        }
+    }
+
+    fun exportBirds(){
+        var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase();
+        val dataList: Array<String> = arrayOf("*")
+        val birdsdata= db.query("birdsAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var datas:ArrayList<Birds_attribute> = ArrayList<Birds_attribute>()
+        while (birdsdata.moveToNext()) {
+
+            var birds_attribute: Birds_attribute = Birds_attribute(birdsdata.getString(0), birdsdata.getString(1), birdsdata.getString(2), birdsdata.getString(3)
+                    , birdsdata.getString(4), birdsdata.getString(5), birdsdata.getString(6), birdsdata.getString(7)
+                    , birdsdata.getString(8), birdsdata.getFloat(9), birdsdata.getString(10), birdsdata.getInt(11), birdsdata.getString(12), birdsdata.getString(13), birdsdata.getString(14)
+                    , birdsdata.getString(15), birdsdata.getInt(16), birdsdata.getString(17), birdsdata.getString(18), birdsdata.getString(19), birdsdata.getString(20), birdsdata.getString(21)
+                    , birdsdata.getString(22), birdsdata.getString(23), birdsdata.getFloat(24), birdsdata.getFloat(25) , birdsdata.getString(26),birdsdata.getString(27))
+
+            datas.add(birds_attribute)
+
+        }
+
+        if(datas != null){
+            for(i in 0..datas.size-1){
+                println("-----datassize${datas.size}")
+
+                val data = datas.get(i)
+
+                val birdsdata= db.query("birdsAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
+
+                while (birdsdata.moveToNext()) {
+
+                    var birds_attribute: Birds_attribute = Birds_attribute(birdsdata.getString(0), birdsdata.getString(1), birdsdata.getString(2), birdsdata.getString(3)
+                            , birdsdata.getString(4), birdsdata.getString(5), birdsdata.getString(6), birdsdata.getString(7)
+                            , birdsdata.getString(8), birdsdata.getFloat(9), birdsdata.getString(10), birdsdata.getInt(11), birdsdata.getString(12), birdsdata.getString(13), birdsdata.getString(14)
+                            , birdsdata.getString(15), birdsdata.getInt(16), birdsdata.getString(17), birdsdata.getString(18), birdsdata.getString(19), birdsdata.getString(20), birdsdata.getString(21)
+                            , birdsdata.getString(22), birdsdata.getString(23), birdsdata.getFloat(24), birdsdata.getFloat(25) , birdsdata.getString(26),birdsdata.getString(27))
+
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,birds_attribute.id))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString,birds_attribute.GROP_ID))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString,birds_attribute.PRJ_NAME))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString,birds_attribute.INV_REGION))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString,birds_attribute.INV_DT))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString,birds_attribute.INV_PERSON))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString,birds_attribute.WEATHER))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString,birds_attribute.WIND))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString,birds_attribute.WIND_DIRE))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTReal,birds_attribute.TEMPERATUR))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString,birds_attribute.ETC))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger,birds_attribute.NUM))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString,birds_attribute.INV_TM))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString,birds_attribute.SPEC_NM))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString,birds_attribute.FAMI_NM))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString,birds_attribute.SCIEN_NM))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger,birds_attribute.INDI_CNT))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("OBS_STAT", ogr.OFTString,birds_attribute.OBS_STAT))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("OBS_ST_ETC", ogr.OFTString,birds_attribute.OBS_ST_ETC))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_TAR", ogr.OFTString,birds_attribute.USE_TAR))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_TAR_SP", ogr.OFTString,birds_attribute.USE_TAR_SP))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_LAYER", ogr.OFTString,birds_attribute.USE_LAYER))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT", ogr.OFTString,birds_attribute.MJ_ACT))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT_PR", ogr.OFTString,birds_attribute.MJ_ACT_PR))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal,birds_attribute.GPS_LAT))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal,birds_attribute.GPS_LON))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString,birds_attribute.TEMP_YN))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString,birds_attribute.CONF_MOD))
+
+                    birdsDatas.add(birds_attribute)
+                }
+            }
+        }
+
+        if(birdsDatas.size > 0) {
+
+            for (i in 0..birdsDatas.size - 1) {
+
+                birdsPk += birdsDatas.get(i).id + "\n"
+
+                val grop_id = birdsDatas.get(i).GROP_ID
+
+                if(points.size > 0) {
+
+                    for (j in 0..points.size - 1) {
+
+                        println(points.size.toString() + "sizeeeeeeeeeeeeeeeeeeeeeeeeeeeee${points.get(j).tag}")
+                            if (points.get(j).tag != null) {
+                            val layerInfo = points.get(j).tag as LayerInfo
+
+                            var attrubuteKey = layerInfo.attrubuteKey
+
+                            if (attrubuteKey.equals(grop_id)) {
+
+                                val exporter = Exporter.ExportPointItem(LAYER_BIRDS, BIRDSATTRIBUTE, points.get(j))
+
+                                pointsArray.add(exporter)
+
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+            dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds" + File.separator + "birds" ,"조류", "birds","Y")
+            Exporter.exportPoint(pointsArray)
+            pointsArray.clear()
+            birdsDatas.clear()
+        }
+    }
+
+    fun exportReptilia(){
+        var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase();
+        val dataList: Array<String> = arrayOf("*")
+        val reptiliadata= db.query("reptiliaAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var datas: ArrayList<Reptilia_attribute> = ArrayList<Reptilia_attribute>()
+
+        while (reptiliadata.moveToNext()) {
+
+            var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(reptiliadata.getString(0), reptiliadata.getString(1), reptiliadata.getString(2), reptiliadata.getString(3), reptiliadata.getString(4)
+                    , reptiliadata.getString(5), reptiliadata.getString(6), reptiliadata.getString(7), reptiliadata.getString(8), reptiliadata.getFloat(9), reptiliadata.getString(10), reptiliadata.getInt(11)
+                    , reptiliadata.getString(12), reptiliadata.getString(13), reptiliadata.getString(14), reptiliadata.getString(15), reptiliadata.getInt(16), reptiliadata.getInt(17), reptiliadata.getInt(18)
+                    , reptiliadata.getString(19), reptiliadata.getString(20), reptiliadata.getString(21), reptiliadata.getString(22), reptiliadata.getString(23), reptiliadata.getString(24)
+                    , reptiliadata.getInt(25), reptiliadata.getInt(26), reptiliadata.getInt(27), reptiliadata.getFloat(28), reptiliadata.getFloat(29),reptiliadata.getString(30),reptiliadata.getString(31))
+
+            datas.add(reptilia_attribute)
+        }
+
+        if(datas != null){
+
+            for(i in 0..datas.size-1){
+                val data = datas.get(i)
+
+                val reptiliadata= db.query("reptiliaAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
+
+                while (reptiliadata.moveToNext()) {
+
+                    var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(reptiliadata.getString(0), reptiliadata.getString(1), reptiliadata.getString(2), reptiliadata.getString(3), reptiliadata.getString(4)
+                            , reptiliadata.getString(5), reptiliadata.getString(6), reptiliadata.getString(7), reptiliadata.getString(8), reptiliadata.getFloat(9), reptiliadata.getString(10), reptiliadata.getInt(11)
+                            , reptiliadata.getString(12), reptiliadata.getString(13), reptiliadata.getString(14), reptiliadata.getString(15), reptiliadata.getInt(16), reptiliadata.getInt(17), reptiliadata.getInt(18)
+                            , reptiliadata.getString(19), reptiliadata.getString(20), reptiliadata.getString(21), reptiliadata.getString(22), reptiliadata.getString(23), reptiliadata.getString(24)
+                            , reptiliadata.getInt(25), reptiliadata.getInt(26), reptiliadata.getInt(27), reptiliadata.getFloat(28), reptiliadata.getFloat(29),reptiliadata.getString(30),reptiliadata.getString(31))
+
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,reptilia_attribute.id))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString,reptilia_attribute.GROP_ID))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString,reptilia_attribute.PRJ_NAME))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString,reptilia_attribute.INV_REGION))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString,reptilia_attribute.INV_DT))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString,reptilia_attribute.INV_PERSON))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString,reptilia_attribute.WEATHER))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString,reptilia_attribute.WIND))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString,reptilia_attribute.WIND_DIRE))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTReal,reptilia_attribute.TEMPERATUR))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString,reptilia_attribute.ETC))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger,reptilia_attribute.NUM))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString,reptilia_attribute.INV_TM))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString,reptilia_attribute.SPEC_NM))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString,reptilia_attribute.FAMI_NM))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString,reptilia_attribute.SCIEN_NM))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("IN_CNT_ADU", ogr.OFTInteger,reptilia_attribute.IN_CNT_ADU))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("IN_CNT_LAR", ogr.OFTInteger,reptilia_attribute.IN_CNT_LAR))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("IN_CNT_EGG", ogr.OFTInteger,reptilia_attribute.IN_CNT_EGG))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_RIVEER", ogr.OFTString,reptilia_attribute.HAB_RIVEER))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_EDGE", ogr.OFTString,reptilia_attribute.HAB_EDGE))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WATER_IN", ogr.OFTString,reptilia_attribute.WATER_IN))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WATER_OUT", ogr.OFTString,reptilia_attribute.WATER_OUT))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WATER_CONT", ogr.OFTString,reptilia_attribute.WATER_CONT))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WATER_QUAL", ogr.OFTString,reptilia_attribute.WATER_QUAL))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WATER_DEPT", ogr.OFTInteger,reptilia_attribute.WATER_DEPT))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA_W", ogr.OFTInteger,reptilia_attribute.HAB_AREA_W))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA_H", ogr.OFTInteger,reptilia_attribute.HAB_AREA_H))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal,reptilia_attribute.GPS_LAT))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal,reptilia_attribute.GPS_LON))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString,reptilia_attribute.TEMP_YN))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString,reptilia_attribute.CONF_MOD))
+
+                    reptiliaDatas.add(reptilia_attribute)
+
+                }
+
+            }
+
+        }
+
+        if(reptiliaDatas.size > 0) {
+
+            for (i in 0..reptiliaDatas.size - 1) {
+                reptiliaPk += reptiliaDatas.get(i).id + "\n"
+
+                val grop_id = reptiliaDatas.get(i).GROP_ID
+
+                if(points.size > 0) {
+
+                    for (j in 0..points.size - 1) {
+
+                        if (points.get(j).tag != null) {
+                            val layerInfo = points.get(j).tag as LayerInfo
+
+                            var attrubuteKey = layerInfo.attrubuteKey
+
+                            if (attrubuteKey.equals(grop_id)) {
+
+                                val exporter = Exporter.ExportPointItem(LAYER_REPTILIA, REPTILIAATTRIBUTE, points.get(j))
+
+                                pointsArray.add(exporter)
+
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+            dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia" + File.separator + "reptilia","양서,파충류", "reptilia","Y")
+            Exporter.exportPoint(pointsArray)
+            pointsArray.clear()
+            reptiliaDatas.clear()
+        }
+
+    }
+
+    fun exportMammal(){
+        var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase();
+        val dataList: Array<String> = arrayOf("*")
+        val mammaldata = db.query("mammalAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var datas:ArrayList<Mammal_attribute> = ArrayList<Mammal_attribute>()
+
+        while (mammaldata.moveToNext()) {
+
+            var mammal_attribute: Mammal_attribute = Mammal_attribute(mammaldata.getString(0), mammaldata.getString(1), mammaldata.getString(2), mammaldata.getString(3), mammaldata.getString(4)
+                    , mammaldata.getString(5), mammaldata.getString(6), mammaldata.getString(7), mammaldata.getString(8), mammaldata.getFloat(9), mammaldata.getString(10), mammaldata.getInt(11)
+                    , mammaldata.getString(12), mammaldata.getString(13), mammaldata.getString(14), mammaldata.getString(15), mammaldata.getString(16), mammaldata.getString(17)
+                    , mammaldata.getInt(18), mammaldata.getString(19), mammaldata.getString(20), mammaldata.getFloat(21), mammaldata.getFloat(22), mammaldata.getString(23), mammaldata.getString(24)
+                    , mammaldata.getString(25), mammaldata.getString(26), mammaldata.getString(27),mammaldata.getString(28))
+
+            datas.add(mammal_attribute)
+
+        }
+
+        if(datas != null){
+
+            for (i in 0..datas.size-1) {
+                val data = datas.get(i)
+
+                val mammaldata = db.query("mammalAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
+
+                while (mammaldata.moveToNext()) {
+
+                    var mammal_attribute: Mammal_attribute = Mammal_attribute(mammaldata.getString(0), mammaldata.getString(1), mammaldata.getString(2), mammaldata.getString(3), mammaldata.getString(4)
+                            , mammaldata.getString(5), mammaldata.getString(6), mammaldata.getString(7), mammaldata.getString(8), mammaldata.getFloat(9), mammaldata.getString(10), mammaldata.getInt(11)
+                            , mammaldata.getString(12), mammaldata.getString(13), mammaldata.getString(14), mammaldata.getString(15), mammaldata.getString(16), mammaldata.getString(17)
+                            , mammaldata.getInt(18), mammaldata.getString(19), mammaldata.getString(20), mammaldata.getFloat(21), mammaldata.getFloat(22), mammaldata.getString(23), mammaldata.getString(24)
+                            , mammaldata.getString(25), mammaldata.getString(26), mammaldata.getString(27), mammaldata.getString(28))
+
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString, mammal_attribute.id))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, mammal_attribute.GROP_ID))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, mammal_attribute.PRJ_NAME))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, mammal_attribute.INV_REGION))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, mammal_attribute.INV_DT))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, mammal_attribute.INV_PERSON))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, mammal_attribute.WEATHER))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, mammal_attribute.WIND))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, mammal_attribute.WIND_DIRE))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTReal, mammal_attribute.TEMPERATUR))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, mammal_attribute.ETC))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger, mammal_attribute.NUM))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, mammal_attribute.INV_TM))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, mammal_attribute.SPEC_NM))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, mammal_attribute.FAMI_NM))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, mammal_attribute.SCIEN_NM))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("OBS_TY", ogr.OFTString, mammal_attribute.OBS_TY))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("OBS_TY_ETC", ogr.OFTString, mammal_attribute.OBS_TY_ETC))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger, mammal_attribute.INDI_CNT))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("OB_PT_CHAR", ogr.OFTString, mammal_attribute.OB_PT_CHAR))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("UNUS_NOTE", ogr.OFTString, mammal_attribute.UNUS_NOTE))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal, mammal_attribute.GPS_LAT))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal, mammal_attribute.GPS_LON))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("UN_SPEC", ogr.OFTString, mammal_attribute.UN_SPEC))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("UN_SPEC_RE", ogr.OFTString, mammal_attribute.UN_SPEC_RE))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("TR_EASY", ogr.OFTString, mammal_attribute.TR_EASY))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("TR_EASY_RE", ogr.OFTString, mammal_attribute.TR_EASY_RE))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString, mammal_attribute.TEMP_YN))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, mammal_attribute.CONF_MOD))
+
+                    mammaliaDatas.add(mammal_attribute)
+                }
+            }
+        }
+
+        if(mammaliaDatas.size > 0) {
+
+            for (i in 0..mammaliaDatas.size - 1) {
+                mammaliaPk += mammaliaDatas.get(i).id + "\n"
+
+                val grop_id = mammaliaDatas.get(i).GROP_ID
+
+                if(points.size > 0) {
+
+                    for (j in 0..points.size - 1) {
+
+                            if(points.get(j).tag != null){
+                            val layerInfo = points.get(j).tag as LayerInfo
+
+                            var attrubuteKey = layerInfo.attrubuteKey
+
+                            if (attrubuteKey.equals(grop_id)) {
+
+                                val exporter = Exporter.ExportPointItem(LAYER_MAMMALIA, MAMMALATTRIBUTE, points.get(j))
+
+                                pointsArray.add(exporter)
+
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+            dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia" + File.separator + "mammalia","포유류", "mammalia","Y")
+            Exporter.exportPoint(pointsArray)
+            pointsArray.clear()
+            mammaliaDatas.clear()
+        }
+    }
+
+    fun exportFish(){
+        var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase();
+        val dataList: Array<String> = arrayOf("*")
+        val fishdata = db.query("fishAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var datas: ArrayList<Fish_attribute> = ArrayList<Fish_attribute>()
+
+        while (fishdata.moveToNext()) {
+
+            var fish_attribute: Fish_attribute = Fish_attribute(fishdata.getString(0), fishdata.getString(1), fishdata.getString(2), fishdata.getString(3), fishdata.getString(4), fishdata.getString(5), fishdata.getString(6), fishdata.getString(7),
+                    fishdata.getString(8),fishdata.getString(9), fishdata.getFloat(10), fishdata.getString(11), fishdata.getString(12), fishdata.getString(13), fishdata.getInt(14), fishdata.getString(15), fishdata.getInt(16), fishdata.getInt(17), fishdata.getString(18),
+                    fishdata.getFloat(19), fishdata.getFloat(20), fishdata.getString(21), fishdata.getInt(22), fishdata.getInt(23), fishdata.getInt(24), fishdata.getInt(25), fishdata.getString(26), fishdata.getString(27), fishdata.getString(28),
+                    fishdata.getInt(29) ,fishdata.getString(30), fishdata.getString(31), fishdata.getString(32), fishdata.getInt(33), fishdata.getString(33), fishdata.getString(35), fishdata.getString(36),fishdata.getString(37),fishdata.getString(38))
+
+            datas.add(fish_attribute)
+        }
+
+        if(datas != null) {
+            for (i in 0..datas.size - 1) {
+                val data = datas.get(i)
+
+                val fishdata = db.query("fishAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
+
+                while (fishdata.moveToNext()) {
+                    var fish_attribute: Fish_attribute = Fish_attribute(fishdata.getString(0), fishdata.getString(1), fishdata.getString(2), fishdata.getString(3), fishdata.getString(4), fishdata.getString(5), fishdata.getString(6), fishdata.getString(7),
+                            fishdata.getString(8),fishdata.getString(9), fishdata.getFloat(10), fishdata.getString(11), fishdata.getString(12), fishdata.getString(13), fishdata.getInt(14), fishdata.getString(15), fishdata.getInt(16), fishdata.getInt(17), fishdata.getString(18),
+                            fishdata.getFloat(19), fishdata.getFloat(20), fishdata.getString(21), fishdata.getInt(22), fishdata.getInt(23), fishdata.getInt(24), fishdata.getInt(25), fishdata.getString(26), fishdata.getString(27), fishdata.getString(28),
+                            fishdata.getInt(29) ,fishdata.getString(30), fishdata.getString(31), fishdata.getString(32), fishdata.getInt(33), fishdata.getString(33), fishdata.getString(35), fishdata.getString(36),fishdata.getString(37),fishdata.getString(38))
+
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString, fish_attribute.id))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, fish_attribute.GROP_ID))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, fish_attribute.PRJ_NAME))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, fish_attribute.INV_REGION))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, fish_attribute.INV_DT))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, fish_attribute.INV_TM))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, fish_attribute.INV_PERSON))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, fish_attribute.WEATHER))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, fish_attribute.WIND))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, fish_attribute.WIND_DIRE))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTReal, fish_attribute.TEMPERATUR))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, fish_attribute.ETC))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("MID_RAGE", ogr.OFTString, fish_attribute.MID_RAGE))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("CODE_NUM", ogr.OFTString, fish_attribute.CODE_NUM))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("RIVER_NUM", ogr.OFTInteger, fish_attribute.RIVER_NUM))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("RIVER_NM", ogr.OFTString, fish_attribute.RIVER_NM))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("NET_CNT", ogr.OFTInteger, fish_attribute.NET_CNT))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("NET_MIN", ogr.OFTInteger, fish_attribute.NET_MIN))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("AD_DIST_NM", ogr.OFTString, fish_attribute.AD_DIST_NM))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal, fish_attribute.GPS_LAT))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal, fish_attribute.GPS_LON))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("COLL_TOOL", ogr.OFTString, fish_attribute.COLL_TOOL))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("STREAM_W", ogr.OFTString, fish_attribute.STREAM_W))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("WATER_W", ogr.OFTInteger, fish_attribute.WATER_W))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("WATER_D", ogr.OFTInteger, fish_attribute.WATER_D))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("WATER_CUR", ogr.OFTInteger, fish_attribute.WATER_CUR))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_STR", ogr.OFTString, fish_attribute.RIV_STR))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_STR_IN", ogr.OFTString, fish_attribute.RIV_STR_IN))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_FORM", ogr.OFTString, fish_attribute.RIV_FORM))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger, fish_attribute.NUM))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, fish_attribute.SPEC_NM))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, fish_attribute.FAMI_NM))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, fish_attribute.SCIEN_NM))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger, fish_attribute.INDI_CNT))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("UNIDENT", ogr.OFTString, fish_attribute.UNIDENT))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_FM_CH", ogr.OFTString, fish_attribute.RIV_FM_CH))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("UN_FISH_CH", ogr.OFTString, fish_attribute.UN_FISH_CH))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString, fish_attribute.TEMP_YN))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, fish_attribute.CONF_MOD))
+
+                    fishDatas.add(fish_attribute)
+
+                }
+            }
+        }
+
+        if(fishDatas.size > 0 ) {
+
+            for (i in 0..fishDatas.size - 1) {
+                fishPk += fishDatas.get(i).id + "\n"
+
+                val grop_id = fishDatas.get(i).GROP_ID
+
+                if (points.size > 0) {
+
+                    for (j in 0..points.size - 1) {
+
+                        if (points.get(j).tag != null) {
+                            val layerInfo = points.get(j).tag as LayerInfo
+
+                            var attrubuteKey = layerInfo.attrubuteKey
+                            if (attrubuteKey.equals(grop_id)) {
+
+                                val exporter = Exporter.ExportPointItem(LAYER_FISH, FISHATTRIBUTE, points.get(j))
+
+                                pointsArray.add(exporter)
+
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+            dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish" + File.separator + "fish","어류", "fish","Y")
+            Exporter.exportPoint(pointsArray)
+            pointsArray.clear()
+            fishDatas.clear()
+        }
+    }
+
+    fun exportInsects(){
+        var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase();
+        val dataList: Array<String> = arrayOf("*")
+        val insectdata = db.query("insectAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var datas: ArrayList<Insect_attribute> = ArrayList<Insect_attribute>()
+
+        while (insectdata.moveToNext()) {
+
+            var insect_attribute: Insect_attribute = Insect_attribute(insectdata.getString(0), insectdata.getString(1), insectdata.getString(2), insectdata.getString(3), insectdata.getString(4)
+                    , insectdata.getString(5), insectdata.getString(6), insectdata.getString(7), insectdata.getString(8), insectdata.getFloat(9), insectdata.getString(10), insectdata.getInt(11)
+                    , insectdata.getString(12), insectdata.getString(13), insectdata.getString(14), insectdata.getString(15), insectdata.getInt(16), insectdata.getString(17), insectdata.getString(18)
+                    , insectdata.getString(19), insectdata.getString(20), insectdata.getString(21), insectdata.getString(22), insectdata.getString(23), insectdata.getString(24), insectdata.getString(25)
+                    , insectdata.getFloat(26), insectdata.getFloat(27), insectdata.getString(28), insectdata.getString(29))
+
+            datas.add(insect_attribute)
+
+        }
+
+        if(datas != null){
+            for(i in 0..datas.size-1){
+                val data = datas.get(i)
+
+                val insectdata = db.query("insectAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
+
+                while (insectdata.moveToNext()) {
+
+                    var insect_attribute: Insect_attribute = Insect_attribute(insectdata.getString(0), insectdata.getString(1), insectdata.getString(2), insectdata.getString(3), insectdata.getString(4)
+                            , insectdata.getString(5), insectdata.getString(6), insectdata.getString(7), insectdata.getString(8), insectdata.getFloat(9), insectdata.getString(10), insectdata.getInt(11)
+                            , insectdata.getString(12), insectdata.getString(13), insectdata.getString(14), insectdata.getString(15), insectdata.getInt(16), insectdata.getString(17), insectdata.getString(18)
+                            , insectdata.getString(19), insectdata.getString(20), insectdata.getString(21), insectdata.getString(22), insectdata.getString(23), insectdata.getString(24), insectdata.getString(25)
+                            , insectdata.getFloat(26), insectdata.getFloat(27), insectdata.getString(28), insectdata.getString(29))
+
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,insect_attribute.id))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString,insect_attribute.GROP_ID))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString,insect_attribute.PRJ_NAME))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString,insect_attribute.INV_REGION))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString,insect_attribute.INV_DT))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString,insect_attribute.INV_PERSON))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString,insect_attribute.WEATHER))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString,insect_attribute.WIND))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString,insect_attribute.WIND_DIRE))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTReal,insect_attribute.TEMPERATUR))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString,insect_attribute.ETC))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger,insect_attribute.NUM))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString,insect_attribute.INV_TM))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString,insect_attribute.SPEC_NM))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString,insect_attribute.FAMI_NM))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString,insect_attribute.SCIEN_NM))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger,insect_attribute.INDI_CNT))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("OBS_STAT", ogr.OFTString,insect_attribute.OBS_STAT))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("OBS_ST_ETC", ogr.OFTString,insect_attribute.OBS_ST_ETC))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("USE_TAR", ogr.OFTString,insect_attribute.USE_TAR))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("USER_TA_ETC", ogr.OFTString,insect_attribute.USER_TA_ETC))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT", ogr.OFTString,insect_attribute.MJ_ACT))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT_ETC", ogr.OFTString,insect_attribute.MJ_ACT_ETC))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_MEAN", ogr.OFTString,insect_attribute.INV_MEAN))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_MN_ETC", ogr.OFTString,insect_attribute.INV_MN_ETC))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("UNUS_NOTE", ogr.OFTString,insect_attribute.UNUS_NOTE))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal,insect_attribute.GPS_LAT))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal,insect_attribute.GPS_LON))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString,insect_attribute.TEMP_YN))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString,insect_attribute.CONF_MOD))
+
+                    insectDatas.add(insect_attribute)
+
+                }
+            }
+        }
+
+        if(insectDatas.size > 0) {
+
+            for (i in 0..insectDatas.size - 1) {
+                insectPk += insectDatas.get(i).id + "\n"
+
+                val grop_id = insectDatas.get(i).GROP_ID
+
+                if (points.size > 0) {
+
+                    for (j in 0..points.size - 1) {
+                        if (points.get(j).tag != null) {
+                            val layerInfo = points.get(j).tag as LayerInfo
+
+                            var attrubuteKey = layerInfo.attrubuteKey
+
+                            if (attrubuteKey.equals(grop_id)) {
+
+                                val exporter = Exporter.ExportPointItem(LAYER_INSECT, INSECTATTRIBUTE, points.get(j))
+
+                                pointsArray.add(exporter)
+
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+            dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect" + File.separator + "insect","곤충", "insect","Y")
+            Exporter.exportPoint(pointsArray)
+            pointsArray.clear()
+            insectDatas.clear()
+        }
+    }
+
+    fun exportFlora(){
+        var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase();
+        val dataList: Array<String> = arrayOf("*")
+
+        val floradata = db.query("floraAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var datas:ArrayList<Flora_Attribute> = ArrayList<Flora_Attribute>()
+
+        while (floradata.moveToNext()) {
+
+            var flora_Attribute: Flora_Attribute = Flora_Attribute(floradata.getString(0), floradata.getString(1), floradata.getString(2), floradata.getString(3), floradata.getString(4)
+                    , floradata.getString(5), floradata.getString(6), floradata.getString(7), floradata.getString(8), floradata.getFloat(9), floradata.getString(10), floradata.getInt(11)
+                    , floradata.getString(12), floradata.getString(13), floradata.getString(14), floradata.getString(15), floradata.getString(16), floradata.getString(17), floradata.getString(18)
+                    , floradata.getString(19), floradata.getInt(20), floradata.getString(21), floradata.getFloat(22), floradata.getFloat(23), floradata.getString(24),floradata.getString(25))
+
+            datas.add(flora_Attribute)
+        }
+
+        if(datas != null){
+            for(i in 0..datas.size-1){
+                val data = datas.get(i)
+                val floradata = db.query("floraAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
+
+                while (floradata.moveToNext()) {
+
+                    var flora_Attribute: Flora_Attribute = Flora_Attribute(floradata.getString(0), floradata.getString(1), floradata.getString(2), floradata.getString(3), floradata.getString(4)
+                            , floradata.getString(5), floradata.getString(6), floradata.getString(7), floradata.getString(8), floradata.getFloat(9), floradata.getString(10), floradata.getInt(11)
+                            , floradata.getString(12), floradata.getString(13), floradata.getString(14), floradata.getString(15), floradata.getString(16), floradata.getString(17), floradata.getString(18)
+                            , floradata.getString(19), floradata.getInt(20), floradata.getString(21), floradata.getFloat(22), floradata.getFloat(23), floradata.getString(24),floradata.getString(25))
+
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("ID",ogr.OFTInteger,flora_Attribute.id))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("GROP_ID",ogr.OFTString,flora_Attribute.GROP_ID))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME",ogr.OFTString,flora_Attribute.PRJ_NAME))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("INV_REGION",ogr.OFTString,flora_Attribute.INV_REGION))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("INV_DT",ogr.OFTString,flora_Attribute.INV_DT))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON",ogr.OFTString,flora_Attribute.INV_PERSON))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("WEATHER",ogr.OFTString,flora_Attribute.WEATHER))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("WIND",ogr.OFTString,flora_Attribute.WIND))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE",ogr.OFTString,flora_Attribute.WIND_DIRE))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR",ogr.OFTString,flora_Attribute.TEMPERATUR))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("ETC",ogr.OFTString,flora_Attribute.ETC))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("NUM",ogr.OFTInteger,flora_Attribute.NUM))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("INV_TM",ogr.OFTString,flora_Attribute.INV_TM))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM",ogr.OFTString,flora_Attribute.SPEC_NM))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM",ogr.OFTString,flora_Attribute.FAMI_NM))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM",ogr.OFTString,flora_Attribute.SCIEN_NM))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("FLORE_YN",ogr.OFTString,flora_Attribute.FLORE_YN))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("PLANT_YN",ogr.OFTString,flora_Attribute.PLANT_YN))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("HAB_STAT",ogr.OFTString,flora_Attribute.HAB_STAT))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("HAB_ETC",ogr.OFTString,flora_Attribute.HAB_ETC))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("COL_IN_CNT",ogr.OFTInteger,flora_Attribute.COL_IN_CNT))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("THRE_CAU",ogr.OFTString,flora_Attribute.THRE_CAU))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT",ogr.OFTReal,flora_Attribute.GPS_LAT))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("GPS_LON",ogr.OFTReal,flora_Attribute.GPS_LON))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN",ogr.OFTInteger,flora_Attribute.TEMP_YN))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD",ogr.OFTInteger,flora_Attribute.CONF_MOD))
+
+                    floraDatas.add(flora_Attribute)
+
+                }
+            }
+        }
+
+        if(floraDatas.size > 0) {
+
+            for (i in 0..floraDatas.size - 1) {
+                floraPk += floraDatas.get(i).id + "\n"
+
+                val grop_id = floraDatas.get(i).GROP_ID
+
+                if (points.size > 0) {
+
+                    for (j in 0..points.size - 1) {
+                        val layerInfo = points.get(j).tag as LayerInfo
+
+                        var attrubuteKey = layerInfo.attrubuteKey
+
+                        if (attrubuteKey.equals(grop_id)) {
+
+                            val exporter = Exporter.ExportPointItem(LAYER_FLORA, FLORAATTRIBUTE, points.get(j))
+
+                            pointsArray.add(exporter)
+
+                        }
+
+                    }
+
+                }
+            }
+
+            dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora" + File.separator + "flora","조류", "flora","Y")
+            Exporter.exportPoint(pointsArray)
+            pointsArray.clear()
+            floraDatas.clear()
+        }
+    }
+
+    fun exportTracking(){
+        var trackingPointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase();
+        val dataList: Array<String> = arrayOf("*")
+
+        val trackingdata = db.query("tracking", dataList, null, null, null, null, "id", null)
+
+        var trackingpk: String  = ""
+
+        while (trackingdata.moveToNext()) {
+            trackingChk = true
+
+            var tracking : Tracking = Tracking(trackingdata.getInt(0),trackingdata.getDouble(1),trackingdata.getDouble(2))
+
+            TRACKINGS.add(Exporter.ColumnDef("ID",ogr.OFTInteger,tracking.id))
+            println("------------------------------------${ogr.OFTInteger}----------------------")
+            TRACKINGS.add(Exporter.ColumnDef("LATITUDE",ogr.OFTReal,tracking.LATITUDE))
+            TRACKINGS.add(Exporter.ColumnDef("LONGITUDE",ogr.OFTReal,tracking.LONGITUDE))
+
+
+            println("tracking.id ${tracking.id}")
+            println("tracking.LATITUDE ${tracking.LATITUDE}")
+            println("tracking.LONGITUDE ${tracking.LONGITUDE}")
+            trackingDatas.add(tracking)
+
+            val latlng = LatLng(tracking.LATITUDE!!,tracking.LONGITUDE!!)
+
+            drawPoint(latlng)
+
+            trackingBtn.setText("Tracking 켜기")
+
+            trackingpk += tracking.id.toString()
+
+        }
+
+        if(trackingDatas.size > 0){
+
+            for (i in 0..trackpoints.size -1 ){
+                println("trackpoint ${trackpoints.size}")
+
+                val exporter = Exporter.ExportPointItem(TRACKING, TRACKINGS,trackpoints.get(i))
+
+                println("============================================exporter" + exporter)
+
+                trackingPointsArray.add(exporter)
+            }
+
+            trackingChk = false
+
+            println("trackingPoints${trackingPointsArray.size}")
+
+            Exporter.exportPoint(trackingPointsArray)
+            trackingPointsArray.clear()
+            trackingDatas.clear()
+
+            for(k in 0..trackpoints.size-1){
+                trackpoints.get(k).remove()
+            }
+
+        }
+    }
+
 
     fun export() {
 
@@ -2586,7 +3546,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     , birdsdata.getString(4), birdsdata.getString(5), birdsdata.getString(6), birdsdata.getString(7)
                     , birdsdata.getString(8), birdsdata.getFloat(9), birdsdata.getString(10), birdsdata.getInt(11), birdsdata.getString(12), birdsdata.getString(13), birdsdata.getString(14)
                     , birdsdata.getString(15), birdsdata.getInt(16), birdsdata.getString(17), birdsdata.getString(18), birdsdata.getString(19), birdsdata.getString(20), birdsdata.getString(21)
-                    , birdsdata.getString(22), birdsdata.getString(23), birdsdata.getFloat(24), birdsdata.getFloat(25) , birdsdata.getString(26))
+                    , birdsdata.getString(22), birdsdata.getString(23), birdsdata.getFloat(24), birdsdata.getFloat(25) , birdsdata.getString(26),birdsdata.getString(27))
 
             BIRDSATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,birds_attribute.id))
             BIRDSATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString,birds_attribute.GROP_ID))
@@ -2615,6 +3575,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal,birds_attribute.GPS_LAT))
             BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal,birds_attribute.GPS_LON))
             BIRDSATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString,birds_attribute.TEMP_YN))
+            BIRDSATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString,birds_attribute.CONF_MOD))
 
             birdsDatas.add(birds_attribute)
         }
@@ -2661,7 +3622,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     , reptiliadata.getString(5), reptiliadata.getString(6), reptiliadata.getString(7), reptiliadata.getString(8), reptiliadata.getFloat(9), reptiliadata.getString(10), reptiliadata.getInt(11)
                     , reptiliadata.getString(12), reptiliadata.getString(13), reptiliadata.getString(14), reptiliadata.getString(15), reptiliadata.getInt(16), reptiliadata.getInt(17), reptiliadata.getInt(18)
                     , reptiliadata.getString(19), reptiliadata.getString(20), reptiliadata.getString(21), reptiliadata.getString(22), reptiliadata.getString(23), reptiliadata.getString(24)
-                    , reptiliadata.getInt(25), reptiliadata.getInt(26), reptiliadata.getInt(27), reptiliadata.getFloat(28), reptiliadata.getFloat(29),reptiliadata.getString(30))
+                    , reptiliadata.getInt(25), reptiliadata.getInt(26), reptiliadata.getInt(27), reptiliadata.getFloat(28), reptiliadata.getFloat(29),reptiliadata.getString(30),reptiliadata.getString(31))
 
                 REPTILIAATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,reptilia_attribute.id))
                 REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString,reptilia_attribute.GROP_ID))
@@ -2694,6 +3655,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal,reptilia_attribute.GPS_LAT))
                 REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal,reptilia_attribute.GPS_LON))
                 REPTILIAATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString,reptilia_attribute.TEMP_YN))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString,reptilia_attribute.CONF_MOD))
 
             reptiliaDatas.add(reptilia_attribute)
 
@@ -2740,7 +3702,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     , mammaldata.getString(5), mammaldata.getString(6), mammaldata.getString(7), mammaldata.getString(8), mammaldata.getFloat(9), mammaldata.getString(10), mammaldata.getInt(11)
                     , mammaldata.getString(12), mammaldata.getString(13), mammaldata.getString(14), mammaldata.getString(15), mammaldata.getString(16), mammaldata.getString(17)
                     , mammaldata.getInt(18), mammaldata.getString(19), mammaldata.getString(20), mammaldata.getFloat(21), mammaldata.getFloat(22), mammaldata.getString(23), mammaldata.getString(24)
-                    , mammaldata.getString(25), mammaldata.getString(26), mammaldata.getString(27))
+                    , mammaldata.getString(25), mammaldata.getString(26), mammaldata.getString(27),mammaldata.getString(28))
 
             MAMMALATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,mammal_attribute.id))
             MAMMALATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString,mammal_attribute.GROP_ID))
@@ -2770,6 +3732,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             MAMMALATTRIBUTE.add(Exporter.ColumnDef("TR_EASY", ogr.OFTString,mammal_attribute.TR_EASY))
             MAMMALATTRIBUTE.add(Exporter.ColumnDef("TR_EASY_RE", ogr.OFTString,mammal_attribute.TR_EASY_RE))
             MAMMALATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString,mammal_attribute.TEMP_YN))
+            MAMMALATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString,mammal_attribute.CONF_MOD))
 
             mammaliaDatas.add(mammal_attribute)
 
@@ -2815,7 +3778,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             var fish_attribute: Fish_attribute = Fish_attribute(fishdata.getString(0), fishdata.getString(1), fishdata.getString(2), fishdata.getString(3), fishdata.getString(4), fishdata.getString(5), fishdata.getString(6), fishdata.getString(7),
                     fishdata.getString(8),fishdata.getString(9), fishdata.getFloat(10), fishdata.getString(11), fishdata.getString(12), fishdata.getString(13), fishdata.getInt(14), fishdata.getString(15), fishdata.getInt(16), fishdata.getInt(17), fishdata.getString(18),
                     fishdata.getFloat(19), fishdata.getFloat(20), fishdata.getString(21), fishdata.getInt(22), fishdata.getInt(23), fishdata.getInt(24), fishdata.getInt(25), fishdata.getString(26), fishdata.getString(27), fishdata.getString(28),
-                    fishdata.getInt(29) ,fishdata.getString(30), fishdata.getString(31), fishdata.getString(32), fishdata.getInt(33), fishdata.getString(33), fishdata.getString(35), fishdata.getString(36),fishdata.getString(37))
+                    fishdata.getInt(29) ,fishdata.getString(30), fishdata.getString(31), fishdata.getString(32), fishdata.getInt(33), fishdata.getString(33), fishdata.getString(35), fishdata.getString(36),fishdata.getString(37),fishdata.getString(38))
 
             FISHATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,fish_attribute.id))
             FISHATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString,fish_attribute.GROP_ID))
@@ -2855,6 +3818,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_FM_CH", ogr.OFTString,fish_attribute.RIV_FM_CH))
             FISHATTRIBUTE.add(Exporter.ColumnDef("UN_FISH_CH", ogr.OFTString,fish_attribute.UN_FISH_CH))
             FISHATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString,fish_attribute.TEMP_YN))
+            FISHATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString,fish_attribute.CONF_MOD))
 
             fishDatas.add(fish_attribute)
 
@@ -2900,7 +3864,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     , insectdata.getString(5), insectdata.getString(6), insectdata.getString(7), insectdata.getString(8), insectdata.getFloat(9), insectdata.getString(10), insectdata.getInt(11)
                     , insectdata.getString(12), insectdata.getString(13), insectdata.getString(14), insectdata.getString(15), insectdata.getInt(16), insectdata.getString(17), insectdata.getString(18)
                     , insectdata.getString(19), insectdata.getString(20), insectdata.getString(21), insectdata.getString(22), insectdata.getString(23), insectdata.getString(24), insectdata.getString(25)
-                    , insectdata.getFloat(26), insectdata.getFloat(27), insectdata.getString(28))
+                    , insectdata.getFloat(26), insectdata.getFloat(27), insectdata.getString(28), insectdata.getString(29))
 
             INSECTATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,insect_attribute.id))
             INSECTATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString,insect_attribute.GROP_ID))
@@ -2931,6 +3895,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             INSECTATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal,insect_attribute.GPS_LAT))
             INSECTATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal,insect_attribute.GPS_LON))
             INSECTATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString,insect_attribute.TEMP_YN))
+            INSECTATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString,insect_attribute.CONF_MOD))
 
             insectDatas.add(insect_attribute)
 
@@ -2976,7 +3941,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             var flora_Attribute: Flora_Attribute = Flora_Attribute(floradata.getString(0), floradata.getString(1), floradata.getString(2), floradata.getString(3), floradata.getString(4)
                     , floradata.getString(5), floradata.getString(6), floradata.getString(7), floradata.getString(8), floradata.getFloat(9), floradata.getString(10), floradata.getInt(11)
                     , floradata.getString(12), floradata.getString(13), floradata.getString(14), floradata.getString(15), floradata.getString(16), floradata.getString(17), floradata.getString(18)
-                    , floradata.getString(19), floradata.getInt(20), floradata.getString(21), floradata.getFloat(22), floradata.getFloat(23), floradata.getString(24))
+                    , floradata.getString(19), floradata.getInt(20), floradata.getString(21), floradata.getFloat(22), floradata.getFloat(23), floradata.getString(24),floradata.getString(25))
 
             FLORAATTRIBUTE.add(Exporter.ColumnDef("ID",ogr.OFTInteger,flora_Attribute.id))
             FLORAATTRIBUTE.add(Exporter.ColumnDef("GROP_ID",ogr.OFTString,flora_Attribute.GROP_ID))
@@ -3003,6 +3968,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             FLORAATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT",ogr.OFTReal,flora_Attribute.GPS_LAT))
             FLORAATTRIBUTE.add(Exporter.ColumnDef("GPS_LON",ogr.OFTReal,flora_Attribute.GPS_LON))
             FLORAATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN",ogr.OFTInteger,flora_Attribute.TEMP_YN))
+            FLORAATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD",ogr.OFTInteger,flora_Attribute.CONF_MOD))
 
             floraDatas.add(flora_Attribute)
 
@@ -3421,17 +4387,20 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         val difference = ((nowTime - time) / 1000)
 
+        println("difference $difference")
+
         val geometryFactory = GeometryFactory()
 
         val currentPoint = geometryFactory.createPoint(Coordinate(location!!.latitude, location!!.longitude))
 
-        if(difference >= 5){
-            val tracking: Tracking = Tracking(null, location.latitude, location.longitude)
+            if(trackingdiv) {
+                val tracking: Tracking = Tracking(null, location.latitude, location.longitude)
 
-            dbManager.inserttracking(tracking)
+                dbManager.inserttracking(tracking)
 
-            println("inserttracking----------")
-        }
+                Toast.makeText(this,"insert.",Toast.LENGTH_SHORT).show()
+
+            }
 
 //        if (prevPoint != null) {
 //            val distance = DistanceOp.distance(prevPoint!!, currentPoint);

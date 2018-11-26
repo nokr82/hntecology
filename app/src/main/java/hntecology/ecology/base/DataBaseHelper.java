@@ -479,7 +479,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO birdsAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,OBS_STAT,OBS_ST_ETC";
-        query += ",USE_TAR,USE_TAR_SP,USE_LAYER,MJ_ACT,MJ_ACT_PR,GPS_LAT,GPS_LON,TEMP_YN)";
+        query += ",USE_TAR,USE_TAR_SP,USE_LAYER,MJ_ACT,MJ_ACT_PR,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD)";
 
         query += " values (";
         query += " '" + birds_attribute.getGROP_ID() + "'";
@@ -508,6 +508,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + birds_attribute.getGPS_LAT() + "'";
         query += ", '" + birds_attribute.getGPS_LON() + "'";
         query += ", '" + birds_attribute.getTEMP_YN() + "'";
+        query += ", '" + birds_attribute.getCONF_MOD() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -520,7 +521,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,IN_CNT_ADU,IN_CNT_LAR,IN_CNT_EGG";
         query += ",HAB_RIVEER,HAB_EDGE,WATER_IN,WATER_OUT,WATER_CONT,WATER_QUAL,WATER_DEPT";
-        query += ",HAB_AREA_W,HAB_AREA_H,GPS_LAT,GPS_LON,TEMP_YN)";
+        query += ",HAB_AREA_W,HAB_AREA_H,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD)";
 
 
         query += " values (";
@@ -554,6 +555,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", " + reptilia_attribute.getGPS_LAT() + "";
         query += ", " + reptilia_attribute.getGPS_LON() + "";
         query += ", '" + reptilia_attribute.getTEMP_YN() + "'";
+        query += ", '" + reptilia_attribute.getCONF_MOD() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -565,7 +567,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO mammalAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,OBS_TY,OBS_TY_ETC,INDI_CNT";
-        query += ",OB_PT_CHAR,UNUS_NOTE,GPS_LAT,GPS_LON,UN_SPEC,UN_SPEC_RE,TR_EASY,TR_EASY_RE,TEMP_YN)";
+        query += ",OB_PT_CHAR,UNUS_NOTE,GPS_LAT,GPS_LON,UN_SPEC,UN_SPEC_RE,TR_EASY,TR_EASY_RE,TEMP_YN,CONF_MOD)";
 
         query += " values (";
         query += " '" + mammal_attribute.getGROP_ID() + "'";
@@ -595,6 +597,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + mammal_attribute.getTR_EASY() + "'";
         query += ", '" + mammal_attribute.getTR_EASY_RE() + "'";
         query += ", '" + mammal_attribute.getTEMP_YN() + "'";
+        query += ", '" + mammal_attribute.getCONF_MOD() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -606,7 +609,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO insectAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,OBS_STAT,OBS_ST_ETC";
-        query += ",USE_TAR,USER_TA_ETC,MJ_ACT,MJ_ACT_ETC,INV_MEAN,INV_MN_ETC,UNUS_NOTE,GPS_LAT,GPS_LON,TEMP_YN)";
+        query += ",USE_TAR,USER_TA_ETC,MJ_ACT,MJ_ACT_ETC,INV_MEAN,INV_MN_ETC,UNUS_NOTE,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD)";
 
         query += " values (";
         query += " '" + insect_attribute.getGROP_ID() + "'";
@@ -637,6 +640,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + insect_attribute.getGPS_LAT() + "'";
         query += ", '" + insect_attribute.getGPS_LON() + "'";
         query += ", '" + insect_attribute.getTEMP_YN() + "'";
+        query += ", '" + insect_attribute.getCONF_MOD() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -649,7 +653,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_TM,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,MID_RAGE,CODE_NUM,RIVER_NUM,RIVER_NM,NET_CNT,NET_MIN,AD_DIST_NM,GPS_LAT";
         query += ",GPS_LON,COLL_TOOL,STREAM_W,WATER_W,WATER_D,WATER_CUR,RIV_STR,RIV_STR_IN,RIV_FORM";
-        query += ",NUM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,UNIDENT,RIV_FM_CH,UN_FISH_CH,TEMP_YN)";
+        query += ",NUM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,UNIDENT,RIV_FM_CH,UN_FISH_CH,TEMP_YN,CONF_MOD)";
 
         query += " values (";
         query += " '" + fish_attribute.getGROP_ID() + "'";
@@ -689,6 +693,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + fish_attribute.getRIV_FM_CH() + "'";
         query += ", '" + fish_attribute.getUN_FISH_CH() + "'";
         query += ", '" + fish_attribute.getTEMP_YN() + "'";
+        query += ", '" + fish_attribute.getCONF_MOD() + "'";
 
         query += " ); ";
 
@@ -701,7 +706,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO floraAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,FLORE_YN,PLANT_YN,HAB_STAT";
-        query += ",HAB_ETC,COL_IN_CNT,THRE_CAU,GPS_LAT,GPS_LON,TEMP_YN)";
+        query += ",HAB_ETC,COL_IN_CNT,THRE_CAU,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD)";
 
         query += " values (";
         query += " '" + flora_Attribute.getGROP_ID() + "'";
@@ -728,6 +733,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + flora_Attribute.getGPS_LAT() + "'";
         query += ", '" + flora_Attribute.getGPS_LON() + "'";
         query += ", '" + flora_Attribute.getTEMP_YN() + "'";
+        query += ", '" + flora_Attribute.getCONF_MOD() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -856,7 +862,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void updatereptilia_attribute(Reptilia_attribute reptilia_attribute,String page) {
+    public void updatereptilia_attribute(Reptilia_attribute reptilia_attribute,String pk) {
 
         String query = "UPDATE reptiliaAttribute SET  " +
                 "INV_REGION='" + reptilia_attribute.getINV_REGION() + "'"
@@ -885,15 +891,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",HAB_AREA_H='" + reptilia_attribute.getHAB_AREA_H() + "'"
                 + ",GPS_LAT='" + reptilia_attribute.getGPS_LAT() + "'"
                 + ",GPS_LON='" + reptilia_attribute.getGPS_LON() + "'"
-                + ",TEMP_YN='" + reptilia_attribute.getTEMP_YN() + "'" +
-                "where id = '" + page + "'";
+                + ",TEMP_YN='" + reptilia_attribute.getTEMP_YN() + "'"
+                + ",TEMP_YN='" + reptilia_attribute.getCONF_MOD() + "'"+
+                "where id = '" + pk + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();
 
     }
 
-    public void updatebirds_attribute(Birds_attribute birds_attribute,String page) {
+    public void updatebirds_attribute(Birds_attribute birds_attribute,String pk) {
 
         String query = "UPDATE birdsAttribute SET  " +
                 "INV_REGION='" + birds_attribute.getINV_REGION() + "'"
@@ -918,8 +925,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",MJ_ACT_PR='" + birds_attribute.getMJ_ACT_PR() + "'"
                 + ",GPS_LAT='" + birds_attribute.getGPS_LAT() + "'"
                 + ",GPS_LON='" + birds_attribute.getGPS_LON() + "'"
-                + ",TEMP_YN='" + birds_attribute.getTEMP_YN() + "'"+
-                 "where id = '" + page + "'";
+                + ",TEMP_YN='" + birds_attribute.getTEMP_YN() + "'"
+                + ",CONF_MOD='" + birds_attribute.getCONF_MOD() + "'"+
+                 "where id = '" + pk + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();
@@ -1002,7 +1010,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void updatemammal_attribute(Mammal_attribute mammal_attribute,String page) {
+    public void updatemammal_attribute(Mammal_attribute mammal_attribute,String pk) {
 
         String query = "UPDATE mammalAttribute SET  " +
                 "INV_REGION='" + mammal_attribute.getINV_REGION() + "'"
@@ -1028,15 +1036,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",UN_SPEC_RE='" + mammal_attribute.getUN_SPEC_RE() + "'"
                 + ",TR_EASY='" + mammal_attribute.getTR_EASY() + "'"
                 + ",TR_EASY_RE='" + mammal_attribute.getTR_EASY_RE() + "'"
-                + ",TEMP_YN='" + mammal_attribute.getTEMP_YN() + "'"+
-                "where id = '" + page + "'";
+                + ",TEMP_YN='" + mammal_attribute.getTEMP_YN() + "'"
+                + ",CONF_MOD='" + mammal_attribute.getCONF_MOD() + "'"+
+                "where id = '" + pk + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();
 
     }
 
-    public void updateinsect_attribute(Insect_attribute insect_attribute,String page) {
+    public void updateinsect_attribute(Insect_attribute insect_attribute,String pk) {
 
         String query = "UPDATE insectAttribute SET  " +
                 "INV_REGION='" + insect_attribute.getINV_REGION() + "'"
@@ -1063,15 +1072,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",UNUS_NOTE='" + insect_attribute.getUNUS_NOTE() + "'"
                 + ",GPS_LAT='" + insect_attribute.getGPS_LAT() + "'"
                 + ",GPS_LON='" + insect_attribute.getGPS_LON() + "'"
-                + ",TEMP_YN='" + insect_attribute.getTEMP_YN() + "'"+
-                "where id = '" + page + "'";
+                + ",TEMP_YN='" + insect_attribute.getTEMP_YN() + "'"
+                + ",CONF_MOD='" + insect_attribute.getCONF_MOD() + "'"+
+                "where id = '" + pk + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();
 
     }
 
-    public void updatefish_attribute(Fish_attribute fish_attribute,String page) {
+    public void updatefish_attribute(Fish_attribute fish_attribute,String pk) {
 
         String query = "UPDATE fishAttribute SET  " +
                 "INV_REGION='" + fish_attribute.getINV_REGION() + "'"
@@ -1108,16 +1118,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",UNIDENT='" + fish_attribute.getUNIDENT() + "'"
                 + ",RIV_FM_CH='" + fish_attribute.getRIV_FM_CH() + "'"
                 + ",UN_FISH_CH='" + fish_attribute.getUN_FISH_CH() + "'"
-                + ",TEMP_YN='" + fish_attribute.getTEMP_YN() + "'"+
+                + ",TEMP_YN='" + fish_attribute.getTEMP_YN() + "'"
+                + ",TEMP_YN='" + fish_attribute.getCONF_MOD() + "'"+
 
-                "where id = '" + page + "'";
+                "where id = '" + pk + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();
 
     }
 
-    public void updateflora_attribute(Flora_Attribute flora_attribute,String page) {
+    public void updateflora_attribute(Flora_Attribute flora_attribute,String pk) {
 
         String query = "UPDATE floraAttribute SET  " +
                 "INV_REGION='" + flora_attribute.getINV_REGION() + "'"
@@ -1141,9 +1152,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",THRE_CAU='" + flora_attribute.getTHRE_CAU() + "'"
                 + ",GPS_LAT='" + flora_attribute.getGPS_LAT() + "'"
                 + ",GPS_LON='" + flora_attribute.getGPS_LON() + "'"
-                + ",TEMP_YN='" + flora_attribute.getTEMP_YN() + "'"+
+                + ",TEMP_YN='" + flora_attribute.getTEMP_YN() + "'"
+                + ",CONF_MOD='" + flora_attribute.getCONF_MOD() + "'"+
 
-                "where id = '" + page + "'";
+                "where id = '" + pk + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();

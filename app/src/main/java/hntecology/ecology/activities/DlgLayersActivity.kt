@@ -41,7 +41,6 @@ class DlgLayersActivity : Activity() {
         apdater = DlgLayerAdapter(context, R.layout.item_layer, adapterData)
         listView.adapter = apdater
 
-
 //        listView.setOnItemClickListener { parent, view, position, id ->
 //            val data = adapterData.get(position)
 //
@@ -52,7 +51,6 @@ class DlgLayersActivity : Activity() {
 //            setResult(RESULT_OK, intent);
 //            finish()
 //        }
-
 
         listView.setOnItemClickListener { adapterView, view, position, l ->
             var data  = adapterData.get(position)
@@ -65,11 +63,13 @@ class DlgLayersActivity : Activity() {
                 apdater.notifyDataSetChanged()
             }
 
-
-
         }
 
         dlgClick.setOnClickListener {
+            if(data != null){
+                data.clear()
+            }
+
             for(i in 0 ..adapterData.size-1){
                 var checkData = adapterData.get(i)
                 var checked = checkData.is_checked
@@ -86,6 +86,7 @@ class DlgLayersActivity : Activity() {
             intent.putExtra("data", data);
             setResult(RESULT_OK, intent);
             finish()
+
         }
 
         loadData()
@@ -106,7 +107,20 @@ class DlgLayersActivity : Activity() {
 
             if(zoom > layerModel.min_scale && zoom < layerModel.max_scale) {
                 adapterData.add(layerModel)
+
                 println("file_name ${layerModel.file_name}")
+            }
+
+            if(intent.getSerializableExtra("layerFileName") != null){
+                var filename: ArrayList<String> = intent.getSerializableExtra("layerFileName") as ArrayList<String>
+
+                for(i in 0..filename.size-1){
+                    for(j in 0..adapterData.size-1){
+                        if(filename.get(i) == adapterData.get(j).file_name){
+                            adapterData.get(j).is_checked = true
+                        }
+                    }
+                }
             }
 
         }

@@ -88,7 +88,6 @@ class DlgcomAcitivity : Activity() {
 
             val datadiviList:Array<String> = arrayOf("code","title","division","area","round","upstreamdrea","rivername","rating");
 
-
             val data2 =  db.query("CommonDivision",datadiviList,"code like '%" + veData.code + "%'" ,null,null,null,null,null);
 
             com_dlg_probars.visibility= View.VISIBLE

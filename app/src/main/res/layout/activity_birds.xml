@@ -333,6 +333,26 @@
                     style="@style/BiotopeTextView"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
+                    android:text="멸종위기 기호" />
+
+                <TextView
+                    android:id="@+id/endangeredTV"
+                    style="@style/BiotopeTextViewDisabled"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    style="@style/BiotopeTextView"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
                     android:text="개체수" />
 
                 <EditText
@@ -569,6 +589,28 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:text="확인/수정 여부"
+                    style="@style/BiotopeTextView"
+                    />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:maxLength="50"
+                    android:gravity="center"
+                    android:id="@+id/confmodTV"
+                    />
+
+            </LinearLayout>
+
 
 
             <LinearLayout
@@ -594,6 +636,7 @@
                     android:text="추가" />
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/delBtn"
                     style="@style/dlgcommonButton"
                     android:layout_width="wrap_content"

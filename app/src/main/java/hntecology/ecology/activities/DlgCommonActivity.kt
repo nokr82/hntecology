@@ -107,8 +107,6 @@ class DlgCommonActivity : Activity() {
             dataList(listdata2,data2);
             dlg_probar.visibility= View.GONE
 
-
-
         })
 
         //중분류

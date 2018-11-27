@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -12,15 +11,11 @@ import android.widget.ListView
 import hntecology.ecology.R
 import hntecology.ecology.adapter.DlgComAdapter
 import hntecology.ecology.adapter.DlgComdiviAdapter
-import hntecology.ecology.adapter.DlgVegeAdapter
-import hntecology.ecology.adapter.DlgVegeAdapter2
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.CommonDivision
-import hntecology.ecology.model.Vegetation
 import hntecology.ecology.model.common
 import kotlinx.android.synthetic.main.activity_dlgcom_acitivity.*
-import kotlinx.android.synthetic.main.activity_dlgvegetation.*
 import java.util.ArrayList
 
 class DlgcomAcitivity : Activity() {

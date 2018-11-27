@@ -29,8 +29,6 @@ import android.widget.Toast
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Polygon
 import com.joooonho.SelectableRoundedImageView
 import com.nostra13.universalimageloader.core.ImageLoader
 import hntecology.ecology.R
@@ -40,7 +38,7 @@ import hntecology.ecology.base.Utils
 import hntecology.ecology.model.*
 import hntecology.ecology.model.Number
 import kotlinx.android.synthetic.main.activity_biotope.*
-import org.gdal.ogr.ogr
+import kotlinx.android.synthetic.main.item_area_search1.*
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -208,33 +206,33 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         }
 
         etTRE_SPECET.setOnClickListener {
-            val intent = Intent(this, DlgvegetationActivity::class.java)
+            val intent = Intent(this, DlgVascularActivity::class.java)
             intent.putExtra("title", "교목층")
-            intent.putExtra("table", "Vegetation")
+            intent.putExtra("table", "vascular_plant")
             intent.putExtra("DlgHeight", 600f);
             startActivityForResult(intent, SET_DATA2);
         }
 
         etSTRE_SPECET.setOnClickListener {
-            val intent = Intent(this, DlgvegetationActivity::class.java)
+            val intent = Intent(this, DlgVascularActivity::class.java)
             intent.putExtra("title", "아교목층")
-            intent.putExtra("table", "Vegetation")
+            intent.putExtra("table", "vascular_plant")
             intent.putExtra("DlgHeight", 600f);
             startActivityForResult(intent, SET_DATA3);
         }
 
         etSHR_SPECET.setOnClickListener {
-            val intent = Intent(this, DlgvegetationActivity::class.java)
+            val intent = Intent(this, DlgVascularActivity::class.java)
             intent.putExtra("title", "관목층")
-            intent.putExtra("table", "Vegetation")
+            intent.putExtra("table", "vascular_plant")
             intent.putExtra("DlgHeight", 600f);
             startActivityForResult(intent, SET_DATA4);
         }
 
         etHER_SPECET.setOnClickListener {
-            val intent = Intent(this, DlgvegetationActivity::class.java)
+            val intent = Intent(this, DlgVascularActivity::class.java)
             intent.putExtra("title", "초본층")
-            intent.putExtra("table", "Vegetation")
+            intent.putExtra("table", "vascular_plant")
             intent.putExtra("DlgHeight", 600f);
             startActivityForResult(intent, SET_DATA5);
         }
@@ -1011,7 +1009,47 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         }
 
         btn_biotopCancle1.setOnClickListener {
-            finish()
+            val builder = AlertDialog.Builder(context)
+            builder.setMessage("작성을 취소하시겠습니까?").setCancelable(false)
+                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
+
+                        val dbManager: DataBaseHelper = DataBaseHelper(this)
+
+                        val db = dbManager.createDataBase()
+
+                        val dataList: Array<String> = arrayOf("*");
+
+                        val data2 = db.query("biotopeAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+
+                        var dataArray:ArrayList<Biotope_attribute> = ArrayList<Biotope_attribute>()
+
+                        while (data2.moveToNext()) {
+
+                            var biotope_attribute: Biotope_attribute = Biotope_attribute(data2.getString(0), data2.getString(1), data2.getString(2), data2.getString(3), data2.getString(4), data2.getString(5), data2.getString(6), data2.getInt(7),
+                                    data2.getString(8), data2.getFloat(9), data2.getFloat(10), data2.getString(11), data2.getString(12), data2.getString(13), data2.getFloat(14)
+                                    , data2.getString(15), data2.getString(16), data2.getString(17), data2.getString(18), data2.getString(19), data2.getString(20), data2.getString(21)
+                                    , data2.getString(22), data2.getString(23), data2.getString(24), data2.getString(25), data2.getFloat(26), data2.getFloat(27), data2.getFloat(28)
+                                    , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
+                                    , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
+                                    , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
+                                    , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53))
+
+                            dataArray.add(biotope_attribute)
+
+                        }
+
+                        if (dataArray.size == 0 ){
+                            var intent = Intent()
+                            intent.putExtra("polygonid", polygonid)
+                            setResult(RESULT_OK, intent);
+                        }
+
+                        finish()
+
+                    })
+                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+            val alert = builder.create()
+            alert.show()
         }
 
         //sqlite 저장.
@@ -1316,8 +1354,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         btn_biotopDelete.setOnClickListener {
 
-            println("pk---------------$pk")
-
             if (pk != null) {
 
                 val builder = AlertDialog.Builder(context)
@@ -1437,12 +1473,21 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                             dialog.cancel()
 
+                            val biotope_attribute: Biotope_attribute = Biotope_attribute(null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null, null)
+
                             if (intent.getStringExtra("id") != null) {
                                 val id = intent.getStringExtra("id")
+                                val GROP_ID = intent.getStringExtra("GROP_ID")
 
                                 val dataList: Array<String> = arrayOf("*");
 
-                                val data2 = db.query("biotopeAttribute", dataList, "id = '$id'", null, null, null, "", null)
+                                val data2 = db.query("biotopeAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
 
                                 if (dataArray != null) {
                                     dataArray.clear()
@@ -1461,23 +1506,36 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                             , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
                                             , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53))
 
+                                    dataArray.add(biotope_attribute)
+
                                 }
 
-                                if (chkdata == true) {
-                                    Toast.makeText(context, "추가하신 데이터가 있습니다.", Toast.LENGTH_SHORT).show()
-                                } else {
-                                    intent.putExtra("polygonid", polygonid)
+                                var intent = Intent()
+
+                                if(dataArray.size > 1) {
+
+                                    dbManager.deletebiotope_attribute(biotope_attribute,pk)
+
+                                    intent.putExtra("reset", 100)
+
                                     setResult(RESULT_OK, intent);
                                     finish()
+
                                 }
 
-                            }
+                                if(dataArray.size == 1){
 
-                            if (intent.getStringExtra("id") == null) {
-                                var intent = Intent()
-                                intent.putExtra("polygonid", polygonid)
-                                setResult(RESULT_OK, intent);
-                                finish()
+                                    var intent = Intent()
+
+                                    intent.putExtra("polygonid", polygonid)
+
+                                    dbManager.deletebiotope_attribute(biotope_attribute, pk)
+
+                                    setResult(RESULT_OK, intent);
+                                    finish()
+
+                                }
+
                             }
 
                         })
@@ -1937,41 +1995,49 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                 SET_DATA2 -> {
 
-                    vegetationData = data!!.getSerializableExtra("veData") as Vegetation
+                    var name = data!!.getStringExtra("name");
+                    var family_name = data!!.getStringExtra("family_name");
+                    var zoological = data!!.getStringExtra("zoological");
 
-                    etTRE_SPECET.setText(vegetationData.CATEGORY)
-                    etTRE_FAMIET.setText(vegetationData.SIGN)
-                    etTRE_SCIENET.setText(vegetationData.CORRESPONDINGNAME)
+                    etTRE_SPECET.setText(name)
+                    etTRE_FAMIET.setText(family_name)
+                    etTRE_SCIENET.setText(zoological)
 
                 }
 
                 SET_DATA3 -> {
 
-                    vegetationData = data!!.getSerializableExtra("veData") as Vegetation
+                    var name = data!!.getStringExtra("name");
+                    var family_name = data!!.getStringExtra("family_name");
+                    var zoological = data!!.getStringExtra("zoological");
 
-                    etSTRE_SPECET.setText(vegetationData.CATEGORY)
-                    etSTRE_FAMIET.setText(vegetationData.SIGN)
-                    etSTRE_SCIENET.setText(vegetationData.CORRESPONDINGNAME)
+                    etSTRE_SPECET.setText(name)
+                    etSTRE_FAMIET.setText(family_name)
+                    etSTRE_SCIENET.setText(zoological)
 
                 }
 
                 SET_DATA4 -> {
 
-                    vegetationData = data!!.getSerializableExtra("veData") as Vegetation
+                    var name = data!!.getStringExtra("name");
+                    var family_name = data!!.getStringExtra("family_name");
+                    var zoological = data!!.getStringExtra("zoological");
 
-                    etSHR_SPECET.setText(vegetationData.CATEGORY)
-                    etSHR_FAMIET.setText(vegetationData.SIGN)
-                    etSHR_SCIENET.setText(vegetationData.CORRESPONDINGNAME)
+                    etSHR_SPECET.setText(name)
+                    etSHR_FAMIET.setText(family_name)
+                    etSHR_SCIENET.setText(zoological)
 
                 }
 
                 SET_DATA5 -> {
 
-                    vegetationData = data!!.getSerializableExtra("veData") as Vegetation
+                    var name = data!!.getStringExtra("name");
+                    var family_name = data!!.getStringExtra("family_name");
+                    var zoological = data!!.getStringExtra("zoological");
 
-                    etHER_SPECET.setText(vegetationData.CATEGORY)
-                    etHER_FAMIET.setText(vegetationData.SIGN)
-                    etHER_SCIENET.setText(vegetationData.CORRESPONDINGNAME)
+                    etHER_SPECET.setText(name)
+                    etHER_FAMIET.setText(family_name)
+                    etHER_SCIENET.setText(zoological)
 
                 }
 

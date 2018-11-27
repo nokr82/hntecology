@@ -48,11 +48,9 @@ import org.geotools.data.shapefile.ShapefileDataStore
 import org.geotools.data.shapefile.ShapefileDataStoreFactory
 import org.geotools.data.simple.SimpleFeatureStore
 import org.geotools.referencing.crs.DefaultGeographicCRS
-import org.json.JSONObject
 import org.locationtech.jts.geom.Coordinate
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
-import org.locationtech.jts.operation.distance.DistanceOp
 import org.locationtech.jtstest.testbuilder.io.shapefile.Shapefile
 import org.opengis.feature.simple.SimpleFeature
 import java.io.File
@@ -114,6 +112,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     private var polygonsToUnion = ArrayList<Polygon>()
     private var trackpoints = ArrayList<Marker>()
     private var getTrackingPoints = ArrayList<Marker>()
+
+    private var start = false
 
     var latitude: Double = 126.79235
     var longitude: Double = 37.39627
@@ -189,6 +189,18 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     var nowTime = System.currentTimeMillis()
 
     lateinit var inputStream : InputStream
+
+    private var timer: Timer? = null
+
+    internal var loadDataHandler: Handler = object : Handler() {
+        override fun handleMessage(msg: android.os.Message) {
+            initGps()
+            var location: Location = Location("route")
+            location.latitude = latitude
+            location.longitude = longitude
+            onLocationUpdated(location)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -360,7 +372,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         btn_satellite.setOnClickListener {
 
-
             var satelite: String = btn_satellite.text.toString()
 
             if (satelite == "위성 지도") {
@@ -500,8 +511,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             val db = dbManager.createDataBase()
 
             if ( title.equals("Tracking 켜기")){
+                start = true
                 dbManager.deletetracking()
                 trackingBtn.setText("Tracking 끄기")
+                timerStart()
 
 //                val tracking = Tracking(null,37.4954,126.7720)
 //                val tracking1 = Tracking(null,37.4947,126.7723)
@@ -512,8 +525,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 trackingdiv = true
             } else if(title.equals("Tracking 끄기")){
+                start = false
                 trackingBtn.setText("Tracking 켜기")
                 trackingdiv = false
+                if (timer != null) {
+                    timer!!.cancel()
+                }
             }
 
         }
@@ -548,6 +565,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         mytrackingBtn.setOnClickListener {
 
+            currentLayer = TRACKING
+
             val title = mytrackingBtn.text.toString()
 
             if(title == "이동경로 보기"){
@@ -577,8 +596,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             if(title == "이동경로 숨기기"){
                 mytrackingBtn.setText("이동경로 보기")
-
-
 
                 trackingPointChk = false
 
@@ -702,22 +719,20 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         val polygonid = data!!.getStringExtra("polygonid")
                         println("biotope_data  $polygonid")
 
-                        println(allPolygons.size.toString()  + "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-                        for(i in 0..allPolygons.size -1){
-
-                            println("id---------------------------------------------------${allPolygons.get(i).id}")
-                            if((allPolygons.get(i).id).equals(polygonid)){
-                                println("ssssssssssssss")
-                                runOnUiThread(Runnable {
-                                    allPolygons.get(i).remove()
-                                    allPolygons.removeAt(i)
-                                })
-//                                allPolygons.remove(polygons.get(i))
-                            }
+                        println(polygons.size.toString()  + "-----------------------------")
+                        for(i in 0..polygons.size -1){
+                                if ((polygons.get(i).id).equals(polygonid)) {
+                                    println("ssssssssssssss")
+                                    runOnUiThread(Runnable {
+                                        polygons.get(i).remove()
+                                        polygons.removeAt(i)
+                                    })
+//                                polygons.remove(polygons.get(i))
+                                }
                         }
 
-                        println("polygons : " + allPolygons)
-                        println("polygons.size : " + allPolygons.size)
+                        println("polygons : " + polygons)
+                        println("polygons.size : " + polygons.size)
 
                     }
 
@@ -730,6 +745,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         if(export == 70){
                             exportBiotope()
                         }
+
                     }
 
                 }
@@ -742,6 +758,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             println("------------remove-------${points.size}")
                             if(points.get(i).id == markerid){
                                 points.get(i).remove()
+                                break
                             }
                         }
                         println("------------removeiiiiii-------${points.size}")
@@ -767,6 +784,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         for(i in 0..points.size -1){
                             if(points.get(i).id == markerid){
                                 points.get(i).remove()
+                                break
                             }
                         }
                     }
@@ -791,6 +809,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         for(i in 0..points.size -1){
                             if(points.get(i).id == markerid){
                                 points.get(i).remove()
+                                break
                             }
                         }
                     }
@@ -814,6 +833,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         for(i in 0..points.size -1){
                             if(points.get(i).id == markerid){
                                 points.get(i).remove()
+                                break
                             }
                         }
                     }
@@ -837,6 +857,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         for(i in 0..points.size -1){
                             if(points.get(i).id == markerid){
                                 points.get(i).remove()
+                                break
                             }
                         }
                     }
@@ -860,6 +881,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         for(i in 0..points.size -1){
                             if(points.get(i).id == markerid){
                                 points.get(i).remove()
+                                break
                             }
                         }
                     }
@@ -1009,9 +1031,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                             var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                    , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                                    , data.getString(22), data.getString(23), data.getFloat(24), data.getFloat(25), data.getString(26), data.getString(27))
-
+                                    , data.getString(15),data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21), data.getString(22)
+                                    , data.getString(23), data.getString(24), data.getFloat(25), data.getFloat(26), data.getString(27), data.getString(28))
                             birdsdataArray.add(birds_attribute)
 
                         }
@@ -1075,8 +1096,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         while (data.moveToNext()) {
                             var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                    , data.getString(15), data.getInt(16), data.getInt(17), data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
-                                    , data.getString(22), data.getString(23), data.getString(24), data.getInt(25), data.getInt(26), data.getInt(27), data.getFloat(28), data.getFloat(29), data.getString(30),data.getString(31))
+                                    , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
+                                    , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32))
+
+
                             reptiliadataArray.add(reptilia_attribute)
                         }
 
@@ -1138,8 +1161,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         while (data.moveToNext()) {
                             var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                    , data.getString(15), data.getString(16), data.getString(17), data.getInt(18), data.getString(19), data.getString(20), data.getFloat(21)
-                                    , data.getFloat(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28))
+                                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getFloat(22)
+                                    , data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29))
+
                             mammaldataArray.add(mammal_attribute)
                         }
 
@@ -1395,7 +1419,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 if (myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIRDS && myLayer != LAYER_REPTILIA && myLayer != LAYER_MAMMALIA && myLayer != LAYER_FISH && myLayer != LAYER_INSECT
-                        && myLayer != LAYER_FLORA && myLayer != TRACKING) {
+                        && myLayer != LAYER_FLORA && myLayer != TRACKING && myLayer != LAYER_MYLOCATION) {
                     intent!!.putExtra("id", attrubuteKey.toString())
 
                     startActivityForResult(intent, MarkerCallBackData)
@@ -1497,25 +1521,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
                                 intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
 
-
                                 if (latlngs != null) {
                                     latlngs.clear()
                                 }
 
                                 if (latlngsGPS != null) {
                                     latlngsGPS.clear()
-                                }
-
-                                for (i in 0..polygons.size - 1) {
-                                    if (polygons.get(i).id != polygon.id) {
-                                        polygons.add(polygon)
-                                        allPolygons.add(polygon)
-                                    }
-                                }
-
-                                if (polygons.size == 0) {
-                                    polygons.add(polygon)
-                                    allPolygons.add(polygon)
                                 }
 
                                 endDraw()
@@ -1561,6 +1572,30 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 }
                             }
 
+
+                            if(polygons.size == 0){
+                                polygons.add(polygon)
+                            }
+
+                            if(allPolygons.size == 0){
+                                allPolygons.add(polygon)
+                            }
+
+                            for (i in 0..polygons.size-1){
+                                if (polygons.get(i).id == polygon.id){
+                                    break
+                                } else{
+                                    polygons.add(polygon)
+                                }
+                            }
+
+                            for (i in 0..allPolygons.size-1){
+                                if (allPolygons.get(i).id == polygon.id){
+                                    break
+                                } else{
+                                    allPolygons.add(polygon)
+                                }
+                            }
                         }
                     }
 
@@ -1679,6 +1714,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     }
 
     private inner class LoadLayerTask(layerName: String , Type: String , added: String) : AsyncTask<LatLngBounds, PolygonOptions, Boolean>() {
+
 
         var layerName = layerName
 
@@ -2372,9 +2408,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         if(latlngs.size >= 3 && polygon != null) {
 
-            polygons.add(polygon)
-            allPolygons.add(polygon)
-
             val layerInfo = polygon.tag as LayerInfo
 
             println("polygon_tag ------------------${polygon.tag}")
@@ -2394,6 +2427,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             intent!!.putExtra("polygonid",polygon.id)
 
             println("polygoniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii${polygon.id}")
+
+            polygons.add(polygon)
+            allPolygons.add(polygon)
 
             startActivityForResult(intent, BIOTOPE_DATA);
 
@@ -2649,50 +2685,48 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         }
 
-        if (biotopeDatas.size > 0) {
+        if (biotopeDatas.size != null) {
 
             println("biotopeDatas.size ${biotopeDatas.size}")
 
             for (i in 0..biotopeDatas.size - 1) {
 
-                biotopeGrop_id += biotopeDatas.get(i).GROP_ID
-
                 val grop_id = biotopeDatas.get(i).GROP_ID
 
                 if (allPolygons.size > 0) {
-
-                    for (k in 0..allPolygons.size - 1) {
-                        println("layerinfo ---- ${allPolygons.get(k).tag}")
-                    }
 
                     println(allPolygons.size.toString() + "----------------------------")
 
                     for (j in 0..allPolygons.size - 1) {
 
                         println("layerinfo ---- ${allPolygons.get(j).tag}")
-                        val layerInfo = allPolygons.get(j).tag as LayerInfo
+                        if(allPolygons.get(j).tag != null) {
+                            val layerInfo = allPolygons.get(j).tag as LayerInfo
 
-                        var attrubuteKey = layerInfo.attrubuteKey
+                            var attrubuteKey = layerInfo.attrubuteKey
 
-                        println("attrubutekey $attrubuteKey")
-                        if (attrubuteKey.equals(grop_id)) {
+                            println("attrubutekey $attrubuteKey")
+                            if (attrubuteKey.equals(grop_id)) {
 
-                            val exporter = Exporter.ExportItem(LAYER_BIOTOPE, BIOTOPEATTRIBUTE, allPolygons.get(j))
+                                val exporter = Exporter.ExportItem(LAYER_BIOTOPE, BIOTOPEATTRIBUTE, allPolygons.get(j))
 
-                            biotopeArray.add(exporter)
+                                biotopeArray.add(exporter)
 
-                            println("adddddddddddd")
+                                println("adddddddddddd")
 
+                            }
                         }
                     }
                 }
 
                 Exporter.export(biotopeArray)
                 dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope" + File.separator + "biotope", "비오톱", "biotope", "Y")
-                biotopeDatas.clear()
+
 
             }
+            biotopeDatas.clear()
         }
+
     }
 
     fun exportBirds(){
@@ -2704,11 +2738,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         var datas:ArrayList<Birds_attribute> = ArrayList<Birds_attribute>()
         while (birdsdata.moveToNext()) {
 
-            var birds_attribute: Birds_attribute = Birds_attribute(birdsdata.getString(0), birdsdata.getString(1), birdsdata.getString(2), birdsdata.getString(3)
-                    , birdsdata.getString(4), birdsdata.getString(5), birdsdata.getString(6), birdsdata.getString(7)
-                    , birdsdata.getString(8), birdsdata.getFloat(9), birdsdata.getString(10), birdsdata.getInt(11), birdsdata.getString(12), birdsdata.getString(13), birdsdata.getString(14)
-                    , birdsdata.getString(15), birdsdata.getInt(16), birdsdata.getString(17), birdsdata.getString(18), birdsdata.getString(19), birdsdata.getString(20), birdsdata.getString(21)
-                    , birdsdata.getString(22), birdsdata.getString(23), birdsdata.getFloat(24), birdsdata.getFloat(25) , birdsdata.getString(26),birdsdata.getString(27))
+            var birds_attribute: Birds_attribute = Birds_attribute(birdsdata.getString(0), birdsdata.getString(1), birdsdata.getString(2), birdsdata.getString(3), birdsdata.getString(4), birdsdata.getString(5), birdsdata.getString(6), birdsdata.getString(7),
+                    birdsdata.getString(8), birdsdata.getFloat(9), birdsdata.getString(10), birdsdata.getInt(11), birdsdata.getString(12), birdsdata.getString(13), birdsdata.getString(14)
+                    , birdsdata.getString(15),birdsdata.getString(16), birdsdata.getInt(17), birdsdata.getString(18), birdsdata.getString(19), birdsdata.getString(20), birdsdata.getString(21), birdsdata.getString(22)
+                    , birdsdata.getString(23), birdsdata.getString(24), birdsdata.getFloat(25), birdsdata.getFloat(26), birdsdata.getString(27), birdsdata.getString(28))
 
             datas.add(birds_attribute)
 
@@ -2724,11 +2757,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 while (birdsdata.moveToNext()) {
 
-                    var birds_attribute: Birds_attribute = Birds_attribute(birdsdata.getString(0), birdsdata.getString(1), birdsdata.getString(2), birdsdata.getString(3)
-                            , birdsdata.getString(4), birdsdata.getString(5), birdsdata.getString(6), birdsdata.getString(7)
-                            , birdsdata.getString(8), birdsdata.getFloat(9), birdsdata.getString(10), birdsdata.getInt(11), birdsdata.getString(12), birdsdata.getString(13), birdsdata.getString(14)
-                            , birdsdata.getString(15), birdsdata.getInt(16), birdsdata.getString(17), birdsdata.getString(18), birdsdata.getString(19), birdsdata.getString(20), birdsdata.getString(21)
-                            , birdsdata.getString(22), birdsdata.getString(23), birdsdata.getFloat(24), birdsdata.getFloat(25) , birdsdata.getString(26),birdsdata.getString(27))
+                    var birds_attribute: Birds_attribute = Birds_attribute(birdsdata.getString(0), birdsdata.getString(1), birdsdata.getString(2), birdsdata.getString(3), birdsdata.getString(4), birdsdata.getString(5), birdsdata.getString(6), birdsdata.getString(7),
+                            birdsdata.getString(8), birdsdata.getFloat(9), birdsdata.getString(10), birdsdata.getInt(11), birdsdata.getString(12), birdsdata.getString(13), birdsdata.getString(14)
+                            , birdsdata.getString(15),birdsdata.getString(16), birdsdata.getInt(17), birdsdata.getString(18), birdsdata.getString(19), birdsdata.getString(20), birdsdata.getString(21), birdsdata.getString(22)
+                            , birdsdata.getString(23), birdsdata.getString(24), birdsdata.getFloat(25), birdsdata.getFloat(26), birdsdata.getString(27), birdsdata.getString(28))
 
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,birds_attribute.id))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString,birds_attribute.GROP_ID))
@@ -2746,6 +2778,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString,birds_attribute.SPEC_NM))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString,birds_attribute.FAMI_NM))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString,birds_attribute.SCIEN_NM))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("ENDANGERED", ogr.OFTString,birds_attribute.ENDANGERED))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger,birds_attribute.INDI_CNT))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("OBS_STAT", ogr.OFTString,birds_attribute.OBS_STAT))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("OBS_ST_ETC", ogr.OFTString,birds_attribute.OBS_ST_ETC))
@@ -2813,11 +2846,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         while (reptiliadata.moveToNext()) {
 
-            var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(reptiliadata.getString(0), reptiliadata.getString(1), reptiliadata.getString(2), reptiliadata.getString(3), reptiliadata.getString(4)
-                    , reptiliadata.getString(5), reptiliadata.getString(6), reptiliadata.getString(7), reptiliadata.getString(8), reptiliadata.getFloat(9), reptiliadata.getString(10), reptiliadata.getInt(11)
-                    , reptiliadata.getString(12), reptiliadata.getString(13), reptiliadata.getString(14), reptiliadata.getString(15), reptiliadata.getInt(16), reptiliadata.getInt(17), reptiliadata.getInt(18)
-                    , reptiliadata.getString(19), reptiliadata.getString(20), reptiliadata.getString(21), reptiliadata.getString(22), reptiliadata.getString(23), reptiliadata.getString(24)
-                    , reptiliadata.getInt(25), reptiliadata.getInt(26), reptiliadata.getInt(27), reptiliadata.getFloat(28), reptiliadata.getFloat(29),reptiliadata.getString(30),reptiliadata.getString(31))
+            var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(reptiliadata.getString(0), reptiliadata.getString(1), reptiliadata.getString(2), reptiliadata.getString(3), reptiliadata.getString(4), reptiliadata.getString(5), reptiliadata.getString(6), reptiliadata.getString(7),
+                    reptiliadata.getString(8), reptiliadata.getFloat(9), reptiliadata.getString(10), reptiliadata.getInt(11), reptiliadata.getString(12), reptiliadata.getString(13), reptiliadata.getString(14)
+                    , reptiliadata.getString(15), reptiliadata.getString(16),reptiliadata.getInt(17), reptiliadata.getInt(18), reptiliadata.getInt(19), reptiliadata.getString(20), reptiliadata.getString(21), reptiliadata.getString(22)
+                    , reptiliadata.getString(23), reptiliadata.getString(24), reptiliadata.getString(25), reptiliadata.getInt(26), reptiliadata.getInt(27), reptiliadata.getInt(28), reptiliadata.getFloat(29), reptiliadata.getFloat(30),reptiliadata.getString(31),reptiliadata.getString(32))
 
             datas.add(reptilia_attribute)
         }
@@ -2831,11 +2863,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 while (reptiliadata.moveToNext()) {
 
-                    var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(reptiliadata.getString(0), reptiliadata.getString(1), reptiliadata.getString(2), reptiliadata.getString(3), reptiliadata.getString(4)
-                            , reptiliadata.getString(5), reptiliadata.getString(6), reptiliadata.getString(7), reptiliadata.getString(8), reptiliadata.getFloat(9), reptiliadata.getString(10), reptiliadata.getInt(11)
-                            , reptiliadata.getString(12), reptiliadata.getString(13), reptiliadata.getString(14), reptiliadata.getString(15), reptiliadata.getInt(16), reptiliadata.getInt(17), reptiliadata.getInt(18)
-                            , reptiliadata.getString(19), reptiliadata.getString(20), reptiliadata.getString(21), reptiliadata.getString(22), reptiliadata.getString(23), reptiliadata.getString(24)
-                            , reptiliadata.getInt(25), reptiliadata.getInt(26), reptiliadata.getInt(27), reptiliadata.getFloat(28), reptiliadata.getFloat(29),reptiliadata.getString(30),reptiliadata.getString(31))
+                    var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(reptiliadata.getString(0), reptiliadata.getString(1), reptiliadata.getString(2), reptiliadata.getString(3), reptiliadata.getString(4), reptiliadata.getString(5), reptiliadata.getString(6), reptiliadata.getString(7),
+                            reptiliadata.getString(8), reptiliadata.getFloat(9), reptiliadata.getString(10), reptiliadata.getInt(11), reptiliadata.getString(12), reptiliadata.getString(13), reptiliadata.getString(14)
+                            , reptiliadata.getString(15), reptiliadata.getString(16),reptiliadata.getInt(17), reptiliadata.getInt(18), reptiliadata.getInt(19), reptiliadata.getString(20), reptiliadata.getString(21), reptiliadata.getString(22)
+                            , reptiliadata.getString(23), reptiliadata.getString(24), reptiliadata.getString(25), reptiliadata.getInt(26), reptiliadata.getInt(27), reptiliadata.getInt(28), reptiliadata.getFloat(29), reptiliadata.getFloat(30),reptiliadata.getString(31),reptiliadata.getString(32))
 
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,reptilia_attribute.id))
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString,reptilia_attribute.GROP_ID))
@@ -2926,11 +2957,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         while (mammaldata.moveToNext()) {
 
-            var mammal_attribute: Mammal_attribute = Mammal_attribute(mammaldata.getString(0), mammaldata.getString(1), mammaldata.getString(2), mammaldata.getString(3), mammaldata.getString(4)
-                    , mammaldata.getString(5), mammaldata.getString(6), mammaldata.getString(7), mammaldata.getString(8), mammaldata.getFloat(9), mammaldata.getString(10), mammaldata.getInt(11)
-                    , mammaldata.getString(12), mammaldata.getString(13), mammaldata.getString(14), mammaldata.getString(15), mammaldata.getString(16), mammaldata.getString(17)
-                    , mammaldata.getInt(18), mammaldata.getString(19), mammaldata.getString(20), mammaldata.getFloat(21), mammaldata.getFloat(22), mammaldata.getString(23), mammaldata.getString(24)
-                    , mammaldata.getString(25), mammaldata.getString(26), mammaldata.getString(27),mammaldata.getString(28))
+            var mammal_attribute: Mammal_attribute = Mammal_attribute(mammaldata.getString(0), mammaldata.getString(1), mammaldata.getString(2), mammaldata.getString(3), mammaldata.getString(4), mammaldata.getString(5), mammaldata.getString(6), mammaldata.getString(7),
+                    mammaldata.getString(8), mammaldata.getFloat(9), mammaldata.getString(10), mammaldata.getInt(11), mammaldata.getString(12), mammaldata.getString(13), mammaldata.getString(14)
+                    , mammaldata.getString(15), mammaldata.getString(16), mammaldata.getString(17), mammaldata.getString(18),mammaldata.getInt(19), mammaldata.getString(20), mammaldata.getString(21), mammaldata.getFloat(22)
+                    , mammaldata.getFloat(23), mammaldata.getString(24), mammaldata.getString(25), mammaldata.getString(26), mammaldata.getString(27),mammaldata.getString(28),mammaldata.getString(29))
 
             datas.add(mammal_attribute)
 
@@ -2945,11 +2975,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 while (mammaldata.moveToNext()) {
 
-                    var mammal_attribute: Mammal_attribute = Mammal_attribute(mammaldata.getString(0), mammaldata.getString(1), mammaldata.getString(2), mammaldata.getString(3), mammaldata.getString(4)
-                            , mammaldata.getString(5), mammaldata.getString(6), mammaldata.getString(7), mammaldata.getString(8), mammaldata.getFloat(9), mammaldata.getString(10), mammaldata.getInt(11)
-                            , mammaldata.getString(12), mammaldata.getString(13), mammaldata.getString(14), mammaldata.getString(15), mammaldata.getString(16), mammaldata.getString(17)
-                            , mammaldata.getInt(18), mammaldata.getString(19), mammaldata.getString(20), mammaldata.getFloat(21), mammaldata.getFloat(22), mammaldata.getString(23), mammaldata.getString(24)
-                            , mammaldata.getString(25), mammaldata.getString(26), mammaldata.getString(27), mammaldata.getString(28))
+                    var mammal_attribute: Mammal_attribute = Mammal_attribute(mammaldata.getString(0), mammaldata.getString(1), mammaldata.getString(2), mammaldata.getString(3), mammaldata.getString(4), mammaldata.getString(5), mammaldata.getString(6), mammaldata.getString(7),
+                            mammaldata.getString(8), mammaldata.getFloat(9), mammaldata.getString(10), mammaldata.getInt(11), mammaldata.getString(12), mammaldata.getString(13), mammaldata.getString(14)
+                            , mammaldata.getString(15), mammaldata.getString(16), mammaldata.getString(17), mammaldata.getString(18),mammaldata.getInt(19), mammaldata.getString(20), mammaldata.getString(21), mammaldata.getFloat(22)
+                            , mammaldata.getFloat(23), mammaldata.getString(24), mammaldata.getString(25), mammaldata.getString(26), mammaldata.getString(27),mammaldata.getString(28),mammaldata.getString(29))
 
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString, mammal_attribute.id))
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, mammal_attribute.GROP_ID))
@@ -2967,6 +2996,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, mammal_attribute.SPEC_NM))
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, mammal_attribute.FAMI_NM))
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, mammal_attribute.SCIEN_NM))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("ENDANGERED", ogr.OFTString, mammal_attribute.ENDANGERED))
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("OBS_TY", ogr.OFTString, mammal_attribute.OBS_TY))
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("OBS_TY_ETC", ogr.OFTString, mammal_attribute.OBS_TY_ETC))
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger, mammal_attribute.INDI_CNT))
@@ -3542,11 +3572,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         while (birdsdata.moveToNext()) {
 
-            var birds_attribute: Birds_attribute = Birds_attribute(birdsdata.getString(0), birdsdata.getString(1), birdsdata.getString(2), birdsdata.getString(3)
-                    , birdsdata.getString(4), birdsdata.getString(5), birdsdata.getString(6), birdsdata.getString(7)
-                    , birdsdata.getString(8), birdsdata.getFloat(9), birdsdata.getString(10), birdsdata.getInt(11), birdsdata.getString(12), birdsdata.getString(13), birdsdata.getString(14)
-                    , birdsdata.getString(15), birdsdata.getInt(16), birdsdata.getString(17), birdsdata.getString(18), birdsdata.getString(19), birdsdata.getString(20), birdsdata.getString(21)
-                    , birdsdata.getString(22), birdsdata.getString(23), birdsdata.getFloat(24), birdsdata.getFloat(25) , birdsdata.getString(26),birdsdata.getString(27))
+            var birds_attribute: Birds_attribute = Birds_attribute(birdsdata.getString(0), birdsdata.getString(1), birdsdata.getString(2), birdsdata.getString(3), birdsdata.getString(4), birdsdata.getString(5), birdsdata.getString(6), birdsdata.getString(7),
+                    birdsdata.getString(8), birdsdata.getFloat(9), birdsdata.getString(10), birdsdata.getInt(11), birdsdata.getString(12), birdsdata.getString(13), birdsdata.getString(14)
+                    , birdsdata.getString(15),birdsdata.getString(16), birdsdata.getInt(17), birdsdata.getString(18), birdsdata.getString(19), birdsdata.getString(20), birdsdata.getString(21), birdsdata.getString(22)
+                    , birdsdata.getString(23), birdsdata.getString(24), birdsdata.getFloat(25), birdsdata.getFloat(26), birdsdata.getString(27), birdsdata.getString(28))
 
             BIRDSATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,birds_attribute.id))
             BIRDSATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString,birds_attribute.GROP_ID))
@@ -3564,6 +3593,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             BIRDSATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString,birds_attribute.SPEC_NM))
             BIRDSATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString,birds_attribute.FAMI_NM))
             BIRDSATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString,birds_attribute.SCIEN_NM))
+            BIRDSATTRIBUTE.add(Exporter.ColumnDef("ENDANGERED", ogr.OFTString,birds_attribute.ENDANGERED))
             BIRDSATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger,birds_attribute.INDI_CNT))
             BIRDSATTRIBUTE.add(Exporter.ColumnDef("OBS_STAT", ogr.OFTString,birds_attribute.OBS_STAT))
             BIRDSATTRIBUTE.add(Exporter.ColumnDef("OBS_ST_ETC", ogr.OFTString,birds_attribute.OBS_ST_ETC))
@@ -3618,11 +3648,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         while (reptiliadata.moveToNext()) {
 
-            var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(reptiliadata.getString(0), reptiliadata.getString(1), reptiliadata.getString(2), reptiliadata.getString(3), reptiliadata.getString(4)
-                    , reptiliadata.getString(5), reptiliadata.getString(6), reptiliadata.getString(7), reptiliadata.getString(8), reptiliadata.getFloat(9), reptiliadata.getString(10), reptiliadata.getInt(11)
-                    , reptiliadata.getString(12), reptiliadata.getString(13), reptiliadata.getString(14), reptiliadata.getString(15), reptiliadata.getInt(16), reptiliadata.getInt(17), reptiliadata.getInt(18)
-                    , reptiliadata.getString(19), reptiliadata.getString(20), reptiliadata.getString(21), reptiliadata.getString(22), reptiliadata.getString(23), reptiliadata.getString(24)
-                    , reptiliadata.getInt(25), reptiliadata.getInt(26), reptiliadata.getInt(27), reptiliadata.getFloat(28), reptiliadata.getFloat(29),reptiliadata.getString(30),reptiliadata.getString(31))
+            var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(reptiliadata.getString(0), reptiliadata.getString(1), reptiliadata.getString(2), reptiliadata.getString(3), reptiliadata.getString(4), reptiliadata.getString(5), reptiliadata.getString(6), reptiliadata.getString(7),
+                    reptiliadata.getString(8), reptiliadata.getFloat(9), reptiliadata.getString(10), reptiliadata.getInt(11), reptiliadata.getString(12), reptiliadata.getString(13), reptiliadata.getString(14)
+                    , reptiliadata.getString(15), reptiliadata.getString(16),reptiliadata.getInt(17), reptiliadata.getInt(18), reptiliadata.getInt(19), reptiliadata.getString(20), reptiliadata.getString(21), reptiliadata.getString(22)
+                    , reptiliadata.getString(23), reptiliadata.getString(24), reptiliadata.getString(25), reptiliadata.getInt(26), reptiliadata.getInt(27), reptiliadata.getInt(28), reptiliadata.getFloat(29), reptiliadata.getFloat(30),reptiliadata.getString(31),reptiliadata.getString(32))
 
                 REPTILIAATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,reptilia_attribute.id))
                 REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString,reptilia_attribute.GROP_ID))
@@ -3698,11 +3727,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         while (mammaldata.moveToNext()) {
 
-            var mammal_attribute: Mammal_attribute = Mammal_attribute(mammaldata.getString(0), mammaldata.getString(1), mammaldata.getString(2), mammaldata.getString(3), mammaldata.getString(4)
-                    , mammaldata.getString(5), mammaldata.getString(6), mammaldata.getString(7), mammaldata.getString(8), mammaldata.getFloat(9), mammaldata.getString(10), mammaldata.getInt(11)
-                    , mammaldata.getString(12), mammaldata.getString(13), mammaldata.getString(14), mammaldata.getString(15), mammaldata.getString(16), mammaldata.getString(17)
-                    , mammaldata.getInt(18), mammaldata.getString(19), mammaldata.getString(20), mammaldata.getFloat(21), mammaldata.getFloat(22), mammaldata.getString(23), mammaldata.getString(24)
-                    , mammaldata.getString(25), mammaldata.getString(26), mammaldata.getString(27),mammaldata.getString(28))
+            var mammal_attribute: Mammal_attribute = Mammal_attribute(mammaldata.getString(0), mammaldata.getString(1), mammaldata.getString(2), mammaldata.getString(3), mammaldata.getString(4), mammaldata.getString(5), mammaldata.getString(6), mammaldata.getString(7),
+                    mammaldata.getString(8), mammaldata.getFloat(9), mammaldata.getString(10), mammaldata.getInt(11), mammaldata.getString(12), mammaldata.getString(13), mammaldata.getString(14)
+                    , mammaldata.getString(15), mammaldata.getString(16), mammaldata.getString(17), mammaldata.getString(18),mammaldata.getInt(19), mammaldata.getString(20), mammaldata.getString(21), mammaldata.getFloat(22)
+                    , mammaldata.getFloat(23), mammaldata.getString(24), mammaldata.getString(25), mammaldata.getString(26), mammaldata.getString(27),mammaldata.getString(28),mammaldata.getString(29))
 
             MAMMALATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,mammal_attribute.id))
             MAMMALATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString,mammal_attribute.GROP_ID))
@@ -3720,6 +3748,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             MAMMALATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString,mammal_attribute.SPEC_NM))
             MAMMALATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString,mammal_attribute.FAMI_NM))
             MAMMALATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString,mammal_attribute.SCIEN_NM))
+            MAMMALATTRIBUTE.add(Exporter.ColumnDef("ENDANGERED", ogr.OFTString,mammal_attribute.ENDANGERED))
             MAMMALATTRIBUTE.add(Exporter.ColumnDef("OBS_TY", ogr.OFTString,mammal_attribute.OBS_TY))
             MAMMALATTRIBUTE.add(Exporter.ColumnDef("OBS_TY_ETC", ogr.OFTString,mammal_attribute.OBS_TY_ETC))
             MAMMALATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger,mammal_attribute.INDI_CNT))
@@ -4391,6 +4420,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         val geometryFactory = GeometryFactory()
 
+
         val currentPoint = geometryFactory.createPoint(Coordinate(location!!.latitude, location!!.longitude))
 
             if(trackingdiv) {
@@ -4399,7 +4429,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 dbManager.inserttracking(tracking)
 
                 Toast.makeText(this,"insert.",Toast.LENGTH_SHORT).show()
-
             }
 
 //        if (prevPoint != null) {
@@ -4491,6 +4520,18 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
             }
         }
+
+    }
+
+    fun timerStart(){
+        val task = object : TimerTask() {
+            override fun run() {
+                loadDataHandler.sendEmptyMessage(0)
+            }
+        }
+
+        timer = Timer()
+        timer!!.schedule(task, 0, 5000)
 
     }
 

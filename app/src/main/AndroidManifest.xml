@@ -182,7 +182,7 @@
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog1" />
         <activity
-            android:name=".activities.DlgvegetationActivity"
+            android:name=".activities.DlgVascularActivity"
             android:theme="@style/full_screen_dialog1" />
         <activity
             android:name=".activities.DlgcomAcitivity"

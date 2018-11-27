@@ -239,7 +239,6 @@ object Exporter {
         if(exportItems != null){
             val exportitem = exportItems.get(0)
             for (columnDef in exportitem.columnDefs) {
-                println("-----------------------${columnDef.columnName} -- ${columnDef.columnType} -- ${columnDef.columnValue}")
                 layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
             }
         }
@@ -247,7 +246,6 @@ object Exporter {
         if(exportPointItems != null){
             val exportPointitem = exportPointItems.get(0)
             for (columnDef in exportPointitem.columnDefs) {
-                println("-----------------------${columnDef.columnName} -- ${columnDef.columnType} -- ${columnDef.columnValue}")
                 layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
             }
         }

@@ -11,9 +11,7 @@ import android.text.TextWatcher
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.Utils
 import hntecology.ecology.R
-import hntecology.ecology.adapter.DlgFishAdapter
 import hntecology.ecology.adapter.DlgFloraAdapter
-import hntecology.ecology.adapter.DlgReptiliaAdapter
 import kotlinx.android.synthetic.main.dlg_flora.*
 import org.json.JSONObject
 import kotlin.collections.ArrayList
@@ -33,7 +31,7 @@ class DlgFloraActivity : Activity() {
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.dlg_birds)
+        setContentView(R.layout.dlg_flora)
 
         context = this;
 
@@ -59,7 +57,7 @@ class DlgFloraActivity : Activity() {
 
         apdater.notifyDataSetChanged()
 
-        closeLL.setOnClickListener {
+        closefloraLL.setOnClickListener {
             finish()
         }
 

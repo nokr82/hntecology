@@ -313,6 +313,28 @@
                     android:gravity="center"
                     />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    style="@style/BiotopeTextView"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:text="멸종위기 기호" />
+
+                <TextView
+                    android:id="@+id/endangeredTV"
+                    style="@style/BiotopeTextViewDisabled"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

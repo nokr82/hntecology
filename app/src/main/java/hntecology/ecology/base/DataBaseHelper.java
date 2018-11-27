@@ -478,7 +478,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void insertbirds_attribute(Birds_attribute birds_attribute){
         String query = "INSERT INTO birdsAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
-        query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,OBS_STAT,OBS_ST_ETC";
+        query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,ENDANGERED,INDI_CNT,OBS_STAT,OBS_ST_ETC";
         query += ",USE_TAR,USE_TAR_SP,USE_LAYER,MJ_ACT,MJ_ACT_PR,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD)";
 
         query += " values (";
@@ -497,6 +497,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + birds_attribute.getSPEC_NM() + "'";
         query += ", '" + birds_attribute.getFAMI_NM() + "'";
         query += ", '" + birds_attribute.getSCIEN_NM() + "'";
+        query += ", '" + birds_attribute.getENDANGERED() + "'";
         query += ", '" + birds_attribute.getINDI_CNT() + "'";
         query += ", '" + birds_attribute.getOBS_STAT() + "'";
         query += ", '" + birds_attribute.getOBS_ST_ETC() + "'";
@@ -519,7 +520,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void insertreptilia_attribute(Reptilia_attribute reptilia_attribute){
         String query = "INSERT INTO reptiliaAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
-        query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,IN_CNT_ADU,IN_CNT_LAR,IN_CNT_EGG";
+        query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,ENDANGERED,IN_CNT_ADU,IN_CNT_LAR,IN_CNT_EGG";
         query += ",HAB_RIVEER,HAB_EDGE,WATER_IN,WATER_OUT,WATER_CONT,WATER_QUAL,WATER_DEPT";
         query += ",HAB_AREA_W,HAB_AREA_H,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD)";
 
@@ -540,6 +541,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + reptilia_attribute.getSPEC_NM() + "'";
         query += ", '" + reptilia_attribute.getFAMI_NM() + "'";
         query += ", '" + reptilia_attribute.getSCIEN_NM() + "'";
+        query += ", '" + reptilia_attribute.getENDANGERED() + "'";
         query += ", '" + reptilia_attribute.getIN_CNT_ADU() + "'";
         query += ", '" + reptilia_attribute.getIN_CNT_LAR() + "'";
         query += ", '" + reptilia_attribute.getIN_CNT_EGG() + "'";
@@ -566,7 +568,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void insertmammal_attribute(Mammal_attribute mammal_attribute){
         String query = "INSERT INTO mammalAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
-        query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,OBS_TY,OBS_TY_ETC,INDI_CNT";
+        query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,ENDANGERED,OBS_TY,OBS_TY_ETC,INDI_CNT";
         query += ",OB_PT_CHAR,UNUS_NOTE,GPS_LAT,GPS_LON,UN_SPEC,UN_SPEC_RE,TR_EASY,TR_EASY_RE,TEMP_YN,CONF_MOD)";
 
         query += " values (";
@@ -585,6 +587,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + mammal_attribute.getSPEC_NM() + "'";
         query += ", '" + mammal_attribute.getFAMI_NM() + "'";
         query += ", '" + mammal_attribute.getSCIEN_NM() + "'";
+        query += ", '" + mammal_attribute.getENDANGERED() + "'";
         query += ", '" + mammal_attribute.getOBS_TY() + "'";
         query += ", '" + mammal_attribute.getOBS_TY_ETC() + "'";
         query += ", '" + mammal_attribute.getINDI_CNT() + "'";
@@ -877,6 +880,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",SPEC_NM='" + reptilia_attribute.getSPEC_NM() + "'"
                 + ",FAMI_NM='" + reptilia_attribute.getFAMI_NM() + "'"
                 + ",SCIEN_NM='" + reptilia_attribute.getSCIEN_NM() + "'"
+                + ",ENDANGERED='" + reptilia_attribute.getENDANGERED() + "'"
                 + ",IN_CNT_ADU='" + reptilia_attribute.getIN_CNT_ADU() + "'"
                 + ",IN_CNT_LAR='" + reptilia_attribute.getIN_CNT_LAR() + "'"
                 + ",IN_CNT_EGG='" + reptilia_attribute.getIN_CNT_EGG() + "'"
@@ -915,6 +919,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",SPEC_NM='" + birds_attribute.getSPEC_NM() + "'"
                 + ",FAMI_NM='" + birds_attribute.getFAMI_NM() + "'"
                 + ",SCIEN_NM='" + birds_attribute.getSCIEN_NM() + "'"
+                + ",ENDANGERED='" + birds_attribute.getENDANGERED() + "'"
                 + ",INDI_CNT='" + birds_attribute.getINDI_CNT() + "'"
                 + ",OBS_STAT='" + birds_attribute.getOBS_STAT() + "'"
                 + ",OBS_ST_ETC='" + birds_attribute.getOBS_ST_ETC() + "'"
@@ -1025,6 +1030,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",SPEC_NM='" + mammal_attribute.getSPEC_NM() + "'"
                 + ",FAMI_NM='" + mammal_attribute.getFAMI_NM() + "'"
                 + ",SCIEN_NM='" + mammal_attribute.getSCIEN_NM() + "'"
+                + ",ENDANGERED='" + mammal_attribute.getENDANGERED() + "'"
                 + ",OBS_TY='" + mammal_attribute.getOBS_TY() + "'"
                 + ",OBS_TY_ETC='" + mammal_attribute.getOBS_TY_ETC() + "'"
                 + ",INDI_CNT='" + mammal_attribute.getINDI_CNT() + "'"

@@ -111,6 +111,7 @@
                     android:background="@android:color/white"
                     android:alpha="0.6">
                     <TextView
+                        android:visibility="gone"
                         android:id="@+id/transparentTV"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"

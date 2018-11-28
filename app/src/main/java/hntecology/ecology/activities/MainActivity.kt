@@ -479,6 +479,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         // 도형 분리
         splitRL.setOnClickListener {
             if (splitRL.isSelected) {
+                splitPolygon()
                 offSplitBtn()
             } else {
                 onSplitBtn()
@@ -1799,7 +1800,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     for (j in 0..(coordinates.size - 1)) {
                         val coordinate = coordinates[j]
 
-                        println("coordinate ${coordinate.x}     ---- ${coordinate.y}")
                         val latlng = LatLng(coordinate.y, coordinate.x)
 
                         val markerOptions = MarkerOptions()
@@ -1941,7 +1941,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
     }
 
-    private var startGeoPoint: LatLng? = null
+    // private var startGeoPoint: LatLng? = null
 
     private var polylineForSplitGuide: Polyline? = null
 
@@ -1969,23 +1969,37 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 point.x = X1
                 point.y = Y1
 
-                startGeoPoint = googleMap.projection.fromScreenLocation(point)
+                val geoPoint = googleMap.projection.fromScreenLocation(point)
 
                 if (splitRL.isSelected) {
+                    if(polylineForSplitGuide != null) {
 
-                    val polylineOptions = PolylineOptions()
-                    polylineOptions.add(startGeoPoint)
+                        val polylineForSplitGuidePoints = ArrayList<LatLng?>()
 
-                    polylineOptions.width(5f)
-                    polylineOptions.color(Color.YELLOW);
+                        for(point in polylineForSplitGuide!!.points) {
+                            polylineForSplitGuidePoints.add(point)
+                        }
 
-                    polylineForSplitGuide = googleMap.addPolyline(polylineOptions)
+                        polylineForSplitGuidePoints.add(geoPoint)
+
+                        polylineForSplitGuide?.points = polylineForSplitGuidePoints
+
+                    } else {
+                        val polylineOptions = PolylineOptions()
+                        polylineOptions.add(geoPoint)
+
+                        polylineOptions.width(5f)
+                        polylineOptions.color(Color.YELLOW);
+
+                        polylineForSplitGuide = googleMap.addPolyline(polylineOptions)
+                    }
                 }
             }
 
             MotionEvent.ACTION_MOVE -> {
                 if (splitRL.isSelected) {
 
+                    /*
                     X1 = event.x.toInt()
                     Y1 = event.y.toInt()
                     point = Point()
@@ -1998,6 +2012,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     polylineForSplitGuidePoints.add(geoPoint)
 
                     polylineForSplitGuide?.points = polylineForSplitGuidePoints
+                    */
                 }
             }
 
@@ -2017,6 +2032,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         return false
                     }
 
+
+                    /*
                     val layerInfo = editingPolygon?.tag as LayerInfo
 
                     val oldAttributeKey = layerInfo.attrubuteKey
@@ -2062,6 +2079,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         copyRow("biotopeAttribute", oldAttributeKey, newAttributeKey)
 
                     }
+                    */
 
                 } else {
 
@@ -2130,6 +2148,67 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
 
         return mGestureDetector.onTouchEvent(event)
+    }
+
+    private fun splitPolygon() {
+
+        if (!splitRL.isSelected) {
+            return
+        }
+
+        if (editingPolygon == null) {
+            return
+        }
+
+        val layerInfo = editingPolygon?.tag as LayerInfo
+
+        val oldAttributeKey = layerInfo.attrubuteKey
+
+        val splited = Utils.splitPolygon(toJTSPolygon(editingPolygon!!), toJTSLineString(polylineForSplitGuide!!))
+
+        offSplitBtn()
+
+        polylineForSplitGuide?.remove()
+
+        polylineForSplitGuide = null
+
+
+
+        editingPolygon?.remove()
+        editingPolygon = null
+
+        for (idx in 0..(splited.numGeometries - 1)) {
+            var polygon = splited.getGeometryN(idx)
+            // polygon = polygon.buffer(-0.00002)
+
+            val polygonOptions = PolygonOptions()
+            polygonOptions.fillColor(getColor())
+            polygonOptions.strokeWidth(5.0f)
+            polygonOptions.strokeColor(Color.WHITE)
+
+            for (coordinate in polygon.coordinates) {
+                polygonOptions.add(LatLng(coordinate.y, coordinate.x))
+            }
+
+            val po = googleMap.addPolygon(polygonOptions)
+            // po.zIndex = 5.0f
+
+            val newAttributeKey = getAttributeKey(layerInfo.layer)
+            val newLayerInfo = LayerInfo()
+            newLayerInfo.attrubuteKey = newAttributeKey
+            newLayerInfo.layer = layerInfo.layer
+
+            po.tag = newLayerInfo
+
+            po.isClickable = true
+
+            polygons.add(po)
+            allPolygons.add(po)
+
+            // copy data
+            copyRow("biotopeAttribute", oldAttributeKey, newAttributeKey)
+
+        }
     }
 
     private fun offSplitBtn() {

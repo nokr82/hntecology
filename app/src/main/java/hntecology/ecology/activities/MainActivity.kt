@@ -688,7 +688,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 PLAY_SERVICES_RESOLUTION_REQUEST -> {
 
                     initilizeMap()
-
                 }
 
                 PolygonCallBackData -> {
@@ -1811,7 +1810,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     for (j in 0..(coordinates.size - 1)) {
                         val coordinate = coordinates[j]
 
-                        println("coordinate ${coordinate.x}     ---- ${coordinate.y}")
                         val latlng = LatLng(coordinate.y, coordinate.x)
 
                         val markerOptions = MarkerOptions()

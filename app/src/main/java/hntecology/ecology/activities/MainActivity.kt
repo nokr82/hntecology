@@ -1713,7 +1713,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         LoadLayerTask(fileName,Type,added).execute(bounds)
     }
 
-    private inner class LoadLayerTask(layerName: String , Type: String , added: String) : AsyncTask<LatLngBounds, PolygonOptions, Boolean>() {
+    private inner class LoadLayerTask(layerName: String , Type: String , added: String) : AsyncTask<LatLngBounds, Any, Boolean>() {
 
 
         var layerName = layerName
@@ -1809,7 +1809,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                         markerOptions.alpha(1.0f)
 
-                        val marker = googleMap.addMarker(markerOptions)
+                        publishProgress(markerOptions)
 
                     }
 
@@ -1821,49 +1821,94 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         }
 
-        override fun onProgressUpdate(vararg polygonOptions: PolygonOptions?) {
-            val polygon = googleMap.addPolygon(polygonOptions[0])
-            polygon.zIndex = 0.0f
-            polygon.tag = layerName
+        override fun onProgressUpdate(vararg geoms: Any?) {
 
-            println("layerName .layer ===== $layerName")
+            if (geoms[0] is PolygonOptions) {
+                val polygon = googleMap.addPolygon(geoms[0] as PolygonOptions)
+                polygon.zIndex = 0.0f
+                polygon.tag = layerName
 
-            polygon.isClickable = true
+                println("layerName .layer ===== $layerName")
 
-            val layerInfo = LayerInfo()
+                polygon.isClickable = true
 
-            if(type.equals("biotope")){
-                layerInfo.layer = LAYER_BIOTOPE
+                val layerInfo = LayerInfo()
+
+                if(type.equals("biotope")){
+                    layerInfo.layer = LAYER_BIOTOPE
+                }
+
+                if (type.equals("birds")){
+                    layerInfo.layer = LAYER_BIRDS
+                }
+
+                if (type.equals("reptilia")){
+                    layerInfo.layer = LAYER_REPTILIA
+                }
+
+                if (type.equals("mammalia")){
+                    layerInfo.layer = LAYER_MAMMALIA
+                }
+
+                if (type.equals("fish")){
+                    layerInfo.layer = LAYER_BIRDS
+                }
+
+                if (type.equals("insect")){
+                    layerInfo.layer = LAYER_INSECT
+                }
+
+                if (type.equals("flora")){
+                    layerInfo.layer = LAYER_FLORA
+                }
+
+                polygon.tag = layerInfo
+
+                polygons.add(polygon)
+                allPolygons.add(polygon)
+
+            } else if (geoms[0] is MarkerOptions) {
+
+                val marker = googleMap.addMarker(geoms[0] as MarkerOptions)
+                marker.zIndex = 0.0f
+                marker.tag = layerName
+
+                println("layerName .layer ===== $layerName")
+
+                val layerInfo = LayerInfo()
+
+                if(type.equals("biotope")){
+                    layerInfo.layer = LAYER_BIOTOPE
+                }
+
+                if (type.equals("birds")){
+                    layerInfo.layer = LAYER_BIRDS
+                }
+
+                if (type.equals("reptilia")){
+                    layerInfo.layer = LAYER_REPTILIA
+                }
+
+                if (type.equals("mammalia")){
+                    layerInfo.layer = LAYER_MAMMALIA
+                }
+
+                if (type.equals("fish")){
+                    layerInfo.layer = LAYER_BIRDS
+                }
+
+                if (type.equals("insect")){
+                    layerInfo.layer = LAYER_INSECT
+                }
+
+                if (type.equals("flora")){
+                    layerInfo.layer = LAYER_FLORA
+                }
+
+                marker.tag = layerInfo
+
+                points.add(marker)
             }
-
-            if (type.equals("birds")){
-                layerInfo.layer = LAYER_BIRDS
-            }
-
-            if (type.equals("reptilia")){
-                layerInfo.layer = LAYER_REPTILIA
-            }
-
-            if (type.equals("mammalia")){
-                layerInfo.layer = LAYER_MAMMALIA
-            }
-
-            if (type.equals("fish")){
-                layerInfo.layer = LAYER_BIRDS
-            }
-
-            if (type.equals("insect")){
-                layerInfo.layer = LAYER_INSECT
-            }
-
-            if (type.equals("flora")){
-                layerInfo.layer = LAYER_FLORA
-            }
-
-            polygon.tag = layerInfo
-
-            polygons.add(polygon)
-            allPolygons.add(polygon)
 
         }
 

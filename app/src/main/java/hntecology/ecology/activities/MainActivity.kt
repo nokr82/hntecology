@@ -716,20 +716,27 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 BIOTOPE_DATA -> {
-                    if(data!!.getStringExtra("polygonid") != null){
+                    if(data!!.getStringExtra("polygonid") != null) {
                         val polygonid = data!!.getStringExtra("polygonid")
                         println("biotope_data  $polygonid")
 
                         println(polygons.size.toString()  + "-----------------------------")
-                        for(i in 0..polygons.size -1){
-                                if ((polygons.get(i).id).equals(polygonid)) {
-                                    println("ssssssssssssss")
-                                    runOnUiThread(Runnable {
-                                        polygons.get(i).remove()
-                                        polygons.removeAt(i)
-                                    })
+                        for(i in 0..polygons.size -1) {
+
+                            val polygon = polygons.get(i)
+
+                            println("polygon : $polygon")
+
+                            if ((polygon.id).equals(polygonid)) {
+
+                                println("ssssssssssssss")
+
+                                runOnUiThread(Runnable {
+                                    polygon.remove()
+                                    // polygons.removeAt(i)
+                                })
 //                                polygons.remove(polygons.get(i))
-                                }
+                            }
                         }
 
                         println("polygons : " + polygons)

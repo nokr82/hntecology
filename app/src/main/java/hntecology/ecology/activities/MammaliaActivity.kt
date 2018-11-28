@@ -900,8 +900,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                         }
 
-                        if (dataArray.size == 0 ){
+                        if (dataArray.size == 0 || intent.getStringExtra("id") != null){
 
+                            var intent = Intent()
                             intent.putExtra("markerid", markerid)
                             setResult(RESULT_OK, intent);
 
@@ -1165,7 +1166,31 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 setResult(RESULT_OK, intent);
             }
 
+            var intent = Intent()
+            intent.putExtra("export",70)
+            setResult(RESULT_OK, intent)
+
             btn_mammalDelete.visibility = View.GONE
+
+            if (images_path != null){
+                images_path!!.clear()
+            }
+
+            if (images != null){
+                images!!.clear()
+            }
+
+            if (images_url != null){
+                images_url!!.clear()
+            }
+
+            if (images_url_remove != null){
+                images_url_remove!!.clear()
+            }
+
+            if (images_id != null){
+                images_id!!.clear()
+            }
 
             clear()
             chkdata = false
@@ -1581,6 +1606,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
     fun startDlgM(){
         val intent = Intent(context, DlgMammalActivity::class.java)
+        intent.putExtra("title", "확인되지 않는 종 선택")
+        intent.putExtra("table", "mammal")
+        intent.putExtra("DlgHeight", 600f);
         startActivityForResult(intent, SET_UNSPEC);
     }
 

@@ -218,13 +218,6 @@
                     android:text="위성 지도" />
 
                 <Button
-                    android:id="@+id/btn_clear_all"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="전체 지우기" />
-
-
-                <Button
                     android:id="@+id/btn_biotope"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -315,6 +308,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="비오톱 삭제" />
+
+                <Button
+                    android:id="@+id/btn_clear_all"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="전체 지우기" />
 
                 <Button
                     android:id="@+id/logoutBtn"

@@ -479,6 +479,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         // 도형 분리
         splitRL.setOnClickListener {
             if (splitRL.isSelected) {
+                splitPolygon()
                 offSplitBtn()
             } else {
                 onSplitBtn()
@@ -531,6 +532,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if (timer != null) {
                     timer!!.cancel()
                 }
+                exportTracking()
             }
 
         }
@@ -630,7 +632,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
         })
 
-
         myLocation = Tracking(null, latitude, longitude)
 
     }
@@ -687,6 +688,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 PLAY_SERVICES_RESOLUTION_REQUEST -> {
 
                     initilizeMap()
+
                 }
 
                 PolygonCallBackData -> {
@@ -705,7 +707,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 dlg_gpsCallbackData -> {
-
                     latitude = data!!.getDoubleExtra("latitude", 126.79235)
                     longitude = data.getDoubleExtra("longitude", 37.39627)
 
@@ -715,17 +716,26 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 BIOTOPE_DATA -> {
-                    if(data!!.getStringExtra("polygonid") != null){
+                    if(data!!.getStringExtra("polygonid") != null) {
                         val polygonid = data!!.getStringExtra("polygonid")
                         println("biotope_data  $polygonid")
 
                         println(polygons.size.toString()  + "-----------------------------")
                         for(i in 0..polygons.size -1){
-                                if ((polygons.get(i).id).equals(polygonid)) {
-                                    println("ssssssssssssss")
+                            val polygon = polygons.get(i)
+                            println("polygonid : ${polygon.id}")
+                            println("polygonid : ${polygonid}")
+
+                                if ((polygon.id).equals(polygonid)) {
+
+                                    println("ssssssssssssss : ${polygon.hashCode()}")
+
+                                    polygons.get(i).remove()
+                                    polygons.remove(polygons.get(i))
+
                                     runOnUiThread(Runnable {
-                                        polygons.get(i).remove()
-                                        polygons.removeAt(i)
+                                        polygon.remove()
+//                                        polygons.removeAt(i)
                                     })
 //                                polygons.remove(polygons.get(i))
                                 }
@@ -1038,7 +1048,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         }
 
                         for (i in 0..birdsdataArray.size - 1) {
-                            title += birdsdataArray.get(i).INV_PERSON + " "
+                            title = "조류"
 
                             marker.title = title
                         }
@@ -1104,7 +1114,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         }
 
                         for (i in 0..reptiliadataArray.size - 1) {
-                            title += reptiliadataArray.get(i).INV_PERSON + " "
+                            title = "양서,파충류"
 
                             marker.title = title
                         }
@@ -1168,7 +1178,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         }
 
                         for (i in 0..mammaldataArray.size - 1) {
-                            title += mammaldataArray.get(i).INV_PERSON + " "
+                            title = "포유류"
 
                             marker.title = title
                         }
@@ -1229,7 +1239,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         }
 
                         for (i in 0..fishdataArray.size - 1) {
-                            title += fishdataArray.get(i).INV_PERSON + " "
+                            title = "어류"
 
                             marker.title = title
                         }
@@ -1293,7 +1303,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
 
                         for (i in 0..insectdataArray.size - 1) {
-                            title += insectdataArray.get(i).INV_PERSON + " "
+                            title = "곤충"
 
                             marker.title = title
                         }
@@ -1355,7 +1365,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         }
 
                         for (i in 0..floradataArray.size - 1) {
-                            title += floradataArray.get(i).INV_PERSON + " "
+                            title = "식물"
 
                             marker.title = title
                         }
@@ -1394,6 +1404,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             intent.putExtra("GROP_ID", attrubuteKey)
                             startActivityForResult(intent, FLORA_DATA);
                         }
+
                     }
 
                     LAYER_ZOOBENTHOS -> {
@@ -1586,6 +1597,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                     break
                                 } else{
                                     polygons.add(polygon)
+
                                 }
                             }
 
@@ -1713,7 +1725,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         LoadLayerTask(fileName,Type,added).execute(bounds)
     }
 
-    private inner class LoadLayerTask(layerName: String , Type: String , added: String) : AsyncTask<LatLngBounds, PolygonOptions, Boolean>() {
+    private inner class LoadLayerTask(layerName: String , Type: String , added: String) : AsyncTask<LatLngBounds, Any, Boolean>() {
 
 
         var layerName = layerName
@@ -1809,7 +1821,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                         markerOptions.alpha(1.0f)
 
-                        val marker = googleMap.addMarker(markerOptions)
+                        publishProgress(markerOptions)
 
                     }
 
@@ -1821,49 +1833,101 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         }
 
-        override fun onProgressUpdate(vararg polygonOptions: PolygonOptions?) {
-            val polygon = googleMap.addPolygon(polygonOptions[0])
-            polygon.zIndex = 0.0f
-            polygon.tag = layerName
+        override fun onProgressUpdate(vararg geoms: Any?) {
 
-            println("layerName .layer ===== $layerName")
+            if (geoms[0] is PolygonOptions) {
+                val polygon = googleMap.addPolygon(geoms[0] as PolygonOptions)
+                polygon.zIndex = 0.0f
+                polygon.tag = layerName
 
-            polygon.isClickable = true
+                println("layerName .layer ===== $layerName")
 
-            val layerInfo = LayerInfo()
+                polygon.isClickable = true
 
-            if(type.equals("biotope")){
-                layerInfo.layer = LAYER_BIOTOPE
+                val layerInfo = LayerInfo()
+
+                if(type.equals("biotope")){
+                    layerInfo.layer = LAYER_BIOTOPE
+                }
+
+                if (type.equals("birds")){
+                    layerInfo.layer = LAYER_BIRDS
+                }
+
+                if (type.equals("reptilia")){
+                    layerInfo.layer = LAYER_REPTILIA
+                }
+
+                if (type.equals("mammalia")){
+                    layerInfo.layer = LAYER_MAMMALIA
+                }
+
+                if (type.equals("fish")){
+                    layerInfo.layer = LAYER_BIRDS
+                }
+
+                if (type.equals("insect")){
+                    layerInfo.layer = LAYER_INSECT
+                }
+
+                if (type.equals("flora")){
+                    layerInfo.layer = LAYER_FLORA
+                }
+
+                polygon.tag = layerInfo
+
+                polygons.add(polygon)
+                allPolygons.add(polygon)
+
+            } else if (geoms[0] is MarkerOptions) {
+
+                val marker = googleMap.addMarker(geoms[0] as MarkerOptions)
+                marker.zIndex = 0.0f
+                marker.tag = layerName
+
+                println("layerName .layer ===== $layerName")
+
+                val layerInfo = LayerInfo()
+
+                if(type.equals("biotope")){
+                    layerInfo.layer = LAYER_BIOTOPE
+                }
+
+                if (type.equals("birds")){
+                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                    layerInfo.layer = LAYER_BIRDS
+                }
+
+                if (type.equals("reptilia")){
+                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                    layerInfo.layer = LAYER_REPTILIA
+                }
+
+                if (type.equals("mammalia")){
+                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
+                    layerInfo.layer = LAYER_MAMMALIA
+                }
+
+                if (type.equals("fish")){
+                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                    layerInfo.layer = LAYER_BIRDS
+                }
+
+                if (type.equals("insect")){
+                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
+                    layerInfo.layer = LAYER_INSECT
+                }
+
+                if (type.equals("flora")){
+                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                    layerInfo.layer = LAYER_FLORA
+                }
+
+                marker.tag = layerInfo
+
+                points.add(marker)
+
             }
-
-            if (type.equals("birds")){
-                layerInfo.layer = LAYER_BIRDS
-            }
-
-            if (type.equals("reptilia")){
-                layerInfo.layer = LAYER_REPTILIA
-            }
-
-            if (type.equals("mammalia")){
-                layerInfo.layer = LAYER_MAMMALIA
-            }
-
-            if (type.equals("fish")){
-                layerInfo.layer = LAYER_BIRDS
-            }
-
-            if (type.equals("insect")){
-                layerInfo.layer = LAYER_INSECT
-            }
-
-            if (type.equals("flora")){
-                layerInfo.layer = LAYER_FLORA
-            }
-
-            polygon.tag = layerInfo
-
-            polygons.add(polygon)
-            allPolygons.add(polygon)
 
         }
 
@@ -1896,7 +1960,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
     }
 
-    private var startGeoPoint: LatLng? = null
+//    private var startGeoPoint: LatLng? = null
 
     private var polylineForSplitGuide: Polyline? = null
 
@@ -1924,23 +1988,37 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 point.x = X1
                 point.y = Y1
 
-                startGeoPoint = googleMap.projection.fromScreenLocation(point)
+                val geoPoint = googleMap.projection.fromScreenLocation(point)
 
                 if (splitRL.isSelected) {
+                    if(polylineForSplitGuide != null) {
 
-                    val polylineOptions = PolylineOptions()
-                    polylineOptions.add(startGeoPoint)
+                        val polylineForSplitGuidePoints = ArrayList<LatLng?>()
 
-                    polylineOptions.width(5f)
-                    polylineOptions.color(Color.YELLOW);
+                        for(point in polylineForSplitGuide!!.points) {
+                            polylineForSplitGuidePoints.add(point)
+                        }
 
-                    polylineForSplitGuide = googleMap.addPolyline(polylineOptions)
+                        polylineForSplitGuidePoints.add(geoPoint)
+
+                        polylineForSplitGuide?.points = polylineForSplitGuidePoints
+
+                    } else {
+                        val polylineOptions = PolylineOptions()
+                        polylineOptions.add(geoPoint)
+
+                        polylineOptions.width(5f)
+                        polylineOptions.color(Color.YELLOW);
+
+                        polylineForSplitGuide = googleMap.addPolyline(polylineOptions)
+                    }
                 }
             }
 
             MotionEvent.ACTION_MOVE -> {
                 if (splitRL.isSelected) {
 
+                    /*
                     X1 = event.x.toInt()
                     Y1 = event.y.toInt()
                     point = Point()
@@ -1953,6 +2031,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     polylineForSplitGuidePoints.add(geoPoint)
 
                     polylineForSplitGuide?.points = polylineForSplitGuidePoints
+                    */
                 }
             }
 
@@ -1972,6 +2051,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         return false
                     }
 
+                    /*
                     val layerInfo = editingPolygon?.tag as LayerInfo
 
                     val oldAttributeKey = layerInfo.attrubuteKey
@@ -2017,6 +2097,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         copyRow("biotopeAttribute", oldAttributeKey, newAttributeKey)
 
                     }
+                    */
 
                 } else {
 
@@ -2116,6 +2197,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         if(mygps){
             marker.title = "현재 위치"
+            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
             mygps = false
         }
 
@@ -2286,12 +2368,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             TRACKING -> {
                 marker.title = "이동 경로"
+                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
 
                 points.add(marker)
                 allpoints.add(marker)
             }
-        }
 
+        }
 
     }
 
@@ -2334,8 +2417,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         polygon!!.points = latlngs
 
         if(latlngs.size >= 3) {
-            val jtsPolygon = toJTSPolygon(editingPolygon!!)
-            if(!jtsPolygon.isValid) {
+            val jtsEditPolygon = toJTSPolygon(editingPolygon!!)
+            val jtsPolygon = toJTSPolygon(polygon!!)
+            if(!jtsEditPolygon.isValid) {
 
                 latlngs.remove(latlngs.last())
                 drawPolygon()
@@ -2406,11 +2490,18 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             Toast.makeText(this,"세곳 이상 클릭해주세요.",Toast.LENGTH_SHORT).show()
         }
 
+        if (latlngs.size == 0) {
+
+            editingPolygon = null
+            this.polygon = null
+
+            return
+
+        }
+
         if(latlngs.size >= 3 && polygon != null) {
 
             val layerInfo = polygon.tag as LayerInfo
-
-            println("polygon_tag ------------------${polygon.tag}")
 
             var myLayer = layerInfo.layer
 
@@ -2419,19 +2510,29 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             intent = Intent(this, BiotopeActivity::class.java)
 
             intent!!.putExtra("GROP_ID", attrubuteKey.toString())
-
-            println("main____gropid ------------------------------$attrubuteKey")
-
             intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
             intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
             intent!!.putExtra("polygonid",polygon.id)
 
-            println("polygoniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii${polygon.id}")
+            startActivityForResult(intent, BIOTOPE_DATA);
+
+            editingPolygon!!.points = latlngs
+            this.polygon!!.points = latlngs
+
+            val jtsEditPolygon = toJTSPolygon(editingPolygon!!)
+            val jtsPolygon = toJTSPolygon(polygon)
 
             polygons.add(polygon)
             allPolygons.add(polygon)
 
-            startActivityForResult(intent, BIOTOPE_DATA);
+            if(!jtsPolygon.isValid) {
+
+                latlngs.remove(latlngs.last())
+                drawPolygon()
+
+                Utils.showNotification(context, "잘못된 지점입니다. 다시 선택해주세요.")
+
+            }
 
             latlngs.clear()
             updateDelPointText()
@@ -2736,6 +2837,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         val dataList: Array<String> = arrayOf("*")
         val birdsdata= db.query("birdsAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var datas:ArrayList<Birds_attribute> = ArrayList<Birds_attribute>()
+        var chkData = false
         while (birdsdata.moveToNext()) {
 
             var birds_attribute: Birds_attribute = Birds_attribute(birdsdata.getString(0), birdsdata.getString(1), birdsdata.getString(2), birdsdata.getString(3), birdsdata.getString(4), birdsdata.getString(5), birdsdata.getString(6), birdsdata.getString(7),
@@ -2829,7 +2931,20 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
             }
 
-            dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds" + File.separator + "birds" ,"조류", "birds","Y")
+            val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds" + File.separator + "birds"
+
+            val layerData= db.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+
+            while (layerData.moveToNext()){
+                chkData = true
+            }
+
+            if(chkData){
+
+            }else {
+                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds" + File.separator + "birds" ,"조류", "birds","Y")
+            }
+
             Exporter.exportPoint(pointsArray)
             pointsArray.clear()
             birdsDatas.clear()
@@ -2843,6 +2958,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         val dataList: Array<String> = arrayOf("*")
         val reptiliadata= db.query("reptiliaAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var datas: ArrayList<Reptilia_attribute> = ArrayList<Reptilia_attribute>()
+        var chkData = false
 
         while (reptiliadata.moveToNext()) {
 
@@ -2939,7 +3055,20 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
             }
 
-            dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia" + File.separator + "reptilia","양서,파충류", "reptilia","Y")
+            val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia" + File.separator + "reptilia"
+
+            val layerData= db.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+
+            while (layerData.moveToNext()){
+                chkData = true
+            }
+
+            if(chkData){
+
+            }else {
+                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia" + File.separator + "reptilia","양서,파충류", "reptilia","Y")
+            }
+
             Exporter.exportPoint(pointsArray)
             pointsArray.clear()
             reptiliaDatas.clear()
@@ -2954,6 +3083,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         val dataList: Array<String> = arrayOf("*")
         val mammaldata = db.query("mammalAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var datas:ArrayList<Mammal_attribute> = ArrayList<Mammal_attribute>()
+        var chkData = false
 
         while (mammaldata.moveToNext()) {
 
@@ -3046,7 +3176,21 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
             }
 
-            dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia" + File.separator + "mammalia","포유류", "mammalia","Y")
+            val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia" + File.separator + "mammalia"
+
+            val layerData= db.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+
+            while (layerData.moveToNext()){
+                chkData = true
+            }
+
+            if(chkData){
+
+            }else {
+                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia" + File.separator + "mammalia","포유류", "mammalia","Y")
+            }
+
+
             Exporter.exportPoint(pointsArray)
             pointsArray.clear()
             mammaliaDatas.clear()
@@ -3060,6 +3204,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         val dataList: Array<String> = arrayOf("*")
         val fishdata = db.query("fishAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var datas: ArrayList<Fish_attribute> = ArrayList<Fish_attribute>()
+        var chkData = false
 
         while (fishdata.moveToNext()) {
 
@@ -3158,7 +3303,20 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
             }
 
-            dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish" + File.separator + "fish","어류", "fish","Y")
+            val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish" + File.separator + "fish"
+
+            val layerData= db.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+
+            while (layerData.moveToNext()){
+                chkData = true
+            }
+
+            if(chkData){
+
+            }else {
+                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish" + File.separator + "fish","어류", "fish","Y")
+            }
+
             Exporter.exportPoint(pointsArray)
             pointsArray.clear()
             fishDatas.clear()
@@ -3172,6 +3330,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         val dataList: Array<String> = arrayOf("*")
         val insectdata = db.query("insectAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var datas: ArrayList<Insect_attribute> = ArrayList<Insect_attribute>()
+        var chkData = false
 
         while (insectdata.moveToNext()) {
 
@@ -3265,7 +3424,20 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
             }
 
-            dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect" + File.separator + "insect","곤충", "insect","Y")
+            val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect" + File.separator + "insect"
+
+            val layerData= db.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+
+            while (layerData.moveToNext()){
+                chkData = true
+            }
+
+            if(chkData){
+
+            }else {
+                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect" + File.separator + "insect","곤충", "insect","Y")
+            }
+
             Exporter.exportPoint(pointsArray)
             pointsArray.clear()
             insectDatas.clear()
@@ -3277,9 +3449,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         val dbManager: DataBaseHelper = DataBaseHelper(this)
         val db = dbManager.createDataBase();
         val dataList: Array<String> = arrayOf("*")
-
         val floradata = db.query("floraAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var datas:ArrayList<Flora_Attribute> = ArrayList<Flora_Attribute>()
+        var chkData = false
 
         while (floradata.moveToNext()) {
 
@@ -3303,7 +3475,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             , floradata.getString(12), floradata.getString(13), floradata.getString(14), floradata.getString(15), floradata.getString(16), floradata.getString(17), floradata.getString(18)
                             , floradata.getString(19), floradata.getInt(20), floradata.getString(21), floradata.getFloat(22), floradata.getFloat(23), floradata.getString(24),floradata.getString(25))
 
-                    FLORAATTRIBUTE.add(Exporter.ColumnDef("ID",ogr.OFTInteger,flora_Attribute.id))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("ID",ogr.OFTString,flora_Attribute.id))
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("GROP_ID",ogr.OFTString,flora_Attribute.GROP_ID))
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME",ogr.OFTString,flora_Attribute.PRJ_NAME))
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("INV_REGION",ogr.OFTString,flora_Attribute.INV_REGION))
@@ -3312,7 +3484,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("WEATHER",ogr.OFTString,flora_Attribute.WEATHER))
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("WIND",ogr.OFTString,flora_Attribute.WIND))
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE",ogr.OFTString,flora_Attribute.WIND_DIRE))
-                    FLORAATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR",ogr.OFTString,flora_Attribute.TEMPERATUR))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR",ogr.OFTReal,flora_Attribute.TEMPERATUR))
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("ETC",ogr.OFTString,flora_Attribute.ETC))
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("NUM",ogr.OFTInteger,flora_Attribute.NUM))
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("INV_TM",ogr.OFTString,flora_Attribute.INV_TM))
@@ -3327,8 +3499,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("THRE_CAU",ogr.OFTString,flora_Attribute.THRE_CAU))
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT",ogr.OFTReal,flora_Attribute.GPS_LAT))
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("GPS_LON",ogr.OFTReal,flora_Attribute.GPS_LON))
-                    FLORAATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN",ogr.OFTInteger,flora_Attribute.TEMP_YN))
-                    FLORAATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD",ogr.OFTInteger,flora_Attribute.CONF_MOD))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN",ogr.OFTString,flora_Attribute.TEMP_YN))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD",ogr.OFTString,flora_Attribute.CONF_MOD))
 
                     floraDatas.add(flora_Attribute)
 
@@ -3339,23 +3511,25 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         if(floraDatas.size > 0) {
 
             for (i in 0..floraDatas.size - 1) {
-                floraPk += floraDatas.get(i).id + "\n"
 
                 val grop_id = floraDatas.get(i).GROP_ID
 
                 if (points.size > 0) {
 
                     for (j in 0..points.size - 1) {
-                        val layerInfo = points.get(j).tag as LayerInfo
 
-                        var attrubuteKey = layerInfo.attrubuteKey
+                        if(points.get(j).tag != null) {
+                            val layerInfo = points.get(j).tag as LayerInfo
 
-                        if (attrubuteKey.equals(grop_id)) {
+                            var attrubuteKey = layerInfo.attrubuteKey
 
-                            val exporter = Exporter.ExportPointItem(LAYER_FLORA, FLORAATTRIBUTE, points.get(j))
+                            if (attrubuteKey.equals(grop_id)) {
 
-                            pointsArray.add(exporter)
+                                val exporter = Exporter.ExportPointItem(LAYER_FLORA, FLORAATTRIBUTE, points.get(j))
 
+                                pointsArray.add(exporter)
+
+                            }
                         }
 
                     }
@@ -3363,10 +3537,24 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
             }
 
-            dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora" + File.separator + "flora","조류", "flora","Y")
+            val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora" + File.separator + "flora"
+
+            val layerData= db.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+
+            while (layerData.moveToNext()){
+                chkData = true
+            }
+
+            if(chkData){
+
+            }else {
+                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora" + File.separator + "flora","식물", "flora","Y")
+            }
+
             Exporter.exportPoint(pointsArray)
             pointsArray.clear()
             floraDatas.clear()
+
         }
     }
 
@@ -4533,6 +4721,65 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         timer = Timer()
         timer!!.schedule(task, 0, 5000)
 
+    }
+
+    private fun splitPolygon() {
+
+        if (!splitRL.isSelected) {
+            return
+        }
+
+        if (editingPolygon == null) {
+            return
+        }
+
+        val layerInfo = editingPolygon?.tag as LayerInfo
+
+        val oldAttributeKey = layerInfo.attrubuteKey
+
+        val splited = Utils.splitPolygon(toJTSPolygon(editingPolygon!!), toJTSLineString(polylineForSplitGuide!!))
+
+        offSplitBtn()
+
+        polylineForSplitGuide?.remove()
+
+        polylineForSplitGuide = null
+
+        editingPolygon?.remove()
+        editingPolygon = null
+
+        for (idx in 0..(splited.numGeometries - 1)) {
+            var polygon = splited.getGeometryN(idx)
+            // polygon = polygon.buffer(-0.00002)
+
+            val polygonOptions = PolygonOptions()
+            polygonOptions.fillColor(getColor())
+            polygonOptions.strokeWidth(5.0f)
+            polygonOptions.strokeColor(Color.WHITE)
+
+            for (coordinate in polygon.coordinates) {
+                polygonOptions.add(LatLng(coordinate.y, coordinate.x))
+            }
+
+            val po = googleMap.addPolygon(polygonOptions)
+            // po.zIndex = 5.0f
+
+            val newAttributeKey = getAttributeKey(layerInfo.layer)
+            val newLayerInfo = LayerInfo()
+            newLayerInfo.attrubuteKey = newAttributeKey
+            newLayerInfo.layer = layerInfo.layer
+
+            po.tag = newLayerInfo
+
+            po.isClickable = true
+
+            polygons.add(po)
+            allPolygons.add(po)
+
+            // copy data
+            copyRow("biotopeAttribute", oldAttributeKey, newAttributeKey)
+
+        }
     }
 
 }

@@ -408,7 +408,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         }
 
-                        if (dataArray.size == 0 ){
+                        if (dataArray.size == 0 || intent.getStringExtra("id") != null ){
                             var intent = Intent()
                             intent.putExtra("markerid", markerid)
                             setResult(RESULT_OK, intent);
@@ -1048,6 +1048,32 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             }
 
             delBtn.visibility = View.GONE
+
+            var intent = Intent()
+            intent.putExtra("export",70)
+            setResult(RESULT_OK, intent)
+
+            if (images_path != null){
+                images_path!!.clear()
+            }
+
+            if (images != null){
+                images!!.clear()
+            }
+
+            if (images_url != null){
+                images_url!!.clear()
+            }
+
+            if (images_url_remove != null){
+                images_url_remove!!.clear()
+            }
+
+            if (images_id != null){
+                images_id!!.clear()
+            }
+
+
 
             clear()
             chkdata = false

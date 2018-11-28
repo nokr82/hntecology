@@ -257,7 +257,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 fishindicntET.setText(fish_attribute.INDI_CNT.toString())
 
                 fishunidentET.setText(fish_attribute.UNIDENT)
-                if(fishunidentET.text == null){
+                if(fish_attribute.UNIDENT == null){
                     fishunidentET.setText("")
                 }
 
@@ -816,8 +816,9 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                         }
 
-                        if (dataArray.size == 0 ){
+                        if (dataArray.size == 0 || intent.getStringExtra("id") != null){
 
+                            var intent = Intent()
                             intent.putExtra("markerid", markerid)
                             setResult(RESULT_OK, intent);
 
@@ -1275,6 +1276,30 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             btn_fishDelete.visibility = View.GONE
 
+            var intent = Intent()
+            intent.putExtra("export",70)
+            setResult(RESULT_OK, intent)
+
+            if (images_path != null){
+                images_path!!.clear()
+            }
+
+            if (images != null){
+                images!!.clear()
+            }
+
+            if (images_url != null){
+                images_url!!.clear()
+            }
+
+            if (images_url_remove != null){
+                images_url_remove!!.clear()
+            }
+
+            if (images_id != null){
+                images_id!!.clear()
+            }
+
             clear()
             chkdata = false
             pk = null
@@ -1368,12 +1393,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         startActivityForResult(intent1, FROM_ALBUM)
 
     }
-
-
-
-
-
-
 
     fun resetPage(page : Int){
         val dataList: Array<String> = arrayOf("*");
@@ -1524,9 +1543,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             if(fish_attribute.RIV_STR_IN != null && !fish_attribute.RIV_STR_IN.equals("")){
                 detailLL.visibility = View.VISIBLE
             }
-
-
-
 
             formTV.setText(fish_attribute.RIV_FORM)
             if(formTV.text == null){

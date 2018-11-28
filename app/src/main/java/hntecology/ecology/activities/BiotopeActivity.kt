@@ -1869,7 +1869,15 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 setResult(RESULT_OK, intent);
             }
 
+            var intent = Intent()
+            intent.putExtra("export",70)
+            setResult(RESULT_OK, intent)
+
             btn_biotopDelete.visibility = View.GONE
+
+            if(images != null){
+                images!!.clear()
+            }
 
             clear()
             chkdata = false

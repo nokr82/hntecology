@@ -171,6 +171,8 @@ class DlgBirdsActivity : Activity() {
 
             var name = data.name_kr
 
+            val dataEndangeredList:Array<String> = arrayOf("ID","TITLE","SCIENTIFICNAME","CLASS","DANGERCLASS","CONTRYCLASS");
+
             val EndangeredData = db.query("ENDANGERED", dataEndangeredList, "TITLE = '$name'", null, null, null, null, null);
 
             while (EndangeredData.moveToNext()) {

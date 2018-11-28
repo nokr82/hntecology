@@ -709,7 +709,9 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                             dataArray.add(flora_Attribute)
                         }
 
-                        if (dataArray.size == 0 ){
+                        if (dataArray.size == 0 || intent.getStringExtra("id") != null ){
+
+                            var intent = Intent()
 
                             intent.putExtra("markerid", markerid)
                             setResult(RESULT_OK, intent);
@@ -787,6 +789,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                                     if (dataArray.size > 1) {
                                         dbManager.deleteflora_attribute(flora_Attribute, pk)
 
+                                        var intent = Intent()
+
                                         intent.putExtra("reset", 100)
 
                                         setResult(RESULT_OK, intent);
@@ -796,6 +800,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                                     if (dataArray.size == 1) {
                                         dbManager.deleteflora_attribute(flora_Attribute, pk)
+
+                                        var intent = Intent()
 
                                         intent.putExtra("markerid", markerid)
 
@@ -849,6 +855,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                                 if (chkdata == true) {
                                     Toast.makeText(context, "추가하신 데이터가 있습니다.", Toast.LENGTH_SHORT).show()
                                 } else {
+                                    var intent = Intent()
+
                                     intent.putExtra("markerid", markerid)
 
                                     setResult(RESULT_OK, intent);
@@ -858,6 +866,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                             }
 
                             if (intent.getStringExtra("id") == null) {
+                                var intent = Intent()
+
                                 intent.putExtra("markerid", markerid)
 
                                 setResult(RESULT_OK, intent);
@@ -1132,6 +1142,30 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             }
 
             floradeleteBT.visibility = View.GONE
+
+            var intent = Intent()
+            intent.putExtra("export",70)
+            setResult(RESULT_OK, intent)
+
+            if (images_path != null){
+                images_path!!.clear()
+            }
+
+            if (images != null){
+                images!!.clear()
+            }
+
+            if (images_url != null){
+                images_url!!.clear()
+            }
+
+            if (images_url_remove != null){
+                images_url_remove!!.clear()
+            }
+
+            if (images_id != null){
+                images_id!!.clear()
+            }
 
             clear()
             chkdata = false

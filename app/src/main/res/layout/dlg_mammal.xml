@@ -97,11 +97,10 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:visibility="invisible"
-                    android:text="판단 기준"
+                    android:text="멸종위기 판단 기준"
                     android:background="@null"/>
 
                 <ListView
-
                     android:layout_marginTop="5dp"
                     android:id="@+id/listLV2"
                     android:layout_width="match_parent"

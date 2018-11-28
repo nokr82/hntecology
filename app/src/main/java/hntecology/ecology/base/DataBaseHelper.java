@@ -265,6 +265,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         querybrids += ",SPEC_NM	    String";
         querybrids += ",FAMI_NM	String";
         querybrids += ",SCIEN_NM	    String";
+        querybrids += ",ENDANGERED	    String";
         querybrids += ",INDI_CNT	Integer";
         querybrids += ",OBS_STAT	String";
         querybrids += ",OBS_ST_ETC	    String";
@@ -296,6 +297,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         queryreptilia += ",SPEC_NM	    String";
         queryreptilia += ",FAMI_NM	String";
         queryreptilia += ",SCIEN_NM	    String";
+        queryreptilia += ",ENDANGERED	    String";
         queryreptilia += ",IN_CNT_ADU	Integer";
         queryreptilia += ",IN_CNT_LAR	Integer";
         queryreptilia += ",IN_CNT_EGG	Integer";
@@ -331,6 +333,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         querymammal += ",SPEC_NM	    String";
         querymammal += ",FAMI_NM	String";
         querymammal += ",SCIEN_NM	    String";
+        querymammal += ",ENDANGERED	    String";
         querymammal += ",OBS_TY	String";
         querymammal += ",OBS_TY_ETC	String";
         querymammal += ",INDI_CNT	Integer";

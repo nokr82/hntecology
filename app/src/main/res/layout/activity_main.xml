@@ -316,6 +316,12 @@
                     android:text="전체 지우기" />
 
                 <Button
+                    android:id="@+id/searchaddressBT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="주소 찾기"/>
+
+                <Button
                     android:id="@+id/logoutBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

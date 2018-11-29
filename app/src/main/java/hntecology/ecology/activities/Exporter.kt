@@ -40,15 +40,18 @@ object Exporter {
     }
 
     fun export(exportItems:ArrayList<ExportItem>) {
-        export(exportItems, null)
+        export(exportItems, null,null,null)
     }
 
     fun exportPoint(exportPointItems:ArrayList<ExportPointItem>) {
-        export(null, exportPointItems)
+        export(null, exportPointItems,null,null)
     }
 
-    private fun export(exportItems:ArrayList<ExportItem>?, exportPointItems:ArrayList<ExportPointItem>?) {
+    fun exportTrackingPoint(exportPointItems:ArrayList<ExportPointItem>,today:String ?, time:String?) {
+        export(null, exportPointItems,today,time)
+    }
 
+    private fun export(exportItems:ArrayList<ExportItem>?, exportPointItems:ArrayList<ExportPointItem>?,today:String ?, time:String?) {
 
         if (exportItems != null) {
             if (exportItems.isEmpty()) {
@@ -111,11 +114,7 @@ object Exporter {
                 }
 
                 MainActivity.TRACKING -> {
-                    val today = Utils.todayStr()
-                    val time = Utils.timeStr()
-
-
-                    layerName = "tracking/" + today + " " + time
+                    layerName = "tracking"
                 }
             }
         }
@@ -161,9 +160,6 @@ object Exporter {
                 }
 
                 MainActivity.TRACKING -> {
-                    val today = Utils.todayStr()
-                    val time = Utils.timeStr()
-
 //                    layerName = "tracking/" + today + " " + time
                     layerName = "tracking"
                 }
@@ -182,9 +178,6 @@ object Exporter {
 
 
         if(layerName == "tracking"){
-
-            val today = Utils.todayStr()
-            val time = Utils.timeStr()
 
             val path = today + " " + time
 

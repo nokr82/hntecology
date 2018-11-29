@@ -10,6 +10,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.*
 import android.provider.MediaStore
@@ -129,6 +131,9 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         val dbmanager = DataBaseHelper(context);
         val db = dbmanager.createDataBase();
 
+        val num = dbmanager.fishsNextNum()
+        fishnumTV.setText(num.toString())
+
         var intent: Intent = getIntent();
 
         if(intent.getStringExtra("markerid") != null){
@@ -152,6 +157,26 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         if(intent.getStringExtra("id") != null){
             pk = intent.getStringExtra("id")
+        }
+
+        if(intent.getStringExtra("longitude") != null && intent.getStringExtra("latitude") != null){
+            lat = intent.getStringExtra("latitude")
+            log = intent.getStringExtra("longitude")
+
+            try {
+                var geocoder:Geocoder = Geocoder(context);
+
+                var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+
+                if(list.size > 0){
+                    System.out.println("list : " + list);
+
+                    fishinvregionET.setText(list.get(0).getAddressLine(0));
+                }
+            } catch (e:IOException) {
+                e.printStackTrace();
+            }
+
         }
 
         val dataList: Array<String> = arrayOf("*");
@@ -248,7 +273,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                 formTV.setText(fish_attribute.RIV_FORM)
 
-                fishnumTV.setText(fish_attribute.id)
+                fishnumTV.setText(fish_attribute.NUM.toString())
 
                 fishspecnmET.setText(fish_attribute.SPEC_NM)
                 fishfaminmET.setText(fish_attribute.FAMI_NM)
@@ -1593,6 +1618,12 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
     }
 
     fun clear(){
+
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase()
+        val num = dbManager.fishsNextNum()
+
+        fishnumTV.setText(num.toString())
 
         fishinvregionET.setText("")
 

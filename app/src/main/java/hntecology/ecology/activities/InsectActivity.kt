@@ -10,6 +10,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.*
 import android.provider.MediaStore
@@ -126,6 +128,9 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
         val db = dbManager.createDataBase();
 
+        val num = dbManager.insectsNextNum()
+        insectnumET.setText(num.toString())
+
         var intent: Intent = getIntent();
 
         if(intent.getStringExtra("markerid") != null){
@@ -143,6 +148,26 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             log = intent.getStringExtra("longitude")
             println("==============$log")
             insectgpslonTV.setText(log)
+        }
+
+        if(intent.getStringExtra("longitude") != null && intent.getStringExtra("latitude") != null){
+            lat = intent.getStringExtra("latitude")
+            log = intent.getStringExtra("longitude")
+
+            try {
+                var geocoder:Geocoder = Geocoder(context);
+
+                var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+
+                if(list.size > 0){
+                    System.out.println("list : " + list);
+
+                    insectinvregionET.setText(list.get(0).getAddressLine(0));
+                }
+            } catch (e:IOException) {
+                e.printStackTrace();
+            }
+
         }
 
         keyId = intent.getStringExtra("GROP_ID")
@@ -163,7 +188,6 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
             insectusernameET.setText(base.INV_PERSON)
             insectinvdtET.setText(base.INV_DT)
-            insectnumET.setText(base.INV_TM)
 
             insectgpslatTV.setText(base.GPS_LAT)
             insectgpslonTV.setText(base.GPS_LON)
@@ -210,7 +234,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                 insecttemperaturET.setText(insect_attribute.TEMPERATUR.toString())
                 insectetcET.setText(insect_attribute.ETC)
 
-                insectnumET.setText(insect_attribute.id)
+                insectnumET.setText(insect_attribute.NUM.toString())
 
                 insecttimeET.setText(insect_attribute.INV_TM)
 
@@ -1315,7 +1339,11 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
         insecttemperaturET.setText("")
         insectetcET.setText("")
 
-        insectnumET.setText("")
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase()
+        val num = dbManager.insectsNextNum()
+
+        insectnumET.setText(num.toString())
 
         insecttimeET.setText("")
 

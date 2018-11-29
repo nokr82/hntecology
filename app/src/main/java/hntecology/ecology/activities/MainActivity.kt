@@ -96,6 +96,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         val INSECT_DATA = 3005
         val FLORA_DATA = 3006
 
+        val SEARCHADDRESS = 4000
+
     }
 
     var types : ArrayList<String> = ArrayList<String>()
@@ -362,6 +364,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             unionRL.isSelected = false
 
             endDraw()
+
         }
 
         //좌표지정 버튼
@@ -614,6 +617,20 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             seekbarSB.visibility = View.VISIBLE
         }
 
+        searchaddressBT.setOnClickListener {
+
+            var intent = Intent()
+
+            intent = Intent(this, SearchAddressActivity::class.java)
+
+            val url = "http://postcode.map.daum.net/search?origin=http%3A%2F%2Fpostcode.map.daum.net&indaum=off&banner=on&mode=transmit&vt=layer&am=on&ani=off&sd=on&plrg=&plrgt=1.5&hmb=off&heb=off&asea=off&smh=off&zo=off&us=on&msi=5&ahs=off&whas=275&sm=on&a51=off&zn=Y&fullpath=%2Fguide"
+
+            intent.putExtra("url",url)
+
+            startActivityForResult(intent, SEARCHADDRESS)
+
+        }
+
         seekbarSB.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 if(allPolygons != null) {
@@ -648,8 +665,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         unionTV.setTypeface(null, Typeface.NORMAL)
 
         for (polygon in polygonsToUnion) {
-            polygon.strokeWidth = 5.0f
-            polygon.strokeColor = Color.WHITE
+            polygon.strokeWidth = 0.0f
         }
 
         polygonsToUnion.clear()
@@ -938,6 +954,19 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         println("jsonOB . filename ${jsonOb.get(i).file_name}")
 
                         layerFileName.add(jsonOb.get(i).file_name)
+                    }
+
+                }
+
+                SEARCHADDRESS -> {
+
+                    if(data!!.getStringExtra("url") != null){
+                        val url = data!!.getStringExtra("url")
+
+                        val reverse = "https://maps.googleapis.com/maps/api/geocode/json?address=$url,+Mountain+View,+CA&key=AIzaSyDwxugiCyvcZY7rQmaZywr6MlOSlgBGlHg"
+
+                        println("reverse $reverse")
+
                     }
 
                 }
@@ -1419,7 +1448,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     }
 
                     TRACKING -> {
-
+                        marker.title = "이동 경로"
                     }
 
                 }
@@ -1482,8 +1511,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                             if (polygonsToUnion.contains(polygon)) {
                                 polygonsToUnion.remove(polygon)
-                                polygon.strokeWidth = 5.0f
-                                polygon.strokeColor = Color.WHITE
+                                polygon.strokeWidth = 0.0f
                                 return@setOnPolygonClickListener
                             }
 
@@ -1493,8 +1521,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             }
 
                             polygonsToUnion.add(polygon)
-                            polygon.strokeWidth = 10.0f
-                            polygon.strokeColor = Color.MAGENTA
+                            polygon.strokeWidth = 0.0f
 
                             return@setOnPolygonClickListener
 
@@ -1783,8 +1810,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if (geometry.geometryType.equals("Polygon")) {
                     val polygonOptions = PolygonOptions()
                     polygonOptions.fillColor(Color.parseColor(getLayerColor(layerName)))
-                    polygonOptions.strokeWidth(5.0f)
-                    polygonOptions.strokeColor(Color.WHITE)
+                    polygonOptions.strokeWidth(0.0f)
 
                     val coordinates = geometry.coordinates
 
@@ -1872,6 +1898,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     layerInfo.layer = LAYER_FLORA
                 }
 
+                if (type.equals("tracking")){
+                    layerInfo.layer = TRACKING
+                }
+
                 polygon.tag = layerInfo
 
                 polygons.add(polygon)
@@ -1919,6 +1949,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if (type.equals("flora")){
                     marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                     layerInfo.layer = LAYER_FLORA
+                }
+
+                if (type.equals("tracking")){
+                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
+                    layerInfo.layer = TRACKING
+
                 }
 
                 marker.tag = layerInfo
@@ -2379,8 +2415,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     private fun initEditingPolygon() {
         val polygonOptions = PolygonOptions()
         polygonOptions.fillColor(getColor())
-        polygonOptions.strokeWidth(5.0f)
-        polygonOptions.strokeColor(Color.WHITE)
+        polygonOptions.strokeWidth(0.0f)
         polygonOptions.addAll(latlngs)
 
         editingPolygon = googleMap.addPolygon(polygonOptions)
@@ -2713,6 +2748,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         val db = dbManager.createDataBase();
         val dataList: Array<String> = arrayOf("*")
         var biotopedata = db.query("biotopeAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var chkData = false
 
         while (biotopedata.moveToNext()) {
             var biotope_attribute: Biotope_attribute = Biotope_attribute(biotopedata.getString(0), biotopedata.getString(1), biotopedata.getString(2), biotopedata.getString(3)
@@ -2818,8 +2854,21 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     }
                 }
 
+                val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope" + File.separator + "biotope"
+
+                val layerData= db.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+
+                while (layerData.moveToNext()){
+                    chkData = true
+                }
+
+                if(chkData){
+
+                }else {
+                    dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope" + File.separator + "biotope", "비오톱", "biotope", "Y")
+                }
+
                 Exporter.export(biotopeArray)
-                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope" + File.separator + "biotope", "비오톱", "biotope", "Y")
 
 
             }
@@ -3608,7 +3657,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             println("trackingPoints${trackingPointsArray.size}")
 
-            Exporter.exportPoint(trackingPointsArray)
+            val today = Utils.todayStr()
+            val time = Utils.timeStr()
+
+            val path = today + " " + time
+
+            dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tracking" + File.separator + path,"경로 : " + path, "tracking","Y")
+
+            Exporter.exportTrackingPoint(trackingPointsArray,today,time)
             trackingPointsArray.clear()
             trackingDatas.clear()
 
@@ -4428,8 +4484,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 val polygonOptions = PolygonOptions()
                 polygonOptions.fillColor(getColor())
-                polygonOptions.strokeWidth(5.0f)
-                polygonOptions.strokeColor(Color.WHITE)
+                polygonOptions.strokeWidth(0.0f)
 
                 for(coordinate in unioned.coordinates) {
                     polygonOptions.add(LatLng(coordinate.y, coordinate.x))
@@ -4752,8 +4807,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val polygonOptions = PolygonOptions()
             polygonOptions.fillColor(getColor())
-            polygonOptions.strokeWidth(5.0f)
-            polygonOptions.strokeColor(Color.WHITE)
+            polygonOptions.strokeWidth(0.0f)
 
             for (coordinate in polygon.coordinates) {
                 polygonOptions.add(LatLng(coordinate.y, coordinate.x))

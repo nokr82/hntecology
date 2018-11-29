@@ -201,9 +201,14 @@
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".activities.DlgDataListActivity"
-            android:theme="@style/full_screen_dialog1"></activity>
-        <activity android:name=".activities.DlgBiotopeTypeActivity"
-            android:theme="@style/full_screen_dialog1"></activity>
+            android:theme="@style/full_screen_dialog1" />
+        <activity
+            android:name=".activities.DlgBiotopeTypeActivity"
+            android:theme="@style/full_screen_dialog1" />
+        <activity android:name=".activities.SearchAddressActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleDialog"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
     </application>
 
 </manifest>

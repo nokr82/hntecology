@@ -55,7 +55,7 @@ class BiotopeClassAdapter(var context: Context, var itemList : ArrayList<Biotope
 
         var BiotopeClass : BiotopeClass = getItem(position)
 
-        viewHoldar.class_biotope_item.text = BiotopeClass.middlecategory;
+        viewHoldar.class_biotope_item.text = BiotopeClass.CATEGORY;
 
         if(BiotopeClass.chkSelect == true){
 

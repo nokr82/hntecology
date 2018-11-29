@@ -48,7 +48,7 @@ class DlgBirdsAdapter2(var context: Context, var itemList : ArrayList<Endangered
 
         var EndangeredSelect : EndangeredSelect = getItem(position)
 
-        viewHoldar.item_name.text = EndangeredSelect.CONTENT;
+        viewHoldar.item_name.text = EndangeredSelect.SIGN + " : " +EndangeredSelect.CONTENT;
         viewHoldar.item_checkbox.isChecked = EndangeredSelect.is_checked
 
         viewHoldar.item_name.setOnClickListener {

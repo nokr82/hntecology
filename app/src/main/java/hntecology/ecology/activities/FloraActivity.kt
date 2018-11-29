@@ -10,6 +10,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.*
 import android.provider.MediaStore
@@ -126,6 +128,9 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
         val db = dbManager.createDataBase();
 
+        val num = dbManager.floraNextNum()
+        floranumET.setText(num.toString())
+
         var intent: Intent = getIntent();
 
         if(intent.getStringExtra("markerid") != null){
@@ -145,6 +150,27 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             floragpslonTV.setText(log)
         }
 
+        if(intent.getStringExtra("longitude") != null && intent.getStringExtra("latitude") != null){
+            lat = intent.getStringExtra("latitude")
+            log = intent.getStringExtra("longitude")
+
+            try {
+                var geocoder:Geocoder = Geocoder(context);
+
+                var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+
+                if(list.size > 0){
+                    System.out.println("list : " + list);
+
+                    florainvregionET.setText(list.get(0).getAddressLine(0));
+                }
+            } catch (e:IOException) {
+                e.printStackTrace();
+            }
+
+        }
+
+
         keyId = intent.getStringExtra("GROP_ID")
 
         if(intent.getStringExtra("id") != null){
@@ -163,7 +189,6 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
             florainvperson.setText(base.INV_PERSON)
             florainvdvET.setText(base.INV_DT)
-            floranumET.setText(base.INV_TM)
 
             floragpslatTV.setText(base.GPS_LAT)
             floragpslonTV.setText(base.GPS_LON)
@@ -215,7 +240,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                 florainvtmET.setText(flora_Attribute.INV_TM)
 
-                floranumET.setText(flora_Attribute.id)
+                floranumET.setText(flora_Attribute.NUM.toString())
 
                 floraspecnmET.setText(flora_Attribute.SPEC_NM)
                 florafaminmTV.setText(flora_Attribute.FAMI_NM)
@@ -509,10 +534,6 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                         flora_Attribute.INV_REGION = florainvregionET.text.toString()
 
                         flora_Attribute.INV_DT = Utils.todayStr()
-
-                        if(floranumET.text.isNotEmpty()) {
-                            flora_Attribute.NUM = floranumET.text.toString().toInt()
-                        }
 
                         if(florainvperson.text == null || florainvperson.text.equals("")){
                             flora_Attribute.INV_PERSON = userName
@@ -976,10 +997,6 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
             flora_Attribute.INV_DT = Utils.todayStr()
 
-            if(floranumET.text.isNotEmpty()) {
-                flora_Attribute.NUM = floranumET.text.toString().toInt()
-            }
-
             if(florainvperson.text == null || florainvperson.text.equals("")){
                 flora_Attribute.INV_PERSON = userName
             }else {
@@ -1266,6 +1283,12 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
     }
 
     fun clear(){
+
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase()
+        val num = dbManager.floraNextNum()
+
+        floranumET.setText(num.toString())
 
         florainvdvET.setText(Utils.todayStr())
 

@@ -10,6 +10,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.*
 import android.provider.MediaStore
@@ -125,6 +127,10 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         val db = dbManager.createDataBase();
 
+        val num = dbManager.reptiliasNextNum()
+
+        numET.setText(num.toString())
+
         var intent: Intent = getIntent();
 
         if(intent.getStringExtra("markerid") != null){
@@ -148,6 +154,26 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         if(intent.getStringExtra("id") != null){
             pk = intent.getStringExtra("id")
+        }
+
+        if(intent.getStringExtra("longitude") != null && intent.getStringExtra("latitude") != null){
+            lat = intent.getStringExtra("latitude")
+            log = intent.getStringExtra("longitude")
+
+            try {
+                var geocoder:Geocoder = Geocoder(context);
+
+                var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+
+                if(list.size > 0){
+                    System.out.println("list : " + list);
+
+                    invregionET.setText(list.get(0).getAddressLine(0));
+                }
+            } catch (e:IOException) {
+                e.printStackTrace();
+            }
+
         }
 
         val dataList: Array<String> = arrayOf("*");
@@ -210,7 +236,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                 temperaturET.setText(reptilia_attribute.TEMPERATUR.toString())
                 etcET.setText(reptilia_attribute.ETC)
 
-                numET.setText(reptilia_attribute.id)
+                numET.setText(reptilia_attribute.NUM.toString())
                 invtmTV.setText(reptilia_attribute.INV_TM)
 
                 specnmET.setText(reptilia_attribute.SPEC_NM)
@@ -1542,7 +1568,10 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
     fun clear(){
 
-        numET.setText("")
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase()
+        val num = dbManager.reptiliasNextNum()
+        numET.setText(num.toString())
 
         invregionET.setText("")
 

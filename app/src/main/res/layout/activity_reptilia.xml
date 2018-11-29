@@ -41,7 +41,7 @@
                     style="@style/BiotopeTextView"
                     android:text="조사지역"/>
 
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -370,6 +370,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:id="@+id/incntaduET"
+                            android:inputType="number"
                             style="@style/BiotopeTextView"
                             android:gravity="center"/>
                     </LinearLayout>
@@ -388,6 +389,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:id="@+id/incntlarET"
+                            android:inputType="number"
                             style="@style/BiotopeTextView"
                             android:gravity="center"/>
                     </LinearLayout>
@@ -407,6 +409,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:id="@+id/incnteggET"
+                            android:inputType="number"
                             style="@style/BiotopeTextView"
                             android:gravity="center"/>
                     </LinearLayout>

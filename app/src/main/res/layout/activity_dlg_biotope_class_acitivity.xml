@@ -65,15 +65,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
-                    <EditText
-                        android:id="@+id/searchET"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:hint="검색"
-                        android:maxLines="1"
-                        android:layout_gravity="center"
-                        android:gravity="center"/>
 
                     <ListView
                         android:id="@+id/class_list_view3"
@@ -88,15 +79,40 @@
 
 
 
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <EditText
+                        android:id="@+id/searchET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="검색"
+                        android:maxLines="1"
+                        android:layout_gravity="center"
+                        android:gravity="center"/>
 
                     <ListView
                         android:id="@+id/class_list_view4"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:layout_weight="1"
                         android:divider="@null">
                     </ListView>
+
+                </LinearLayout>
+
+
+                <ListView
+                    android:id="@+id/class_list_view5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:divider="@null"
+                    android:layout_marginLeft="15dp"
+                    ></ListView>
 
 
 

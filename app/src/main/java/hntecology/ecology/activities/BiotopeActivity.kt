@@ -10,6 +10,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
@@ -141,6 +143,10 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         var intent: Intent = getIntent();
 
+        val num = dbManager.biotopesNextNum()
+
+        tvINV_IndexTV.setText(num.toString())
+
         val userName = PrefUtils.getStringPreference(context, "name");
         tvINV_PERSONTV.setText(userName)
 
@@ -166,6 +172,27 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             println("==============$log")
             etGPS_LONTV.setText(log)
         }
+
+        if(intent.getStringExtra("longitude") != null && intent.getStringExtra("latitude") != null){
+            lat = intent.getStringExtra("latitude")
+            log = intent.getStringExtra("longitude")
+            try {
+                var geocoder:Geocoder = Geocoder(context);
+
+                var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+
+                if(list.size > 0){
+                    System.out.println("list : " + list);
+
+                    etINV_REGIONET.setText(list.get(0).getAddressLine(0));
+                }
+            } catch (e:IOException) {
+                e.printStackTrace();
+            }
+
+        }
+
+
 
         keyId = intent.getStringExtra("GROP_ID")
 
@@ -273,7 +300,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                 etINV_DTTV.setText(biotope_attribute.INV_DT)
                 etINV_TMTV.setText(biotope_attribute.INV_TM)
-                tvINV_IndexTV.setText(biotope_attribute.id)
+                tvINV_IndexTV.setText(biotope_attribute.INV_INDEX.toString())
 
                 TVLU_GR_NumTV.setText(biotope_attribute.LU_GR_NUM)
                 if (TVLU_GR_NumTV.text == null) {
@@ -1089,6 +1116,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             biotope_attribute.INV_TM = etINV_TMTV.text.toString();
                         }
 
+                        biotope_attribute.INV_INDEX = tvINV_IndexTV.text.toString().toInt()
+
                         biotope_attribute.LU_GR_NUM = ETLU_GR_NumET.text.toString()
 
                         if (etLU_TY_RATEET.text.isNotEmpty()) {
@@ -1615,10 +1644,10 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 biotope_attribute.INV_TM = etINV_TMTV.text.toString();
             }
 
-//            if (tvINV_IndexTV.text.isNotEmpty()) {
-//
-//                biotope_attribute.INV_INDEX = biotope_attribute.id!!.toInt()
-//            }
+            if (tvINV_IndexTV.text.isNotEmpty()) {
+
+                biotope_attribute.INV_INDEX = tvINV_IndexTV.text.toString().toInt()
+            }
 
             if (etLU_TY_RATEET.text.isNotEmpty()) {
 
@@ -1869,7 +1898,15 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 setResult(RESULT_OK, intent);
             }
 
+            var intent = Intent()
+            intent.putExtra("export",70)
+            setResult(RESULT_OK, intent)
+
             btn_biotopDelete.visibility = View.GONE
+
+            if(images != null){
+                images!!.clear()
+            }
 
             clear()
             chkdata = false
@@ -1956,7 +1993,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             ETlcmGR_NumET.setText("")
                         }
 
-
                         var bioModelParent: BiotopeModel
                         bioModelParent = data!!.getSerializableExtra("bioModelParent") as BiotopeModel
 
@@ -1969,19 +2005,20 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         //불투수
                         if (bioModelParent.code == "A") {
 
-                            etlcmTypeiET.setText("I")
+                            etlcmTypeiET.setText(biotopeModel.code)
+                            println("biotopeModel ${biotopeModel.code}")
                             //투수
                         } else if (bioModelParent.code == "B") {
 
-                            etlcmTypepET.setText("P")
+                            etlcmTypepET.setText(biotopeModel.code)
                             //녹지
                         } else if (bioModelParent.code == "C") {
 
-                            etlcmTypegET.setText("G")
+                            etlcmTypegET.setText(biotopeModel.code)
                             //수공간
                         } else if (bioModelParent.code == "D") {
 
-                            etlcmTypewET.setText("W")
+                            etlcmTypewET.setText(biotopeModel.code)
                         }
 
                         //현존식생현황  아직 테이블 명 코드 미정
@@ -2048,7 +2085,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                         println("biotopeSize ${biotopeClass.sign}")
 
-                        TVTY_MARKTV.setText(biotopeClass.sign)
+                        TVTY_MARKTV.setText(biotopeClass.smallcategory)
 
                     }
 
@@ -2056,7 +2093,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         vegetation = data!!.getSerializableExtra("Vegetation") as Vegetation
                         if (data!!.getSerializableExtra("Number") != null) {
                             number = data!!.getSerializableExtra("Number") as Number
-                            TVTY_MARKTV.setText(vegetation.SIGN + number.COUNT)
+                            TVTY_MARKTV.setText(vegetation.CORRESPONDINGNAME)
                         }
 
                     }
@@ -2379,6 +2416,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 addPicturesLL!!.addView(vv)
             }
         }
+
         for (j in images_path!!.indices) {
             val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
             if (images!!.size == 0) {
@@ -2475,13 +2513,15 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
     }
 
-
     fun clear() {
-
 
         etINV_DTTV.setText(Utils.todayStr());
         etINV_TMTV.setText(createId())
-        tvINV_IndexTV.setText("")
+
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase()
+        val num = dbManager.biotopesNextNum()
+        tvINV_IndexTV.setText(num.toString())
 
         TVLU_GR_NumTV.setText("")
         etLU_TY_RATEET.setText("")

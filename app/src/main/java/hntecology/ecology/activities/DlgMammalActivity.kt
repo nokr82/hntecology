@@ -171,39 +171,6 @@ class DlgMammalActivity : Activity() {
 
             if (chkData){
                 selectTV.visibility = View.VISIBLE
-                if(name == "수달"){
-                    listdata2.add(item)
-                    listdata2.add(item2)
-                    listdata2.add(item3)
-                    listdata2.add(item4)
-                    listdata2.add(item5)
-                    listdata2.add(item6)
-                }
-
-                if(name == "담비"){
-                    listdata2.add(item)
-                    listdata2.add(item2)
-                    listdata2.add(item3)
-                    listdata2.add(item4)
-                }
-
-                if(name == "삵"){
-                    listdata2.add(item)
-                    listdata2.add(item2)
-                    listdata2.add(item3)
-                    listdata2.add(item4)
-                    listdata2.add(item7)
-                }
-
-                if(name == "하늘다람쥐"){
-                    listdata2.add(item)
-                    listdata2.add(item2)
-                    listdata2.add(item3)
-                    listdata2.add(item4)
-                    listdata2.add(item8)
-                }
-
-                if(name != "수달" && name != "담비" && name != "삵" && name != "하늘다람쥐"){
                     listdata2.add(item)
                     listdata2.add(item2)
                     listdata2.add(item3)
@@ -212,8 +179,6 @@ class DlgMammalActivity : Activity() {
                     listdata2.add(item6)
                     listdata2.add(item7)
                     listdata2.add(item8)
-                }
-
             }else {
                 if(listdata2 != null) {
                     listdata2.clear()

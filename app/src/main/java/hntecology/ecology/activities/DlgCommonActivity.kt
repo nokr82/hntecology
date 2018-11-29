@@ -128,6 +128,8 @@ class DlgCommonActivity : Activity() {
             var intent = Intent();
             intent.putExtra("bioModel",listAdapte3.getItem(position))
 
+            println(listAdapte3.getItem(position).code + "-------------------")
+
 
             for ( i in 0..(listAdapte1.count-1)){
 

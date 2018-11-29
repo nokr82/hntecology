@@ -10,6 +10,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.*
 import android.provider.MediaStore
@@ -139,6 +141,9 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
         val db = dbManager.createDataBase();
 
+        val num = dbManager.birdsNextNum()
+        numTV.setText(num.toString())
+
         var intent: Intent = getIntent();
 
         if(intent.getStringExtra("markerid") != null){
@@ -163,6 +168,22 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
         if(intent.getStringExtra("id") != null){
             pk = intent.getStringExtra("id")
+        }
+
+        if(intent.getStringExtra("longitude") != null && intent.getStringExtra("latitude") != null){
+            lat = intent.getStringExtra("latitude")
+            log = intent.getStringExtra("longitude")
+
+            var geocoder: Geocoder = Geocoder(context);
+
+            var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+
+            if(list.size > 0){
+                System.out.println("list : " + list);
+
+                invRegionET.setText(list.get(0).getAddressLine(0));
+            }
+
         }
 
         val dataList: Array<String> = arrayOf("*");
@@ -256,7 +277,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 temperatureET.setText(birds_attribute.TEMPERATUR.toString())       //기온
                 etcET.setText(birds_attribute.ETC)
 
-                numTV.setText(birds_attribute.id)
+                numTV.setText(birds_attribute.NUM.toString())
 
                 birdsTV.setText(birds_attribute.SPEC_NM)
                 familyNameTV.setText(birds_attribute.FAMI_NM)
@@ -408,7 +429,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         }
 
-                        if (dataArray.size == 0 ){
+                        if (dataArray.size == 0 || intent.getStringExtra("id") != null ){
                             var intent = Intent()
                             intent.putExtra("markerid", markerid)
                             setResult(RESULT_OK, intent);
@@ -443,6 +464,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         birds_attribute.INV_REGION = invRegionET.text.toString()
 
                         birds_attribute.INV_DT = Utils.todayStr()
+
+                        birds_attribute.NUM = numTV.text.toString().toInt()
 
                         if(invPersonTV.text == null){
                             birds_attribute.INV_PERSON = userName
@@ -881,6 +904,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
             birds_attribute.INV_DT = Utils.todayStr()
 
+            birds_attribute.NUM = numTV.text.toString().toInt()
+
             if(invPersonTV.text == null){
                 birds_attribute.INV_PERSON = userName
             }else {
@@ -1048,6 +1073,32 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             }
 
             delBtn.visibility = View.GONE
+
+            var intent = Intent()
+            intent.putExtra("export",70)
+            setResult(RESULT_OK, intent)
+
+            if (images_path != null){
+                images_path!!.clear()
+            }
+
+            if (images != null){
+                images!!.clear()
+            }
+
+            if (images_url != null){
+                images_url!!.clear()
+            }
+
+            if (images_url_remove != null){
+                images_url_remove!!.clear()
+            }
+
+            if (images_id != null){
+                images_id!!.clear()
+            }
+
+
 
             clear()
             chkdata = false
@@ -1614,18 +1665,12 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
     fun clear(){
 
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase()
+        val num = dbManager.birdsNextNum()
+        numTV.setText(num.toString())
 
-        invDtTV.setText(Utils.todayStr())
-
-        numTV.setText("")
-
-        btn1.setText("")       //날씨
-        btn2.setText("")          //바람
-        btn3.setText("")     //풍향
-
-        temperatureET.setText("")       //기온
-        etcET.setText("")
-
+        timeTV.setText("")
 
         birdsTV.setText("")
         familyNameTV.setText("")

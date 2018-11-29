@@ -265,6 +265,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         querybrids += ",SPEC_NM	    String";
         querybrids += ",FAMI_NM	String";
         querybrids += ",SCIEN_NM	    String";
+        querybrids += ",ENDANGERED	    String";
         querybrids += ",INDI_CNT	Integer";
         querybrids += ",OBS_STAT	String";
         querybrids += ",OBS_ST_ETC	    String";
@@ -296,6 +297,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         queryreptilia += ",SPEC_NM	    String";
         queryreptilia += ",FAMI_NM	String";
         queryreptilia += ",SCIEN_NM	    String";
+        queryreptilia += ",ENDANGERED	    String";
         queryreptilia += ",IN_CNT_ADU	Integer";
         queryreptilia += ",IN_CNT_LAR	Integer";
         queryreptilia += ",IN_CNT_EGG	Integer";
@@ -331,6 +333,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         querymammal += ",SPEC_NM	    String";
         querymammal += ",FAMI_NM	String";
         querymammal += ",SCIEN_NM	    String";
+        querymammal += ",ENDANGERED	    String";
         querymammal += ",OBS_TY	String";
         querymammal += ",OBS_TY_ETC	String";
         querymammal += ",INDI_CNT	Integer";
@@ -1180,6 +1183,134 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();
+    }
+
+
+
+    public int biotopesNextNum(){
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(INV_INDEX\n ,9,15)),0)+1 ,-15, 15) FROM biotopeAttribute";
+
+        int num = 0;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                num = cursor.getInt(0);
+            }
+        }
+        cursor.close();
+        return num;
+    }
+
+    public int birdsNextNum(){
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(NUM\n ,9,15)),0)+1 ,-15, 15) FROM birdsAttribute";
+
+        int num = 0;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                num = cursor.getInt(0);
+            }
+        }
+        cursor.close();
+        return num;
+    }
+
+    public int reptiliasNextNum(){
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(NUM\n ,9,15)),0)+1 ,-15, 15) FROM reptiliaAttribute";
+
+        int num = 0;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                num = cursor.getInt(0);
+            }
+        }
+        cursor.close();
+        return num;
+    }
+
+    public int mammalsNextNum(){
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(NUM\n ,9,15)),0)+1 ,-15, 15) FROM mammalAttribute";
+
+        int num = 0;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                num = cursor.getInt(0);
+            }
+        }
+        cursor.close();
+        return num;
+    }
+
+    public int fishsNextNum(){
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(NUM\n ,9,15)),0)+1 ,-15, 15) FROM fishAttribute";
+
+        int num = 0;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                num = cursor.getInt(0);
+            }
+        }
+        cursor.close();
+        return num;
+    }
+
+    public int insectsNextNum(){
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(NUM\n ,9,15)),0)+1 ,-15, 15) FROM insectAttribute";
+
+        int num = 0;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                num = cursor.getInt(0);
+            }
+        }
+        cursor.close();
+        return num;
+    }
+
+    public int floraNextNum(){
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(NUM\n ,9,15)),0)+1 ,-15, 15) FROM floraAttribute";
+
+        int num = 0;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                num = cursor.getInt(0);
+            }
+        }
+        cursor.close();
+        return num;
     }
 
 

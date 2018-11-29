@@ -16,6 +16,7 @@ import hntecology.ecology.model.Vegetation
 import kotlinx.android.synthetic.main.activity_dlgvegetation.*
 import java.util.ArrayList
 import android.text.Editable
+import hntecology.ecology.model.Endangered
 import hntecology.ecology.model.Vascular_plant
 
 
@@ -36,6 +37,8 @@ class DlgVascularActivity : Activity() {
     var tableName:String = ""
     var titleName:String=""
     var DlgHeight:Float=430F
+
+    var chkData = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,12 +103,33 @@ class DlgVascularActivity : Activity() {
             var family_name = data.Family_name_kr
             var zoological = data.zoological
 
-            val intent = Intent();
-            intent.putExtra("name",name)
-            intent.putExtra("family_name",family_name)
-            intent.putExtra("zoological",zoological)
-            setResult(RESULT_OK, intent);
-            finish()
+            val dataEndangeredList:Array<String> = arrayOf("ID","TITLE","SCIENTIFICNAME","CLASS","DANGERCLASS","CONTRYCLASS");
+
+            val EndangeredData = db.query("ENDANGERED", dataEndangeredList, "TITLE = '$name'", null, null, null, null, null);
+
+            while (EndangeredData.moveToNext()) {
+
+                var endangered = Endangered(EndangeredData.getString(0),EndangeredData.getString(1),EndangeredData.getString(2),EndangeredData.getString(3),EndangeredData.getString(4),EndangeredData.getString(5))
+
+                chkData = true
+
+            }
+
+            if(chkData){
+                val intent = Intent();
+                intent.putExtra("name",name + "(멸종 위기)")
+                intent.putExtra("family_name",family_name)
+                intent.putExtra("zoological",zoological)
+                setResult(RESULT_OK, intent);
+                finish()
+            }else {
+                val intent = Intent();
+                intent.putExtra("name",name)
+                intent.putExtra("family_name",family_name)
+                intent.putExtra("zoological",zoological)
+                setResult(RESULT_OK, intent);
+                finish()
+            }
 
         })
 

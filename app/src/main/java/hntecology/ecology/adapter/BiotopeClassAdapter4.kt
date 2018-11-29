@@ -1,16 +1,23 @@
 package hntecology.ecology.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
 import hntecology.ecology.R
+import hntecology.ecology.base.DataBaseHelper
+import hntecology.ecology.model.BiotopeClass
+import hntecology.ecology.model.BiotopeModel
+import hntecology.ecology.model.Vegetation
 
-class BiotopeClassAdapter4(var context: Context, var itemList : ArrayList<hntecology.ecology.model.Number>) : BaseAdapter() {
+class BiotopeClassAdapter4(var context: Context, var itemList : ArrayList<Vegetation>) : BaseAdapter() {
 
     var selectIndex:Int = 0;
 
@@ -46,11 +53,11 @@ class BiotopeClassAdapter4(var context: Context, var itemList : ArrayList<hnteco
             viewHoldar = view.tag as ViewHoldar
         }
 
-        var Number : hntecology.ecology.model.Number = getItem(position)
+        var Vegetation : Vegetation = getItem(position)
 
-        viewHoldar.class_biotope_item.text = Number.COUNT;
+        viewHoldar.class_biotope_item.text = Vegetation.CORRESPONDINGNAME;
 
-        if(Number.chkSelect == true){
+        if(Vegetation.chkSelect == true){
 
             viewHoldar.class_search1_item.setBackgroundColor(Color.parseColor("#004baa"))
             viewHoldar.class_biotope_item.setTextColor(Color.parseColor("#FFFFFF"));
@@ -65,7 +72,7 @@ class BiotopeClassAdapter4(var context: Context, var itemList : ArrayList<hnteco
         return view as View
     }
 
-    override fun getItem(position: Int): hntecology.ecology.model.Number {
+    override fun getItem(position: Int): Vegetation {
 
         return itemList.get(position)
     }
@@ -85,9 +92,9 @@ class BiotopeClassAdapter4(var context: Context, var itemList : ArrayList<hnteco
         itemList.clear();
         notifyDataSetChanged();
     }
-    fun addItem(Number: hntecology.ecology.model.Number){
+    fun addItem(Vegetation: Vegetation){
 
-        itemList.add(Number);
+        itemList.add(Vegetation);
         notifyDataSetChanged()
     }
 
@@ -107,9 +114,9 @@ class BiotopeClassAdapter4(var context: Context, var itemList : ArrayList<hnteco
             itemList.set(i,bioListModel)
         }*/
 
-        var Number:hntecology.ecology.model.Number = itemList.get(selectIndex);
-        Number.chkSelect = false
-        itemList.set(selectIndex,Number)
+        var Vegetation:Vegetation = itemList.get(selectIndex);
+        Vegetation.chkSelect = false
+        itemList.set(selectIndex,Vegetation)
 
         var biotopeModel = getItem(position);
 

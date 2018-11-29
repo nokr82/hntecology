@@ -10,6 +10,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.*
 import android.provider.MediaStore
@@ -126,6 +128,9 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
         val db = dbManager.createDataBase();
 
+        val num = dbManager.floraNextNum()
+        floranumET.setText(num.toString())
+
         var intent: Intent = getIntent();
 
         if(intent.getStringExtra("markerid") != null){
@@ -145,6 +150,27 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             floragpslonTV.setText(log)
         }
 
+        if(intent.getStringExtra("longitude") != null && intent.getStringExtra("latitude") != null){
+            lat = intent.getStringExtra("latitude")
+            log = intent.getStringExtra("longitude")
+
+            try {
+                var geocoder:Geocoder = Geocoder(context);
+
+                var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+
+                if(list.size > 0){
+                    System.out.println("list : " + list);
+
+                    florainvregionET.setText(list.get(0).getAddressLine(0));
+                }
+            } catch (e:IOException) {
+                e.printStackTrace();
+            }
+
+        }
+
+
         keyId = intent.getStringExtra("GROP_ID")
 
         if(intent.getStringExtra("id") != null){
@@ -163,7 +189,6 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
             florainvperson.setText(base.INV_PERSON)
             florainvdvET.setText(base.INV_DT)
-            floranumET.setText(base.INV_TM)
 
             floragpslatTV.setText(base.GPS_LAT)
             floragpslonTV.setText(base.GPS_LON)
@@ -215,7 +240,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                 florainvtmET.setText(flora_Attribute.INV_TM)
 
-                floranumET.setText(flora_Attribute.id)
+                floranumET.setText(flora_Attribute.NUM.toString())
 
                 floraspecnmET.setText(flora_Attribute.SPEC_NM)
                 florafaminmTV.setText(flora_Attribute.FAMI_NM)
@@ -510,10 +535,6 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                         flora_Attribute.INV_DT = Utils.todayStr()
 
-                        if(floranumET.text.isNotEmpty()) {
-                            flora_Attribute.NUM = floranumET.text.toString().toInt()
-                        }
-
                         if(florainvperson.text == null || florainvperson.text.equals("")){
                             flora_Attribute.INV_PERSON = userName
                         }else {
@@ -709,7 +730,9 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                             dataArray.add(flora_Attribute)
                         }
 
-                        if (dataArray.size == 0 ){
+                        if (dataArray.size == 0 || intent.getStringExtra("id") != null ){
+
+                            var intent = Intent()
 
                             intent.putExtra("markerid", markerid)
                             setResult(RESULT_OK, intent);
@@ -787,6 +810,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                                     if (dataArray.size > 1) {
                                         dbManager.deleteflora_attribute(flora_Attribute, pk)
 
+                                        var intent = Intent()
+
                                         intent.putExtra("reset", 100)
 
                                         setResult(RESULT_OK, intent);
@@ -796,6 +821,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                                     if (dataArray.size == 1) {
                                         dbManager.deleteflora_attribute(flora_Attribute, pk)
+
+                                        var intent = Intent()
 
                                         intent.putExtra("markerid", markerid)
 
@@ -849,6 +876,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                                 if (chkdata == true) {
                                     Toast.makeText(context, "추가하신 데이터가 있습니다.", Toast.LENGTH_SHORT).show()
                                 } else {
+                                    var intent = Intent()
+
                                     intent.putExtra("markerid", markerid)
 
                                     setResult(RESULT_OK, intent);
@@ -858,6 +887,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                             }
 
                             if (intent.getStringExtra("id") == null) {
+                                var intent = Intent()
+
                                 intent.putExtra("markerid", markerid)
 
                                 setResult(RESULT_OK, intent);
@@ -965,10 +996,6 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             flora_Attribute.INV_REGION = florainvregionET.text.toString()
 
             flora_Attribute.INV_DT = Utils.todayStr()
-
-            if(floranumET.text.isNotEmpty()) {
-                flora_Attribute.NUM = floranumET.text.toString().toInt()
-            }
 
             if(florainvperson.text == null || florainvperson.text.equals("")){
                 flora_Attribute.INV_PERSON = userName
@@ -1133,6 +1160,30 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
             floradeleteBT.visibility = View.GONE
 
+            var intent = Intent()
+            intent.putExtra("export",70)
+            setResult(RESULT_OK, intent)
+
+            if (images_path != null){
+                images_path!!.clear()
+            }
+
+            if (images != null){
+                images!!.clear()
+            }
+
+            if (images_url != null){
+                images_url!!.clear()
+            }
+
+            if (images_url_remove != null){
+                images_url_remove!!.clear()
+            }
+
+            if (images_id != null){
+                images_id!!.clear()
+            }
+
             clear()
             chkdata = false
             pk = null
@@ -1233,14 +1284,11 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
     fun clear(){
 
-        florainvdvET.setText(Utils.todayStr())
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase()
+        val num = dbManager.floraNextNum()
 
-        floraweatherTV.setText("")
-        florawindTV.setText("")
-        florawinddireTV.setText("")
-        floratemperaturTV.setText("")
-
-        floraetcET.setText("")
+        floranumET.setText(num.toString())
 
         florainvtmET.setText("")
 

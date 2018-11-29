@@ -10,6 +10,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.*
 import android.provider.MediaStore
@@ -129,6 +131,9 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         val dbmanager = DataBaseHelper(context);
         val db = dbmanager.createDataBase();
 
+        val num = dbmanager.fishsNextNum()
+        fishnumTV.setText(num.toString())
+
         var intent: Intent = getIntent();
 
         if(intent.getStringExtra("markerid") != null){
@@ -152,6 +157,26 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         if(intent.getStringExtra("id") != null){
             pk = intent.getStringExtra("id")
+        }
+
+        if(intent.getStringExtra("longitude") != null && intent.getStringExtra("latitude") != null){
+            lat = intent.getStringExtra("latitude")
+            log = intent.getStringExtra("longitude")
+
+            try {
+                var geocoder:Geocoder = Geocoder(context);
+
+                var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+
+                if(list.size > 0){
+                    System.out.println("list : " + list);
+
+                    fishinvregionET.setText(list.get(0).getAddressLine(0));
+                }
+            } catch (e:IOException) {
+                e.printStackTrace();
+            }
+
         }
 
         val dataList: Array<String> = arrayOf("*");
@@ -248,7 +273,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                 formTV.setText(fish_attribute.RIV_FORM)
 
-                fishnumTV.setText(fish_attribute.id)
+                fishnumTV.setText(fish_attribute.NUM.toString())
 
                 fishspecnmET.setText(fish_attribute.SPEC_NM)
                 fishfaminmET.setText(fish_attribute.FAMI_NM)
@@ -257,7 +282,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 fishindicntET.setText(fish_attribute.INDI_CNT.toString())
 
                 fishunidentET.setText(fish_attribute.UNIDENT)
-                if(fishunidentET.text == null){
+                if(fish_attribute.UNIDENT == null){
                     fishunidentET.setText("")
                 }
 
@@ -816,8 +841,9 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                         }
 
-                        if (dataArray.size == 0 ){
+                        if (dataArray.size == 0 || intent.getStringExtra("id") != null){
 
+                            var intent = Intent()
                             intent.putExtra("markerid", markerid)
                             setResult(RESULT_OK, intent);
 
@@ -1275,6 +1301,30 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             btn_fishDelete.visibility = View.GONE
 
+            var intent = Intent()
+            intent.putExtra("export",70)
+            setResult(RESULT_OK, intent)
+
+            if (images_path != null){
+                images_path!!.clear()
+            }
+
+            if (images != null){
+                images!!.clear()
+            }
+
+            if (images_url != null){
+                images_url!!.clear()
+            }
+
+            if (images_url_remove != null){
+                images_url_remove!!.clear()
+            }
+
+            if (images_id != null){
+                images_id!!.clear()
+            }
+
             clear()
             chkdata = false
             pk = null
@@ -1368,12 +1418,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         startActivityForResult(intent1, FROM_ALBUM)
 
     }
-
-
-
-
-
-
 
     fun resetPage(page : Int){
         val dataList: Array<String> = arrayOf("*");
@@ -1525,9 +1569,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 detailLL.visibility = View.VISIBLE
             }
 
-
-
-
             formTV.setText(fish_attribute.RIV_FORM)
             if(formTV.text == null){
                 formTV.setText("")
@@ -1578,14 +1619,11 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
     fun clear(){
 
-        fishinvregionET.setText("")
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase()
+        val num = dbManager.fishsNextNum()
 
-        fishweatherET.setText("")
-        fishwindET.setText("")
-        fishwinddireET.setText("")
-        fishtemperaturET.setText("")
-
-        fishetcET.setText("")
+        fishnumTV.setText(num.toString())
 
         fishmidrageET.setText("")
 

@@ -95,7 +95,7 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="판단 기준"
+                    android:text="멸종위기 판단 기준"
                     android:maxLines="1"
                     android:gravity="center"
                     android:background="@null"/>

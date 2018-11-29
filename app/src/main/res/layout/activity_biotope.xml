@@ -82,7 +82,7 @@
                     style="@style/BiotopeTextView"
                     android:text="조사지"/>
 
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
@@ -432,7 +432,6 @@
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
-                                        android:maxLength="1"
                                         android:id="@+id/etlcmTypepET"
                                         style="@style/BiotopeTextViewDisabled"
                                         android:gravity="center"
@@ -457,7 +456,6 @@
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
-                                        android:maxLength="1"
                                         android:id="@+id/etlcmTypeiET"
                                         style="@style/BiotopeTextViewDisabled"
                                         android:gravity="center"
@@ -483,7 +481,6 @@
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
-                                        android:maxLength="1"
                                         android:id="@+id/etlcmTypegET"
                                         style="@style/BiotopeTextViewDisabled"
                                         android:gravity="center"
@@ -508,7 +505,6 @@
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
-                                        android:maxLength="1"
                                        android:id="@+id/etlcmTypewET"
                                        style="@style/BiotopeTextViewDisabled"
                                        android:gravity="center"

@@ -10,6 +10,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.*
 import android.provider.MediaStore
@@ -126,6 +128,10 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         val db = dbManager.createDataBase();
 
+        val num = dbManager.mammalsNextNum()
+
+        mammalnumTV.setText(num.toString())
+
         window.setLayout(Utils.dpToPx(700f).toInt(), WindowManager.LayoutParams.WRAP_CONTENT);
 
         var intent: Intent = getIntent();
@@ -151,6 +157,26 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         if(intent.getStringExtra("id") != null){
             pk = intent.getStringExtra("id")
+        }
+
+        if(intent.getStringExtra("longitude") != null && intent.getStringExtra("latitude") != null){
+            lat = intent.getStringExtra("latitude")
+            log = intent.getStringExtra("longitude")
+
+            try {
+                var geocoder:Geocoder = Geocoder(context);
+
+                var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+
+                if(list.size > 0){
+                    System.out.println("list : " + list);
+
+                    maminvregionET.setText(list.get(0).getAddressLine(0));
+                }
+            } catch (e:IOException) {
+                e.printStackTrace();
+            }
+
         }
 
         val dataList: Array<String> = arrayOf("*");
@@ -214,7 +240,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 mametcET.setText(mammal_attribute.ETC)
 
                 mammaltimeTV.setText(mammal_attribute.INV_TM)
-                mammalnumTV.setText(mammal_attribute.id)
+                mammalnumTV.setText(mammal_attribute.NUM.toString())
 
                 mamspecnmET.setText(mammal_attribute.SPEC_NM)
                 mamfaminmTV.setText(mammal_attribute.FAMI_NM)
@@ -432,8 +458,6 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             }
 
             mammal_attribute.ETC = mametcET.text.toString()
-
-            mammal_attribute.NUM = 0
 
             mammal_attribute.INV_TM = Utils.timeStr()
 
@@ -900,8 +924,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                         }
 
-                        if (dataArray.size == 0 ){
+                        if (dataArray.size == 0 || intent.getStringExtra("id") != null){
 
+                            var intent = Intent()
                             intent.putExtra("markerid", markerid)
                             setResult(RESULT_OK, intent);
 
@@ -1165,7 +1190,31 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 setResult(RESULT_OK, intent);
             }
 
+            var intent = Intent()
+            intent.putExtra("export",70)
+            setResult(RESULT_OK, intent)
+
             btn_mammalDelete.visibility = View.GONE
+
+            if (images_path != null){
+                images_path!!.clear()
+            }
+
+            if (images != null){
+                images!!.clear()
+            }
+
+            if (images_url != null){
+                images_url!!.clear()
+            }
+
+            if (images_url_remove != null){
+                images_url_remove!!.clear()
+            }
+
+            if (images_id != null){
+                images_id!!.clear()
+            }
 
             clear()
             chkdata = false
@@ -1261,15 +1310,13 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
     fun clear(){
 
-        mammalnumTV.setText("")
-        maminvdtTV.setText(Utils.todayStr())
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase()
+        val num = dbManager.mammalsNextNum()
 
-        mamweatherET.setText("")
-        mamwindET.setText("")
-        mamwinddireET.setText("")
+        mammalnumTV.setText(num.toString())
 
-        mamtemperatureET.setText("")
-        mametcET.setText("")
+        mammaltimeTV.setText("")
 
         mamspecnmET.setText("")
         mamfaminmTV.setText("")
@@ -1581,6 +1628,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
     fun startDlgM(){
         val intent = Intent(context, DlgMammalActivity::class.java)
+        intent.putExtra("title", "확인되지 않는 종 선택")
+        intent.putExtra("table", "mammal")
+        intent.putExtra("DlgHeight", 600f);
         startActivityForResult(intent, SET_UNSPEC);
     }
 

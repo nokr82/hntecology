@@ -86,4 +86,7 @@ dependencies {
     implementation('io.nlopez.smartlocation:library:3.3.3') {
         transitive = false
     }
+
+    //  async http
+    implementation 'com.loopj.android:android-async-http:1.4.9'
 }

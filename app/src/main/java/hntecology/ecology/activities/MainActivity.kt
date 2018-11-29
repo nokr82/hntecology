@@ -712,7 +712,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         unionTV.setTypeface(null, Typeface.NORMAL)
 
         for (polygon in polygonsToUnion) {
-            polygon.strokeWidth = 0.0f
+            polygon.strokeWidth = 1.0f
+            polygon.strokeColor = Color.BLACK
         }
 
         polygonsToUnion.clear()
@@ -1559,6 +1560,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             if (polygonsToUnion.contains(polygon)) {
                                 polygonsToUnion.remove(polygon)
                                 polygon.strokeWidth = 0.0f
+                                polygon.strokeColor = Color.TRANSPARENT
                                 return@setOnPolygonClickListener
                             }
 
@@ -1569,6 +1571,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                             polygonsToUnion.add(polygon)
                             polygon.strokeWidth = 0.0f
+                            polygon.strokeColor = Color.TRANSPARENT
 
                             return@setOnPolygonClickListener
 
@@ -4677,8 +4680,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 val polygonOptions = PolygonOptions()
                 polygonOptions.fillColor(getColor())
-                polygonOptions.strokeWidth(5.0f)
-                polygonOptions.strokeColor(Color.WHITE)
+                polygonOptions.strokeWidth(1.0f)
+                polygonOptions.strokeColor(Color.BLACK)
 
                 for(coordinate in unioned.coordinates) {
                     polygonOptions.add(LatLng(coordinate.y, coordinate.x))
@@ -5001,7 +5004,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val polygonOptions = PolygonOptions()
             polygonOptions.fillColor(getColor())
-            polygonOptions.strokeWidth(0.0f)
+            polygonOptions.strokeWidth(1.0f)
+            polygonOptions.strokeColor(Color.BLACK)
 
             for (coordinate in polygon.coordinates) {
                 polygonOptions.add(LatLng(coordinate.y, coordinate.x))

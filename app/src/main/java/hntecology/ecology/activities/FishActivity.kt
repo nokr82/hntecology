@@ -1625,15 +1625,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         fishnumTV.setText(num.toString())
 
-        fishinvregionET.setText("")
-
-        fishweatherET.setText("")
-        fishwindET.setText("")
-        fishwinddireET.setText("")
-        fishtemperaturET.setText("")
-
-        fishetcET.setText("")
-
         fishmidrageET.setText("")
 
         fishcodenumET.setText("")

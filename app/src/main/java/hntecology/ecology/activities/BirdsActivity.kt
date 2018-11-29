@@ -1665,21 +1665,12 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
     fun clear(){
 
-
-        invDtTV.setText(Utils.todayStr())
-
         val dbManager: DataBaseHelper = DataBaseHelper(this)
         val db = dbManager.createDataBase()
         val num = dbManager.birdsNextNum()
         numTV.setText(num.toString())
 
-        btn1.setText("")       //날씨
-        btn2.setText("")          //바람
-        btn3.setText("")     //풍향
-
-        temperatureET.setText("")       //기온
-        etcET.setText("")
-
+        timeTV.setText("")
 
         birdsTV.setText("")
         familyNameTV.setText("")

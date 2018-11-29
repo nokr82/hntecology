@@ -1331,14 +1331,6 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
     fun clear(){
 
-        insectinvdtET.setText(Utils.todayStr())
-
-        insectweatherET.setText("")
-        insectwindET.setText("")
-        insectwinddireET.setText("")
-        insecttemperaturET.setText("")
-        insectetcET.setText("")
-
         val dbManager: DataBaseHelper = DataBaseHelper(this)
         val db = dbManager.createDataBase()
         val num = dbManager.insectsNextNum()

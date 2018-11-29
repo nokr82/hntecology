@@ -194,6 +194,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     private var timer: Timer? = null
 
+    private val BACK_PRESSED_TERM = (1000 * 2).toLong()
+    private var backPressedTime: Long = 0
+
+    var chkDivision = false
+
     internal var loadDataHandler: Handler = object : Handler() {
         override fun handleMessage(msg: android.os.Message) {
             initGps()
@@ -250,6 +255,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         // 비오톱 추가
         btn_biotope.setOnClickListener {
 
+            if(chkDivision){
+                if( !chkDivision(LAYER_BIOTOPE)) {
+                    return@setOnClickListener
+                }
+            }
+
             currentLayer = LAYER_BIOTOPE
 
             if (drawer_view.visibility == View.VISIBLE) {
@@ -269,7 +280,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         //조류 추가
         btn_birds.setOnClickListener {
-
+            if(chkDivision){
+                if( !chkDivision(LAYER_BIRDS)) {
+                    return@setOnClickListener
+                }
+            }
             currentLayer = LAYER_BIRDS
 
             if (drawer_view.visibility == View.VISIBLE) {
@@ -283,6 +298,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         //양서ㆍ파충류 추가
         btn_Reptilia.setOnClickListener {
 
+            if(chkDivision){
+                if( !chkDivision(LAYER_REPTILIA)) {
+                    return@setOnClickListener
+                }
+            }
+
             currentLayer = LAYER_REPTILIA
 
             if (drawer_view.visibility == View.VISIBLE) {
@@ -294,6 +315,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         //포유류 추가
         btn_mammalia.setOnClickListener {
+
+            if(chkDivision){
+                if( !chkDivision(LAYER_MAMMALIA)) {
+                    return@setOnClickListener
+                }
+            }
 
             currentLayer = LAYER_MAMMALIA
 
@@ -307,6 +334,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         //어류 추가
         btn_fish.setOnClickListener {
 
+            if(chkDivision){
+                if( !chkDivision(LAYER_FISH)) {
+                    return@setOnClickListener
+                }
+            }
+
             currentLayer = LAYER_FISH
 
             if (drawer_view.visibility == View.VISIBLE) {
@@ -319,6 +352,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         //곤충 추가
         btn_insect.setOnClickListener {
 
+            if(chkDivision){
+                if( !chkDivision(LAYER_INSECT)) {
+                    return@setOnClickListener
+                }
+            }
+
             currentLayer = LAYER_INSECT
 
             if (drawer_view.visibility == View.VISIBLE) {
@@ -330,6 +369,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         //식물 추가
         btn_flora.setOnClickListener {
+
+            if(chkDivision){
+                if( !chkDivision(LAYER_FLORA)) {
+                    return@setOnClickListener
+                }
+            }
 
             currentLayer = LAYER_FLORA
 
@@ -1733,13 +1778,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         val zoom = googleMap.cameraPosition.zoom
         if (zoom < 16) {
-            Utils.showNotification(context, "지도 레벨을 16이상으로 확대한 후 이용하세요.")
+//            Utils.showNotification(context, "지도 레벨을 16이상으로 확대한 후 이용하세요.")
             // return
         }
 
         if (zoom < 13) {
-            Utils.showNotification(context, "지도 레벨을 16이상으로 확대한 후 이용하세요. 정말 안되요 ㅠㅠㅠ")
-            return
+//            Utils.showNotification(context, "지도 레벨을 16이상으로 확대한 후 이용하세요. 정말 안되요 ㅠㅠㅠ")
+//            return
         }
 
         currentFileName = fileName
@@ -2410,6 +2455,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         }
 
+        chkDivision = false
+
     }
 
     private fun initEditingPolygon() {
@@ -2510,7 +2557,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             LAYER_MYLOCATION -> {
                 btn_mygps.text = "내 위치로 이동"
             }
+
         }
+        chkDivision = true
     }
 
     fun endPolygonDraw(polygon:Polygon) {
@@ -2613,6 +2662,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 
             currentLayer = -1
+            chkDivision = false
 
         }
     }
@@ -2669,6 +2719,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
 
         currentLayer = -1
+
+        chkDivision = false
 
     }
 
@@ -4832,6 +4884,26 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             copyRow("biotopeAttribute", oldAttributeKey, newAttributeKey)
 
         }
+    }
+
+    override fun onBackPressed() {
+            val builder = AlertDialog.Builder(context)
+            builder.setMessage("종료하시겠습니까 ?").setCancelable(false)
+                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
+                        finish()
+                    })
+                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+            val alert = builder.create()
+            alert.show()
+    }
+
+    fun chkDivision(clickLayer: Int):Boolean{
+        if(clickLayer == currentLayer){
+            return true
+        }else {
+            return false
+        }
+
     }
 
 }

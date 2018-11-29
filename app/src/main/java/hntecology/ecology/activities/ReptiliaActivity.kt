@@ -1573,14 +1573,6 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         val num = dbManager.reptiliasNextNum()
         numET.setText(num.toString())
 
-        invregionET.setText("")
-
-        weatherTV.setText("")
-        windTV.setText("")
-        windDireTV.setText("")
-
-        temperaturET.setText("")
-        etcET.setText("")
 
         invtmTV.setText("")
 

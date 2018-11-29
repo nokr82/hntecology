@@ -1315,14 +1315,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         val num = dbManager.mammalsNextNum()
 
         mammalnumTV.setText(num.toString())
-        maminvdtTV.setText(Utils.todayStr())
 
-        mamweatherET.setText("")
-        mamwindET.setText("")
-        mamwinddireET.setText("")
-
-        mamtemperatureET.setText("")
-        mametcET.setText("")
+        mammaltimeTV.setText("")
 
         mamspecnmET.setText("")
         mamfaminmTV.setText("")

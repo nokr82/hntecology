@@ -1290,15 +1290,6 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
         floranumET.setText(num.toString())
 
-        florainvdvET.setText(Utils.todayStr())
-
-        floraweatherTV.setText("")
-        florawindTV.setText("")
-        florawinddireTV.setText("")
-        floratemperaturTV.setText("")
-
-        floraetcET.setText("")
-
         florainvtmET.setText("")
 
         floraspecnmET.setText("")

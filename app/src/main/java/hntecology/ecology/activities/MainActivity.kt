@@ -48,6 +48,7 @@ import org.geotools.data.shapefile.ShapefileDataStore
 import org.geotools.data.shapefile.ShapefileDataStoreFactory
 import org.geotools.data.simple.SimpleFeatureStore
 import org.geotools.referencing.crs.DefaultGeographicCRS
+import org.json.JSONObject
 import org.locationtech.jts.geom.Coordinate
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
@@ -59,6 +60,7 @@ import java.io.InputStream
 import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnTouchListener, GoogleMap.OnCameraMoveListener, OnLocationUpdatedListener {
@@ -1670,6 +1672,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
         }
 
+
+        loadLayer("birds", "birds", "birds", "N")
     }
 
     private var parsed: Boolean = false
@@ -1707,11 +1711,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             // return
         }
 
-        if (zoom < 13) {
-            Utils.showNotification(context, "지도 레벨을 16이상으로 확대한 후 이용하세요. 정말 안되요 ㅠㅠㅠ")
-            return
-        }
-
         currentFileName = fileName
         currentLayerName = layerName
 
@@ -1740,6 +1739,132 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             val coordinate3 = Coordinate(northeast.longitude, southwest.latitude)
             val coordinate4 = Coordinate(southwest.longitude, southwest.latitude)
 
+            val ring = org.gdal.ogr.Geometry(ogr.wkbLinearRing)
+            ring.AddPoint(coordinate1.x, coordinate1.y)
+            ring.AddPoint(coordinate2.x, coordinate2.y)
+            ring.AddPoint(coordinate3.x, coordinate3.y)
+            ring.AddPoint(coordinate4.x, coordinate4.y)
+            ring.AddPoint(coordinate1.x, coordinate1.y)
+
+            val mapBoundary = org.gdal.ogr.Geometry(ogr.wkbPolygon)
+            mapBoundary.AddGeometry(ring)
+
+
+            ogr.RegisterAll()
+
+            // set up the shapefile driver
+            val driver = ogr.GetDriverByName("ESRI Shapefile")
+
+
+            var shpFilePath = context.applicationInfo.dataDir + File.separator + "$layerName.shp"
+            if (added == "Y"){
+                shpFilePath = "$layerName.shp"
+            }
+
+            val dataSource = driver.Open(shpFilePath, 0)
+
+            println("dataSource : $dataSource")
+
+            val layerCount = dataSource.GetLayerCount()
+
+            println("layerCount : $layerCount")
+
+            for (idx in 0..(layerCount -1)) {
+                val layer = dataSource.GetLayer(idx)
+                val featureCount = layer.GetFeatureCount()
+                for (fid in 0..(featureCount -1)) {
+                    val feature = layer.GetFeature(fid)
+
+                    val geometryRef = feature.GetGeometryRef()
+
+                    if(!geometryRef.Intersects(mapBoundary)) {
+                        // continue
+                    }
+
+                    // dbf
+                    val metadata = HashMap<String, Any>()
+                    val fieldCount = feature.GetFieldCount()
+                    for (fieldIdx in 0..(fieldCount -1)) {
+                        val fieldType = feature.GetFieldType(fieldIdx)
+                        val key = feature.GetDefnRef().GetFieldDefn(fieldIdx).GetName()
+                        val value = feature.GetFieldAsString(fieldIdx)
+
+                        println("$fieldIdx / ${fieldCount -1} : $key $value")
+
+                        metadata.put(key, value)
+
+                    }
+
+                    val geometryType = geometryRef.GetGeometryType()
+
+                    println("geometryType : $geometryType")
+
+                    if (geometryType == ogr.wkbPoint) {
+                        val pointCount = geometryRef.GetPointCount()
+                        for(pc in 0 until pointCount) {
+                            val point = geometryRef.GetPoint(pc)
+
+                            val x = point[0]
+                            val y = point[1]
+
+                            println("geometryType : $geometryType, point : $x, $y")
+
+                            val latlng = LatLng(y, x)
+
+                            val markerOptions = MarkerOptions()
+                            markerOptions.position(latlng)
+
+                            // markerOptions.title("Marker in Sydney")
+                            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                            markerOptions.alpha(1.0f)
+
+                            publishProgress(markerOptions, JSONObject(metadata).toString())
+
+                            Thread.sleep(10)
+                        }
+                    } else if (geometryType == ogr.wkbPolygon) {
+
+                        val polygonOptions = PolygonOptions()
+                        polygonOptions.fillColor(Color.parseColor(getLayerColor(layerName)))
+                        polygonOptions.strokeWidth(1.0f)
+                        polygonOptions.strokeColor(Color.BLACK)
+
+                        val pointCount = geometryRef.GetPointCount()
+                        for(pc in 0 until pointCount) {
+                            val point = geometryRef.GetPoint(pc)
+
+                            val x = point[0]
+                            val y = point[1]
+
+                            println("geometryType : $geometryType, point : $x, $y")
+
+                            val latlng = LatLng(y, x)
+
+                            polygonOptions.add(latlng)
+                        }
+
+                        publishProgress(polygonOptions, JSONObject(metadata).toString())
+
+                        Thread.sleep(10)
+
+                    }
+                }
+            }
+
+            return true
+
+        }
+
+        fun doInBackgroundOld(vararg latLngBounds: LatLngBounds): Boolean {
+
+            val northeast = latLngBounds[0].northeast
+            val southwest = latLngBounds[0].southwest
+
+            val coordinate1 = Coordinate(southwest.longitude, northeast.latitude)
+            val coordinate2 = Coordinate(northeast.longitude, northeast.latitude)
+            val coordinate3 = Coordinate(northeast.longitude, southwest.latitude)
+            val coordinate4 = Coordinate(southwest.longitude, southwest.latitude)
+
             val coordinates = arrayOfNulls<Coordinate>(5)
             coordinates.set(0, coordinate1)
             coordinates.set(1, coordinate2)
@@ -1752,11 +1877,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             val mapBoundary = geometryFactory.createPolygon(linearRing)
 
             if (added == "N") {
-              inputStream = assets.open("$layerName.shp")
+                inputStream = assets.open("$layerName.shp")
             }
 
             if (added == "Y"){
-              inputStream = FileInputStream("$layerName.shp")
+                inputStream = FileInputStream("$layerName.shp")
             }
 
             println(layerName + "===============================")
@@ -1780,8 +1905,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if (geometry.geometryType.equals("Polygon")) {
                     val polygonOptions = PolygonOptions()
                     polygonOptions.fillColor(Color.parseColor(getLayerColor(layerName)))
-                    polygonOptions.strokeWidth(5.0f)
-                    polygonOptions.strokeColor(Color.WHITE)
+                    polygonOptions.strokeWidth(1.0f)
+                    polygonOptions.strokeColor(Color.BLACK)
 
                     val coordinates = geometry.coordinates
 
@@ -1830,6 +1955,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         override fun onProgressUpdate(vararg geoms: Any?) {
 
+            val metadataP = geoms[1] as String
+            val metadata = JSONObject(metadataP)
+
+            println(metadata)
+
             if (geoms[0] is PolygonOptions) {
                 val polygon = googleMap.addPolygon(geoms[0] as PolygonOptions)
                 polygon.zIndex = 0.0f
@@ -1868,6 +1998,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if (type.equals("flora")){
                     layerInfo.layer = LAYER_FLORA
                 }
+
+                // metadata
+                layerInfo.metadata = metadata
 
                 polygon.tag = layerInfo
 
@@ -1911,6 +2044,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if (type.equals("flora")){
                     layerInfo.layer = LAYER_FLORA
                 }
+
+                // metadata
+                layerInfo.metadata = metadata
 
                 marker.tag = layerInfo
 
@@ -2190,8 +2326,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val polygonOptions = PolygonOptions()
             polygonOptions.fillColor(getColor())
-            polygonOptions.strokeWidth(5.0f)
-            polygonOptions.strokeColor(Color.WHITE)
+            polygonOptions.strokeWidth(1.0f)
+            polygonOptions.strokeColor(Color.BLACK)
 
             for (coordinate in polygon.coordinates) {
                 polygonOptions.add(LatLng(coordinate.y, coordinate.x))
@@ -2429,8 +2565,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     private fun initEditingPolygon() {
         val polygonOptions = PolygonOptions()
         polygonOptions.fillColor(getColor())
-        polygonOptions.strokeWidth(5.0f)
-        polygonOptions.strokeColor(Color.WHITE)
+        polygonOptions.strokeWidth(1.0f)
+        polygonOptions.strokeColor(Color.BLACK)
         polygonOptions.addAll(latlngs)
 
         editingPolygon = googleMap.addPolygon(polygonOptions)
@@ -4373,8 +4509,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 val polygonOptions = PolygonOptions()
                 polygonOptions.fillColor(getColor())
-                polygonOptions.strokeWidth(5.0f)
-                polygonOptions.strokeColor(Color.WHITE)
+                polygonOptions.strokeWidth(1.0f)
+                polygonOptions.strokeColor(Color.BLACK)
 
                 for(coordinate in unioned.coordinates) {
                     polygonOptions.add(LatLng(coordinate.y, coordinate.x))

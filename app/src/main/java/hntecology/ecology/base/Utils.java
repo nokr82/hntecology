@@ -75,6 +75,10 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -91,6 +95,14 @@ import java.util.Random;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 
 public class Utils {
     private static Bitmap noImageBitmap = null;
@@ -1571,4 +1583,89 @@ public class Utils {
         }
         return new Date();
     }
+
+    public static void processFile(Cipher ci, String inFile, String outFile)
+            throws javax.crypto.IllegalBlockSizeException,
+            javax.crypto.BadPaddingException,
+            java.io.IOException {
+        try (FileInputStream in = new FileInputStream(inFile);
+             FileOutputStream out = new FileOutputStream(outFile)) {
+            byte[] ibuf = new byte[1024];
+            int len;
+            while ((len = in.read(ibuf)) != -1) {
+                byte[] obuf = ci.update(ibuf, 0, len);
+                if ( obuf != null ) out.write(obuf);
+            }
+            byte[] obuf = ci.doFinal();
+            if ( obuf != null ) out.write(obuf);
+        }
+    }
+
+    public static void encrypt(String inFile, String outFile) {
+        try {
+            byte[] iv = new byte[128/8];
+
+            SecureRandom secureRandom = new SecureRandom();
+            secureRandom.nextBytes(iv);
+            IvParameterSpec ivspec = new IvParameterSpec(iv);
+
+            KeyGenerator kgen = KeyGenerator.getInstance("AES");
+            SecretKey skey = kgen.generateKey();
+
+
+
+
+            Cipher ci = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            ci.init(Cipher.ENCRYPT_MODE, skey, ivspec);
+            processFile(ci, inFile, outFile);
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void decrypt(String inFile, String outFile) {
+        try {
+            byte[] iv = new byte[128/8];
+
+            SecureRandom secureRandom = new SecureRandom();
+            secureRandom.nextBytes(iv);
+            IvParameterSpec ivspec = new IvParameterSpec(iv);
+
+            KeyGenerator kgen = KeyGenerator.getInstance("AES");
+            SecretKey skey = kgen.generateKey();
+
+            Cipher ci = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            ci.init(Cipher.DECRYPT_MODE, skey, ivspec);
+            processFile(ci, inFile, outFile);
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

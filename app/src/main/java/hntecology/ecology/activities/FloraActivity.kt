@@ -730,7 +730,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                             dataArray.add(flora_Attribute)
                         }
 
-                        if (dataArray.size == 0 || intent.getStringExtra("id") != null ){
+                        if (dataArray.size == 0 || intent.getStringExtra("id") == null ){
 
                             var intent = Intent()
 

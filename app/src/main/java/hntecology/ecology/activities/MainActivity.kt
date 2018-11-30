@@ -367,6 +367,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             } else {
                 startDraw()
             }
+
         }
 
         //식물 추가
@@ -385,6 +386,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             } else {
                 startDraw()
             }
+
         }
 
         //저서무척추동물 추가
@@ -1783,13 +1785,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         val zoom = googleMap.cameraPosition.zoom
         if (zoom < 16) {
-            Utils.showNotification(context, "지도 레벨을 16이상으로 확대한 후 이용하세요.")
-            return
+//            Utils.showNotification(context, "지도 레벨을 16이상으로 확대한 후 이용하세요.")
+//            return
         }
 
         if (zoom < 13) {
-            Utils.showNotification(context, "지도 레벨을 16이상으로 확대한 후 이용하세요. 정말 안되요 ㅠㅠㅠ")
-            return
+//            Utils.showNotification(context, "지도 레벨을 16이상으로 확대한 후 이용하세요. 정말 안되요 ㅠㅠㅠ")
+//            return
         }
 
         currentFileName = fileName
@@ -3167,10 +3169,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 pointsArray.add(exporter)
 
                             }
-
                         }
                     }
-
                 }
             }
 
@@ -3191,6 +3191,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             Exporter.exportPoint(pointsArray)
             pointsArray.clear()
             birdsDatas.clear()
+
         }
     }
 
@@ -3860,17 +3861,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tracking" + File.separator + path,"경로 : " + path, "tracking","Y")
 
-            Exporter.exportTrackingPoint(trackingPointsArray,today,time)
+            Exporter.exportPoint(trackingPointsArray)
             trackingPointsArray.clear()
             trackingDatas.clear()
 
             for(k in 0..trackpoints.size-1){
                 trackpoints.get(k).remove()
             }
-
         }
     }
-
 
     fun export() {
 

@@ -40,18 +40,14 @@ object Exporter {
     }
 
     fun export(exportItems:ArrayList<ExportItem>) {
-        export(exportItems, null,null,null)
+        export(exportItems, null)
     }
 
     fun exportPoint(exportPointItems:ArrayList<ExportPointItem>) {
-        export(null, exportPointItems,null,null)
+        export(null, exportPointItems)
     }
 
-    fun exportTrackingPoint(exportPointItems:ArrayList<ExportPointItem>,today:String ?, time:String?) {
-        export(null, exportPointItems,today,time)
-    }
-
-    private fun export(exportItems:ArrayList<ExportItem>?, exportPointItems:ArrayList<ExportPointItem>?,today:String ?, time:String?) {
+    private fun export(exportItems:ArrayList<ExportItem>?, exportPointItems:ArrayList<ExportPointItem>?) {
 
         if (exportItems != null) {
             if (exportItems.isEmpty()) {
@@ -176,15 +172,16 @@ object Exporter {
         val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + layerName + File.separator
         var outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + layerName + File.separator + layerName + ".shp"
 
-
         if(layerName == "tracking"){
+            val today = Utils.todayStr()
+
+            val time = Utils.timeStr()
 
             val path = today + " " + time
 
             outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + layerName + File.separator + path + ".shp"
-        }
 
-        println("outPathFile : $outPathFile")
+        }
 
         val outputsDir = File(outPath)
 
@@ -232,6 +229,8 @@ object Exporter {
         if(exportItems != null){
             val exportitem = exportItems.get(0)
             for (columnDef in exportitem.columnDefs) {
+                println("exportitem${exportItem.columnDefs}")
+                println(columnDef.columnName +"---------------${columnDef.columnType}")
                 layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
             }
         }
@@ -239,6 +238,8 @@ object Exporter {
         if(exportPointItems != null){
             val exportPointitem = exportPointItems.get(0)
             for (columnDef in exportPointitem.columnDefs) {
+                println("exportPoint${exportPointItem.columnDefs}")
+                println(columnDef.columnName +"---------------${columnDef.columnType}")
                 layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
             }
         }

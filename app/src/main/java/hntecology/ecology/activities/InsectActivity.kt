@@ -745,7 +745,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                             dataArray.add(insect_attribute)
                         }
 
-                        if (dataArray.size == 0 || intent.getStringExtra("id") != null ){
+                        if (dataArray.size == 0 || intent.getStringExtra("id") == null ){
 
                             var intent = Intent()
                             intent.putExtra("markerid", markerid)

@@ -87,6 +87,12 @@ class IntroActivity : Activity() {
         val targetDirectory = File(applicationInfo.dataDir)
 
         val sourceDirectoryFiles = sourceDirectory.listFiles()
+
+        if(sourceDirectoryFiles == null){
+            stopIntro()
+            return
+        }
+
         for (sourceDirectoryFile in sourceDirectoryFiles) {
             val targetDirectoryFile = File("$targetDirectory${File.separator}${sourceDirectoryFile.name}")
             if(!targetDirectoryFile.exists()) {

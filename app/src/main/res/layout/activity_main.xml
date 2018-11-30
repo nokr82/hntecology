@@ -89,7 +89,7 @@
                         android:id="@+id/layerNameTV"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="레이어 로드"
+                        android:text="새로고침"
                         android:textColor="#333333"
                         android:layout_centerInParent="true"
                         android:layout_marginLeft="4dp"

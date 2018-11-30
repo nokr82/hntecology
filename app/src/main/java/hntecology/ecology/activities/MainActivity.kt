@@ -449,6 +449,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         logoutBtn.setOnClickListener {
 
+
             var builder: AlertDialog.Builder = AlertDialog.Builder(context)
             builder.setMessage("로그아웃 하시겠습니까?")
             builder.setCancelable(true)
@@ -736,7 +737,35 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         })
 
         myLocation = Tracking(null, latitude, longitude)
-        loadLayer("","","","Y")
+//        getLoadLayer()
+
+    }
+
+    fun getLoadLayer(){
+
+        val dataBaseHelper = DataBaseHelper(context);
+
+        val db = dataBaseHelper.createDataBase();
+
+        val dataList: Array<String> = arrayOf("*");
+
+        //대분류
+        val data =  db.query("layers", dataList,"added = 'Y'",null,null,null,null,null);
+
+        var layerDatas:ArrayList<LayerModel> = ArrayList<LayerModel>()
+
+        while (data.moveToNext()) {
+            val layerModel = LayerModel(data.getString(0), data.getString(1), data.getInt(2),data.getInt(3),data.getString(4),data.getString(5),data.getString(6),false);
+
+            layerDatas.add(layerModel)
+        }
+
+        if(layerDatas != null){
+            for(i in 0..layerDatas.size-1) {
+                println("filename ${layerDatas.get(i).layer_name}")
+                loadLayer(layerDatas.get(i).file_name, layerDatas.get(i).layer_name,layerDatas.get(i).type, layerDatas.get(i).added)
+            }
+        }
 
     }
 
@@ -1853,16 +1882,16 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             return
         }
 
-        val zoom = googleMap.cameraPosition.zoom
-        if (zoom < 16) {
+        val zoom = 15.6
+//        if (zoom < 16) {
 //            Utils.showNotification(context, "지도 레벨을 16이상으로 확대한 후 이용하세요.")
 //            return
-        }
+//        }
 
-        if (zoom < 13) {
+//        if (zoom < 13) {
 //            Utils.showNotification(context, "지도 레벨을 16이상으로 확대한 후 이용하세요. 정말 안되요 ㅠㅠㅠ")
 //            return
-        }
+//        }
 
         currentFileName = fileName
         currentLayerName = layerName
@@ -2172,6 +2201,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 println("id : $id  grop_id : $grop_id  landuse $landuse")
 
+                if(grop_id != null) {
+                    layerInfo.attrubuteKey = grop_id
+                }
                 polygon.tag = layerInfo
 
                 println("polygon.tag ${polygon.tag}")
@@ -2232,9 +2264,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 // metadata
                 layerInfo.metadata = metadata
 
-                val id = Utils.getString(layerInfo.metadata , "id")
-                val grop_id = Utils.getString(layerInfo.metadata , "grop_id")
+                val id = Utils.getString(layerInfo.metadata , "ID")
+                val grop_id = Utils.getString(layerInfo.metadata , "GROP_ID")
                 val landuse = Utils.getString(layerInfo.metadata, "landuse")
+
+                if(grop_id != null) {
+                    layerInfo.attrubuteKey = grop_id
+                }
 
                 println("id : $id  grop_id : $grop_id  landuse $landuse")
 
@@ -3278,8 +3314,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(chkData){
 
             }else {
-                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds" + File.separator + "birds" ,"조류", "birds","Y")
-            }
+                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds" + File.separator + "birds" ,"조류", "birds","Y")            }
 
             pointsArray.clear()
             birdsDatas.clear()
@@ -5070,7 +5105,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
             READ_EXTERNAL_STORAGE -> {
                 if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
                     if (layerDivision == 0 ){
                         exportBiotope()
                     }

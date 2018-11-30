@@ -381,6 +381,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         queryinsect += ");";
         db.execSQL(queryinsect);
 
+        String layerinsect = "create table if not exists ";
+        layerinsect += "layers ( id String PRIMARY KEY";
+        layerinsect += ",file_name	   String";
+        layerinsect += ",layer_name	   String";
+        layerinsect += ",min_scale	String";
+        layerinsect += ",max_scale	    String";
+        layerinsect += ",type	String";
+        layerinsect += ",added	String";
+        layerinsect += ",grop_id 	String";
+        layerinsect += ");";
+        db.execSQL(layerinsect);
 
     }
 
@@ -783,7 +794,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public void insertlayers(String file_name , String layer_name , String type,String Y){
         String query = "INSERT INTO layers";
-        query += "(file_name,layer_name,min_scale,max_scale,type,added)";
+        query += "(file_name,layer_name,min_scale,max_scale,type,added,grop_id)";
 
         query += " values (";
         query += " '" + file_name + "'";
@@ -792,6 +803,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + 19 + "'";
         query += ", '" + type + "'";
         query += ", '" + Y + "'";
+        query += ", '" + "" + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();

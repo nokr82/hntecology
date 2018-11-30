@@ -80,6 +80,7 @@ class DlgLayersActivity : Activity() {
 
                 if(checked) {
                     data.add(adapterData.get(i))
+                    println("-------added ${adapterData.get(i).added}")
                 }
 
             }

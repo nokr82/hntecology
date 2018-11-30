@@ -2133,6 +2133,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
                         val delIV = v.findViewById<View>(R.id.delIV) as ImageView
                         imageIV.setImageBitmap(bitmap)
+                        images!!.add(bitmap)
                         delIV.setTag(images!!.size)
 
                         if (imgSeq == 0) {
@@ -2758,6 +2759,42 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         }
     }
 
+    override fun onBackPressed() {
+
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+
+        val db = dbManager.createDataBase()
+
+        val dataList: Array<String> = arrayOf("*");
+
+        val data2 = db.query("biotopeAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+
+        var dataArray:ArrayList<Biotope_attribute> = ArrayList<Biotope_attribute>()
+
+        while (data2.moveToNext()) {
+
+            var biotope_attribute: Biotope_attribute = Biotope_attribute(data2.getString(0), data2.getString(1), data2.getString(2), data2.getString(3), data2.getString(4), data2.getString(5), data2.getString(6), data2.getInt(7),
+                    data2.getString(8), data2.getFloat(9), data2.getFloat(10), data2.getString(11), data2.getString(12), data2.getString(13), data2.getFloat(14)
+                    , data2.getString(15), data2.getString(16), data2.getString(17), data2.getString(18), data2.getString(19), data2.getString(20), data2.getString(21)
+                    , data2.getString(22), data2.getString(23), data2.getString(24), data2.getString(25), data2.getFloat(26), data2.getFloat(27), data2.getFloat(28)
+                    , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
+                    , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
+                    , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
+                    , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53))
+
+            dataArray.add(biotope_attribute)
+
+        }
+
+        if (dataArray.size == 0 ){
+            var intent = Intent()
+            intent.putExtra("polygonid", polygonid)
+            setResult(RESULT_OK, intent);
+        }
+
+        finish()
+
+    }
 
 }
 

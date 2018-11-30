@@ -1650,6 +1650,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                         val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
                         val delIV = v.findViewById<View>(R.id.delIV) as ImageView
                         imageIV.setImageBitmap(bitmap)
+                        images!!.add(bitmap)
                         delIV.setTag(images!!.size)
 
                         if (imgSeq == 0) {
@@ -1845,6 +1846,42 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
         val strDT = dayTime.format(Date(time))
 
         return strDT
+    }
+
+    override fun onBackPressed() {
+
+        val dataList: Array<String> = arrayOf("*");
+
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+
+        val db = dbManager.createDataBase()
+
+        val data= db.query("floraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+
+        if (dataArray != null){
+            dataArray.clear()
+        }
+
+        while (data.moveToNext()) {
+
+            var flora_Attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
+                    , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25))
+
+            dataArray.add(flora_Attribute)
+        }
+
+        if (dataArray.size == 0 || intent.getStringExtra("id") == null ){
+
+            var intent = Intent()
+
+            intent.putExtra("markerid", markerid)
+            setResult(RESULT_OK, intent);
+
+        }
+
+        finish()
     }
 
 }

@@ -199,7 +199,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     private val BACK_PRESSED_TERM = (1000 * 2).toLong()
     private var backPressedTime: Long = 0
 
+    private var layersDatas:ArrayList<LayerModel> = ArrayList<LayerModel>()
+
     var chkDivision = false
+
+    var layerDivision = 0
 
     internal var loadDataHandler: Handler = object : Handler() {
         override fun handleMessage(msg: android.os.Message) {
@@ -467,8 +471,42 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         }
 
-        layerNameTV.setOnClickListener {
-            loadLayer(currentFileName, currentLayerName,"","")
+        resetTV.setOnClickListener {
+
+            val dbManager: DataBaseHelper = DataBaseHelper(this)
+
+            val db = dbManager.createDataBase();
+
+            val dataList:Array<String> = arrayOf("file_name", "layer_name","min_scale","max_scale","type","added","grop_id");
+
+            var datas:ArrayList<LayerModel> = ArrayList<LayerModel>()
+
+            val zoom = intent.getFloatExtra("zoom", 0.0F)
+
+            var chkData = false
+
+            if (layersDatas != null){
+                for (i in 0..layersDatas.size-1) {
+                    var layerdata = db.query("layers", dataList, "grop_id = '${layersDatas.get(i).grop_id}' and min_scale = ${zoom.toInt()}", null, null, null, "", null)
+
+                    while(layerdata.moveToNext()){
+                        chkData = true
+
+                        val layerModel = LayerModel(data.getString(0), data.getString(1), data.getInt(2),data.getInt(3),data.getString(4),data.getString(5),data.getString(6),false);
+
+                        datas.add(layerModel)
+                    }
+                }
+
+                if (chkData){
+                    layersDatas.clear()
+                    for (i in 0..datas.size-1){
+                        layersDatas.add(datas.get(i))
+                        loadLayer(datas.get(i).file_name, datas.get(i).layer_name,datas.get(i).type, datas.get(i).added)
+                    }
+                }
+
+            }
         }
 
         exportBtn.setOnClickListener {
@@ -476,7 +514,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
             } else {
                 export()
-
             }
 
         }
@@ -699,6 +736,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         })
 
         myLocation = Tracking(null, latitude, longitude)
+        loadLayer("","","","Y")
 
     }
 
@@ -818,7 +856,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         println("----------------$export")
 
                         if(export == 70){
-                            exportBiotope()
+                            layerDivision = 0
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                            } else {
+                                exportBiotope()
+                            }
                         }
 
                     }
@@ -847,7 +890,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         val export = data!!.getIntExtra("export",0)
 
                         if(export == 70){
-                            exportBirds()
+                            layerDivision = 1
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                            } else {
+                                exportBirds()
+                            }
                         }
                     }
 
@@ -872,7 +920,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         val export = data!!.getIntExtra("export",0)
 
                         if(export == 70){
-                            exportReptilia()
+                            layerDivision = 2
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                            } else {
+                                exportReptilia()
+                            }
                         }
                     }
 
@@ -897,7 +950,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         val export = data!!.getIntExtra("export",0)
 
                         if(export == 70){
-                            exportMammal()
+                            layerDivision = 3
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                            } else {
+                                exportMammal()
+                            }
                         }
                     }
                 }
@@ -921,7 +979,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         val export = data!!.getIntExtra("export",0)
 
                         if(export == 70){
-                            exportFish()
+                            layerDivision = 4
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                            } else {
+                                exportFish()
+                            }
                         }
                     }
                 }
@@ -945,7 +1008,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         val export = data!!.getIntExtra("export",0)
 
                         if(export == 70){
-                            exportInsects()
+                            layerDivision = 5
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                            } else {
+                                exportInsects()
+                            }
                         }
                     }
                 }
@@ -969,19 +1037,20 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         val export = data!!.getIntExtra("export",0)
 
                         if(export == 70){
-                            exportFlora()
+                            layerDivision = 6
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                            } else {
+                                exportFlora()
+                            }
                         }
                     }
                 }
 
                 REQUEST_LAYER -> {
-                    val file_name = data!!.getStringExtra("file_name")
-                    val layer_name = data.getStringExtra("layer_name")
-                    val added = data.getStringExtra("added")
-
                     var jsonOb: ArrayList<LayerModel> = ArrayList<LayerModel>()
 
-                    jsonOb = data.getSerializableExtra("data") as ArrayList<LayerModel>
+                    jsonOb = data!!.getSerializableExtra("data") as ArrayList<LayerModel>
 
                     if(types.size != null){
                         types.clear()
@@ -998,12 +1067,17 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                     googleMap.clear()
 
+                    if(layersDatas != null){
+                        layersDatas.clear()
+                    }
+
                     for (i in 0..jsonOb.size - 1) {
                         loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name,jsonOb.get(i).type, jsonOb.get(i).added)
 
                         println("jsonOB . filename ${jsonOb.get(i).file_name}")
 
                         layerFileName.add(jsonOb.get(i).file_name)
+                        layersDatas.add(jsonOb.get(i))
                     }
 
                 }
@@ -1641,6 +1715,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 if (latlngsGPS != null) {
                                     latlngsGPS.clear()
                                 }
+
                             }
 
                             if (biotopedataArray.size > 1) {
@@ -1661,7 +1736,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 }
                             }
 
-
                             if(polygons.size == 0){
                                 polygons.add(polygon)
                             }
@@ -1672,16 +1746,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                             for (i in 0..polygons.size-1){
                                 if (polygons.get(i).id == polygon.id){
-                                    break
                                 } else{
                                     polygons.add(polygon)
-
                                 }
                             }
 
                             for (i in 0..allPolygons.size-1){
                                 if (allPolygons.get(i).id == polygon.id){
-                                    break
                                 } else{
                                     allPolygons.add(polygon)
                                 }
@@ -1712,7 +1783,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     LAYER_FLORA -> {
                         intent = Intent(this, FloraActivity::class.java)
                     }
-
 
                     LAYER_ZOOBENTHOS -> {
                         intent = Intent(this, ZoobenthosActivity::class.java)
@@ -1801,10 +1871,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         val bounds = googleMap.projection.visibleRegion.latLngBounds
         LoadLayerTask(fileName,Type,added).execute(bounds)
+
     }
 
     private inner class LoadLayerTask(layerName: String , Type: String , added: String) : AsyncTask<LatLngBounds, Any, Boolean>() {
-
 
         var layerName = layerName
 
@@ -1832,17 +1902,24 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             val mapBoundary = org.gdal.ogr.Geometry(ogr.wkbPolygon)
             mapBoundary.AddGeometry(ring)
 
-
             ogr.RegisterAll()
 
             // set up the shapefile driver
             val driver = ogr.GetDriverByName("ESRI Shapefile")
 
-
             var shpFilePath = context.applicationInfo.dataDir + File.separator + "$layerName.shp"
+
+            println("shpFilePath : $shpFilePath")
+
             if (added == "Y"){
                 shpFilePath = "$layerName.shp"
             }
+
+            println("shpFilePath 2 : $shpFilePath")
+
+            val f = File(shpFilePath)
+
+            println("g : ${f.exists()}")
 
             val dataSource = driver.Open(shpFilePath, 0)
 
@@ -2089,7 +2166,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 // metadata
                 layerInfo.metadata = metadata
 
+                val id = Utils.getString(layerInfo.metadata , "ID")
+                val grop_id = Utils.getString(layerInfo.metadata , "GROP_ID")
+                val landuse = Utils.getString(layerInfo.metadata, "landuse")
+
+                println("id : $id  grop_id : $grop_id  landuse $landuse")
+
                 polygon.tag = layerInfo
+
+                println("polygon.tag ${polygon.tag}")
 
                 polygons.add(polygon)
                 allPolygons.add(polygon)
@@ -2146,6 +2231,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 // metadata
                 layerInfo.metadata = metadata
+
+                val id = Utils.getString(layerInfo.metadata , "id")
+                val grop_id = Utils.getString(layerInfo.metadata , "grop_id")
+                val landuse = Utils.getString(layerInfo.metadata, "landuse")
+
+                println("id : $id  grop_id : $grop_id  landuse $landuse")
 
                 marker.tag = layerInfo
 
@@ -3168,6 +3259,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 pointsArray.add(exporter)
 
+                                Exporter.exportPoint(pointsArray)
+
                             }
                         }
                     }
@@ -3188,7 +3281,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds" + File.separator + "birds" ,"조류", "birds","Y")
             }
 
-            Exporter.exportPoint(pointsArray)
             pointsArray.clear()
             birdsDatas.clear()
 
@@ -3290,7 +3382,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 val exporter = Exporter.ExportPointItem(LAYER_REPTILIA, REPTILIAATTRIBUTE, points.get(j))
 
                                 pointsArray.add(exporter)
-
+                                Exporter.exportPoint(pointsArray)
                             }
 
                         }
@@ -3313,7 +3405,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia" + File.separator + "reptilia","양서,파충류", "reptilia","Y")
             }
 
-            Exporter.exportPoint(pointsArray)
             pointsArray.clear()
             reptiliaDatas.clear()
         }
@@ -3411,6 +3502,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 val exporter = Exporter.ExportPointItem(LAYER_MAMMALIA, MAMMALATTRIBUTE, points.get(j))
 
                                 pointsArray.add(exporter)
+                                Exporter.exportPoint(pointsArray)
 
                             }
 
@@ -3434,8 +3526,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia" + File.separator + "mammalia","포유류", "mammalia","Y")
             }
 
-
-            Exporter.exportPoint(pointsArray)
             pointsArray.clear()
             mammaliaDatas.clear()
         }
@@ -3538,6 +3628,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 val exporter = Exporter.ExportPointItem(LAYER_FISH, FISHATTRIBUTE, points.get(j))
 
                                 pointsArray.add(exporter)
+                                Exporter.exportPoint(pointsArray)
 
                             }
 
@@ -3561,7 +3652,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish" + File.separator + "fish","어류", "fish","Y")
             }
 
-            Exporter.exportPoint(pointsArray)
             pointsArray.clear()
             fishDatas.clear()
         }
@@ -3660,6 +3750,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 pointsArray.add(exporter)
 
+                                Exporter.exportPoint(pointsArray)
+
                             }
 
                         }
@@ -3682,7 +3774,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect" + File.separator + "insect","곤충", "insect","Y")
             }
 
-            Exporter.exportPoint(pointsArray)
             pointsArray.clear()
             insectDatas.clear()
         }
@@ -3773,6 +3864,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 pointsArray.add(exporter)
 
+                                Exporter.exportPoint(pointsArray)
+
                             }
                         }
 
@@ -3795,7 +3888,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora" + File.separator + "flora","식물", "flora","Y")
             }
 
-            Exporter.exportPoint(pointsArray)
             pointsArray.clear()
             floraDatas.clear()
 
@@ -4810,7 +4902,33 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             } else if(android.Manifest.permission.WRITE_EXTERNAL_STORAGE == perm){
                 loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE )
             } else if(android.Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
-                export()
+                if (layerDivision == 0 ){
+                    exportBiotope()
+                }
+
+                if (layerDivision == 1 ){
+                    exportBirds()
+                }
+
+                if (layerDivision == 2 ){
+                    exportReptilia()
+                }
+
+                if (layerDivision == 3 ){
+                    exportMammal()
+                }
+
+                if (layerDivision == 4 ){
+                    exportFish()
+                }
+
+                if (layerDivision == 5 ){
+                    exportInsects()
+                }
+
+                if (layerDivision == 6 ){
+                    exportFlora()
+                }
             }
         }
     }
@@ -5043,12 +5161,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     }
 
     fun chkDivision(clickLayer: Int):Boolean{
-        if(clickLayer == currentLayer){
+        if (clickLayer == currentLayer){
             return true
-        }else {
+        } else {
             return false
         }
-
     }
 
 }

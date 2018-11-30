@@ -24,7 +24,6 @@ class IntroActivity : Activity() {
 
         this.context = this
 
-
         val dataBaseHelper = DataBaseHelper(this)
         dataBaseHelper.deleteDataBase()
 
@@ -61,16 +60,18 @@ class IntroActivity : Activity() {
 
     private fun stopIntro() {
 
-        val name = PrefUtils.getStringPreference(context, "name")
+//        PrefUtils.clear(context)
 
-        if (null == name || "" == name || name.length < 1) {
+//        val name = PrefUtils.getStringPreference(context, "name")
+//
+//        if (null == name || "" == name || name.length < 1) {
             toLogin()
-        } else {
-            val intent = Intent(context, MainActivity::class.java)
-            //                Intent intent = new Intent(context, SelectLocationActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-            startActivity(intent)
-        }
+//        } else {
+//            val intent = Intent(context, MainActivity::class.java)
+//                            Intent intent = new Intent(context, SelectLocationActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+//            startActivity(intent)
+//        }
 
     }
 
@@ -83,10 +84,15 @@ class IntroActivity : Activity() {
     }
 
     private fun copyAllData() {
-        val sourceDirectory = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data")
+        // val sourceDirectory = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data")
+        val sourceDirectory = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString())
         val targetDirectory = File(applicationInfo.dataDir)
 
+        println("sourceDirectory : $sourceDirectory")
+
         val sourceDirectoryFiles = sourceDirectory.listFiles()
+
+        println("sourceDirectoryFiles : $sourceDirectoryFiles")
 
         if(sourceDirectoryFiles == null){
             stopIntro()
@@ -95,11 +101,15 @@ class IntroActivity : Activity() {
 
         for (sourceDirectoryFile in sourceDirectoryFiles) {
             val targetDirectoryFile = File("$targetDirectory${File.separator}${sourceDirectoryFile.name}")
+
+            println(targetDirectoryFile.absolutePath)
+
             if(!targetDirectoryFile.exists()) {
                 sourceDirectoryFile.copyTo(targetDirectoryFile, true)
             }
         }
 
         stopIntro()
+
     }
 }

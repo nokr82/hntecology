@@ -26,6 +26,8 @@ class DlgLayersActivity : Activity() {
 
     private var data :ArrayList<LayerModel> = ArrayList<LayerModel>()
 
+    private var grop_id:ArrayList<String> = ArrayList<String>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dlg_layers)
@@ -96,12 +98,12 @@ class DlgLayersActivity : Activity() {
     fun loadData() {
 
         // select
-        val dataList:Array<String> = arrayOf("file_name", "layer_name","min_scale","max_scale","type","added");
+        val dataList:Array<String> = arrayOf("file_name", "layer_name","min_scale","max_scale","type","added","grop_id");
 
         //대분류
         val data =  db.query("layers", dataList,null,null,null,null,"id",null);
         while (data.moveToNext()) {
-            val layerModel = LayerModel(data.getString(0), data.getString(1), data.getInt(2),data.getInt(3),data.getString(4),data.getString(5),false);
+            val layerModel = LayerModel(data.getString(0), data.getString(1), data.getInt(2),data.getInt(3),data.getString(4),data.getString(5),data.getString(6),false);
 
             val zoom = intent.getFloatExtra("zoom", 0.0F)
 

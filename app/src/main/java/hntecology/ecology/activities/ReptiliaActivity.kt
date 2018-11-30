@@ -1370,12 +1370,14 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                           options.inJustDecodeBounds = false
                           options.inSampleSize = 1
+
                           if (options.outWidth > 96) {
                               val ws = options.outWidth / 96 + 1
                               if (ws > options.inSampleSize) {
                                   options.inSampleSize = ws
                               }
                           }
+
                           if (options.outHeight > 96) {
                               val hs = options.outHeight / 96 + 1
                               if (hs > options.inSampleSize) {
@@ -1390,6 +1392,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                         val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
                         val delIV = v.findViewById<View>(R.id.delIV) as ImageView
                         imageIV.setImageBitmap(bitmap)
+                        images!!.add(bitmap)
                         delIV.setTag(images!!.size)
 
                         if (imgSeq == 0) {
@@ -1416,7 +1419,6 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                         }
                         reset(str, i)
-
                     }
                     val child = addPicturesLL!!.getChildCount()
                     for (i in 0 until child) {
@@ -1916,5 +1918,41 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         return strDT
     }
 
+    override fun onBackPressed() {
+
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+
+        val db = dbManager.createDataBase()
+
+        val dataList: Array<String> = arrayOf("*");
+
+        val data= db.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+
+        if (dataArray != null){
+            dataArray.clear()
+        }
+
+        while (data.moveToNext()) {
+
+            var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                    , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
+                    , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32))
+
+            dataArray.add(reptilia_attribute)
+
+        }
+
+        if (dataArray.size == 0 || intent.getStringExtra("id") == null){
+
+            var intent = Intent()
+            intent.putExtra("markerid", markerid)
+            setResult(RESULT_OK, intent);
+
+        }
+
+        finish()
+
+    }
 
 }

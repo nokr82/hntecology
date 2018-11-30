@@ -5071,7 +5071,33 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             READ_EXTERNAL_STORAGE -> {
                 if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    export()
+                    if (layerDivision == 0 ){
+                        exportBiotope()
+                    }
+
+                    if (layerDivision == 1 ){
+                        exportBirds()
+                    }
+
+                    if (layerDivision == 2 ){
+                        exportReptilia()
+                    }
+
+                    if (layerDivision == 3 ){
+                        exportMammal()
+                    }
+
+                    if (layerDivision == 4 ){
+                        exportFish()
+                    }
+
+                    if (layerDivision == 5 ){
+                        exportInsects()
+                    }
+
+                    if (layerDivision == 6 ){
+                        exportFlora()
+                    }
                 }
             }
         }

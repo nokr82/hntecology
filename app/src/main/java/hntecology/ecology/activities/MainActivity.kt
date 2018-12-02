@@ -1961,10 +1961,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             for (idx in 0..(layerCount -1)) {
                 val layer = dataSource.GetLayer(idx)
                 val featureCount = layer.GetFeatureCount()
+
                 for (fid in 0..(featureCount -1)) {
+
                     val feature = layer.GetFeature(fid)
 
-                    val geometryRef = feature.GetGeometryRef()
+                    var geometryRef = feature.GetGeometryRef()
 
                     if(!geometryRef.Intersects(mapBoundary)) {
                         // continue
@@ -1978,15 +1980,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         val key = feature.GetDefnRef().GetFieldDefn(fieldIdx).GetName()
                         val value = feature.GetFieldAsString(fieldIdx)
 
-                        println("$fieldIdx / ${fieldCount -1} : $key $value")
-
                         metadata.put(key, value)
 
                     }
 
                     val geometryType = geometryRef.GetGeometryType()
 
-                    println("geometryType : $geometryType")
+                    // println("geometryType : $geometryType")
 
                     if (geometryType == ogr.wkbPoint) {
                         val pointCount = geometryRef.GetPointCount()
@@ -2018,23 +2018,81 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         polygonOptions.strokeWidth(1.0f)
                         polygonOptions.strokeColor(Color.BLACK)
 
-                        val pointCount = geometryRef.GetPointCount()
-                        for(pc in 0 until pointCount) {
-                            val point = geometryRef.GetPoint(pc)
+                        val ringCount = geometryRef.GetGeometryCount()
 
-                            val x = point[0]
-                            val y = point[1]
+                        for (ringIdx in 0 until ringCount) {
+                            val ring = geometryRef.GetGeometryRef(ringIdx)
+                            val pointCount = ring.GetPointCount()
 
-                            println("geometryType : $geometryType, point : $x, $y")
+                            // println("pointCount : $pointCount")
 
-                            val latlng = LatLng(y, x)
+                            var latlngs = ArrayList<LatLng>()
+                            for (pc in 0 until pointCount) {
+                                val point = ring.GetPoint(pc)
+                                val x = point[0]
+                                val y = point[1]
 
-                            polygonOptions.add(latlng)
+                                val latlng = LatLng(y, x)
+                                latlngs.add(latlng)
+                            }
+
+                            if (ringIdx == 0) {
+                                polygonOptions.addAll(latlngs)
+                            } else {
+                                polygonOptions.addHole(latlngs)
+                            }
                         }
 
-                        publishProgress(polygonOptions, JSONObject(metadata).toString())
+                        if (ringCount > 0) {
+                            publishProgress(polygonOptions, JSONObject(metadata).toString())
 
-                        Thread.sleep(10)
+                            Thread.sleep(10)
+                        }
+
+
+
+                    } else if (geometryType == ogr.wkbMultiPolygon) {
+                        val geometryCount = geometryRef.GetGeometryCount()
+                        for(idx in 0 until geometryCount) {
+
+                            val polygonGeometryRef = geometryRef.GetGeometryRef(idx)
+
+                            val polygonOptions = PolygonOptions()
+                            polygonOptions.fillColor(Color.parseColor(getLayerColor(layerName)))
+                            polygonOptions.strokeWidth(1.0f)
+                            polygonOptions.strokeColor(Color.BLACK)
+
+                            val ringCount = polygonGeometryRef.GetGeometryCount()
+
+                            for (ringIdx in 0 until ringCount) {
+                                val ring = polygonGeometryRef.GetGeometryRef(ringIdx)
+                                val pointCount = ring.GetPointCount()
+
+                                // println("pointCount : $pointCount")
+
+                                var latlngs = ArrayList<LatLng>()
+                                for (pc in 0 until pointCount) {
+                                    val point = ring.GetPoint(pc)
+                                    val x = point[0]
+                                    val y = point[1]
+
+                                    val latlng = LatLng(y, x)
+                                    latlngs.add(latlng)
+                                }
+
+                                if (ringIdx == 0) {
+                                    polygonOptions.addAll(latlngs)
+                                } else {
+                                    polygonOptions.addHole(latlngs)
+                                }
+                            }
+
+                            if (ringCount > 0) {
+                                publishProgress(polygonOptions, JSONObject(metadata).toString())
+
+                                Thread.sleep(10)
+                            }
+                        }
 
                     }
                 }
@@ -2147,14 +2205,17 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             val metadataP = geoms[1] as String
             val metadata = JSONObject(metadataP)
 
-            println(metadata)
+            // println(metadata)
 
             if (geoms[0] is PolygonOptions) {
+
+                // println("geoms[0] : ${geoms[0]}")
+
                 val polygon = googleMap.addPolygon(geoms[0] as PolygonOptions)
                 polygon.zIndex = 0.0f
                 polygon.tag = layerName
 
-                println("layerName .layer ===== $layerName")
+                // println("layerName .layer ===== $layerName")
 
                 polygon.isClickable = true
 
@@ -2199,14 +2260,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 val grop_id = Utils.getString(layerInfo.metadata , "GROP_ID")
                 val landuse = Utils.getString(layerInfo.metadata, "landuse")
 
-                println("id : $id  grop_id : $grop_id  landuse $landuse")
+                // println("id : $id  grop_id : $grop_id  landuse $landuse")
 
                 if(grop_id != null) {
                     layerInfo.attrubuteKey = grop_id
                 }
                 polygon.tag = layerInfo
 
-                println("polygon.tag ${polygon.tag}")
+                // println("polygon.tag ${polygon.tag}")
 
                 polygons.add(polygon)
                 allPolygons.add(polygon)

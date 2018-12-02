@@ -27,8 +27,6 @@ class IntroActivity : Activity() {
         val dataBaseHelper = DataBaseHelper(this)
         dataBaseHelper.deleteDataBase()
 
-        copyAllData()
-
         splashThread = object : Thread() {
             override fun run() {
                 try {
@@ -84,8 +82,7 @@ class IntroActivity : Activity() {
     }
 
     private fun copyAllData() {
-        // val sourceDirectory = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data")
-        val sourceDirectory = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString())
+        val sourceDirectory = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data")
         val targetDirectory = File(applicationInfo.dataDir)
 
         println("sourceDirectory : $sourceDirectory")

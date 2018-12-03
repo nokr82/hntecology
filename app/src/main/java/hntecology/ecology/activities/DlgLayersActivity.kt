@@ -64,7 +64,6 @@ class DlgLayersActivity : Activity() {
                 data.is_checked = false
                 apdater.notifyDataSetChanged()
             }
-
         }
 
         dlgClick.setOnClickListener {

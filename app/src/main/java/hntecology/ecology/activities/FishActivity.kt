@@ -1034,6 +1034,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             listItems.add("비");
 
             alert(listItems, "날씨", fishweatherET, "weather");
+
         }
 
         fishwindET.setOnClickListener {

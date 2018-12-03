@@ -97,6 +97,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         val FISH_DATA = 3004
         val INSECT_DATA = 3005
         val FLORA_DATA = 3006
+        val ZOOBENTHOS_DATA = 3007
 
         val SEARCHADDRESS = 4000
 
@@ -135,6 +136,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     var insectDatas:ArrayList<Insect_attribute> = ArrayList<Insect_attribute>()
     var mammaliaDatas:ArrayList<Mammal_attribute> = ArrayList<Mammal_attribute>()
     var reptiliaDatas:ArrayList<Reptilia_attribute> = ArrayList<Reptilia_attribute>()
+    var zoobenthousDatas:ArrayList<Zoobenthos_Attribute> = ArrayList<Zoobenthos_Attribute>()
     var trackingDatas:ArrayList<Tracking> = ArrayList<Tracking>()
 
     var biotopeGrop_id:String? = String()
@@ -153,6 +155,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     val FISHATTRIBUTE:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
     var INSECTATTRIBUTE:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
     var FLORAATTRIBUTE:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+    var ZOOBENTHOUS:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
     var TRACKINGS:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
     private val latlngs: ArrayList<LatLng> = ArrayList<LatLng>()
@@ -179,6 +182,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     var fishdataArray:ArrayList<Fish_attribute> = ArrayList<Fish_attribute>()
     var insectdataArray:ArrayList<Insect_attribute> = ArrayList<Insect_attribute>()
     var floradataArray:ArrayList<Flora_Attribute> = ArrayList<Flora_Attribute>()
+    var zoobenthosArray:ArrayList<Zoobenthos_Attribute> = ArrayList<Zoobenthos_Attribute>()
 
     var mygps = false
 
@@ -396,6 +400,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         //저서무척추동물 추가
         btn_zoobenthos.setOnClickListener {
 
+            if(chkDivision){
+                if( !chkDivision(LAYER_ZOOBENTHOS)) {
+                    return@setOnClickListener
+                }
+            }
+
             currentLayer = LAYER_ZOOBENTHOS
 
             if (drawer_view.visibility == View.VISIBLE) {
@@ -403,6 +413,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             } else {
                 startDraw()
             }
+
         }
 
         btn_clear_all.setOnClickListener {
@@ -474,6 +485,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         resetTV.setOnClickListener {
 
+            googleMap.clear()
+
             val dbManager: DataBaseHelper = DataBaseHelper(this)
 
             val db = dbManager.createDataBase();
@@ -482,18 +495,21 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             var datas:ArrayList<LayerModel> = ArrayList<LayerModel>()
 
-            val zoom = intent.getFloatExtra("zoom", 0.0F)
+            val zoom = googleMap.cameraPosition.zoom
+
+            println("zoom ${zoom.toInt()}")
 
             var chkData = false
 
             if (layersDatas != null){
                 for (i in 0..layersDatas.size-1) {
-                    var layerdata = db.query("layers", dataList, "grop_id = '${layersDatas.get(i).grop_id}' and min_scale = ${zoom.toInt()}", null, null, null, "", null)
+                    println("layerDatas ${layersDatas.get(i).grop_id}")
+                    var layerdata = db.query("layers", dataList, "grop_id = '${layersDatas.get(i).grop_id}' and min_scale = '${zoom.toInt()}'", null, null, null, null, null)
 
                     while(layerdata.moveToNext()){
                         chkData = true
 
-                        val layerModel = LayerModel(data.getString(0), data.getString(1), data.getInt(2),data.getInt(3),data.getString(4),data.getString(5),data.getString(6),false);
+                        val layerModel = LayerModel(layerdata.getString(0), layerdata.getString(1), layerdata.getInt(2),layerdata.getInt(3),layerdata.getString(4),layerdata.getString(5),layerdata.getString(6),false);
 
                         datas.add(layerModel)
                     }
@@ -503,6 +519,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     layersDatas.clear()
                     for (i in 0..datas.size-1){
                         layersDatas.add(datas.get(i))
+                        println(datas.get(i).file_name + ".add")
                         loadLayer(datas.get(i).file_name, datas.get(i).layer_name,datas.get(i).type, datas.get(i).added)
                     }
                 }
@@ -1076,6 +1093,37 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     }
                 }
 
+                ZOOBENTHOS_DATA -> {
+                    if(data!!.getStringExtra("markerid") != null){
+                        val markerid = data!!.getStringExtra("markerid")
+                        for(i in 0..points.size -1){
+                            if(points.get(i).id == markerid){
+                                points.get(i).remove()
+                                break
+                            }
+                        }
+                    }
+
+                    if(data!!.getStringExtra("reset") != null){
+
+                    }
+
+                    if(data!!.getIntExtra("export", 0 ) != null){
+                        val export = data!!.getIntExtra("export",0)
+
+                        println("export $export ---------")
+
+                        if(export == 70){
+                            layerDivision = 7
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                            } else {
+                                exportZoobenthous()
+                            }
+                        }
+                    }
+                }
+
                 REQUEST_LAYER -> {
                     var jsonOb: ArrayList<LayerModel> = ArrayList<LayerModel>()
 
@@ -1252,6 +1300,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         if(birdsdataArray.size == 1 ){
 
                             intent = Intent(this, BirdsActivity::class.java)
+
 
                             intent!!.putExtra("id" , birdsdataArray.get(0).id)
                             intent!!.putExtra("GROP_ID", attrubuteKey)
@@ -1589,7 +1638,69 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     }
 
                     LAYER_ZOOBENTHOS -> {
-                        intent = Intent(this, ZoobenthosActivity::class.java)
+
+                        val dataList: Array<String> = arrayOf("*");
+
+                        println("main------------$attrubuteKey")
+
+                        val data = db.query("ZoobenthosAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                        var title = ""
+
+                        if(zoobenthosArray != null){
+                            zoobenthosArray.clear()
+                        }
+
+                        while (data.moveToNext()) {
+                            var zoo: Zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                                    data.getInt(8), data.getInt(9), data.getInt(10), data.getInt(11), data.getInt(12), data.getString(13), data.getString(14)
+                                    , data.getString(15),data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getInt(20), data.getInt(21), data.getInt(22)
+                                    , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32),data.getFloat(33)
+                                    , data.getFloat(34),data.getFloat(35),data.getFloat(36),data.getFloat(37),data.getString(38),data.getString(39),data.getString(40),data.getString(41),data.getString(42),data.getString(43),data.getString(44)
+                                    , data.getString(45),data.getString(46),data.getString(47),data.getString(48),data.getFloat(49),data.getFloat(50),data.getString(51),data.getString(52),data.getString(53),data.getString(54),data.getString(55))
+
+                            zoobenthosArray.add(zoo)
+                        }
+
+                        if (zoobenthosArray.size == 0){
+                            title = "저서무척추동물"
+
+                            marker.title = title
+
+                            intent = Intent(this, ZoobenthosActivity::class.java)
+
+                            println("Zoobenthos")
+
+                            intent!!.putExtra("GROP_ID", attrubuteKey)
+                            intent!!.putExtra("markerid", marker.id)
+
+                            startActivityForResult(intent, ZOOBENTHOS_DATA)
+                        }
+
+                        if (zoobenthosArray.size == 1){
+                            title = "저서무척추동물"
+                            marker.title = title
+
+                            intent = Intent(this, ZoobenthosActivity::class.java)
+
+                            println("Zoobenthos${zoobenthosArray.get(0).id}")
+
+                            intent!!.putExtra("id" , zoobenthosArray.get(0).id)
+                            intent!!.putExtra("GROP_ID", attrubuteKey)
+                            intent!!.putExtra("markerid", marker.id)
+
+                            startActivityForResult(intent, ZOOBENTHOS_DATA)
+                        }
+
+                        if (zoobenthosArray.size > 1 ){
+                            val intent = Intent(this, DlgDataListActivity::class.java)
+                            intent.putExtra("title", "저서무척추동물")
+                            intent.putExtra("table", "ZoobenthosAttribute")
+                            intent.putExtra("DlgHeight", 600f);
+                            intent!!.putExtra("markerid", marker.id)
+                            intent.putExtra("GROP_ID", attrubuteKey)
+                            startActivityForResult(intent, ZOOBENTHOS_DATA);
+                        }
                     }
 
                     LAYER_MYLOCATION -> {
@@ -1611,7 +1722,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 if (myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIRDS && myLayer != LAYER_REPTILIA && myLayer != LAYER_MAMMALIA && myLayer != LAYER_FISH && myLayer != LAYER_INSECT
-                        && myLayer != LAYER_FLORA && myLayer != TRACKING && myLayer != LAYER_MYLOCATION) {
+                        && myLayer != LAYER_FLORA && myLayer != TRACKING && myLayer != LAYER_MYLOCATION && myLayer != LAYER_ZOOBENTHOS) {
                     intent!!.putExtra("id", attrubuteKey.toString())
 
                     startActivityForResult(intent, MarkerCallBackData)
@@ -2205,7 +2316,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             val metadataP = geoms[1] as String
             val metadata = JSONObject(metadataP)
 
-            // println(metadata)
+             println("$metadata--------------------")
 
             if (geoms[0] is PolygonOptions) {
 
@@ -2249,6 +2360,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     layerInfo.layer = LAYER_FLORA
                 }
 
+                if (type.equals("zoobenthos")){
+                    layerInfo.layer = LAYER_ZOOBENTHOS
+                }
+
                 if (type.equals("tracking")){
                     layerInfo.layer = TRACKING
                 }
@@ -2260,10 +2375,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 val grop_id = Utils.getString(layerInfo.metadata , "GROP_ID")
                 val landuse = Utils.getString(layerInfo.metadata, "landuse")
 
-                // println("id : $id  grop_id : $grop_id  landuse $landuse")
 
-                if(grop_id != null) {
+                if (grop_id != null) {
                     layerInfo.attrubuteKey = grop_id
+                }
+
+                if (landuse != null){
+                    if (landuse == "B21"){
+                        polygon.fillColor = Color.GRAY
+                    }
                 }
                 polygon.tag = layerInfo
 
@@ -2314,6 +2434,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if (type.equals("flora")){
                     marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                     layerInfo.layer = LAYER_FLORA
+                }
+
+                if (type.equals("zoobenthos")){
+                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
+                    layerInfo.layer = LAYER_ZOOBENTHOS
                 }
 
                 if (type.equals("tracking")){
@@ -2755,6 +2880,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             LAYER_ZOOBENTHOS -> {
                 intent = Intent(this, ZoobenthosActivity::class.java)
 
+                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
                 marker.title = "저서무척추동물"
 
                 points.add(marker)
@@ -2765,7 +2891,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 intent!!.putExtra("markerid",marker.id)
                 intent!!.putExtra("GROP_ID", attrubuteKey.toString())
 
-                startActivityForResult(intent, FLORA_DATA)
+                startActivityForResult(intent, ZOOBENTHOS_DATA)
 
                 endDraw()
             }
@@ -3990,6 +4116,161 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
     }
 
+    fun exportZoobenthous(){
+        var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase();
+        val dataList: Array<String> = arrayOf("*")
+        val data = db.query("ZoobenthosAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var datas:ArrayList<Zoobenthos_Attribute> = ArrayList<Zoobenthos_Attribute>()
+        var chkData = false
+
+        while (data.moveToNext()) {
+
+            var zoo: Zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                    data.getInt(8), data.getInt(9), data.getInt(10), data.getInt(11), data.getInt(12), data.getString(13), data.getString(14)
+                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getInt(20), data.getInt(21), data.getInt(22)
+                    , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
+                    , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
+                    , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55))
+
+            datas.add(zoo)
+
+        }
+
+        if(datas != null){
+            for(i in 0..datas.size-1){
+                val item = datas.get(i)
+                val data = db.query("ZoobenthosAttribute", dataList, "GROP_ID = '${item.GROP_ID}'", null, null, null, "", null)
+
+                while (data.moveToNext()) {
+
+                    var zoo: Zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                            data.getInt(8), data.getInt(9), data.getInt(10), data.getInt(11), data.getInt(12), data.getString(13), data.getString(14)
+                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getInt(20), data.getInt(21), data.getInt(22)
+                            , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
+                            , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
+                            , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55))
+
+
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("ID",ogr.OFTString,zoo.id))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("GROP_ID",ogr.OFTString,zoo.GROP_ID))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("PRJ_NAME",ogr.OFTString,zoo.PRJ_NAME))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("INV_REGION",ogr.OFTString,zoo.INV_REGION))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("INV_MEAN",ogr.OFTString,zoo.INV_MEAN))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("INV_PERSON",ogr.OFTString,zoo.INV_PERSON))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("MAP_SYS_NM",ogr.OFTString,zoo.MAP_SYS_NM))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("COORD_N_D",ogr.OFTInteger,zoo.COORD_N_D))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("COORD_N_M",ogr.OFTInteger,zoo.COORD_N_M))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("COORD_N_S",ogr.OFTInteger,zoo.COORD_N_S))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("COORD_E_D",ogr.OFTInteger,zoo.COORD_E_D))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("COORD_E_M",ogr.OFTInteger,zoo.COORD_E_M))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("COORD_E_S",ogr.OFTInteger,zoo.COORD_E_S))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("INV_DT",ogr.OFTString,zoo.INV_DT))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("NUM",ogr.OFTString,zoo.NUM))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("INV_TM",ogr.OFTString,zoo.INV_TM))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("WEATHER",ogr.OFTString,zoo.WEATHER))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("INV_TOOL",ogr.OFTString,zoo.INV_TOOL))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("AD_DIST_NM",ogr.OFTString,zoo.AD_DIST_NM))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("RIV_W1",ogr.OFTInteger,zoo.RIV_W1))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("RIV_W2",ogr.OFTInteger,zoo.RIV_W2))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("RUN_RIV_W1",ogr.OFTInteger,zoo.RUN_RIV_W1))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("RUN_RIV_W2",ogr.OFTInteger,zoo.RUN_RIV_W2))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("WATER_DEPT",ogr.OFTInteger,zoo.WATER_DEPT))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("HAB_TY",ogr.OFTString,zoo.HAB_TY))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("HAB_TY_ETC",ogr.OFTString,zoo.HAB_TY_ETC))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("FILT_AREA",ogr.OFTString,zoo.FILT_AREA))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("TEMPERATUR",ogr.OFTReal,zoo.TEMPERATUR))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("WATER_TEM",ogr.OFTReal,zoo.WATER_TEM))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("TURBIDITY",ogr.OFTString,zoo.TURBIDITY))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("MUD",ogr.OFTReal,zoo.MUD))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("SAND",ogr.OFTReal,zoo.SAND))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("COR_SAND",ogr.OFTReal,zoo.COR_SAND))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("GRAVEL",ogr.OFTReal,zoo.GRAVEL))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("STONE_S",ogr.OFTReal,zoo.STONE_S))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("STONE_B",ogr.OFTReal,zoo.STONE_B))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("CONCRETE",ogr.OFTReal,zoo.CONCRETE))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("BED_ROCK",ogr.OFTReal,zoo.BED_ROCK))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("BANK_L",ogr.OFTString,zoo.BANK_L))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("BANK_L_ETC",ogr.OFTString,zoo.BANK_L_ETC))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("BANK_R",ogr.OFTString,zoo.BANK_R))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("BANK_R_ETC",ogr.OFTString,zoo.BANK_R_ETC))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("BAS_L",ogr.OFTString,zoo.BAS_L))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("BAS_L_ETC",ogr.OFTString,zoo.BAS_L_ETC))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("BAS_R",ogr.OFTString,zoo.BAS_R))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("BAS_R_ETC",ogr.OFTString,zoo.BAS_R_ETC))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("DIST_CAU",ogr.OFTString,zoo.DIST_CAU))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("DIST_ETC",ogr.OFTString,zoo.DIST_ETC))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("UNUS_NOTE",ogr.OFTString,zoo.UNUS_NOTE))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("GPS_LAT",ogr.OFTReal,zoo.GPS_LAT))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("GPS_LON",ogr.OFTReal,zoo.GPS_LON))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("SPEC_NM",ogr.OFTString,zoo.SPEC_NM))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("FAMI_NM",ogr.OFTString,zoo.FAMI_NM))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("SCIEN_NM",ogr.OFTString,zoo.SCIEN_NM))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("TEMP_YN",ogr.OFTString,zoo.TEMP_YN))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("CONF_MOD",ogr.OFTString,zoo.CONF_MOD))
+
+                    zoobenthousDatas.add(zoo)
+
+                }
+
+
+            }
+        }
+
+        if(zoobenthousDatas.size > 0) {
+
+            for (i in 0..zoobenthousDatas.size - 1) {
+
+                val grop_id = zoobenthousDatas.get(i).GROP_ID
+
+                if (points.size > 0) {
+
+                    for (j in 0..points.size - 1) {
+
+                        if(points.get(j).tag != null) {
+                            val layerInfo = points.get(j).tag as LayerInfo
+
+                            var attrubuteKey = layerInfo.attrubuteKey
+
+                            if (attrubuteKey.equals(grop_id)) {
+
+                                val exporter = Exporter.ExportPointItem(LAYER_ZOOBENTHOS, ZOOBENTHOUS, points.get(j))
+
+                                pointsArray.add(exporter)
+
+                                Exporter.exportPoint(pointsArray)
+
+                            }
+                        }
+
+                    }
+
+                }
+            }
+
+            val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "zoobenthos" + File.separator + "flora"
+
+            val layerData= db.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+
+            while (layerData.moveToNext()){
+                chkData = true
+            }
+
+            if(chkData){
+
+            }else {
+                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "zoobenthos" + File.separator + "zoobenthos","저서무척추동물", "zoobenthos","Y")
+            }
+
+            pointsArray.clear()
+            floraDatas.clear()
+
+        }
+
+
+    }
+
     fun exportTracking(){
         var trackingPointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
         val dbManager: DataBaseHelper = DataBaseHelper(this)
@@ -4058,6 +4339,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
         }
     }
+
 
     fun export() {
 
@@ -5025,6 +5307,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if (layerDivision == 6 ){
                     exportFlora()
                 }
+
+                if (layerDivision == 7){
+                    exportZoobenthous()
+                }
             }
         }
     }
@@ -5192,6 +5478,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                     if (layerDivision == 6 ){
                         exportFlora()
+                    }
+
+                    if (layerDivision == 7){
+                        exportZoobenthous()
                     }
                 }
             }

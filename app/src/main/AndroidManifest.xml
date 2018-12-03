@@ -205,10 +205,16 @@
         <activity
             android:name=".activities.DlgBiotopeTypeActivity"
             android:theme="@style/full_screen_dialog1" />
-        <activity android:name=".activities.SearchAddressActivity"
+        <activity
+            android:name=".activities.SearchAddressActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleDialog"
             android:windowSoftInputMode="adjustPan|adjustResize" />
+        <activity
+            android:name=".activities.DlgZoobenthosActivity"
+            android:theme="@style/full_screen_dialog1" />
+        <activity android:name=".activities.DlgZoobenActivity"
+            android:theme="@style/full_screen_dialog1"></activity>
     </application>
 
 </manifest>

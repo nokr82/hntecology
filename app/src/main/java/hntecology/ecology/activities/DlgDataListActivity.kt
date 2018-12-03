@@ -30,6 +30,7 @@ class DlgDataListActivity : Activity() {
     private lateinit var fishsData : ArrayList<Fish_attribute>
     private lateinit var insectData : ArrayList<Insect_attribute>
     private lateinit var florasData : ArrayList<Flora_Attribute>
+    private  lateinit var zoobenthosData : ArrayList<Zoobenthos_Attribute>
 
     private lateinit var biotopeAdaper : DataBiotopeAdapter
     private lateinit var birdsAadapter: DataBirdsAdapter;
@@ -38,6 +39,7 @@ class DlgDataListActivity : Activity() {
     private lateinit var fishAdapter : DataFIshAdapter
     private lateinit var insectAdapter : DataInsectAdapter
     private lateinit var floraAdapter : DataFloraAdapter
+    private lateinit var zoobenthousAdapter : DataZoobenthosAdapter
 
     private val MarkerCallBackData = 1004
 
@@ -48,6 +50,7 @@ class DlgDataListActivity : Activity() {
     val FISH_DATA = 3004
     val INSECT_DATA = 3005
     val FLORA_DATA = 3006
+    val ZOOBENTHOS_DATA = 3007
 
     var tableName:String = ""
     var titleName:String=""
@@ -63,6 +66,7 @@ class DlgDataListActivity : Activity() {
     val FISH = 5
     val INSECT = 6
     val FLORA = 7
+    val ZOOBENTHOUS = 8
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,6 +99,7 @@ class DlgDataListActivity : Activity() {
         fishsData = ArrayList()
         insectData = ArrayList()
         florasData = ArrayList()
+        zoobenthosData = ArrayList()
 
         biotopeAdaper = DataBiotopeAdapter(context,biotopeData)
         birdsAadapter = DataBirdsAdapter(context,birdsData)
@@ -103,6 +108,7 @@ class DlgDataListActivity : Activity() {
         fishAdapter = DataFIshAdapter(context,fishsData)
         insectAdapter = DataInsectAdapter(context,insectData)
         floraAdapter = DataFloraAdapter(context,florasData)
+        zoobenthousAdapter = DataZoobenthosAdapter(context,zoobenthosData)
 
         if(intent.getStringExtra("markerid") != null){
             markerid = intent.getStringExtra("markerid")
@@ -206,6 +212,22 @@ class DlgDataListActivity : Activity() {
             florasdataList(florasData,florasdata)
 
             listView1.adapter = floraAdapter
+
+        }
+
+        if(tableName.equals("ZoobenthosAttribute")){
+
+            val data:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_MEAN","INV_PERSON","MAP_SYS_NM","COORD_N_D","COORD_N_M","COORD_N_S","COORD_E_D","COORD_E_M","COORD_E_S"
+                    ,"INV_DT" ,"NUM" ,"INV_TM" ,"WEATHER" ,"INV_TOOL" ,"AD_DIST_NM" ,"RIV_W1" ,"RIV_W2" ,"RUN_RIV_W1" ,"RUN_RIV_W2","WATER_DEPT" ,"HAB_TY","HAB_TY_ETC"
+                  ,  "FILT_AREA","TEMPERATUR","WATER_TEM","TURBIDITY","MUD","SAND","COR_SAND","GRAVEL","STONE_S","STONE_B","CONCRETE","BED_ROCK","BANK_L"
+            ,"BANK_L_ETC" ,"BANK_R" ,"BANK_R_ETC" ,"BAS_L" ,"BAS_L_ETC" ,"BAS_R" ,"BAS_R_ETC" ,"DIST_CAU" ,"DIST_ETC" ,"UNUS_NOTE","GPS_LAT" ,"GPS_LON","SPEC_NM"
+                    ,"FAMI_NM","SCIEN_NM","TEMP_YN","CONF_MOD")
+
+            val zoobentousdata = db.query(tableName,data,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null)
+
+            zoobenthossdataList(zoobenthosData,zoobentousdata)
+
+            listView1.adapter = zoobenthousAdapter
 
         }
 
@@ -326,6 +348,22 @@ class DlgDataListActivity : Activity() {
 
             }
 
+            if(tableName.equals("ZoobenthosAttribute")){
+
+                val floradata = zoobenthousAdapter.getItem(position)
+
+                val intent = Intent(this, ZoobenthosActivity::class.java)
+
+                intent!!.putExtra("id", floradata.id.toString())
+                intent.putExtra("set",3)
+                intent!!.putExtra("GROP_ID",floradata.GROP_ID)
+                intent.putExtra("export", 70)
+                intent!!.putExtra("markerid",markerid)
+
+                startActivityForResult(intent, ZOOBENTHOS_DATA)
+
+            }
+
         }
 
         closeLL.setOnClickListener {
@@ -440,6 +478,23 @@ class DlgDataListActivity : Activity() {
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
                     , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25))
+
+            listdata.add(model)
+        }
+    }
+
+    fun zoobenthossdataList(listdata: java.util.ArrayList<Zoobenthos_Attribute>, data: Cursor) {
+
+        while (data.moveToNext()){
+
+            var model : Zoobenthos_Attribute;
+
+            model = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                    data.getInt(8), data.getInt(9), data.getInt(10), data.getInt(11), data.getInt(12), data.getString(13), data.getString(14)
+                    , data.getString(15),data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getInt(20), data.getInt(21), data.getInt(22)
+                    , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32),data.getFloat(33)
+                    , data.getFloat(34),data.getFloat(35),data.getFloat(36),data.getFloat(37),data.getString(38),data.getString(39),data.getString(40),data.getString(41),data.getString(42),data.getString(43),data.getString(44)
+                    , data.getString(45),data.getString(46),data.getString(47),data.getString(48),data.getFloat(49),data.getFloat(50),data.getString(51),data.getString(52),data.getString(53),data.getString(54),data.getString(55))
 
             listdata.add(model)
         }
@@ -830,6 +885,61 @@ class DlgDataListActivity : Activity() {
 
                         finish()
                     }
+                }
+
+                ZOOBENTHOS_DATA -> {
+
+                    if (data!!.getIntExtra("reset",0) != null) {
+
+                        val reset = data!!.getIntExtra("reset",0)
+                        println("listdata reset $reset")
+                        if(reset == 100){
+
+                            val data:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_MEAN","INV_PERSON","MAP_SYS_NM","COORD_N_D","COORD_N_M","COORD_N_S","COORD_E_D","COORD_E_M","COORD_E_S"
+                                    ,"INV_DT" ,"NUM" ,"INV_TM" ,"WEATHER" ,"INV_TOOL" ,"AD_DIST_NM" ,"RIV_W1" ,"RIV_W2" ,"RUN_RIV_W1" ,"RUN_RIV_W2","WATER_DEPT" ,"HAB_TY","HAB_TY_ETC"
+                                    ,  "FILT_AREA","TEMPERATUR","WATER_TEM","TURBIDITY","MUD","SAND","COR_SAND","GRAVEL","STONE_S","STONE_B","CONCRETE","BED_ROCK","BANK_L"
+                                    ,"BANK_L_ETC" ,"BANK_R" ,"BANK_R_ETC" ,"BAS_L" ,"BAS_L_ETC" ,"BAS_R" ,"BAS_R_ETC" ,"DIST_CAU" ,"DIST_ETC" ,"UNUS_NOTE","GPS_LAT" ,"GPS_LON","SPEC_NM"
+                                    ,"FAMI_NM","SCIEN_NM","TEMP_YN","CONF_MOD")
+
+                            val zoobenthoussdata=  db.query(tableName,data,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
+
+                            if(zoobenthosData != null){
+                                zoobenthosData.clear()
+                            }
+
+                            zoobenthossdataList(zoobenthosData,zoobenthoussdata)
+
+                            listView1.adapter = zoobenthousAdapter
+
+                            zoobenthousAdapter.notifyDataSetChanged()
+
+                        }
+
+                    }
+
+                    if (data!!.getStringExtra("markerid") != null){
+
+                        val markerpk = data!!.getStringExtra("markerid")
+                        println("datalist --------markerpk $markerpk")
+
+                        var intent = Intent()
+                        intent.putExtra("markerid", markerpk)
+                        setResult(RESULT_OK, intent);
+
+                        finish()
+                    }
+
+                    if(data!!.getIntExtra("export" , 0) != null){
+                        var intent = Intent()
+
+                        val export = data!!.getIntExtra("export",0)
+
+                        intent.putExtra("export",export)
+                        setResult(RESULT_OK, intent)
+
+                        finish()
+                    }
+
                 }
             }
         }

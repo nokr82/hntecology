@@ -25,7 +25,6 @@ class DlgBirdsAdapter(var context: Context, var itemList : ArrayList<Birds>) : B
         var search_item : TextView
         var search_item_LL:LinearLayout
 
-
         init {
             this.search_item = row?.findViewById(R.id.search_item) as TextView
             this.search_item_LL = row?.findViewById(R.id.search_item_LL) as LinearLayout

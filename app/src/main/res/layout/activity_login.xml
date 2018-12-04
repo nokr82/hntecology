@@ -8,6 +8,9 @@
     android:background="@drawable/background_round_border"
     >
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -80,5 +83,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
+    </ScrollView>
 </LinearLayout>

@@ -315,6 +315,7 @@
                     android:text="화면 지우기" />
 
                 <Button
+                    android:visibility="gone"
                     android:id="@+id/searchaddressBT"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

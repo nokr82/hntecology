@@ -112,6 +112,10 @@ object Exporter {
                 MainActivity.TRACKING -> {
                     layerName = "tracking"
                 }
+
+                MainActivity.NOTHING -> {
+                    layerName = "nothing"
+                }
             }
         }
 
@@ -227,20 +231,20 @@ object Exporter {
 
         // column names
         if(exportItems != null){
-            val exportitem = exportItems.get(0)
-            for (columnDef in exportitem.columnDefs) {
-                println("exportitem${exportItem.columnDefs}")
-                println(columnDef.columnName +"---------------${columnDef.columnType}")
-                layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
+            for (i in 0..exportItems.size-1) {
+                val exportitem = exportItems.get(i)
+                for (columnDef in exportitem.columnDefs) {
+                    layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
+                }
             }
         }
 
         if(exportPointItems != null){
-            val exportPointitem = exportPointItems.get(0)
-            for (columnDef in exportPointitem.columnDefs) {
-                println("exportPoint${exportPointItem.columnDefs}")
-                println(columnDef.columnName +"---------------${columnDef.columnType}")
-                layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
+            for(i in 0..exportPointItems.size-1) {
+                val exportPointitem = exportPointItems.get(i)
+                for (columnDef in exportPointitem.columnDefs) {
+                    layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
+                }
             }
         }
 

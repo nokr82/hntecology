@@ -25,7 +25,7 @@ class IntroActivity : Activity() {
         this.context = this
 
         val dataBaseHelper = DataBaseHelper(this)
-        dataBaseHelper.deleteDataBase()
+//        dataBaseHelper.deleteDataBase()
 
         splashThread = object : Thread() {
             override fun run() {

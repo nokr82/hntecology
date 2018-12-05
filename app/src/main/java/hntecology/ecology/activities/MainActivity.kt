@@ -209,6 +209,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     var layerDivision = 0
 
+
+
     internal var loadDataHandler: Handler = object : Handler() {
         override fun handleMessage(msg: android.os.Message) {
             initGps()
@@ -525,17 +527,33 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
 
             if (layersDatas != null){
-                val progressDialog = ProgressDialog(this@MainActivity,
-                        ProgressDialog.STYLE_SPINNER)
-                progressDialog.isIndeterminate = true
-                progressDialog.setMessage("잠시만 기다려 주세요")
-                progressDialog.setCancelable(false)
-                progressDialog.show()
+                if(zoom.toInt() == 13) {
+                    val progressDialog = ProgressDialog(this@MainActivity,
+                            ProgressDialog.STYLE_SPINNER)
+                    progressDialog.isIndeterminate = true
+                    progressDialog.setMessage("잠시만 기다려 주세요")
+                    progressDialog.setCancelable(false)
+                    progressDialog.show()
 
-                android.os.Handler().postDelayed(
-                        {
-                            progressDialog.dismiss()
-                        }, 8000)
+                    android.os.Handler().postDelayed(
+                            {
+                                progressDialog.dismiss()
+                            }, 1000)
+                }
+
+                if(zoom.toInt() >= 14){
+                    val progressDialog = ProgressDialog(this@MainActivity,
+                            ProgressDialog.STYLE_SPINNER)
+                    progressDialog.isIndeterminate = true
+                    progressDialog.setMessage("잠시만 기다려 주세요")
+                    progressDialog.setCancelable(false)
+                    progressDialog.show()
+
+                    android.os.Handler().postDelayed(
+                            {
+                                progressDialog.dismiss()
+                            }, 8000)
+                }
 
                 for (i in 0..layersDatas.size-1) {
                     println("layerDatas ${layersDatas.get(i).grop_id}")
@@ -1180,7 +1198,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
                             } else {
-                                exportZoobenthous()
+                                exportManyFloras()
                             }
                         }
                     }
@@ -1809,49 +1827,70 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                         }
 
-                        for (i in 0..manyfloradataArray.size - 1) {
-                            title = "식물2"
+//                        for (i in 0..manyfloradataArray.size - 1) {
+//                            title = "식물2"
+//
+//                            marker.title = title
+//                        }
+//
+//                        if (manyfloradataArray.size == 0) {
+//                            title = "식물2"
+//
+//                            marker.title = title
+//
+//                            intent = Intent(this, Flora2Activity::class.java)
+//
+//                            intent!!.putExtra("GROP_ID", attrubuteKey)
+//                            intent!!.putExtra("markerid", marker.id)
+//
+//                            println("intent-----------------------------------${attrubuteKey.toString()}")
+//
+//                            startActivityForResult(intent, FLORA_DATA2)
+//                        }
+//
+//                        if(manyfloradataArray.size == 1 ){
+//
+//                            intent = Intent(this, Flora2Activity::class.java)
+//
+//
+//                            intent!!.putExtra("id" , manyfloradataArray.get(0).id)
+//                            intent!!.putExtra("GROP_ID", attrubuteKey)
+//                            intent!!.putExtra("markerid", marker.id)
+//
+//                            startActivityForResult(intent, FLORA_DATA2)
+//
+//                        }
+//                        if (manyfloradataArray.size > 1) {
+//                            val intent = Intent(this, DlgDataListActivity::class.java)
+//                            intent.putExtra("title", "식물2")
+//                            intent.putExtra("table", "ManyFloraAttribute")
+//                            intent.putExtra("DlgHeight", 600f);
+//                            intent!!.putExtra("markerid", marker.id)
+//                            intent.putExtra("GROP_ID", attrubuteKey)
+//                            startActivityForResult(intent, FLORA_DATA2);
+//                        }
 
-                            marker.title = title
+                        if(manyfloradataArray != null && manyfloradataArray.size >= 1){
+                            val size = manyfloradataArray.size
+
+                            intent = Intent(this, Flora2Activity::class.java)
+
+                            intent!!.putExtra("id" , manyfloradataArray.get(size - 1).id)
+                            intent!!.putExtra("GROP_ID", attrubuteKey)
+                            intent!!.putExtra("markerid", marker.id)
+
+                            startActivityForResult(intent, FLORA_DATA2)
                         }
 
-                        if (manyfloradataArray.size == 0) {
-                            title = "식물2"
-
-                            marker.title = title
-
+                        if(manyfloradataArray == null){
                             intent = Intent(this, Flora2Activity::class.java)
 
                             intent!!.putExtra("GROP_ID", attrubuteKey)
                             intent!!.putExtra("markerid", marker.id)
 
-                            println("intent-----------------------------------${attrubuteKey.toString()}")
-
                             startActivityForResult(intent, FLORA_DATA2)
                         }
 
-                        if(manyfloradataArray.size == 1 ){
-
-                            intent = Intent(this, Flora2Activity::class.java)
-
-
-                            intent!!.putExtra("id" , manyfloradataArray.get(0).id)
-                            intent!!.putExtra("GROP_ID", attrubuteKey)
-                            intent!!.putExtra("markerid", marker.id)
-
-                            startActivityForResult(intent, FLORA_DATA2)
-
-                        }
-
-                        if (manyfloradataArray.size > 1) {
-                            val intent = Intent(this, DlgDataListActivity::class.java)
-                            intent.putExtra("title", "식물2")
-                            intent.putExtra("table", "ManyFloraAttribute")
-                            intent.putExtra("DlgHeight", 600f);
-                            intent!!.putExtra("markerid", marker.id)
-                            intent.putExtra("GROP_ID", attrubuteKey)
-                            startActivityForResult(intent, FLORA_DATA2);
-                        }
                     }
 
                     LAYER_MYLOCATION -> {
@@ -3055,6 +3094,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 if (type.equals("flora2")){
+                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                     layerInfo.layer = LAYER_FLORA2
                 }
 
@@ -3826,7 +3866,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 
             LAYER_FLORA2 -> {
-                btn_flora2.text = "식물상2 추가 중"
+                btn_flora2.text = "식물상2 추가"
             }
 
         }

@@ -13,6 +13,7 @@ import hntecology.ecology.base.Utils
 import hntecology.ecology.R
 import hntecology.ecology.adapter.DlgFishAdapter
 import hntecology.ecology.adapter.DlgReptiliaAdapter
+import hntecology.ecology.base.Jaso
 import hntecology.ecology.model.Endangered
 import kotlinx.android.synthetic.main.dig_fish.*
 import org.json.JSONObject
@@ -150,7 +151,8 @@ class DlgFishActivity : Activity() {
 
             for(i in 0..names.size-1){
 
-                if(names.get(i).toLowerCase().contains(charText)){
+                if (Jaso.startsWith(names.get(i), charText)
+                        || names.get(i).toLowerCase().contains(charText)) {
                     adapterData.add(copyadapterData.get(i))
                 }
 

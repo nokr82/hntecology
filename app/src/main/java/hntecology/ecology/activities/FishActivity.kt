@@ -1988,6 +1988,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             del2IV.visibility = View.VISIBLE
             del2IV.tag = k
             ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
+            ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
             if (imgSeq == 0) {
                 addPicturesLL!!.addView(vv)
             }

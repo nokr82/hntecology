@@ -16,6 +16,7 @@ import hntecology.ecology.R
 import hntecology.ecology.adapter.DlgMammalAdapter
 import hntecology.ecology.adapter.DlgMammalAdapter2
 import hntecology.ecology.adapter.DlgReptiliaAdapter
+import hntecology.ecology.base.Jaso
 import hntecology.ecology.model.Endangered
 import hntecology.ecology.model.EndangeredSelect
 import hntecology.ecology.model.Mammal
@@ -252,7 +253,8 @@ class DlgMammalActivity : Activity() {
 
             for(i in 0..names.size-1){
 
-                if(names.get(i).toLowerCase().contains(charText)){
+                if (Jaso.startsWith(names.get(i), charText)
+                        || names.get(i).toLowerCase().contains(charText)) {
                     listdata1.add(copyadapterData.get(i))
                 }
 

@@ -16,6 +16,7 @@ import hntecology.ecology.model.Vegetation
 import kotlinx.android.synthetic.main.activity_dlgvegetation.*
 import java.util.ArrayList
 import android.text.Editable
+import hntecology.ecology.base.Jaso
 import hntecology.ecology.model.Endangered
 import hntecology.ecology.model.Vascular_plant
 
@@ -176,7 +177,8 @@ class DlgVascularActivity : Activity() {
 
             for (i in 0..copylistdata1.size-1){
 
-                if(copylistdata1.get(i).name_kr!!.toLowerCase().contains(charText)){
+                if (Jaso.startsWith(copylistdata1.get(i).name_kr!!, charText)
+                        ||copylistdata1.get(i).name_kr!!.toLowerCase().contains(charText)) {
                     listdata1.add(copylistdata1.get(i))
                 }
 

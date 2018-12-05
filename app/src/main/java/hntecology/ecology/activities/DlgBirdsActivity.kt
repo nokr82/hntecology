@@ -16,6 +16,7 @@ import hntecology.ecology.base.Utils
 import hntecology.ecology.R
 import hntecology.ecology.adapter.DlgBirdsAdapter
 import hntecology.ecology.adapter.DlgBirdsAdapter2
+import hntecology.ecology.base.Jaso
 import hntecology.ecology.model.Birds
 import hntecology.ecology.model.Endangered
 import hntecology.ecology.model.EndangeredSelect
@@ -264,7 +265,8 @@ class DlgBirdsActivity : Activity() {
 
             for(i in 0..names.size-1){
 
-                if(names.get(i).toLowerCase().contains(charText)){
+                if (Jaso.startsWith(names.get(i), charText)
+                        || names.get(i).toLowerCase().contains(charText)) {
                     listdata1.add(copyadapterData.get(i))
                 }
 

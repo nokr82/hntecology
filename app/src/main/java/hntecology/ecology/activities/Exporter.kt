@@ -116,6 +116,10 @@ object Exporter {
                 MainActivity.NOTHING -> {
                     layerName = "nothing"
                 }
+
+                MainActivity.LAYER_FLORA2 -> {
+                    layerName = "flora2"
+                }
             }
         }
 
@@ -160,8 +164,11 @@ object Exporter {
                 }
 
                 MainActivity.TRACKING -> {
-//                    layerName = "tracking/" + today + " " + time
                     layerName = "tracking"
+                }
+
+                MainActivity.LAYER_FLORA2 -> {
+                    layerName = "flora2"
                 }
 
             }

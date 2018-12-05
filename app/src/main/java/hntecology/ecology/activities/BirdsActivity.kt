@@ -238,7 +238,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                     val data = db.query("birdsAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
-
                     if (dataArray != null) {
                         dataArray.clear()
                     }

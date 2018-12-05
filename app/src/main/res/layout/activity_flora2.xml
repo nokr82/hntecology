@@ -144,6 +144,43 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     >
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true">
+                            <TextView
+                                android:id="@+id/treleftTV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="〈 "
+                                android:textSize="30dp"
+                                android:layout_marginRight="40dp"/>
+
+                            <TextView
+                                android:id="@+id/trepageTV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_centerInParent="true"
+                                android:gravity="center"
+                                android:text="0 / 0" />
+
+                            <TextView
+                                android:id="@+id/trerightTV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="〉 "
+                                android:layout_alignParentRight="true"
+                                android:gravity="center"
+                                android:textSize="30dp"
+                                android:layout_marginLeft="40dp"/>
+                        </LinearLayout>
+                    </RelativeLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
@@ -158,15 +195,16 @@
                             style="@style/BiotopeTextView"
                             />
 
-                        <TextView
-                            android:id="@+id/trenumTV"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2"
-                            android:maxLength="30"
-                            android:gravity="center"
-                            style="@style/BiotopeTextView"
-                            />
+                            <TextView
+                                android:id="@+id/trenumTV"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="2"
+                                android:maxLength="30"
+                                android:layout_centerInParent="true"
+                                android:gravity="center"
+                                style="@style/BiotopeTextView"
+                                />
 
                     </LinearLayout>
 
@@ -347,6 +385,42 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     >
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true">
+                            <TextView
+                                android:id="@+id/streleftTV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="〈 "
+                                android:textSize="30dp"
+                                android:layout_marginRight="40dp"/>
+
+                            <TextView
+                                android:id="@+id/strepageTV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_centerInParent="true"
+                                android:gravity="center"
+                                android:text="0 / 0" />
+
+                            <TextView
+                                android:id="@+id/strerightTV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="〉 "
+                                android:layout_alignParentRight="true"
+                                android:gravity="center"
+                                android:textSize="30dp"
+                                android:layout_marginLeft="40dp"/>
+                        </LinearLayout>
+                    </RelativeLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -556,6 +630,42 @@
                     android:orientation="vertical"
                     >
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true">
+                            <TextView
+                                android:id="@+id/shrleftTV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="〈 "
+                                android:textSize="30dp"
+                                android:layout_marginRight="40dp"/>
+
+                            <TextView
+                                android:id="@+id/shrpageTV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_centerInParent="true"
+                                android:gravity="center"
+                                android:text="0 / 0" />
+
+                            <TextView
+                                android:id="@+id/shrrightTV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="〉 "
+                                android:layout_alignParentRight="true"
+                                android:gravity="center"
+                                android:textSize="30dp"
+                                android:layout_marginLeft="40dp"/>
+                        </LinearLayout>
+                    </RelativeLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
@@ -738,6 +848,41 @@
                     android:orientation="vertical"
                     >
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true">
+                            <TextView
+                                android:id="@+id/herleftTV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="〈 "
+                                android:textSize="30dp"
+                                android:layout_marginRight="40dp"/>
+
+                            <TextView
+                                android:id="@+id/herpageTV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_centerInParent="true"
+                                android:gravity="center"
+                                android:text="0 / 0" />
+
+                            <TextView
+                                android:id="@+id/herrightTV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="〉 "
+                                android:layout_alignParentRight="true"
+                                android:gravity="center"
+                                android:textSize="30dp"
+                                android:layout_marginLeft="40dp"/>
+                        </LinearLayout>
+                    </RelativeLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"

@@ -55,6 +55,16 @@ class Flora2Activity : Activity() {
     val SET_DATA5 = 5
     val SET_DATA6 = 6
 
+    var trepage = 0
+    var strepage = 0
+    var shrpage = 0
+    var herpage = 0
+
+    var TreDatas: ArrayList<ManyFloraAttribute> = ArrayList<ManyFloraAttribute>()
+    var StrDatas: ArrayList<ManyFloraAttribute> = ArrayList<ManyFloraAttribute>()
+    var ShrDatas: ArrayList<ManyFloraAttribute> = ArrayList<ManyFloraAttribute>()
+    var HerDatas: ArrayList<ManyFloraAttribute> = ArrayList<ManyFloraAttribute>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_flora2)
@@ -75,15 +85,15 @@ class Flora2Activity : Activity() {
         invpersonTV.setText(userName)
         invdtTV.setText(Utils.todayStr())
 
-        val TRENUM = dbManager.manyfloratrenumNext()
-        val STRENUM = dbManager.manyflorastrenumNext()
-        val SHRNUM = dbManager.manyflorashrnumNext()
-        val HERNUM = dbManager.manyflorahernumNext()
+//        val TRENUM = dbManager.manyfloratrenumNext()
+//        val STRENUM = dbManager.manyflorastrenumNext()
+//        val SHRNUM = dbManager.manyflorashrnumNext()
+//        val HERNUM = dbManager.manyflorahernumNext()
 
-        trenumTV.setText(TRENUM.toString())
-        strenumTV.setText(STRENUM.toString())
-        shrnumTV.setText(SHRNUM.toString())
-        hernumTV.setText(HERNUM.toString())
+//        trenumTV.setText(TRENUM.toString())
+//        strenumTV.setText(STRENUM.toString())
+//        shrnumTV.setText(SHRNUM.toString())
+//        hernumTV.setText(HERNUM.toString())
 
         var intent: Intent = getIntent();
 
@@ -93,7 +103,6 @@ class Flora2Activity : Activity() {
 
         if(intent.getStringExtra("latitude")!= null){
             lat = intent.getStringExtra("latitude")
-
             println("==============$lat")
             gpslatTV.setText(lat)
         }
@@ -124,6 +133,15 @@ class Flora2Activity : Activity() {
 
         }
 
+        if(intent.getStringExtra("GROP_ID") != null){
+
+            val grop_id = intent.getStringExtra("GROP_ID")
+
+            val dataList: Array<String> = arrayOf("*");
+
+            val data = db.query("ManyFloraAttribute", dataList, "GROP_ID = '$grop_id'", null, null, null, "", null)
+
+        }
 
         if(intent.getStringExtra("id") != null){
             pk = intent.getStringExtra("id")
@@ -260,6 +278,42 @@ class Flora2Activity : Activity() {
             intent.putExtra("table", "vascular_plant")
             intent.putExtra("DlgHeight", 600f);
             startActivityForResult(intent, SET_DATA5);
+        }
+
+        treleftTV.setOnClickListener {
+
+        }
+
+        trerightTV.setOnClickListener {
+            AddTreFlora()
+//            TreClear()
+        }
+
+        streleftTV.setOnClickListener {
+
+        }
+
+        strerightTV.setOnClickListener {
+            AddStreFlora()
+//            Stre_Clear()
+        }
+
+        shrleftTV.setOnClickListener {
+
+        }
+
+        shrrightTV.setOnClickListener {
+            AddShrFlora()
+//            Shr_Clear()
+        }
+
+        herleftTV.setOnClickListener {
+
+        }
+
+        herrightTV.setOnClickListener {
+            AddHerFlora()
+//            Her_Clear()
         }
 
         saveBT.setOnClickListener {
@@ -837,6 +891,554 @@ class Flora2Activity : Activity() {
         finish()
     }
 
+    fun AddTreFlora(){
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase()
+
+        var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null,null,null,null,null,null,null,null,null,null
+                ,null,null,null,null,null,null,null,null,null,null,null,null,null
+                ,null,null,null,null,null,null,null,null,null,null,null,null,null)
+
+        keyId = intent.getStringExtra("GROP_ID")
+
+        manyFloraAttribute.GROP_ID = keyId
+
+        manyFloraAttribute.INV_REGION = invregionTV.text.toString()
+
+        manyFloraAttribute.INV_DT = Utils.todayStr()
+
+        if(invpersonTV.text == null || invpersonTV.text.equals("")){
+            manyFloraAttribute.INV_PERSON = userName
+        }else {
+            manyFloraAttribute.INV_PERSON = invpersonTV.text.toString()
+        }
+
+        manyFloraAttribute.INV_TM = Utils.timeStr()
+
+
+        if (trenumTV.text.isNotEmpty()) {
+            manyFloraAttribute.TRE_NUM = trenumTV.text.toString().toInt()
+        }
+
+        manyFloraAttribute.TRE_SPEC = etTRE_SPECET.text.toString()
+        manyFloraAttribute.TRE_FAMI = etTRE_FAMIET.text.toString()
+        manyFloraAttribute.TRE_SCIEN = etTRE_SCIENET.text.toString()
+
+        if (etTRE_HET.text.isNotEmpty()) {
+            manyFloraAttribute.TRE_H = etTRE_HET.text.toString().toFloat()
+        }
+
+        if (etTRE_BREAET.text.isNotEmpty()) {
+            manyFloraAttribute.TRE_BREA = etTRE_BREAET.text.toString().toFloat()
+        }
+
+        if (etTRE_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.TRE_COVE = etTRE_COVEET.text.toString().toFloat()
+        }
+
+        if (strenumTV.text.isNotEmpty()) {
+            manyFloraAttribute.STRE_NUM = strenumTV.text.toString().toInt()
+        }
+
+        manyFloraAttribute.STRE_SPEC = etSTRE_SPECET.text.toString()
+        manyFloraAttribute.STRE_FAMI = etSTRE_FAMIET.text.toString()
+
+        if (etSTRE_HET.text.isNotEmpty()) {
+            manyFloraAttribute.STRE_H = etSTRE_HET.text.toString().toFloat()
+        }
+
+        if (etSTRE_BREAET.text.isNotEmpty()) {
+            manyFloraAttribute.STRE_BREA = etSTRE_BREAET.text.toString().toFloat()
+        }
+
+        if (etSTRE_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.STRE_COVE = etSTRE_COVEET.text.toString().toFloat()
+        }
+
+        if (shrnumTV.text.isNotEmpty()) {
+            manyFloraAttribute.SHR_NUM = shrnumTV.text.toString().toInt()
+        }
+
+        manyFloraAttribute.SHR_SPEC = etSHR_SPECET.text.toString()
+        manyFloraAttribute.SHR_FAMI = etSHR_FAMIET.text.toString()
+        manyFloraAttribute.SHR_SCIEN = etSHR_SCIENET.text.toString()
+
+        if (etSTR_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.SHR_H = etSTRE_HET.text.toString().toFloat()
+        }
+
+        if (etSTR_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.SHR_COVE = etSTR_COVEET.text.toString().toFloat()
+        }
+
+        if (hernumTV.text.isNotEmpty()) {
+            manyFloraAttribute.HER_NUM = hernumTV.text.toString().toInt()
+        }
+
+        manyFloraAttribute.HER_SPEC = etHER_SPECET.text.toString()
+        manyFloraAttribute.HER_FAMI = etHER_FAMIET.text.toString()
+        manyFloraAttribute.HER_SCIEN = etHER_SCIENET.text.toString()
+
+        if (etHER_HET.text.isNotEmpty()) {
+            manyFloraAttribute.HER_H = etHER_HET.text.toString().toFloat()
+        }
+
+        if (etHER_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.HER_COVE = etHER_COVEET.text.toString().toFloat()
+        }
+
+        if (gpslatTV.text.isNotEmpty()) {
+            manyFloraAttribute.GPS_LAT = gpslatTV.text.toString().toFloat()
+        }
+
+        if (gpslonTV.text.isNotEmpty()) {
+            manyFloraAttribute.GPS_LON = gpslonTV.text.toString().toFloat()
+        }
+
+        manyFloraAttribute.TEMP_YN = "Y"
+        manyFloraAttribute.CONF_MOD = "N"
+
+        if (chkdata) {
+
+            if(pk != null){
+
+                val CONF_MOD = manyFloraAttribute.CONF_MOD
+
+                if(CONF_MOD == "C" || CONF_MOD == "N"){
+                    manyFloraAttribute.CONF_MOD = "M"
+                }
+
+            }
+
+        } else {
+
+        }
+
+        if(intent.getStringExtra("set") != null){
+            intent.putExtra("reset", 100)
+
+            setResult(RESULT_OK, intent);
+        }
+
+        TreDatas.add(manyFloraAttribute)
+
+        deleteBT.visibility = View.GONE
+
+        chkdata = false
+        pk = null
+    }
+
+    fun AddStreFlora(){
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase()
+
+        var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null,null,null,null,null,null,null,null,null,null
+                ,null,null,null,null,null,null,null,null,null,null,null,null,null
+                ,null,null,null,null,null,null,null,null,null,null,null,null,null)
+
+        keyId = intent.getStringExtra("GROP_ID")
+
+        manyFloraAttribute.GROP_ID = keyId
+
+        manyFloraAttribute.INV_REGION = invregionTV.text.toString()
+
+        manyFloraAttribute.INV_DT = Utils.todayStr()
+
+        if(invpersonTV.text == null || invpersonTV.text.equals("")){
+            manyFloraAttribute.INV_PERSON = userName
+        }else {
+            manyFloraAttribute.INV_PERSON = invpersonTV.text.toString()
+        }
+
+        manyFloraAttribute.INV_TM = Utils.timeStr()
+
+
+        if (trenumTV.text.isNotEmpty()) {
+            manyFloraAttribute.TRE_NUM = trenumTV.text.toString().toInt()
+        }
+
+        manyFloraAttribute.TRE_SPEC = etTRE_SPECET.text.toString()
+        manyFloraAttribute.TRE_FAMI = etTRE_FAMIET.text.toString()
+        manyFloraAttribute.TRE_SCIEN = etTRE_SCIENET.text.toString()
+
+        if (etTRE_HET.text.isNotEmpty()) {
+            manyFloraAttribute.TRE_H = etTRE_HET.text.toString().toFloat()
+        }
+
+        if (etTRE_BREAET.text.isNotEmpty()) {
+            manyFloraAttribute.TRE_BREA = etTRE_BREAET.text.toString().toFloat()
+        }
+
+        if (etTRE_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.TRE_COVE = etTRE_COVEET.text.toString().toFloat()
+        }
+
+        if (strenumTV.text.isNotEmpty()) {
+            manyFloraAttribute.STRE_NUM = strenumTV.text.toString().toInt()
+        }
+
+        manyFloraAttribute.STRE_SPEC = etSTRE_SPECET.text.toString()
+        manyFloraAttribute.STRE_FAMI = etSTRE_FAMIET.text.toString()
+
+        if (etSTRE_HET.text.isNotEmpty()) {
+            manyFloraAttribute.STRE_H = etSTRE_HET.text.toString().toFloat()
+        }
+
+        if (etSTRE_BREAET.text.isNotEmpty()) {
+            manyFloraAttribute.STRE_BREA = etSTRE_BREAET.text.toString().toFloat()
+        }
+
+        if (etSTRE_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.STRE_COVE = etSTRE_COVEET.text.toString().toFloat()
+        }
+
+        if (shrnumTV.text.isNotEmpty()) {
+            manyFloraAttribute.SHR_NUM = shrnumTV.text.toString().toInt()
+        }
+
+        manyFloraAttribute.SHR_SPEC = etSHR_SPECET.text.toString()
+        manyFloraAttribute.SHR_FAMI = etSHR_FAMIET.text.toString()
+        manyFloraAttribute.SHR_SCIEN = etSHR_SCIENET.text.toString()
+
+        if (etSTR_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.SHR_H = etSTRE_HET.text.toString().toFloat()
+        }
+
+        if (etSTR_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.SHR_COVE = etSTR_COVEET.text.toString().toFloat()
+        }
+
+        if (hernumTV.text.isNotEmpty()) {
+            manyFloraAttribute.HER_NUM = hernumTV.text.toString().toInt()
+        }
+
+        manyFloraAttribute.HER_SPEC = etHER_SPECET.text.toString()
+        manyFloraAttribute.HER_FAMI = etHER_FAMIET.text.toString()
+        manyFloraAttribute.HER_SCIEN = etHER_SCIENET.text.toString()
+
+        if (etHER_HET.text.isNotEmpty()) {
+            manyFloraAttribute.HER_H = etHER_HET.text.toString().toFloat()
+        }
+
+        if (etHER_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.HER_COVE = etHER_COVEET.text.toString().toFloat()
+        }
+
+        if (gpslatTV.text.isNotEmpty()) {
+            manyFloraAttribute.GPS_LAT = gpslatTV.text.toString().toFloat()
+        }
+
+        if (gpslonTV.text.isNotEmpty()) {
+            manyFloraAttribute.GPS_LON = gpslonTV.text.toString().toFloat()
+        }
+
+        manyFloraAttribute.TEMP_YN = "Y"
+        manyFloraAttribute.CONF_MOD = "N"
+
+        if (chkdata) {
+
+            if(pk != null){
+
+                val CONF_MOD = manyFloraAttribute.CONF_MOD
+
+                if(CONF_MOD == "C" || CONF_MOD == "N"){
+                    manyFloraAttribute.CONF_MOD = "M"
+                }
+
+            }
+
+        } else {
+
+        }
+
+        if(intent.getStringExtra("set") != null){
+            intent.putExtra("reset", 100)
+
+            setResult(RESULT_OK, intent);
+        }
+
+        StrDatas.add(manyFloraAttribute)
+
+        deleteBT.visibility = View.GONE
+
+        chkdata = false
+        pk = null
+    }
+
+    fun AddShrFlora(){
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase()
+
+        var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null,null,null,null,null,null,null,null,null,null
+                ,null,null,null,null,null,null,null,null,null,null,null,null,null
+                ,null,null,null,null,null,null,null,null,null,null,null,null,null)
+
+        keyId = intent.getStringExtra("GROP_ID")
+
+        manyFloraAttribute.GROP_ID = keyId
+
+        manyFloraAttribute.INV_REGION = invregionTV.text.toString()
+
+        manyFloraAttribute.INV_DT = Utils.todayStr()
+
+        if(invpersonTV.text == null || invpersonTV.text.equals("")){
+            manyFloraAttribute.INV_PERSON = userName
+        }else {
+            manyFloraAttribute.INV_PERSON = invpersonTV.text.toString()
+        }
+
+        manyFloraAttribute.INV_TM = Utils.timeStr()
+
+
+        if (trenumTV.text.isNotEmpty()) {
+            manyFloraAttribute.TRE_NUM = trenumTV.text.toString().toInt()
+        }
+
+        manyFloraAttribute.TRE_SPEC = etTRE_SPECET.text.toString()
+        manyFloraAttribute.TRE_FAMI = etTRE_FAMIET.text.toString()
+        manyFloraAttribute.TRE_SCIEN = etTRE_SCIENET.text.toString()
+
+        if (etTRE_HET.text.isNotEmpty()) {
+            manyFloraAttribute.TRE_H = etTRE_HET.text.toString().toFloat()
+        }
+
+        if (etTRE_BREAET.text.isNotEmpty()) {
+            manyFloraAttribute.TRE_BREA = etTRE_BREAET.text.toString().toFloat()
+        }
+
+        if (etTRE_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.TRE_COVE = etTRE_COVEET.text.toString().toFloat()
+        }
+
+        if (strenumTV.text.isNotEmpty()) {
+            manyFloraAttribute.STRE_NUM = strenumTV.text.toString().toInt()
+        }
+
+        manyFloraAttribute.STRE_SPEC = etSTRE_SPECET.text.toString()
+        manyFloraAttribute.STRE_FAMI = etSTRE_FAMIET.text.toString()
+
+        if (etSTRE_HET.text.isNotEmpty()) {
+            manyFloraAttribute.STRE_H = etSTRE_HET.text.toString().toFloat()
+        }
+
+        if (etSTRE_BREAET.text.isNotEmpty()) {
+            manyFloraAttribute.STRE_BREA = etSTRE_BREAET.text.toString().toFloat()
+        }
+
+        if (etSTRE_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.STRE_COVE = etSTRE_COVEET.text.toString().toFloat()
+        }
+
+        if (shrnumTV.text.isNotEmpty()) {
+            manyFloraAttribute.SHR_NUM = shrnumTV.text.toString().toInt()
+        }
+
+        manyFloraAttribute.SHR_SPEC = etSHR_SPECET.text.toString()
+        manyFloraAttribute.SHR_FAMI = etSHR_FAMIET.text.toString()
+        manyFloraAttribute.SHR_SCIEN = etSHR_SCIENET.text.toString()
+
+        if (etSTR_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.SHR_H = etSTRE_HET.text.toString().toFloat()
+        }
+
+        if (etSTR_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.SHR_COVE = etSTR_COVEET.text.toString().toFloat()
+        }
+
+        if (hernumTV.text.isNotEmpty()) {
+            manyFloraAttribute.HER_NUM = hernumTV.text.toString().toInt()
+        }
+
+        manyFloraAttribute.HER_SPEC = etHER_SPECET.text.toString()
+        manyFloraAttribute.HER_FAMI = etHER_FAMIET.text.toString()
+        manyFloraAttribute.HER_SCIEN = etHER_SCIENET.text.toString()
+
+        if (etHER_HET.text.isNotEmpty()) {
+            manyFloraAttribute.HER_H = etHER_HET.text.toString().toFloat()
+        }
+
+        if (etHER_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.HER_COVE = etHER_COVEET.text.toString().toFloat()
+        }
+
+        if (gpslatTV.text.isNotEmpty()) {
+            manyFloraAttribute.GPS_LAT = gpslatTV.text.toString().toFloat()
+        }
+
+        if (gpslonTV.text.isNotEmpty()) {
+            manyFloraAttribute.GPS_LON = gpslonTV.text.toString().toFloat()
+        }
+
+        manyFloraAttribute.TEMP_YN = "Y"
+        manyFloraAttribute.CONF_MOD = "N"
+
+        if (chkdata) {
+
+            if(pk != null){
+
+                val CONF_MOD = manyFloraAttribute.CONF_MOD
+
+                if(CONF_MOD == "C" || CONF_MOD == "N"){
+                    manyFloraAttribute.CONF_MOD = "M"
+                }
+
+            }
+
+        } else {
+
+        }
+
+        if(intent.getStringExtra("set") != null){
+            intent.putExtra("reset", 100)
+
+            setResult(RESULT_OK, intent);
+        }
+
+        ShrDatas.add(manyFloraAttribute)
+
+        deleteBT.visibility = View.GONE
+
+        chkdata = false
+        pk = null
+    }
+
+    fun AddHerFlora(){
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase()
+
+        var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null,null,null,null,null,null,null,null,null,null
+                ,null,null,null,null,null,null,null,null,null,null,null,null,null
+                ,null,null,null,null,null,null,null,null,null,null,null,null,null)
+
+        keyId = intent.getStringExtra("GROP_ID")
+
+        manyFloraAttribute.GROP_ID = keyId
+
+        manyFloraAttribute.INV_REGION = invregionTV.text.toString()
+
+        manyFloraAttribute.INV_DT = Utils.todayStr()
+
+        if(invpersonTV.text == null || invpersonTV.text.equals("")){
+            manyFloraAttribute.INV_PERSON = userName
+        }else {
+            manyFloraAttribute.INV_PERSON = invpersonTV.text.toString()
+        }
+
+        manyFloraAttribute.INV_TM = Utils.timeStr()
+
+
+        if (trenumTV.text.isNotEmpty()) {
+            manyFloraAttribute.TRE_NUM = trenumTV.text.toString().toInt()
+        }
+
+        manyFloraAttribute.TRE_SPEC = etTRE_SPECET.text.toString()
+        manyFloraAttribute.TRE_FAMI = etTRE_FAMIET.text.toString()
+        manyFloraAttribute.TRE_SCIEN = etTRE_SCIENET.text.toString()
+
+        if (etTRE_HET.text.isNotEmpty()) {
+            manyFloraAttribute.TRE_H = etTRE_HET.text.toString().toFloat()
+        }
+
+        if (etTRE_BREAET.text.isNotEmpty()) {
+            manyFloraAttribute.TRE_BREA = etTRE_BREAET.text.toString().toFloat()
+        }
+
+        if (etTRE_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.TRE_COVE = etTRE_COVEET.text.toString().toFloat()
+        }
+
+        if (strenumTV.text.isNotEmpty()) {
+            manyFloraAttribute.STRE_NUM = strenumTV.text.toString().toInt()
+        }
+
+        manyFloraAttribute.STRE_SPEC = etSTRE_SPECET.text.toString()
+        manyFloraAttribute.STRE_FAMI = etSTRE_FAMIET.text.toString()
+
+        if (etSTRE_HET.text.isNotEmpty()) {
+            manyFloraAttribute.STRE_H = etSTRE_HET.text.toString().toFloat()
+        }
+
+        if (etSTRE_BREAET.text.isNotEmpty()) {
+            manyFloraAttribute.STRE_BREA = etSTRE_BREAET.text.toString().toFloat()
+        }
+
+        if (etSTRE_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.STRE_COVE = etSTRE_COVEET.text.toString().toFloat()
+        }
+
+        if (shrnumTV.text.isNotEmpty()) {
+            manyFloraAttribute.SHR_NUM = shrnumTV.text.toString().toInt()
+        }
+
+        manyFloraAttribute.SHR_SPEC = etSHR_SPECET.text.toString()
+        manyFloraAttribute.SHR_FAMI = etSHR_FAMIET.text.toString()
+        manyFloraAttribute.SHR_SCIEN = etSHR_SCIENET.text.toString()
+
+        if (etSTR_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.SHR_H = etSTRE_HET.text.toString().toFloat()
+        }
+
+        if (etSTR_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.SHR_COVE = etSTR_COVEET.text.toString().toFloat()
+        }
+
+        if (hernumTV.text.isNotEmpty()) {
+            manyFloraAttribute.HER_NUM = hernumTV.text.toString().toInt()
+        }
+
+        manyFloraAttribute.HER_SPEC = etHER_SPECET.text.toString()
+        manyFloraAttribute.HER_FAMI = etHER_FAMIET.text.toString()
+        manyFloraAttribute.HER_SCIEN = etHER_SCIENET.text.toString()
+
+        if (etHER_HET.text.isNotEmpty()) {
+            manyFloraAttribute.HER_H = etHER_HET.text.toString().toFloat()
+        }
+
+        if (etHER_COVEET.text.isNotEmpty()) {
+            manyFloraAttribute.HER_COVE = etHER_COVEET.text.toString().toFloat()
+        }
+
+        if (gpslatTV.text.isNotEmpty()) {
+            manyFloraAttribute.GPS_LAT = gpslatTV.text.toString().toFloat()
+        }
+
+        if (gpslonTV.text.isNotEmpty()) {
+            manyFloraAttribute.GPS_LON = gpslonTV.text.toString().toFloat()
+        }
+
+        manyFloraAttribute.TEMP_YN = "Y"
+        manyFloraAttribute.CONF_MOD = "N"
+
+        if (chkdata) {
+
+            if(pk != null){
+
+                val CONF_MOD = manyFloraAttribute.CONF_MOD
+
+                if(CONF_MOD == "C" || CONF_MOD == "N"){
+                    manyFloraAttribute.CONF_MOD = "M"
+                }
+
+            }
+
+        } else {
+
+        }
+
+        if(intent.getStringExtra("set") != null){
+            intent.putExtra("reset", 100)
+
+            setResult(RESULT_OK, intent);
+        }
+
+        HerDatas.add(manyFloraAttribute)
+
+        deleteBT.visibility = View.GONE
+
+        chkdata = false
+        pk = null
+    }
+
     fun clear(){
         val dbManager: DataBaseHelper = DataBaseHelper(this)
         val db = dbManager.createDataBase()
@@ -875,11 +1477,11 @@ class Flora2Activity : Activity() {
         etHER_COVEET.setText("")
     }
 
-    fun TreClear(){
+    fun TreClear(page: String){
         val dbManager: DataBaseHelper = DataBaseHelper(this)
         val db = dbManager.createDataBase()
-        val TRENUM = dbManager.manyfloratrenumNext()
-        trenumTV.setText(TRENUM.toString())
+//        val TRENUM = dbManager.manyfloratrenumNext()
+        trenumTV.setText(page)
         etTRE_SPECET.setText("")
         etTRE_FAMIET.setText("")
         etTRE_SCIENET.setText("")
@@ -888,12 +1490,12 @@ class Flora2Activity : Activity() {
         etTRE_COVEET.setText("")
     }
 
-    fun Stre_Clear(){
+    fun Stre_Clear(page: String){
         val dbManager: DataBaseHelper = DataBaseHelper(this)
         val db = dbManager.createDataBase()
 
-        val STRENUM = dbManager.manyflorastrenumNext()
-        strenumTV.setText(STRENUM.toString())
+//        val STRENUM = dbManager.manyflorastrenumNext()
+        strenumTV.setText(page)
         etSTRE_SPECET.setText("")
         etSTRE_FAMIET.setText("")
         etSTRE_SCIENET.setText("")
@@ -902,12 +1504,12 @@ class Flora2Activity : Activity() {
         etSTRE_COVEET.setText("")
     }
 
-    fun Shr_Clear(){
+    fun Shr_Clear(page: String){
         val dbManager: DataBaseHelper = DataBaseHelper(this)
         val db = dbManager.createDataBase()
 
-        val SHRNUM = dbManager.manyflorashrnumNext()
-        shrnumTV.setText(SHRNUM.toString())
+//        val SHRNUM = dbManager.manyflorashrnumNext()
+        shrnumTV.setText(page)
         etSTRE_COVEET.setText("")
         etSHR_SPECET.setText("")
         etSHR_FAMIET.setText("")
@@ -916,12 +1518,12 @@ class Flora2Activity : Activity() {
         etSTR_COVEET.setText("")
     }
 
-    fun Her_Clear(){
+    fun Her_Clear(page: String){
         val dbManager: DataBaseHelper = DataBaseHelper(this)
         val db = dbManager.createDataBase()
-        val HERNUM = dbManager.manyflorahernumNext()
+//        val HERNUM = dbManager.manyflorahernumNext()
 
-        hernumTV.setText(HERNUM.toString())
+        hernumTV.setText(page)
         etHER_SPECET.setText("")
         etHER_FAMIET.setText("")
         etHER_SCIENET.setText("")

@@ -1213,6 +1213,18 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         layersDatas.clear()
                     }
 
+//                    val progressDialog = ProgressDialog(this@MainActivity,
+//                            ProgressDialog.STYLE_SPINNER)
+//                    progressDialog.isIndeterminate = true
+//                    progressDialog.setMessage("잠시만 기다려 주세요")
+//                    progressDialog.setCancelable(false)
+//                    progressDialog.show()
+//
+//                    android.os.Handler().postDelayed(
+//                            {
+//                                progressDialog.dismiss()
+//                            }, 10000)
+
                     for (i in 0..jsonOb.size - 1) {
 
                         layerDivision = 8
@@ -2223,6 +2235,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     }
 
                     NOTHING -> {
+                        println("nothinggggggggggggggggg")
 
                     }
 
@@ -2230,20 +2243,23 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 println("aa : $attrubuteKey")
 
-                if (myLayer != LAYER_BIOTOPE || myLayer == LAYER_BIRDS || myLayer == LAYER_REPTILIA || myLayer == LAYER_MAMMALIA || myLayer == LAYER_FISH || myLayer == LAYER_INSECT
-                        || myLayer == LAYER_FLORA) {
-                    intent!!.putExtra("GROP_ID", attrubuteKey.toString())
-
-                    println("intent-----------------------------------${attrubuteKey.toString()}")
-
-                    startActivityForResult(intent, PolygonCallBackData)
-                }
-                if (myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIOTOPE && myLayer != LAYER_BIRDS && myLayer != LAYER_REPTILIA && myLayer != LAYER_MAMMALIA && myLayer != LAYER_FISH
-                        && myLayer != LAYER_INSECT && myLayer != LAYER_FLORA && myLayer != TRACKING && myLayer != NOTHING && myLayer != LAYER_FLORA2) {
-                    intent!!.putExtra("id", attrubuteKey.toString())
-
-                    startActivityForResult(intent, PolygonCallBackData)
-                }
+//                if (myLayer != LAYER_BIOTOPE || myLayer == LAYER_BIRDS || myLayer == LAYER_REPTILIA || myLayer == LAYER_MAMMALIA || myLayer == LAYER_FISH || myLayer == LAYER_INSECT
+//                        || myLayer == LAYER_FLORA || myLayer != NOTHING) {
+//
+//                    if(attrubuteKey != null) {
+//                        intent!!.putExtra("GROP_ID", attrubuteKey.toString())
+//
+//                        println("intent-----------------------------------${attrubuteKey.toString()}")
+//
+//                        startActivityForResult(intent, PolygonCallBackData)
+//                    }
+//                }
+//                if (myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIOTOPE && myLayer != LAYER_BIRDS && myLayer != LAYER_REPTILIA && myLayer != LAYER_MAMMALIA && myLayer != LAYER_FISH
+//                        && myLayer != LAYER_INSECT && myLayer != LAYER_FLORA && myLayer != TRACKING && myLayer != NOTHING && myLayer != LAYER_FLORA2) {
+//                    intent!!.putExtra("id", attrubuteKey.toString())
+//
+//                    startActivityForResult(intent, PolygonCallBackData)
+//                }
 
             }
         }
@@ -2627,6 +2643,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 layerInfo.layer = currentLayer
                 layerInfo.metadata = metadata
 
+                if (type.equals("nothing")){
+                    layerInfo.layer = NOTHING
+                }
+
                 polygon.tag = layerInfo
                 polygon.isClickable = true
 
@@ -2798,8 +2818,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     layerInfo.layer = TRACKING
                 }
 
-                if (type.equals("nothing")){
-                    layerInfo.layer = NOTHING
+                if (type.equals("flora2")){
+                    layerInfo.layer = LAYER_FLORA2
                 }
 
                 // metadata
@@ -2814,72 +2834,164 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 if (landuse != null){
-                    if (landuse == "B21"){
-                        polygon.fillColor = Color.parseColor("#B21B21")
-                    }
-
-                    if (landuse == "AAA"){
-                        polygon.fillColor = Color.parseColor("#AAAAAA")
-                    }
-
-                    if (landuse == "A54"){
-                        polygon.fillColor = Color.parseColor("#A54A54")
-                    }
-
-                    if (landuse == "A53"){
-                        polygon.fillColor = Color.parseColor("#A53A53")
-                    }
-
-                    if (landuse == "C21"){
-                        polygon.fillColor = Color.parseColor("#C21C21")
-                    }
-
-                    if (landuse == "C11"){
-                        polygon.fillColor = Color.parseColor("#C11C11")
-                    }
-
-                    if (landuse == "C31"){
-                        polygon.fillColor = Color.parseColor("#C31C31")
-                    }
-
-                    if (landuse == "D22"){
-                        polygon.fillColor = Color.parseColor("#D22D22")
-                    }
-
-                    if (landuse == "B41"){
-                        polygon.fillColor = Color.parseColor("#B41B41")
-                    }
-
-                    if (landuse == "B11"){
-                        polygon.fillColor = Color.parseColor("#B11B11")
-                    }
-
-                    if (landuse == "D23"){
-                        polygon.fillColor = Color.parseColor("#D23D23")
-                    }
-
-                    if (landuse == "A31"){
-                        polygon.fillColor = Color.parseColor("#A31A31")
-                    }
-
-                    if (landuse == "A63"){
-                        polygon.fillColor = Color.parseColor("#A63A63")
+                    if (landuse == "A11"){
+                        polygon.fillColor = Color.parseColor("#FEE6C2")
                     }
 
                     if (landuse == "A12"){
-                        polygon.fillColor = Color.parseColor("#A12A12")
+                        polygon.fillColor = Color.parseColor("#DFC16F")
+                    }
+
+                    if (landuse == "A21"){
+                        polygon.fillColor = Color.parseColor("#C08484")
+                    }
+
+                    if (landuse == "A31"){
+                        polygon.fillColor = Color.parseColor("#ED83B8")
+                    }
+
+                    if (landuse == "A32"){
+                        polygon.fillColor = Color.parseColor("#DFB0A4")
+                    }
+
+                    if (landuse == "A41"){
+                        polygon.fillColor = Color.parseColor("#F6718A")
+                    }
+
+                    if (landuse == "A51"){
+                        polygon.fillColor = Color.parseColor("#E526FE")
+                    }
+
+                    if (landuse == "A52"){
+                        polygon.fillColor = Color.parseColor("#C53251")
+                    }
+
+                    if (landuse == "A53"){
+                        polygon.fillColor = Color.parseColor("#FC044E")
                     }
 
                     if (landuse == "A54"){
-                        polygon.fillColor = Color.parseColor("#A54A54")
+                        polygon.fillColor = Color.parseColor("#F7412A")
+                    }
+
+                    if (landuse == "A55"){
+                        polygon.fillColor = Color.parseColor("#730000")
+                    }
+
+                    if (landuse == "A61"){
+                        polygon.fillColor = Color.parseColor("#F6B112")
+                    }
+
+                    if (landuse == "A62"){
+                        polygon.fillColor = Color.parseColor("#FF7A00")
+                    }
+
+                    if (landuse == "A63"){
+                        polygon.fillColor = Color.parseColor("#C7581B")
+                    }
+
+                    if (landuse == "B11"){
+                        polygon.fillColor = Color.parseColor("#FFFFBF")
+                    }
+
+                    if (landuse == "B12"){
+                        polygon.fillColor = Color.parseColor("#F4E6A8")
+                    }
+
+                    if (landuse == "B21"){
+                        polygon.fillColor = Color.parseColor("#F7F966")
+                    }
+
+                    if (landuse == "B31"){
+                        polygon.fillColor = Color.parseColor("#DFDC73")
+                    }
+
+                    if (landuse == "B41"){
+                        polygon.fillColor = Color.parseColor("#B8B12C")
+                    }
+
+                    if (landuse == "B51"){
+                        polygon.fillColor = Color.parseColor("#B89112")
+                    }
+
+                    if (landuse == "B52"){
+                        polygon.fillColor = Color.parseColor("#AA6400")
+                    }
+
+                    if (landuse == "C11"){
+                        polygon.fillColor = Color.parseColor("#33A02C")
+                    }
+
+                    if (landuse == "C21"){
+                        polygon.fillColor = Color.parseColor("#0A4F40")
+                    }
+
+                    if (landuse == "C31"){
+                        polygon.fillColor = Color.parseColor("#336633")
+                    }
+
+                    if (landuse == "D11"){
+                        polygon.fillColor = Color.parseColor("#A1D594")
+                    }
+
+                    if (landuse == "D21"){
+                        polygon.fillColor = Color.parseColor("#80E45A")
+                    }
+
+                    if (landuse == "D22"){
+                        polygon.fillColor = Color.parseColor("#71B05A")
+                    }
+
+                    if (landuse == "D23"){
+                        polygon.fillColor = Color.parseColor("#607E33")
                     }
 
                     if (landuse == "E11"){
-                        polygon.fillColor = Color.parseColor("#E11E11")
+                        polygon.fillColor = Color.parseColor("#B4A7D0")
+                    }
+
+                    if (landuse == "E21"){
+                        polygon.fillColor = Color.parseColor("#997499")
+                    }
+
+                    if (landuse == "E22"){
+                        polygon.fillColor = Color.parseColor("#7C1EA2")
+                    }
+
+                    if (landuse == "F11"){
+                        polygon.fillColor = Color.parseColor("#C1DBEC")
+                    }
+
+                    if (landuse == "F12"){
+                        polygon.fillColor = Color.parseColor("#ABC5CA")
+                    }
+
+                    if (landuse == "F13"){
+                        polygon.fillColor = Color.parseColor("#ABB6A5")
+                    }
+
+                    if (landuse == "F21"){
+                        polygon.fillColor = Color.parseColor("#585A8A")
+                    }
+
+                    if (landuse == "F22"){
+                        polygon.fillColor = Color.parseColor("#7BB5AC")
                     }
 
                     if (landuse == "F23"){
-                        polygon.fillColor = Color.parseColor("#F23F23")
+                        polygon.fillColor = Color.parseColor("#9FF2FF")
+                    }
+
+                    if (landuse == "G11"){
+                        polygon.fillColor = Color.parseColor("#3EA7FF")
+                    }
+
+                    if (landuse == "G12"){
+                        polygon.fillColor = Color.parseColor("#5D6DFF")
+                    }
+
+                    if (landuse == "G21"){
+                        polygon.fillColor = Color.parseColor("#1739FF")
                     }
 
                 }
@@ -2940,7 +3052,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if (type.equals("tracking")){
                     marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
                     layerInfo.layer = TRACKING
+                }
 
+                if (type.equals("flora2")){
+                    layerInfo.layer = LAYER_FLORA2
+                }
+
+                if (type.equals("nothing")){
+                    layerInfo.layer = NOTHING
                 }
 
                 // metadata

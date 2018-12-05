@@ -203,6 +203,20 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             lat = base.GPS_LAT!!
             log = base.GPS_LON!!
 
+            try {
+                var geocoder:Geocoder = Geocoder(context);
+
+                var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+
+                if(list.size > 0){
+                    System.out.println("list : " + list);
+
+                    fishinvregionET.setText(list.get(0).getAddressLine(0));
+                }
+            } catch (e:IOException) {
+                e.printStackTrace();
+            }
+
         }
 
         if(basechkdata){

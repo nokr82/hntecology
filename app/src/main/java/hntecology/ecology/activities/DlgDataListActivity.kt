@@ -31,6 +31,7 @@ class DlgDataListActivity : Activity() {
     private lateinit var insectData : ArrayList<Insect_attribute>
     private lateinit var florasData : ArrayList<Flora_Attribute>
     private  lateinit var zoobenthosData : ArrayList<Zoobenthos_Attribute>
+    private lateinit var manyflorasData : ArrayList<ManyFloraAttribute>
 
     private lateinit var biotopeAdaper : DataBiotopeAdapter
     private lateinit var birdsAadapter: DataBirdsAdapter;
@@ -40,6 +41,7 @@ class DlgDataListActivity : Activity() {
     private lateinit var insectAdapter : DataInsectAdapter
     private lateinit var floraAdapter : DataFloraAdapter
     private lateinit var zoobenthousAdapter : DataZoobenthosAdapter
+    private lateinit var manyfloraAdapter : DataManyFloraAdapter
 
     private val MarkerCallBackData = 1004
 
@@ -51,6 +53,7 @@ class DlgDataListActivity : Activity() {
     val INSECT_DATA = 3005
     val FLORA_DATA = 3006
     val ZOOBENTHOS_DATA = 3007
+    val FLORA_DATA2 = 3008
 
     var tableName:String = ""
     var titleName:String=""
@@ -67,6 +70,7 @@ class DlgDataListActivity : Activity() {
     val INSECT = 6
     val FLORA = 7
     val ZOOBENTHOUS = 8
+    val FLORA2 = 9
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,6 +104,7 @@ class DlgDataListActivity : Activity() {
         insectData = ArrayList()
         florasData = ArrayList()
         zoobenthosData = ArrayList()
+        manyflorasData = ArrayList()
 
         biotopeAdaper = DataBiotopeAdapter(context,biotopeData)
         birdsAadapter = DataBirdsAdapter(context,birdsData)
@@ -109,6 +114,7 @@ class DlgDataListActivity : Activity() {
         insectAdapter = DataInsectAdapter(context,insectData)
         floraAdapter = DataFloraAdapter(context,florasData)
         zoobenthousAdapter = DataZoobenthosAdapter(context,zoobenthosData)
+        manyfloraAdapter = DataManyFloraAdapter(context,manyflorasData)
 
         if(intent.getStringExtra("markerid") != null){
             markerid = intent.getStringExtra("markerid")
@@ -230,6 +236,22 @@ class DlgDataListActivity : Activity() {
             listView1.adapter = zoobenthousAdapter
 
         }
+
+        if(tableName.equals("ManyFloraAttribute")){
+
+            val data:Array<String> = arrayOf("id","GROP_ID","INV_REGION","INV_PERSON","INV_DT","INV_TM","TRE_NUM","TRE_SPEC","TRE_FAMI","TRE_SCIEN","TRE_H"
+                    ,"TRE_BREA" ,"TRE_COVE" ,"STRE_NUM" ,"STRE_SPEC" ,"STRE_FAMI" ,"STRE_SCIEN" ,"STRE_H" ,"STRE_BREA" ,"STRE_COVE" ,"SHR_NUM","SHR_SPEC" ,"SHR_FAMI","SHR_SCIEN"
+                    ,  "SHR_H","SHR_COVE","HER_NUM","HER_SPEC","HER_FAMI","HER_SCIEN","HER_H","HER_COVE","GPS_LAT","GPS_LON","TEMP_YN","CONF_MOD")
+
+            val manyFloraData = db.query(tableName,data,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null)
+
+            manyflorasdataList(manyflorasData,manyFloraData)
+
+            listView1.adapter = manyfloraAdapter
+
+        }
+
+
 
         listView1.setOnItemClickListener{ parent, view, position, id ->
 
@@ -364,6 +386,22 @@ class DlgDataListActivity : Activity() {
 
             }
 
+            if(tableName.equals("ManyFloraAttribute")){
+
+                val floradata = manyfloraAdapter.getItem(position)
+
+                val intent = Intent(this, Flora2Activity::class.java)
+
+                intent!!.putExtra("id", floradata.id.toString())
+                intent.putExtra("set",3)
+                intent!!.putExtra("GROP_ID",floradata.GROP_ID)
+                intent.putExtra("export", 70)
+                intent!!.putExtra("markerid",markerid)
+
+                startActivityForResult(intent, FLORA_DATA2)
+
+            }
+
         }
 
         closeLL.setOnClickListener {
@@ -495,6 +533,22 @@ class DlgDataListActivity : Activity() {
                     , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32),data.getFloat(33)
                     , data.getFloat(34),data.getFloat(35),data.getFloat(36),data.getFloat(37),data.getString(38),data.getString(39),data.getString(40),data.getString(41),data.getString(42),data.getString(43),data.getString(44)
                     , data.getString(45),data.getString(46),data.getString(47),data.getString(48),data.getFloat(49),data.getFloat(50),data.getString(51),data.getString(52),data.getString(53),data.getString(54),data.getString(55))
+
+            listdata.add(model)
+        }
+    }
+
+    fun manyflorasdataList(listdata: java.util.ArrayList<ManyFloraAttribute>, data: Cursor) {
+
+        while (data.moveToNext()){
+
+            var model : ManyFloraAttribute;
+
+            model =ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
+                    data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getFloat(12), data.getInt(13), data.getString(14)
+                    , data.getString(15),data.getString(16), data.getFloat(17), data.getFloat(18), data.getFloat(19), data.getInt(20), data.getString(21), data.getString(22)
+                    , data.getString(23), data.getFloat(24), data.getFloat(25), data.getInt(26), data.getString(27), data.getString(28),data.getString(29),data.getFloat(30),data.getFloat(31),data.getFloat(32)
+                    ,data.getFloat(33),data.getString(34),data.getString(35))
 
             listdata.add(model)
         }
@@ -941,7 +995,61 @@ class DlgDataListActivity : Activity() {
                     }
 
                 }
+
+                FLORA_DATA2 -> {
+                    if (data!!.getIntExtra("reset",0) != null) {
+
+                        val reset = data!!.getIntExtra("reset",0)
+                        println("listdata reset $reset")
+                        if(reset == 100){
+
+                            val data:Array<String> = arrayOf("id","GROP_ID","INV_REGION","INV_PERSON","INV_DT","INV_TM","TRE_NUM","TRE_SPEC","TRE_FAMI","TRE_SCIEN","TRE_H"
+                                    ,"TRE_BREA" ,"TRE_COVE" ,"STRE_NUM" ,"STRE_SPEC" ,"STRE_FAMI" ,"STRE_SCIEN" ,"STRE_H" ,"STRE_BREA" ,"STRE_COVE" ,"SHR_NUM","SHR_SPEC" ,"SHR_FAMI","SHR_SCIEN"
+                                    ,  "SHR_H","SHR_COVE","HER_NUM","HER_SPEC","HER_FAMI","HER_SCIEN","HER_H","HER_COVE","GPS_LAT","GPS_LON","TEMP_YN","CONF_MOD")
+
+                            val manyFloraData = db.query(tableName,data,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null)
+
+                            if(manyflorasData != null){
+                                manyflorasData.clear()
+                            }
+
+                            manyflorasdataList(manyflorasData,manyFloraData)
+
+                            listView1.adapter = manyfloraAdapter
+
+                            manyfloraAdapter.notifyDataSetChanged()
+
+                        }
+
+                    }
+
+                    if (data!!.getStringExtra("markerid") != null){
+
+                        val markerpk = data!!.getStringExtra("markerid")
+                        println("datalist --------markerpk $markerpk")
+
+                        var intent = Intent()
+                        intent.putExtra("markerid", markerpk)
+                        setResult(RESULT_OK, intent);
+
+                        finish()
+                    }
+
+                    if(data!!.getIntExtra("export" , 0) != null){
+                        var intent = Intent()
+
+                        val export = data!!.getIntExtra("export",0)
+
+                        intent.putExtra("export",export)
+                        setResult(RESULT_OK, intent)
+
+                        finish()
+                    }
+                }
             }
         }
     }
+
+
+
 }

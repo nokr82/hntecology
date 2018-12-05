@@ -91,6 +91,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         val LAYER_MYLOCATION = 2009
         val TRACKING = 2010
         val NOTHING = 2011
+        val LAYER_FLORA2 = 2012
 
         val BIOTOPE_DATA = 3000
         val BIRDS_DATA = 3001
@@ -100,6 +101,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         val INSECT_DATA = 3005
         val FLORA_DATA = 3006
         val ZOOBENTHOS_DATA = 3007
+        val FLORA_DATA2 = 3008
 
         val SEARCHADDRESS = 4000
 
@@ -138,6 +140,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     var insectDatas:ArrayList<Insect_attribute> = ArrayList<Insect_attribute>()
     var mammaliaDatas:ArrayList<Mammal_attribute> = ArrayList<Mammal_attribute>()
     var reptiliaDatas:ArrayList<Reptilia_attribute> = ArrayList<Reptilia_attribute>()
+    var manyflorasDatas:ArrayList<ManyFloraAttribute> = ArrayList<ManyFloraAttribute>()
     var zoobenthousDatas:ArrayList<Zoobenthos_Attribute> = ArrayList<Zoobenthos_Attribute>()
     var trackingDatas:ArrayList<Tracking> = ArrayList<Tracking>()
 
@@ -177,6 +180,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     var insectdataArray:ArrayList<Insect_attribute> = ArrayList<Insect_attribute>()
     var floradataArray:ArrayList<Flora_Attribute> = ArrayList<Flora_Attribute>()
     var zoobenthosArray:ArrayList<Zoobenthos_Attribute> = ArrayList<Zoobenthos_Attribute>()
+    var manyfloradataArray:ArrayList<ManyFloraAttribute> = ArrayList<ManyFloraAttribute>()
 
     var jsonOb: ArrayList<LayerModel> = ArrayList<LayerModel>()
 
@@ -404,6 +408,23 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 
             currentLayer = LAYER_ZOOBENTHOS
+
+            if (drawer_view.visibility == View.VISIBLE) {
+                endDraw()
+            } else {
+                startDraw()
+            }
+
+        }
+
+        btn_flora2.setOnClickListener {
+            if(chkDivision){
+                if( !chkDivision(LAYER_FLORA2)) {
+                    return@setOnClickListener
+                }
+            }
+
+            currentLayer = LAYER_FLORA2
 
             if (drawer_view.visibility == View.VISIBLE) {
                 endDraw()
@@ -854,10 +875,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 MarkerCallBackData -> {
-                    if(data!!.getStringExtra("markerid") != null){
+                    if (data!!.getStringExtra("markerid") != null) {
                         val markerid = data!!.getStringExtra("markerid")
-                        for(i in 0..points.size -1){
-                            if(points.get(i).id == markerid){
+                        for (i in 0..points.size - 1) {
+                            if (points.get(i).id == markerid) {
                                 points.get(i).remove()
                             }
                         }
@@ -874,29 +895,29 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 BIOTOPE_DATA -> {
-                    if(data!!.getStringExtra("polygonid") != null) {
+                    if (data!!.getStringExtra("polygonid") != null) {
                         val polygonid = data!!.getStringExtra("polygonid")
                         println("biotope_data  $polygonid")
 
-                        println(polygons.size.toString()  + "-----------------------------")
-                        for(i in 0..polygons.size -1){
+                        println(polygons.size.toString() + "-----------------------------")
+                        for (i in 0..polygons.size - 1) {
                             val polygon = polygons.get(i)
                             println("polygonid : ${polygon.id}")
                             println("polygonid : ${polygonid}")
 
-                                if ((polygon.id).equals(polygonid)) {
+                            if ((polygon.id).equals(polygonid)) {
 
-                                    println("ssssssssssssss : ${polygon.hashCode()}")
+                                println("ssssssssssssss : ${polygon.hashCode()}")
 
-                                    polygons.get(i).remove()
-                                    polygons.remove(polygons.get(i))
+                                polygons.get(i).remove()
+                                polygons.remove(polygons.get(i))
 
-                                    runOnUiThread(Runnable {
-                                        polygon.remove()
+                                runOnUiThread(Runnable {
+                                    polygon.remove()
 //                                        polygons.removeAt(i)
-                                    })
+                                })
 //                                polygons.remove(polygons.get(i))
-                                }
+                            }
                         }
 
                         println("polygons : " + polygons)
@@ -904,13 +925,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                     }
 
-                    if(data!!.getIntExtra("export" , 0) != null){
+                    if (data!!.getIntExtra("export", 0) != null) {
 
-                        val export = data!!.getIntExtra("export",0)
+                        val export = data!!.getIntExtra("export", 0)
 
                         println("----------------$export")
 
-                        if(export == 70){
+                        if (export == 70) {
                             layerDivision = 0
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
@@ -923,13 +944,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 }
 
-                BIRDS_DATA ->{
+                BIRDS_DATA -> {
 
-                    if(data!!.getStringExtra("markerid") != null){
+                    if (data!!.getStringExtra("markerid") != null) {
                         val markerid = data!!.getStringExtra("markerid")
-                        for(i in 0..points.size -1){
+                        for (i in 0..points.size - 1) {
                             println("------------remove-------${points.size}")
-                            if(points.get(i).id == markerid){
+                            if (points.get(i).id == markerid) {
                                 points.get(i).remove()
                                 break
                             }
@@ -937,14 +958,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         println("------------removeiiiiii-------${points.size}")
                     }
 
-                    if(data!!.getStringExtra("reset") != null){
+                    if (data!!.getStringExtra("reset") != null) {
 
                     }
 
-                    if(data!!.getIntExtra("export", 0 ) != null){
-                        val export = data!!.getIntExtra("export",0)
+                    if (data!!.getIntExtra("export", 0) != null) {
+                        val export = data!!.getIntExtra("export", 0)
 
-                        if(export == 70){
+                        if (export == 70) {
                             layerDivision = 1
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
@@ -956,25 +977,25 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 }
 
-                REPTILIA_DATA ->{
-                    if(data!!.getStringExtra("markerid") != null){
+                REPTILIA_DATA -> {
+                    if (data!!.getStringExtra("markerid") != null) {
                         val markerid = data!!.getStringExtra("markerid")
-                        for(i in 0..points.size -1){
-                            if(points.get(i).id == markerid){
+                        for (i in 0..points.size - 1) {
+                            if (points.get(i).id == markerid) {
                                 points.get(i).remove()
                                 break
                             }
                         }
                     }
 
-                    if(data!!.getStringExtra("reset") != null){
+                    if (data!!.getStringExtra("reset") != null) {
 
                     }
 
-                    if(data!!.getIntExtra("export", 0 ) != null){
-                        val export = data!!.getIntExtra("export",0)
+                    if (data!!.getIntExtra("export", 0) != null) {
+                        val export = data!!.getIntExtra("export", 0)
 
-                        if(export == 70){
+                        if (export == 70) {
                             layerDivision = 2
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
@@ -987,24 +1008,24 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 MAMMALIA_DATA -> {
-                    if(data!!.getStringExtra("markerid") != null){
+                    if (data!!.getStringExtra("markerid") != null) {
                         val markerid = data!!.getStringExtra("markerid")
-                        for(i in 0..points.size -1){
-                            if(points.get(i).id == markerid){
+                        for (i in 0..points.size - 1) {
+                            if (points.get(i).id == markerid) {
                                 points.get(i).remove()
                                 break
                             }
                         }
                     }
 
-                    if(data!!.getStringExtra("reset") != null){
+                    if (data!!.getStringExtra("reset") != null) {
 
                     }
 
-                    if(data!!.getIntExtra("export", 0 ) != null){
-                        val export = data!!.getIntExtra("export",0)
+                    if (data!!.getIntExtra("export", 0) != null) {
+                        val export = data!!.getIntExtra("export", 0)
 
-                        if(export == 70){
+                        if (export == 70) {
                             layerDivision = 3
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
@@ -1016,24 +1037,24 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 FISH_DATA -> {
-                    if(data!!.getStringExtra("markerid") != null){
+                    if (data!!.getStringExtra("markerid") != null) {
                         val markerid = data!!.getStringExtra("markerid")
-                        for(i in 0..points.size -1){
-                            if(points.get(i).id == markerid){
+                        for (i in 0..points.size - 1) {
+                            if (points.get(i).id == markerid) {
                                 points.get(i).remove()
                                 break
                             }
                         }
                     }
 
-                    if(data!!.getStringExtra("reset") != null){
+                    if (data!!.getStringExtra("reset") != null) {
 
                     }
 
-                    if(data!!.getIntExtra("export", 0 ) != null){
-                        val export = data!!.getIntExtra("export",0)
+                    if (data!!.getIntExtra("export", 0) != null) {
+                        val export = data!!.getIntExtra("export", 0)
 
-                        if(export == 70){
+                        if (export == 70) {
                             layerDivision = 4
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
@@ -1045,24 +1066,24 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 INSECT_DATA -> {
-                    if(data!!.getStringExtra("markerid") != null){
+                    if (data!!.getStringExtra("markerid") != null) {
                         val markerid = data!!.getStringExtra("markerid")
-                        for(i in 0..points.size -1){
-                            if(points.get(i).id == markerid){
+                        for (i in 0..points.size - 1) {
+                            if (points.get(i).id == markerid) {
                                 points.get(i).remove()
                                 break
                             }
                         }
                     }
 
-                    if(data!!.getStringExtra("reset") != null){
+                    if (data!!.getStringExtra("reset") != null) {
 
                     }
 
-                    if(data!!.getIntExtra("export", 0 ) != null){
-                        val export = data!!.getIntExtra("export",0)
+                    if (data!!.getIntExtra("export", 0) != null) {
+                        val export = data!!.getIntExtra("export", 0)
 
-                        if(export == 70){
+                        if (export == 70) {
                             layerDivision = 5
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
@@ -1074,24 +1095,24 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 FLORA_DATA -> {
-                    if(data!!.getStringExtra("markerid") != null){
+                    if (data!!.getStringExtra("markerid") != null) {
                         val markerid = data!!.getStringExtra("markerid")
-                        for(i in 0..points.size -1){
-                            if(points.get(i).id == markerid){
+                        for (i in 0..points.size - 1) {
+                            if (points.get(i).id == markerid) {
                                 points.get(i).remove()
                                 break
                             }
                         }
                     }
 
-                    if(data!!.getStringExtra("reset") != null){
+                    if (data!!.getStringExtra("reset") != null) {
 
                     }
 
-                    if(data!!.getIntExtra("export", 0 ) != null){
-                        val export = data!!.getIntExtra("export",0)
+                    if (data!!.getIntExtra("export", 0) != null) {
+                        val export = data!!.getIntExtra("export", 0)
 
-                        if(export == 70){
+                        if (export == 70) {
                             layerDivision = 6
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
@@ -1103,27 +1124,59 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 ZOOBENTHOS_DATA -> {
-                    if(data!!.getStringExtra("markerid") != null){
+                    if (data!!.getStringExtra("markerid") != null) {
                         val markerid = data!!.getStringExtra("markerid")
-                        for(i in 0..points.size -1){
-                            if(points.get(i).id == markerid){
+                        for (i in 0..points.size - 1) {
+                            if (points.get(i).id == markerid) {
                                 points.get(i).remove()
                                 break
                             }
                         }
                     }
 
-                    if(data!!.getStringExtra("reset") != null){
+                    if (data!!.getStringExtra("reset") != null) {
 
                     }
 
-                    if(data!!.getIntExtra("export", 0 ) != null){
-                        val export = data!!.getIntExtra("export",0)
+                    if (data!!.getIntExtra("export", 0) != null) {
+                        val export = data!!.getIntExtra("export", 0)
 
                         println("export $export ---------")
 
-                        if(export == 70){
+                        if (export == 70) {
                             layerDivision = 7
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                            } else {
+                                exportZoobenthous()
+                            }
+                        }
+                    }
+                }
+
+                FLORA_DATA2 -> {
+
+                    if (data!!.getStringExtra("markerid") != null) {
+                        val markerid = data!!.getStringExtra("markerid")
+                        for (i in 0..points.size - 1) {
+                            if (points.get(i).id == markerid) {
+                                points.get(i).remove()
+                                break
+                            }
+                        }
+                    }
+
+                    if (data!!.getStringExtra("reset") != null) {
+
+                    }
+
+                    if (data!!.getIntExtra("export", 0) != null) {
+                        val export = data!!.getIntExtra("export", 0)
+
+                        println("export $export ---------")
+
+                        if (export == 70) {
+                            layerDivision = 9
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
                             } else {
@@ -1721,6 +1774,74 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         }
                     }
 
+                    LAYER_FLORA2 -> {
+                        val dataList: Array<String> = arrayOf("*");
+
+                        val data = db.query("ManyFloraAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+
+                        if (manyfloradataArray != null) {
+                            manyfloradataArray.clear()
+                        }
+
+                        var title = ""
+
+                        while (data.moveToNext()) {
+
+                            var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
+                                    data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getFloat(12), data.getInt(13), data.getString(14)
+                                    , data.getString(15),data.getString(16), data.getFloat(17), data.getFloat(18), data.getFloat(19), data.getInt(20), data.getString(21), data.getString(22)
+                                    , data.getString(23), data.getFloat(24), data.getFloat(25), data.getInt(26), data.getString(27), data.getString(28),data.getString(29),data.getFloat(30),data.getFloat(31),data.getFloat(32)
+                                    ,data.getFloat(33),data.getString(34),data.getString(35))
+                            manyfloradataArray.add(manyFloraAttribute)
+
+                        }
+
+                        for (i in 0..manyfloradataArray.size - 1) {
+                            title = "식물2"
+
+                            marker.title = title
+                        }
+
+                        if (manyfloradataArray.size == 0) {
+                            title = "식물2"
+
+                            marker.title = title
+
+                            intent = Intent(this, Flora2Activity::class.java)
+
+                            intent!!.putExtra("GROP_ID", attrubuteKey)
+                            intent!!.putExtra("markerid", marker.id)
+
+                            println("intent-----------------------------------${attrubuteKey.toString()}")
+
+                            startActivityForResult(intent, FLORA_DATA2)
+                        }
+
+                        if(manyfloradataArray.size == 1 ){
+
+                            intent = Intent(this, Flora2Activity::class.java)
+
+
+                            intent!!.putExtra("id" , manyfloradataArray.get(0).id)
+                            intent!!.putExtra("GROP_ID", attrubuteKey)
+                            intent!!.putExtra("markerid", marker.id)
+
+                            startActivityForResult(intent, FLORA_DATA2)
+
+                        }
+
+                        if (manyfloradataArray.size > 1) {
+                            val intent = Intent(this, DlgDataListActivity::class.java)
+                            intent.putExtra("title", "식물2")
+                            intent.putExtra("table", "ManyFloraAttribute")
+                            intent.putExtra("DlgHeight", 600f);
+                            intent!!.putExtra("markerid", marker.id)
+                            intent.putExtra("GROP_ID", attrubuteKey)
+                            startActivityForResult(intent, FLORA_DATA2);
+                        }
+                    }
+
                     LAYER_MYLOCATION -> {
 
                     }
@@ -1740,7 +1861,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 if (myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIRDS && myLayer != LAYER_REPTILIA && myLayer != LAYER_MAMMALIA && myLayer != LAYER_FISH && myLayer != LAYER_INSECT
-                        && myLayer != LAYER_FLORA && myLayer != TRACKING && myLayer != LAYER_MYLOCATION && myLayer != LAYER_ZOOBENTHOS) {
+                        && myLayer != LAYER_FLORA && myLayer != TRACKING && myLayer != LAYER_MYLOCATION && myLayer != LAYER_ZOOBENTHOS && myLayer != LAYER_FLORA2) {
                     intent!!.putExtra("id", attrubuteKey.toString())
 
                     startActivityForResult(intent, MarkerCallBackData)
@@ -2118,7 +2239,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     startActivityForResult(intent, PolygonCallBackData)
                 }
                 if (myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIOTOPE && myLayer != LAYER_BIRDS && myLayer != LAYER_REPTILIA && myLayer != LAYER_MAMMALIA && myLayer != LAYER_FISH
-                        && myLayer != LAYER_INSECT && myLayer != LAYER_FLORA && myLayer != TRACKING && myLayer != NOTHING) {
+                        && myLayer != LAYER_INSECT && myLayer != LAYER_FLORA && myLayer != TRACKING && myLayer != NOTHING && myLayer != LAYER_FLORA2) {
                     intent!!.putExtra("id", attrubuteKey.toString())
 
                     startActivityForResult(intent, PolygonCallBackData)
@@ -3070,6 +3191,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 drawPoint(geoPoint)
                             }
 
+                            LAYER_FLORA2 -> {
+                                drawPoint(geoPoint)
+                            }
+
                         }
 
                     }
@@ -3271,6 +3396,25 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 endDraw()
             }
 
+            LAYER_FLORA2 -> {
+                intent = Intent(this, Flora2Activity::class.java)
+
+                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                marker.title = "식물2"
+
+                points.add(marker)
+                allpoints.add(marker)
+
+                intent!!.putExtra("latitude", geoPoint.latitude.toString())
+                intent!!.putExtra("longitude", geoPoint.longitude.toString())
+                intent!!.putExtra("markerid",marker.id)
+                intent!!.putExtra("GROP_ID", attrubuteKey.toString())
+
+                startActivityForResult(intent, FLORA_DATA2)
+
+                endDraw()
+            }
+
             LAYER_MYLOCATION -> {
 
             }
@@ -3391,6 +3535,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             LAYER_MYLOCATION -> {
                 btn_mygps.text = "내 위치로 이동"
+            }
+
+            LAYER_FLORA2 -> {
+                btn_flora2.text = "식물상2 추가 중"
             }
 
         }
@@ -3556,6 +3704,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             LAYER_MYLOCATION -> {
                 btn_mygps.text = "내 위치로 이동"
+            }
+
+            LAYER_FLORA2 -> {
+                btn_flora2.text = "식물상2 추가 중"
             }
 
         }
@@ -4694,6 +4846,142 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     }
 
+    fun exportManyFloras(){
+        var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        val db = dbManager.createDataBase();
+        val dataList: Array<String> = arrayOf("*")
+        val data = db.query("ManyFloraAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var datas:ArrayList<ManyFloraAttribute> = ArrayList<ManyFloraAttribute>()
+        var chkData = false
+
+        while (data.moveToNext()) {
+
+            var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
+                    data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getFloat(12), data.getInt(13), data.getString(14)
+                    , data.getString(15),data.getString(16), data.getFloat(17), data.getFloat(18), data.getFloat(19), data.getInt(20), data.getString(21), data.getString(22)
+                    , data.getString(23), data.getFloat(24), data.getFloat(25), data.getInt(26), data.getString(27), data.getString(28),data.getString(29),data.getFloat(30),data.getFloat(31),data.getFloat(32)
+                    ,data.getFloat(33),data.getString(34),data.getString(35))
+
+            datas.add(manyFloraAttribute)
+
+        }
+
+        if(datas != null){
+            for(i in 0..datas.size-1){
+                val item = datas.get(i)
+                val data = db.query("ManyFloraAttribute", dataList, "GROP_ID = '${item.GROP_ID}'", null, null, null, "", null)
+
+                while (data.moveToNext()) {
+
+                    var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
+                            data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getFloat(12), data.getInt(13), data.getString(14)
+                            , data.getString(15),data.getString(16), data.getFloat(17), data.getFloat(18), data.getFloat(19), data.getInt(20), data.getString(21), data.getString(22)
+                            , data.getString(23), data.getFloat(24), data.getFloat(25), data.getInt(26), data.getString(27), data.getString(28),data.getString(29),data.getFloat(30),data.getFloat(31),data.getFloat(32)
+                            ,data.getFloat(33),data.getString(34),data.getString(35))
+
+                    manyflorasDatas.add(manyFloraAttribute)
+
+                }
+
+
+            }
+        }
+
+        if(manyflorasDatas.size > 0) {
+
+            for (i in 0..manyflorasDatas.size - 1) {
+
+                val grop_id = manyflorasDatas.get(i).GROP_ID
+
+                val zoo = manyflorasDatas.get(i)
+
+                if (points.size > 0) {
+
+                    for (j in 0..points.size - 1) {
+
+                        if(points.get(j).tag != null) {
+                            val layerInfo = points.get(j).tag as LayerInfo
+
+                            var attrubuteKey = layerInfo.attrubuteKey
+
+                            if (attrubuteKey.equals(grop_id)) {
+
+                                var MANYFLORA:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+
+                                MANYFLORA.add(Exporter.ColumnDef("ID",ogr.OFTString,zoo.id))
+                                MANYFLORA.add(Exporter.ColumnDef("GROP_ID",ogr.OFTString,zoo.GROP_ID))
+                                MANYFLORA.add(Exporter.ColumnDef("INV_REGION",ogr.OFTString,zoo.INV_REGION))
+                                MANYFLORA.add(Exporter.ColumnDef("INV_PERSON",ogr.OFTString,zoo.INV_PERSON))
+                                MANYFLORA.add(Exporter.ColumnDef("INV_DT",ogr.OFTString,zoo.INV_DT))
+                                MANYFLORA.add(Exporter.ColumnDef("INV_TM",ogr.OFTString,zoo.INV_TM))
+                                MANYFLORA.add(Exporter.ColumnDef("TRE_NUM",ogr.OFTInteger,zoo.TRE_NUM))
+                                MANYFLORA.add(Exporter.ColumnDef("TRE_SPEC",ogr.OFTInteger,zoo.TRE_SPEC))
+                                MANYFLORA.add(Exporter.ColumnDef("TRE_FAMI",ogr.OFTInteger,zoo.TRE_FAMI))
+                                MANYFLORA.add(Exporter.ColumnDef("TRE_SCIEN",ogr.OFTInteger,zoo.TRE_SCIEN))
+                                MANYFLORA.add(Exporter.ColumnDef("TRE_H",ogr.OFTInteger,zoo.TRE_H))
+                                MANYFLORA.add(Exporter.ColumnDef("TRE_BREA",ogr.OFTInteger,zoo.TRE_BREA))
+                                MANYFLORA.add(Exporter.ColumnDef("TRE_COVE",ogr.OFTString,zoo.TRE_COVE))
+                                MANYFLORA.add(Exporter.ColumnDef("STRE_NUM",ogr.OFTString,zoo.STRE_NUM))
+                                MANYFLORA.add(Exporter.ColumnDef("STRE_SPEC",ogr.OFTString,zoo.STRE_SPEC))
+                                MANYFLORA.add(Exporter.ColumnDef("STRE_FAMI",ogr.OFTString,zoo.STRE_FAMI))
+                                MANYFLORA.add(Exporter.ColumnDef("STRE_SCIEN",ogr.OFTString,zoo.STRE_SCIEN))
+                                MANYFLORA.add(Exporter.ColumnDef("STRE_H",ogr.OFTString,zoo.STRE_H))
+                                MANYFLORA.add(Exporter.ColumnDef("STRE_BREA",ogr.OFTInteger,zoo.STRE_BREA))
+                                MANYFLORA.add(Exporter.ColumnDef("STRE_COVE",ogr.OFTInteger,zoo.STRE_COVE))
+                                MANYFLORA.add(Exporter.ColumnDef("SHR_NUM",ogr.OFTInteger,zoo.SHR_NUM))
+                                MANYFLORA.add(Exporter.ColumnDef("SHR_SPEC",ogr.OFTInteger,zoo.SHR_SPEC))
+                                MANYFLORA.add(Exporter.ColumnDef("SHR_FAMI",ogr.OFTInteger,zoo.SHR_FAMI))
+                                MANYFLORA.add(Exporter.ColumnDef("SHR_SCIEN",ogr.OFTString,zoo.SHR_SCIEN))
+                                MANYFLORA.add(Exporter.ColumnDef("SHR_H",ogr.OFTString,zoo.SHR_H))
+                                MANYFLORA.add(Exporter.ColumnDef("SHR_COVE",ogr.OFTString,zoo.SHR_COVE))
+                                MANYFLORA.add(Exporter.ColumnDef("HER_NUM",ogr.OFTReal,zoo.HER_NUM))
+                                MANYFLORA.add(Exporter.ColumnDef("HER_SPEC",ogr.OFTReal,zoo.HER_SPEC))
+                                MANYFLORA.add(Exporter.ColumnDef("HER_FAMI",ogr.OFTString,zoo.HER_FAMI))
+                                MANYFLORA.add(Exporter.ColumnDef("HER_SCIEN",ogr.OFTReal,zoo.HER_SCIEN))
+                                MANYFLORA.add(Exporter.ColumnDef("HER_H",ogr.OFTReal,zoo.HER_H))
+                                MANYFLORA.add(Exporter.ColumnDef("HER_COVE",ogr.OFTReal,zoo.HER_COVE))
+                                MANYFLORA.add(Exporter.ColumnDef("GPS_LAT",ogr.OFTReal,zoo.GPS_LAT))
+                                MANYFLORA.add(Exporter.ColumnDef("GPS_LON",ogr.OFTReal,zoo.GPS_LON))
+                                MANYFLORA.add(Exporter.ColumnDef("TEMP_YN",ogr.OFTReal,zoo.TEMP_YN))
+                                MANYFLORA.add(Exporter.ColumnDef("CONF_MOD",ogr.OFTReal,zoo.CONF_MOD))
+
+                                val exporter = Exporter.ExportPointItem(LAYER_FLORA2, MANYFLORA, points.get(j))
+
+                                pointsArray.add(exporter)
+
+                            }
+                        }
+
+                    }
+
+                }
+            }
+
+            Exporter.exportPoint(pointsArray)
+
+            val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora2" + File.separator + "flora2"
+
+            val layerData= db.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+
+            while (layerData.moveToNext()){
+                chkData = true
+            }
+
+            if(chkData){
+
+            }else {
+                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora2" + File.separator + "flora2","식물2", "flora2","Y")
+            }
+
+            pointsArray.clear()
+            manyflorasDatas.clear()
+
+        }
+
+
+    }
+
     fun exportTracking(){
         var trackingPointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
         val dbManager: DataBaseHelper = DataBaseHelper(this)
@@ -5089,6 +5377,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name, jsonOb.get(i).type, jsonOb.get(i).added)
                     }
                 }
+
+                if (layerDivision == 9){
+                    exportManyFloras()
+                }
+
             }
         }
     }
@@ -5267,6 +5560,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name, jsonOb.get(i).type, jsonOb.get(i).added)
                         }
                     }
+
+                    if (layerDivision == 9){
+                        exportManyFloras()
+                    }
+
                 }
             }
         }

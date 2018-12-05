@@ -213,8 +213,13 @@
         <activity
             android:name=".activities.DlgZoobenthosActivity"
             android:theme="@style/full_screen_dialog1" />
-        <activity android:name=".activities.DlgZoobenActivity"
-            android:theme="@style/full_screen_dialog1"></activity>
+        <activity
+            android:name=".activities.DlgZoobenActivity"
+            android:theme="@style/full_screen_dialog1" />
+        <activity android:name=".activities.Flora2Activity"
+            android:screenOrientation="landscape"
+            android:theme="@style/full_screen_dialog2"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"></activity>
     </application>
 
 </manifest>

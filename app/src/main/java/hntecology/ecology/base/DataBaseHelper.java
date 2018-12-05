@@ -21,6 +21,7 @@ import hntecology.ecology.model.Flora_Attribute;
 import hntecology.ecology.model.GpsSet;
 import hntecology.ecology.model.Insect_attribute;
 import hntecology.ecology.model.Mammal_attribute;
+import hntecology.ecology.model.ManyFloraAttribute;
 import hntecology.ecology.model.Reptilia_attribute;
 import hntecology.ecology.model.Tracking;
 import hntecology.ecology.model.Zoobenthos_Attribute;
@@ -759,6 +760,56 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void insertmanyflora_attribute(ManyFloraAttribute ManyFloraAttribute){
+        String query = "INSERT INTO ManyFloraAttribute";
+        query += "(GROP_ID,INV_REGION,INV_PERSON,INV_DT,INV_TM,TRE_NUM,TRE_SPEC,TRE_FAMI";
+        query += ",TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE,STRE_NUM,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_H,STRE_BREA";
+        query += ",STRE_COVE,SHR_NUM,SHR_SPEC,SHR_FAMI,SHR_SCIEN,SHR_H,SHR_COVE,HER_NUM,HER_SPEC,HER_FAMI";
+        query += ",HER_SCIEN,HER_H,HER_COVE,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD)";
+
+        query += " values (";
+        query += " '" + ManyFloraAttribute.getGROP_ID() + "'";
+        query += ", '" + ManyFloraAttribute.getINV_REGION() + "'";
+        query += ", '" + ManyFloraAttribute.getINV_PERSON() + "'";
+        query += ", '" + ManyFloraAttribute.getINV_DT() + "'";
+        query += ", '" + ManyFloraAttribute.getINV_TM() + "'";
+        query += ", '" + ManyFloraAttribute.getTRE_NUM() + "'";
+        query += ", '" + ManyFloraAttribute.getTRE_SPEC() + "'";
+        query += ", '" + ManyFloraAttribute.getTRE_FAMI() + "'";
+        query += ", '" + ManyFloraAttribute.getTRE_SCIEN() + "'";
+        query += ", '" + ManyFloraAttribute.getTRE_H() + "'";
+        query += ", '" + ManyFloraAttribute.getTRE_BREA() + "'";
+        query += ", '" + ManyFloraAttribute.getTRE_COVE() + "'";
+        query += ", '" + ManyFloraAttribute.getSTRE_NUM() + "'";
+        query += ", '" + ManyFloraAttribute.getSTRE_SPEC() + "'";
+        query += ", '" + ManyFloraAttribute.getSTRE_FAMI() + "'";
+        query += ", '" + ManyFloraAttribute.getSTRE_SCIEN() + "'";
+        query += ", '" + ManyFloraAttribute.getSTRE_H() + "'";
+        query += ", '" + ManyFloraAttribute.getSTRE_BREA() + "'";
+        query += ", '" + ManyFloraAttribute.getSTRE_COVE() + "'";
+        query += ", '" + ManyFloraAttribute.getSHR_NUM() + "'";
+        query += ", '" + ManyFloraAttribute.getSHR_SPEC() + "'";
+        query += ", '" + ManyFloraAttribute.getSHR_FAMI() + "'";
+        query += ", '" + ManyFloraAttribute.getSHR_SCIEN() + "'";
+        query += ", '" + ManyFloraAttribute.getSHR_H() + "'";
+        query += ", '" + ManyFloraAttribute.getSHR_COVE() + "'";
+        query += ", '" + ManyFloraAttribute.getHER_NUM() + "'";
+        query += ", '" + ManyFloraAttribute.getHER_SPEC() + "'";
+        query += ", '" + ManyFloraAttribute.getHER_FAMI() + "'";
+        query += ", '" + ManyFloraAttribute.getHER_SCIEN() + "'";
+        query += ", '" + ManyFloraAttribute.getHER_H() + "'";
+        query += ", '" + ManyFloraAttribute.getHER_COVE() + "'";
+        query += ", '" + ManyFloraAttribute.getGPS_LAT() + "'";
+        query += ", '" + ManyFloraAttribute.getGPS_LON() + "'";
+        query += ", '" + ManyFloraAttribute.getTEMP_YN() + "'";
+        query += ", '" + ManyFloraAttribute.getCONF_MOD() + "'";
+        query += " ); ";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
     public void inserttracking(Tracking tracking){
         String query = "INSERT INTO tracking";
         query += "(latitude,longitude)";
@@ -946,6 +997,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public void deletezoobenthous_attribute(Zoobenthos_Attribute ZoobenthosAttribute,String pk) {
         String query = "DELETE FROM ZoobenthosAttribute WHERE id = '" + pk + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void deletemanyflora_attribute(ManyFloraAttribute ManyFloraAttribute,String pk) {
+        String query = "DELETE FROM ManyFloraAttribute WHERE id = '" + pk + "'";
 
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1325,6 +1384,51 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
+
+    public void updatemanyflora_attribute(ManyFloraAttribute ManyFloraAttribute,String pk) {
+
+        String query = "UPDATE ManyFloraAttribute SET  " +
+                "INV_DT='" + ManyFloraAttribute.getINV_DT() + "'"
+                + ",INV_DT='" + ManyFloraAttribute.getINV_DT() + "'"
+                + ",INV_TM='" + ManyFloraAttribute.getINV_TM() + "'"
+                + ",TRE_NUM='" + ManyFloraAttribute.getTRE_NUM() + "'"
+                + ",TRE_SPEC='" + ManyFloraAttribute.getTRE_SPEC() + "'"
+                + ",TRE_FAMI='" + ManyFloraAttribute.getTRE_FAMI() + "'"
+                + ",TRE_SCIEN='" + ManyFloraAttribute.getTRE_SCIEN() + "'"
+                + ",TRE_H='" + ManyFloraAttribute.getTRE_H() + "'"
+                + ",TRE_BREA='" + ManyFloraAttribute.getTRE_BREA() + "'"
+                + ",TRE_COVE='" + ManyFloraAttribute.getTRE_COVE() + "'"
+                + ",STRE_NUM='" + ManyFloraAttribute.getSTRE_NUM() + "'"
+                + ",STRE_SPEC='" + ManyFloraAttribute.getSTRE_SPEC() + "'"
+                + ",STRE_FAMI='" + ManyFloraAttribute.getSTRE_FAMI() + "'"
+                + ",STRE_SCIEN='" + ManyFloraAttribute.getSTRE_SCIEN() + "'"
+                + ",STRE_H='" + ManyFloraAttribute.getSTRE_H() + "'"
+                + ",STRE_BREA='" + ManyFloraAttribute.getSTRE_BREA() + "'"
+                + ",STRE_COVE='" + ManyFloraAttribute.getSTRE_COVE() + "'"
+                + ",SHR_NUM='" + ManyFloraAttribute.getSHR_NUM() + "'"
+                + ",SHR_SPEC='" + ManyFloraAttribute.getSHR_SPEC() + "'"
+                + ",SHR_FAMI='" + ManyFloraAttribute.getSHR_FAMI() + "'"
+                + ",SHR_SCIEN='" + ManyFloraAttribute.getSHR_SCIEN() + "'"
+                + ",SHR_H='" + ManyFloraAttribute.getSHR_H() + "'"
+                + ",SHR_COVE='" + ManyFloraAttribute.getSHR_COVE() + "'"
+                + ",HER_NUM='" + ManyFloraAttribute.getHER_NUM() + "'"
+                + ",HER_SPEC='" + ManyFloraAttribute.getHER_SPEC() + "'"
+                + ",HER_FAMI='" + ManyFloraAttribute.getHER_FAMI() + "'"
+                + ",HER_SCIEN='" + ManyFloraAttribute.getHER_SCIEN() + "'"
+                + ",HER_H='" + ManyFloraAttribute.getHER_H() + "'"
+                + ",HER_COVE='" + ManyFloraAttribute.getHER_COVE() + "'"
+                + ",GPS_LAT='" + ManyFloraAttribute.getGPS_LAT() + "'"
+                + ",GPS_LON='" + ManyFloraAttribute.getGPS_LON() + "'"
+                + ",TEMP_YN='" + ManyFloraAttribute.getTEMP_YN() + "'"
+                + ",CONF_MOD='" + ManyFloraAttribute.getCONF_MOD() + "'"+
+
+                "where id = '" + pk + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
     public void insertGpsSet(GpsSet gpsset) {
         //37 column
         String query = "INSERT INTO gps_set";
@@ -1472,6 +1576,78 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
 
         String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(NUM\n ,9,15)),0)+1 ,-15, 15) FROM ZoobenthosAttribute";
+
+        int num = 0;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                num = cursor.getInt(0);
+            }
+        }
+        cursor.close();
+        return num;
+    }
+
+    public int manyfloratrenumNext(){
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(TRE_NUM\n ,9,15)),0)+1 ,-15, 15) FROM ManyFloraAttribute";
+
+        int num = 0;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                num = cursor.getInt(0);
+            }
+        }
+        cursor.close();
+        return num;
+    }
+
+    public int manyflorastrenumNext(){
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(STRE_NUM\n ,9,15)),0)+1 ,-15, 15) FROM ManyFloraAttribute";
+
+        int num = 0;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                num = cursor.getInt(0);
+            }
+        }
+        cursor.close();
+        return num;
+    }
+
+    public int manyflorashrnumNext(){
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(SHR_NUM\n ,9,15)),0)+1 ,-15, 15) FROM ManyFloraAttribute";
+
+        int num = 0;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                num = cursor.getInt(0);
+            }
+        }
+        cursor.close();
+        return num;
+    }
+
+    public int manyflorahernumNext(){
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(HER_NUM\n ,9,15)),0)+1 ,-15, 15) FROM ManyFloraAttribute";
 
         int num = 0;
 

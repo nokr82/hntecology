@@ -209,6 +209,16 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             lat = base.GPS_LAT!!
             log = base.GPS_LON!!
 
+            var geocoder: Geocoder = Geocoder(context);
+
+            var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+
+            if(list.size > 0){
+                System.out.println("list : " + list);
+
+                invRegionET.setText(list.get(0).getAddressLine(0));
+            }
+
         }
 
         if(basechkdata){

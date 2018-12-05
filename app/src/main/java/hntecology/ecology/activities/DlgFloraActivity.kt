@@ -8,14 +8,14 @@ import android.database.Cursor
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import hntecology.ecology.base.DataBaseHelper
-import hntecology.ecology.base.Utils
 import hntecology.ecology.R
 import hntecology.ecology.adapter.DlgFloraAdapter
+import hntecology.ecology.base.DataBaseHelper
+import hntecology.ecology.base.Jaso
+import hntecology.ecology.base.Utils
 import hntecology.ecology.model.Endangered
 import kotlinx.android.synthetic.main.dlg_flora.*
 import org.json.JSONObject
-import kotlin.collections.ArrayList
 
 class DlgFloraActivity : Activity() {
 
@@ -150,13 +150,11 @@ class DlgFloraActivity : Activity() {
             }
 
             for(i in 0..names.size-1){
-
-                if(names.get(i).toLowerCase().contains(charText)){
+                if (Jaso.startsWith(names.get(i), charText)
+                    || names.get(i).toLowerCase().contains(charText)) {
                     adapterData.add(copyadapterData.get(i))
                 }
-
             }
-
         }
 
         apdater.notifyDataSetChanged()

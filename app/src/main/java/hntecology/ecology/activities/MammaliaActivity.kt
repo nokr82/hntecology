@@ -109,7 +109,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         progressDialog = ProgressDialog(context)
 
         window.setGravity(Gravity.RIGHT);
-        this.setFinishOnTouchOutside(true);
+//        this.setFinishOnTouchOutside(true);
 
         maminvdtTV.text = Utils.todayStr()
         mammaltimeTV.text = Utils.timeStr()

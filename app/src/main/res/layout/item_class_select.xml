@@ -22,7 +22,7 @@
                 android:layout_height="match_parent"
                 android:textSize="15sp"
                 android:text="111"
-                android:gravity="center" />
+                android:gravity="left|center" />
         </LinearLayout>
 
     <View

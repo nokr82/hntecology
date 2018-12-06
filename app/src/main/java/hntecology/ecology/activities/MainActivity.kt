@@ -1827,69 +1827,63 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                         }
 
-//                        for (i in 0..manyfloradataArray.size - 1) {
-//                            title = "식물2"
-//
-//                            marker.title = title
-//                        }
-//
-//                        if (manyfloradataArray.size == 0) {
-//                            title = "식물2"
-//
-//                            marker.title = title
-//
-//                            intent = Intent(this, Flora2Activity::class.java)
-//
-//                            intent!!.putExtra("GROP_ID", attrubuteKey)
-//                            intent!!.putExtra("markerid", marker.id)
-//
-//                            println("intent-----------------------------------${attrubuteKey.toString()}")
-//
-//                            startActivityForResult(intent, FLORA_DATA2)
-//                        }
-//
-//                        if(manyfloradataArray.size == 1 ){
-//
-//                            intent = Intent(this, Flora2Activity::class.java)
-//
-//
-//                            intent!!.putExtra("id" , manyfloradataArray.get(0).id)
-//                            intent!!.putExtra("GROP_ID", attrubuteKey)
-//                            intent!!.putExtra("markerid", marker.id)
-//
-//                            startActivityForResult(intent, FLORA_DATA2)
-//
-//                        }
-//                        if (manyfloradataArray.size > 1) {
-//                            val intent = Intent(this, DlgDataListActivity::class.java)
-//                            intent.putExtra("title", "식물2")
-//                            intent.putExtra("table", "ManyFloraAttribute")
-//                            intent.putExtra("DlgHeight", 600f);
-//                            intent!!.putExtra("markerid", marker.id)
-//                            intent.putExtra("GROP_ID", attrubuteKey)
-//                            startActivityForResult(intent, FLORA_DATA2);
-//                        }
+                        if (manyfloradataArray.size == 0) {
+                            title = "식물2"
 
-                        if(manyfloradataArray != null && manyfloradataArray.size >= 1){
-                            val size = manyfloradataArray.size
+                            marker.title = title
 
-                            intent = Intent(this, Flora2Activity::class.java)
-
-                            intent!!.putExtra("id" , manyfloradataArray.get(size - 1).id)
-                            intent!!.putExtra("GROP_ID", attrubuteKey)
-                            intent!!.putExtra("markerid", marker.id)
-
-                            startActivityForResult(intent, FLORA_DATA2)
-                        }
-
-                        if(manyfloradataArray == null){
                             intent = Intent(this, Flora2Activity::class.java)
 
                             intent!!.putExtra("GROP_ID", attrubuteKey)
                             intent!!.putExtra("markerid", marker.id)
 
+                            println("intent-----------------------------------${attrubuteKey.toString()}")
+
                             startActivityForResult(intent, FLORA_DATA2)
                         }
+
+                        if(manyfloradataArray.size == 1 ){
+
+                            intent = Intent(this, Flora2Activity::class.java)
+
+
+                            intent!!.putExtra("id" , manyfloradataArray.get(0).id)
+                            intent!!.putExtra("GROP_ID", attrubuteKey)
+                            intent!!.putExtra("markerid", marker.id)
+
+                            startActivityForResult(intent, FLORA_DATA2)
+
+                        }
+                        if (manyfloradataArray.size > 1) {
+                            val intent = Intent(this, DlgDataListActivity::class.java)
+                            intent.putExtra("title", "식물2")
+                            intent.putExtra("table", "ManyFloraAttribute")
+                            intent.putExtra("DlgHeight", 600f);
+                            intent!!.putExtra("markerid", marker.id)
+                            intent.putExtra("GROP_ID", attrubuteKey)
+                            startActivityForResult(intent, FLORA_DATA2);
+                        }
+
+//                        if(manyfloradataArray != null && manyfloradataArray.size >= 1){
+//                            val size = manyfloradataArray.size
+//
+//                            intent = Intent(this, Flora2Activity::class.java)
+//
+//                            intent!!.putExtra("id" , manyfloradataArray.get(size - 1).id)
+//                            intent!!.putExtra("GROP_ID", attrubuteKey)
+//                            intent!!.putExtra("markerid", marker.id)
+//
+//                            startActivityForResult(intent, FLORA_DATA2)
+//                        }
+//
+//                        if(manyfloradataArray == null){
+//                            intent = Intent(this, Flora2Activity::class.java)
+//
+//                            intent!!.putExtra("GROP_ID", attrubuteKey)
+//                            intent!!.putExtra("markerid", marker.id)
+//
+//                            startActivityForResult(intent, FLORA_DATA2)
+//                        }
 
                     }
 
@@ -2012,14 +2006,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 val layerinfo = polygon.tag as LayerInfo
 
-                                val division = layerInfo.metadata.has("GPS_LON")
-
                                 for(i in 0..polygons.size-1) {
                                     if (polygons.get(i).tag == polygon.tag) {
-
-                                        println("===============click $division")
-
-                                        if (division == true) {
                                             println("layerinfo.metadata ${layerinfo.metadata}")
 
                                             intent = Intent(this, BiotopeActivity::class.java)
@@ -2079,6 +2067,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             var HER_FAMI = Utils.getString(layerInfo.metadata, "HER_FAMI")
                                             var INV_INDEX = Utils.getString(layerInfo.metadata, "INV_INDEX")
                                             var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
+                                            var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
 
                                             if (INV_INDEX == "" || INV_INDEX == null) {
                                                 INV_INDEX = "0"
@@ -2151,36 +2140,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                             intent!!.putExtra("biotopedata", data)
                                             intent!!.putExtra("GROP_ID", attrubuteKey.toString())
+                                            intent!!.putExtra("EMD_NM",EMD_NM)
                                             intent!!.putExtra("polygonid", polygon.id)
 
                                             endDraw()
 
                                             startActivityForResult(intent, BIOTOPE_DATA)
 
-                                        }
                                     }
-                                }
-
-                                if(division == false) {
-
-                                    intent = Intent(this, BiotopeActivity::class.java)
-
-                                    intent!!.putExtra("GROP_ID", attrubuteKey.toString())
-                                    intent!!.putExtra("polygonid", polygon.id)
-                                    intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
-                                    intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
-
-                                    if (latlngs != null) {
-                                        latlngs.clear()
-                                    }
-
-                                    if (latlngsGPS != null) {
-                                        latlngsGPS.clear()
-                                    }
-
-                                    endDraw()
-
-                                    startActivityForResult(intent, BIOTOPE_DATA)
                                 }
 
                             }
@@ -4448,7 +4415,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 }
             }
-
 
             Exporter.exportPoint(pointsArray)
 

@@ -111,7 +111,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         progressDialog = ProgressDialog(context)
 
         window.setGravity(Gravity.RIGHT);
-        this.setFinishOnTouchOutside(true);
+        //this.setFinishOnTouchOutside(true);
 
         userName = PrefUtils.getStringPreference(context, "name");
 

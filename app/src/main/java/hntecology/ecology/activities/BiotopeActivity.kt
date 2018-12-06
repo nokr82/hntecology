@@ -124,7 +124,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         this.context = this
 
         window.setGravity(Gravity.RIGHT);
-        this.setFinishOnTouchOutside(true);
+//        this.setFinishOnTouchOutside(true);
         buildGoogleApiClient();
 
         images_path = ArrayList();
@@ -1037,47 +1037,53 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         }
 
         btn_biotopCancle1.setOnClickListener {
-            val builder = AlertDialog.Builder(context)
-            builder.setMessage("작성을 취소하시겠습니까?").setCancelable(false)
-                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                        val dbManager: DataBaseHelper = DataBaseHelper(this)
+            if (intent.getSerializableExtra("biotopedata") == null){
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("작성을 취소하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                        val db = dbManager.createDataBase()
+                            val dbManager: DataBaseHelper = DataBaseHelper(this)
 
-                        val dataList: Array<String> = arrayOf("*");
+                            val db = dbManager.createDataBase()
 
-                        val data2 = db.query("biotopeAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+                            val dataList: Array<String> = arrayOf("*");
 
-                        var dataArray:ArrayList<Biotope_attribute> = ArrayList<Biotope_attribute>()
+                            val data2 = db.query("biotopeAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
-                        while (data2.moveToNext()) {
+                            var dataArray:ArrayList<Biotope_attribute> = ArrayList<Biotope_attribute>()
 
-                            var biotope_attribute: Biotope_attribute = Biotope_attribute(data2.getString(0), data2.getString(1), data2.getString(2), data2.getString(3), data2.getString(4), data2.getString(5), data2.getString(6), data2.getInt(7),
-                                    data2.getString(8), data2.getFloat(9), data2.getFloat(10), data2.getString(11), data2.getString(12), data2.getString(13), data2.getFloat(14)
-                                    , data2.getString(15), data2.getString(16), data2.getString(17), data2.getString(18), data2.getString(19), data2.getString(20), data2.getString(21)
-                                    , data2.getString(22), data2.getString(23), data2.getString(24), data2.getString(25), data2.getFloat(26), data2.getFloat(27), data2.getFloat(28)
-                                    , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
-                                    , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
-                                    , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
-                                    , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53))
+                            while (data2.moveToNext()) {
 
-                            dataArray.add(biotope_attribute)
+                                var biotope_attribute: Biotope_attribute = Biotope_attribute(data2.getString(0), data2.getString(1), data2.getString(2), data2.getString(3), data2.getString(4), data2.getString(5), data2.getString(6), data2.getInt(7),
+                                        data2.getString(8), data2.getFloat(9), data2.getFloat(10), data2.getString(11), data2.getString(12), data2.getString(13), data2.getFloat(14)
+                                        , data2.getString(15), data2.getString(16), data2.getString(17), data2.getString(18), data2.getString(19), data2.getString(20), data2.getString(21)
+                                        , data2.getString(22), data2.getString(23), data2.getString(24), data2.getString(25), data2.getFloat(26), data2.getFloat(27), data2.getFloat(28)
+                                        , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
+                                        , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
+                                        , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
+                                        , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53))
 
-                        }
+                                dataArray.add(biotope_attribute)
 
-                        if (dataArray.size == 0 ){
-                            var intent = Intent()
-                            intent.putExtra("polygonid", polygonid)
-                            setResult(RESULT_OK, intent);
-                        }
+                            }
 
-                        finish()
+                            if (dataArray.size == 0 ){
+                                var intent = Intent()
+                                intent.putExtra("polygonid", polygonid)
+                                setResult(RESULT_OK, intent);
+                            }
 
-                    })
-                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
-            val alert = builder.create()
-            alert.show()
+                            finish()
+
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+            }else {
+                finish()
+            }
+
         }
 
         //sqlite 저장.
@@ -1916,6 +1922,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         }
 
         if (intent.getSerializableExtra("biotopedata") != null){
+
             var biotope_attribute = intent.getSerializableExtra("biotopedata") as Biotope_attribute
             println("biotope_attribute ${biotope_attribute.GPS_LON}")
             lat = biotope_attribute.GPS_LAT.toString()
@@ -1930,6 +1937,14 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             etGPS_LONTV.setText(biotope_attribute.GPS_LON.toString())
 
             etINV_REGIONET.setText(biotope_attribute.INV_REGION);                   // 조사지
+
+            if (intent.getStringExtra("EMD_NM") != null){
+                val EMD_NM = intent.getStringExtra("EMD_NM")
+
+                if(EMD_NM != "" && EMD_NM != null){
+                    etINV_REGIONET.setText(EMD_NM);
+                }
+            }
             tvINV_PERSONTV.setText(biotope_attribute.INV_PERSON)                    // 조사자
 
             etINV_DTTV.setText(biotope_attribute.INV_DT)
@@ -2625,75 +2640,94 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
     }
 
     fun clickMethod(v: View) {
-        addPicturesLL!!.removeAllViews()
-        images!!.clear()
-        val tag = v.tag as Int
-        images_path!!.removeAt(tag)
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage("삭제하시겠습니까 ? ").setCancelable(false)
+                .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-        for (k in images_url!!.indices) {
-            val vv = View.inflate(context, R.layout.item_add_image, null)
-            val imageIV = vv.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
-            val delIV = vv.findViewById<View>(R.id.delIV) as ImageView
-            delIV.visibility = View.GONE
-            val del2IV = vv.findViewById<View>(R.id.del2IV) as ImageView
-            del2IV.visibility = View.VISIBLE
-            del2IV.tag = k
-            ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
-            if (imgSeq == 0) {
-                addPicturesLL!!.addView(vv)
-            }
-        }
+                    addPicturesLL!!.removeAllViews()
+                    images!!.clear()
+                    val tag = v.tag as Int
+                    images_path!!.removeAt(tag)
 
-        for (j in images_path!!.indices) {
-            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
-            if (images!!.size == 0) {
-                images!!.add(add_file)
-            } else {
-                try {
-                    images!!.set(images!!.size, add_file)
-                } catch (e: IndexOutOfBoundsException) {
-                    images!!.add(add_file)
-                }
+                    for (k in images_url!!.indices) {
+                        val vv = View.inflate(context, R.layout.item_add_image, null)
+                        val imageIV = vv.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                        val delIV = vv.findViewById<View>(R.id.delIV) as ImageView
+                        delIV.visibility = View.GONE
+                        val del2IV = vv.findViewById<View>(R.id.del2IV) as ImageView
+                        del2IV.visibility = View.VISIBLE
+                        del2IV.tag = k
+                        ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
+                        ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
+                        if (imgSeq == 0) {
+                            addPicturesLL!!.addView(vv)
+                        }
+                    }
+                    for (j in images_path!!.indices) {
+                        val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+                        if (images!!.size == 0) {
+                            images!!.add(add_file)
+                        } else {
+                            try {
+                                images!!.set(images!!.size, add_file)
+                            } catch (e: IndexOutOfBoundsException) {
+                                images!!.add(add_file)
+                            }
 
-            }
-            reset(images_path!!.get(j), j)
-        }
+                        }
+                        reset(images_path!!.get(j), j)
+                    }
+
+                })
+                .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+        val alert = builder.create()
+        alert.show()
     }
 
     fun clickMethod2(v: View) {
-        addPicturesLL!!.removeAllViews()
-        val tag = v.tag as Int
-        images_url!!.removeAt(tag)
-        images_url_remove!!.add(images_id!!.get(tag).toString())
-        images_id!!.removeAt(tag)
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage("삭제하시겠습니까 ? ").setCancelable(false)
+                .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-        for (k in images_url!!.indices) {
-            val vv = View.inflate(context, R.layout.item_add_image, null)
-            val imageIV = vv.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
-            val delIV = vv.findViewById<View>(R.id.delIV) as ImageView
-            delIV.visibility = View.GONE
-            val del2IV = vv.findViewById<View>(R.id.del2IV) as ImageView
-            del2IV.visibility = View.VISIBLE
-            del2IV.tag = k
-            ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
-            if (imgSeq == 0) {
-                addPicturesLL!!.addView(vv)
-            }
-        }
-        for (j in images_path!!.indices) {
-            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
-            if (images!!.size == 0) {
-                images!!.add(add_file)
-            } else {
-                try {
-                    images!!.set(images!!.size, add_file)
-                } catch (e: IndexOutOfBoundsException) {
-                    images!!.add(add_file)
-                }
+                    addPicturesLL!!.removeAllViews()
+                    val tag = v.tag as Int
+                    images_url!!.removeAt(tag)
+                    images_url_remove!!.add(images_id!!.get(tag).toString())
+                    images_id!!.removeAt(tag)
 
-            }
-            reset(images_path!!.get(j), j)
-        }
+                    for (k in images_url!!.indices) {
+                        val vv = View.inflate(context, R.layout.item_add_image, null)
+                        val imageIV = vv.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                        val delIV = vv.findViewById<View>(R.id.delIV) as ImageView
+                        delIV.visibility = View.GONE
+                        val del2IV = vv.findViewById<View>(R.id.del2IV) as ImageView
+                        del2IV.visibility = View.VISIBLE
+                        del2IV.tag = k
+                        ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
+                        if (imgSeq == 0) {
+                            addPicturesLL!!.addView(vv)
+                        }
+                    }
+                    for (j in images_path!!.indices) {
+                        val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+                        if (images!!.size == 0) {
+                            images!!.add(add_file)
+                        } else {
+                            try {
+                                images!!.set(images!!.size, add_file)
+                            } catch (e: IndexOutOfBoundsException) {
+                                images!!.add(add_file)
+                            }
+
+                        }
+                        reset(images_path!!.get(j), j)
+                    }
+
+
+                })
+                .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+        val alert = builder.create()
+        alert.show()
 
     }
 

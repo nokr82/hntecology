@@ -132,42 +132,63 @@ class Flora2Activity : Activity() {
             }
         }
 
-//        if(intent.getStringExtra("GROP_ID") != null){
-//
-//            var AllDatas:ArrayList<ManyFloraAttribute> = ArrayList<ManyFloraAttribute>()
-//
-//            val grop_id = intent.getStringExtra("GROP_ID")
-//
-//            val dataList: Array<String> = arrayOf("*");
-//
-//            val data = db.query("ManyFloraAttribute", dataList, "GROP_ID = '$grop_id'", null, null, null, "", null)
-//
-//            while(data.moveToNext()){
-//
-//                var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
-//                        data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getFloat(12), data.getInt(13), data.getString(14)
-//                        , data.getString(15),data.getString(16), data.getFloat(17), data.getFloat(18), data.getFloat(19), data.getInt(20), data.getString(21), data.getString(22)
-//                        , data.getString(23), data.getFloat(24), data.getFloat(25), data.getInt(26), data.getString(27), data.getString(28),data.getString(29),data.getFloat(30),data.getFloat(31),data.getFloat(32)
-//                        ,data.getFloat(33),data.getString(34),data.getString(35))
-//
-//                AllDatas.add(manyFloraAttribute)
-//            }
-//
-//            if(AllDatas != null){
-//                for (i in 0..AllDatas.size -1){
-//                     trepage = AllDatas.get(i).TRE_NUM!!.toInt()
-//                     strepage = AllDatas.get(i).STRE_NUM!!.toInt()
-//                     shrpage = AllDatas.get(i).SHR_NUM!!.toInt()
-//                     herpage = AllDatas.get(i).HER_NUM!!.toInt()
-//                }
-//            }
-//
-//            trepageTV.setText(trepage.toString() + " / "+ trepage.toString())
-//            strepageTV.setText(strepage.toString() + " / "+ strepage.toString())
-//            shrpageTV.setText(shrpage.toString() + " / "+ strepage.toString())
-//            herpageTV.setText(herpage.toString() + " / "+ strepage.toString())
-//
-//        }
+        if(intent.getStringExtra("GROP_ID") != null){
+
+            var AllDatas:ArrayList<ManyFloraAttribute> = ArrayList<ManyFloraAttribute>()
+
+            val grop_id = intent.getStringExtra("GROP_ID")
+
+            val dataList: Array<String> = arrayOf("*");
+
+            val data = db.query("ManyFloraAttribute", dataList, "GROP_ID = '$grop_id'", null, null, null, "", null)
+
+            while(data.moveToNext()){
+
+                var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
+                        data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getFloat(12), data.getInt(13), data.getString(14)
+                        , data.getString(15),data.getString(16), data.getFloat(17), data.getFloat(18), data.getFloat(19), data.getInt(20), data.getString(21), data.getString(22)
+                        , data.getString(23), data.getFloat(24), data.getFloat(25), data.getInt(26), data.getString(27), data.getString(28),data.getString(29),data.getFloat(30),data.getFloat(31),data.getFloat(32)
+                        ,data.getFloat(33),data.getString(34),data.getString(35))
+
+                AllDatas.add(manyFloraAttribute)
+            }
+
+            if(AllDatas != null){
+                for (i in 0..AllDatas.size -1){
+                    trepage = AllDatas.get(i).TRE_NUM!!.toInt()
+                    strepage = AllDatas.get(i).STRE_NUM!!.toInt()
+                    shrpage = AllDatas.get(i).SHR_NUM!!.toInt()
+                    herpage = AllDatas.get(i).HER_NUM!!.toInt()
+                }
+
+                for (i in 0..trepage - 1){
+                    val data = TreeData1(AllDatas.get(i).TRE_NUM,AllDatas.get(i).TRE_SPEC,AllDatas.get(i).TRE_FAMI,AllDatas.get(i).TRE_SCIEN,AllDatas.get(i).TRE_H,AllDatas.get(i).TRE_BREA,AllDatas.get(i).TRE_COVE)
+                    TreDatas.add(data)
+                }
+
+                for (i in 0..strepage - 1){
+                    val data = TreeData1(AllDatas.get(i).STRE_NUM,AllDatas.get(i).STRE_SPEC,AllDatas.get(i).STRE_FAMI,AllDatas.get(i).STRE_SCIEN,AllDatas.get(i).STRE_H,AllDatas.get(i).STRE_BREA,AllDatas.get(i).STRE_COVE)
+                    StreDatas.add(data)
+                }
+
+                for (i in 0..shrpage - 1){
+                    val data = TreeData2(AllDatas.get(i).SHR_NUM,AllDatas.get(i).SHR_SPEC,AllDatas.get(i).SHR_FAMI,AllDatas.get(i).SHR_SCIEN,AllDatas.get(i).SHR_H,AllDatas.get(i).STRE_COVE)
+                    ShrDatas.add(data)
+                }
+
+                for (i in 0..herpage - 1){
+                    val data = TreeData2(AllDatas.get(i).HER_NUM,AllDatas.get(i).HER_SPEC,AllDatas.get(i).HER_FAMI,AllDatas.get(i).HER_SCIEN,AllDatas.get(i).HER_H,AllDatas.get(i).HER_COVE)
+                    HerDatas.add(data)
+                }
+
+            }
+
+            trepageTV.setText(trepage.toString() + " / "+ trepage.toString())
+            strepageTV.setText(strepage.toString() + " / "+ strepage.toString())
+            shrpageTV.setText(shrpage.toString() + " / "+ strepage.toString())
+            herpageTV.setText(herpage.toString() + " / "+ strepage.toString())
+
+        }
 
         if(intent.getStringExtra("id") != null){
             pk = intent.getStringExtra("id")
@@ -730,13 +751,13 @@ class Flora2Activity : Activity() {
                                 manyFloraAttribute.INV_TM = Utils.timeStr()
 
                                 if(MaxLength - 1 > TreDataSize - 1){
-                                    manyFloraAttribute.TRE_NUM = 0
-                                    manyFloraAttribute.TRE_SPEC = ""
-                                    manyFloraAttribute.TRE_FAMI = ""
-                                    manyFloraAttribute.TRE_SCIEN = ""
-                                    manyFloraAttribute.TRE_H = 0.0F
-                                    manyFloraAttribute.TRE_BREA = 0.0F
-                                    manyFloraAttribute.TRE_COVE = 0.0F
+                                    manyFloraAttribute.TRE_NUM = TreDataSize -1
+                                    manyFloraAttribute.TRE_SPEC = TreDatas.get(TreDataSize -1).SPEC
+                                    manyFloraAttribute.TRE_FAMI = TreDatas.get(TreDataSize -1).FAMI
+                                    manyFloraAttribute.TRE_SCIEN = TreDatas.get(TreDataSize -1).SCIEN
+                                    manyFloraAttribute.TRE_H = TreDatas.get(TreDataSize -1).H
+                                    manyFloraAttribute.TRE_BREA = TreDatas.get(TreDataSize -1).BREA
+                                    manyFloraAttribute.TRE_COVE = TreDatas.get(TreDataSize -1).COVE
                                 }else {
                                     manyFloraAttribute.TRE_NUM = TreDatas.get(i).PAGE
                                     manyFloraAttribute.TRE_SPEC = TreDatas.get(i).SPEC
@@ -748,13 +769,13 @@ class Flora2Activity : Activity() {
                                 }
 
                                 if (MaxLength - 1 > StreDataSize - 1){
-                                    manyFloraAttribute.STRE_NUM = 0
-                                    manyFloraAttribute.STRE_SPEC = ""
-                                    manyFloraAttribute.STRE_FAMI = ""
-                                    manyFloraAttribute.STRE_SCIEN = ""
-                                    manyFloraAttribute.STRE_H = 0.0F
-                                    manyFloraAttribute.STRE_BREA = 0.0F
-                                    manyFloraAttribute.STRE_COVE = 0.0F
+                                    manyFloraAttribute.STRE_NUM = StreDataSize - 1
+                                    manyFloraAttribute.STRE_SPEC = StreDatas.get(StreDataSize - 1).SPEC
+                                    manyFloraAttribute.STRE_FAMI = StreDatas.get(StreDataSize - 1).FAMI
+                                    manyFloraAttribute.STRE_SCIEN = StreDatas.get(StreDataSize - 1).SCIEN
+                                    manyFloraAttribute.STRE_H = StreDatas.get(StreDataSize - 1).H
+                                    manyFloraAttribute.STRE_BREA = StreDatas.get(StreDataSize - 1).BREA
+                                    manyFloraAttribute.STRE_COVE = StreDatas.get(StreDataSize - 1).COVE
                                 } else {
                                     manyFloraAttribute.STRE_NUM = StreDatas.get(i).PAGE
                                     manyFloraAttribute.STRE_SPEC = StreDatas.get(i).SPEC
@@ -766,12 +787,12 @@ class Flora2Activity : Activity() {
                                 }
 
                                 if (MaxLength - 1 > ShrDataSize - 1){
-                                    manyFloraAttribute.SHR_NUM = 0
-                                    manyFloraAttribute.SHR_SPEC = ""
-                                    manyFloraAttribute.SHR_FAMI = ""
-                                    manyFloraAttribute.SHR_SCIEN = ""
-                                    manyFloraAttribute.SHR_H = 0.0F
-                                    manyFloraAttribute.SHR_COVE = 0.0F
+                                    manyFloraAttribute.SHR_NUM = ShrDataSize - 1
+                                    manyFloraAttribute.STRE_SPEC = ShrDatas.get(ShrDataSize - 1).SPEC
+                                    manyFloraAttribute.STRE_FAMI = ShrDatas.get(ShrDataSize - 1).FAMI
+                                    manyFloraAttribute.STRE_SCIEN = ShrDatas.get(ShrDataSize - 1).SCIEN
+                                    manyFloraAttribute.STRE_H = ShrDatas.get(ShrDataSize - 1).H
+                                    manyFloraAttribute.STRE_COVE = ShrDatas.get(ShrDataSize - 1).COVE
                                 } else {
                                     manyFloraAttribute.STRE_NUM = ShrDatas.get(i).PAGE
                                     manyFloraAttribute.STRE_SPEC = ShrDatas.get(i).SPEC
@@ -782,12 +803,12 @@ class Flora2Activity : Activity() {
                                 }
 
                                 if (MaxLength - 1 > HerDataSize - 1){
-                                    manyFloraAttribute.HER_NUM = 0
-                                    manyFloraAttribute.HER_SPEC = ""
-                                    manyFloraAttribute.HER_FAMI = ""
-                                    manyFloraAttribute.HER_SCIEN = ""
-                                    manyFloraAttribute.HER_H = 0.0F
-                                    manyFloraAttribute.HER_COVE = 0.0F
+                                    manyFloraAttribute.HER_NUM = HerDataSize - 1
+                                    manyFloraAttribute.HER_SPEC = HerDatas.get(HerDataSize - 1).SPEC
+                                    manyFloraAttribute.HER_FAMI = HerDatas.get(HerDataSize - 1).FAMI
+                                    manyFloraAttribute.HER_SCIEN = HerDatas.get(HerDataSize - 1).SCIEN
+                                    manyFloraAttribute.HER_H = HerDatas.get(HerDataSize - 1).H
+                                    manyFloraAttribute.HER_COVE = HerDatas.get(HerDataSize - 1).COVE
                                 } else {
                                     manyFloraAttribute.HER_NUM = HerDatas.get(i).PAGE
                                     manyFloraAttribute.HER_SPEC = HerDatas.get(i).SPEC

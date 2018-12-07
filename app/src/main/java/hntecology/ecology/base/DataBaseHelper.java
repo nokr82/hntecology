@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -142,8 +143,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         // Open your local db as the input stream
 //        InputStream myInput = myContext.getAssets().open(DB_NAME);
 //        InputStream myInput = myContext.getAssets().open(DB_NAME);
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology";
-        InputStream myInput = myContext.openFileInput(path);
+
+        File path = myContext.getDatabasePath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotopeTest.db");
+        InputStream myInput = new FileInputStream(path);
+
+        System.out.println("open--------------------------");
 
         // Path to the just created empty db
         String outFileName = DB_PATH + DB_NAME;

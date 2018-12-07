@@ -179,6 +179,24 @@
                                 android:textSize="30dp"
                                 android:layout_marginLeft="40dp"/>
                         </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/trecloseLL"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:padding="10dp">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="30dp"
+                                android:src="@mipmap/close"/>
+
+                        </LinearLayout>
+
+
+
+
                     </RelativeLayout>
 
                     <LinearLayout
@@ -421,7 +439,23 @@
                                 android:textSize="30dp"
                                 android:layout_marginLeft="40dp"/>
                         </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/strecloseLL"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:padding="10dp">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="30dp"
+                                android:src="@mipmap/close"/>
+
+                        </LinearLayout>
                     </RelativeLayout>
+
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -666,6 +700,20 @@
                                 android:textSize="30dp"
                                 android:layout_marginLeft="40dp"/>
                         </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/shrcloseLL"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:padding="10dp">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="30dp"
+                                android:src="@mipmap/close"/>
+
+                        </LinearLayout>
+
                     </RelativeLayout>
 
                     <LinearLayout
@@ -885,6 +933,21 @@
                                 android:textSize="30dp"
                                 android:layout_marginLeft="40dp"/>
                         </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/hercloseLL"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:padding="10dp">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="30dp"
+                                android:src="@mipmap/close"/>
+
+                        </LinearLayout>
+
                     </RelativeLayout>
                     <LinearLayout
                         android:layout_width="match_parent"

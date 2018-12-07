@@ -2,7 +2,11 @@ package hntecology.ecology.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.view.Gravity
 import android.widget.Toast
 import hntecology.ecology.R
@@ -18,6 +22,12 @@ class LoginActivity : Activity() {
 
         window.setGravity(Gravity.CENTER);
         window.setLayout(Utils.dpToPx(600f).toInt(), Utils.dpToPx(400f).toInt());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, MainActivity.WRITE_EXTERNAL_STORAGE)
+        } else {
+
+        }
 
 
         doneTV.setOnClickListener {
@@ -38,6 +48,25 @@ class LoginActivity : Activity() {
             }
 
 
+        }
+    }
+
+
+
+
+    private fun loadPermissions(perm: String, requestCode: Int) {
+        if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(perm), requestCode)
+        } else {
+            if (android.Manifest.permission.ACCESS_FINE_LOCATION == perm) {
+                loadPermissions(android.Manifest.permission.ACCESS_COARSE_LOCATION, MainActivity.REQUEST_ACCESS_COARSE_LOCATION)
+            } else if (android.Manifest.permission.ACCESS_COARSE_LOCATION == perm) {
+            } else if(android.Manifest.permission.WRITE_EXTERNAL_STORAGE == perm){
+                loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, MainActivity.READ_EXTERNAL_STORAGE)
+            } else if(android.Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
+
+
+            }
         }
     }
 }

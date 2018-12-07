@@ -144,7 +144,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 //        InputStream myInput = myContext.getAssets().open(DB_NAME);
 //        InputStream myInput = myContext.getAssets().open(DB_NAME);
 
-        File path = myContext.getDatabasePath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotopeTest.db");
+        File path = myContext.getDatabasePath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "ecology.db");
         InputStream myInput = new FileInputStream(path);
 
         System.out.println("open--------------------------");

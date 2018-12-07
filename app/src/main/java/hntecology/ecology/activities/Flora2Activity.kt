@@ -431,10 +431,10 @@ class Flora2Activity : Activity() {
                 shrpageTV.setText(shrpage.toString() + " / "+ ShrDatas.size.toString())
                 herpageTV.setText(herpage.toString() + " / "+ HerDatas.size.toString())
 
-                val tredata = db.query("ManyFloraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "TRE_NUM > 0", null)
-                val stredata = db.query("ManyFloraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "STRE_NUM > 0", null)
-                val shrdata = db.query("ManyFloraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "SHR_NUM > 0", null)
-                val herdata = db.query("ManyFloraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "HER_NUM > 0", null)
+                val tredata = db.query("ManyFloraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "TRE_NUM", null)
+                val stredata = db.query("ManyFloraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "STRE_NUM", null)
+                val shrdata = db.query("ManyFloraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "SHR_NUM", null)
+                val herdata = db.query("ManyFloraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "HER_NUM", null)
 
                 val TRE_NUM = manyFloraAttribute.TRE_NUM
                 val STRE_NUM = manyFloraAttribute.STRE_NUM
@@ -448,6 +448,7 @@ class Flora2Activity : Activity() {
 
                 if(TRE_NUM!! > 0) {
                     while (tredata.moveToNext()) {
+                        var treChk  = false
                         var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(tredata.getString(0), tredata.getString(1), tredata.getString(2), tredata.getString(3), tredata.getString(4), tredata.getString(5), tredata.getInt(6), tredata.getString(7),
                                 tredata.getString(8), tredata.getString(9), tredata.getFloat(10), tredata.getFloat(11), tredata.getFloat(12), tredata.getInt(13), tredata.getString(14)
                                 , tredata.getString(15), tredata.getString(16), tredata.getFloat(17), tredata.getFloat(18), tredata.getFloat(19), tredata.getInt(20), tredata.getString(21), tredata.getString(22)
@@ -455,9 +456,17 @@ class Flora2Activity : Activity() {
                                 , tredata.getFloat(33), tredata.getString(34), tredata.getString(35))
 
                         if(manyFloraAttribute.TRE_NUM!! > 0 ) {
-                            val tredata = TreeData1(manyFloraAttribute.TRE_NUM, manyFloraAttribute.TRE_SPEC, manyFloraAttribute.TRE_FAMI, manyFloraAttribute.TRE_SCIEN, manyFloraAttribute.TRE_H, manyFloraAttribute.TRE_BREA
-                                    , manyFloraAttribute.TRE_COVE)
-                            TreDatas.add(tredata)
+                            if (trepage == manyFloraAttribute.TRE_NUM) {
+                                treChk = true
+                            } else {
+                                treChk = false
+                            }
+
+                            if(treChk == false) {
+                                val tredata = TreeData1(manyFloraAttribute.TRE_NUM, manyFloraAttribute.TRE_SPEC, manyFloraAttribute.TRE_FAMI, manyFloraAttribute.TRE_SCIEN, manyFloraAttribute.TRE_H, manyFloraAttribute.TRE_BREA
+                                        , manyFloraAttribute.TRE_COVE)
+                                TreDatas.add(tredata)
+                            }
                         }
                     }
 
@@ -478,6 +487,8 @@ class Flora2Activity : Activity() {
 
                 if(STRE_NUM!! > 0 ) {
                     while (stredata.moveToNext()) {
+                        var streChk = false
+
                         var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(stredata.getString(0), stredata.getString(1), stredata.getString(2), stredata.getString(3), stredata.getString(4), stredata.getString(5), stredata.getInt(6), stredata.getString(7),
                                 stredata.getString(8), stredata.getString(9), stredata.getFloat(10), stredata.getFloat(11), stredata.getFloat(12), stredata.getInt(13), stredata.getString(14)
                                 , stredata.getString(15), stredata.getString(16), stredata.getFloat(17), stredata.getFloat(18), stredata.getFloat(19), stredata.getInt(20), stredata.getString(21), stredata.getString(22)
@@ -485,14 +496,17 @@ class Flora2Activity : Activity() {
                                 , stredata.getFloat(33), stredata.getString(34), stredata.getString(35))
 
                         if(manyFloraAttribute.STRE_NUM!! > 0 ) {
-                            for (i in 0..StreDatas.size - 1) {
-                                if (StreDatas.get(i).PAGE == manyFloraAttribute.STRE_NUM){
-
-                                }
+                            if (strepage == manyFloraAttribute.STRE_NUM){
+                                streChk = true
+                            }else {
+                                streChk = false
                             }
-                            val stredata = TreeData1(manyFloraAttribute.STRE_NUM, manyFloraAttribute.STRE_SPEC, manyFloraAttribute.STRE_FAMI, manyFloraAttribute.STRE_SCIEN, manyFloraAttribute.STRE_H, manyFloraAttribute.STRE_BREA
-                                    , manyFloraAttribute.STRE_COVE)
-                            StreDatas.add(stredata)
+
+                            if(streChk == false) {
+                                val stredata = TreeData1(manyFloraAttribute.STRE_NUM, manyFloraAttribute.STRE_SPEC, manyFloraAttribute.STRE_FAMI, manyFloraAttribute.STRE_SCIEN, manyFloraAttribute.STRE_H, manyFloraAttribute.STRE_BREA
+                                        , manyFloraAttribute.STRE_COVE)
+                                StreDatas.add(stredata)
+                            }
 
                         }
                     }
@@ -505,6 +519,7 @@ class Flora2Activity : Activity() {
 
                 if(SHR_NUM!! > 0) {
                     while (shrdata.moveToNext()) {
+                        var shrChk = false
                         var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(shrdata.getString(0), shrdata.getString(1), shrdata.getString(2), shrdata.getString(3), shrdata.getString(4), shrdata.getString(5), shrdata.getInt(6), shrdata.getString(7),
                                 shrdata.getString(8), shrdata.getString(9), shrdata.getFloat(10), shrdata.getFloat(11), shrdata.getFloat(12), shrdata.getInt(13), shrdata.getString(14)
                                 , shrdata.getString(15), shrdata.getString(16), shrdata.getFloat(17), shrdata.getFloat(18), shrdata.getFloat(19), shrdata.getInt(20), shrdata.getString(21), shrdata.getString(22)
@@ -512,8 +527,17 @@ class Flora2Activity : Activity() {
                                 , shrdata.getFloat(33), shrdata.getString(34), shrdata.getString(35))
 
                         if(manyFloraAttribute.SHR_NUM!! > 0 ) {
-                            val shrdata = TreeData2(manyFloraAttribute.SHR_NUM, manyFloraAttribute.SHR_SPEC, manyFloraAttribute.SHR_FAMI, manyFloraAttribute.SHR_SCIEN, manyFloraAttribute.SHR_H, manyFloraAttribute.SHR_COVE)
-                            ShrDatas.add(shrdata)
+                            if (shrpage == manyFloraAttribute.STRE_NUM){
+                                shrChk = true
+                            }else {
+                                shrChk = false
+                            }
+
+
+                            if(shrChk == false) {
+                                val shrdata = TreeData2(manyFloraAttribute.SHR_NUM, manyFloraAttribute.SHR_SPEC, manyFloraAttribute.SHR_FAMI, manyFloraAttribute.SHR_SCIEN, manyFloraAttribute.SHR_H, manyFloraAttribute.SHR_COVE)
+                                ShrDatas.add(shrdata)
+                            }
                         }
                     }
                     println("shrpage - $shrpage")
@@ -524,6 +548,7 @@ class Flora2Activity : Activity() {
 
                 if(HER_NUM!! > 0 ) {
                     while (herdata.moveToNext()) {
+                        var herChk = false
                         var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(herdata.getString(0), herdata.getString(1), herdata.getString(2), herdata.getString(3), herdata.getString(4), herdata.getString(5), herdata.getInt(6), herdata.getString(7),
                                 herdata.getString(8), herdata.getString(9), herdata.getFloat(10), herdata.getFloat(11), herdata.getFloat(12), herdata.getInt(13), herdata.getString(14)
                                 , herdata.getString(15), herdata.getString(16), herdata.getFloat(17), herdata.getFloat(18), herdata.getFloat(19), herdata.getInt(20), herdata.getString(21), herdata.getString(22)
@@ -531,14 +556,22 @@ class Flora2Activity : Activity() {
                                 , herdata.getFloat(33), herdata.getString(34), herdata.getString(35))
 
                         if(manyFloraAttribute.HER_NUM!! > 0 ) {
-                            val herdata = TreeData2(manyFloraAttribute.HER_NUM, manyFloraAttribute.HER_SPEC, manyFloraAttribute.HER_FAMI, manyFloraAttribute.HER_SCIEN, manyFloraAttribute.HER_H, manyFloraAttribute.HER_COVE)
-                            HerDatas.add(herdata)
+                            if (herpage == manyFloraAttribute.HER_NUM){
+                                herChk = true
+                            }else {
+                                herChk = false
+                            }
+
+                            if(herChk == false) {
+                                val herdata = TreeData2(manyFloraAttribute.HER_NUM, manyFloraAttribute.HER_SPEC, manyFloraAttribute.HER_FAMI, manyFloraAttribute.HER_SCIEN, manyFloraAttribute.HER_H, manyFloraAttribute.HER_COVE)
+                                HerDatas.add(herdata)
+                            }
                         }
                     }
                     println("herpage - $herpage")
                     herpage = HerDatas.size
-                    shrpageTV.setText(herpage.toString() + " / " + HerDatas.size.toString())
-                    shrnumTV.setText(herpage.toString())
+                    herpageTV.setText(herpage.toString() + " / " + HerDatas.size.toString())
+                    hernumTV.setText(herpage.toString())
                 }
 
             }
@@ -2275,7 +2308,7 @@ class Flora2Activity : Activity() {
                     }
 
                     val page = herpage
-                    val size = ShrDatas.size
+                    val size = HerDatas.size
 
                     herpageTV.setText(page.toString() + " / " +  size.toString())
                     hernumTV.setText(page.toString())
@@ -2291,21 +2324,21 @@ class Flora2Activity : Activity() {
 
         }
 
-        if (shrpage < ShrDatas.size){
-            shrpage = shrpage + 1
-            for (i in 0..ShrDatas.size-1) {
-                val data = ShrDatas.get(i)
-                etSTRE_SPECET.setText(data.SPEC)
-                etSTRE_FAMIET.setText(data.FAMI)
-                etSTRE_SCIENET.setText(data.SCIEN)
-                etSTRE_HET.setText(data.H.toString())
-                etSTRE_COVEET.setText(data.COVE.toString())
+        if (herpage < HerDatas.size){
+            herpage = herpage + 1
+            for (i in 0..HerDatas.size-1) {
+                val data = HerDatas.get(i)
+                etHER_SPECET.setText(data.SPEC)
+                etHER_FAMIET.setText(data.FAMI)
+                etHER_SCIENET.setText(data.SCIEN)
+                etHER_HET.setText(data.H.toString())
+                etHER_COVEET.setText(data.COVE.toString())
 
-                val page = shrpage
-                val size = StreDatas.size
+                val page = herpage
+                val size = HerDatas.size
 
-                shrpageTV.setText(page.toString() + " / " +  size.toString())
-                shrnumTV.setText(page.toString())
+                herpageTV.setText(page.toString() + " / " +  size.toString())
+                hernumTV.setText(page.toString())
             }
         }
 

@@ -1827,9 +1827,62 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                         }
 
-                        if (manyfloradataArray.size == 0) {
-                            title = "식물2"
+//                        if (manyfloradataArray.size == 0) {
+//                            title = "식물2"
+//
+//                            marker.title = title
+//
+//                            intent = Intent(this, Flora2Activity::class.java)
+//
+//                            intent!!.putExtra("GROP_ID", attrubuteKey)
+//                            intent!!.putExtra("markerid", marker.id)
+//
+//                            println("intent-----------------------------------${attrubuteKey.toString()}")
+//
+//                            startActivityForResult(intent, FLORA_DATA2)
+//                        }
+//
+//                        if(manyfloradataArray.size == 1 ){
+//
+//                            intent = Intent(this, Flora2Activity::class.java)
+//
+//
+//                            intent!!.putExtra("id" , manyfloradataArray.get(0).id)
+//                            intent!!.putExtra("GROP_ID", attrubuteKey)
+//                            intent!!.putExtra("markerid", marker.id)
+//
+//                            startActivityForResult(intent, FLORA_DATA2)
+//
+//                        }
+//                        if (manyfloradataArray.size > 1) {
+//                            val intent = Intent(this, DlgDataListActivity::class.java)
+//                            intent.putExtra("title", "식물2")
+//                            intent.putExtra("table", "ManyFloraAttribute")
+//                            intent.putExtra("DlgHeight", 600f);
+//                            intent!!.putExtra("markerid", marker.id)
+//                            intent.putExtra("GROP_ID", attrubuteKey)
+//                            startActivityForResult(intent, FLORA_DATA2);
+//                        }
 
+                        if(manyfloradataArray != null && manyfloradataArray.size >= 1){
+
+                            val size = manyfloradataArray.size
+
+                            title = "식물2"
+                            marker.title = title
+
+                            intent = Intent(this, Flora2Activity::class.java)
+
+                            intent!!.putExtra("id" , manyfloradataArray.get(size - 1).id)
+                            intent!!.putExtra("GROP_ID", attrubuteKey)
+                            intent!!.putExtra("markerid", marker.id)
+
+                            startActivityForResult(intent, FLORA_DATA2)
+                        }
+
+                        if(manyfloradataArray == null){
+
+                            title = "식물2"
                             marker.title = title
 
                             intent = Intent(this, Flora2Activity::class.java)
@@ -1837,53 +1890,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             intent!!.putExtra("GROP_ID", attrubuteKey)
                             intent!!.putExtra("markerid", marker.id)
 
-                            println("intent-----------------------------------${attrubuteKey.toString()}")
-
                             startActivityForResult(intent, FLORA_DATA2)
                         }
-
-                        if(manyfloradataArray.size == 1 ){
-
-                            intent = Intent(this, Flora2Activity::class.java)
-
-
-                            intent!!.putExtra("id" , manyfloradataArray.get(0).id)
-                            intent!!.putExtra("GROP_ID", attrubuteKey)
-                            intent!!.putExtra("markerid", marker.id)
-
-                            startActivityForResult(intent, FLORA_DATA2)
-
-                        }
-                        if (manyfloradataArray.size > 1) {
-                            val intent = Intent(this, DlgDataListActivity::class.java)
-                            intent.putExtra("title", "식물2")
-                            intent.putExtra("table", "ManyFloraAttribute")
-                            intent.putExtra("DlgHeight", 600f);
-                            intent!!.putExtra("markerid", marker.id)
-                            intent.putExtra("GROP_ID", attrubuteKey)
-                            startActivityForResult(intent, FLORA_DATA2);
-                        }
-
-//                        if(manyfloradataArray != null && manyfloradataArray.size >= 1){
-//                            val size = manyfloradataArray.size
-//
-//                            intent = Intent(this, Flora2Activity::class.java)
-//
-//                            intent!!.putExtra("id" , manyfloradataArray.get(size - 1).id)
-//                            intent!!.putExtra("GROP_ID", attrubuteKey)
-//                            intent!!.putExtra("markerid", marker.id)
-//
-//                            startActivityForResult(intent, FLORA_DATA2)
-//                        }
-//
-//                        if(manyfloradataArray == null){
-//                            intent = Intent(this, Flora2Activity::class.java)
-//
-//                            intent!!.putExtra("GROP_ID", attrubuteKey)
-//                            intent!!.putExtra("markerid", marker.id)
-//
-//                            startActivityForResult(intent, FLORA_DATA2)
-//                        }
 
                     }
 
@@ -2242,7 +2250,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                     NOTHING -> {
                         println("nothinggggggggggggggggg")
-
                     }
 
                 }
@@ -2636,7 +2643,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 // println("geoms[0] : ${geoms[0]}")
 
                 val polygon = googleMap.addPolygon(geoms[0] as PolygonOptions)
-                polygon.zIndex = 0.0f
+                polygon.zIndex = -1.0f
 
                 // println("layerName .layer ===== $layerName")
 
@@ -3704,6 +3711,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             polygon.isClickable = true
 
             var attrubuteKey = layerInfo.attrubuteKey
+
+            polygon.zIndex = 0.0f
 
             intent = Intent(this, BiotopeActivity::class.java)
 

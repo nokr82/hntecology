@@ -201,6 +201,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="2"
                                 android:maxLength="30"
+                                android:text="0"
                                 android:layout_centerInParent="true"
                                 android:gravity="center"
                                 style="@style/BiotopeTextView"
@@ -442,6 +443,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="2"
                             android:maxLength="30"
+                            android:text="0"
                             android:gravity="center"
                             style="@style/BiotopeTextView"
                             />
@@ -686,6 +688,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="2"
                             android:maxLength="30"
+                            android:text="0"
                             android:gravity="center"
                             style="@style/BiotopeTextView"
                             />
@@ -903,6 +906,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="2"
                             android:maxLength="30"
+                            android:text="0"
                             android:gravity="center"
                             style="@style/BiotopeTextView"
                             />

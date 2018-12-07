@@ -6,6 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,6 +25,7 @@ import hntecology.ecology.model.Mammal_attribute;
 import hntecology.ecology.model.ManyFloraAttribute;
 import hntecology.ecology.model.Reptilia_attribute;
 import hntecology.ecology.model.Tracking;
+import hntecology.ecology.model.TreeData1;
 import hntecology.ecology.model.Zoobenthos_Attribute;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
@@ -139,7 +141,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         // Open your local db as the input stream
 //        InputStream myInput = myContext.getAssets().open(DB_NAME);
-        InputStream myInput = myContext.getAssets().open(DB_NAME);
+//        InputStream myInput = myContext.getAssets().open(DB_NAME);
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology";
+        InputStream myInput = myContext.openFileInput(path);
 
         // Path to the just created empty db
         String outFileName = DB_PATH + DB_NAME;
@@ -1423,6 +1427,75 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",CONF_MOD='" + ManyFloraAttribute.getCONF_MOD() + "'"+
 
                 "where id = '" + pk + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+    public void updatefloratre(TreeData1 TreeData1, String GROP_ID, int TRE_NUM) {
+
+        String query = "UPDATE ManyFloraAttribute SET  " +
+                  "TRE_NUM='" + TreeData1.getPAGE() + "'"
+                + ",TRE_SPEC='" + TreeData1.getSPEC() + "'"
+                + ",TRE_FAMI='" + TreeData1.getFAMI() + "'"
+                + ",TRE_SCIEN='" + TreeData1.getSCIEN() + "'"
+                + ",TRE_H='" + TreeData1.getH() + "'"
+                + ",TRE_BREA='" + TreeData1.getBREA() + "'"
+                + ",TRE_COVE='" + TreeData1.getCOVE() + "'" +
+
+                "where GROP_ID = '" + GROP_ID + "' and TRE_NUM = '" + TRE_NUM + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+    public void updateflorastre(ManyFloraAttribute ManyFloraAttribute,String GROP_ID,int STRE_NUM) {
+
+        String query = "UPDATE ManyFloraAttribute SET  " +
+                "STRE_NUM='" + ManyFloraAttribute.getSTRE_NUM() + "'"
+                + ",STRE_SPEC='" + ManyFloraAttribute.getSTRE_SPEC() + "'"
+                + ",STRE_FAMI='" + ManyFloraAttribute.getSTRE_FAMI() + "'"
+                + ",STRE_SCIEN='" + ManyFloraAttribute.getSTRE_SCIEN() + "'"
+                + ",STRE_H='" + ManyFloraAttribute.getSTRE_H() + "'"
+                + ",STRE_BREA='" + ManyFloraAttribute.getSTRE_BREA() + "'"
+                + ",STRE_COVE='" + ManyFloraAttribute.getSTRE_COVE() + "'" +
+
+                "where GROP_ID = '" + GROP_ID + "' and STRE_NUM = '" + STRE_NUM + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+    public void updateflorashr(ManyFloraAttribute ManyFloraAttribute,String GROP_ID,int SHR_NUM) {
+
+        String query = "UPDATE ManyFloraAttribute SET  " +
+                "SHR_NUM='" + ManyFloraAttribute.getSHR_NUM() + "'"
+                + ",SHR_SPEC='" + ManyFloraAttribute.getSHR_SPEC() + "'"
+                + ",SHR_FAMI='" + ManyFloraAttribute.getSHR_FAMI() + "'"
+                + ",SHR_SCIEN='" + ManyFloraAttribute.getSHR_SCIEN() + "'"
+                + ",SHR_H='" + ManyFloraAttribute.getSHR_H() + "'"
+                + ",SHR_COVE='" + ManyFloraAttribute.getSHR_COVE() + "'" +
+
+                "where GROP_ID = '" + GROP_ID + "' and SHR_NUM = '" + SHR_NUM + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+    public void updatefloraher(ManyFloraAttribute ManyFloraAttribute,String GROP_ID,int HER_NUM) {
+
+        String query = "UPDATE ManyFloraAttribute SET  " +
+                "HER_NUM='" + ManyFloraAttribute.getHER_NUM() + "'"
+                + ",HER_SPEC='" + ManyFloraAttribute.getHER_SPEC() + "'"
+                + ",HER_FAMI='" + ManyFloraAttribute.getHER_FAMI() + "'"
+                + ",HER_SCIEN='" + ManyFloraAttribute.getHER_SCIEN() + "'"
+                + ",HER_H='" + ManyFloraAttribute.getHER_H() + "'"
+                + ",HER_COVE='" + ManyFloraAttribute.getHER_COVE() + "'" +
+
+                "where GROP_ID = '" + GROP_ID + "' and HER_NUM = '" + HER_NUM + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();

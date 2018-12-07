@@ -87,7 +87,7 @@ object Exporter {
 
                 MainActivity.LAYER_MAMMALIA -> {
                     layerName = "mammalia"
-            }
+                }
 
                 MainActivity.LAYER_FISH -> {
                     layerName = "fish"

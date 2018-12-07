@@ -1002,26 +1002,26 @@ class Flora2Activity : Activity() {
                                 }
 
                                 if(trechkData == false){
-                                    val spec = etSHR_SPECET.text.toString()
-                                    val fami = etSHR_FAMIET.text.toString()
-                                    val scien = etSHR_SCIENET.text.toString()
+                                    val spec = etHER_SPECET.text.toString()
+                                    val fami = etHER_FAMIET.text.toString()
+                                    val scien = etHER_SCIENET.text.toString()
 
                                     var h: Float = 0.0F
 
-                                    if (etSHR_HET.text.isNotEmpty()) {
-                                        h = etSHR_HET.text.toString().toFloat()
+                                    if (etHER_HET.text.isNotEmpty()) {
+                                        h = etHER_HET.text.toString().toFloat()
                                     }
 
                                     var cove = 0.0F
 
-                                    if (etSTR_COVEET.text.isNotEmpty()) {
-                                        cove = etSTR_COVEET.text.toString().toFloat()
+                                    if (etHER_COVEET.text.isNotEmpty()) {
+                                        cove = etHER_COVEET.text.toString().toFloat()
                                     }
 
-                                    var shredata = TreeData2(shrpage+1, spec, fami, scien, h, cove)
+                                    var herdata = TreeData2(herpage+1, spec, fami, scien, h, cove)
 
                                     if(spec != null && spec != "") {
-                                        ShrDatas.add(shredata)
+                                        HerDatas.add(herdata)
                                     }
                                 }
                             }
@@ -1158,7 +1158,9 @@ class Flora2Activity : Activity() {
                                         manyFloraAttribute.STRE_H = StreDatas.get(StreDataSize - 1).H
                                         manyFloraAttribute.STRE_BREA = StreDatas.get(StreDataSize - 1).BREA
                                         manyFloraAttribute.STRE_COVE = StreDatas.get(StreDataSize - 1).COVE
-                                    } else {
+                                    }
+
+                                    if (MaxLength -1 <= StreDataSize - 1){
                                         manyFloraAttribute.STRE_NUM = StreDatas.get(i).PAGE
                                         manyFloraAttribute.STRE_SPEC = StreDatas.get(i).SPEC
                                         manyFloraAttribute.STRE_FAMI = StreDatas.get(i).FAMI
@@ -1167,6 +1169,8 @@ class Flora2Activity : Activity() {
                                         manyFloraAttribute.STRE_BREA = StreDatas.get(i).BREA
                                         manyFloraAttribute.STRE_COVE = StreDatas.get(i).COVE
                                     }
+
+
                                 }
 
                                 if (StreDataSize == 0){
@@ -1187,7 +1191,8 @@ class Flora2Activity : Activity() {
                                         manyFloraAttribute.SHR_SCIEN = ShrDatas.get(ShrDataSize - 1).SCIEN
                                         manyFloraAttribute.SHR_H = ShrDatas.get(ShrDataSize - 1).H
                                         manyFloraAttribute.SHR_COVE = ShrDatas.get(ShrDataSize - 1).COVE
-                                    } else {
+                                    }
+                                    if (MaxLength -1 <= ShrDataSize - 1){
                                         manyFloraAttribute.SHR_NUM = ShrDatas.get(i).PAGE
                                         manyFloraAttribute.SHR_SPEC = ShrDatas.get(i).SPEC
                                         manyFloraAttribute.SHR_FAMI = ShrDatas.get(i).FAMI
@@ -1214,7 +1219,8 @@ class Flora2Activity : Activity() {
                                         manyFloraAttribute.HER_SCIEN = HerDatas.get(HerDataSize - 1).SCIEN
                                         manyFloraAttribute.HER_H = HerDatas.get(HerDataSize - 1).H
                                         manyFloraAttribute.HER_COVE = HerDatas.get(HerDataSize - 1).COVE
-                                    } else {
+                                    }
+                                    if (MaxLength -1 <= HerDataSize - 1){
                                         manyFloraAttribute.HER_NUM = HerDatas.get(i).PAGE
                                         manyFloraAttribute.HER_SPEC = HerDatas.get(i).SPEC
                                         manyFloraAttribute.HER_FAMI = HerDatas.get(i).FAMI

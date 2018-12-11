@@ -1805,76 +1805,110 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
     }
 
     fun clickMethod(v: View) {
-        addPicturesLL!!.removeAllViews()
-        images!!.clear()
-        val tag = v.tag as Int
-        images_path!!.removeAt(tag)
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage("삭제하시겠습니까 ? ").setCancelable(false)
+                .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-        for (k in images_url!!.indices) {
-            val vv = View.inflate(context, R.layout.item_add_image, null)
-            val imageIV = vv.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
-            val delIV = vv.findViewById<View>(R.id.delIV) as ImageView
-            delIV.visibility = View.GONE
-            val del2IV = vv.findViewById<View>(R.id.del2IV) as ImageView
-            del2IV.visibility = View.VISIBLE
-            del2IV.tag = k
-            ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
-            if (imgSeq == 0) {
-                addPicturesLL!!.addView(vv)
-            }
-        }
-        for (j in images_path!!.indices) {
-            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
-            if (images!!.size == 0) {
-                images!!.add(add_file)
-            } else {
-                try {
-                    images!!.set(images!!.size, add_file)
-                } catch (e: IndexOutOfBoundsException) {
-                    images!!.add(add_file)
-                }
+                    addPicturesLL!!.removeAllViews()
+                    images!!.clear()
+                    val tag = v.tag as Int
+                    images_path!!.removeAt(tag)
 
-            }
-            reset(images_path!!.get(j), j)
-        }
+                    for (k in images_url!!.indices) {
+                        val vv = View.inflate(context, R.layout.item_add_image, null)
+                        val imageIV = vv.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                        val delIV = vv.findViewById<View>(R.id.delIV) as ImageView
+                        delIV.visibility = View.GONE
+                        val del2IV = vv.findViewById<View>(R.id.del2IV) as ImageView
+                        del2IV.visibility = View.VISIBLE
+                        del2IV.tag = k
+                        ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
+                        ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
+                        if (imgSeq == 0) {
+                            addPicturesLL!!.addView(vv)
+                        }
+                    }
+                    for (j in images_path!!.indices) {
+
+                        val paths = images_path!!.get(j).split("/")
+                        val file_name = paths.get(paths.size - 1)
+                        val getPk = file_name.split("_")
+                        val pathPk = getPk.get(0)
+
+                        if (pathPk == pk){
+                            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+                            if (images!!.size == 0) {
+                                images!!.add(add_file)
+                            } else {
+                                try {
+                                    images!!.set(images!!.size, add_file)
+                                } catch (e: IndexOutOfBoundsException) {
+                                    images!!.add(add_file)
+                                }
+
+                            }
+                            reset(images_path!!.get(j), j)
+                        }
+                    }
+
+                })
+                .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+        val alert = builder.create()
+        alert.show()
     }
 
     fun clickMethod2(v: View) {
-        addPicturesLL!!.removeAllViews()
-        val tag = v.tag as Int
-        images_url!!.removeAt(tag)
-        images_url_remove!!.add(images_id!!.get(tag).toString())
-        images_id!!.removeAt(tag)
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage("삭제하시겠습니까 ? ").setCancelable(false)
+                .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-        for (k in images_url!!.indices) {
-            val vv = View.inflate(context, R.layout.item_add_image, null)
-            val imageIV = vv.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
-            val delIV = vv.findViewById<View>(R.id.delIV) as ImageView
-            delIV.visibility = View.GONE
-            val del2IV = vv.findViewById<View>(R.id.del2IV) as ImageView
-            del2IV.visibility = View.VISIBLE
-            del2IV.tag = k
-            ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
-            if (imgSeq == 0) {
-                addPicturesLL!!.addView(vv)
-            }
-        }
-        for (j in images_path!!.indices) {
-            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
-            if (images!!.size == 0) {
-                images!!.add(add_file)
-            } else {
-                try {
-                    images!!.set(images!!.size, add_file)
-                } catch (e: IndexOutOfBoundsException) {
-                    images!!.add(add_file)
-                }
+                    addPicturesLL!!.removeAllViews()
+                    val tag = v.tag as Int
+                    images_url!!.removeAt(tag)
+                    images_url_remove!!.add(images_id!!.get(tag).toString())
+                    images_id!!.removeAt(tag)
 
-            }
-            reset(images_path!!.get(j), j)
-        }
+                    for (k in images_url!!.indices) {
+                        val vv = View.inflate(context, R.layout.item_add_image, null)
+                        val imageIV = vv.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                        val delIV = vv.findViewById<View>(R.id.delIV) as ImageView
+                        delIV.visibility = View.GONE
+                        val del2IV = vv.findViewById<View>(R.id.del2IV) as ImageView
+                        del2IV.visibility = View.VISIBLE
+                        del2IV.tag = k
+                        ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
+                        if (imgSeq == 0) {
+                            addPicturesLL!!.addView(vv)
+                        }
+                    }
+                    for (j in images_path!!.indices) {
+
+                        val paths = images_path!!.get(j).split("/")
+                        val file_name = paths.get(paths.size - 1)
+                        val getPk = file_name.split("_")
+                        val pathPk = getPk.get(0)
+
+                        if (pathPk == pk){
+                            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+                            if (images!!.size == 0) {
+                                images!!.add(add_file)
+                            } else {
+                                try {
+                                    images!!.set(images!!.size, add_file)
+                                } catch (e: IndexOutOfBoundsException) {
+                                    images!!.add(add_file)
+                                }
+
+                            }
+                            reset(images_path!!.get(j), j)
+                        }
+                    }
 
 
+                })
+                .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+        val alert = builder.create()
+        alert.show()
     }
 
     fun saveVitmapToFile(bitmap:Bitmap, filePath:String){

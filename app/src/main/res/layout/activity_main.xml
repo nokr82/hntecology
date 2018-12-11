@@ -11,27 +11,45 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="#D3D3D3">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="100dp"
+                android:src="@drawable/logo"
+                android:layout_marginLeft="50dp" />
 
-        <ImageView
-            android:layout_width="200dp"
-            android:layout_height="100dp"
-            android:src="@drawable/logo"
-            android:layout_marginLeft="50dp" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            >
-        </View>
-        <TextView
-            android:layout_width="200dp"
-            android:layout_height="100dp"
-            android:textSize="20sp"
-            android:text="15123123123"
-            android:id="@+id/TVtimeTV"
-            android:gravity="center"
-            />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                >
+            </View>
+            <TextView
+                android:layout_alignParentRight="true"
+                android:layout_width="200dp"
+                android:layout_height="100dp"
+                android:textSize="20sp"
+                android:text="15123123123"
+                android:id="@+id/TVtimeTV"
+                android:gravity="center"
+                />
+            <Switch
+                android:id="@+id/typeST"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="200dp"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:textOn="임상도"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:textSize="20dp"
+                android:scaleY="1.5"
+                android:scaleX="1.2"
+                android:textOff="비오톱"/>
+        </RelativeLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -65,7 +83,7 @@
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="50dp"
                     android:layout_marginLeft="4dp"
                     android:background="@android:color/white"
                     android:alpha="0.6">
@@ -81,13 +99,13 @@
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="50dp"
                     android:layout_marginLeft="4dp"
                     android:background="@android:color/white"
                     android:alpha="0.6">
                     <TextView
                         android:id="@+id/resetTV"
-                        android:layout_width="wrap_content"
+                        android:layout_width="80dp"
                         android:layout_height="match_parent"
                         android:text="새로고침"
                         android:textColor="#333333"
@@ -218,12 +236,22 @@
                     android:text="위성 지도" />
 
                 <Button
+                    android:id="@+id/btn_stokemap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="식생조사 추가" />
+
+                <Button
+                    android:id="@+id/btn_flora2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="식생조사 위치 추가" />
+
+                <Button
                     android:id="@+id/btn_biotope"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="비오톱 추가" />
-
-
 
                 <Button
                     android:id="@+id/btn_birds"
@@ -260,12 +288,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="식물 추가" />
-
-                <Button
-                    android:id="@+id/btn_flora2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="식물2 추가" />
 
 
                 <Button

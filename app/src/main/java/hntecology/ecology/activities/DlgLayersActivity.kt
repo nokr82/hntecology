@@ -3,8 +3,12 @@ package hntecology.ecology.activities
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteDatabase
+import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import hntecology.ecology.R
 import hntecology.ecology.adapter.DlgLayerAdapter
 import hntecology.ecology.base.DataBaseHelper
@@ -27,6 +31,8 @@ class DlgLayersActivity : Activity() {
     private var data :ArrayList<LayerModel> = ArrayList<LayerModel>()
 
     private var grop_id:ArrayList<String> = ArrayList<String>()
+
+    val READ_EXTERNAL_STORAGE = 4
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,33 +73,40 @@ class DlgLayersActivity : Activity() {
         }
 
         dlgClick.setOnClickListener {
-            if(data != null){
-                data.clear()
-            }
 
-            for(i in 0 ..adapterData.size-1){
-                var checkData = adapterData.get(i)
-                var checked = checkData.is_checked
-
-                println("checked : " + checked)
-
-                if(checked) {
-                    data.add(adapterData.get(i))
-                    println("-------added ${adapterData.get(i).added}")
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1){
+                loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, MainActivity.READ_EXTERNAL_STORAGE)
+            } else {
+                if(data != null){
+                    data.clear()
                 }
 
-            }
+                for(i in 0 ..adapterData.size-1){
+                    var checkData = adapterData.get(i)
+                    var checked = checkData.is_checked
 
-            var intent = Intent();
-            intent.putExtra("data", data);
-            setResult(RESULT_OK, intent);
-            finish()
+                    println("checked : " + checked)
+
+                    if(checked) {
+                        data.add(adapterData.get(i))
+                        println("-------added ${adapterData.get(i).added}")
+                    }
+
+                }
+
+                var intent = Intent();
+                intent.putExtra("data", data);
+                setResult(RESULT_OK, intent);
+                finish()
+            }
 
         }
 
         loadData()
 
     }
+
+
 
     fun loadData() {
 
@@ -129,6 +142,38 @@ class DlgLayersActivity : Activity() {
 
         apdater.notifyDataSetChanged()
 
+    }
+
+    private fun loadPermissions(perm: String, requestCode: Int) {
+        if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(perm), requestCode)
+        } else {
+            if(android.Manifest.permission.WRITE_EXTERNAL_STORAGE == perm){
+                loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, MainActivity.READ_EXTERNAL_STORAGE)
+            } else if(android.Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
+                if(data != null){
+                    data.clear()
+                }
+
+                for(i in 0 ..adapterData.size-1){
+                    var checkData = adapterData.get(i)
+                    var checked = checkData.is_checked
+
+                    println("checked : " + checked)
+
+                    if(checked) {
+                        data.add(adapterData.get(i))
+                        println("-------added ${adapterData.get(i).added}")
+                    }
+
+                }
+
+                var intent = Intent();
+                intent.putExtra("data", data);
+                setResult(RESULT_OK, intent);
+                finish()
+            }
+        }
     }
 
 }

@@ -1683,20 +1683,27 @@ class ZoobenthosActivity : Activity() {
                         }
                     }
                     for (j in images_path!!.indices) {
-                        val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
-                        if (images!!.size == 0) {
-                            images!!.add(add_file)
-                        } else {
-                            try {
-                                images!!.set(images!!.size, add_file)
-                            } catch (e: IndexOutOfBoundsException) {
+
+                        val paths = images_path!!.get(j).split("/")
+                        val file_name = paths.get(paths.size - 1)
+                        val getPk = file_name.split("_")
+                        val pathPk = getPk.get(0)
+
+                        if (pathPk == pk){
+                            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+                            if (images!!.size == 0) {
                                 images!!.add(add_file)
+                            } else {
+                                try {
+                                    images!!.set(images!!.size, add_file)
+                                } catch (e: IndexOutOfBoundsException) {
+                                    images!!.add(add_file)
+                                }
+
                             }
-
+                            reset(images_path!!.get(j), j)
                         }
-                        reset(images_path!!.get(j), j)
                     }
-
                 })
                 .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
         val alert = builder.create()
@@ -1728,18 +1735,26 @@ class ZoobenthosActivity : Activity() {
                         }
                     }
                     for (j in images_path!!.indices) {
-                        val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
-                        if (images!!.size == 0) {
-                            images!!.add(add_file)
-                        } else {
-                            try {
-                                images!!.set(images!!.size, add_file)
-                            } catch (e: IndexOutOfBoundsException) {
-                                images!!.add(add_file)
-                            }
 
+                        val paths = images_path!!.get(j).split("/")
+                        val file_name = paths.get(paths.size - 1)
+                        val getPk = file_name.split("_")
+                        val pathPk = getPk.get(0)
+
+                        if (pathPk == pk){
+                            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+                            if (images!!.size == 0) {
+                                images!!.add(add_file)
+                            } else {
+                                try {
+                                    images!!.set(images!!.size, add_file)
+                                } catch (e: IndexOutOfBoundsException) {
+                                    images!!.add(add_file)
+                                }
+
+                            }
+                            reset(images_path!!.get(j), j)
                         }
-                        reset(images_path!!.get(j), j)
                     }
 
 

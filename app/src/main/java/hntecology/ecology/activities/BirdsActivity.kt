@@ -330,6 +330,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                 val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + birds_attribute.INV_DT + "." + birds_attribute.INV_TM + "/imges")
                 val fileList = file.listFiles()
+                val pk = birds_attribute.id
                 val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds/imges/")
                 var tmpfileList = tmpfiles.listFiles()
 
@@ -368,6 +369,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                 if(tmpfileList != null){
                     for (i in 0..tmpfileList.size - 1) {
+
+                        println("tmpfileList  ${tmpfileList.get(i).path}")
 
                         val options = BitmapFactory.Options()
                         options.inJustDecodeBounds = true
@@ -1604,20 +1607,27 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         }
                     }
                     for (j in images_path!!.indices) {
-                        val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
-                        if (images!!.size == 0) {
-                            images!!.add(add_file)
-                        } else {
-                            try {
-                                images!!.set(images!!.size, add_file)
-                            } catch (e: IndexOutOfBoundsException) {
-                                images!!.add(add_file)
-                            }
 
+                        val paths = images_path!!.get(j).split("/")
+                        val file_name = paths.get(paths.size - 1)
+                        val getPk = file_name.split("_")
+                        val pathPk = getPk.get(0)
+
+                        if (pathPk == pk){
+                                val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+                                if (images!!.size == 0) {
+                                    images!!.add(add_file)
+                                } else {
+                                    try {
+                                        images!!.set(images!!.size, add_file)
+                                    } catch (e: IndexOutOfBoundsException) {
+                                        images!!.add(add_file)
+                                    }
+
+                                }
+                                reset(images_path!!.get(j), j)
                         }
-                        reset(images_path!!.get(j), j)
                     }
-
                 })
                 .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
         val alert = builder.create()
@@ -1649,21 +1659,28 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         }
                     }
                     for (j in images_path!!.indices) {
-                        val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
-                        if (images!!.size == 0) {
-                            images!!.add(add_file)
-                        } else {
-                            try {
-                                images!!.set(images!!.size, add_file)
-                            } catch (e: IndexOutOfBoundsException) {
+
+                        val paths = images_path!!.get(j).split("/")
+                        val file_name = paths.get(paths.size - 1)
+                        val getPk = file_name.split("_")
+                        val pathPk = getPk.get(0)
+
+                        if (pathPk == pk){
+                            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+                            if (images!!.size == 0) {
                                 images!!.add(add_file)
+                            } else {
+                                try {
+                                    images!!.set(images!!.size, add_file)
+                                } catch (e: IndexOutOfBoundsException) {
+                                    images!!.add(add_file)
+                                }
+
                             }
-
+                            reset(images_path!!.get(j), j)
                         }
-                        reset(images_path!!.get(j), j)
                     }
-
-
+                    
                 })
                 .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
         val alert = builder.create()

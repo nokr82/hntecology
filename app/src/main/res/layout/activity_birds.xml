@@ -41,7 +41,7 @@
                     android:layout_height="match_parent"
                     android:text="조사지역" />
 
-                <TextView
+                <EditText
                     android:id="@+id/invRegionET"
                     style="@style/BiotopeTextView"
                     android:layout_width="0dp"
@@ -327,13 +327,13 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="wrap_content">
 
                 <TextView
-                    style="@style/BiotopeTextView"
                     android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:text="멸종위기 기호" />
+                    android:layout_height="50dp"
+                    android:text="멸종위기 기호"
+                    style="@style/BiotopeTextView"/>
 
                 <TextView
                     android:id="@+id/endangeredTV"

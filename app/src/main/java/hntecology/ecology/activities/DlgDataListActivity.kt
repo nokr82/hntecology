@@ -32,6 +32,7 @@ class DlgDataListActivity : Activity() {
     private lateinit var florasData : ArrayList<Flora_Attribute>
     private  lateinit var zoobenthosData : ArrayList<Zoobenthos_Attribute>
     private lateinit var manyflorasData : ArrayList<ManyFloraAttribute>
+    private lateinit var stocksData : ArrayList<StockMap>
 
     private lateinit var biotopeAdaper : DataBiotopeAdapter
     private lateinit var birdsAadapter: DataBirdsAdapter;
@@ -42,6 +43,7 @@ class DlgDataListActivity : Activity() {
     private lateinit var floraAdapter : DataFloraAdapter
     private lateinit var zoobenthousAdapter : DataZoobenthosAdapter
     private lateinit var manyfloraAdapter : DataManyFloraAdapter
+    private lateinit var stockmapAdapter : DataStockAdapter
 
     private val MarkerCallBackData = 1004
 
@@ -54,6 +56,7 @@ class DlgDataListActivity : Activity() {
     val FLORA_DATA = 3006
     val ZOOBENTHOS_DATA = 3007
     val FLORA_DATA2 = 3008
+    val STOCKMAP_DATA = 3009
 
     var tableName:String = ""
     var titleName:String=""
@@ -71,6 +74,7 @@ class DlgDataListActivity : Activity() {
     val FLORA = 7
     val ZOOBENTHOUS = 8
     val FLORA2 = 9
+    val STOCKMAP = 10
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,6 +109,7 @@ class DlgDataListActivity : Activity() {
         florasData = ArrayList()
         zoobenthosData = ArrayList()
         manyflorasData = ArrayList()
+        stocksData = ArrayList()
 
         biotopeAdaper = DataBiotopeAdapter(context,biotopeData)
         birdsAadapter = DataBirdsAdapter(context,birdsData)
@@ -115,6 +120,7 @@ class DlgDataListActivity : Activity() {
         floraAdapter = DataFloraAdapter(context,florasData)
         zoobenthousAdapter = DataZoobenthosAdapter(context,zoobenthosData)
         manyfloraAdapter = DataManyFloraAdapter(context,manyflorasData)
+        stockmapAdapter = DataStockAdapter(context,stocksData)
 
         if(intent.getStringExtra("markerid") != null){
             markerid = intent.getStringExtra("markerid")
@@ -248,6 +254,18 @@ class DlgDataListActivity : Activity() {
             manyflorasdataList(manyflorasData,manyFloraData)
 
             listView1.adapter = manyfloraAdapter
+
+        }
+
+        if(tableName.equals("StockMap")){
+
+            val dataList: Array<String> = arrayOf("*");
+
+            val stocksdata=  db.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
+
+            stockmapsdataList(stocksData,stocksdata)
+
+            listView1.adapter = stockmapAdapter
 
         }
 
@@ -402,6 +420,22 @@ class DlgDataListActivity : Activity() {
 
             }
 
+            if(tableName.equals("StockMap")){
+
+                val stockdata = stockmapAdapter.getItem(position)
+
+                val intent = Intent(this, StockActivity::class.java)
+
+                intent!!.putExtra("id", stockdata.id.toString())
+                intent.putExtra("set",3)
+                intent!!.putExtra("GROP_ID",stockdata.GROP_ID)
+                intent.putExtra("export", 70)
+                intent!!.putExtra("polygonid",polygonid)
+
+                startActivityForResult(intent, STOCKMAP_DATA)
+
+            }
+
         }
 
         closeLL.setOnClickListener {
@@ -551,6 +585,22 @@ class DlgDataListActivity : Activity() {
                     ,data.getFloat(33),data.getString(34),data.getString(35))
 
             listdata.add(model)
+        }
+    }
+
+    fun stockmapsdataList(listdata: java.util.ArrayList<StockMap>, data: Cursor) {
+
+        while (data.moveToNext()){
+
+            var model : StockMap;
+
+            model = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                    data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
+                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
+                    , data.getString(22))
+
+            listdata.add(model)
+
         }
     }
 
@@ -1046,10 +1096,54 @@ class DlgDataListActivity : Activity() {
                         finish()
                     }
                 }
+
+                STOCKMAP_DATA -> {
+
+                    if (data!!.getIntExtra("reset",0) != null) {
+
+                        val dataList: Array<String> = arrayOf("*");
+
+                        val stockmapsdata=  db.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
+
+                        if(stocksData != null){
+                            stocksData.clear()
+                        }
+
+                        stockmapsdataList(stocksData,stockmapsdata)
+
+                        listView1.adapter = stockmapAdapter
+
+                        stockmapAdapter.notifyDataSetChanged()
+
+                    }
+
+                    if(data!!.getStringExtra("polygonid") != null){
+
+                        val polygonid = data!!.getStringExtra("polygonid")
+
+                        println("polygonid ----------------------------------$polygonid")
+
+                        var intent = Intent()
+                        intent.putExtra("polygonid", polygonid)
+                        setResult(RESULT_OK, intent);
+
+                        finish()
+
+                    }
+
+                    if(data!!.getIntExtra("export" , 0) != null){
+                        var intent = Intent()
+
+                        val export = data!!.getIntExtra("export",0)
+
+                        intent.putExtra("export",export)
+                        setResult(RESULT_OK, intent)
+
+                        finish()
+                    }
+
+                }
             }
         }
     }
-
-
-
 }

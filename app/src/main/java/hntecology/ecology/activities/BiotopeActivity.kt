@@ -69,7 +69,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
     var keyId: String? = null;
     var pk: String? = null
-    var gropid: ArrayList<Long>? = null
     var chkdata: Boolean = false;
     var basechkdata: Boolean = false
 
@@ -1081,7 +1080,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             }else {
                 finish()
             }
-
         }
 
         //sqlite 저장.
@@ -1923,8 +1921,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
             var biotope_attribute = intent.getSerializableExtra("biotopedata") as Biotope_attribute
             println("biotope_attribute ${biotope_attribute.GPS_LON}")
-            lat = biotope_attribute.GPS_LAT.toString()
-            log = biotope_attribute.GPS_LON.toString()
             val dbManager: DataBaseHelper = DataBaseHelper(this)
 
             val db = dbManager.createDataBase()
@@ -1934,16 +1930,13 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             etGPS_LATTV.setText(biotope_attribute.GPS_LAT.toString())
             etGPS_LONTV.setText(biotope_attribute.GPS_LON.toString())
 
-            etINV_REGIONET.setText(biotope_attribute.INV_REGION);                   // 조사지
-
-            if (intent.getStringExtra("EMD_NM") != null){
+            if (intent.getStringExtra("EMD_NM") != null) {
                 val EMD_NM = intent.getStringExtra("EMD_NM")
 
-                if(EMD_NM != "" && EMD_NM != null){
+                if (EMD_NM != "" && EMD_NM != null) {
                     etINV_REGIONET.setText(EMD_NM);
                 }
             }
-            tvINV_PERSONTV.setText(biotope_attribute.INV_PERSON)                    // 조사자
 
             etINV_DTTV.setText(biotope_attribute.INV_DT)
             etINV_TMTV.setText(biotope_attribute.INV_TM)
@@ -2662,18 +2655,26 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         }
                     }
                     for (j in images_path!!.indices) {
-                        val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
-                        if (images!!.size == 0) {
-                            images!!.add(add_file)
-                        } else {
-                            try {
-                                images!!.set(images!!.size, add_file)
-                            } catch (e: IndexOutOfBoundsException) {
-                                images!!.add(add_file)
-                            }
 
+                        val paths = images_path!!.get(j).split("/")
+                        val file_name = paths.get(paths.size - 1)
+                        val getPk = file_name.split("_")
+                        val pathPk = getPk.get(0)
+
+                        if (pathPk == pk){
+                            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+                            if (images!!.size == 0) {
+                                images!!.add(add_file)
+                            } else {
+                                try {
+                                    images!!.set(images!!.size, add_file)
+                                } catch (e: IndexOutOfBoundsException) {
+                                    images!!.add(add_file)
+                                }
+
+                            }
+                            reset(images_path!!.get(j), j)
                         }
-                        reset(images_path!!.get(j), j)
                     }
 
                 })
@@ -2706,21 +2707,29 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             addPicturesLL!!.addView(vv)
                         }
                     }
+
                     for (j in images_path!!.indices) {
-                        val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
-                        if (images!!.size == 0) {
-                            images!!.add(add_file)
-                        } else {
-                            try {
-                                images!!.set(images!!.size, add_file)
-                            } catch (e: IndexOutOfBoundsException) {
+
+                        val paths = images_path!!.get(j).split("/")
+                        val file_name = paths.get(paths.size - 1)
+                        val getPk = file_name.split("_")
+                        val pathPk = getPk.get(0)
+
+                        if (pathPk == pk){
+                            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+                            if (images!!.size == 0) {
                                 images!!.add(add_file)
+                            } else {
+                                try {
+                                    images!!.set(images!!.size, add_file)
+                                } catch (e: IndexOutOfBoundsException) {
+                                    images!!.add(add_file)
+                                }
+
                             }
-
+                            reset(images_path!!.get(j), j)
                         }
-                        reset(images_path!!.get(j), j)
                     }
-
 
                 })
                 .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })

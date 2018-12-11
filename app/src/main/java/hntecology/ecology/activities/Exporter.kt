@@ -120,6 +120,10 @@ object Exporter {
                 MainActivity.LAYER_FLORA2 -> {
                     layerName = "flora2"
                 }
+
+                MainActivity.LAYER_STOCKMAP -> {
+                    layerName = "stockmap"
+                }
             }
         }
 
@@ -169,6 +173,9 @@ object Exporter {
 
                 MainActivity.LAYER_FLORA2 -> {
                     layerName = "flora2"
+                }
+                MainActivity.LAYER_STOCKMAP -> {
+                    layerName = "stockmap"
                 }
 
             }
@@ -230,6 +237,8 @@ object Exporter {
         if(exportItems != null) {
             val exportitem = exportItems.get(0)
             if (exportitem.layerInt == MainActivity.LAYER_BIOTOPE) {
+                layerType = ogr.wkbPolygon
+            } else if (exportItem.layerInt == MainActivity.LAYER_STOCKMAP){
                 layerType = ogr.wkbPolygon
             }
         }

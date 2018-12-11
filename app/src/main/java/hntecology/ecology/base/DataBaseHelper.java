@@ -25,6 +25,7 @@ import hntecology.ecology.model.Insect_attribute;
 import hntecology.ecology.model.Mammal_attribute;
 import hntecology.ecology.model.ManyFloraAttribute;
 import hntecology.ecology.model.Reptilia_attribute;
+import hntecology.ecology.model.StockMap;
 import hntecology.ecology.model.Tracking;
 import hntecology.ecology.model.TreeData1;
 import hntecology.ecology.model.Zoobenthos_Attribute;
@@ -142,10 +143,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         // Open your local db as the input stream
 //        InputStream myInput = myContext.getAssets().open(DB_NAME);
-//        InputStream myInput = myContext.getAssets().open(DB_NAME);
+        InputStream myInput = myContext.getAssets().open(DB_NAME);
 
-        File path = myContext.getDatabasePath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "ecology.db");
-        InputStream myInput = new FileInputStream(path);
+//        File path = myContext.getDatabasePath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "ecology.db");
+//        InputStream myInput = new FileInputStream(path);
 
         System.out.println("open--------------------------");
 
@@ -942,6 +943,41 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void insertstockmap(StockMap StockMap){
+        String query = "INSERT INTO StockMap";
+        query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,NUM,FRTP_CD,KOFTR_GROUP_CD,STORUNST_CD,FROR_CD,DMCLS_CD";
+        query += ",AGCLS_CD,DNST_CD,HEIGHT,LDMARK_STNDA_CD,MAP_LABEL,MAP_LABEL2,ETC_PCMTT,GPS_LAT,GPS_LON,CONF_MOD)";
+
+        query += " values (";
+        query += " '" + StockMap.getGROP_ID() + "'";
+        query += ", '" + StockMap.getPRJ_NAME() + "'";
+        query += ", '" + StockMap.getINV_REGION() + "'";
+        query += ", '" + StockMap.getINV_PERSON() + "'";
+        query += ", '" + StockMap.getINV_DT() + "'";
+        query += ", '" + StockMap.getINV_TM() + "'";
+        query += ", '" + StockMap.getNUM() + "'";
+        query += ", '" + StockMap.getFRTP_CD() + "'";
+        query += ", '" + StockMap.getKOFTR_GROUP_CD() + "'";
+        query += ", '" + StockMap.getSTORUNST_CD() + "'";
+        query += ", '" + StockMap.getFROR_CD() + "'";
+        query += ", '" + StockMap.getDMCLS_CD() + "'";
+        query += ", '" + StockMap.getAGCLS_CD() + "'";
+        query += ", '" + StockMap.getDNST_CD() + "'";
+        query += ", '" + StockMap.getHEIGHT() + "'";
+        query += ", '" + StockMap.getLDMARK_STNDA_CD() + "'";
+        query += ", '" + StockMap.getMAP_LABEL() + "'";
+        query += ", '" + StockMap.getMAP_LABEL2() + "'";
+        query += ", '" + StockMap.getETC_PCMTT() + "'";
+        query += ", '" + StockMap.getGPS_LAT() + "'";
+        query += ", '" + StockMap.getGPS_LON() + "'";
+        query += ", '" + StockMap.getCONF_MOD() + "'";
+        query += " ); ";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
 
 
 
@@ -1011,8 +1047,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deletemanyflora_attribute(ManyFloraAttribute ManyFloraAttribute,String pk) {
-        String query = "DELETE FROM ManyFloraAttribute WHERE id = '" + pk + "'";
+
+    public void deletestockmap(String pk) {
+        String query = "DELETE FROM StockMap WHERE id = '" + pk + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void deletemanyflora_attribute(ManyFloraAttribute ManyFloraAttribute,String GROP_ID) {
+        String query = "DELETE FROM ManyFloraAttribute WHERE GROP_ID = '" + GROP_ID + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void deleteAllManyFloraAttribute(String GROP_ID) {
+        String query = "DELETE FROM ManyFloraAttribute WHERE GROP_ID = '" + GROP_ID + "'";
 
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1437,6 +1490,35 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public void updatestockmap(StockMap StockMap,String pk) {
+
+        String query = "UPDATE StockMap SET  " +
+                "INV_REGION='" + StockMap.getINV_REGION() + "'"
+                + ",INV_DT='" + StockMap.getINV_DT() + "'"
+                + ",INV_TM='" + StockMap.getINV_TM() + "'"
+                + ",NUM='" + StockMap.getNUM() + "'"
+                + ",FRTP_CD='" + StockMap.getFRTP_CD() + "'"
+                + ",KOFTR_GROUP_CD='" + StockMap.getKOFTR_GROUP_CD() + "'"
+                + ",STORUNST_CD='" + StockMap.getSTORUNST_CD() + "'"
+                + ",FROR_CD='" + StockMap.getFROR_CD() + "'"
+                + ",DMCLS_CD='" + StockMap.getDMCLS_CD() + "'"
+                + ",AGCLS_CD='" + StockMap.getAGCLS_CD() + "'"
+                + ",DNST_CD='" + StockMap.getDNST_CD() + "'"
+                + ",HEIGHT='" + StockMap.getHEIGHT() + "'"
+                + ",LDMARK_STNDA_CD='" + StockMap.getLDMARK_STNDA_CD() + "'"
+                + ",MAP_LABEL='" + StockMap.getMAP_LABEL() + "'"
+                + ",MAP_LABEL2='" + StockMap.getMAP_LABEL2() + "'"
+                + ",ETC_PCMTT='" + StockMap.getETC_PCMTT() + "'"
+                + ",GPS_LAT='" + StockMap.getGPS_LAT() + "'"
+                + ",GPS_LON='" + StockMap.getGPS_LON() + "'"
+                + ",CONF_MOD='" + StockMap.getCONF_MOD() + "'"+
+                "where id = '" + pk + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
     public void updatefloratre(TreeData1 TreeData1, String GROP_ID, int TRE_NUM) {
 
         String query = "UPDATE ManyFloraAttribute SET  " +
@@ -1653,6 +1735,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
 
         String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(NUM\n ,9,15)),0)+1 ,-15, 15) FROM ZoobenthosAttribute";
+
+        int num = 0;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                num = cursor.getInt(0);
+            }
+        }
+        cursor.close();
+        return num;
+    }
+
+    public int stockmapNextNum(){
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(NUM\n ,9,15)),0)+1 ,-15, 15) FROM StockMap";
 
         int num = 0;
 

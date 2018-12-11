@@ -282,11 +282,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             if (drawer_view.visibility == View.VISIBLE) {
 
-                if(polygon != null) {
-                    endPolygonDraw(polygon!!)
+                if(editingPolygon != null) {
+                    endPolygonDraw(editingPolygon!!)
                 }
 
-                if(polygon == null){
+                if(editingPolygon == null){
                     endDraw()
                 }
 
@@ -308,11 +308,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             if (drawer_view.visibility == View.VISIBLE) {
 
-                if(polygon != null) {
-                    endPolygonDraw(polygon!!)
+                if(editingPolygon != null) {
+                    endPolygonDraw(editingPolygon!!)
                 }
 
-                if(polygon == null){
+                if(editingPolygon == null){
                     endDraw()
                 }
 
@@ -3752,7 +3752,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     }
 
     private var editingPolygon: Polygon? = null
-    private var polygon: Polygon? = null
+    // private var polygon: Polygon? = null
 
     private fun drawPoint(geoPoint: LatLng) {
         val markerOptions = MarkerOptions()
@@ -3978,17 +3978,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         polygonOptions.addAll(latlngs)
 
         editingPolygon = googleMap.addPolygon(polygonOptions)
-        polygon = googleMap.addPolygon(polygonOptions)
-        // editingPolygon?.zIndex = 5.0f
         editingPolygon?.isClickable = true
-        polygon?.isClickable = true
 
         val layerInfo = LayerInfo()
         layerInfo.attrubuteKey = getAttributeKey(layerInfo.layer)
         layerInfo.layer = currentLayer
 
         editingPolygon?.tag = layerInfo
-        polygon?.tag = layerInfo
 
     }
 
@@ -3999,18 +3995,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         if (latlngs.size == 0) {
 
             editingPolygon = null
-            polygon = null
 
             return
 
         }
 
         editingPolygon!!.points = latlngs
-        polygon!!.points = latlngs
 
         if(latlngs.size >= 3) {
             val jtsEditPolygon = toJTSPolygon(editingPolygon!!)
-            val jtsPolygon = toJTSPolygon(polygon!!)
             if(!jtsEditPolygon.isValid) {
 
                 latlngs.remove(latlngs.last())
@@ -4095,7 +4088,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         if (latlngs.size == 0) {
 
             editingPolygon = null
-            this.polygon = null
 
             return
 
@@ -4158,7 +4150,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 
             editingPolygon!!.points = latlngs
-            this.polygon!!.points = latlngs
 
             val jtsEditPolygon = toJTSPolygon(editingPolygon!!)
             val jtsPolygon = toJTSPolygon(polygon)

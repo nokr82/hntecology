@@ -115,7 +115,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     private lateinit var mGestureDetector: GestureDetector
     private lateinit var googleMap: GoogleMap
 
-    private var allPolygons: ArrayList<Polygon> = ArrayList<Polygon>()
+    // private var allPolygons: ArrayList<Polygon> = ArrayList<Polygon>()
     private var polygons : ArrayList<Polygon> = ArrayList<Polygon>()
     private var points = ArrayList<Marker>()
     private var allpoints = ArrayList<Marker>()
@@ -282,11 +282,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             if (drawer_view.visibility == View.VISIBLE) {
 
-                if(polygon != null) {
-                    endPolygonDraw(polygon!!)
+                if(editingPolygon != null) {
+                    endPolygonDraw(editingPolygon!!)
                 }
 
-                if(polygon == null){
+                if(editingPolygon == null){
                     endDraw()
                 }
 
@@ -308,11 +308,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             if (drawer_view.visibility == View.VISIBLE) {
 
-                if(polygon != null) {
-                    endPolygonDraw(polygon!!)
+                if(editingPolygon != null) {
+                    endPolygonDraw(editingPolygon!!)
                 }
 
-                if(polygon == null){
+                if(editingPolygon == null){
                     endDraw()
                 }
 
@@ -670,12 +670,26 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         // 도형 분리
         splitRL.setOnClickListener {
+
             if (splitRL.isSelected) {
+
+                if(splittingPolygon == null) {
+                    Toast.makeText(context, "분리할 도형을 선택해주세요.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
                 splitPolygon()
                 offSplitBtn()
             } else {
                 onSplitBtn()
+
+                Utils.alert(context, "분리할 도형을 선택해주세요.");
             }
+        }
+
+        // 도형 분리 취소
+        cancelSplitRL.setOnClickListener {
+            offSplitBtn()
         }
 
         // 도형 합지기
@@ -689,6 +703,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 onUnionBtn()
             }
 
+        }
+
+        // 도형 합지기 취소
+        cancelUnionRL.setOnClickListener {
+            offUnionBtn()
         }
 
 
@@ -828,11 +847,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         seekbarSB.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                if(allPolygons != null) {
-                    for (i in 0..allPolygons.size - 1) {
-                        allPolygons.get(i)
-                    }
-                }
+
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -882,6 +897,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         unionRL.isSelected = true
         unionTV.setTextColor(Color.BLACK)
         unionTV.setTypeface(null, Typeface.BOLD)
+
+        cancelUnionRL.visibility = View.VISIBLE
+
     }
 
     private fun offUnionBtn() {
@@ -896,6 +914,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         polygonsToUnion.clear()
 
+        cancelUnionRL.visibility = View.GONE
+
     }
 
     private fun onSplitBtn() {
@@ -904,7 +924,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         splitTV.setTextColor(Color.BLACK)
         splitTV.setTypeface(null, Typeface.BOLD);
 
-        drawer_view.visibility = View.VISIBLE
+        cancelSplitRL.visibility = View.VISIBLE
     }
 
     private fun startRegistrationService() {
@@ -971,14 +991,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 println("ssssssssssssss : ${polygon.hashCode()}")
 
-                                polygons.get(i).remove()
-                                polygons.remove(polygons.get(i))
+                                val delPoly = polygons.get(i)
+                                delPoly.remove()
+                                polygons.remove(delPoly)
+                                // allPolygons.remove(delPoly)
 
-                                runOnUiThread(Runnable {
-                                    polygon.remove()
-//                                        polygons.removeAt(i)
-                                })
-//                                polygons.remove(polygons.get(i))
                             }
                         }
 
@@ -1263,14 +1280,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 println("ssssssssssssss : ${polygon.hashCode()}")
 
-                                polygons.get(i).remove()
-                                polygons.remove(polygons.get(i))
+                                val delPoly = polygons.get(i)
+                                delPoly.remove()
+                                polygons.remove(delPoly)
+                                // allPolygons.remove(delPoly)
 
-                                runOnUiThread(Runnable {
-                                    polygon.remove()
-//                                        polygons.removeAt(i)
-                                })
-//                                polygons.remove(polygons.get(i))
                             }
                         }
 
@@ -1378,6 +1392,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             Toast.makeText(this, "No Support for Google Play Service", Toast.LENGTH_LONG).show()
         }
     }
+
+    private var splittingPolygon: Polygon? = null
 
     override fun onMapReady(map: GoogleMap?) {
         if (map == null) {
@@ -1981,6 +1997,21 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             if (zoom.toInt() >= 16) {
 
+                // 도형 분리 중이면.....
+                if(splitRL.isSelected) {
+
+                    splittingPolygon = polygon
+                    splittingPolygon!!.strokeWidth = 10.0f
+                    splittingPolygon!!.strokeColor = Color.RED
+
+
+                    drawer_view.visibility = View.VISIBLE
+
+                    Utils.alert(context, "분리선을 추가해 주세요.");
+
+                    return@setOnPolygonClickListener
+                }
+
                 val builder = AlertDialog.Builder(context)
                 if (polygonRemove == true) {
                     builder.setMessage("삭제하시겠습니까?").setCancelable(false)
@@ -2046,8 +2077,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 }
 
                                 polygonsToUnion.add(polygon)
-                                polygon.strokeWidth = 0.0f
-                                polygon.strokeColor = Color.TRANSPARENT
+                                polygon.strokeWidth = 10.0f
+                                polygon.strokeColor = Color.RED
 
                                 return@setOnPolygonClickListener
 
@@ -2277,9 +2308,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                         polygons.add(polygon)
                                     }
 
+                                    /*
                                     if (allPolygons.size == 0) {
                                         allPolygons.add(polygon)
                                     }
+                                    */
                                 }
                                 if (type == true) {
                                     val dataList: Array<String> = arrayOf("*");
@@ -2397,9 +2430,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                         polygons.add(polygon)
                                     }
 
+                                    /*
                                     if (allPolygons.size == 0) {
                                         allPolygons.add(polygon)
                                     }
+                                    */
                                 }
 
                             }
@@ -2694,9 +2729,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                         polygons.add(polygon)
                                     }
 
+                                    /*
                                     if (allPolygons.size == 0) {
                                         allPolygons.add(polygon)
                                     }
+                                    */
                                 }
                                 if (type == true) {
                                     val dataList: Array<String> = arrayOf("*");
@@ -2814,9 +2851,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                         polygons.add(polygon)
                                     }
 
+                                    /*
                                     if (allPolygons.size == 0) {
                                         allPolygons.add(polygon)
                                     }
+                                    */
                                 }
 
                             }
@@ -3399,7 +3438,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 // println("polygon.tag ${polygon.tag}")
 
                 polygons.add(polygon)
-                allPolygons.add(polygon)
+                // allPolygons.add(polygon)
 
             } else if (geoms[0] is MarkerOptions) {
 
@@ -3545,6 +3584,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 val geoPoint = googleMap.projection.fromScreenLocation(point)
 
                 if (splitRL.isSelected) {
+
+                    if(splittingPolygon == null) {
+                        Toast.makeText(context, "분리할 도형을 선택해주세요.", Toast.LENGTH_SHORT).show()
+                        return true
+                    }
+
                     if(polylineForSplitGuide != null) {
 
                         val polylineForSplitGuidePoints = ArrayList<LatLng?>()
@@ -3601,7 +3646,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 if (splitRL.isSelected) {
 
-                    if (editingPolygon == null) {
+                    if (splittingPolygon == null) {
                         return false
                     }
 
@@ -3742,17 +3787,24 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         endDraw()
 
+        polylineForSplitGuide?.remove()
+
+        polylineForSplitGuide = null
+
         splitRL.isSelected = false
 
         splitTV.setTextColor(Color.parseColor("#333333"))
         splitTV.setTypeface(null, Typeface.NORMAL);
 
         drawer_view.visibility = View.GONE
+        cancelSplitRL.visibility = View.GONE
 
+        splittingPolygon?.strokeWidth = 1.0f
+        splittingPolygon?.strokeColor = Color.BLACK
     }
 
     private var editingPolygon: Polygon? = null
-    private var polygon: Polygon? = null
+    // private var polygon: Polygon? = null
 
     private fun drawPoint(geoPoint: LatLng) {
         val markerOptions = MarkerOptions()
@@ -3978,17 +4030,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         polygonOptions.addAll(latlngs)
 
         editingPolygon = googleMap.addPolygon(polygonOptions)
-        polygon = googleMap.addPolygon(polygonOptions)
-        // editingPolygon?.zIndex = 5.0f
         editingPolygon?.isClickable = true
-        polygon?.isClickable = true
 
         val layerInfo = LayerInfo()
         layerInfo.attrubuteKey = getAttributeKey(layerInfo.layer)
         layerInfo.layer = currentLayer
 
         editingPolygon?.tag = layerInfo
-        polygon?.tag = layerInfo
 
     }
 
@@ -3999,18 +4047,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         if (latlngs.size == 0) {
 
             editingPolygon = null
-            polygon = null
 
             return
 
         }
 
         editingPolygon!!.points = latlngs
-        polygon!!.points = latlngs
 
         if(latlngs.size >= 3) {
             val jtsEditPolygon = toJTSPolygon(editingPolygon!!)
-            val jtsPolygon = toJTSPolygon(polygon!!)
             if(!jtsEditPolygon.isValid) {
 
                 latlngs.remove(latlngs.last())
@@ -4095,7 +4140,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         if (latlngs.size == 0) {
 
             editingPolygon = null
-            this.polygon = null
 
             return
 
@@ -4158,13 +4202,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 
             editingPolygon!!.points = latlngs
-            this.polygon!!.points = latlngs
 
             val jtsEditPolygon = toJTSPolygon(editingPolygon!!)
             val jtsPolygon = toJTSPolygon(polygon)
 
             polygons.add(polygon)
-            allPolygons.add(polygon)
+            // allPolygons.add(polygon)
 
             if(!jtsPolygon.isValid) {
 
@@ -4482,7 +4525,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, biotope_attribute.CONF_MOD))
                                 BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString, biotope_attribute.TEMP_YN))
 
-                                val exporter = Exporter.ExportItem(LAYER_BIOTOPE, BIOTOPEATTRIBUTE, allPolygons.get(j))
+                                val exporter = Exporter.ExportItem(LAYER_BIOTOPE, BIOTOPEATTRIBUTE, polygons.get(j))
 
                                 biotopeArray.add(exporter)
 
@@ -5709,7 +5752,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 STOKEMAP.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, stockMap.GPS_LON))
                                 STOKEMAP.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, stockMap.CONF_MOD))
 
-                                val exporter = Exporter.ExportItem(LAYER_STOCKMAP, STOKEMAP, allPolygons.get(j))
+                                val exporter = Exporter.ExportItem(LAYER_STOCKMAP, STOKEMAP, polygons.get(j))
 
                                 stokeArray.add(exporter)
 
@@ -5876,12 +5919,20 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 for (idx in 1..(polygonsToUnion.size - 1)) {
                     val polygon = polygonsToUnion.get(idx)
                     val layerInfo = polygon.tag as LayerInfo
-                    deleteRow("biotopeAttribute", layerInfo.attrubuteKey)
+
+                    if(typeST.isChecked) {
+                        deleteRow("StockMap", layerInfo.attrubuteKey)
+                    } else {
+                        deleteRow("biotopeAttribute", layerInfo.attrubuteKey)
+                    }
                 }
 
                 for (idx in 0..(polygonsToUnion.size - 1)) {
                     val polygon = polygonsToUnion.get(idx)
                     polygon.remove()
+
+                    polygons.remove(polygon)
+                    // allPolygons.remove(polygon)
                 }
 
                 val polygonOptions = PolygonOptions()
@@ -5948,32 +5999,46 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         return geometryFactory.createLineString(coordinates)
     }
 
-    private fun copyRow(tableName:String, keyId:String, newKeyId:String) {
+    private fun copyRow(tableName:String, keyId:String, newKeyId:String, po:Polygon) {
 
         println("keyId : $keyId, newKeyId : $newKeyId")
 
         val dbCursor = db!!.query(tableName, null, null, null, null, null, null)
-        val columnNames = dbCursor.columnNames
-        val columnNamesStr = columnNames.joinToString(separator = ",")
+        var columnNames = dbCursor.columnNames
+        var newColumnNames = ArrayList<String>()
+        for (columnName in columnNames) {
+            if(columnName != "id") {
+                newColumnNames.add(columnName)
+            }
+        }
+        val columnNamesStr = newColumnNames.joinToString(separator = ",")
 
         val dataList: Array<String> = arrayOf("*");
 
-        val data = db!!.query(tableName, dataList, "id = '$keyId'", null, null, null, "", null);
+        val data = db!!.query(tableName, dataList, "GROP_ID = '$keyId'", null, null, null, "", null);
 
+        val metadata = HashMap<String, Any>()
         val values = ArrayList<Any>()
         while (data.moveToNext()) {
 
             for(idx in 0..(data.columnCount - 1)) {
-                var value = data.getString(idx)
+
                 val columnName = data.getColumnName(idx)
+                if("id" == columnName) {
+                    continue
+                }
+
+                var value = data.getString(idx)
 
                 // println("value : $value")
 
-                if("id" == columnName) {
+                if("GROP_ID" == columnName) {
                     value = newKeyId
                 }
 
                 values.add("\"$value\"")
+
+                metadata.put(columnName, "\"$value\"")
             }
 
             break
@@ -5983,11 +6048,18 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             return
         }
 
+        val json = JSONObject(metadata)
+        val layerInfo = po.tag as LayerInfo
+        layerInfo.metadata = json
+
+        po.tag = layerInfo
+
         val qry = "INSERT INTO $tableName ($columnNamesStr) values(${values.joinToString(separator = ",")})"
 
         println(qry)
 
         db!!.execSQL(qry)
+
 
     }
 
@@ -5995,7 +6067,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         println("$attrubuteKey deleted..")
 
-        db!!.delete(tableName, "id = '$attrubuteKey'", null)
+        db!!.delete(tableName, "GROP_ID = '$attrubuteKey'", null)
     }
 
     protected fun initGps() {
@@ -6286,15 +6358,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             return
         }
 
-        if (editingPolygon == null) {
+        if (splittingPolygon == null) {
             return
         }
 
-        val layerInfo = editingPolygon?.tag as LayerInfo
+        val layerInfo = splittingPolygon?.tag as LayerInfo
 
         val oldAttributeKey = layerInfo.attrubuteKey
 
-        val splited = Utils.splitPolygon(toJTSPolygon(editingPolygon!!), toJTSLineString(polylineForSplitGuide!!))
+        val splited = Utils.splitPolygon(toJTSPolygon(splittingPolygon!!), toJTSLineString(polylineForSplitGuide!!))
 
         offSplitBtn()
 
@@ -6302,8 +6374,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         polylineForSplitGuide = null
 
-        editingPolygon?.remove()
-        editingPolygon = null
+        splittingPolygon?.remove()
+        splittingPolygon = null
 
         for (idx in 0..(splited.numGeometries - 1)) {
             var polygon = splited.getGeometryN(idx)
@@ -6331,12 +6403,24 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             po.isClickable = true
 
             polygons.add(po)
-            allPolygons.add(po)
+            // allPolygons.add(po)
 
             // copy data
-            copyRow("biotopeAttribute", oldAttributeKey, newAttributeKey)
+            if(typeST.isChecked) {
+                copyRow("StockMap", oldAttributeKey, newAttributeKey, po)
+            } else {
+                copyRow("biotopeAttribute", oldAttributeKey, newAttributeKey, po)
+            }
+
 
         }
+
+        if(typeST.isChecked) {
+            deleteRow("StockMap", oldAttributeKey)
+        } else {
+            deleteRow("biotopeAttribute", oldAttributeKey)
+        }
+
     }
 
     override fun onBackPressed() {

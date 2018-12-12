@@ -178,6 +178,25 @@
                         android:gravity="center"/>
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/cancelSplitRL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="4dp"
+                    android:background="@android:color/white"
+                    android:alpha="0.6"
+                    android:visibility="gone">
+                    <TextView
+                        android:id="@+id/cancelSplitTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="도형 분리 취소"
+                        android:textColor="#333333"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:gravity="center"/>
+                </RelativeLayout>
+                <RelativeLayout
                     android:id="@+id/unionRL"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
@@ -189,6 +208,25 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="도형 합치기"
+                        android:textColor="#333333"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:gravity="center"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/cancelUnionRL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="4dp"
+                    android:background="@android:color/white"
+                    android:alpha="0.6"
+                    android:visibility="gone">
+                    <TextView
+                        android:id="@+id/cancelUnionTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="도형 합치기 취소"
                         android:textColor="#333333"
                         android:layout_centerInParent="true"
                         android:layout_marginLeft="8dp"

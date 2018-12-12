@@ -59,6 +59,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public SQLiteDatabase createDataBase() throws IOException {
         boolean dbExist = checkDataBase();
 
+        System.out.println("dbExist" + dbExist);
+
         if (dbExist) {
             // do nothing - database already exist
         } else {
@@ -78,10 +80,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 throw new Error("Error copying database");
 
             }
+
         }
 
         try {
             String myPath = DB_PATH + DB_NAME;
+            System.out.println("------------------------copy");
             return SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
         } catch (SQLiteException e) {
             e.printStackTrace();

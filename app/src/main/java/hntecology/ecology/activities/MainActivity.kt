@@ -559,33 +559,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
 
             if (layersDatas != null){
-                if(zoom.toInt() == 13) {
-                    val progressDialog = ProgressDialog(this@MainActivity,
-                            ProgressDialog.STYLE_SPINNER)
-                    progressDialog.isIndeterminate = true
-                    progressDialog.setMessage("잠시만 기다려 주세요")
-                    progressDialog.setCancelable(false)
-                    progressDialog.show()
-
-                    android.os.Handler().postDelayed(
-                            {
-                                progressDialog.dismiss()
-                            }, 1000)
-                }
-
-                if(zoom.toInt() >= 14){
-                    val progressDialog = ProgressDialog(this@MainActivity,
-                            ProgressDialog.STYLE_SPINNER)
-                    progressDialog.isIndeterminate = true
-                    progressDialog.setMessage("잠시만 기다려 주세요")
-                    progressDialog.setCancelable(false)
-                    progressDialog.show()
-
-                    android.os.Handler().postDelayed(
-                            {
-                                progressDialog.dismiss()
-                            }, 8000)
-                }
 
                 for (i in 0..layersDatas.size-1) {
                     println("layerDatas ${layersDatas.get(i).grop_id}")
@@ -858,6 +831,18 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             }
         })
+
+
+        layerDivision = 100
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, MainActivity.WRITE_EXTERNAL_STORAGE)
+        } else {
+
+            val dbManager: DataBaseHelper = DataBaseHelper(this)
+
+            val db = dbManager.createDataBase();
+        }
+
 
         myLocation = Tracking(null, latitude, longitude)
 //        getLoadLayer()
@@ -2865,24 +2850,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                     println("aa : $attrubuteKey")
 
-//                if (myLayer != LAYER_BIOTOPE || myLayer == LAYER_BIRDS || myLayer == LAYER_REPTILIA || myLayer == LAYER_MAMMALIA || myLayer == LAYER_FISH || myLayer == LAYER_INSECT
-//                        || myLayer == LAYER_FLORA || myLayer != NOTHING) {
-//
-//                    if(attrubuteKey != null) {
-//                        intent!!.putExtra("GROP_ID", attrubuteKey.toString())
-//
-//                        println("intent-----------------------------------${attrubuteKey.toString()}")
-//
-//                        startActivityForResult(intent, PolygonCallBackData)
-//                    }
-//                }
-//                if (myLayer != LAYER_MYLOCATION && myLayer != LAYER && myLayer != LAYER_BIOTOPE && myLayer != LAYER_BIRDS && myLayer != LAYER_REPTILIA && myLayer != LAYER_MAMMALIA && myLayer != LAYER_FISH
-//                        && myLayer != LAYER_INSECT && myLayer != LAYER_FLORA && myLayer != TRACKING && myLayer != NOTHING && myLayer != LAYER_FLORA2) {
-//                    intent!!.putExtra("id", attrubuteKey.toString())
-//
-//                    startActivityForResult(intent, PolygonCallBackData)
-//                }
-
                 }
             } else {
                 Toast.makeText(context, "16레벨 이상까지 확대해주세요.", Toast.LENGTH_SHORT).show()
@@ -2922,57 +2889,16 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         currentFileName = fileName
         currentLayerName = layerName
-
-        if (added == "Y"){
-            val progressDialog = ProgressDialog(this@MainActivity,
-                    ProgressDialog.STYLE_SPINNER)
-            progressDialog.isIndeterminate = true
-            progressDialog.setMessage("잠시만 기다려 주세요")
-            progressDialog.setCancelable(false)
-            progressDialog.show()
-
-            android.os.Handler().postDelayed(
-                    {
-                        progressDialog.dismiss()
-                    }, 1000)
-        }
-
-        if (added == "N"){
-            val zoom = googleMap.cameraPosition.zoom
-
-            if(zoom.toInt() == 13) {
-                val progressDialog = ProgressDialog(this@MainActivity,
-                        ProgressDialog.STYLE_SPINNER)
-                progressDialog.isIndeterminate = true
-                progressDialog.setMessage("잠시만 기다려 주세요")
-                progressDialog.setCancelable(false)
-                progressDialog.show()
-
-                android.os.Handler().postDelayed(
-                        {
-                            progressDialog.dismiss()
-                        }, 1000)
-            }
-
-            if(zoom.toInt() >= 14) {
-                val progressDialog = ProgressDialog(this@MainActivity,
-                        ProgressDialog.STYLE_SPINNER)
-                progressDialog.isIndeterminate = true
-                progressDialog.setMessage("잠시만 기다려 주세요")
-                progressDialog.setCancelable(false)
-                progressDialog.show()
-
-                android.os.Handler().postDelayed(
-                        {
-                            progressDialog.dismiss()
-                        }, 8000)
-            }
-        }
-
+        val progressDialog = ProgressDialog(this@MainActivity, ProgressDialog.STYLE_SPINNER)
+        progressDialog!!.isIndeterminate = true
+        progressDialog.setMessage("잠시만 기다려 주세요")
+        progressDialog.setCancelable(false)
+        progressDialog.show()
 //        layerNameTV.text = currentLayerName
 
         val bounds = googleMap.projection.visibleRegion.latLngBounds
         LoadLayerTask(fileName,Type,added).execute(bounds)
+        progressDialog.dismiss()
 
     }
 
@@ -6101,6 +6027,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             } else if(android.Manifest.permission.WRITE_EXTERNAL_STORAGE == perm){
                 loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE )
             } else if(android.Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
+                val dbManager: DataBaseHelper = DataBaseHelper(this)
+
+                val db = dbManager.createDataBase();
+
                 if (layerDivision == 0 ){
                     exportBiotope()
                 }
@@ -6145,6 +6075,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 if (layerDivision == 10){
                     exportStockMap()
+                }
+
+                if (layerDivision == 100){
+                    val dbManager: DataBaseHelper = DataBaseHelper(this)
+
+                    val db = dbManager.createDataBase();
                 }
 
             }
@@ -6330,8 +6266,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         exportManyFloras()
                     }
 
-                    if (layerDivision == 0){
+                    if (layerDivision == 10){
                         exportStockMap()
+                    }
+
+                    if (layerDivision == 100){
+                        val dbManager: DataBaseHelper = DataBaseHelper(this)
+
+                        val db = dbManager.createDataBase();
                     }
 
                 }

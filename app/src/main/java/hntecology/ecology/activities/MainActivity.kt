@@ -558,37 +558,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             var chkData = false
 
 
-            if (layersDatas != null){
-                if(zoom.toInt() == 13) {
-                    val progressDialog = ProgressDialog(this@MainActivity,
-                            ProgressDialog.STYLE_SPINNER)
-                    progressDialog.isIndeterminate = true
-                    progressDialog.setMessage("잠시만 기다려 주세요")
-                    progressDialog.setCancelable(false)
-                    progressDialog.show()
-
-                    android.os.Handler().postDelayed(
-                            {
-                                progressDialog.dismiss()
-                            }, 1000)
-                }
-
-                if(zoom.toInt() >= 14){
-                    val progressDialog = ProgressDialog(this@MainActivity,
-                            ProgressDialog.STYLE_SPINNER)
-                    progressDialog.isIndeterminate = true
-                    progressDialog.setMessage("잠시만 기다려 주세요")
-                    progressDialog.setCancelable(false)
-                    progressDialog.show()
-
-                    android.os.Handler().postDelayed(
-                            {
-                                progressDialog.dismiss()
-                            }, 8000)
-                }
+            if (layersDatas != null) {
 
                 for (i in 0..layersDatas.size-1) {
-                    println("layerDatas ${layersDatas.get(i).grop_id}")
+                    // println("layerDatas ${layersDatas.get(i).grop_id}")
                     var layerdata = db.query("layers", dataList, "grop_id = '${layersDatas.get(i).grop_id}' and min_scale = '${zoom.toInt()}'", null, null, null, null, null)
 
                     while(layerdata.moveToNext()){
@@ -602,11 +575,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 if (chkData){
                     layersDatas.clear()
-                    for (i in 0..datas.size-1){
-                        layersDatas.add(datas.get(i))
-                        println(datas.get(i).file_name + ".add")
-                        loadLayer(datas.get(i).file_name, datas.get(i).layer_name,datas.get(i).type, datas.get(i).added)
-                    }
+
+                    runOnUiThread(Runnable {
+                        for (i in 0..datas.size-1){
+                            layersDatas.add(datas.get(i))
+                            // println(datas.get(i).file_name + ".add")
+                            loadLayer(datas.get(i).file_name, datas.get(i).layer_name,datas.get(i).type, datas.get(i).added)
+                        }
+                    })
+
                 }
 
             }
@@ -671,6 +648,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         // 도형 분리
         splitRL.setOnClickListener {
 
+            if(polygons.size == 0) {
+                return@setOnClickListener
+            }
+
             if (splitRL.isSelected) {
 
                 if(splittingPolygon == null) {
@@ -694,6 +675,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         // 도형 합지기
         unionRL.setOnClickListener {
+
+            if(polygons.size == 0) {
+                return@setOnClickListener
+            }
 
             endDraw()
 
@@ -1338,19 +1323,23 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         layersDatas.clear()
                     }
 
-                    println("jsonOb.size==================== ${jsonOb.size}")
+                    // println("jsonOb.size==================== ${jsonOb.size}")
 
-                    for (i in 0..jsonOb.size - 1) {
+                    // progressDialog?.show()
 
-                        layerDivision = 8
-                        loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name,jsonOb.get(i).type, jsonOb.get(i).added)
+                    runOnUiThread(Runnable {
+                        for (i in 0..jsonOb.size - 1) {
 
-                        println("jsonOB . filename ${jsonOb.get(i).file_name}")
+                            layerDivision = 8
 
-                        layerFileName.add(jsonOb.get(i).file_name)
-                        layersDatas.add(jsonOb.get(i))
-                    }
+                            loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name,jsonOb.get(i).type, jsonOb.get(i).added)
 
+                            // println("jsonOB . filename ${jsonOb.get(i).file_name}")
+
+                            layerFileName.add(jsonOb.get(i).file_name)
+                            layersDatas.add(jsonOb.get(i))
+                        }
+                    })
                 }
 
                 SEARCHADDRESS -> {
@@ -2913,6 +2902,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     private var currentFileName = ""
     private var currentLayerName = ""
+    private var progressDialogCnt = 0
 
     private fun loadLayer(fileName: String, layerName: String, Type: String,added : String) {
 
@@ -2923,51 +2913,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         currentFileName = fileName
         currentLayerName = layerName
 
-        if (added == "Y"){
-            val progressDialog = ProgressDialog(this@MainActivity,
-                    ProgressDialog.STYLE_SPINNER)
-            progressDialog.isIndeterminate = true
-            progressDialog.setMessage("잠시만 기다려 주세요")
-            progressDialog.setCancelable(false)
-            progressDialog.show()
+        progressDialog?.show()
 
-            android.os.Handler().postDelayed(
-                    {
-                        progressDialog.dismiss()
-                    }, 1000)
-        }
-
-        if (added == "N"){
-            val zoom = googleMap.cameraPosition.zoom
-
-            if(zoom.toInt() == 13) {
-                val progressDialog = ProgressDialog(this@MainActivity,
-                        ProgressDialog.STYLE_SPINNER)
-                progressDialog.isIndeterminate = true
-                progressDialog.setMessage("잠시만 기다려 주세요")
-                progressDialog.setCancelable(false)
-                progressDialog.show()
-
-                android.os.Handler().postDelayed(
-                        {
-                            progressDialog.dismiss()
-                        }, 1000)
-            }
-
-            if(zoom.toInt() >= 14) {
-                val progressDialog = ProgressDialog(this@MainActivity,
-                        ProgressDialog.STYLE_SPINNER)
-                progressDialog.isIndeterminate = true
-                progressDialog.setMessage("잠시만 기다려 주세요")
-                progressDialog.setCancelable(false)
-                progressDialog.show()
-
-                android.os.Handler().postDelayed(
-                        {
-                            progressDialog.dismiss()
-                        }, 8000)
-            }
-        }
+        progressDialogCnt++
 
 //        layerNameTV.text = currentLayerName
 
@@ -3021,15 +2969,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val f = File(shpFilePath)
 
-            println("g : ${f.exists()}")
+            // println("g : ${f.exists()}")
 
-            val dataSource = driver.Open(shpFilePath, 0)
+            val dataSource = driver.Open(shpFilePath, 0)?:return true
 
-            println("dataSource : $dataSource")
+            // println("dataSource : $dataSource")
 
             val layerCount = dataSource.GetLayerCount()
 
-            println("layerCount : $layerCount")
+            // println("layerCount : $layerCount")
 
             for (idx in 0..(layerCount -1)) {
                 val layer = dataSource.GetLayer(idx)
@@ -3042,7 +2990,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     var geometryRef = feature.GetGeometryRef()
 
                     if(!geometryRef.Intersects(mapBoundary)) {
-                        println("added : $added")
+                        // println("added : $added")
                          if(added == "N"){
                              continue
                          }
@@ -3072,7 +3020,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             val x = point[0]
                             val y = point[1]
 
-                            println("geometryType : $geometryType, point : $x, $y")
+                            // println("geometryType : $geometryType, point : $x, $y")
 
                             val latlng = LatLng(y, x)
 
@@ -3212,11 +3160,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 polygon.tag = layerInfo
                 polygon.isClickable = true
 
-                println("polygon.tag : ${polygon.tag}")
+                // println("polygon.tag : ${polygon.tag}")
 
                 var attrubuteKey = layerInfo.attrubuteKey
 
-                println("attrubuteKey : $attrubuteKey")
+                // println("attrubuteKey : $attrubuteKey")
 
                 if(type.equals("biotope")){
                     layerInfo.layer = LAYER_BIOTOPE
@@ -3528,6 +3476,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             Utils.hideLoading(this@MainActivity)
 
             print("Post........")
+
+            progressDialogCnt--
+
+            if(progressDialogCnt == 0) {
+                progressDialog?.dismiss()
+            }
         }
 
     }

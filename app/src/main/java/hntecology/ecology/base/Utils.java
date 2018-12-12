@@ -1530,7 +1530,7 @@ public class Utils {
         ActivityManager am = (ActivityManager) activity.getSystemService(activity.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
 
-        System.out.println("taskInfo : " + taskInfo);
+        // System.out.println("taskInfo : " + taskInfo);
 
         if(taskInfo != null && taskInfo.size() > 0) {
             String topClazzName = taskInfo.get(0).topActivity.getClassName();

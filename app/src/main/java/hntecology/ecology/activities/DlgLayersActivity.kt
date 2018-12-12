@@ -12,10 +12,8 @@ import android.support.v4.content.ContextCompat
 import hntecology.ecology.R
 import hntecology.ecology.adapter.DlgLayerAdapter
 import hntecology.ecology.base.DataBaseHelper
-import hntecology.ecology.base.Utils
 import hntecology.ecology.model.LayerModel
 import kotlinx.android.synthetic.main.dlg_layers.*
-import org.json.JSONObject
 
 
 class DlgLayersActivity : Activity() {
@@ -85,11 +83,11 @@ class DlgLayersActivity : Activity() {
                     var checkData = adapterData.get(i)
                     var checked = checkData.is_checked
 
-                    println("checked : " + checked)
+                    // println("checked : " + checked)
 
                     if(checked) {
                         data.add(adapterData.get(i))
-                        println("-------added ${adapterData.get(i).added}")
+                        // println("-------added ${adapterData.get(i).added}")
                     }
 
                 }
@@ -123,7 +121,7 @@ class DlgLayersActivity : Activity() {
             if(zoom > layerModel.min_scale && zoom < layerModel.max_scale) {
                 adapterData.add(layerModel)
 
-                println("file_name ${layerModel.file_name}")
+                // println("file_name ${layerModel.file_name}")
             }
 
             if(intent.getSerializableExtra("layerFileName") != null){
@@ -159,11 +157,11 @@ class DlgLayersActivity : Activity() {
                     var checkData = adapterData.get(i)
                     var checked = checkData.is_checked
 
-                    println("checked : " + checked)
+                    // println("checked : " + checked)
 
                     if(checked) {
                         data.add(adapterData.get(i))
-                        println("-------added ${adapterData.get(i).added}")
+                        // println("-------added ${adapterData.get(i).added}")
                     }
 
                 }

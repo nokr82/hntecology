@@ -1,21 +1,15 @@
 package hntecology.ecology.adapter
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
 import hntecology.ecology.R
-import hntecology.ecology.base.DataBaseHelper
-import hntecology.ecology.model.BiotopeModel
 import hntecology.ecology.model.Vascular_plant
-import hntecology.ecology.model.Vegetation
 
 class DlgPlantAdapter(var context: Context, var itemList : ArrayList<Vascular_plant>) : BaseAdapter() {
 
@@ -68,7 +62,7 @@ class DlgPlantAdapter(var context: Context, var itemList : ArrayList<Vascular_pl
             viewHoldar.biotope_item.setTextColor(Color.parseColor("#000000"));
         }
 
-        println("hh : " + position + ", " + hashCode())
+        // println("hh : " + position + ", " + hashCode())
         return view as View
     }
 

@@ -11,23 +11,30 @@ public class Jaso {
 
 
     // 유니코드 한글 문자열을 입력 받음
-    public static boolean startsWith(String s, String cho) {
+    public static boolean startsWith(String s, String chos) {
+        boolean matches = true;
+        for(int idx = 0; idx < chos.length(); idx++) {
+            char cho = chos.charAt(idx);
 
-        int a = 0;
+            int a = 0;
 
-        for (int i = 0; i < s.length(); i++) {
-            char ch = s.charAt(i);
+            for (int i = idx; i < s.length(); i++) {
+                char ch = s.charAt(i);
 
-            if (ch >= 0xAC00 && ch <= 0xD7A3) { // "AC00:가" ~ "D7A3:힣" 에 속한 글자면 분해
-                int c = ch - 0xAC00;
-                a = c / (21 * 28);
+                if (ch >= 0xAC00 && ch <= 0xD7A3) { // "AC00:가" ~ "D7A3:힣" 에 속한 글자면 분해
+                    int c = ch - 0xAC00;
+                    a = c / (21 * 28);
+                    break;
+                }
+            }
+
+            if(ChoSung[a] != cho) {
+                matches = false;
                 break;
             }
         }
 
-        System.out.println("as : " + ChoSung[a] + ", h : " + cho.charAt(0));
-
-        return ChoSung[a] == cho.charAt(0);
+        return matches;
     }
 
     // 유니코드 한글 문자열을 입력 받음

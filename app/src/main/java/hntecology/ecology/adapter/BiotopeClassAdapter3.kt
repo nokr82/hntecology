@@ -1,21 +1,15 @@
 package hntecology.ecology.adapter
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
 import hntecology.ecology.R
-import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.model.BiotopeClass
-import hntecology.ecology.model.BiotopeModel
-import hntecology.ecology.model.Vegetation
 
 class BiotopeClassAdapter3(var context: Context, var itemList : ArrayList<BiotopeClass>) : BaseAdapter() {
 
@@ -69,7 +63,7 @@ class BiotopeClassAdapter3(var context: Context, var itemList : ArrayList<Biotop
             
         }
 
-        println("hh : " + position + ", " + hashCode())
+        // println("hh : " + position + ", " + hashCode())
         return view as View
     }
 

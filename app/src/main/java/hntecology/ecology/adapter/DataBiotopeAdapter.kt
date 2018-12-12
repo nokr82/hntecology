@@ -1,7 +1,6 @@
 package hntecology.ecology.adapter
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +9,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import hntecology.ecology.R
 import hntecology.ecology.model.Biotope_attribute
-import hntecology.ecology.model.Birds_attribute
-import hntecology.ecology.model.Vegetation
 
 class DataBiotopeAdapter(var context: Context, var itemList : ArrayList<Biotope_attribute>) : BaseAdapter() {
 
@@ -54,7 +51,7 @@ class DataBiotopeAdapter(var context: Context, var itemList : ArrayList<Biotope_
 
         viewHoldar.class_biotope_item.text = Biotope_attribute.INV_DT + " / " + Biotope_attribute.INV_TM
 
-        println("hh : " + position + ", " + hashCode())
+        // println("hh : " + position + ", " + hashCode())
         return view as View
     }
 

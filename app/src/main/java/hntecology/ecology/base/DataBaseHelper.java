@@ -832,7 +832,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     public void insertbase(Base base){
-        String query = "INSERT INTO base";
+        String query = "INSERT INTO base ";
         query += "(GROP_ID,PRJ_NAME,GPS_LAT,GPS_LON,INV_PERSON,INV_DT,INV_TM)";
 
         query += " values (";

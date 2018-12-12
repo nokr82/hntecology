@@ -553,43 +553,18 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val zoom = googleMap.cameraPosition.zoom
 
-            println("zoom ${zoom.toInt()}")
+            println("zoom ${zoom.toInt()}, layersDatas : ${layersDatas.size}")
 
             var chkData = false
 
 
-            if (layersDatas != null){
-                if(zoom.toInt() == 13) {
-                    val progressDialog = ProgressDialog(this@MainActivity,
-                            ProgressDialog.STYLE_SPINNER)
-                    progressDialog.isIndeterminate = true
-                    progressDialog.setMessage("잠시만 기다려 주세요")
-                    progressDialog.setCancelable(false)
-                    progressDialog.show()
-
-                    android.os.Handler().postDelayed(
-                            {
-                                progressDialog.dismiss()
-                            }, 1000)
-                }
-
-                if(zoom.toInt() >= 14){
-                    val progressDialog = ProgressDialog(this@MainActivity,
-                            ProgressDialog.STYLE_SPINNER)
-                    progressDialog.isIndeterminate = true
-                    progressDialog.setMessage("잠시만 기다려 주세요")
-                    progressDialog.setCancelable(false)
-                    progressDialog.show()
-
-                    android.os.Handler().postDelayed(
-                            {
-                                progressDialog.dismiss()
-                            }, 8000)
-                }
+            if (layersDatas != null) {
 
                 for (i in 0..layersDatas.size-1) {
-                    // println("layerDatas ${layersDatas.get(i).grop_id}")
-                    var layerdata = db.query("layers", dataList, "grop_id = '${layersDatas.get(i).grop_id}' and min_scale = '${zoom.toInt()}'", null, null, null, null, null)
+
+                    println("layerDatas ${layersDatas.get(i).grop_id}")
+
+                    var layerdata = db.query("layers", dataList, "grop_id = '${layersDatas.get(i).grop_id}' and min_scale <= '${zoom.toInt()}' and max_scale >= '${zoom.toInt()}'", null, null, null, null, null)
 
                     while(layerdata.moveToNext()){
                         chkData = true
@@ -2958,6 +2933,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
 //        layerNameTV.text = currentLayerName
 
+        println("fileName : fileName")
+
         val bounds = googleMap.projection.visibleRegion.latLngBounds
         LoadLayerTask(fileName,Type,added).execute(bounds)
 
@@ -3515,6 +3492,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             Utils.hideLoading(this@MainActivity)
 
             print("Post........")
+
+            progressDialogCnt--
+
+            if(progressDialogCnt == 0) {
+                progressDialog?.dismiss()
+            }
         }
 
     }
@@ -6088,10 +6071,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             } else if(android.Manifest.permission.WRITE_EXTERNAL_STORAGE == perm){
                 loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE )
             } else if(android.Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
-                val dbManager: DataBaseHelper = DataBaseHelper(this)
-
-                val db = dbManager.createDataBase();
-
                 if (layerDivision == 0 ){
                     exportBiotope()
                 }

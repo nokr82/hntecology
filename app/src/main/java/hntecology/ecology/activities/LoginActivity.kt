@@ -1,25 +1,34 @@
 package hntecology.ecology.activities
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.view.Gravity
 import android.widget.Toast
 import hntecology.ecology.R
+import hntecology.ecology.base.AlertListener
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
+import hntecology.ecology.base.Utils.alert
 import kotlinx.android.synthetic.main.activity_login.*
+import java.io.File
 
 class LoginActivity : Activity() {
+
+    private lateinit var context: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        this.context = this
 
         window.setGravity(Gravity.CENTER);
         window.setLayout(Utils.dpToPx(600f).toInt(), Utils.dpToPx(400f).toInt());
@@ -28,8 +37,9 @@ class LoginActivity : Activity() {
             loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, MainActivity.WRITE_EXTERNAL_STORAGE)
         } else {
             val dbManager: DataBaseHelper = DataBaseHelper(this)
-
             val db = dbManager.createDataBase();
+
+            copyAllData()
         }
 
 
@@ -66,8 +76,9 @@ class LoginActivity : Activity() {
                 loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, MainActivity.READ_EXTERNAL_STORAGE)
             } else if (android.Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
                 val dbManager: DataBaseHelper = DataBaseHelper(this)
-
                 val db = dbManager.createDataBase();
+
+                copyAllData()
             }
         }
     }
@@ -77,11 +88,67 @@ class LoginActivity : Activity() {
 
         when (requestCode) {
             MainActivity.WRITE_EXTERNAL_STORAGE -> {
-                loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, MainActivity.READ_EXTERNAL_STORAGE)
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Utils.alert(context, "권한을 승인해야 사용할 수 있습니다.", object : AlertListener {
+                        override fun before(): Boolean {
+                            return true
+                        }
+
+                        override fun after() {
+                            loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, MainActivity.WRITE_EXTERNAL_STORAGE)
+                        }
+                    })
+                } else {
+                    loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, MainActivity.READ_EXTERNAL_STORAGE)
+                }
+
+
             }
             MainActivity.READ_EXTERNAL_STORAGE -> {
-                val dbManager: DataBaseHelper = DataBaseHelper(this)
-                val db = dbManager.createDataBase();
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    alert(context, "권한을 승인해야 사용할 수 있습니다.", object: AlertListener {
+                        override fun before(): Boolean {
+                            return true
+                        }
+
+                        override fun after() {
+                            loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, MainActivity.READ_EXTERNAL_STORAGE)
+                        }
+                    })
+
+                } else {
+                    val dbManager: DataBaseHelper = DataBaseHelper(this)
+                    val db = dbManager.createDataBase();
+
+                    copyAllData()
+                }
+
+            }
+        }
+
+    }
+
+    private fun copyAllData() {
+        val sourceDirectory = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data")
+        val targetDirectory = File(applicationInfo.dataDir)
+
+        println("sourceDirectory : $sourceDirectory")
+
+        val sourceDirectoryFiles = sourceDirectory.listFiles()
+
+        println("sourceDirectoryFiles : $sourceDirectoryFiles")
+
+        if(sourceDirectoryFiles == null) {
+            return
+        }
+
+        for (sourceDirectoryFile in sourceDirectoryFiles) {
+            val targetDirectoryFile = File("$targetDirectory${File.separator}${sourceDirectoryFile.name}")
+
+            println(targetDirectoryFile.absolutePath)
+
+            if(!targetDirectoryFile.exists()) {
+                sourceDirectoryFile.copyTo(targetDirectoryFile, true)
             }
         }
 

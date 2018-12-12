@@ -178,7 +178,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
         val dataList: Array<String> = arrayOf("*");
 
-        var basedata= db.query("Base", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        var basedata= db.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         while(basedata.moveToNext()){
 

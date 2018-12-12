@@ -4,11 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
-import java.io.File
 
 class IntroActivity : Activity() {
 
@@ -47,7 +45,7 @@ class IntroActivity : Activity() {
                     });
                     */
 
-                    copyAllData()
+                    stopIntro()
 
                 }
             }
@@ -81,32 +79,4 @@ class IntroActivity : Activity() {
         startActivity(intent)
     }
 
-    private fun copyAllData() {
-        val sourceDirectory = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data")
-        val targetDirectory = File(applicationInfo.dataDir)
-
-        println("sourceDirectory : $sourceDirectory")
-
-        val sourceDirectoryFiles = sourceDirectory.listFiles()
-
-        println("sourceDirectoryFiles : $sourceDirectoryFiles")
-
-        if(sourceDirectoryFiles == null){
-            stopIntro()
-            return
-        }
-
-        for (sourceDirectoryFile in sourceDirectoryFiles) {
-            val targetDirectoryFile = File("$targetDirectory${File.separator}${sourceDirectoryFile.name}")
-
-            println(targetDirectoryFile.absolutePath)
-
-            if(!targetDirectoryFile.exists()) {
-                sourceDirectoryFile.copyTo(targetDirectoryFile, true)
-            }
-        }
-
-        stopIntro()
-
-    }
 }

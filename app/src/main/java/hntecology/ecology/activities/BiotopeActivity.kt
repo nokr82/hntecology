@@ -40,8 +40,10 @@ import hntecology.ecology.base.Utils
 import hntecology.ecology.model.*
 import hntecology.ecology.model.Number
 import kotlinx.android.synthetic.main.activity_biotope.*
-import kotlinx.android.synthetic.main.item_area_search1.*
-import java.io.*
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -200,7 +202,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         val dataList: Array<String> = arrayOf("*");
 
-        var basedata = db.query("Base", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        var basedata = db.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         while (basedata.moveToNext()) {
 

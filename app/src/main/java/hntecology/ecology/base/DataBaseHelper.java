@@ -35,8 +35,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private final Context myContext;
 
     // The Android's default system path of your application database.
-//    private static String DB_PATH = "/hntecology/ecology/database/";
-    private static String DB_PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator;
+    private static String DB_PATH = "/data/data/hntecology.ecology/databases/";
 
     private static String DB_NAME = "ecology.db";
 
@@ -59,8 +58,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public SQLiteDatabase createDataBase() throws IOException {
         boolean dbExist = checkDataBase();
 
-        System.out.println("dbExist" + dbExist);
-
         if (dbExist) {
             // do nothing - database already exist
         } else {
@@ -80,12 +77,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 throw new Error("Error copying database");
 
             }
-
         }
 
         try {
             String myPath = DB_PATH + DB_NAME;
-            System.out.println("------------------------copy");
             return SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
         } catch (SQLiteException e) {
             e.printStackTrace();
@@ -105,8 +100,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         try {
             String myPath = DB_PATH + DB_NAME;
+
+            // System.out.println("myPath : " + myPath);
+
             checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
         } catch (SQLiteException e) {
+            e.printStackTrace();
             return false;
         }
 
@@ -136,7 +135,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         System.out.println("f.exists() : " + f.exists());
 
         if (!f.exists()) {
-            boolean made = f.mkdir();
+            boolean made = f.mkdirs();
 
             System.out.println("made : " + f.exists());
 
@@ -836,7 +835,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     public void insertbase(Base base){
-        String query = "INSERT INTO base ";
+        String query = "INSERT INTO base_info ";
         query += "(GROP_ID,PRJ_NAME,GPS_LAT,GPS_LON,INV_PERSON,INV_DT,INV_TM)";
 
         query += " values (";

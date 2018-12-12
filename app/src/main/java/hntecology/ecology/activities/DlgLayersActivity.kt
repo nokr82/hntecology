@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat
 import hntecology.ecology.R
 import hntecology.ecology.adapter.DlgLayerAdapter
 import hntecology.ecology.base.DataBaseHelper
+import hntecology.ecology.base.Utils
 import hntecology.ecology.model.LayerModel
 import kotlinx.android.synthetic.main.dlg_layers.*
 

@@ -36,9 +36,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     // The Android's default system path of your application database.
 //    private static String DB_PATH = "/hntecology/ecology/database/";
-    private static String DB_PATH = "/data/data/hntecology.ecology/databases/";
+    private static String DB_PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator;
 
-    private static String DB_NAME = "biotopeTest.db";
+    private static String DB_NAME = "ecology.db";
 
     private SQLiteDatabase myDataBase;
 
@@ -120,9 +120,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      */
     private void copyDataBase() throws IOException {
 
-        System.out.println("1 : " + (new File("/data/data/hntecology.ecology/").exists()));
-        System.out.println("2 : " + (new File("/data/data").exists()));
-
         File f = new File(DB_PATH);
         if(f.exists()) {
             boolean deleted = f.delete();
@@ -143,10 +140,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         // Open your local db as the input stream
 //        InputStream myInput = myContext.getAssets().open(DB_NAME);
-        InputStream myInput = myContext.getAssets().open(DB_NAME);
+//        InputStream myInput = myContext.getAssets().open(DB_NAME);
 
-//        File path = myContext.getDatabasePath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "ecology.db");
-//        InputStream myInput = new FileInputStream(path);
+        File path = myContext.getDatabasePath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "ecology.db");
+        InputStream myInput = new FileInputStream(path);
 
         System.out.println("open--------------------------");
 

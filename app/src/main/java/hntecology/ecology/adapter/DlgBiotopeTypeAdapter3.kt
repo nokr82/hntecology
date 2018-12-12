@@ -10,7 +10,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import hntecology.ecology.R
 import hntecology.ecology.model.BiotopeType
-import hntecology.ecology.model.Region
 
 class DlgBiotopeTypeAdapter3(var context: Context, var itemList : ArrayList<BiotopeType>) : BaseAdapter() {
 
@@ -63,7 +62,7 @@ class DlgBiotopeTypeAdapter3(var context: Context, var itemList : ArrayList<Biot
             viewHoldar.class_biotope_item.setTextColor(Color.parseColor("#000000"));
         }
 
-        println("hh : " + position + ", " + hashCode())
+        // println("hh : " + position + ", " + hashCode())
         return view as View
     }
 

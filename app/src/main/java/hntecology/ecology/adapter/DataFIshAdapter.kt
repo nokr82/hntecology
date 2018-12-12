@@ -1,7 +1,6 @@
 package hntecology.ecology.adapter
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
 import hntecology.ecology.R
-import hntecology.ecology.model.Birds_attribute
 import hntecology.ecology.model.Fish_attribute
-import hntecology.ecology.model.Vegetation
 
 class DataFIshAdapter(var context: Context, var itemList : ArrayList<Fish_attribute>) : BaseAdapter() {
 
@@ -53,7 +50,7 @@ class DataFIshAdapter(var context: Context, var itemList : ArrayList<Fish_attrib
 
         viewHoldar.class_biotope_item.text = Fish_attribute.INV_DT + " / " + Fish_attribute.INV_TM
 
-        println("hh : " + position + ", " + hashCode())
+        // println("hh : " + position + ", " + hashCode())
         return view as View
     }
 

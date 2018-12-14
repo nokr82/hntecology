@@ -853,18 +853,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void insertlayers(String file_name , String layer_name , String type,String Y){
+    public void insertlayers(String file_name , String layer_name , String type,String Y, String grop_id){
         String query = "INSERT INTO layers";
         query += "(file_name,layer_name,min_scale,max_scale,type,added,grop_id)";
 
         query += " values (";
         query += " '" + file_name + "'";
         query += ", '" + layer_name + "'";
-        query += ", '" + 10 + "'";
-        query += ", '" + 19 + "'";
+        query += ", '" + 1 + "'";
+        query += ", '" + 99 + "'";
         query += ", '" + type + "'";
         query += ", '" + Y + "'";
-        query += ", '" + "" + "'";
+        query += ", '" + grop_id + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();

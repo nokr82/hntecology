@@ -543,16 +543,26 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         resetTV.setOnClickListener {
 
-            googleMap.clear()
+            for(polygon in polygons) {
+                polygon.remove()
+            }
 
             polygons?.clear()
+
+            for(point in points) {
+                point.remove()
+            }
+
             points?.clear()
 
-            for (loadLayerTask in loadLayerTasks) {
-                if(loadLayerTask.status !=  AsyncTask.Status.FINISHED) {
-                    loadLayerTask.cancel(true)
-                }
-            }
+
+            googleMap.clear()
+
+//            for (loadLayerTask in loadLayerTasks) {
+//                if(loadLayerTask.status !=  AsyncTask.Status.FINISHED) {
+//                    loadLayerTask.cancel(true)
+//                }
+//            }
 
             val dataList:Array<String> = arrayOf("file_name", "layer_name","min_scale","max_scale","type","added","grop_id");
 
@@ -571,7 +581,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                     println("layerDatas ${layersDatas.get(i).grop_id}")
 
-                    var layerdata = db!!.query("layers", dataList, "grop_id = '${layersDatas.get(i).grop_id}' and min_scale <= '${zoom.toInt()}' and max_scale >= '${zoom.toInt()}'", null, null, null, null, null)
+                    var layerdata = db!!.query("layers", dataList, "grop_id = '${layersDatas.get(i).grop_id}' and min_scale <= '${zoom.toInt()}' and max_scale >= '${zoom.toInt()+1}'", null, null, null, null, null)
 
                     while(layerdata.moveToNext()){
                         chkData = true
@@ -579,6 +589,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         val layerModel = LayerModel(layerdata.getString(0), layerdata.getString(1), layerdata.getInt(2),layerdata.getInt(3),layerdata.getString(4),layerdata.getString(5),layerdata.getString(6),false);
 
                         datas.add(layerModel)
+                        println("dats.size ${datas.size}")
                     }
 
                     layerdata.close()
@@ -591,7 +602,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         for (i in 0..datas.size-1){
                             layersDatas.add(datas.get(i))
                             // println(datas.get(i).file_name + ".add")
-                            loadLayer(datas.get(i).file_name, datas.get(i).layer_name,datas.get(i).type, datas.get(i).added)
+//                             println("layersDatas.size ${layersDatas.size}")
+                            loadLayer(layersDatas.get(i).file_name, layersDatas.get(i).layer_name,layersDatas.get(i).type, layersDatas.get(i).added)
                         }
                     })
                 }
@@ -890,7 +902,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
         }
         data.close()
-
+        layerDatas.clear()
     }
 
     private fun onUnionBtn() {
@@ -1475,6 +1487,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 birdsdataArray.add(birds_attribute)
 
                             }
+                            data.close()
 
                             for (i in 0..birdsdataArray.size - 1) {
                                 title = "조류"
@@ -1519,7 +1532,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 intent.putExtra("GROP_ID", attrubuteKey)
                                 startActivityForResult(intent, BIRDS_DATA);
                             }
-                            data.close()
 
                         }
 
@@ -2938,9 +2950,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         currentFileName = fileName
         currentLayerName = layerName
 
-//        progressDialog?.show()
-//
-//        progressDialogCnt++
+        progressDialog?.show()
+
+        progressDialogCnt = progressDialogCnt + 1
 
 //        layerNameTV.text = currentLayerName
 
@@ -2948,7 +2960,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         val bounds = googleMap.projection.visibleRegion.latLngBounds
         val loadLayerTask = LoadLayerTask(fileName,Type,added).execute(bounds)
-        loadLayerTasks.add(loadLayerTask)
+//        loadLayerTasks.add(loadLayerTask)
+
     }
 
     private inner class LoadLayerTask(layerName: String , Type: String , added: String) : AsyncTask<LatLngBounds, Any, Boolean>() {
@@ -3500,7 +3513,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             print("Post........")
 
-            progressDialogCnt--
+            if (progressDialogCnt > 0 ) {
+                progressDialogCnt = progressDialogCnt - 1
+            }
 
             if(progressDialogCnt == 0) {
                 progressDialog?.dismiss()
@@ -4522,7 +4537,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if(chkData){
 
                 }else {
-                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope" + File.separator + "biotope", "비오톱", "biotope", "Y")
+                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope" + File.separator + "biotope", "비오톱", "biotope", "Y","biotope")
                 }
 
                 biotopedata.close()
@@ -4653,7 +4668,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(chkData){
 
             }else {
-                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds" + File.separator + "birds" ,"조류", "birds","Y")
+                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds" + File.separator + "birds" ,"조류", "birds","Y","birds")
             }
 
             birdsDatas.clear()
@@ -4782,7 +4797,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(chkData){
 
             }else {
-                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia" + File.separator + "reptilia","양서,파충류", "reptilia","Y")
+                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia" + File.separator + "reptilia","양서,파충류", "reptilia","Y","reptilia")
             }
 
             reptiliaDatas.clear()
@@ -4906,7 +4921,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(chkData){
 
             }else {
-                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia" + File.separator + "mammalia","포유류", "mammalia","Y")
+                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia" + File.separator + "mammalia","포유류", "mammalia","Y","mammalia")
             }
             mammaldata.close()
 
@@ -5036,7 +5051,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(chkData){
 
             }else {
-                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish" + File.separator + "fish","어류", "fish","Y")
+                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish" + File.separator + "fish","어류", "fish","Y","fish")
             }
 
             fishdata.close()
@@ -5161,7 +5176,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(chkData){
 
             }else {
-                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect" + File.separator + "insect","곤충", "insect","Y")
+                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect" + File.separator + "insect","곤충", "insect","Y","insect")
             }
 
             insectdata.close()
@@ -5278,7 +5293,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(chkData){
 
             }else {
-                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora" + File.separator + "flora","식물", "flora","Y")
+                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora" + File.separator + "flora","식물", "flora","Y","flora")
             }
 
             floradata.close()
@@ -5433,7 +5448,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(chkData){
 
             }else {
-                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "zoobenthos" + File.separator + "zoobenthos","저서무척추동물", "zoobenthos","Y")
+                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "zoobenthos" + File.separator + "zoobenthos","저서무척추동물", "zoobenthos","Y","zoobenthos")
             }
 
             data.close()
@@ -5568,7 +5583,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(chkData){
 
             }else {
-                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora2" + File.separator + "flora2","식물2", "flora2","Y")
+                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora2" + File.separator + "flora2","식물2", "flora2","Y","flora2")
             }
 
             data.close()
@@ -5635,7 +5650,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val path = today + " " + time
 
-            dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tracking" + File.separator + path,"경로 : " + path, "tracking","Y")
+            dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tracking" + File.separator + path,"이동경로 : " + path, "tracking","Y","tracking")
 
             Exporter.exportPoint(trackingPointsArray)
             trackingPointsArray.clear()
@@ -5742,7 +5757,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if(chkData){
 
                 }else {
-                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "stockmap" + File.separator + "stockmap", "임상도", "stokemap", "Y")
+                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "stockmap" + File.separator + "stockmap", "임상도", "stokemap", "Y","stokemap")
                 }
 
             }

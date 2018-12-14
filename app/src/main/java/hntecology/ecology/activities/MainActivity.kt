@@ -110,6 +110,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     var types : ArrayList<String> = ArrayList<String>()
 
+    private var loadLayerTasks = ArrayList<AsyncTask<LatLngBounds, Any, Boolean>>()
+
     private lateinit var context: Context
 
     private lateinit var mGestureDetector: GestureDetector
@@ -543,9 +545,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             googleMap.clear()
 
-            val dbManager: DataBaseHelper = DataBaseHelper(this)
+            polygons?.clear()
+            points?.clear()
 
-            val db = dbManager.createDataBase();
+            for (loadLayerTask in loadLayerTasks) {
+                if(loadLayerTask.status !=  AsyncTask.Status.FINISHED) {
+                    loadLayerTask.cancel(true)
+                }
+            }
 
             val dataList:Array<String> = arrayOf("file_name", "layer_name","min_scale","max_scale","type","added","grop_id");
 
@@ -564,7 +571,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                     println("layerDatas ${layersDatas.get(i).grop_id}")
 
-                    var layerdata = db.query("layers", dataList, "grop_id = '${layersDatas.get(i).grop_id}' and min_scale <= '${zoom.toInt()}' and max_scale >= '${zoom.toInt()}'", null, null, null, null, null)
+                    var layerdata = db!!.query("layers", dataList, "grop_id = '${layersDatas.get(i).grop_id}' and min_scale <= '${zoom.toInt()}' and max_scale >= '${zoom.toInt()}'", null, null, null, null, null)
 
                     while(layerdata.moveToNext()){
                         chkData = true
@@ -573,6 +580,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                         datas.add(layerModel)
                     }
+
+                    layerdata.close()
                 }
 
                 if (chkData){
@@ -585,8 +594,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             loadLayer(datas.get(i).file_name, datas.get(i).layer_name,datas.get(i).type, datas.get(i).added)
                         }
                     })
-
                 }
+
+                datas.clear()
 
             }
         }
@@ -706,13 +716,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val title = trackingBtn.text.toString()
 
-            val dbManager: DataBaseHelper = DataBaseHelper(this)
-
-            val db = dbManager.createDataBase()
-
             if ( title.equals("Tracking 켜기")){
                 start = true
-                dbManager.deletetracking()
+                dbManager!!.deletetracking()
                 trackingBtn.setText("Tracking 끄기")
                 timerStart()
 
@@ -779,11 +785,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     getTrackingPoints.clear()
                 }
 
-                val dbManager: DataBaseHelper = DataBaseHelper(this)
-
-                val db = dbManager.createDataBase();
-
-                val trackingdata = db.query("tracking", dataList, null, null, null, null, "id", null)
+                val trackingdata = db!!.query("tracking", dataList, null, null, null, null, "id", null)
 
                 while (trackingdata.moveToNext()) {
                     var tracking : Tracking = Tracking(trackingdata.getInt(0),trackingdata.getDouble(1),trackingdata.getDouble(2))
@@ -792,6 +794,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                     drawPoint(latlng)
                 }
+
+                trackingdata.close()
 
             }
 
@@ -866,14 +870,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     fun getLoadLayer(){
 
-        val dataBaseHelper = DataBaseHelper(context);
-
-        val db = dataBaseHelper.createDataBase();
-
         val dataList: Array<String> = arrayOf("*");
 
         //대분류
-        val data =  db.query("layers", dataList,"added = 'Y'",null,null,null,null,null);
+        val data =  db!!.query("layers", dataList,"added = 'Y'",null,null,null,null,null);
 
         var layerDatas:ArrayList<LayerModel> = ArrayList<LayerModel>()
 
@@ -889,6 +889,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 loadLayer(layerDatas.get(i).file_name, layerDatas.get(i).layer_name,layerDatas.get(i).type, layerDatas.get(i).added)
             }
         }
+        data.close()
 
     }
 
@@ -1337,9 +1338,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         layersDatas.clear()
                     }
 
-                    // println("jsonOb.size==================== ${jsonOb.size}")
+                     println("jsonOb.size==================== ${jsonOb.size}")
 
-                    // progressDialog?.show()
+                     progressDialog?.show()
 
                     runOnUiThread(Runnable {
                         for (i in 0..jsonOb.size - 1) {
@@ -1450,17 +1451,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     var attrubuteKey = layerInfo.attrubuteKey
                     var intent: Intent? = null
 
-                    val dbManager: DataBaseHelper = DataBaseHelper(this)
-
-                    val db = dbManager.createDataBase();
-
                     when (myLayer) {
 
                         LAYER_BIRDS -> {
 
                             val dataList: Array<String> = arrayOf("*");
 
-                            val data = db.query("birdsAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+                            val data = db!!.query("birdsAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
 
 
                             if (birdsdataArray != null) {
@@ -1522,13 +1519,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 intent.putExtra("GROP_ID", attrubuteKey)
                                 startActivityForResult(intent, BIRDS_DATA);
                             }
+                            data.close()
 
                         }
 
                         LAYER_REPTILIA -> {
                             val dataList: Array<String> = arrayOf("*");
 
-                            val data = db.query("reptiliaAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+                            val data = db!!.query("reptiliaAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
 
                             if (reptiliadataArray != null) {
                                 reptiliadataArray.clear()
@@ -1587,13 +1585,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 startActivityForResult(intent, REPTILIA_DATA);
                             }
 
+                            data.close()
+
                         }
 
                         LAYER_MAMMALIA -> {
 
                             val dataList: Array<String> = arrayOf("*");
 
-                            val data = db.query("mammalAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+                            val data = db!!.query("mammalAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
 
                             if (mammaldataArray != null) {
                                 mammaldataArray.clear()
@@ -1649,13 +1649,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 startActivityForResult(intent, MAMMALIA_DATA);
                             }
 
+                            data.close()
+
                         }
 
                         LAYER_FISH -> {
 
                             val dataList: Array<String> = arrayOf("*");
 
-                            val data = db.query("fishAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+                            val data = db!!.query("fishAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
 
                             if (fishdataArray != null) {
                                 fishdataArray.clear()
@@ -1712,13 +1714,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 startActivityForResult(intent, FISH_DATA);
                             }
 
+                            data.close()
+
                         }
 
                         LAYER_INSECT -> {
 
                             val dataList: Array<String> = arrayOf("*");
 
-                            val data = db.query("insectAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+                            val data = db!!.query("insectAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
 
                             if (insectdataArray != null) {
                                 insectdataArray.clear()
@@ -1775,13 +1779,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 intent.putExtra("GROP_ID", attrubuteKey)
                                 startActivityForResult(intent, INSECT_DATA);
                             }
+
+                            data.close()
                         }
 
                         LAYER_FLORA -> {
 
                             val dataList: Array<String> = arrayOf("*");
 
-                            val data = db.query("floraAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+                            val data = db!!.query("floraAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
 
                             if (floradataArray != null) {
                                 floradataArray.clear()
@@ -1838,6 +1844,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 startActivityForResult(intent, FLORA_DATA);
                             }
 
+                            data.close()
+
                         }
 
                         LAYER_ZOOBENTHOS -> {
@@ -1846,7 +1854,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                             println("main------------$attrubuteKey")
 
-                            val data = db.query("ZoobenthosAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+                            val data = db!!.query("ZoobenthosAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
 
                             var title = ""
 
@@ -1904,12 +1912,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 intent.putExtra("GROP_ID", attrubuteKey)
                                 startActivityForResult(intent, ZOOBENTHOS_DATA);
                             }
+
+                            data.close()
                         }
 
                         LAYER_FLORA2 -> {
                             val dataList: Array<String> = arrayOf("*");
 
-                            val data = db.query("ManyFloraAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+                            val data = db!!.query("ManyFloraAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
 
 
                             if (manyfloradataArray != null) {
@@ -1957,6 +1967,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 startActivityForResult(intent, FLORA_DATA2)
                             }
+
+                            data.close()
 
                         }
 
@@ -2057,10 +2069,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                     var intent: Intent? = null
 
-                    val dbManager: DataBaseHelper = DataBaseHelper(this)
-
-                    val db = dbManager.createDataBase();
-
                     when (myLayer) {
 
                         LAYER_BIOTOPE -> {
@@ -2093,7 +2101,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 if (type == false) {
                                     val dataList: Array<String> = arrayOf("*");
 
-                                    val data = db.query("biotopeAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+                                    val data = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
 
                                     if (biotopedataArray != null) {
                                         biotopedataArray.clear()
@@ -2320,7 +2328,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 if (type == true) {
                                     val dataList: Array<String> = arrayOf("*");
 
-                                    val data = db.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+                                    val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
 
                                     if (stockdataArray != null) {
                                         stockdataArray.clear()
@@ -2438,6 +2446,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                         allPolygons.add(polygon)
                                     }
                                     */
+                                    data.close()
                                 }
 
                             }
@@ -2514,7 +2523,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 if (type == false) {
                                     val dataList: Array<String> = arrayOf("*");
 
-                                    val data = db.query("biotopeAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+                                    val data = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
 
                                     if (biotopedataArray != null) {
                                         biotopedataArray.clear()
@@ -2737,11 +2746,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                         allPolygons.add(polygon)
                                     }
                                     */
+                                    data.close()
                                 }
                                 if (type == true) {
                                     val dataList: Array<String> = arrayOf("*");
 
-                                    val data = db.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+                                    val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
 
                                     if (stockdataArray != null) {
                                         stockdataArray.clear()
@@ -2859,6 +2869,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                         allPolygons.add(polygon)
                                     }
                                     */
+                                    data.close()
                                 }
 
                             }
@@ -2927,17 +2938,17 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         currentFileName = fileName
         currentLayerName = layerName
 
-        progressDialog?.show()
-
-        progressDialogCnt++
+//        progressDialog?.show()
+//
+//        progressDialogCnt++
 
 //        layerNameTV.text = currentLayerName
 
         println("fileName : fileName")
 
         val bounds = googleMap.projection.visibleRegion.latLngBounds
-        LoadLayerTask(fileName,Type,added).execute(bounds)
-
+        val loadLayerTask = LoadLayerTask(fileName,Type,added).execute(bounds)
+        loadLayerTasks.add(loadLayerTask)
     }
 
     private inner class LoadLayerTask(layerName: String , Type: String , added: String) : AsyncTask<LatLngBounds, Any, Boolean>() {
@@ -3141,10 +3152,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
 
         override fun onProgressUpdate(vararg geoms: Any?) {
-
-            val dbManager: DataBaseHelper = DataBaseHelper(this@MainActivity)
-
-            val db = dbManager.createDataBase();
 
             val metadataP = geoms[1] as String
             val metadata = JSONObject(metadataP)
@@ -4388,10 +4395,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     fun exportBiotope() {
         var biotopeArray: ArrayList<Exporter.ExportItem> = ArrayList<Exporter.ExportItem>()
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-        val db = dbManager.createDataBase();
         val dataList: Array<String> = arrayOf("*")
-        var biotopedata = db.query("biotopeAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var biotopedata = db!!.query("biotopeAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var chkData = false
 
         while (biotopedata.moveToNext()) {
@@ -4508,7 +4513,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope" + File.separator + "biotope"
 
-                val layerData= db.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+                val layerData= db!!.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
 
                 while (layerData.moveToNext()){
                     chkData = true
@@ -4517,8 +4522,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if(chkData){
 
                 }else {
-                    dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope" + File.separator + "biotope", "비오톱", "biotope", "Y")
+                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope" + File.separator + "biotope", "비오톱", "biotope", "Y")
                 }
+
+                biotopedata.close()
 
             }
             biotopeDatas.clear()
@@ -4528,10 +4535,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     fun exportBirds(){
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-        val db = dbManager.createDataBase();
         val dataList: Array<String> = arrayOf("*")
-        val birdsdata= db.query("birdsAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        val birdsdata= db!!.query("birdsAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var datas:ArrayList<Birds_attribute> = ArrayList<Birds_attribute>()
         var chkData = false
         while (birdsdata.moveToNext()) {
@@ -4551,7 +4556,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                             val data = datas.get(i)
 
-                            val birdsdata= db.query("birdsAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
+                            val birdsdata= db!!.query("birdsAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
 
                             while (birdsdata.moveToNext()) {
 
@@ -4639,7 +4644,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds" + File.separator + "birds"
 
-            val layerData= db.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+            val layerData= db!!.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
 
             while (layerData.moveToNext()){
                 chkData = true
@@ -4648,20 +4653,20 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(chkData){
 
             }else {
-                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds" + File.separator + "birds" ,"조류", "birds","Y")
+                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds" + File.separator + "birds" ,"조류", "birds","Y")
             }
 
             birdsDatas.clear()
+
+            birdsdata.close()
 
         }
     }
 
     fun exportReptilia(){
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-        val db = dbManager.createDataBase();
         val dataList: Array<String> = arrayOf("*")
-        val reptiliadata= db.query("reptiliaAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        val reptiliadata= db!!.query("reptiliaAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var datas: ArrayList<Reptilia_attribute> = ArrayList<Reptilia_attribute>()
         var chkData = false
 
@@ -4680,7 +4685,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             for(i in 0..datas.size-1){
                 val data = datas.get(i)
 
-                val reptiliadata= db.query("reptiliaAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
+                val reptiliadata= db!!.query("reptiliaAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
 
                 while (reptiliadata.moveToNext()) {
 
@@ -4768,7 +4773,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia" + File.separator + "reptilia"
 
-            val layerData= db.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+            val layerData= db!!.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
 
             while (layerData.moveToNext()){
                 chkData = true
@@ -4777,20 +4782,20 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(chkData){
 
             }else {
-                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia" + File.separator + "reptilia","양서,파충류", "reptilia","Y")
+                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia" + File.separator + "reptilia","양서,파충류", "reptilia","Y")
             }
 
             reptiliaDatas.clear()
+
+            reptiliadata.close()
         }
 
     }
 
     fun exportMammal(){
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-        val db = dbManager.createDataBase();
         val dataList: Array<String> = arrayOf("*")
-        val mammaldata = db.query("mammalAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        val mammaldata = db!!.query("mammalAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var datas:ArrayList<Mammal_attribute> = ArrayList<Mammal_attribute>()
         var chkData = false
 
@@ -4810,7 +4815,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             for (i in 0..datas.size-1) {
                 val data = datas.get(i)
 
-                val mammaldata = db.query("mammalAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
+                val mammaldata = db!!.query("mammalAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
 
                 while (mammaldata.moveToNext()) {
 
@@ -4892,7 +4897,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia" + File.separator + "mammalia"
 
-            val layerData= db.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+            val layerData= db!!.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
 
             while (layerData.moveToNext()){
                 chkData = true
@@ -4901,8 +4906,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(chkData){
 
             }else {
-                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia" + File.separator + "mammalia","포유류", "mammalia","Y")
+                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia" + File.separator + "mammalia","포유류", "mammalia","Y")
             }
+            mammaldata.close()
 
             pointsArray.clear()
             mammaliaDatas.clear()
@@ -4911,10 +4917,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     fun exportFish(){
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-        val db = dbManager.createDataBase();
         val dataList: Array<String> = arrayOf("*")
-        val fishdata = db.query("fishAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        val fishdata = db!!.query("fishAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var datas: ArrayList<Fish_attribute> = ArrayList<Fish_attribute>()
         var chkData = false
 
@@ -4932,7 +4936,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             for (i in 0..datas.size - 1) {
                 val data = datas.get(i)
 
-                val fishdata = db.query("fishAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
+                val fishdata = db!!.query("fishAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
 
                 while (fishdata.moveToNext()) {
                     var fish_attribute: Fish_attribute = Fish_attribute(fishdata.getString(0), fishdata.getString(1), fishdata.getString(2), fishdata.getString(3), fishdata.getString(4), fishdata.getString(5), fishdata.getString(6), fishdata.getString(7),
@@ -5023,7 +5027,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish" + File.separator + "fish"
 
-            val layerData= db.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+            val layerData= db!!.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
 
             while (layerData.moveToNext()){
                 chkData = true
@@ -5032,9 +5036,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(chkData){
 
             }else {
-                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish" + File.separator + "fish","어류", "fish","Y")
+                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish" + File.separator + "fish","어류", "fish","Y")
             }
 
+            fishdata.close()
             pointsArray.clear()
             fishDatas.clear()
         }
@@ -5042,10 +5047,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     fun exportInsects(){
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-        val db = dbManager.createDataBase();
         val dataList: Array<String> = arrayOf("*")
-        val insectdata = db.query("insectAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        val insectdata = db!!.query("insectAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var datas: ArrayList<Insect_attribute> = ArrayList<Insect_attribute>()
         var chkData = false
 
@@ -5065,7 +5068,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             for(i in 0..datas.size-1){
                 val data = datas.get(i)
 
-                val insectdata = db.query("insectAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
+                val insectdata = db!!.query("insectAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
 
                 while (insectdata.moveToNext()) {
 
@@ -5149,7 +5152,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect" + File.separator + "insect"
 
-            val layerData= db.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+            val layerData= db!!.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
 
             while (layerData.moveToNext()){
                 chkData = true
@@ -5158,9 +5161,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(chkData){
 
             }else {
-                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect" + File.separator + "insect","곤충", "insect","Y")
+                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect" + File.separator + "insect","곤충", "insect","Y")
             }
 
+            insectdata.close()
             pointsArray.clear()
             insectDatas.clear()
         }
@@ -5168,10 +5172,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     fun exportFlora(){
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-        val db = dbManager.createDataBase();
         val dataList: Array<String> = arrayOf("*")
-        val floradata = db.query("floraAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        val floradata = db!!.query("floraAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var datas:ArrayList<Flora_Attribute> = ArrayList<Flora_Attribute>()
         var chkData = false
 
@@ -5188,7 +5190,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         if(datas != null){
             for(i in 0..datas.size-1){
                 val data = datas.get(i)
-                val floradata = db.query("floraAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
+                val floradata = db!!.query("floraAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
 
                 while (floradata.moveToNext()) {
 
@@ -5267,7 +5269,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora" + File.separator + "flora"
 
-            val layerData= db.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+            val layerData= db!!.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
 
             while (layerData.moveToNext()){
                 chkData = true
@@ -5276,9 +5278,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(chkData){
 
             }else {
-                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora" + File.separator + "flora","식물", "flora","Y")
+                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora" + File.separator + "flora","식물", "flora","Y")
             }
 
+            floradata.close()
             pointsArray.clear()
             floraDatas.clear()
 
@@ -5287,10 +5290,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     fun exportZoobenthous(){
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-        val db = dbManager.createDataBase();
         val dataList: Array<String> = arrayOf("*")
-        val data = db.query("ZoobenthosAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        val data = db!!.query("ZoobenthosAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var datas:ArrayList<Zoobenthos_Attribute> = ArrayList<Zoobenthos_Attribute>()
         var chkData = false
 
@@ -5310,7 +5311,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         if(datas != null){
             for(i in 0..datas.size-1){
                 val item = datas.get(i)
-                val data = db.query("ZoobenthosAttribute", dataList, "GROP_ID = '${item.GROP_ID}'", null, null, null, "", null)
+                val data = db!!.query("ZoobenthosAttribute", dataList, "GROP_ID = '${item.GROP_ID}'", null, null, null, "", null)
 
                 while (data.moveToNext()) {
 
@@ -5423,7 +5424,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "zoobenthos" + File.separator + "flora"
 
-            val layerData= db.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+            val layerData= db!!.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
 
             while (layerData.moveToNext()){
                 chkData = true
@@ -5432,9 +5433,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(chkData){
 
             }else {
-                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "zoobenthos" + File.separator + "zoobenthos","저서무척추동물", "zoobenthos","Y")
+                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "zoobenthos" + File.separator + "zoobenthos","저서무척추동물", "zoobenthos","Y")
             }
 
+            data.close()
             pointsArray.clear()
             floraDatas.clear()
 
@@ -5445,10 +5447,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     fun exportManyFloras(){
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-        val db = dbManager.createDataBase();
         val dataList: Array<String> = arrayOf("*")
-        val data = db.query("ManyFloraAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        val data = db!!.query("ManyFloraAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var datas:ArrayList<ManyFloraAttribute> = ArrayList<ManyFloraAttribute>()
         var chkData = false
 
@@ -5467,7 +5467,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         if(datas != null){
             for(i in 0..datas.size-1){
                 val item = datas.get(i)
-                val data = db.query("ManyFloraAttribute", dataList, "GROP_ID = '${item.GROP_ID}'", null, null, null, "", null)
+                val data = db!!.query("ManyFloraAttribute", dataList, "GROP_ID = '${item.GROP_ID}'", null, null, null, "", null)
 
                 while (data.moveToNext()) {
 
@@ -5559,7 +5559,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora2" + File.separator + "flora2"
 
-            val layerData= db.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+            val layerData= db!!.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
 
             while (layerData.moveToNext()){
                 chkData = true
@@ -5568,9 +5568,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(chkData){
 
             }else {
-                dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora2" + File.separator + "flora2","식물2", "flora2","Y")
+                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora2" + File.separator + "flora2","식물2", "flora2","Y")
             }
 
+            data.close()
             pointsArray.clear()
             manyflorasDatas.clear()
 
@@ -5581,11 +5582,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     fun exportTracking(){
         var trackingPointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-        val db = dbManager.createDataBase();
         val dataList: Array<String> = arrayOf("*")
 
-        val trackingdata = db.query("tracking", dataList, null, null, null, null, "id", null)
+        val trackingdata = db!!.query("tracking", dataList, null, null, null, null, "id", null)
 
         var trackingpk: String  = ""
 
@@ -5636,7 +5635,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val path = today + " " + time
 
-            dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tracking" + File.separator + path,"경로 : " + path, "tracking","Y")
+            dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tracking" + File.separator + path,"경로 : " + path, "tracking","Y")
 
             Exporter.exportPoint(trackingPointsArray)
             trackingPointsArray.clear()
@@ -5645,15 +5644,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             for(k in 0..trackpoints.size-1){
                 trackpoints.get(k).remove()
             }
+            trackingdata.close()
         }
     }
 
     fun exportStockMap() {
         var stokeArray: ArrayList<Exporter.ExportItem> = ArrayList<Exporter.ExportItem>()
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-        val db = dbManager.createDataBase();
         val dataList: Array<String> = arrayOf("*")
-        var data = db.query("StockMap", dataList, null, null, "GROP_ID", null, "", null)
+        var data = db!!.query("StockMap", dataList, null, null, "GROP_ID", null, "", null)
         var chkData = false
 
         while (data.moveToNext()) {
@@ -5735,7 +5733,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "stockmap" + File.separator + "stockmap"
 
-                val layerData= db.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+                val layerData= db!!.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
 
                 while (layerData.moveToNext()){
                     chkData = true
@@ -5744,11 +5742,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if(chkData){
 
                 }else {
-                    dbManager.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "stockmap" + File.separator + "stockmap", "임상도", "stokemap", "Y")
+                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "stockmap" + File.separator + "stockmap", "임상도", "stokemap", "Y")
                 }
 
             }
             stokemapDatas.clear()
+            data.close()
         }
 
     }
@@ -6156,11 +6155,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     }
 
     override fun onLocationUpdated(location: Location?) {
-
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-
-        val db = dbManager.createDataBase();
-
         val time = System.currentTimeMillis()
 
         val difference = ((nowTime - time) / 1000)
@@ -6175,7 +6169,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(trackingdiv) {
                 val tracking: Tracking = Tracking(null, location.latitude, location.longitude)
 
-                dbManager.inserttracking(tracking)
+                dbManager!!.inserttracking(tracking)
 
                 Toast.makeText(this,"insert.",Toast.LENGTH_SHORT).show()
             }

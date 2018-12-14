@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -46,6 +47,10 @@ class DlgReptiliaActivity : Activity() {
 
     var chkData = false
 
+    var dbManager: DataBaseHelper? = null
+
+    private var db: SQLiteDatabase? = null
+
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,8 +58,8 @@ class DlgReptiliaActivity : Activity() {
 
         context = this;
 
-        val dataBaseHelper = DataBaseHelper(context);
-        val db = dataBaseHelper.createDataBase();
+        dbManager = DataBaseHelper(context);
+        db = dbManager!!.createDataBase();
 
         tableName = intent.getStringExtra("table");
         titleName = intent.getStringExtra("title")
@@ -68,7 +73,7 @@ class DlgReptiliaActivity : Activity() {
         val dataList:Array<String> = arrayOf("no","taxon","zoological","name_kr","author","year","Phylum_name","Phylum_name_kr","Class_name","Class_name_kr","Order_name","Order_name_kr","Family_name"
                 ,"Family_name_kr","Genus_name","Genus_name_kr","Species_name","Species_name_kr");
 
-        val data = db.query(tableName, dataList, null, null, null, null, "name_kr", null);
+        val data = db!!.query(tableName, dataList, null, null, null, null, "name_kr", null);
 
         listView1 = findViewById(R.id.listLV)
         listView2 = findViewById(R.id.listLV2)
@@ -157,7 +162,7 @@ class DlgReptiliaActivity : Activity() {
 
             val dataEndangeredList:Array<String> = arrayOf("ID","TITLE","SCIENTIFICNAME","CLASS","DANGERCLASS","CONTRYCLASS");
 
-            val EndangeredData = db.query("ENDANGERED", dataEndangeredList, "TITLE = '$name'", null, null, null, null, null);
+            val EndangeredData = db!!.query("ENDANGERED", dataEndangeredList, "TITLE = '$name'", null, null, null, null, null);
 
             while (EndangeredData.moveToNext()) {
 
@@ -178,6 +183,8 @@ class DlgReptiliaActivity : Activity() {
                     listdata2.clear()
                 }
             }
+
+            EndangeredData.close()
 
         }
 

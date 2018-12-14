@@ -127,6 +127,8 @@ class DlgStockMapActivity : Activity() {
 
                 listAdapter2.notifyDataSetChanged()
 
+                data.close()
+
             } else if(data.Title == "식재림"){
                 val dataList:Array<String> = arrayOf("CATEGORYCODE","CATEGORY","CLASSCODE","SIGN","CORRESPONDINGNAME");
 
@@ -139,6 +141,8 @@ class DlgStockMapActivity : Activity() {
                 copyadapterData.addAll(listdata2)
 
                 listAdapter2.notifyDataSetChanged()
+
+                data.close()
 
             }
 

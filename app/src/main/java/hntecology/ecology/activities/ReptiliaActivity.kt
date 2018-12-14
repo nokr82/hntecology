@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Address
@@ -99,6 +100,10 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
     var markerid : String? = null
 
+    var dbManager: DataBaseHelper? = null
+
+    private var db: SQLiteDatabase? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reptilia)
@@ -123,11 +128,11 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         invpersonET.setText(userName)
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        dbManager = DataBaseHelper(this)
 
-        val db = dbManager.createDataBase();
+        db = dbManager!!.createDataBase();
 
-        val num = dbManager.reptiliasNextNum()
+        val num = dbManager!!.reptiliasNextNum()
 
         numET.setText(num.toString())
 
@@ -178,7 +183,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         val dataList: Array<String> = arrayOf("*");
 
-        var basedata= db.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        var basedata= db!!.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         while(basedata.moveToNext()){
 
@@ -220,7 +225,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
             val base : Base = Base(null,keyId,"",lat,log,invpersonET.text.toString(),createdDateTV.text.toString(),invtmTV.text.toString())
 
-            dbManager.insertbase(base)
+            dbManager!!.insertbase(base)
 
         }
 
@@ -230,7 +235,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data= db.query("reptiliaAttribute", dataList, "id = '$pk'", null, null, null, "", null)
+            val data= db!!.query("reptiliaAttribute", dataList, "id = '$pk'", null, null, null, "", null)
 
             while (data.moveToNext()) {
                 chkdata = true
@@ -280,7 +285,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                 val id = reptilia_attribute.id
 
                 if(reptilia_attribute.TEMP_YN.equals("N")){
-                    dbManager.deletereptilia_attribute(reptilia_attribute,id)
+                    dbManager!!.deletereptilia_attribute(reptilia_attribute,id)
                 }
 
                 if(reptilia_attribute.TEMP_YN.equals("Y")){
@@ -375,7 +380,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data= db.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data= db!!.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
             if (dataArray != null){
                 dataArray.clear()
@@ -418,7 +423,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data= db.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data= db!!.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
             if (dataArray != null){
                 dataArray.clear()
@@ -515,11 +520,11 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             reptilia_attribute.TEMP_YN = "N"
 
             if(page == dataArray.size){
-                dbManager.insertreptilia_attribute(reptilia_attribute)
+                dbManager!!.insertreptilia_attribute(reptilia_attribute)
                 page = page!! + 1
             }
 
-            val data2= db.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data2= db!!.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
             if (dataArray != null){
                 dataArray.clear()
@@ -652,7 +657,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                                     val dataList: Array<String> = arrayOf("*");
 
-                                    val data= db.query("reptiliaAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+                                    val data= db!!.query("reptiliaAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
 
                                     if (dataArray != null) {
                                         dataArray.clear()
@@ -674,7 +679,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                                     var intent = Intent()
 
                                     if(dataArray.size > 1) {
-                                        dbManager.deletereptilia_attribute(reptilia_attribute, pk)
+                                        dbManager!!.deletereptilia_attribute(reptilia_attribute, pk)
 
                                         intent.putExtra("reset", 100)
 
@@ -684,7 +689,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                                     }
 
                                     if(dataArray.size == 1) {
-                                        dbManager.deletereptilia_attribute(reptilia_attribute, pk)
+                                        dbManager!!.deletereptilia_attribute(reptilia_attribute, pk)
 
                                         var intent = Intent()
 
@@ -693,6 +698,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                                         setResult(RESULT_OK, intent);
                                         finish()
                                     }
+
+                                    data.close()
                                 }
 
                             } else {
@@ -717,7 +724,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                                 val dataList: Array<String> = arrayOf("*");
 
-                                val data= db.query("reptiliaAttribute", dataList, "id = '$id'", null, null, null, "", null)
+                                val data= db!!.query("reptiliaAttribute", dataList, "id = '$id'", null, null, null, "", null)
 
                                 if (dataArray != null) {
                                     dataArray.clear()
@@ -798,6 +805,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                         }
 
                         finish()
+
+                        data.close()
 
                     })
                     .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
@@ -902,7 +911,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                                     reptilia_attribute.CONF_MOD = "M"
                                 }
 
-                                dbManager.updatereptilia_attribute(reptilia_attribute,pk)
+                                dbManager!!.updatereptilia_attribute(reptilia_attribute,pk)
                             }
 
                             val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia/imges/")
@@ -952,7 +961,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                         } else {
 
-                            dbManager.insertreptilia_attribute(reptilia_attribute);
+                            dbManager!!.insertreptilia_attribute(reptilia_attribute);
 
                             var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
                             sdPath += "/ecology/tmps/" + reptilia_attribute.INV_DT +"."+ reptilia_attribute.INV_TM + "/imges"
@@ -1104,7 +1113,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                         reptilia_attribute.CONF_MOD = "M"
                     }
 
-                        dbManager.updatereptilia_attribute(reptilia_attribute,pk)
+                        dbManager!!.updatereptilia_attribute(reptilia_attribute,pk)
                 }
 
                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia/imges/")
@@ -1155,7 +1164,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
             } else {
 
-                dbManager.insertreptilia_attribute(reptilia_attribute);
+                dbManager!!.insertreptilia_attribute(reptilia_attribute);
 
                 var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
                 sdPath += "/ecology/tmps/" + reptilia_attribute.INV_DT +"."+ reptilia_attribute.INV_TM + "/imges"
@@ -1968,13 +1977,9 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
     override fun onBackPressed() {
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-
-        val db = dbManager.createDataBase()
-
         val dataList: Array<String> = arrayOf("*");
 
-        val data= db.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        val data= db!!.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         if (dataArray != null){
             dataArray.clear()
@@ -1998,6 +2003,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             setResult(RESULT_OK, intent);
 
         }
+
+        data.close()
 
         finish()
 

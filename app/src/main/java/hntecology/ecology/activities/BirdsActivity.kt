@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Address
@@ -110,6 +111,11 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
     var markerid : String? = null
 
+
+    var dbManager: DataBaseHelper? = null
+
+    private var db: SQLiteDatabase? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_birds)
@@ -137,11 +143,11 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         userName = PrefUtils.getStringPreference(context, "name");
         invPersonTV.text = userName;
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        dbManager = DataBaseHelper(this)
 
-        val db = dbManager.createDataBase();
+        db = dbManager!!.createDataBase();
 
-        val num = dbManager.birdsNextNum()
+        val num = dbManager!!.birdsNextNum()
         numTV.setText(num.toString())
 
         var intent: Intent = getIntent();
@@ -188,7 +194,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
         val dataList: Array<String> = arrayOf("*");
 
-        var basedata= db.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        var basedata= db!!.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         while(basedata.moveToNext()){
 
@@ -219,6 +225,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 invRegionET.setText(list.get(0).getAddressLine(0));
             }
 
+            basedata.close()
+
         }
 
         if(basechkdata){
@@ -227,7 +235,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
             val base : Base = Base(null,keyId,"",lat,log,invPersonTV.text.toString(),invDtTV.text.toString(),timeTV.text.toString())
 
-            dbManager.insertbase(base)
+            dbManager!!.insertbase(base)
 
         }
 
@@ -236,7 +244,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                     val dataList: Array<String> = arrayOf("*");
 
-                    val data = db.query("birdsAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+                    val data = db!!.query("birdsAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
                     if (dataArray != null) {
                         dataArray.clear()
@@ -255,6 +263,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                     }
 
+                    data.close()
+
                     println("dataArrayList ${dataArray.size}")
                 }
 
@@ -264,7 +274,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data = db.query("birdsAttribute", dataList, "id = '$pk'", null, null, null, "", null)
+            val data = db!!.query("birdsAttribute", dataList, "id = '$pk'", null, null, null, "", null)
 
             while (data.moveToNext()) {
 
@@ -319,7 +329,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 }
 
                 if(birds_attribute.TEMP_YN.equals("N")){
-                    dbManager.deletebirds_attribute(birds_attribute,pk)
+                    dbManager!!.deletebirds_attribute(birds_attribute,pk)
                 }
 
                 if(birds_attribute.TEMP_YN.equals("Y")){
@@ -409,6 +419,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                     }
                 }
 
+                data.close()
+
             }
 
         }
@@ -446,6 +458,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                             intent.putExtra("markerid", markerid)
                             setResult(RESULT_OK, intent);
                         }
+                        data.close()
 
                         finish()
 
@@ -544,7 +557,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                                     birds_attribute.CONF_MOD = "M"
                                 }
 
-                                dbManager.updatebirds_attribute(birds_attribute,pk)
+                                dbManager!!.updatebirds_attribute(birds_attribute,pk)
                             }
 
                             val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds/imges/")
@@ -592,7 +605,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         } else {
 
-                            dbManager.insertbirds_attribute(birds_attribute);
+                            dbManager!!.insertbirds_attribute(birds_attribute);
 
                             var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
                             sdPath += "/ecology/tmps/" + birds_attribute.INV_DT +"."+ birds_attribute.INV_TM + "/imges"
@@ -692,7 +705,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                                     val dataList: Array<String> = arrayOf("*");
 
-                                    val data = db.query("birdsAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+                                    val data = db!!.query("birdsAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
 
                                     if (dataArray != null) {
                                         dataArray.clear()
@@ -717,7 +730,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                                     if(dataArray.size > 1) {
 
-                                        dbManager.deletebirds_attribute(birds_attribute, pk)
+                                        dbManager!!.deletebirds_attribute(birds_attribute, pk)
 
                                         intent.putExtra("reset", 100)
 
@@ -732,11 +745,12 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                                         intent.putExtra("markerid", markerid)
 
-                                        dbManager.deletebirds_attribute(birds_attribute, pk)
+                                        dbManager!!.deletebirds_attribute(birds_attribute, pk)
 
                                         setResult(RESULT_OK, intent);
                                         finish()
                                     }
+                                    data.close()
                                 }
 
                             } else {
@@ -759,7 +773,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                                 val dataList: Array<String> = arrayOf("*");
 
-                                val data = db.query("birdsAttribute", dataList, "id = '$id'", null, null, null, "", null)
+                                val data = db!!.query("birdsAttribute", dataList, "id = '$id'", null, null, null, "", null)
 
                                 if (dataArray != null) {
                                     dataArray.clear()
@@ -784,6 +798,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                                     setResult(RESULT_OK, intent);
                                     finish()
                                 }
+                                data.close()
 
                             }
 
@@ -794,6 +809,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                                 setResult(RESULT_OK, intent);
                                 finish()
                             }
+
 
                             dialog.cancel()
 
@@ -983,7 +999,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         birds_attribute.CONF_MOD = "M"
                     }
 
-                    dbManager.updatebirds_attribute(birds_attribute,pk)
+                    dbManager!!.updatebirds_attribute(birds_attribute,pk)
                 }
 
                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds/imges/")
@@ -1032,7 +1048,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
             } else {
 
-                dbManager.insertbirds_attribute(birds_attribute);
+                dbManager!!.insertbirds_attribute(birds_attribute);
 
                 var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
                 sdPath += "/ecology/tmps/" + birds_attribute.INV_DT +"."+ birds_attribute.INV_TM + "/imges"
@@ -1881,18 +1897,16 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             gpslatTV.setText(lat)
             gpslonTV.setText(log)
 
+            data.close()
+
         }
 
     }
 
     override fun onBackPressed() {
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-
-        val db = dbManager.createDataBase()
-
         val dataList: Array<String> = arrayOf("*");
 
-        val data = db.query("birdsAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        val data = db!!.query("birdsAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         if (dataArray != null) {
             dataArray.clear()
@@ -1914,6 +1928,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             intent.putExtra("markerid", markerid)
             setResult(RESULT_OK, intent);
         }
+
+        data.close()
 
         finish()
     }

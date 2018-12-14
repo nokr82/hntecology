@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Address
@@ -100,6 +101,10 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
     var markerid : String? = null
 
+    var dbManager: DataBaseHelper? = null
+
+    private var db: SQLiteDatabase? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_insect)
@@ -124,11 +129,11 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
         window.setLayout(Utils.dpToPx(700f).toInt(), WindowManager.LayoutParams.WRAP_CONTENT);
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        dbManager = DataBaseHelper(this)
 
-        val db = dbManager.createDataBase();
+        db = dbManager!!.createDataBase();
 
-        val num = dbManager.insectsNextNum()
+        val num = dbManager!!.insectsNextNum()
         insectnumET.setText(num.toString())
 
         var intent: Intent = getIntent();
@@ -178,7 +183,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
         val dataList: Array<String> = arrayOf("*");
 
-        var basedata= db.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        var basedata= db!!.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         while(basedata.moveToNext()){
 
@@ -217,7 +222,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
             val base : Base = Base(null,keyId,"",lat,log,insectusernameET.text.toString(),insectinvdtET.text.toString(),insectnumET.text.toString())
 
-            dbManager.insertbase(base)
+            dbManager!!.insertbase(base)
 
         }
 
@@ -227,7 +232,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data = db.query("insectAttribute", dataList, "id = '$pk'", null, null, null, "", null)
+            val data = db!!.query("insectAttribute", dataList, "id = '$pk'", null, null, null, "", null)
 
             while (data.moveToNext()) {
                 chkdata = true
@@ -287,7 +292,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                 val id = insect_attribute.id
 
                 if(insect_attribute.TEMP_YN.equals("N")){
-                    dbManager.deleteinsect_attribute(insect_attribute,id)
+                    dbManager!!.deleteinsect_attribute(insect_attribute,id)
                 }
 
                 if(insect_attribute.TEMP_YN.equals("Y")){
@@ -374,13 +379,15 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
             }
 
+            data.close()
+
         }
 
         insectleftLL.setOnClickListener {
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data = db.query("insectAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data = db!!.query("insectAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
             if (dataArray != null) {
                 dataArray.clear()
@@ -415,6 +422,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                 resetPage(page!!)
             }
 
+            data.close()
+
 
         }
 
@@ -423,7 +432,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data = db.query("insectAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data = db!!.query("insectAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
             if (dataArray != null) {
                 dataArray.clear()
@@ -505,12 +514,12 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             insect_attribute.CONF_MOD = "N"
 
             if(page == dataArray.size){
-                dbManager.insertinsect_attribute(insect_attribute)
+                dbManager!!.insertinsect_attribute(insect_attribute)
                 page = page!! + 1
             }
 
 
-            val data2 = db.query("insectAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data2 = db!!.query("insectAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
             if (dataArray != null) {
                 dataArray.clear()
@@ -537,7 +546,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
             resetPage(page!!)
 
-
+            data.close()
 
         }
 
@@ -623,7 +632,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                                     insect_attribute.CONF_MOD = "M"
                                 }
 
-                                dbManager.updateinsect_attribute(insect_attribute,pk)
+                                dbManager!!.updateinsect_attribute(insect_attribute,pk)
                             }
 
                             val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect/imges/")
@@ -673,7 +682,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                         } else {
 
-                            dbManager.insertinsect_attribute(insect_attribute);
+                            dbManager!!.insertinsect_attribute(insect_attribute);
 
                             var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
                             sdPath += "/ecology/tmps/" + insect_attribute.INV_DT +"."+ insect_attribute.INV_TM + "/imges"
@@ -743,7 +752,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                         val dataList: Array<String> = arrayOf("*");
 
-                        val data = db.query("insectAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+                        val data = db!!.query("insectAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
                         if (dataArray != null) {
                             dataArray.clear()
@@ -769,6 +778,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
 
                         finish()
+                        data.close()
 
                     })
                     .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
@@ -818,7 +828,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                                     val dataList: Array<String> = arrayOf("*");
 
-                                    val data = db.query("insectAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+                                    val data = db!!.query("insectAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
 
                                     if (dataArray != null) {
                                         dataArray.clear()
@@ -842,7 +852,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                                     var intent = Intent()
 
                                     if (dataArray.size > 1) {
-                                        dbManager.deleteinsect_attribute(insect_attribute, pk)
+                                        dbManager!!.deleteinsect_attribute(insect_attribute, pk)
 
                                         intent.putExtra("reset", 100)
 
@@ -852,7 +862,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                                     }
 
                                     if (dataArray.size == 1) {
-                                        dbManager.deleteinsect_attribute(insect_attribute, pk)
+                                        dbManager!!.deleteinsect_attribute(insect_attribute, pk)
 
                                         intent.putExtra("markerid", markerid)
 
@@ -884,7 +894,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                                 val dataList: Array<String> = arrayOf("*");
 
-                                val data = db.query("insectAttribute", dataList, "id = '$id'", null, null, null, "", null)
+                                val data = db!!.query("insectAttribute", dataList, "id = '$id'", null, null, null, "", null)
 
                                 if (dataArray != null) {
                                     dataArray.clear()
@@ -908,6 +918,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                                     setResult(RESULT_OK, intent);
                                     finish()
                                 }
+                                data.close()
 
                             }
 
@@ -1117,7 +1128,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                         insect_attribute.CONF_MOD = "M"
                     }
 
-                    dbManager.updateinsect_attribute(insect_attribute,pk)
+                    dbManager!!.updateinsect_attribute(insect_attribute,pk)
                 }
 
                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect/imges/")
@@ -1167,7 +1178,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
             } else {
 
-                dbManager.insertinsect_attribute(insect_attribute);
+                dbManager!!.insertinsect_attribute(insect_attribute);
 
                 var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
                 sdPath += "/ecology/tmps/" + insect_attribute.INV_DT +"."+ insect_attribute.INV_TM + "/imges"
@@ -1521,6 +1532,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
             insectgpslatTV.setText(insect_attribute.GPS_LAT.toString())
             insectgpslonTV.setText(insect_attribute.GPS_LON.toString())
+
+            data.close()
 
         }
 
@@ -2033,6 +2046,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             setResult(RESULT_OK, intent);
 
         }
+
+        data.close()
 
         finish()
 

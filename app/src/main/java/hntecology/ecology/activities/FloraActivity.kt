@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Address
@@ -97,6 +98,10 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
     var markerid : String? = null
 
+    var dbManager: DataBaseHelper? = null
+
+    private var db: SQLiteDatabase? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_flora)
@@ -124,11 +129,11 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
         window.setLayout(Utils.dpToPx(700f).toInt(), WindowManager.LayoutParams.WRAP_CONTENT);
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        dbManager = DataBaseHelper(this)
 
-        val db = dbManager.createDataBase();
+        db = dbManager!!.createDataBase();
 
-        val num = dbManager.floraNextNum()
+        val num = dbManager!!.floraNextNum()
         floranumET.setText(num.toString())
 
         var intent: Intent = getIntent();
@@ -179,7 +184,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
         val dataList: Array<String> = arrayOf("*");
 
-        var basedata= db.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        var basedata= db!!.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         while(basedata.moveToNext()){
 
@@ -218,7 +223,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
             val base : Base = Base(null,keyId,"",lat,log,florainvperson.text.toString(),florainvdvET.text.toString(),floranumET.text.toString())
 
-            dbManager.insertbase(base)
+            dbManager!!.insertbase(base)
 
         }
 
@@ -232,7 +237,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data = db.query("floraAttribute", dataList, "id = '$pk'", null, null, null, "", null)
+            val data = db!!.query("floraAttribute", dataList, "id = '$pk'", null, null, null, "", null)
 
             while (data.moveToNext()) {
                 chkdata = true
@@ -279,7 +284,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                 val id = flora_Attribute.id
 
                 if(flora_Attribute.TEMP_YN.equals("N")){
-                    dbManager.deleteflora_attribute(flora_Attribute,id)
+                    dbManager!!.deleteflora_attribute(flora_Attribute,id)
                 }
 
                 if(flora_Attribute.TEMP_YN.equals("Y")){
@@ -366,6 +371,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                     }
                 }
 
+                data.close()
+
 
             }
 
@@ -375,7 +382,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data= db.query("floraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data= db!!.query("floraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
             if (dataArray != null){
                 dataArray.clear()
@@ -420,7 +427,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data= db.query("floraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data= db!!.query("floraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
             if (dataArray != null){
                 dataArray.clear()
@@ -495,7 +502,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             flora_Attribute.TEMP_YN = "N"
 
             if(page == dataArray.size){
-                dbManager.insertflora_attribute(flora_Attribute)
+                dbManager!!.insertflora_attribute(flora_Attribute)
                 page = page!! + 1
             }
 
@@ -503,7 +510,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                 dataArray.clear()
             }
 
-            val data2= db.query("floraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data2= db!!.query("floraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
             while (data2.moveToNext()) {
 
@@ -610,7 +617,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                                 }
 
 
-                                dbManager.updateflora_attribute(flora_Attribute,pk)
+                                dbManager!!.updateflora_attribute(flora_Attribute,pk)
                             }
 
                             val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora/imges/")
@@ -660,7 +667,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                         } else {
 
-                            dbManager.insertflora_attribute(flora_Attribute);
+                            dbManager!!.insertflora_attribute(flora_Attribute);
 
                             var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
                             sdPath += "/ecology/tmps/" + flora_Attribute.INV_DT +"."+ flora_Attribute.INV_TM + "/imges"
@@ -728,7 +735,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                         val dataList: Array<String> = arrayOf("*");
 
-                        val data= db.query("floraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+                        val data= db!!.query("floraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
                         if (dataArray != null){
                             dataArray.clear()
@@ -754,6 +761,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                         }
 
                         finish()
+
+                        data.close()
 
                     })
                     .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
@@ -800,7 +809,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                                     val dataList: Array<String> = arrayOf("*");
 
-                                    val data = db.query("floraAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+                                    val data = db!!.query("floraAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
 
                                     if (dataArray != null) {
                                         dataArray.clear()
@@ -822,7 +831,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                                     var intent = Intent()
 
                                     if (dataArray.size > 1) {
-                                        dbManager.deleteflora_attribute(flora_Attribute, pk)
+                                        dbManager!!.deleteflora_attribute(flora_Attribute, pk)
 
                                         var intent = Intent()
 
@@ -834,7 +843,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                                     }
 
                                     if (dataArray.size == 1) {
-                                        dbManager.deleteflora_attribute(flora_Attribute, pk)
+                                        dbManager!!.deleteflora_attribute(flora_Attribute, pk)
 
                                         var intent = Intent()
 
@@ -843,6 +852,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                                         setResult(RESULT_OK, intent);
                                         finish()
                                     }
+
+                                    data.close()
                                 }
 
 
@@ -871,7 +882,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                                 val dataList: Array<String> = arrayOf("*");
 
-                                val data = db.query("floraAttribute", dataList, "id = '$id'", null, null, null, "", null)
+                                val data = db!!.query("floraAttribute", dataList, "id = '$id'", null, null, null, "", null)
 
                                 if (dataArray != null) {
                                     dataArray.clear()
@@ -1071,7 +1082,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                         flora_Attribute.CONF_MOD = "M"
                     }
 
-                    dbManager.updateflora_attribute(flora_Attribute,pk)
+                    dbManager!!.updateflora_attribute(flora_Attribute,pk)
                 }
 
                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora/imges/")
@@ -1121,7 +1132,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
             } else {
 
-                dbManager.insertflora_attribute(flora_Attribute);
+                dbManager!!.insertflora_attribute(flora_Attribute);
 
                 var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
                 sdPath += "/ecology/tmps/" + flora_Attribute.INV_DT +"."+ flora_Attribute.INV_TM + "/imges"
@@ -1903,11 +1914,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
         val dataList: Array<String> = arrayOf("*");
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-
-        val db = dbManager.createDataBase()
-
-        val data= db.query("floraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        val data= db!!.query("floraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         if (dataArray != null){
             dataArray.clear()
@@ -1931,6 +1938,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             setResult(RESULT_OK, intent);
 
         }
+
+        data.close()
 
         finish()
     }

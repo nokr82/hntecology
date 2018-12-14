@@ -132,6 +132,8 @@ class DlgVascularActivity : Activity() {
                 finish()
             }
 
+            EndangeredData.close()
+
         })
 
     }

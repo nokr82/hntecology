@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Address
@@ -103,6 +104,10 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
     var markerid : String? = null
 
+    var dbmanager: DataBaseHelper? = null
+
+    private var db: SQLiteDatabase? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fish)
@@ -128,10 +133,10 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         val SET_DATA1 = 1;
 
-        val dbmanager = DataBaseHelper(context);
-        val db = dbmanager.createDataBase();
+        dbmanager = DataBaseHelper(context);
+        db = dbmanager!!.createDataBase();
 
-        val num = dbmanager.fishsNextNum()
+        val num = dbmanager!!.fishsNextNum()
         fishnumTV.setText(num.toString())
 
         var intent: Intent = getIntent();
@@ -181,7 +186,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         val dataList: Array<String> = arrayOf("*");
 
-        var basedata= db.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        var basedata= db!!.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         while(basedata.moveToNext()){
 
@@ -225,7 +230,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             val base : Base = Base(null,keyId,"",lat,log,fishinvpersonET.text.toString(),fishinvdtET.text.toString(),Utils.timeStr())
 
-            dbmanager.insertbase(base)
+            dbmanager!!.insertbase(base)
 
         }
 
@@ -235,7 +240,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data = db.query("fishAttribute", dataList, "id = '$pk'", null, null, null, "", null)
+            val data = db!!.query("fishAttribute", dataList, "id = '$pk'", null, null, null, "", null)
 
             while (data.moveToNext()) {
                 chkdata = true
@@ -311,7 +316,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 val id = fish_attribute.id
 
                 if(fish_attribute.TEMP_YN.equals("N")){
-                    dbmanager.deletefish_attribute(fish_attribute,id)
+                    dbmanager!!.deletefish_attribute(fish_attribute,id)
                 }
 
                 if(fish_attribute.TEMP_YN.equals("Y")){
@@ -400,6 +405,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             }
 
+            data.close()
+
         }
 
         fishleftLL.setOnClickListener {
@@ -407,7 +414,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data = db.query("fishAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data = db!!.query("fishAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
             if (dataArray != null){
                 dataArray.clear()
@@ -442,6 +449,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 resetPage(page!!)
             }
 
+            data.close()
 
         }
 
@@ -451,7 +459,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data = db.query("fishAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data = db!!.query("fishAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
             if (dataArray != null) {
                 dataArray.clear()
@@ -560,11 +568,11 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
 
             if (page == dataArray.size) {
-                dbmanager.insertfish_attribute(fish_attribute)
+                dbmanager!!.insertfish_attribute(fish_attribute)
                 page = page!! + 1
             }
 
-            val data2 = db.query("fishAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data2 = db!!.query("fishAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
             if (dataArray != null) {
                 dataArray.clear()
@@ -590,6 +598,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             fishpageTV.setText(page.toString() + " / " + dataArray.size.toString())
 
             resetPage(page!!)
+
+            data.close()
 
         }
 
@@ -718,7 +728,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                                     fish_attribute.CONF_MOD = "M"
                                 }
 
-                                dbmanager.updatefish_attribute(fish_attribute,pk)
+                                dbmanager!!.updatefish_attribute(fish_attribute,pk)
                             }
 
                             val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish/imges/")
@@ -768,7 +778,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                         } else {
 
-                            dbmanager.insertfish_attribute(fish_attribute);
+                            dbmanager!!.insertfish_attribute(fish_attribute);
 
                             var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
                             sdPath += "/ecology/tmps/" + fish_attribute.INV_DT +"."+ fish_attribute.INV_TM + "/imges"
@@ -838,7 +848,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                         val dataList: Array<String> = arrayOf("*");
 
-                        val data = db.query("fishAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+                        val data = db!!.query("fishAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
                         if (dataArray != null) {
                             dataArray.clear()
@@ -862,6 +872,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                             setResult(RESULT_OK, intent);
 
                         }
+
+                        data.close()
 
                         finish()
 
@@ -913,7 +925,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                                     val dataList: Array<String> = arrayOf("*");
 
-                                    val data = db.query("fishAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+                                    val data = db!!.query("fishAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
 
                                     if (dataArray != null) {
                                         dataArray.clear()
@@ -935,7 +947,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                                     var intent = Intent()
 
                                     if (dataArray.size > 1) {
-                                        dbmanager.deletefish_attribute(fish_attribute, pk)
+                                        dbmanager!!.deletefish_attribute(fish_attribute, pk)
 
                                         intent.putExtra("reset", 100)
 
@@ -945,7 +957,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                                     }
 
                                     if (dataArray.size == 1) {
-                                        dbmanager.deletefish_attribute(fish_attribute, pk)
+                                        dbmanager!!.deletefish_attribute(fish_attribute, pk)
 
                                         var intent = Intent()
 
@@ -954,6 +966,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                                         setResult(RESULT_OK, intent);
                                         finish()
                                     }
+
+                                    data.close()
                                 }
 
                             } else {
@@ -981,7 +995,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                                 val dataList: Array<String> = arrayOf("*");
 
-                                val data= db.query("fishAttribute", dataList, "id = '$id'", null, null, null, "", null)
+                                val data= db!!.query("fishAttribute", dataList, "id = '$id'", null, null, null, "", null)
 
                                 if (dataArray != null) {
                                     dataArray.clear()
@@ -1005,6 +1019,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                                     setResult(RESULT_OK, intent);
                                     finish()
                                 }
+
+                                data.close()
 
                             }
 
@@ -1213,7 +1229,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         fish_attribute.CONF_MOD = "M"
                     }
 
-                    dbmanager.updatefish_attribute(fish_attribute,pk)
+                    dbmanager!!.updatefish_attribute(fish_attribute,pk)
                 }
 
                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish/imges/")
@@ -1263,7 +1279,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             } else {
 
-                dbmanager.insertfish_attribute(fish_attribute);
+                dbmanager!!.insertfish_attribute(fish_attribute);
 
                 var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
                 sdPath += "/ecology/tmps/" + fish_attribute.INV_DT +"."+ fish_attribute.INV_TM + "/imges"
@@ -2136,13 +2152,9 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
     override fun onBackPressed() {
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-
-        val db = dbManager.createDataBase()
-
         val dataList: Array<String> = arrayOf("*");
 
-        val data = db.query("fishAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        val data = db!!.query("fishAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         if (dataArray != null) {
             dataArray.clear()
@@ -2168,6 +2180,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         }
 
         finish()
+
+        data.close()
 
     }
 

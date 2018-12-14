@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.location.Address
 import android.location.Geocoder
 import android.support.v7.app.AppCompatActivity
@@ -54,6 +55,11 @@ class StockActivity : Activity() {
     val AGCLS_CD = 105
     val DNST_CD = 106
 
+    var dbManager: DataBaseHelper? = null
+
+    private var db: SQLiteDatabase? = null
+
+
     var dataArray:ArrayList<StockMap> = ArrayList<StockMap>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,10 +78,10 @@ class StockActivity : Activity() {
         window.setGravity(Gravity.RIGHT);
         window.setLayout(Utils.dpToPx(700f).toInt(), WindowManager.LayoutParams.WRAP_CONTENT);
 
-        val dbManager = DataBaseHelper(context);
-        val db = dbManager.createDataBase();
+        dbManager = DataBaseHelper(context);
+        db = dbManager!!.createDataBase();
 
-        val num = dbManager.stockmapNextNum()
+        val num = dbManager!!.stockmapNextNum()
         numTV.setText(num.toString())
 
         var intent: Intent = getIntent();
@@ -131,7 +137,7 @@ class StockActivity : Activity() {
 
         val dataList: Array<String> = arrayOf("*");
 
-        var basedata = db.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        var basedata = db!!.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         while (basedata.moveToNext()) {
 
@@ -171,7 +177,7 @@ class StockActivity : Activity() {
 
             val base: Base = Base(null, keyId, "", lat, log, invpersonTV.text.toString(), invdtTV.text.toString(), invtmTV.text.toString())
 
-            dbManager.insertbase(base)
+            dbManager!!.insertbase(base)
 
         }
 
@@ -212,7 +218,7 @@ class StockActivity : Activity() {
 
             val dataList: Array<String> = arrayOf("*");
 
-            var data = db.query("StockMap", dataList, "id = '$pk'", null, null, null, "", null)
+            var data = db!!.query("StockMap", dataList, "id = '$pk'", null, null, null, "", null)
 
             while (data.moveToNext()) {
 
@@ -327,6 +333,8 @@ class StockActivity : Activity() {
                                 setResult(RESULT_OK, intent);
                             }
 
+                            data.close()
+
                             finish()
 
                         })
@@ -388,12 +396,12 @@ class StockActivity : Activity() {
 
                                 stockMap.MAP_LABEL2 = map_lableET.text.toString()
 
-                                dbManager.updatestockmap(stockMap,pk)
+                                dbManager!!.updatestockmap(stockMap,pk)
                             }
 
                         } else {
 
-                            dbManager.insertstockmap(stockMap);
+                            dbManager!!.insertstockmap(stockMap);
 
                         }
 
@@ -428,7 +436,7 @@ class StockActivity : Activity() {
 
                                     val dataList: Array<String> = arrayOf("*");
 
-                                    val data = db.query("StockMap", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+                                    val data = db!!.query("StockMap", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
 
                                     if (dataArray != null) {
                                         dataArray.clear()
@@ -450,7 +458,7 @@ class StockActivity : Activity() {
                                     var intent = Intent()
 
                                     if (dataArray.size > 1) {
-                                        dbManager.deletestockmap(pk)
+                                        dbManager!!.deletestockmap(pk)
 
                                         intent.putExtra("reset", 100)
 
@@ -460,7 +468,7 @@ class StockActivity : Activity() {
                                     }
 
                                     if (dataArray.size == 1) {
-                                        dbManager.deletestockmap(pk)
+                                        dbManager!!.deletestockmap(pk)
 
                                         var intent = Intent()
 
@@ -469,6 +477,8 @@ class StockActivity : Activity() {
                                         setResult(RESULT_OK, intent);
                                         finish()
                                     }
+
+                                    data.close()
                                 }
 
                             } else {
@@ -496,7 +506,7 @@ class StockActivity : Activity() {
 
                                 val dataList: Array<String> = arrayOf("*");
 
-                                val data= db.query("StockMap", dataList, "id = '$id'", null, null, null, "", null)
+                                val data= db!!.query("StockMap", dataList, "id = '$id'", null, null, null, "", null)
 
                                 if (dataArray != null) {
                                     dataArray.clear()
@@ -520,6 +530,8 @@ class StockActivity : Activity() {
                                     setResult(RESULT_OK, intent);
                                     finish()
                                 }
+
+                                data.close()
 
                             }
 
@@ -583,12 +595,12 @@ class StockActivity : Activity() {
 
                     stockMap.MAP_LABEL2 = map_lableET.text.toString()
 
-                    dbManager.updatestockmap(stockMap,pk)
+                    dbManager!!.updatestockmap(stockMap,pk)
                 }
 
             } else {
 
-                dbManager.insertstockmap(stockMap);
+                dbManager!!.insertstockmap(stockMap);
 
             }
 
@@ -744,13 +756,9 @@ class StockActivity : Activity() {
             builder.setMessage("작성을 취소하시겠습니까?").setCancelable(false)
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                        val dbManager: DataBaseHelper = DataBaseHelper(this)
-
-                        val db = dbManager.createDataBase()
-
                         val dataList: Array<String> = arrayOf("*");
 
-                        val data = db.query("StockMap", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+                        val data = db!!.query("StockMap", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
                         if (dataArray != null) {
                             dataArray.clear()
@@ -772,6 +780,8 @@ class StockActivity : Activity() {
                             intent.putExtra("polygonid", polygonid)
                             setResult(RESULT_OK, intent);
                         }
+
+                        data.close()
 
                         finish()
 
@@ -824,13 +834,11 @@ class StockActivity : Activity() {
 
     fun setCode(){
         val koftr = koftrTV.text.toString()
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-        val db = dbManager.createDataBase();
         val dataList: Array<String> = arrayOf("*");
         var div = ""
 
         if (koftr != "" && koftr != null) {
-            var data = db.query("Vegetation", dataList, "SIGN = '$koftr'", null, null, null, "", null)
+            var data = db!!.query("Vegetation", dataList, "SIGN = '$koftr'", null, null, null, "", null)
             while (data.moveToNext()){
 
                 var model : Vegetation;
@@ -845,6 +853,7 @@ class StockActivity : Activity() {
             }
 
             codeModify(div)
+            data.close()
         }
     }
 

@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Address
@@ -93,6 +94,10 @@ class ZoobenthosActivity : Activity() {
 
     var basechkdata = false
 
+    var dbManager: DataBaseHelper? = null
+
+    private var db: SQLiteDatabase? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_zoobenthos)
@@ -121,12 +126,11 @@ class ZoobenthosActivity : Activity() {
 
         invpersonTV.setText(userName)
 
+        dbManager = DataBaseHelper(this)
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        db = dbManager!!.createDataBase();
 
-        val db = dbManager.createDataBase();
-
-        val num = dbManager.zoobenthosNextNum()
+        val num = dbManager!!.zoobenthosNextNum()
         numTV.setText(num.toString())
 
         var intent: Intent = getIntent();
@@ -176,7 +180,7 @@ class ZoobenthosActivity : Activity() {
 
         val dataList: Array<String> = arrayOf("*");
 
-        var basedata= db.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        var basedata= db!!.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         while(basedata.moveToNext()){
 
@@ -206,7 +210,7 @@ class ZoobenthosActivity : Activity() {
 
             val base : Base = Base(null,keyId,"",lat,log,invpersonTV.text.toString(),invdtTV.text.toString(),Utils.timeStr())
 
-            dbManager.insertbase(base)
+            dbManager!!.insertbase(base)
 
         }
 
@@ -357,7 +361,7 @@ class ZoobenthosActivity : Activity() {
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data = db.query("ZoobenthosAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data = db!!.query("ZoobenthosAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
             if (dataArray != null) {
                 dataArray.clear()
@@ -389,7 +393,7 @@ class ZoobenthosActivity : Activity() {
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data = db.query("ZoobenthosAttribute", dataList, "id = '$pk'", null, null, null, "", null)
+            val data = db!!.query("ZoobenthosAttribute", dataList, "id = '$pk'", null, null, null, "", null)
             while (data.moveToNext()) {
                 chkdata = true
 
@@ -673,7 +677,7 @@ class ZoobenthosActivity : Activity() {
                                     zoobenthos_Attribute.CONF_MOD = "M"
                                 }
 
-                                dbManager.updatezoobenthous_attribute(zoobenthos_Attribute,pk)
+                                dbManager!!.updatezoobenthous_attribute(zoobenthos_Attribute,pk)
                             }
 
                             val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "zoobenthos/imges/")
@@ -721,7 +725,7 @@ class ZoobenthosActivity : Activity() {
 
                         } else {
 
-                            dbManager.insertzoobenthos(zoobenthos_Attribute);
+                            dbManager!!.insertzoobenthos(zoobenthos_Attribute);
 
                             var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
                             sdPath += "/ecology/tmps/" + zoobenthos_Attribute.INV_DT +"."+ zoobenthos_Attribute.INV_TM + "/imges"
@@ -822,7 +826,7 @@ class ZoobenthosActivity : Activity() {
 
                                     val dataList: Array<String> = arrayOf("*");
 
-                                    val data = db.query("ZoobenthosAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+                                    val data = db!!.query("ZoobenthosAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
 
                                     if (dataArray != null) {
                                         dataArray.clear()
@@ -849,7 +853,7 @@ class ZoobenthosActivity : Activity() {
 
                                     if(dataArray.size > 1) {
 
-                                        dbManager.deletezoobenthous_attribute(zoobenthos_Attribute, pk)
+                                        dbManager!!.deletezoobenthous_attribute(zoobenthos_Attribute, pk)
 
                                         intent.putExtra("reset", 100)
 
@@ -864,7 +868,7 @@ class ZoobenthosActivity : Activity() {
 
                                         intent.putExtra("markerid", markerid)
 
-                                        dbManager.deletezoobenthous_attribute(zoobenthos_Attribute, pk)
+                                        dbManager!!.deletezoobenthous_attribute(zoobenthos_Attribute, pk)
 
                                         setResult(RESULT_OK, intent);
                                         finish()
@@ -891,7 +895,7 @@ class ZoobenthosActivity : Activity() {
 
                                 val dataList: Array<String> = arrayOf("*");
 
-                                val data = db.query("ZoobenthosAttribute", dataList, "id = '$id'", null, null, null, "", null)
+                                val data = db!!.query("ZoobenthosAttribute", dataList, "id = '$id'", null, null, null, "", null)
 
                                 if (dataArray != null) {
                                     dataArray.clear()
@@ -1108,7 +1112,7 @@ class ZoobenthosActivity : Activity() {
                         zoobenthos_Attribute.CONF_MOD = "M"
                     }
 
-                    dbManager.updatezoobenthous_attribute(zoobenthos_Attribute,pk)
+                    dbManager!!.updatezoobenthous_attribute(zoobenthos_Attribute,pk)
                 }
 
                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "zoobenthos/imges/")
@@ -1156,7 +1160,7 @@ class ZoobenthosActivity : Activity() {
 
             } else {
 
-                dbManager.insertzoobenthos(zoobenthos_Attribute);
+                dbManager!!.insertzoobenthos(zoobenthos_Attribute);
 
                 var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
                 sdPath += "/ecology/tmps/" + zoobenthos_Attribute.INV_DT +"."+ zoobenthos_Attribute.INV_TM + "/imges"
@@ -1812,13 +1816,10 @@ class ZoobenthosActivity : Activity() {
 
     }
     override fun onBackPressed() {
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-
-        val db = dbManager.createDataBase()
 
         val dataList: Array<String> = arrayOf("*");
 
-        val data = db.query("ZoobenthosAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        val data = db!!.query("ZoobenthosAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         if (dataArray != null) {
             dataArray.clear()
@@ -1843,6 +1844,8 @@ class ZoobenthosActivity : Activity() {
             intent.putExtra("markerid", markerid)
             setResult(RESULT_OK, intent);
         }
+
+        data.close()
 
         finish()
     }

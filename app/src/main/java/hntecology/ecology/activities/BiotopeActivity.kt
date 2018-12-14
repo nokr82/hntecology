@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Address
@@ -117,6 +118,10 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
     var polygonid: String? = null
 
+    var dbManager: DataBaseHelper? = null
+
+    private var db: SQLiteDatabase? = null
+
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -138,13 +143,13 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         //etinvesDatetimeTV 바뀜.
         //etinvesDatetimeTV.text = getTime()
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        dbManager = DataBaseHelper(this)
 
-        val db = dbManager.createDataBase()
+        db = dbManager!!.createDataBase()
 
         var intent: Intent = getIntent();
 
-        val num = dbManager.biotopesNextNum()
+        val num = dbManager!!.biotopesNextNum()
 
         tvINV_IndexTV.setText(num.toString())
 
@@ -202,7 +207,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         val dataList: Array<String> = arrayOf("*");
 
-        var basedata = db.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        var basedata = db!!.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         while (basedata.moveToNext()) {
 
@@ -228,7 +233,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
             val base: Base = Base(null, keyId, "", lat, log, tvINV_PERSONTV.text.toString(), etINV_DTTV.text.toString(), etINV_TMTV.text.toString())
 
-            dbManager.insertbase(base)
+            dbManager!!.insertbase(base)
 
         }
 
@@ -274,9 +279,9 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
             val dataList: Array<String> = arrayOf("*");
 
-            var data = db.query("biotopeAttribute", dataList, "id = '$pk'", null, null, null, "", null)
+            var data = db!!.query("biotopeAttribute", dataList, "id = '$pk'", null, null, null, "", null)
 
-            val data2 = db.query("biotopeAttribute", dataList, "id = '$pk'", null, null, null, "", null)
+            val data2 = db!!.query("biotopeAttribute", dataList, "id = '$pk'", null, null, null, "", null)
 
             while (data2.moveToNext()) {
 
@@ -314,7 +319,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 if (biotope_attribute.LU_GR_NUM != null) {
 
                     val dataSelectList: Array<String> = arrayOf("name")
-                    val data = db.query("biotopeM", dataList, "code = '" + biotope_attribute.LU_GR_NUM + "'", null, null, null, "", null);
+                    val data = db!!.query("biotopeM", dataList, "code = '" + biotope_attribute.LU_GR_NUM + "'", null, null, null, "", null);
 
                     while (data.moveToNext()) {
 
@@ -333,7 +338,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 if (biotope_attribute.LC_GR_NUM != null) {
 
                     val dataSelectList: Array<String> = arrayOf("name", "code");
-                    val data = db.query("biotopeS", dataList, "code = '" + biotope_attribute.LC_GR_NUM + "'", null, null, null, "", null);
+                    val data = db!!.query("biotopeS", dataList, "code = '" + biotope_attribute.LC_GR_NUM + "'", null, null, null, "", null);
 
                     while (data.moveToNext()) {
 
@@ -495,7 +500,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 val id = biotope_attribute.id
 
                 if (biotope_attribute.TEMP_YN.equals("N")) {
-                    dbManager.deletebiotope_attribute(biotope_attribute, id)
+                    dbManager!!.deletebiotope_attribute(biotope_attribute, id)
                 }
 
                 if (biotope_attribute.TEMP_YN.equals("Y")) {
@@ -756,12 +761,12 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 biotope_attribute.TEMP_YN = "N"
 
                 if (page == dataArray.size) {
-                    dbManager.insertbiotope_attribute(biotope_attribute);
+                    dbManager!!.insertbiotope_attribute(biotope_attribute);
                     page = page!! + 1
                     println("biotope_attribute ====== ${biotope_attribute.id}")
                 }
 
-                val data2 = db.query("biotopeAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+                val data2 = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
                 if (dataArray != null) {
                     dataArray.clear()
@@ -804,7 +809,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     if (biotope_attribute.LU_GR_NUM != null) {
 
                         val dataSelectList: Array<String> = arrayOf("name");
-                        val data = db.query("biotopeM", dataList, "code = '" + biotope_attribute.LU_GR_NUM + "'", null, null, null, "", null);
+                        val data = db!!.query("biotopeM", dataList, "code = '" + biotope_attribute.LU_GR_NUM + "'", null, null, null, "", null);
 
 
                         while (data.moveToNext()) {
@@ -823,7 +828,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     if (biotope_attribute.LC_GR_NUM != null) {
 
                         val dataSelectList: Array<String> = arrayOf("name", "code");
-                        val data = db.query("biotopeS", dataList, "code = '" + biotope_attribute.LC_GR_NUM + "'", null, null, null, "", null);
+                        val data = db!!.query("biotopeS", dataList, "code = '" + biotope_attribute.LC_GR_NUM + "'", null, null, null, "", null);
 
 
                         while (data.moveToNext()) {
@@ -1267,7 +1272,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                     biotope_attribute.CONF_MOD = "M"
                                 }
 
-                                dbManager.updatebiotope_attribute(biotope_attribute, pk)
+                                dbManager!!.updatebiotope_attribute(biotope_attribute, pk)
                             }
 
                             val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope/imges/")
@@ -1321,7 +1326,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                 biotope_attribute.PIC_FOLDER = getAttrubuteKey()
                             }
 
-                            dbManager.insertbiotope_attribute(biotope_attribute);
+                            dbManager!!.insertbiotope_attribute(biotope_attribute);
 
                             var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
                             sdPath += "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "/imges"
@@ -1438,7 +1443,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                                     val dataList: Array<String> = arrayOf("*");
 
-                                    val data2 = db.query("biotopeAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+                                    val data2 = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
 
                                     if (dataArray != null) {
                                         dataArray.clear()
@@ -1467,7 +1472,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                                         println("pk $pk =============================================")
 
-                                        dbManager.deletebiotope_attribute(biotope_attribute, pk)
+                                        dbManager!!.deletebiotope_attribute(biotope_attribute, pk)
 
                                         intent.putExtra("reset", 100)
 
@@ -1477,7 +1482,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                     }
 
                                     if (dataArray.size == 1) {
-                                        dbManager.deletebiotope_attribute(biotope_attribute, pk)
+                                        dbManager!!.deletebiotope_attribute(biotope_attribute, pk)
 
                                         var intent = Intent()
 
@@ -1521,7 +1526,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                                 val dataList: Array<String> = arrayOf("*");
 
-                                val data2 = db.query("biotopeAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+                                val data2 = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
 
                                 if (dataArray != null) {
                                     dataArray.clear()
@@ -1548,7 +1553,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                                 if(dataArray.size > 1) {
 
-                                    dbManager.deletebiotope_attribute(biotope_attribute,pk)
+                                    dbManager!!.deletebiotope_attribute(biotope_attribute,pk)
 
                                     intent.putExtra("reset", 100)
 
@@ -1563,7 +1568,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                                     intent.putExtra("polygonid", polygonid)
 
-                                    dbManager.deletebiotope_attribute(biotope_attribute, pk)
+                                    dbManager!!.deletebiotope_attribute(biotope_attribute, pk)
 
                                     setResult(RESULT_OK, intent);
                                     finish()
@@ -1796,7 +1801,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         biotope_attribute.CONF_MOD = "M"
                     }
 
-                    dbManager.updatebiotope_attribute(biotope_attribute, pk)
+                    dbManager!!.updatebiotope_attribute(biotope_attribute, pk)
                 }
 
                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope/imges/")
@@ -1850,7 +1855,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     biotope_attribute.PIC_FOLDER = getAttrubuteKey()
                 }
 
-                dbManager.insertbiotope_attribute(biotope_attribute);
+                dbManager!!.insertbiotope_attribute(biotope_attribute);
 
                 var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
                 sdPath += "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "/imges"
@@ -3035,13 +3040,9 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             builder.setMessage("작성을 취소하시겠습니까?").setCancelable(false)
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                        val dbManager: DataBaseHelper = DataBaseHelper(this)
-
-                        val db = dbManager.createDataBase()
-
                         val dataList: Array<String> = arrayOf("*");
 
-                        val data2 = db.query("biotopeAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+                        val data2 = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
                         var dataArray:ArrayList<Biotope_attribute> = ArrayList<Biotope_attribute>()
 

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -31,8 +32,9 @@ class DlgcomAcitivity : Activity() {
     private lateinit var listAdapte1: DlgComAdapter;
     private lateinit var listAdapte2: DlgComdiviAdapter;
 
-    val dataBaseHelper = DataBaseHelper(this);
-    val db = dataBaseHelper.createDataBase()
+    var dbManager: DataBaseHelper? = null
+    private var db: SQLiteDatabase? = null
+
     var tableName:String = ""
     var titleName:String=""
     var DlgHeight:Float=430F
@@ -43,9 +45,9 @@ class DlgcomAcitivity : Activity() {
 
         context = applicationContext;
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        dbManager = DataBaseHelper(this)
 
-        val db = dbManager.createDataBase();
+        db = dbManager!!.createDataBase();
 
         val intent = getIntent()
 
@@ -60,7 +62,7 @@ class DlgcomAcitivity : Activity() {
 
         val dataList:Array<String> = arrayOf("title","code","commons","area");
 
-        val data1=  db.query(tableName,dataList,null,null,"code",null,null,null);
+        val data1=  db!!.query(tableName,dataList,null,null,"code",null,null,null);
 
         listView1 = findViewById(R.id.com_list_view1)
         listView2 = findViewById(R.id.com_list_view2)
@@ -83,7 +85,7 @@ class DlgcomAcitivity : Activity() {
 
             val datadiviList:Array<String> = arrayOf("code","title","division","area","round","upstreamdrea","rivername","rating");
 
-            val data2 =  db.query("CommonDivision",datadiviList,"code like '%" + veData.code + "%'" ,null,null,null,null,null);
+            val data2 =  db!!.query("CommonDivision",datadiviList,"code like '%" + veData.code + "%'" ,null,null,null,null,null);
 
             com_dlg_probars.visibility= View.VISIBLE
             datadiviList(listdata2,data2);

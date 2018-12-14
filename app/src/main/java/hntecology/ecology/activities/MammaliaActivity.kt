@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Address
@@ -101,6 +102,10 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
     var markerid : String? = null
 
+    var dbManager: DataBaseHelper? = null
+
+    private var db: SQLiteDatabase? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mammalia)
@@ -124,11 +129,11 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         maminvpersonTV.setText(userName)
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        dbManager = DataBaseHelper(this)
 
-        val db = dbManager.createDataBase();
+        db = dbManager!!.createDataBase();
 
-        val num = dbManager.mammalsNextNum()
+        val num = dbManager!!.mammalsNextNum()
 
         mammalnumTV.setText(num.toString())
 
@@ -181,7 +186,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         val dataList: Array<String> = arrayOf("*");
 
-        var basedata= db.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        var basedata= db!!.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         while(basedata.moveToNext()){
 
@@ -224,7 +229,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             val base : Base = Base(null,keyId,"",lat,log,maminvpersonTV.text.toString(),maminvdtTV.text.toString(),mammaltimeTV.text.toString())
 
-            dbManager.insertbase(base)
+            dbManager!!.insertbase(base)
 
         }
 
@@ -234,7 +239,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data = db.query("mammalAttribute", dataList, "id = '$pk'", null, null, null, "", null)
+            val data = db!!.query("mammalAttribute", dataList, "id = '$pk'", null, null, null, "", null)
 
             while (data.moveToNext()) {
                 chkdata = true
@@ -281,7 +286,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 val id = mammal_attribute.id
 
                 if(mammal_attribute.TEMP_YN.equals("N")){
-                    dbManager.deletemammal_attribute(mammal_attribute,id)
+                    dbManager!!.deletemammal_attribute(mammal_attribute,id)
                 }
 
                 if(mammal_attribute.TEMP_YN.equals("Y")){
@@ -369,6 +374,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 }
 
             }
+            data.close()
 
         }
 
@@ -376,7 +382,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data= db.query("mammalAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data= db!!.query("mammalAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
             if (dataArray != null){
                 dataArray.clear()
@@ -411,6 +417,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 resetPage(page!!)
 
             }
+            data.close()
         }
 
         mamrightLL.setOnClickListener {
@@ -418,7 +425,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data= db.query("mammalAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data= db!!.query("mammalAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
             if (dataArray != null){
                 dataArray.clear()
@@ -504,11 +511,11 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             mammal_attribute.TEMP_YN = "N"
 
             if(page == dataArray.size){
-                dbManager.insertmammal_attribute(mammal_attribute)
+                dbManager!!.insertmammal_attribute(mammal_attribute)
                 page = page!! + 1
             }
 
-            val data2= db.query("mammalAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data2= db!!.query("mammalAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
             if (dataArray != null){
                 dataArray.clear()
@@ -534,6 +541,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             mampageTV.setText(page.toString() + " / " + dataArray.size.toString())
 
             resetPage(page!!)
+
+            data.close()
 
 
         }
@@ -623,7 +632,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                                     mammal_attribute.CONF_MOD = "M"
                                 }
 
-                                dbManager.updatemammal_attribute(mammal_attribute,pk)
+                                dbManager!!.updatemammal_attribute(mammal_attribute,pk)
                             }
 
                             val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia/imges/")
@@ -673,7 +682,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                         } else {
 
-                            dbManager.insertmammal_attribute(mammal_attribute);
+                            dbManager!!.insertmammal_attribute(mammal_attribute);
 
                             var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
                             sdPath += "/ecology/tmps/" + mammal_attribute.INV_DT +"."+ mammal_attribute.INV_TM + "/imges"
@@ -775,7 +784,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                                     val dataList: Array<String> = arrayOf("*");
 
-                                    val data = db.query("mammalAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+                                    val data = db!!.query("mammalAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
 
                                     if (dataArray != null) {
                                         dataArray.clear()
@@ -797,7 +806,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                                     var intent = Intent()
 
                                     if (dataArray.size > 1) {
-                                        dbManager.deletemammal_attribute(mammal_attribute, pk)
+                                        dbManager!!.deletemammal_attribute(mammal_attribute, pk)
 
                                         intent.putExtra("reset", 100)
 
@@ -807,7 +816,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                                     }
 
                                     if (dataArray.size == 1) {
-                                        dbManager.deletemammal_attribute(mammal_attribute, pk)
+                                        dbManager!!.deletemammal_attribute(mammal_attribute, pk)
 
                                         var intent = Intent()
 
@@ -816,6 +825,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                                         setResult(RESULT_OK, intent);
                                         finish()
                                     }
+
+                                    data.close()
                                 }
 
                             } else {
@@ -842,7 +853,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                                 val dataList: Array<String> = arrayOf("*");
 
-                                val data = db.query("mammalAttribute", dataList, "id = '$id'", null, null, null, "", null)
+                                val data = db!!.query("mammalAttribute", dataList, "id = '$id'", null, null, null, "", null)
 
                                 if (dataArray != null) {
                                     dataArray.clear()
@@ -921,7 +932,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                         val dataList: Array<String> = arrayOf("*");
 
-                        val data= db.query("mammalAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+                        val data= db!!.query("mammalAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
                         if (dataArray != null){
                             dataArray.clear()
@@ -947,6 +958,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         }
 
                         finish()
+                        data.close()
 
                     })
                     .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
@@ -1103,7 +1115,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         mammal_attribute.CONF_MOD = "M"
                     }
 
-                    dbManager.updatemammal_attribute(mammal_attribute,pk)
+                    dbManager!!.updatemammal_attribute(mammal_attribute,pk)
                 }
 
                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia/imges/")
@@ -1153,7 +1165,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             } else {
 
-                dbManager.insertmammal_attribute(mammal_attribute);
+                dbManager!!.insertmammal_attribute(mammal_attribute);
 
                 var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
                 sdPath += "/ecology/tmps/" + mammal_attribute.INV_DT +"."+ mammal_attribute.INV_TM + "/imges"
@@ -1996,6 +2008,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             setResult(RESULT_OK, intent);
 
         }
+
+        data.close()
 
         finish()
 

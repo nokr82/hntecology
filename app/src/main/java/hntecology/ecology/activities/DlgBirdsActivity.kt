@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -48,6 +49,9 @@ class DlgBirdsActivity : Activity() {
 
     var chkData = false
 
+    var dbManager: DataBaseHelper? = null
+
+    private var db: SQLiteDatabase? = null
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,8 +64,8 @@ class DlgBirdsActivity : Activity() {
 
         val intent = getIntent()
 
-        val dataBaseHelper = DataBaseHelper(context);
-        val db = dataBaseHelper.createDataBase();
+        dbManager = DataBaseHelper(context);
+        db = dbManager!!.createDataBase();
 
         tableName = intent.getStringExtra("table");
         titleName = intent.getStringExtra("title")
@@ -99,7 +103,7 @@ class DlgBirdsActivity : Activity() {
         val dataList: Array<String> = arrayOf("no", "taxon", "zoological", "name_kr", "author", "year", "Phylum_name", "Phylum_name_kr", "Class_name", "Class_name_kr", "Order_name", "Order_name_kr", "Family_name"
                 , "Family_name_kr", "Genus_name", "Genus_name_kr", "Species_name", "Species_name_kr");
 
-        val data = db.query(tableName, dataList, null, null, null, null, "case when name_kr like '[0-9]%' then 3 when name_kr like '[A-Za-z]%' then 2 else 1 end, name_kr", null);
+        val data = db!!.query(tableName, dataList, null, null, null, null, "case when name_kr like '[0-9]%' then 3 when name_kr like '[A-Za-z]%' then 2 else 1 end, name_kr", null);
 
         listView1.adapter = listAdapte1
         listView2.adapter = listAdapter2
@@ -143,6 +147,8 @@ class DlgBirdsActivity : Activity() {
 
             finish()
 
+            data.close()
+
         }
 
         listView1.setOnItemClickListener { parent, view, position, id ->
@@ -177,7 +183,7 @@ class DlgBirdsActivity : Activity() {
 
             val dataEndangeredList: Array<String> = arrayOf("ID", "TITLE", "SCIENTIFICNAME", "CLASS", "DANGERCLASS", "CONTRYCLASS");
 
-            val EndangeredData = db.query("ENDANGERED", dataEndangeredList, "TITLE = '$name'", null, null, null, null, null);
+            val EndangeredData = db!!.query("ENDANGERED", dataEndangeredList, "TITLE = '$name'", null, null, null, null, null);
 
             while (EndangeredData.moveToNext()) {
 
@@ -210,6 +216,8 @@ class DlgBirdsActivity : Activity() {
                     listdata2.clear()
                 }
             }
+
+            EndangeredData.close()
 
         }
 

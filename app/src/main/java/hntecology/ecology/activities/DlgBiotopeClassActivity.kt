@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -49,15 +50,20 @@ class DlgBiotopeClassActivity : Activity() {
 
     var list4position:Int = 0
 
+    var dbManager: DataBaseHelper? = null
+
+    private var db: SQLiteDatabase? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dlg_biotope_class_acitivity)
 
         context = applicationContext;
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        dbManager = DataBaseHelper(this)
 
-        val db = dbManager.createDataBase();
+        db = dbManager!!.createDataBase();
 
         val intent = getIntent()
 
@@ -72,7 +78,7 @@ class DlgBiotopeClassActivity : Activity() {
 
         val dataList:Array<String> = arrayOf("CATEGORY","MIDDLECATEGORY","SMALLCATEGORY","SIGN");
 
-        val data1=  db.query(tableName,dataList,null,null,"CATEGORY",null,null,null);
+        val data1=  db!!.query(tableName,dataList,null,null,"CATEGORY",null,null,null);
 
         listView1 = findViewById(R.id.class_list_view1)
         listView2 = findViewById(R.id.class_list_view2)
@@ -109,11 +115,13 @@ class DlgBiotopeClassActivity : Activity() {
 
             listAdapte1.setItemSelect(position)
 
-            val data2 =  db.query(tableName,dataList,"CATEGORY='"+veData.CATEGORY +"'" ,null,"MIDDLECATEGORY",null,null,null);
+            val data2 =  db!!.query(tableName,dataList,"CATEGORY='"+veData.CATEGORY +"'" ,null,"MIDDLECATEGORY",null,null,null);
 
             class_probar.visibility= View.VISIBLE
             dataList(listdata2,data2);
             class_probar.visibility= View.GONE
+
+            data2.close()
 
         })
 
@@ -125,11 +133,13 @@ class DlgBiotopeClassActivity : Activity() {
 
             listAdapte2.setItemSelect(position)
 
-            val data =  db.query(tableName,dataList,"MIDDLECATEGORY='"+veData.middlecategory +"'" ,null,null,null,null,null);
+            val data =  db!!.query(tableName,dataList,"MIDDLECATEGORY='"+veData.middlecategory +"'" ,null,null,null,null,null);
 
             class_probar.visibility= View.VISIBLE
             dataList(listdata3,data)
             class_probar.visibility= View.GONE
+
+            data.close()
 
         })
 
@@ -145,7 +155,7 @@ class DlgBiotopeClassActivity : Activity() {
 
                 val dataList:Array<String> = arrayOf("categorycode","category","classcode","sign","correspondingname");
 
-                val vegedata=  db.query("Vegetation",dataList,null,null,null,null,"SIGN",null);
+                val vegedata=  db!!.query("Vegetation",dataList,null,null,null,null,"SIGN",null);
 
                 listAdapte3.setItemSelect(position)
 
@@ -156,6 +166,8 @@ class DlgBiotopeClassActivity : Activity() {
                 copylistdata3.addAll(listdata4)
 
                 listAdapte3.notifyDataSetChanged()
+
+                vegedata.close()
 
             }else {
 
@@ -177,7 +189,7 @@ class DlgBiotopeClassActivity : Activity() {
 
             val dataList:Array<String> = arrayOf("COUNT");
 
-            val numdata=  db.query("Number",dataList,null,null,null,null,"COUNT",null);
+            val numdata=  db!!.query("Number",dataList,null,null,null,null,"COUNT",null);
 
             listAdapte4.setItemSelect(position)
 
@@ -186,6 +198,8 @@ class DlgBiotopeClassActivity : Activity() {
             class_probar.visibility= View.GONE
 
             listAdapte5.notifyDataSetChanged()
+
+            numdata.close()
 
         })
 

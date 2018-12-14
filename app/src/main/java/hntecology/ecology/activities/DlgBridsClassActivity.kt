@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -46,6 +47,9 @@ class DlgBridsClassActivity : Activity() {
     var titleName:String=""
     var DlgHeight:Float=430F
 
+    var dbManager: DataBaseHelper? = null
+
+    private var db: SQLiteDatabase? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,9 +57,9 @@ class DlgBridsClassActivity : Activity() {
 
         context = applicationContext;
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        dbManager = DataBaseHelper(this)
 
-        val db = dbManager.createDataBase();
+        db = dbManager!!.createDataBase();
 
         val intent = getIntent()
 
@@ -70,7 +74,7 @@ class DlgBridsClassActivity : Activity() {
 
         val dataList:Array<String> = arrayOf("MAINCATEGORY","MIDDLECATEGORY","SMALLCATEGORY");
 
-        val data1=  db.query(tableName,dataList,null,null,"MAINCATEGORY",null,null,null);
+        val data1=  db!!.query(tableName,dataList,null,null,"MAINCATEGORY",null,null,null);
 
         listView1 = findViewById(R.id.brids_list_view1)
         listView2 = findViewById(R.id.brids_list_view2)
@@ -107,7 +111,7 @@ class DlgBridsClassActivity : Activity() {
 
                 val dataList:Array<String> = arrayOf("categorycode","category","classcode","sign","correspondingname");
 
-                val vegedata=  db.query("Vegetation",dataList,null,null,null,null,"SIGN",null);
+                val vegedata=  db!!.query("Vegetation",dataList,null,null,null,null,"SIGN",null);
 
                 listAdapte1.setItemSelect(position)
 
@@ -127,7 +131,7 @@ class DlgBridsClassActivity : Activity() {
 
                 listAdapte1.setItemSelect(position)
 
-                val data2 =  db.query(tableName,dataList,"MAINCATEGORY='"+veData.MAINCATEGORY +"'" ,null,"MIDDLECATEGORY",null,null,null);
+                val data2 =  db!!.query(tableName,dataList,"MAINCATEGORY='"+veData.MAINCATEGORY +"'" ,null,"MIDDLECATEGORY",null,null,null);
 
                 class_probar.visibility= View.VISIBLE
                 dataList(listdata2,data2);
@@ -145,7 +149,7 @@ class DlgBridsClassActivity : Activity() {
 
             listAdapte2.setItemSelect(position)
 
-            val data2 =  db.query(tableName,dataList,"MIDDLECATEGORY='"+veData.MIDDLECATEGORY +"'" ,null,null,null,null,null);
+            val data2 =  db!!.query(tableName,dataList,"MIDDLECATEGORY='"+veData.MIDDLECATEGORY +"'" ,null,null,null,null,null);
 
             class_probar.visibility= View.VISIBLE
             dataList(listdata3,data2);

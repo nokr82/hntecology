@@ -139,6 +139,8 @@ class DlgLayersActivity : Activity() {
 
         }
 
+        data.close()
+
         apdater.notifyDataSetChanged()
 
     }

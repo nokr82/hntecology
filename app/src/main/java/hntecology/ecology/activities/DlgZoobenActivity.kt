@@ -99,6 +99,8 @@ class DlgZoobenActivity : Activity() {
                 finish()
             }
 
+            EndangeredData.close()
+
         }
 
         searchET.addTextChangedListener(object : TextWatcher {

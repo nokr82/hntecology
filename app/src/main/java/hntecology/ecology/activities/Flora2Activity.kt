@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.BitmapFactory
 import android.location.Address
 import android.location.Geocoder
@@ -65,6 +66,10 @@ class Flora2Activity : Activity() {
 
     var dataPk = -1
 
+    var dbManager: DataBaseHelper? = null
+
+    private var db: SQLiteDatabase? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_flora2)
@@ -77,9 +82,9 @@ class Flora2Activity : Activity() {
 
         window.setLayout(Utils.dpToPx(700f).toInt(), WindowManager.LayoutParams.WRAP_CONTENT);
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        dbManager = DataBaseHelper(this)
 
-        val db = dbManager.createDataBase();
+        db = dbManager!!.createDataBase();
 
         userName = PrefUtils.getStringPreference(context, "name");
         invpersonTV.setText(userName)
@@ -144,7 +149,7 @@ class Flora2Activity : Activity() {
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data = db.query("ManyFloraAttribute", dataList, "GROP_ID = '$grop_id'", null, null, null, "id", null)
+            val data = db!!.query("ManyFloraAttribute", dataList, "GROP_ID = '$grop_id'", null, null, null, "id", null)
 
             while(data.moveToNext()){
 
@@ -313,6 +318,7 @@ class Flora2Activity : Activity() {
             }
             deleteBT.visibility = View.VISIBLE
 
+            data.close()
         }
 
         if(intent.getStringExtra("id") != null){
@@ -321,7 +327,7 @@ class Flora2Activity : Activity() {
 
         val dataList: Array<String> = arrayOf("*");
 
-        var basedata= db.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        var basedata= db!!.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         while(basedata.moveToNext()){
 
@@ -360,7 +366,7 @@ class Flora2Activity : Activity() {
 
             val base : Base = Base(null,keyId,"",lat,log,invpersonTV.text.toString(),invdtTV.text.toString(),"0")
 
-            dbManager.insertbase(base)
+            dbManager!!.insertbase(base)
 
         }
 
@@ -1013,12 +1019,12 @@ class Flora2Activity : Activity() {
                                         manyFloraAttribute.CONF_MOD = "M"
                                     }
 
-                                    dbManager.updatemanyflora_attribute(manyFloraAttribute,pk)
+                                    dbManager!!.updatemanyflora_attribute(manyFloraAttribute,pk)
                                 }
 
                             } else {
 
-                                dbManager.insertmanyflora_attribute(manyFloraAttribute);
+                                dbManager!!.insertmanyflora_attribute(manyFloraAttribute);
 
                             }
 
@@ -1043,7 +1049,7 @@ class Flora2Activity : Activity() {
 
                             dialog.cancel()
 
-                            dbManager.deleteAllManyFloraAttribute(keyId)
+                            dbManager!!.deleteAllManyFloraAttribute(keyId)
 
                             var MaxLength = 0
                             var TreDataSize  = TreDatas.size
@@ -1187,7 +1193,7 @@ class Flora2Activity : Activity() {
                                         }
                                     }
 
-                                    dbManager.insertmanyflora_attribute(manyFloraAttribute);
+                                    dbManager!!.insertmanyflora_attribute(manyFloraAttribute);
 
                                 }
 
@@ -1343,7 +1349,7 @@ class Flora2Activity : Activity() {
 
                         println("canclekeyid $keyId")
 
-                        val data= db.query("ManyFloraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+                        val data= db!!.query("ManyFloraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
                         if (dataArray != null){
                             dataArray.clear()
@@ -1370,6 +1376,8 @@ class Flora2Activity : Activity() {
                             setResult(RESULT_OK, intent);
 
                         }
+
+                        data.close()
 
                         finish()
 
@@ -1400,7 +1408,7 @@ class Flora2Activity : Activity() {
 
                                     val dataList: Array<String> = arrayOf("*");
 
-                                    val data = db.query("ManyFloraAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+                                    val data = db!!.query("ManyFloraAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
 
                                     if (dataArray != null) {
                                         dataArray.clear()
@@ -1423,7 +1431,7 @@ class Flora2Activity : Activity() {
                                     var intent = Intent()
 
                                     if (dataArray.size > 1) {
-                                        dbManager.deletemanyflora_attribute(manyFloraAttribute, pk)
+                                        dbManager!!.deletemanyflora_attribute(manyFloraAttribute, pk)
 
                                         var intent = Intent()
 
@@ -1435,7 +1443,7 @@ class Flora2Activity : Activity() {
                                     }
 
                                     if (dataArray.size == 1) {
-                                        dbManager.deletemanyflora_attribute(manyFloraAttribute, pk)
+                                        dbManager!!.deletemanyflora_attribute(manyFloraAttribute, pk)
 
                                         var intent = Intent()
 
@@ -1444,6 +1452,7 @@ class Flora2Activity : Activity() {
                                         setResult(RESULT_OK, intent);
                                         finish()
                                     }
+                                    data.close()
                                 }
 
 
@@ -1472,7 +1481,7 @@ class Flora2Activity : Activity() {
 
                                 val dataList: Array<String> = arrayOf("*");
 
-                                val data = db.query("ManyFloraAttribute", dataList, "id = '$id'", null, null, null, "", null)
+                                val data = db!!.query("ManyFloraAttribute", dataList, "id = '$id'", null, null, null, "", null)
 
                                 if (dataArray != null) {
                                     dataArray.clear()
@@ -1501,6 +1510,7 @@ class Flora2Activity : Activity() {
                                     setResult(RESULT_OK, intent);
                                     finish()
                                 }
+                                data.close()
 
                             }
 
@@ -1589,13 +1599,9 @@ class Flora2Activity : Activity() {
     override fun onBackPressed() {
         val dataList: Array<String> = arrayOf("*");
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-
-        val db = dbManager.createDataBase()
-
         println("keyid $keyId")
 
-        val data= db.query("ManyFloraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        val data= db!!.query("ManyFloraAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         if (dataArray != null){
             dataArray.clear()
@@ -1620,6 +1626,8 @@ class Flora2Activity : Activity() {
             setResult(RESULT_OK, intent);
 
         }
+
+        data.close()
 
         finish()
     }
@@ -2284,9 +2292,6 @@ class Flora2Activity : Activity() {
     }
 
     fun insert(){
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-
-        val db = dbManager.createDataBase();
 
         var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null,null,null,null,null,null,null,null,null,null
                 ,null,null,null,null,null,null,null,null,null,null,null,null,null
@@ -2413,7 +2418,7 @@ class Flora2Activity : Activity() {
         manyFloraAttribute.TEMP_YN = "Y"
         manyFloraAttribute.CONF_MOD = "N"
 
-        dbManager.insertmanyflora_attribute(manyFloraAttribute);
+        dbManager!!.insertmanyflora_attribute(manyFloraAttribute);
 
         var intent = Intent()
 

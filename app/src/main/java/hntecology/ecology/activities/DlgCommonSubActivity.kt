@@ -26,8 +26,6 @@ class DlgCommonSubActivity : Activity() {
 
     private lateinit var listAdapte1: ComDlgAdapter;
 
-    val dataBaseHelper = DataBaseHelper(this);
-    val db = dataBaseHelper.createDataBase()
     var tableName:String = ""
     var titleName:String=""
     var DlgHeight:Float=430F;

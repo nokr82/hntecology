@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -37,8 +38,9 @@ class DlgCommonActivity : Activity() {
     private lateinit var listAdapte2: AreaItem1Adapte;
     private lateinit var listAdapte3: AreaItem1Adapte;
 
-    val dataBaseHelper = DataBaseHelper(this);
-    val db = dataBaseHelper.createDataBase()
+    var dbManager: DataBaseHelper? = null
+
+    private var db: SQLiteDatabase? = null
     var tableName:String = ""
     var titleName:String=""
     var DlgHeight:Float=430F
@@ -54,6 +56,10 @@ class DlgCommonActivity : Activity() {
 
         val intent = getIntent()
 
+        dbManager = DataBaseHelper(this)
+
+        db = dbManager!!.createDataBase()
+
         tableName = intent.getStringExtra("table");
         titleName = intent.getStringExtra("title")
         DlgHeight = intent.getFloatExtra("DlgHeight",430F);
@@ -66,7 +72,7 @@ class DlgCommonActivity : Activity() {
         //select
         val dataList:Array<String> = arrayOf("name","code","rgb_code");
         //대분류
-        val data1 =  db.query(tableName,dataList,"g_code='A'",null,null,null,"code",null);
+        val data1 =  db!!.query(tableName,dataList,"g_code='A'",null,null,null,"code",null);
         //대분류 중분류 소분류
         listView1 = findViewById(R.id.recipe_list_view1)
         listView2 = findViewById(R.id.recipe_list_view2)
@@ -101,11 +107,12 @@ class DlgCommonActivity : Activity() {
             listAdapte1.setItemSelect(position)
 
 
-            val data2 =  db.query(tableName,dataList,"g_code='B' and code like '%"+biomModel.code+"%'",null,null,null,"code",null);
+            val data2 =  db!!.query(tableName,dataList,"g_code='B' and code like '%"+biomModel.code+"%'",null,null,null,"code",null);
 
             dlg_probar.visibility= View.VISIBLE
             dataList(listdata2,data2);
             dlg_probar.visibility= View.GONE
+            data2.close()
 
         })
 
@@ -118,8 +125,9 @@ class DlgCommonActivity : Activity() {
 
             listAdapte2.setItemSelect(position)
 
-            val data3 =  db.query(tableName,dataList,"g_code='C' and code like '%"+biomModel.code+"%'",null,null,null,"code",null);
+            val data3 =  db!!.query(tableName,dataList,"g_code='C' and code like '%"+biomModel.code+"%'",null,null,null,"code",null);
             dataList(listdata3,data3);
+            data3.close()
         })
 
         //소분류

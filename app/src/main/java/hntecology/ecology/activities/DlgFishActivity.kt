@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -33,6 +34,10 @@ class DlgFishActivity : Activity() {
 
     var chkData = false
 
+    var dbManager: DataBaseHelper? = null
+
+    private var db: SQLiteDatabase? = null
+
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,12 +50,12 @@ class DlgFishActivity : Activity() {
 
         val intent = getIntent()
 
-        val dataBaseHelper = DataBaseHelper(context);
-        val db = dataBaseHelper.createDataBase();
+        dbManager = DataBaseHelper(context);
+        db = dbManager!!.createDataBase();
 
         val dataList:Array<String> = arrayOf("name_kr","Family_name_kr","zoological");
 
-        val data = db.query("fish", dataList, null, null, null, null, "name_kr", null);
+        val data = db!!.query("fish", dataList, null, null, null, null, "name_kr", null);
         setDataList(data);
 
         copyadapterData.addAll(adapterData)
@@ -73,7 +78,7 @@ class DlgFishActivity : Activity() {
 
             val dataEndangeredList:Array<String> = arrayOf("ID","TITLE","SCIENTIFICNAME","CLASS","DANGERCLASS","CONTRYCLASS");
 
-            val EndangeredData = db.query("ENDANGERED", dataEndangeredList, "TITLE = '$name'", null, null, null, null, null);
+            val EndangeredData = db!!.query("ENDANGERED", dataEndangeredList, "TITLE = '$name'", null, null, null, null, null);
 
             while (EndangeredData.moveToNext()) {
 
@@ -98,6 +103,8 @@ class DlgFishActivity : Activity() {
                 setResult(RESULT_OK, intent);
                 finish()
             }
+
+            EndangeredData.close()
 
         }
 

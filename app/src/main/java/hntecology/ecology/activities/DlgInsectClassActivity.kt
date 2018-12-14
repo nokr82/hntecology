@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -38,15 +39,19 @@ class DlgInsectClassActivity : Activity() {
     var titleName:String=""
     var DlgHeight:Float=430F
 
+    var dbManager: DataBaseHelper? = null
+
+    private var db: SQLiteDatabase? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dlg_insect_class)
 
         context = applicationContext;
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        dbManager = DataBaseHelper(this)
 
-        val db = dbManager.createDataBase();
+        db = dbManager!!.createDataBase();
 
         val intent = getIntent()
 
@@ -61,7 +66,7 @@ class DlgInsectClassActivity : Activity() {
 
         val dataList:Array<String> = arrayOf("MAINCATEGORY","MIDDLECATEGORY","SMALLCATEGORY");
 
-        val data1=  db.query(tableName,dataList,null,null,"MAINCATEGORY",null,null,null);
+        val data1=  db!!.query(tableName,dataList,null,null,"MAINCATEGORY",null,null,null);
 
         listView1 = findViewById(R.id.insect_list_view1)
         listView2 = findViewById(R.id.insect_list_view2)
@@ -89,13 +94,15 @@ class DlgInsectClassActivity : Activity() {
 
                 listAdapte1.setItemSelect(position)
 
-                val data2 =  db.query(tableName,dataList,"MAINCATEGORY='"+veData.MAINCATEGORY +"'" ,null,"MIDDLECATEGORY",null,null,null);
+                val data2 =  db!!.query(tableName,dataList,"MAINCATEGORY='"+veData.MAINCATEGORY +"'" ,null,"MIDDLECATEGORY",null,null,null);
 
                 class_probar.visibility= View.VISIBLE
                 dataList(listdata2,data2);
                 class_probar.visibility= View.GONE
 
                 listAdapte2.notifyDataSetChanged()
+
+            data2.close()
 
         })
 
@@ -106,13 +113,15 @@ class DlgInsectClassActivity : Activity() {
 
             listAdapte2.setItemSelect(position)
 
-            val data2 =  db.query(tableName,dataList,"MIDDLECATEGORY='"+veData.MIDDLECATEGORY +"'" ,null,null,null,null,null);
+            val data2 =  db!!.query(tableName,dataList,"MIDDLECATEGORY='"+veData.MIDDLECATEGORY +"'" ,null,null,null,null,null);
 
             class_probar.visibility= View.VISIBLE
             dataList(listdata3,data2);
             class_probar.visibility= View.GONE
 
             listAdapte3.notifyDataSetChanged()
+
+            data2.close()
 
         })
 

@@ -89,7 +89,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:hint="검색"
                         android:maxLines="1"
                         android:layout_gravity="center"
                         android:gravity="center"/>

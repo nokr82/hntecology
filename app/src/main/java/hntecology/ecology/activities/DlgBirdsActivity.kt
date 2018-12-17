@@ -2,16 +2,21 @@ package hntecology.ecology.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.os.Environment
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import android.widget.AutoCompleteTextView
 import android.widget.ListView
+import android.widget.Toast
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.Utils
 import hntecology.ecology.R
@@ -52,6 +57,9 @@ class DlgBirdsActivity : Activity() {
     var dbManager: DataBaseHelper? = null
 
     private var db: SQLiteDatabase? = null
+
+    var SPEC:String = ""
+    var END:String = ""
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,6 +118,69 @@ class DlgBirdsActivity : Activity() {
 
         dataBirdsList(listdata1, data)
 
+        if (intent.getStringExtra("SPEC") != null){
+            SPEC = intent.getStringExtra("SPEC")
+            for (i in 0 until listdata1.size){
+                if (listdata1.get(i).name_kr == SPEC){
+                    listdata1.get(i).chkSelect = true
+                    listView1.setSelection(i)
+                }
+            }
+
+            val dataEndangeredList: Array<String> = arrayOf("ID", "TITLE", "SCIENTIFICNAME", "CLASS", "DANGERCLASS", "CONTRYCLASS");
+
+            val EndangeredData = db!!.query("ENDANGERED", dataEndangeredList, "TITLE = '$SPEC'", null, null, null, null, null);
+
+            while (EndangeredData.moveToNext()) {
+
+                var endangered = Endangered(EndangeredData.getString(0), EndangeredData.getString(1), EndangeredData.getString(2), EndangeredData.getString(3), EndangeredData.getString(4), EndangeredData.getString(5))
+
+                chkData = true
+
+            }
+
+            if (chkData) {
+                selectTV.visibility = View.VISIBLE
+                birds_probars.visibility = View.VISIBLE
+                listdata2.add(item)
+                listdata2.add(item2)
+                listdata2.add(item3)
+                listdata2.add(item4)
+                listdata2.add(item5)
+                listdata2.add(item6)
+                listdata2.add(item7)
+                listdata2.add(item8)
+                listdata2.add(item9)
+                listdata2.add(item10)
+                listdata2.add(item11)
+                listdata2.add(item12)
+                listdata2.add(item13)
+                listdata2.add(item14)
+                birds_probars.visibility = View.GONE
+            } else {
+                if (listdata2 != null) {
+                    listdata2.clear()
+                }
+            }
+
+            if (intent.getStringExtra("END") != null){
+                END = intent.getStringExtra("END")
+                println("end ------$END")
+                var split = END.split(" ")
+                for (i in 0 until split.size){
+                    for (j in 0 until listdata2.size){
+                        if (split.get(i) == listdata2.get(j).SIGN){
+                            listdata2.get(j).is_checked = true
+                        }
+                    }
+                }
+            }
+
+
+
+
+        }
+
         copyadapterData.addAll(listdata1)
 
         val dataEndangeredList: Array<String> = arrayOf("ID", "TITLE", "SCIENTIFICNAME", "CLASS", "DANGERCLASS", "CONTRYCLASS");
@@ -136,19 +207,39 @@ class DlgBirdsActivity : Activity() {
                 }
             }
 
-            intent.putExtra("name", name)
-            intent.putExtra("family_name", family_name)
-            intent.putExtra("zoological", zoological)
+            if (name != "" && name != null) {
 
-            if (code != null) {
-                intent.putExtra("code", code)
+                intent.putExtra("name", name)
+                intent.putExtra("family_name", family_name)
+                intent.putExtra("zoological", zoological)
+
+                if (code != null) {
+                    intent.putExtra("code", code)
+                }
+                setResult(RESULT_OK, intent);
+
+                finish()
+
+                data.close()
+            } else {
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("빈값을 입력하시겠습니까 ?").setCancelable(false)
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
+                            intent.putExtra("name", name)
+                            intent.putExtra("family_name", family_name)
+                            intent.putExtra("zoological", zoological)
+
+                            if (code != null) {
+                                intent.putExtra("code", code)
+                            }
+                            setResult(RESULT_OK, intent);
+
+                            finish()
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
             }
-            setResult(RESULT_OK, intent);
-
-            finish()
-
-            data.close()
-
         }
 
         listView1.setOnItemClickListener { parent, view, position, id ->
@@ -195,7 +286,7 @@ class DlgBirdsActivity : Activity() {
 
             if (chkData) {
                 selectTV.visibility = View.VISIBLE
-                dlg_probars.visibility = View.VISIBLE
+                birds_probars.visibility = View.VISIBLE
                 listdata2.add(item)
                 listdata2.add(item2)
                 listdata2.add(item3)
@@ -210,7 +301,7 @@ class DlgBirdsActivity : Activity() {
                 listdata2.add(item12)
                 listdata2.add(item13)
                 listdata2.add(item14)
-                dlg_probars.visibility = View.GONE
+                birds_probars.visibility = View.GONE
             } else {
                 if (listdata2 != null) {
                     listdata2.clear()

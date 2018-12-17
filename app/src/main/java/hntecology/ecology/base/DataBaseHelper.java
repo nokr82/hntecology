@@ -680,7 +680,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO fishAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_TM,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,MID_RAGE,CODE_NUM,RIVER_NUM,RIVER_NM,NET_CNT,NET_MIN,AD_DIST_NM,GPS_LAT";
-        query += ",GPS_LON,COLL_TOOL,STREAM_W,WATER_W,WATER_D,WATER_CUR,RIV_STR,RIV_STR_IN,RIV_FORM";
+        query += ",GPS_LON,COLL_TOOL,COLL_TOOL2,STREAM_W,WATER_W,WATER_D,WATER_CUR,RIV_STR,RIV_STR_IN,RIV_FORM";
         query += ",NUM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,UNIDENT,RIV_FM_CH,UN_FISH_CH,TEMP_YN,CONF_MOD)";
 
         query += " values (";
@@ -705,6 +705,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + fish_attribute.getGPS_LAT() + "'";
         query += ", '" + fish_attribute.getGPS_LON() + "'";
         query += ", '" + fish_attribute.getCOLL_TOOL() + "'";
+        query += ", '" + fish_attribute.getCOLL_TOOL2() + "'";
         query += ", '" + fish_attribute.getSTREAM_W() + "'";
         query += ", '" + fish_attribute.getWATER_W() + "'";
         query += ", '" + fish_attribute.getWATER_D() + "'";
@@ -1324,6 +1325,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",GPS_LAT='" + fish_attribute.getGPS_LAT() + "'"
                 + ",GPS_LON='" + fish_attribute.getGPS_LON() + "'"
                 + ",COLL_TOOL='" + fish_attribute.getCOLL_TOOL() + "'"
+                + ",COLL_TOOL2='" + fish_attribute.getCOLL_TOOL2() + "'"
                 + ",STREAM_W='" + fish_attribute.getSTREAM_W() + "'"
                 + ",WATER_W='" + fish_attribute.getWATER_W() + "'"
                 + ",WATER_D='" + fish_attribute.getWATER_D() + "'"

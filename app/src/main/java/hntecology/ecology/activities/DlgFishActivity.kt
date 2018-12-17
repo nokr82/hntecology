@@ -9,13 +9,16 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.ListView
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.Utils
 import hntecology.ecology.R
 import hntecology.ecology.adapter.DlgFishAdapter
 import hntecology.ecology.adapter.DlgReptiliaAdapter
 import hntecology.ecology.base.Jaso
+import hntecology.ecology.model.Birds
 import hntecology.ecology.model.Endangered
+import hntecology.ecology.model.Fishs
 import kotlinx.android.synthetic.main.dig_fish.*
 import org.json.JSONObject
 import kotlin.collections.ArrayList
@@ -24,9 +27,9 @@ class DlgFishActivity : Activity() {
 
     private lateinit var context:Context;
 
-    private var adapterData :ArrayList<JSONObject> = ArrayList<JSONObject>()
+    private var adapterData :ArrayList<Fishs> = ArrayList<Fishs>()
 
-    private var copyadapterData :ArrayList<JSONObject> = ArrayList<JSONObject>()
+    private var copyadapterData :ArrayList<Fishs> = ArrayList<Fishs>()
 
     private lateinit var apdater: DlgFishAdapter;
 
@@ -37,6 +40,14 @@ class DlgFishActivity : Activity() {
     var dbManager: DataBaseHelper? = null
 
     private var db: SQLiteDatabase? = null
+
+    private lateinit var listView1: ListView
+
+    private lateinit var listdata1: java.util.ArrayList<Fishs>
+
+    private lateinit var listAdapter1: DlgFishAdapter;
+
+    var SPEC:String = ""
 
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,29 +63,38 @@ class DlgFishActivity : Activity() {
 
         dbManager = DataBaseHelper(context);
         db = dbManager!!.createDataBase();
+        listView1 = findViewById(R.id.listfLV)
+        listdata1 = java.util.ArrayList()
+        listAdapter1 = DlgFishAdapter(context, listdata1);
+        listView1.adapter = listAdapter1
 
-        val dataList:Array<String> = arrayOf("name_kr","Family_name_kr","zoological");
+        val dataList: Array<String> = arrayOf("*");
 
         val data = db!!.query("fish", dataList, null, null, null, null, "name_kr", null);
-        setDataList(data);
+        setDataList(listdata1,data);
 
-        copyadapterData.addAll(adapterData)
+        copyadapterData.addAll(listdata1)
 
-        apdater = DlgFishAdapter(context, R.layout.item_repilia, adapterData)
-        listLV.adapter = apdater
-
-        apdater.notifyDataSetChanged()
+        if (intent.getStringExtra("SPEC") != null){
+            SPEC = intent.getStringExtra("SPEC")
+            for (i in 0 until listdata1.size){
+                if (listdata1.get(i).name_kr == SPEC){
+                    listdata1.get(i).chkSelect = true
+                    listView1.setSelection(i)
+                }
+            }
+        }
 
         closeLL.setOnClickListener {
             finish()
         }
 
-        listLV.setOnItemClickListener { parent, view, position, id ->
+        listfLV.setOnItemClickListener { parent, view, position, id ->
 
-            var data = adapterData.get(position)
-            var name = Utils.getString(data, "name_kr");
-            var family_name = Utils.getString(data, "family_name_kr");
-            var zoological = Utils.getString(data, "zoological");
+            var data = listdata1.get(position)
+            var name = data.name_kr
+            var family_name = data.Family_name
+            var zoological = data.zoological
 
             val dataEndangeredList:Array<String> = arrayOf("ID","TITLE","SCIENTIFICNAME","CLASS","DANGERCLASS","CONTRYCLASS");
 
@@ -123,36 +143,39 @@ class DlgFishActivity : Activity() {
 
     }
 
-    fun setDataList(data: Cursor){
+    fun setDataList(listdata: java.util.ArrayList<Fishs>,data: Cursor){
 
         while (data.moveToNext()){
 
-            var dataObj : JSONObject = JSONObject();
-            dataObj.put("name_kr", data.getString(0))
-            dataObj.put("family_name_kr", data.getString(1))
-            dataObj.put("zoological", data.getString(2))
+            var model: Fishs;
 
-            adapterData.add(dataObj)
+            model = Fishs(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7), data.getString(8), data.getString(9), data.getString(10)
+                    , data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getString(16), data.getString(17),  data.getString(18), data.getString(19),false);
+
+
+            listdata.add(model)
         }
 
     }
 
-    fun search(charText: String){
-        adapterData.clear()
+    fun search(charText: String) {
+        listdata1.clear()
 
-        if(charText.length == 0){
+        if (charText.length == 0) {
 
-            adapterData.addAll(copyadapterData)
+            listdata1.addAll(copyadapterData)
 
-        }else {
+        } else {
 
-            var names:ArrayList<String> = ArrayList<String>()
+            var names: ArrayList<String> = ArrayList<String>()
 
-            for (i in 0..copyadapterData.size-1){
+            for (i in 0..copyadapterData.size - 1) {
 
-                val name =  Utils.getString(copyadapterData.get(i), "name_kr");
+                val name =  Utils.getString(copyadapterData.get(i).name_kr, copyadapterData.get(i).name_kr);
 
                 names.add(name)
+
+                println(names.get(i) + "-------------------------")
 
             }
 
@@ -160,14 +183,14 @@ class DlgFishActivity : Activity() {
 
                 if (Jaso.startsWith(names.get(i), charText)
                         || names.get(i).toLowerCase().contains(charText)) {
-                    adapterData.add(copyadapterData.get(i))
+                    listdata1.add(copyadapterData.get(i))
                 }
 
             }
 
         }
 
-        apdater.notifyDataSetChanged()
+        listAdapter1.notifyDataSetChanged()
 
     }
 

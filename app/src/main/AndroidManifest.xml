@@ -229,7 +229,10 @@
         <activity
             android:name=".activities.DlgStockMapActivity"
             android:theme="@style/full_screen_dialog1" />
-        <activity android:name=".activities.DlgStockSelectActivity"
+        <activity
+            android:name=".activities.DlgStockSelectActivity"
+            android:theme="@style/full_screen_dialog1" />
+        <activity android:name=".activities.DlgCollActivity"
             android:theme="@style/full_screen_dialog1"></activity>
     </application>
 

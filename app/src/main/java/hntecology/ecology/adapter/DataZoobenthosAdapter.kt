@@ -49,7 +49,11 @@ class DataZoobenthosAdapter(var context: Context, var itemList : ArrayList<Zoobe
 
         var Zoobenthos_Attribute : Zoobenthos_Attribute = getItem(position)
 
-        viewHoldar.class_biotope_item.text = Zoobenthos_Attribute.INV_DT  + " / " + Zoobenthos_Attribute.INV_TM
+        if (Zoobenthos_Attribute.SPEC_NM != null && Zoobenthos_Attribute.SPEC_NM != ""){
+            viewHoldar.class_biotope_item.text = Zoobenthos_Attribute.INV_DT  + " / " + Zoobenthos_Attribute.INV_TM + " / " + Zoobenthos_Attribute.SPEC_NM
+        } else {
+            viewHoldar.class_biotope_item.text = Zoobenthos_Attribute.INV_DT  + " / " + Zoobenthos_Attribute.INV_TM
+        }
 
         return view as View
     }

@@ -1304,6 +1304,10 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
     fun startDlgFlora(){
         val intent = Intent(context, DlgFloraActivity::class.java)
+        if (floraspecnmET.text != null && floraspecnmET.text != ""){
+            var SPEC = floraspecnmET.text.toString()
+            intent.putExtra("SPEC",SPEC)
+        }
         startActivityForResult(intent, SET_FLORA);
     }
 

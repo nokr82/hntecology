@@ -48,7 +48,11 @@ class DataReptiliaAdapter(var context: Context, var itemList : ArrayList<Reptili
 
         var Reptilia_attribute : Reptilia_attribute = getItem(position)
 
-        viewHoldar.class_biotope_item.text = Reptilia_attribute.INV_DT + " / " + Reptilia_attribute.INV_TM
+        if (Reptilia_attribute.SPEC_NM != null && Reptilia_attribute.SPEC_NM != ""){
+            viewHoldar.class_biotope_item.text = Reptilia_attribute.INV_DT + " / " + Reptilia_attribute.INV_TM + " / " + Reptilia_attribute.SPEC_NM + ",성채 : " + Reptilia_attribute.IN_CNT_ADU.toString() + ", 유생 : "+ Reptilia_attribute.IN_CNT_LAR.toString() + ", 알덩이 :" + Reptilia_attribute.IN_CNT_EGG.toString()
+        } else {
+            viewHoldar.class_biotope_item.text = Reptilia_attribute.INV_DT + " / " + Reptilia_attribute.INV_TM
+        }
 
         // println("hh : " + position + ", " + hashCode())
         return view as View

@@ -47,7 +47,11 @@ class DataBirdsAdapter(var context: Context, var itemList : ArrayList<Birds_attr
 
         var Birds_attribute : Birds_attribute = getItem(position)
 
-        viewHoldar.class_biotope_item.text = Birds_attribute.INV_DT + " / " + Birds_attribute.INV_TM
+        if (Birds_attribute.SPEC_NM != null && Birds_attribute.SPEC_NM != ""){
+            viewHoldar.class_biotope_item.text = Birds_attribute.INV_DT + " / " + Birds_attribute.INV_TM + " / " + Birds_attribute.SPEC_NM + "," + Birds_attribute.INDI_CNT.toString()
+        } else {
+            viewHoldar.class_biotope_item.text = Birds_attribute.INV_DT + " / " + Birds_attribute.INV_TM
+        }
 
         // println("hh : " + position + ", " + hashCode())
         return view as View

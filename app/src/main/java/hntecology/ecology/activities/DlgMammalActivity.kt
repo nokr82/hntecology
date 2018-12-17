@@ -2,7 +2,9 @@ package hntecology.ecology.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -43,6 +45,8 @@ class DlgMammalActivity : Activity() {
     var tableName:String = ""
     var titleName:String=""
     var DlgHeight:Float=430F
+    var END:String = ""
+    var SPEC:String = ""
 
     var chkData = false
 
@@ -60,6 +64,7 @@ class DlgMammalActivity : Activity() {
         tableName = intent.getStringExtra("table");
         titleName = intent.getStringExtra("title")
         DlgHeight = intent.getFloatExtra("DlgHeight",430F);
+
 
         window.setLayout(Utils.dpToPx(800F).toInt(), Utils.dpToPx(DlgHeight).toInt());
         this.setFinishOnTouchOutside(true);
@@ -85,11 +90,6 @@ class DlgMammalActivity : Activity() {
 
         dataReptiliaList(listdata1,data)
 
-        copyadapterData.addAll(listdata1)
-
-        listView1.adapter = listAdapte1
-        listView2.adapter = listAdapter2
-
         val item = EndangeredSelect("A","동일 지역(격자)에서 사용하고 있는 보금자리가 발견되고 실체가 1회 이상 확인됨",false)
         val item2 = EndangeredSelect("B","동일 지역(격자)에서 배설물(오래된 것, 신선한 것 2개 이상)이 2회 이상 발견됨",false)
         val item3 = EndangeredSelect("C","동일 지역(격자)에서 발자국이 2회 이상 발견됨",false)
@@ -98,6 +98,63 @@ class DlgMammalActivity : Activity() {
         val item6 = EndangeredSelect("F","장기적 사용 흔적(실체, 최근 이용 배설물 다수)이 있는 보금자리가 존재할 경우(하천경계부에서 20m 이내)",false)
         val item7 = EndangeredSelect("G","산림이 우수한 지역의 5m 이내에 변색된 배설물(서식흔적)과 신선한 배설물이 3곳 이상에서 관찰됨",false)
         val item8 = EndangeredSelect("H","실체가 1회 이상 확인되고, 주변에 다수의 배설물이 산재한 지역",false)
+
+
+        if (intent.getStringExtra("SPEC") != null){
+            SPEC = intent.getStringExtra("SPEC")
+            for (i in 0 until listdata1.size){
+                if (listdata1.get(i).name_kr == SPEC){
+                    listdata1.get(i).chkSelect = true
+                    listView1.setSelection(i)
+                    val dataEndangeredList:Array<String> = arrayOf("ID","TITLE","SCIENTIFICNAME","CLASS","DANGERCLASS","CONTRYCLASS");
+                    val EndangeredData = db!!.query("ENDANGERED", dataEndangeredList, "TITLE = '$SPEC'", null, null, null, null, null);
+
+                    while (EndangeredData.moveToNext()) {
+
+                        var endangered = Endangered(EndangeredData.getString(0),EndangeredData.getString(1),EndangeredData.getString(2),EndangeredData.getString(3),EndangeredData.getString(4),EndangeredData.getString(5))
+
+                        chkData = true
+
+                    }
+
+                    if (chkData){
+                        selectTV.visibility = View.VISIBLE
+                        listdata2.add(item)
+                        listdata2.add(item2)
+                        listdata2.add(item3)
+                        listdata2.add(item4)
+                        listdata2.add(item5)
+                        listdata2.add(item6)
+                        listdata2.add(item7)
+                        listdata2.add(item8)
+                    }else {
+                        if(listdata2 != null) {
+                            listdata2.clear()
+                        }
+                    }
+
+                    if (intent.getStringExtra("END") != null){
+                        END = intent.getStringExtra("END")
+                        println("end ------$END")
+                        var split = END.split(" ")
+                        for (i in 0 until split.size){
+                            for (j in 0 until listdata2.size){
+                                if (split.get(i) == listdata2.get(j).SIGN){
+                                    listdata2.get(j).is_checked = true
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+        copyadapterData.addAll(listdata1)
+
+        listView1.adapter = listAdapte1
+        listView2.adapter = listAdapter2
+
 
         selectLL.setOnClickListener {
             var name:String = ""
@@ -121,16 +178,40 @@ class DlgMammalActivity : Activity() {
                 }
             }
 
-            intent.putExtra("name", name)
-            intent.putExtra("family_name", family_name)
-            intent.putExtra("zoological", zoological)
+            if (name != "" && name != null) {
 
-            if(code != null){
-                intent.putExtra("code", code)
+                intent.putExtra("name", name)
+                intent.putExtra("family_name", family_name)
+                intent.putExtra("zoological", zoological)
+
+                if (code != null) {
+                    intent.putExtra("code", code)
+                }
+                setResult(RESULT_OK, intent);
+
+                finish()
+
+                data.close()
+            } else {
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("빈값을 입력하시겠습니까 ?").setCancelable(false)
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
+                            intent.putExtra("name", name)
+                            intent.putExtra("family_name", family_name)
+                            intent.putExtra("zoological", zoological)
+
+                            if (code != null) {
+                                intent.putExtra("code", code)
+                            }
+                            setResult(RESULT_OK, intent);
+
+                            finish()
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
             }
-            setResult(RESULT_OK, intent);
 
-            finish()
         }
 
         listLV.setOnItemClickListener { parent, view, position, id ->

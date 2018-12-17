@@ -278,18 +278,22 @@ class Flora2Activity : Activity() {
 
             if (TreDatas.size > 0){
                 treDataSize = TreDatas.size
+                trepage = TreDatas.size
             }
 
             if (StreDatas.size > 0){
                 streDataSize = StreDatas.size
+                strepage = StreDatas.size
             }
 
             if (ShrDatas.size > 0){
                 shrDataSize = ShrDatas.size
+                shrpage = ShrDatas.size
             }
 
             if (HerDatas.size > 0){
                 herDataSize = HerDatas.size
+                herpage = HerDatas.size
             }
 
             trepageTV.setText(trepage.toString())
@@ -408,10 +412,28 @@ class Flora2Activity : Activity() {
 
         trecloseLL.setOnClickListener {
 
+            if (trepage == 1){
+                for (i in 0 until TreDatas.size){
+                    if (trepage == TreDatas.get(i).PAGE){
+                        val data = TreDatas.get(i)
+                        TreDatas.remove(data)
+                        break
+                    }
+                }
+
+                etTRE_SPECET.setText("")
+                etTRE_FAMIET.setText("")
+                etTRE_SCIENET.setText("")
+                etTRE_HET.setText("")
+                etTRE_BREAET.setText("")
+                etTRE_COVEET.setText("")
+            }
+
             if (trepage > 1 ){
                 for (i in 0 until TreDatas.size){
                     if (trepage == TreDatas.get(i).PAGE){
-                        TreDatas.remove(TreDatas.get(i))
+                        val data = TreDatas.get(i)
+                        TreDatas.remove(data)
                         break
                     }
                 }
@@ -440,9 +462,29 @@ class Flora2Activity : Activity() {
                 trepageTV.setText(page.toString())
                 trerightpageTV.setText(size.toString())
             }
+
+            println("delete-------------------------${TreDatas.size}")
+
         }
 
         strecloseLL.setOnClickListener {
+
+            if (strepage == 1){
+                for (i in 0 until StreDatas.size){
+                    if (strepage == StreDatas.get(i).PAGE){
+                        StreDatas.remove(StreDatas.get(i))
+                        break
+                    }
+                }
+
+                etSTRE_SPECET.setText("")
+                etSTRE_FAMIET.setText("")
+                etSTRE_SCIENET.setText("")
+                etSTRE_HET.setText("")
+                etSTRE_BREAET.setText("")
+                etSTRE_COVEET.setText("")
+
+            }
 
             if (strepage > 1 ){
                 for (i in 0 until StreDatas.size){
@@ -476,9 +518,26 @@ class Flora2Activity : Activity() {
                 strepageTV.setText(page.toString())
                 strerightpageTV.setText(size.toString())
             }
+
         }
 
         shrcloseLL.setOnClickListener {
+
+            if (shrpage == 1){
+                for (i in 0 until ShrDatas.size){
+                    if (shrpage == ShrDatas.get(i).PAGE){
+                        ShrDatas.remove(ShrDatas.get(i))
+                        break
+                    }
+                }
+
+                etSHR_SPECET.setText("")
+                etSHR_FAMIET.setText("")
+                etSHR_SCIENET.setText("")
+                etSHR_HET.setText("")
+                etSTR_COVEET.setText("")
+            }
+
             if (shrpage > 1 ){
                 for (i in 0 until ShrDatas.size){
                     if (shrpage == ShrDatas.get(i).PAGE){
@@ -510,9 +569,26 @@ class Flora2Activity : Activity() {
                 shrpageTV.setText(page.toString())
                 shrrightpageTV.setText(size.toString())
             }
+
         }
 
         hercloseLL.setOnClickListener {
+
+            if (herpage == 1){
+                for (i in 0 until HerDatas.size){
+                    if (herpage == HerDatas.get(i).PAGE){
+                        HerDatas.remove(HerDatas.get(i))
+                        break
+                    }
+                }
+
+                etHER_SPECET.setText("")
+                etHER_FAMIET.setText("")
+                etHER_SCIENET.setText("")
+                etHER_HET.setText("")
+                etHER_COVEET.setText("")
+            }
+
             if (herpage > 1 ){
                 for (i in 0 until HerDatas.size){
                     if (herpage == HerDatas.get(i).PAGE){
@@ -545,6 +621,7 @@ class Flora2Activity : Activity() {
                 herpageTV.setText(page.toString())
                 herrightpageTV.setText(size.toString())
             }
+
         }
 
 
@@ -1049,6 +1126,7 @@ class Flora2Activity : Activity() {
 
                             dialog.cancel()
 
+                            println("delete-------------------- $keyId")
                             dbManager!!.deleteAllManyFloraAttribute(keyId)
 
                             var MaxLength = 0
@@ -1197,138 +1275,8 @@ class Flora2Activity : Activity() {
 
                                 }
 
-                                insert()
 
-//                            if (dataPk != -1) {
-//
-//                                dbManager.deleteAllManyFloraAttribute(keyId)
-//
-//                                for(i in 0..MaxLength-1) {
-//                                    var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null, null, null, null, null, null, null, null, null, null
-//                                            , null, null, null, null, null, null, null, null, null, null, null, null, null
-//                                            , null, null, null, null, null, null, null, null, null, null, null, null, null)
-//
-//                                    keyId = intent.getStringExtra("GROP_ID")
-//
-//                                    println("insertkeyid $keyId")
-//
-//                                    manyFloraAttribute.GROP_ID = keyId
-//
-//                                    manyFloraAttribute.INV_REGION = invregionTV.text.toString()
-//
-//                                    manyFloraAttribute.INV_DT = Utils.todayStr()
-//
-//                                    if (invpersonTV.text == null || invpersonTV.text.equals("")) {
-//                                        manyFloraAttribute.INV_PERSON = userName
-//                                    } else {
-//                                        manyFloraAttribute.INV_PERSON = invpersonTV.text.toString()
-//                                    }
-//
-//                                    manyFloraAttribute.INV_TM = Utils.timeStr()
-//
-//                                    manyFloraAttribute.TEMP_YN = "Y"
-//                                    manyFloraAttribute.CONF_MOD = "N"
-//
-//                                    if (MaxLength - 1 > TreDataSize - 1) {
-//                                        manyFloraAttribute.TRE_NUM = 0
-//                                        manyFloraAttribute.TRE_SPEC = ""
-//                                        manyFloraAttribute.TRE_FAMI = ""
-//                                        manyFloraAttribute.TRE_SCIEN = ""
-//                                        manyFloraAttribute.TRE_H = 0.0f
-//                                        manyFloraAttribute.TRE_BREA = 0.0f
-//                                        manyFloraAttribute.TRE_COVE = 0.0f
-//
-//                                    }
-//
-//                                    if (TreDatas != null && TreDataSize > 0) {
-//                                        if (MaxLength - 1 > TreDataSize - 1) {
-//                                            manyFloraAttribute.TRE_NUM = 0
-//                                            manyFloraAttribute.TRE_SPEC = ""
-//                                            manyFloraAttribute.TRE_FAMI = ""
-//                                            manyFloraAttribute.TRE_SCIEN = ""
-//                                            manyFloraAttribute.TRE_H = 0.0f
-//                                            manyFloraAttribute.TRE_BREA = 0.0f
-//                                            manyFloraAttribute.TRE_COVE = 0.0f
-//                                        }
-//
-//                                        if (MaxLength -1 <= TreDataSize - 1){
-//                                            manyFloraAttribute.TRE_NUM = TreDatas.get(i).PAGE
-//                                            manyFloraAttribute.TRE_SPEC = TreDatas.get(i).SPEC
-//                                            manyFloraAttribute.TRE_FAMI = TreDatas.get(i).FAMI
-//                                            manyFloraAttribute.TRE_SCIEN = TreDatas.get(i).SCIEN
-//                                            manyFloraAttribute.TRE_H = TreDatas.get(i).H
-//                                            manyFloraAttribute.TRE_BREA = TreDatas.get(i).BREA
-//                                            manyFloraAttribute.TRE_COVE = TreDatas.get(i).COVE
-//                                        }
-//                                    }
-//
-//                                    if (StreDatas != null  && StreDataSize > 0) {
-//                                        if (MaxLength - 1 > StreDataSize - 1 ) {
-//                                            manyFloraAttribute.STRE_NUM = 0
-//                                            manyFloraAttribute.STRE_SPEC = ""
-//                                            manyFloraAttribute.STRE_FAMI = ""
-//                                            manyFloraAttribute.STRE_SCIEN = ""
-//                                            manyFloraAttribute.STRE_H = 0.0f
-//                                            manyFloraAttribute.STRE_BREA = 0.0f
-//                                            manyFloraAttribute.STRE_COVE = 0.0f
-//                                        }
-//
-//                                        if (MaxLength -1 <= StreDataSize - 1){
-//                                            manyFloraAttribute.STRE_NUM = StreDatas.get(i).PAGE
-//                                            manyFloraAttribute.STRE_SPEC = StreDatas.get(i).SPEC
-//                                            manyFloraAttribute.STRE_FAMI = StreDatas.get(i).FAMI
-//                                            manyFloraAttribute.STRE_SCIEN = StreDatas.get(i).SCIEN
-//                                            manyFloraAttribute.STRE_H = StreDatas.get(i).H
-//                                            manyFloraAttribute.STRE_BREA = StreDatas.get(i).BREA
-//                                            manyFloraAttribute.STRE_COVE = StreDatas.get(i).COVE
-//                                        }
-//                                    }
-//
-//                                    if(ShrDatas != null && ShrDataSize > 0 ) {
-//                                        if (MaxLength - 1 > ShrDataSize - 1) {
-//                                            manyFloraAttribute.SHR_NUM = 0
-//                                            manyFloraAttribute.SHR_SPEC = ""
-//                                            manyFloraAttribute.SHR_FAMI = ""
-//                                            manyFloraAttribute.SHR_SCIEN = ""
-//                                            manyFloraAttribute.SHR_H = 0.0f
-//                                            manyFloraAttribute.SHR_COVE = 0.0f
-//                                        }
-//                                        if (MaxLength -1 <= ShrDataSize - 1){
-//                                            manyFloraAttribute.SHR_NUM = ShrDatas.get(i).PAGE
-//                                            manyFloraAttribute.SHR_SPEC = ShrDatas.get(i).SPEC
-//                                            manyFloraAttribute.SHR_FAMI = ShrDatas.get(i).FAMI
-//                                            manyFloraAttribute.SHR_SCIEN = ShrDatas.get(i).SCIEN
-//                                            manyFloraAttribute.SHR_H = ShrDatas.get(i).H
-//                                            manyFloraAttribute.SHR_COVE = ShrDatas.get(i).COVE
-//                                        }
-//                                    }
-//
-//                                    if(HerDatas != null && HerDataSize > 0) {
-//                                        if (MaxLength - 1 > HerDataSize - 1) {
-//                                            manyFloraAttribute.HER_NUM = 0
-//                                            manyFloraAttribute.HER_SPEC = ""
-//                                            manyFloraAttribute.HER_FAMI = ""
-//                                            manyFloraAttribute.HER_SCIEN = ""
-//                                            manyFloraAttribute.HER_H = 0.0f
-//                                            manyFloraAttribute.HER_COVE = 0.0f
-//                                        }
-//                                        if (MaxLength -1 <= HerDataSize - 1){
-//                                            manyFloraAttribute.HER_NUM = HerDatas.get(i).PAGE
-//                                            manyFloraAttribute.HER_SPEC = HerDatas.get(i).SPEC
-//                                            manyFloraAttribute.HER_FAMI = HerDatas.get(i).FAMI
-//                                            manyFloraAttribute.HER_SCIEN = HerDatas.get(i).SCIEN
-//                                            manyFloraAttribute.HER_H = HerDatas.get(i).H
-//                                            manyFloraAttribute.HER_COVE = HerDatas.get(i).COVE
-//                                        }
-//                                    }
-//
-//                                    dbManager.insertmanyflora_attribute(manyFloraAttribute);
-//
-//                                }
-//
-//                                insert()
-//
-//                            }
+                                insert()
 
                         })
 
@@ -1638,19 +1586,12 @@ class Flora2Activity : Activity() {
 
         var equlas = false
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-
-        val db = dbManager.createDataBase();
-
-        val dataList: Array<String> = arrayOf("*");
-
         println("trepage $trepage")
 
         val maxsize = trerightpageTV.text.toString().toInt()
 
         if(trepage == maxsize){
 
-            equlas = true
             if (trepage > 1 ){
 
                 val spec = etTRE_SPECET.text.toString()
@@ -2315,97 +2256,147 @@ class Flora2Activity : Activity() {
 
         manyFloraAttribute.INV_TM = Utils.timeStr()
 
-        if (trenumTV.text.isNotEmpty()) {
-            manyFloraAttribute.TRE_NUM = trenumTV.text.toString().toInt()
+        var treChk = false
+
+        for (i in 0 until  TreDatas.size){
+            if (TreDatas.get(i).PAGE == trenumTV.text.toString().toInt()){
+              treChk = true
+            }
         }
 
-        manyFloraAttribute.TRE_SPEC = etTRE_SPECET.text.toString()
-        manyFloraAttribute.TRE_FAMI = etTRE_FAMIET.text.toString()
-        manyFloraAttribute.TRE_SCIEN = etTRE_SCIENET.text.toString()
+        if (treChk == false){
+            if (trenumTV.text.isNotEmpty()) {
+                manyFloraAttribute.TRE_NUM = trenumTV.text.toString().toInt()
+            }
 
-        if (etTRE_HET.text.isNotEmpty()) {
-            manyFloraAttribute.TRE_H = etTRE_HET.text.toString().toFloat()
+            manyFloraAttribute.TRE_SPEC = etTRE_SPECET.text.toString()
+            manyFloraAttribute.TRE_FAMI = etTRE_FAMIET.text.toString()
+            manyFloraAttribute.TRE_SCIEN = etTRE_SCIENET.text.toString()
+
+            if (etTRE_HET.text.isNotEmpty()) {
+                manyFloraAttribute.TRE_H = etTRE_HET.text.toString().toFloat()
+            }
+
+            if (etTRE_BREAET.text.isNotEmpty()) {
+                manyFloraAttribute.TRE_BREA = etTRE_BREAET.text.toString().toFloat()
+            }
+
+            if (etTRE_COVEET.text.isNotEmpty()) {
+                manyFloraAttribute.TRE_COVE = etTRE_COVEET.text.toString().toFloat()
+            }
+        } else {
+            manyFloraAttribute.TRE_NUM = 0
+            manyFloraAttribute.TRE_SPEC = ""
+            manyFloraAttribute.TRE_FAMI = ""
+            manyFloraAttribute.TRE_SCIEN = ""
+            manyFloraAttribute.TRE_H = 0.0f
+            manyFloraAttribute.TRE_BREA = 0.0f
+            manyFloraAttribute.TRE_COVE = 0.0f
         }
 
-        if (etTRE_BREAET.text.isNotEmpty()) {
-            manyFloraAttribute.TRE_BREA = etTRE_BREAET.text.toString().toFloat()
+        var streChk = false
+
+        for (i in 0 until  StreDatas.size){
+            if (StreDatas.get(i).PAGE == strenumTV.text.toString().toInt()){
+                streChk = true
+            }
         }
 
-        if (etTRE_COVEET.text.isNotEmpty()) {
-            manyFloraAttribute.TRE_COVE = etTRE_COVEET.text.toString().toFloat()
+        if (streChk == false){
+            if (strenumTV.text.isNotEmpty()) {
+                manyFloraAttribute.STRE_NUM = strenumTV.text.toString().toInt()
+            }
+
+            manyFloraAttribute.STRE_SPEC = etSTRE_SPECET.text.toString()
+            manyFloraAttribute.STRE_FAMI = etSTRE_FAMIET.text.toString()
+            manyFloraAttribute.STRE_SCIEN = etSTRE_SCIENET.text.toString()
+
+            if (etSTRE_HET.text.isNotEmpty()) {
+                manyFloraAttribute.STRE_H = etSTRE_HET.text.toString().toFloat()
+            }
+
+            if (etSTRE_BREAET.text.isNotEmpty()) {
+                manyFloraAttribute.STRE_BREA = etSTRE_BREAET.text.toString().toFloat()
+            }
+
+            if (etSTRE_COVEET.text.isNotEmpty()) {
+                manyFloraAttribute.STRE_COVE = etSTRE_COVEET.text.toString().toFloat()
+            }
+        } else {
+            manyFloraAttribute.STRE_NUM = 0
+            manyFloraAttribute.STRE_SPEC = ""
+            manyFloraAttribute.STRE_FAMI = ""
+            manyFloraAttribute.STRE_SCIEN = ""
+            manyFloraAttribute.STRE_H = 0.0f
+            manyFloraAttribute.STRE_BREA = 0.0f
+            manyFloraAttribute.STRE_COVE = 0.0f
         }
 
-        val TRE_SPEC = etTRE_SPECET.text.toString()
-        if(TRE_SPEC != "" && TRE_SPEC != null){
-            manyFloraAttribute.TRE_NUM = 1
+        var shrChk = false
+
+        for (i in 0 until  ShrDatas.size){
+            if (ShrDatas.get(i).PAGE == shrnumTV.text.toString().toInt()){
+                shrChk = true
+            }
         }
 
-        if (strenumTV.text.isNotEmpty()) {
-            manyFloraAttribute.STRE_NUM = strenumTV.text.toString().toInt()
-        }
+        if (shrChk == false){
+            if (shrnumTV.text.isNotEmpty()) {
+                manyFloraAttribute.SHR_NUM = shrnumTV.text.toString().toInt()
+            }
 
-        manyFloraAttribute.STRE_SPEC = etSTRE_SPECET.text.toString()
-        manyFloraAttribute.STRE_FAMI = etSTRE_FAMIET.text.toString()
-        manyFloraAttribute.STRE_SCIEN = etSTRE_SCIENET.text.toString()
+            manyFloraAttribute.SHR_SPEC = etSHR_SPECET.text.toString()
+            manyFloraAttribute.SHR_FAMI = etSHR_FAMIET.text.toString()
+            manyFloraAttribute.SHR_SCIEN = etSHR_SCIENET.text.toString()
 
-        if (etSTRE_HET.text.isNotEmpty()) {
-            manyFloraAttribute.STRE_H = etSTRE_HET.text.toString().toFloat()
-        }
+            if (etSTR_COVEET.text.isNotEmpty()) {
+                manyFloraAttribute.SHR_H = etSTRE_HET.text.toString().toFloat()
+            }
 
-        if (etSTRE_BREAET.text.isNotEmpty()) {
-            manyFloraAttribute.STRE_BREA = etSTRE_BREAET.text.toString().toFloat()
-        }
-
-        if (etSTRE_COVEET.text.isNotEmpty()) {
-            manyFloraAttribute.STRE_COVE = etSTRE_COVEET.text.toString().toFloat()
-        }
-
-        val STRE_SPEC = etSTRE_SPECET.text.toString()
-        if(STRE_SPEC != "" && STRE_SPEC != null){
-            manyFloraAttribute.STRE_NUM = 1
-        }
-
-        if (shrnumTV.text.isNotEmpty()) {
-            manyFloraAttribute.SHR_NUM = shrnumTV.text.toString().toInt()
-        }
-
-        manyFloraAttribute.SHR_SPEC = etSHR_SPECET.text.toString()
-        manyFloraAttribute.SHR_FAMI = etSHR_FAMIET.text.toString()
-        manyFloraAttribute.SHR_SCIEN = etSHR_SCIENET.text.toString()
-
-        if (etSTR_COVEET.text.isNotEmpty()) {
-            manyFloraAttribute.SHR_H = etSTRE_HET.text.toString().toFloat()
-        }
-
-        if (etSTR_COVEET.text.isNotEmpty()) {
-            manyFloraAttribute.SHR_COVE = etSTR_COVEET.text.toString().toFloat()
-        }
-
-        val SHR_SPEC = etSHR_SPECET.text.toString()
-        if(SHR_SPEC != "" && SHR_SPEC != null){
+            if (etSTR_COVEET.text.isNotEmpty()) {
+                manyFloraAttribute.SHR_COVE = etSTR_COVEET.text.toString().toFloat()
+            }
+        } else {
             manyFloraAttribute.SHR_NUM = 1
+            manyFloraAttribute.SHR_SPEC = ""
+            manyFloraAttribute.SHR_FAMI = ""
+            manyFloraAttribute.SHR_SCIEN = ""
+            manyFloraAttribute.SHR_H = 0.0f
+            manyFloraAttribute.SHR_COVE = 0.0f
         }
 
-        if (hernumTV.text.isNotEmpty()) {
-            manyFloraAttribute.HER_NUM = hernumTV.text.toString().toInt()
+        var herChk = false
+
+        for (i in 0 until  HerDatas.size){
+            if (HerDatas.get(i).PAGE == hernumTV.text.toString().toInt()){
+                herChk = true
+            }
         }
 
-        manyFloraAttribute.HER_SPEC = etHER_SPECET.text.toString()
-        manyFloraAttribute.HER_FAMI = etHER_FAMIET.text.toString()
-        manyFloraAttribute.HER_SCIEN = etHER_SCIENET.text.toString()
+        if (herChk == false){
+            if (hernumTV.text.isNotEmpty()) {
+                manyFloraAttribute.HER_NUM = hernumTV.text.toString().toInt()
+            }
 
-        if (etHER_HET.text.isNotEmpty()) {
-            manyFloraAttribute.HER_H = etHER_HET.text.toString().toFloat()
-        }
+            manyFloraAttribute.HER_SPEC = etHER_SPECET.text.toString()
+            manyFloraAttribute.HER_FAMI = etHER_FAMIET.text.toString()
+            manyFloraAttribute.HER_SCIEN = etHER_SCIENET.text.toString()
 
-        if (etHER_COVEET.text.isNotEmpty()) {
-            manyFloraAttribute.HER_COVE = etHER_COVEET.text.toString().toFloat()
-        }
+            if (etHER_HET.text.isNotEmpty()) {
+                manyFloraAttribute.HER_H = etHER_HET.text.toString().toFloat()
+            }
 
-        val HER_SPEC = etHER_COVEET.text.toString()
-        if(HER_SPEC != "" && HER_SPEC != null){
+            if (etHER_COVEET.text.isNotEmpty()) {
+                manyFloraAttribute.HER_COVE = etHER_COVEET.text.toString().toFloat()
+            }
+        } else {
             manyFloraAttribute.HER_NUM = 1
-        }
+            manyFloraAttribute.HER_SPEC = ""
+            manyFloraAttribute.HER_FAMI = ""
+            manyFloraAttribute.HER_SCIEN = ""
+            manyFloraAttribute.HER_H = 0.0f
+            manyFloraAttribute.HER_COVE = 0.0f
+    }
 
         if (gpslatTV.text.isNotEmpty()) {
             manyFloraAttribute.GPS_LAT = gpslatTV.text.toString().toFloat()

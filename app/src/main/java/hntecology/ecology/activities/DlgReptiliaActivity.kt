@@ -33,13 +33,10 @@ class DlgReptiliaActivity : Activity() {
     private lateinit var apdater: DlgReptiliaAdapter;
 
     private lateinit var listView1: ListView
-    private lateinit var listView2: ListView
 
     private lateinit var listdata1 : java.util.ArrayList<Reptilia>
-    private lateinit var listdata2 : java.util.ArrayList<EndangeredSelect>
 
     private lateinit var listAdapte1: DlgReptiliaAdapter;
-    private lateinit var listAdapter2: DlgReptiliaAdapter2
 
     var tableName:String = ""
     var titleName:String=""
@@ -50,6 +47,8 @@ class DlgReptiliaActivity : Activity() {
     var dbManager: DataBaseHelper? = null
 
     private var db: SQLiteDatabase? = null
+
+    var SPEC = ""
 
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,95 +69,44 @@ class DlgReptiliaActivity : Activity() {
 
         val intent = getIntent()
 
+
         val dataList:Array<String> = arrayOf("no","taxon","zoological","name_kr","author","year","Phylum_name","Phylum_name_kr","Class_name","Class_name_kr","Order_name","Order_name_kr","Family_name"
                 ,"Family_name_kr","Genus_name","Genus_name_kr","Species_name","Species_name_kr");
 
         val data = db!!.query(tableName, dataList, null, null, null, null, "name_kr", null);
 
         listView1 = findViewById(R.id.listLV)
-        listView2 = findViewById(R.id.listLV2)
 
         listdata1 = java.util.ArrayList()
-        listdata2 = java.util.ArrayList()
 
         listAdapte1 = DlgReptiliaAdapter(context,listdata1)
-        listAdapter2 = DlgReptiliaAdapter2(context,listdata2)
 
         dataReptiliaList(listdata1,data);
+
+        if (intent.getStringExtra("SPEC") != null){
+            SPEC = intent.getStringExtra("SPEC")
+
+            for (i in 0 until listdata1.size){
+                if (listdata1.get(i).name_kr == SPEC){
+                    listdata1.get(i).chkSelect = true
+                    listView1.setSelection(i)
+                }
+            }
+        }
 
         copyadapterData.addAll(listdata1)
 
         listView1.adapter = listAdapte1
-        listView2.adapter = listAdapter2
-
-        val item = EndangeredSelect("Y","Y",false)
-        val item2 = EndangeredSelect("N","N",false)
-
-        selectLL.setOnClickListener {
-            var name:String = ""
-            var family_name:String = ""
-            var zoological:String = ""
-            var code:String = ""
-
-            for(i in 0..listdata1.size-1){
-                if (listdata1.get(i).chkSelect == true){
-                    name = listdata1.get(i).name_kr!!
-                    family_name = listdata1.get(i).Family_name_kr!!
-                    zoological = listdata1.get(i).zoological!!
-                }
-            }
-
-            if(listdata2 != null){
-                for(i in 0..listdata2.size-1){
-                    if(listdata2.get(i).is_checked == true){
-                        code = listdata2.get(i).SIGN!!
-                    }
-                }
-            }
-
-            intent.putExtra("name", name)
-            intent.putExtra("family_name", family_name)
-            intent.putExtra("zoological", zoological)
-
-            if(code != null){
-                intent.putExtra("code", code)
-            }
-            setResult(RESULT_OK, intent);
-
-            finish()
-
-        }
 
         listView1.setOnItemClickListener { parent, view, position, id ->
-            if(listdata2 != null){
-                for(i in 0..listdata2.size-1){
-                    listdata2.get(i).is_checked = false
-                }
-            }
 
             chkData = false
 
-            listAdapter2.clearItem()
-
-            selectTV.visibility = View.INVISIBLE
-
-            listAdapte1.setItemSelect(position)
-
-            for(i in 0..listdata1.size-1){
-                listdata1.get(i).chkSelect = false
-            }
-
             var data = listdata1.get(position)
 
-            if(data.chkSelect == false){
-                data.chkSelect = true
-                listAdapte1.notifyDataSetChanged()
-            }else {
-                data.chkSelect = false
-                listAdapte1.notifyDataSetChanged()
-            }
-
             var name = data.name_kr
+            val family_name = data.Family_name_kr
+            val zoological = data.zoological
 
             val dataEndangeredList:Array<String> = arrayOf("ID","TITLE","SCIENTIFICNAME","CLASS","DANGERCLASS","CONTRYCLASS");
 
@@ -171,39 +119,25 @@ class DlgReptiliaActivity : Activity() {
                 chkData = true
 
             }
-
-            if(chkData){
-                selectTV.visibility = View.VISIBLE
-                probar.visibility = View.VISIBLE
-                listdata2.add(item)
-                listdata2.add(item2)
-                probar.visibility = View.GONE
-            }else {
-                if(listdata2 != null) {
-                    listdata2.clear()
-                }
-            }
-
             EndangeredData.close()
 
-        }
 
-        listView2.setOnItemClickListener { adapterView, view, position, l ->
+            if(chkData){
+                probar.visibility = View.VISIBLE
 
-            val data = listdata2.get(position)
+                intent.putExtra("name", name + "(멸종 위기)")
+                intent.putExtra("family_name", family_name)
+                intent.putExtra("zoological", zoological)
+                setResult(RESULT_OK, intent);
+                finish()
 
-            listAdapter2.setItemSelect(position)
-
-            for(i in 0..listdata2.size-1){
-                listdata2.get(i).is_checked = false
-            }
-
-            if(data.is_checked == false){
-                data.is_checked = true
-                listAdapter2.notifyDataSetChanged()
+                probar.visibility = View.GONE
             }else {
-                data.is_checked = false
-                listAdapter2.notifyDataSetChanged()
+                intent.putExtra("name", name)
+                intent.putExtra("family_name", family_name)
+                intent.putExtra("zoological", zoological)
+                setResult(RESULT_OK, intent);
+                finish()
             }
 
         }

@@ -48,7 +48,11 @@ class DataMammalAdapter(var context: Context, var itemList : ArrayList<Mammal_at
 
         var Mammal_attribute : Mammal_attribute = getItem(position)
 
-        viewHoldar.class_biotope_item.text = Mammal_attribute.INV_DT + " / " + Mammal_attribute.INV_TM
+        if (Mammal_attribute.SPEC_NM != null && Mammal_attribute.SPEC_NM != ""){
+            viewHoldar.class_biotope_item.text = Mammal_attribute.INV_DT + " / " + Mammal_attribute.INV_TM  + " / " + Mammal_attribute.SPEC_NM + " / " + Mammal_attribute.INDI_CNT.toString()
+        } else {
+            viewHoldar.class_biotope_item.text = Mammal_attribute.INV_DT + " / " + Mammal_attribute.INV_TM
+        }
 
         // println("hh : " + position + ", " + hashCode())
         return view as View

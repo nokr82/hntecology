@@ -1191,6 +1191,15 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         intent.putExtra("title", "조류 종명 선택")
         intent.putExtra("table", "birds")
         intent.putExtra("DlgHeight", 600f);
+        if (birdsTV.text != null && birdsTV.text != ""){
+            val spec = birdsTV.text.toString()
+            intent.putExtra("SPEC",spec)
+        }
+
+        if (endangeredTV.text != null && endangeredTV.text != ""){
+            val end = endangeredTV.text.toString()
+            intent.putExtra("END",end)
+        }
         startActivityForResult(intent, SET_BIRDS);
     }
 
@@ -1586,7 +1595,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 options.inSampleSize = hs
             }
         }
-        val bitmap = BitmapFactory.decodeFile(str, options)
+        val bitmap = BitmapFactory.decodeFile(str)
         val v = View.inflate(context, R.layout.item_add_image, null)
         val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
         val delIV = v.findViewById<View>(R.id.delIV) as ImageView

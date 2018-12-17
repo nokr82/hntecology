@@ -43,12 +43,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:textOn="임상도"
+                android:textOff="비오톱"
                 android:textStyle="bold"
                 android:textColor="#ffffff"
                 android:textSize="20dp"
+                android:thumb="@drawable/swich_on"
                 android:scaleY="1.5"
-                android:scaleX="1.2"
-                android:textOff="비오톱"/>
+                android:scaleX="1.2"/>
         </RelativeLayout>
     </LinearLayout>
     <LinearLayout

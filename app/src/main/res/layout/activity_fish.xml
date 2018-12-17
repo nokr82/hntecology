@@ -380,23 +380,36 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp">
-
                 <TextView
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
                     android:text="채집도구"/>
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
+                    android:inputType="number"
+                    android:id="@+id/colltoolTV"
                     android:gravity="center"
-                    android:id="@+id/fishcolltoolET"
-                    android:singleLine="true"
-                    android:hint="투망 (망목 9 x 9 mm), 족대 (망목 4 x 4 mm)"
+                    android:hint="투망 (망목 9 x 9 mm)"
                     />
-
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text=","/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    android:inputType="number"
+                    android:id="@+id/colltool2TV"
+                    android:gravity="center"
+                    android:hint="족대 (망목 4 x 4 mm)"
+                    />
             </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
@@ -675,7 +688,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="150dp"
                 android:orientation="horizontal"
 
                 >

@@ -48,7 +48,11 @@ class DataInsectAdapter(var context: Context, var itemList : ArrayList<Insect_at
 
         var Insect_attribute : Insect_attribute = getItem(position)
 
-        viewHoldar.class_biotope_item.text = Insect_attribute.INV_DT + " / " + Insect_attribute.INV_TM
+        if (Insect_attribute.SPEC_NM != null && Insect_attribute.SPEC_NM != ""){
+            viewHoldar.class_biotope_item.text = Insect_attribute.INV_DT + " / " + Insect_attribute.INV_TM + " / " + Insect_attribute.SPEC_NM + " / " + Insect_attribute.INDI_CNT.toString()
+        } else {
+            viewHoldar.class_biotope_item.text = Insect_attribute.INV_DT + " / " + Insect_attribute.INV_TM
+        }
 
         // println("hh : " + position + ", " + hashCode())
         return view as View

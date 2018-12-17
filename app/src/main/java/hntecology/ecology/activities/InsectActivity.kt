@@ -1350,6 +1350,10 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
     fun startDlgInsect(){
         val intent = Intent(context, DlgInsectActivity::class.java)
+        if (insectspecnmET.text != null && insectspecnmET.text != ""){
+            val spec = insectspecnmET.text.toString()
+            intent.putExtra("SPEC",spec)
+        }
         startActivityForResult(intent, SET_INSECT);
     }
 

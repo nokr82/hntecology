@@ -11,6 +11,8 @@ import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.Typeface
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.*
 import android.support.v4.app.ActivityCompat
@@ -1438,7 +1440,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val zoom = googleMap.cameraPosition.zoom
 
-            if (zoom.toInt() >= 16) {
+            if (zoom.toInt() >= 17) {
                 println("click")
                 val builder = AlertDialog.Builder(context)
                 if (markerRemove == true) {
@@ -1680,8 +1682,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             while (data.moveToNext()) {
                                 var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                         data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
-                                        data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getString(26), data.getString(27), data.getString(28),
-                                        data.getInt(29), data.getString(30), data.getString(31), data.getString(32), data.getInt(33), data.getString(33), data.getString(35), data.getString(36), data.getString(37), data.getString(38))
+                                        data.getFloat(19), data.getFloat(20), data.getString(21),data.getString(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getInt(26), data.getString(27), data.getString(28), data.getString(29),
+                                        data.getInt(30), data.getString(31), data.getString(32), data.getString(33), data.getInt(34), data.getString(35), data.getString(36), data.getString(37), data.getString(38), data.getString(39))
                                 fishdataArray.add(fish_attribute)
                             }
 
@@ -1955,7 +1957,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 val size = manyfloradataArray.size
 
-                                title = "식물2"
+                                title = "식생"
                                 marker.title = title
 
                                 intent = Intent(this, Flora2Activity::class.java)
@@ -1969,7 +1971,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                             if (manyfloradataArray == null) {
 
-                                title = "식물2"
+                                title = "식생"
                                 marker.title = title
 
                                 intent = Intent(this, Flora2Activity::class.java)
@@ -2011,7 +2013,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 }
             } else {
-                Toast.makeText(context, "16레벨 이상까지 확대해주세요.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "17레벨 이상까지 확대해주세요.", Toast.LENGTH_SHORT).show()
             }
             false
         }
@@ -2022,7 +2024,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val zoom = googleMap.cameraPosition.zoom
 
-            if (zoom.toInt() >= 16) {
+            if (zoom.toInt() >= 17) {
 
                 // 도형 분리 중이면.....
                 if(splitRL.isSelected) {
@@ -2911,7 +2913,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 }
             } else {
-                Toast.makeText(context, "16레벨 이상까지 확대해주세요.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "17레벨 이상까지 확대해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -3176,7 +3178,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 // println("geoms[0] : ${geoms[0]}")
 
                 val polygon = googleMap.addPolygon(geoms[0] as PolygonOptions)
-                polygon.zIndex = -1.0f
+                polygon.zIndex = 0.0f
 
                 // println("layerName .layer ===== $layerName")
 
@@ -3808,6 +3810,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         markerOptions.draggable(true)
 
         val marker = googleMap.addMarker(markerOptions)
+        marker.zIndex= 1.0f
 
         if(mygps){
             marker.title = "현재 위치"
@@ -3977,7 +3980,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 intent = Intent(this, Flora2Activity::class.java)
 
                 marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                marker.title = "식물2"
+                marker.title = "식생"
 
                 points.add(marker)
                 allpoints.add(marker)
@@ -4155,7 +4158,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 var attrubuteKey = layerInfo.attrubuteKey
 
-                polygon.zIndex = 0.0f
+                polygon.zIndex = 1.0f
 
                 intent = Intent(this, BiotopeActivity::class.java)
 
@@ -4179,7 +4182,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 var attrubuteKey = layerInfo.attrubuteKey
 
-                polygon.zIndex = 0.0f
+                polygon.zIndex = 1.0f
 
 
                 intent = Intent(this, StockActivity::class.java)
@@ -4460,7 +4463,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 println("id: -------------biotope ${biotope_attribute.id}")
 
-                                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString, biotope_attribute.id))
+//                                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString, biotope_attribute.id))
                                 BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, biotope_attribute.GROP_ID))
                                 BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, biotope_attribute.PRJ_NAME))
                                 BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTInteger, biotope_attribute.INV_REGION))
@@ -4610,7 +4613,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 var BIRDSATTRIBUTE:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,birds_attribute.id))
+//                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,birds_attribute.id))
                                 BIRDSATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString,birds_attribute.GROP_ID))
                                 BIRDSATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString,birds_attribute.PRJ_NAME))
                                 BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString,birds_attribute.INV_REGION))
@@ -4740,7 +4743,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 var REPTILIAATTRIBUTE:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
-                                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,reptilia_attribute.id))
+//                                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,reptilia_attribute.id))
                                 REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString,reptilia_attribute.GROP_ID))
                                 REPTILIAATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString,reptilia_attribute.PRJ_NAME))
                                 REPTILIAATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString,reptilia_attribute.INV_REGION))
@@ -4866,7 +4869,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 var MAMMALATTRIBUTE:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
-                                MAMMALATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString, mammal_attribute.id))
+//                                MAMMALATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString, mammal_attribute.id))
                                 MAMMALATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, mammal_attribute.GROP_ID))
                                 MAMMALATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, mammal_attribute.PRJ_NAME))
                                 MAMMALATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, mammal_attribute.INV_REGION))
@@ -4941,8 +4944,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             var fish_attribute: Fish_attribute = Fish_attribute(fishdata.getString(0), fishdata.getString(1), fishdata.getString(2), fishdata.getString(3), fishdata.getString(4), fishdata.getString(5), fishdata.getString(6), fishdata.getString(7),
                     fishdata.getString(8),fishdata.getString(9), fishdata.getFloat(10), fishdata.getString(11), fishdata.getString(12), fishdata.getString(13), fishdata.getInt(14), fishdata.getString(15), fishdata.getInt(16), fishdata.getInt(17), fishdata.getString(18),
-                    fishdata.getFloat(19), fishdata.getFloat(20), fishdata.getString(21), fishdata.getInt(22), fishdata.getInt(23), fishdata.getInt(24), fishdata.getInt(25), fishdata.getString(26), fishdata.getString(27), fishdata.getString(28),
-                    fishdata.getInt(29) ,fishdata.getString(30), fishdata.getString(31), fishdata.getString(32), fishdata.getInt(33), fishdata.getString(33), fishdata.getString(35), fishdata.getString(36),fishdata.getString(37),fishdata.getString(38))
+                    fishdata.getFloat(19), fishdata.getFloat(20), fishdata.getString(21),fishdata.getString(22), fishdata.getInt(23), fishdata.getInt(24), fishdata.getInt(25), fishdata.getInt(26), fishdata.getString(27), fishdata.getString(28), fishdata.getString(29),
+                    fishdata.getInt(30) ,fishdata.getString(31), fishdata.getString(32), fishdata.getString(33), fishdata.getInt(34), fishdata.getString(35), fishdata.getString(36), fishdata.getString(37),fishdata.getString(38),fishdata.getString(39))
 
             datas.add(fish_attribute)
         }
@@ -4956,9 +4959,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 while (fishdata.moveToNext()) {
                     var fish_attribute: Fish_attribute = Fish_attribute(fishdata.getString(0), fishdata.getString(1), fishdata.getString(2), fishdata.getString(3), fishdata.getString(4), fishdata.getString(5), fishdata.getString(6), fishdata.getString(7),
                             fishdata.getString(8),fishdata.getString(9), fishdata.getFloat(10), fishdata.getString(11), fishdata.getString(12), fishdata.getString(13), fishdata.getInt(14), fishdata.getString(15), fishdata.getInt(16), fishdata.getInt(17), fishdata.getString(18),
-                            fishdata.getFloat(19), fishdata.getFloat(20), fishdata.getString(21), fishdata.getInt(22), fishdata.getInt(23), fishdata.getInt(24), fishdata.getInt(25), fishdata.getString(26), fishdata.getString(27), fishdata.getString(28),
-                            fishdata.getInt(29) ,fishdata.getString(30), fishdata.getString(31), fishdata.getString(32), fishdata.getInt(33), fishdata.getString(33), fishdata.getString(35), fishdata.getString(36),fishdata.getString(37),fishdata.getString(38))
-
+                            fishdata.getFloat(19), fishdata.getFloat(20), fishdata.getString(21),fishdata.getString(22), fishdata.getInt(23), fishdata.getInt(24), fishdata.getInt(25), fishdata.getInt(26), fishdata.getString(27), fishdata.getString(28), fishdata.getString(29),
+                            fishdata.getInt(30) ,fishdata.getString(31), fishdata.getString(32), fishdata.getString(33), fishdata.getInt(34), fishdata.getString(35), fishdata.getString(36), fishdata.getString(37),fishdata.getString(38),fishdata.getString(39))
                     fishDatas.add(fish_attribute)
 
                 }
@@ -4986,7 +4988,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 var FISHATTRIBUTE:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
-                                FISHATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString, fish_attribute.id))
+//                                FISHATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString, fish_attribute.id))
                                 FISHATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, fish_attribute.GROP_ID))
                                 FISHATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, fish_attribute.PRJ_NAME))
                                 FISHATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, fish_attribute.INV_REGION))
@@ -5008,6 +5010,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 FISHATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal, fish_attribute.GPS_LAT))
                                 FISHATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal, fish_attribute.GPS_LON))
                                 FISHATTRIBUTE.add(Exporter.ColumnDef("COLL_TOOL", ogr.OFTString, fish_attribute.COLL_TOOL))
+                                FISHATTRIBUTE.add(Exporter.ColumnDef("COLL_TOOL2", ogr.OFTString, fish_attribute.COLL_TOOL2))
                                 FISHATTRIBUTE.add(Exporter.ColumnDef("STREAM_W", ogr.OFTString, fish_attribute.STREAM_W))
                                 FISHATTRIBUTE.add(Exporter.ColumnDef("WATER_W", ogr.OFTInteger, fish_attribute.WATER_W))
                                 FISHATTRIBUTE.add(Exporter.ColumnDef("WATER_D", ogr.OFTInteger, fish_attribute.WATER_D))
@@ -5120,7 +5123,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 var INSECTATTRIBUTE:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
-                                INSECTATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,insect_attribute.id))
+//                                INSECTATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,insect_attribute.id))
                                 INSECTATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString,insect_attribute.GROP_ID))
                                 INSECTATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString,insect_attribute.PRJ_NAME))
                                 INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString,insect_attribute.INV_REGION))
@@ -5241,7 +5244,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 var FLORAATTRIBUTE:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
-                                FLORAATTRIBUTE.add(Exporter.ColumnDef("ID",ogr.OFTString,flora_Attribute.id))
+//                                FLORAATTRIBUTE.add(Exporter.ColumnDef("ID",ogr.OFTString,flora_Attribute.id))
                                 FLORAATTRIBUTE.add(Exporter.ColumnDef("GROP_ID",ogr.OFTString,flora_Attribute.GROP_ID))
                                 FLORAATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME",ogr.OFTString,flora_Attribute.PRJ_NAME))
                                 FLORAATTRIBUTE.add(Exporter.ColumnDef("INV_REGION",ogr.OFTString,flora_Attribute.INV_REGION))
@@ -5366,7 +5369,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 var ZOOBENTHOUS:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
-                                ZOOBENTHOUS.add(Exporter.ColumnDef("ID",ogr.OFTString,zoo.id))
+//                                ZOOBENTHOUS.add(Exporter.ColumnDef("ID",ogr.OFTString,zoo.id))
                                 ZOOBENTHOUS.add(Exporter.ColumnDef("GROP_ID",ogr.OFTString,zoo.GROP_ID))
                                 ZOOBENTHOUS.add(Exporter.ColumnDef("PRJ_NAME",ogr.OFTString,zoo.PRJ_NAME))
                                 ZOOBENTHOUS.add(Exporter.ColumnDef("INV_REGION",ogr.OFTString,zoo.INV_REGION))
@@ -5437,7 +5440,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             Exporter.exportPoint(pointsArray)
 
-            val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "zoobenthos" + File.separator + "flora"
+            val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "zoobenthos" + File.separator + "zoobenthos"
 
             val layerData= db!!.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
 
@@ -5453,7 +5456,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             data.close()
             pointsArray.clear()
-            floraDatas.clear()
+            zoobenthousDatas.clear()
 
         }
 
@@ -5521,7 +5524,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 var MANYFLORA:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
-                                MANYFLORA.add(Exporter.ColumnDef("ID",ogr.OFTString,zoo.id))
                                 MANYFLORA.add(Exporter.ColumnDef("GROP_ID",ogr.OFTString,zoo.GROP_ID))
                                 MANYFLORA.add(Exporter.ColumnDef("INV_REGION",ogr.OFTString,zoo.INV_REGION))
                                 MANYFLORA.add(Exporter.ColumnDef("INV_PERSON",ogr.OFTString,zoo.INV_PERSON))
@@ -5583,7 +5585,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(chkData){
 
             }else {
-                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora2" + File.separator + "flora2","식물2", "flora2","Y","flora2")
+                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora2" + File.separator + "flora2","식생", "flora2","Y","flora2")
             }
 
             data.close()
@@ -5711,7 +5713,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 println("id: -------------biotope ${stockMap.id}")
 
-                                STOKEMAP.add(Exporter.ColumnDef("ID", ogr.OFTString, stockMap.id))
+//                                STOKEMAP.add(Exporter.ColumnDef("ID", ogr.OFTString, stockMap.id))
                                 STOKEMAP.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, stockMap.GROP_ID))
                                 STOKEMAP.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, stockMap.PRJ_NAME))
                                 STOKEMAP.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, stockMap.INV_REGION))
@@ -5915,6 +5917,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     val polygon = polygonsToUnion.get(idx)
                     polygon.remove()
 
+                    println("-------remove")
+
                     polygons.remove(polygon)
                     // allPolygons.remove(polygon)
                 }
@@ -5933,9 +5937,39 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 editingPolygon?.tag = firstLayerInfo
                 editingPolygon?.isClickable = true
 
+                val test = editingPolygon?.tag as LayerInfo
+
+
+                println("editingPolygon.attrubuteKey ${test.attrubuteKey.toString()} ---------")
+
+                val userName =  PrefUtils.getStringPreference(context, "name");
+                val num = dbManager!!.biotopesNextNum()
+                var region = ""
+
+                var geocoder: Geocoder = Geocoder(context);
+
+                var list:List<Address> = geocoder.getFromLocation(editingPolygon?.points!!.get(0).latitude, editingPolygon?.points!!.get(0).longitude, 1);
+
+                if(list.size > 0){
+                    System.out.println("list : " + list);
+
+                    region = (list.get(0).getAddressLine(0));
+                }
+
+                var biotopedata = Biotope_attribute("0",firstLayerInfo.attrubuteKey,"",region,userName,Utils.todayStr(),Utils.timeStr(),num,"",0.0f,0.0f
+                        ,"","","",0.0f,"","","","","","","",""
+                        ,"","","",0.0f,0.0f,0.0f,"","","",0.0f,0.0f,0.0f,""
+                        ,"","",0.0f,0.0f,"","","",0.0f,0.0f,"","","",""
+                        ,editingPolygon?.points!!.get(0).latitude,editingPolygon?.points!!.get(0).longitude,"","N","Y")
+
+                dbManager!!.insertbiotope_attribute(biotopedata)
+                exportBiotope()
+
                 polygonsToUnion.clear()
 
                 offUnionBtn()
+
+                println("합치기----------------------------")
             }
 
         } catch (e:Exception) {
@@ -6044,6 +6078,26 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         db!!.execSQL(qry)
 
+        val userName =  PrefUtils.getStringPreference(context, "name");
+        val num = dbManager!!.biotopesNextNum()
+        var region = ""
+
+        var geocoder: Geocoder = Geocoder(context);
+
+        var list:List<Address> = geocoder.getFromLocation(po.points.get(0).latitude, po.points.get(0).longitude, 1);
+
+        if(list.size > 0){
+            System.out.println("list : " + list);
+
+            region = (list.get(0).getAddressLine(0));
+        }
+        var biotopedata = Biotope_attribute("0",keyId,"",region,userName,Utils.todayStr(),Utils.timeStr(),num,"",0.0f,0.0f
+                ,"","","",0.0f,"","","","","","","",""
+                ,"","","",0.0f,0.0f,0.0f,"","","",0.0f,0.0f,0.0f,""
+                ,"","",0.0f,0.0f,"","","",0.0f,0.0f,"","","",""
+                ,po.points.get(0).latitude,po.points.get(0).longitude,"","N","Y")
+
+        dbManager!!.insertbiotope_attribute(biotopedata)
 
     }
 
@@ -6189,26 +6243,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 Toast.makeText(this,"insert.",Toast.LENGTH_SHORT).show()
             }
 
-//        if (prevPoint != null) {
-//            val distance = DistanceOp.distance(prevPoint!!, currentPoint);
-//            if(distance < 3) {
-//                // insert
-//
-//                if(trackingdiv == true) {
-//                    val tracking: Tracking = Tracking(null, location.latitude, location.longitude)
-//
-//                    dbManager!!.inserttracking(tracking)
-//                }
-//            }
-//        } else {
-//            // insert
-//
-//            if(trackingdiv == true) {
-//                val tracking: Tracking = Tracking(null, location.latitude, location.longitude)
-//
-//                dbManager!!.inserttracking(tracking)
-//            }
-//        }
 
         prevPoint = currentPoint
 
@@ -6399,8 +6433,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             // copy data
             if(typeST.isChecked) {
                 copyRow("StockMap", oldAttributeKey, newAttributeKey, po)
+                exportBiotope()
             } else {
                 copyRow("biotopeAttribute", oldAttributeKey, newAttributeKey, po)
+                exportBiotope()
             }
 
 

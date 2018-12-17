@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.ListView
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.Utils
 import hntecology.ecology.R
@@ -16,6 +17,7 @@ import hntecology.ecology.adapter.DlgInsectAdapter
 import hntecology.ecology.adapter.DlgReptiliaAdapter
 import hntecology.ecology.base.Jaso
 import hntecology.ecology.model.Endangered
+import hntecology.ecology.model.Insects
 import kotlinx.android.synthetic.main.dlg_insect.*
 import org.json.JSONObject
 import kotlin.collections.ArrayList
@@ -24,9 +26,7 @@ class DlgInsectActivity : Activity() {
 
     private lateinit var context:Context;
 
-    private var adapterData :ArrayList<JSONObject> = ArrayList<JSONObject>()
-
-    private var copyadapterData :ArrayList<JSONObject> = ArrayList<JSONObject>()
+    private var copyadapterData :ArrayList<Insects> = ArrayList<Insects>()
 
     private lateinit var apdater: DlgInsectAdapter;
 
@@ -37,6 +37,14 @@ class DlgInsectActivity : Activity() {
     var dbManager: DataBaseHelper? = null
 
     private var db: SQLiteDatabase? = null
+
+    private lateinit var listView1: ListView
+
+    private lateinit var listdata1: java.util.ArrayList<Insects>
+
+    private lateinit var listAdapter1: DlgInsectAdapter;
+
+    var SPEC:String = ""
 
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,28 +61,39 @@ class DlgInsectActivity : Activity() {
         dbManager = DataBaseHelper(context);
         db = dbManager!!.createDataBase();
 
-        val dataList:Array<String> = arrayOf("name_kr","Family_name_kr","zoological");
+        val dataList: Array<String> = arrayOf("*");
+
+        listView1 = findViewById(R.id.listiLV)
+        listdata1 = java.util.ArrayList()
+        listAdapter1 = DlgInsectAdapter(context, listdata1);
+        listView1.adapter = listAdapter1
 
         val data = db!!.query("insect", dataList, null, null, null, null, "name_kr", null);
-        setDataList(data);
+        setDataList(listdata1,data);
 
-        copyadapterData.addAll(adapterData)
+        copyadapterData.addAll(listdata1)
 
-        apdater = DlgInsectAdapter(context, R.layout.item_repilia, adapterData)
-        listLV.adapter = apdater
+        if (intent.getStringExtra("SPEC") != null){
+            SPEC = intent.getStringExtra("SPEC")
+            for (i in 0 until listdata1.size){
+               if (listdata1.get(i).name_kr == SPEC){
+                   listdata1.get(i).chkSelect = true
+                   listView1.setSelection(i)
+               }
+            }
+        }
 
-        apdater.notifyDataSetChanged()
 
         closeLL.setOnClickListener {
             finish()
         }
 
-        listLV.setOnItemClickListener { parent, view, position, id ->
+        listView1.setOnItemClickListener { parent, view, position, id ->
 
-            var data = adapterData.get(position)
-            var name = Utils.getString(data, "name_kr");
-            var family_name = Utils.getString(data, "family_name_kr");
-            var zoological = Utils.getString(data, "zoological");
+            var data = listdata1.get(position)
+            var name = data.name_kr
+            var family_name = data.Family_name
+            var zoological = data.zoological
 
             val dataEndangeredList:Array<String> = arrayOf("ID","TITLE","SCIENTIFICNAME","CLASS","DANGERCLASS","CONTRYCLASS");
 
@@ -123,26 +142,27 @@ class DlgInsectActivity : Activity() {
 
     }
 
-    fun setDataList(data: Cursor){
+    fun setDataList(listdata: java.util.ArrayList<Insects>,data: Cursor){
 
         while (data.moveToNext()){
 
-            var dataObj : JSONObject = JSONObject();
-            dataObj.put("name_kr", data.getString(0))
-            dataObj.put("family_name_kr", data.getString(1))
-            dataObj.put("zoological", data.getString(2))
+            var model: Insects;
 
-            adapterData.add(dataObj)
+            model = Insects(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7), data.getString(8), data.getString(9), data.getString(10)
+                    , data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getString(16), data.getString(17),  data.getString(18), data.getString(19),data.getString(20),data.getString(21),false);
+
+
+            listdata.add(model)
         }
 
     }
 
     fun search(charText: String){
-        adapterData.clear()
+        listdata1.clear()
 
         if(charText.length == 0){
 
-            adapterData.addAll(copyadapterData)
+            listdata1.addAll(copyadapterData)
 
         }else {
 
@@ -150,7 +170,7 @@ class DlgInsectActivity : Activity() {
 
             for (i in 0..copyadapterData.size-1){
 
-                val name =  Utils.getString(copyadapterData.get(i), "name_kr");
+                val name =  Utils.getString(copyadapterData.get(i).name_kr, copyadapterData.get(i).name_kr);
 
                 names.add(name)
 
@@ -160,14 +180,14 @@ class DlgInsectActivity : Activity() {
 
                 if (Jaso.startsWith(names.get(i), charText)
                         || names.get(i).toLowerCase().contains(charText)) {
-                    adapterData.add(copyadapterData.get(i))
+                    listdata1.add(copyadapterData.get(i))
                 }
 
             }
 
         }
 
-        apdater.notifyDataSetChanged()
+        listAdapter1.notifyDataSetChanged()
 
     }
 

@@ -13,6 +13,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Address
 import android.location.Geocoder
+import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -176,6 +177,20 @@ class ZoobenthosActivity : Activity() {
                 invregionTV.setText(list.get(0).getAddressLine(0));
             }
 
+            val tmplat = lat.toFloat().toInt()
+            val minute = ((lat.toFloat() - tmplat) * 60)
+            val second = (((lat.toFloat() - tmplat) * 60) - minute) * 60
+
+            val strlat = Location.convert(lat.toDouble(),Location.FORMAT_DEGREES)
+
+            println("strlat $strlat")
+
+            DegreeToDMS(lat.toDouble())
+            DegreeToDMS(log.toDouble())
+
+
+
+
         }
 
         val dataList: Array<String> = arrayOf("*");
@@ -310,6 +325,10 @@ class ZoobenthosActivity : Activity() {
 
         specnmTV.setOnClickListener {
             val intent = Intent(context, DlgZoobenActivity::class.java)
+            if (specnmTV.text != null && specnmTV.text != ""){
+                var spec = specnmTV.text.toString()
+                intent.putExtra("SPEC",spec)
+            }
             startActivityForResult(intent, SET_ZOOBENTHOS);
         }
 
@@ -1813,6 +1832,9 @@ class ZoobenthosActivity : Activity() {
         distcauET.setText("")
         unusnoteET.setText("")
         invtoolET.setText("")
+        specnmTV.setText("")
+        faminmTV.setText("")
+        sciennmTV.setText("")
 
     }
     override fun onBackPressed() {
@@ -1849,5 +1871,20 @@ class ZoobenthosActivity : Activity() {
 
         finish()
     }
+
+    fun DegreeToDMS(degree:Double){
+        var degreed = 0.0f
+        var hour = degree.toInt();
+        degreed = (degree - hour).toFloat();
+        var minute = (degree*60).toInt();
+        degreed = (degree*60 - minute).toFloat();
+        var second = (degree*60).toInt();
+        degreed = (degree*60 - second).toFloat();
+        var msecond = (degree*1000).toInt();
+
+        println("hour ---- $hour minute $minute  second $second msecond $msecond")
+    }
+
+
 
 }

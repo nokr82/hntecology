@@ -33,22 +33,6 @@
                 android:text="양서ㆍ파충류 종명 선택"
                 android:layout_centerInParent="true"/>
 
-            <LinearLayout
-                android:id="@+id/selectLL"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:padding="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="확인"
-                    android:textSize="23dp"
-                    android:textStyle="bold"/>
-
-            </LinearLayout>
-
         </RelativeLayout>
 
         <LinearLayout
@@ -83,35 +67,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginTop="15dp">
 
-                <TextView
-                    android:id="@+id/selectTV"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:visibility="invisible"
-                    android:text="멸종 위기 여부"
-                    android:background="@null"/>
-
-                <ListView
-                    android:layout_marginTop="5dp"
-                    android:id="@+id/listLV2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:divider="@null">
-
-                </ListView>
-
-            </LinearLayout>
         </LinearLayout>
 
         <ProgressBar

@@ -48,7 +48,11 @@ class DataFIshAdapter(var context: Context, var itemList : ArrayList<Fish_attrib
 
         var Fish_attribute : Fish_attribute = getItem(position)
 
-        viewHoldar.class_biotope_item.text = Fish_attribute.INV_DT + " / " + Fish_attribute.INV_TM
+        if (Fish_attribute.SPEC_NM != null && Fish_attribute.SPEC_NM != ""){
+            viewHoldar.class_biotope_item.text = Fish_attribute.INV_DT + " / " + Fish_attribute.INV_TM + " / " + Fish_attribute.SPEC_NM + " / " + Fish_attribute.INDI_CNT.toString()
+        } else {
+            viewHoldar.class_biotope_item.text = Fish_attribute.INV_DT + " / " + Fish_attribute.INV_TM
+        }
 
         // println("hh : " + position + ", " + hashCode())
         return view as View

@@ -260,7 +260,6 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                 specnmET.setText(reptilia_attribute.SPEC_NM)
                 famiET.setText(reptilia_attribute.FAMI_NM)
                 scienET.setText(reptilia_attribute.SCIEN_NM)
-                endangeredTV.setText(reptilia_attribute.ENDANGERED)
 
                 incntaduET.setText(reptilia_attribute.IN_CNT_ADU.toString())
                 incntlarET.setText(reptilia_attribute.IN_CNT_LAR.toString())
@@ -475,7 +474,6 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             reptilia_attribute.SPEC_NM = specnmET.text.toString()
             reptilia_attribute.FAMI_NM = famiET.text.toString()
             reptilia_attribute.SCIEN_NM = scienET.text.toString()
-            reptilia_attribute.ENDANGERED = endangeredTV.text.toString()
 
             if(incntaduET.text.isNotEmpty()){
                 reptilia_attribute.IN_CNT_ADU = incntaduET.text.toString().toInt()
@@ -854,7 +852,6 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                         reptilia_attribute.SPEC_NM = specnmET.text.toString()
                         reptilia_attribute.FAMI_NM = famiET.text.toString()
                         reptilia_attribute.SCIEN_NM = scienET.text.toString()
-                        reptilia_attribute.ENDANGERED = endangeredTV.text.toString()
 
                         if(incntaduET.text.isNotEmpty()){
                             reptilia_attribute.IN_CNT_ADU = incntaduET.text.toString().toInt()
@@ -1056,7 +1053,6 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             reptilia_attribute.SPEC_NM = specnmET.text.toString()
             reptilia_attribute.FAMI_NM = famiET.text.toString()
             reptilia_attribute.SCIEN_NM = scienET.text.toString()
-            reptilia_attribute.ENDANGERED = endangeredTV.text.toString()
 
             if(incntaduET.text.isNotEmpty()){
                 reptilia_attribute.IN_CNT_ADU = incntaduET.text.toString().toInt()
@@ -1339,6 +1335,11 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         intent.putExtra("title", "양서ㆍ파충류 선택")
         intent.putExtra("table", "Amphibian")
         intent.putExtra("DlgHeight", 600f);
+
+        if (specnmET.text != null && specnmET.text != ""){
+            val SPEC = specnmET.text.toString()
+            intent.putExtra("SPEC",SPEC)
+        }
         startActivityForResult(intent, SET_REPTILIA);
     }
 
@@ -1370,12 +1371,6 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                     var name = data!!.getStringExtra("name");
                     var family_name = data!!.getStringExtra("family_name");
                     var zoological = data!!.getStringExtra("zoological");
-
-                    if(data!!.getStringExtra("code") != null){
-                        val code = data!!.getStringExtra("code")
-
-                        endangeredTV.setText(code)
-                    }
 
                     specnmET.text = name
                     famiET.text = family_name
@@ -1642,7 +1637,6 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         incntaduET.setText("")
         incntlarET.setText("")
         incnteggET.setText("")
-        endangeredTV.setText("")
 
         habriveerET.setText("")
         habedgeET.setText("")

@@ -52,7 +52,11 @@ class DataFloraAdapter(var context: Context, var itemList : ArrayList<Flora_Attr
 
         var Flora_Attribute : Flora_Attribute = getItem(position)
 
-        viewHoldar.class_biotope_item.text = Flora_Attribute.INV_DT  + " / " + Flora_Attribute.INV_TM
+        if (Flora_Attribute.SPEC_NM != null && Flora_Attribute.SPEC_NM != ""){
+            viewHoldar.class_biotope_item.text = Flora_Attribute.INV_DT  + " / " + Flora_Attribute.INV_TM + " / " + Flora_Attribute.SPEC_NM + " / " + Flora_Attribute.COL_IN_CNT.toString()
+        } else {
+            viewHoldar.class_biotope_item.text = Flora_Attribute.INV_DT  + " / " + Flora_Attribute.INV_TM
+        }
 
         return view as View
     }

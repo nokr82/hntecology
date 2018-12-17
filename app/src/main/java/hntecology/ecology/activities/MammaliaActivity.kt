@@ -1649,6 +1649,15 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         intent.putExtra("title", "포유류 선택")
         intent.putExtra("table", "mammal")
         intent.putExtra("DlgHeight", 600f);
+        if (mamspecnmET.text != null && mamspecnmET.text != ""){
+            val spec = mamspecnmET.text.toString()
+            intent.putExtra("SPEC",spec)
+        }
+
+        if (endangeredTV.text != null && endangeredTV.text != ""){
+            val end = endangeredTV.text.toString()
+            intent.putExtra("END",end)
+        }
         startActivityForResult(intent, SET_MAMMAL);
     }
 

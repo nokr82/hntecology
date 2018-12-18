@@ -237,6 +237,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         dbManager = DataBaseHelper(this)
 
         db = dbManager!!.createDataBase()
+
+        isFile()
+
         val dataList: Array<String> = arrayOf("*")
         val data = db!!.query("settings", dataList, null, null, null, null, "id desc", "1")
 
@@ -5915,11 +5918,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 for (idx in 0..(polygonsToUnion.size - 1)) {
                     val polygon = polygonsToUnion.get(idx)
-                    polygon.remove()
 
                     println("-------remove")
 
                     polygons.remove(polygon)
+                    polygon.remove()
                     // allPolygons.remove(polygon)
                 }
 
@@ -5927,6 +5930,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 polygonOptions.fillColor(getColor())
                 polygonOptions.strokeWidth(1.0f)
                 polygonOptions.strokeColor(Color.BLACK)
+
 
                 for(coordinate in unioned.coordinates) {
                     polygonOptions.add(LatLng(coordinate.y, coordinate.x))
@@ -5939,31 +5943,36 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 val test = editingPolygon?.tag as LayerInfo
 
+                polygons.add(editingPolygon!!)
 
-                println("editingPolygon.attrubuteKey ${test.attrubuteKey.toString()} ---------")
+//                val userName =  PrefUtils.getStringPreference(context, "name");
+//                val num = dbManager!!.biotopesNextNum()
+//                var region = ""
+//
+//                var geocoder: Geocoder = Geocoder(context);
+//
+//                var list:List<Address> = geocoder.getFromLocation(editingPolygon?.points!!.get(0).latitude, editingPolygon?.points!!.get(0).longitude, 1);
+//
+//                if(list.size > 0){
+//                    System.out.println("list : " + list);
+//
+//                    region = (list.get(0).getAddressLine(0));
+//                }
+//
+//                var biotopedata = Biotope_attribute("0",test.attrubuteKey,"",region,userName,Utils.todayStr(),Utils.timeStr(),num,"",0.0f,0.0f
+//                        ,"","","",0.0f,"","","","","","","",""
+//                        ,"","","",0.0f,0.0f,0.0f,"","","",0.0f,0.0f,0.0f,""
+//                        ,"","",0.0f,0.0f,"","","",0.0f,0.0f,"","","",""
+//                        ,editingPolygon?.points!!.get(0).latitude,editingPolygon?.points!!.get(0).longitude,"","N","Y")
+//
+//                dbManager!!.insertbiotope_attribute(biotopedata)
+//                exportBiotope()
 
-                val userName =  PrefUtils.getStringPreference(context, "name");
-                val num = dbManager!!.biotopesNextNum()
-                var region = ""
-
-                var geocoder: Geocoder = Geocoder(context);
-
-                var list:List<Address> = geocoder.getFromLocation(editingPolygon?.points!!.get(0).latitude, editingPolygon?.points!!.get(0).longitude, 1);
-
-                if(list.size > 0){
-                    System.out.println("list : " + list);
-
-                    region = (list.get(0).getAddressLine(0));
+                if(typeST.isChecked) {
+                    exportStockMap()
+                } else {
+                    exportBiotope()
                 }
-
-                var biotopedata = Biotope_attribute("0",firstLayerInfo.attrubuteKey,"",region,userName,Utils.todayStr(),Utils.timeStr(),num,"",0.0f,0.0f
-                        ,"","","",0.0f,"","","","","","","",""
-                        ,"","","",0.0f,0.0f,0.0f,"","","",0.0f,0.0f,0.0f,""
-                        ,"","",0.0f,0.0f,"","","",0.0f,0.0f,"","","",""
-                        ,editingPolygon?.points!!.get(0).latitude,editingPolygon?.points!!.get(0).longitude,"","N","Y")
-
-                dbManager!!.insertbiotope_attribute(biotopedata)
-                exportBiotope()
 
                 polygonsToUnion.clear()
 
@@ -6078,26 +6087,26 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         db!!.execSQL(qry)
 
-        val userName =  PrefUtils.getStringPreference(context, "name");
-        val num = dbManager!!.biotopesNextNum()
-        var region = ""
-
-        var geocoder: Geocoder = Geocoder(context);
-
-        var list:List<Address> = geocoder.getFromLocation(po.points.get(0).latitude, po.points.get(0).longitude, 1);
-
-        if(list.size > 0){
-            System.out.println("list : " + list);
-
-            region = (list.get(0).getAddressLine(0));
-        }
-        var biotopedata = Biotope_attribute("0",keyId,"",region,userName,Utils.todayStr(),Utils.timeStr(),num,"",0.0f,0.0f
-                ,"","","",0.0f,"","","","","","","",""
-                ,"","","",0.0f,0.0f,0.0f,"","","",0.0f,0.0f,0.0f,""
-                ,"","",0.0f,0.0f,"","","",0.0f,0.0f,"","","",""
-                ,po.points.get(0).latitude,po.points.get(0).longitude,"","N","Y")
-
-        dbManager!!.insertbiotope_attribute(biotopedata)
+//        val userName =  PrefUtils.getStringPreference(context, "name");
+//        val num = dbManager!!.biotopesNextNum()
+//        var region = ""
+//
+//        var geocoder: Geocoder = Geocoder(context);
+//
+//        var list:List<Address> = geocoder.getFromLocation(po.points.get(0).latitude, po.points.get(0).longitude, 1);
+//
+//        if(list.size > 0){
+//            System.out.println("list : " + list);
+//
+//            region = (list.get(0).getAddressLine(0));
+//        }
+//        var biotopedata = Biotope_attribute("0",keyId,"",region,userName,Utils.todayStr(),Utils.timeStr(),num,"",0.0f,0.0f
+//                ,"","","",0.0f,"","","","","","","",""
+//                ,"","","",0.0f,0.0f,0.0f,"","","",0.0f,0.0f,0.0f,""
+//                ,"","",0.0f,0.0f,"","","",0.0f,0.0f,"","","",""
+//                ,po.points.get(0).latitude,po.points.get(0).longitude,"","N","Y")
+//
+//        dbManager!!.insertbiotope_attribute(biotopedata)
 
     }
 
@@ -6105,7 +6114,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         println("$attrubuteKey deleted..")
 
-        db!!.delete(tableName, "GROP_ID = '$attrubuteKey'", null)
+        if (tableName == "biotopeAttribute"){
+            dbManager!!.deletegrop_biotope(attrubuteKey)
+        } else {
+            dbManager!!.deletegrop_stock(attrubuteKey)
+        }
+
     }
 
     protected fun initGps() {
@@ -6433,7 +6447,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             // copy data
             if(typeST.isChecked) {
                 copyRow("StockMap", oldAttributeKey, newAttributeKey, po)
-                exportBiotope()
+                exportStockMap()
             } else {
                 copyRow("biotopeAttribute", oldAttributeKey, newAttributeKey, po)
                 exportBiotope()
@@ -6489,6 +6503,66 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         })
 
         builder.show();
+    }
+
+
+    fun isFile(){
+        val biotopePath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope" +  File.separator + "biotope.shp")
+
+        if (!biotopePath.exists()) {
+            dbManager!!.deletelayers("biotope")
+        }
+
+        val bridsPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds" + File.separator + "birds.shp")
+        if (!bridsPath.exists()) {
+            dbManager!!. deletelayers("birds")
+        }
+
+        val reptiliaPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "reptilia"  + File.separator + "reptilia.shp")
+        if (!reptiliaPath.exists()) {
+            dbManager!!. deletelayers("reptilia")
+        }
+
+        val mammaliaPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia" + File.separator + "mammalia.shp")
+        if (!mammaliaPath.exists()) {
+            dbManager!!. deletelayers("mammalia")
+        }
+
+        val fishPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish" + File.separator + "fish.shp")
+        if (!fishPath.exists()) {
+            dbManager!!.deletelayers("fish")
+        }
+
+        val insectPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "insect" + File.separator + "insect.shp")
+        if (!insectPath.exists()) {
+            dbManager!!.deletelayers("insect")
+        }
+
+        val floraPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora" + File.separator + "flora.shp")
+        if (!floraPath.exists()) {
+            dbManager!!.deletelayers("flora")
+        }
+
+        val zoobenthosPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "zoobenthos" + File.separator + "zoobenthos.shp")
+        if (!zoobenthosPath.exists()) {
+            dbManager!!.deletelayers("zoobenthos")
+        }
+
+        val flora2Path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora2" + File.separator + "flora2.shp")
+        if (!flora2Path.exists()) {
+            dbManager!!.deletelayers("flora2")
+        }
+
+        val trackingPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tracking" )
+        if (!trackingPath.isDirectory) {
+            dbManager!!.deletelayers("tracking")
+        }
+
+        val stockmapPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "stockmap" + File.separator + "stockmap.shp")
+        if (!stockmapPath.exists()) {
+            dbManager!!.deletelayers("stockmap")
+        }
+
     }
 
 

@@ -295,7 +295,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                 confmodTV.setText(mammal_attribute.CONF_MOD)
 
-                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + mammal_attribute.INV_DT + "." + mammal_attribute.INV_TM + "/imges")
+                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + mammal_attribute.INV_DT + "." + mammal_attribute.INV_TM +"."+mammal_attribute.NUM+ "/imges")
                 val fileList = file.listFiles()
                 val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia/imges/")
                 var tmpfileList = tmpfiles.listFiles()
@@ -685,7 +685,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                             dbManager!!.insertmammal_attribute(mammal_attribute);
 
                             var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-                            sdPath += "/ecology/tmps/" + mammal_attribute.INV_DT +"."+ mammal_attribute.INV_TM + "/imges"
+                            sdPath += "/ecology/tmps/" + mammal_attribute.INV_DT +"."+ mammal_attribute.INV_TM +"."+mammal_attribute.NUM+  "/imges"
                             val mammalia = File(sdPath)
                             mammalia.mkdir();
 //                          sdPath +="/imgs"
@@ -702,7 +702,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                             for(i   in 0..images!!.size-1){
 
-                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + mammal_attribute.INV_DT +"."+ mammal_attribute.INV_TM + "/imges/"
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + mammal_attribute.INV_DT +"."+ mammal_attribute.INV_TM + "."+mammal_attribute.NUM+ "/imges/"
                                 val outputsDir = File(outPath)
 
                                 if (outputsDir.exists()) {
@@ -1168,7 +1168,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 dbManager!!.insertmammal_attribute(mammal_attribute);
 
                 var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-                sdPath += "/ecology/tmps/" + mammal_attribute.INV_DT +"."+ mammal_attribute.INV_TM + "/imges"
+                sdPath += "/ecology/tmps/" + mammal_attribute.INV_DT +"."+ mammal_attribute.INV_TM + "."+mammal_attribute.NUM+ "/imges"
                 val mammalia = File(sdPath)
                 mammalia.mkdir();
 //                          sdPath +="/imgs"
@@ -1185,7 +1185,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                 for(i   in 0..images!!.size-1){
 
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + mammal_attribute.INV_DT +"."+ mammal_attribute.INV_TM + "/imges/"
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + mammal_attribute.INV_DT +"."+ mammal_attribute.INV_TM +"."+mammal_attribute.NUM+  "/imges/"
                     val outputsDir = File(outPath)
 
                     if (outputsDir.exists()) {

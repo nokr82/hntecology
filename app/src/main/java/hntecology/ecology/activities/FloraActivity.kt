@@ -293,7 +293,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                 confmodTV.setText(flora_Attribute.CONF_MOD)
 
-                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + flora_Attribute.INV_DT + "." + flora_Attribute.INV_TM + "/imges")
+                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + flora_Attribute.INV_DT + "." + flora_Attribute.INV_TM +"."+flora_Attribute.NUM+ "/imges")
                 val fileList = file.listFiles()
                 val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "flora/imges/")
                 var tmpfileList = tmpfiles.listFiles()
@@ -670,7 +670,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                             dbManager!!.insertflora_attribute(flora_Attribute);
 
                             var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-                            sdPath += "/ecology/tmps/" + flora_Attribute.INV_DT +"."+ flora_Attribute.INV_TM + "/imges"
+                            sdPath += "/ecology/tmps/" + flora_Attribute.INV_DT +"."+ flora_Attribute.INV_TM +"."+flora_Attribute.NUM+ "/imges"
                             val flora = File(sdPath)
                             flora.mkdir();
 //                          sdPath +="/imgs"
@@ -687,7 +687,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                             for(i   in 0..images!!.size-1){
 
-                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + flora_Attribute.INV_DT +"."+ flora_Attribute.INV_TM + "/imges/"
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + flora_Attribute.INV_DT +"."+ flora_Attribute.INV_TM +"."+flora_Attribute.NUM+ "/imges/"
                                 val outputsDir = File(outPath)
 
                                 if (outputsDir.exists()) {
@@ -1135,7 +1135,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                 dbManager!!.insertflora_attribute(flora_Attribute);
 
                 var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-                sdPath += "/ecology/tmps/" + flora_Attribute.INV_DT +"."+ flora_Attribute.INV_TM + "/imges"
+                sdPath += "/ecology/tmps/" + flora_Attribute.INV_DT +"."+ flora_Attribute.INV_TM +"."+flora_Attribute.NUM+ "/imges"
                 val flora = File(sdPath)
                 flora.mkdir();
 //                          sdPath +="/imgs"
@@ -1152,7 +1152,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                 for(i   in 0..images!!.size-1){
 
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + flora_Attribute.INV_DT +"."+ flora_Attribute.INV_TM + "/imges/"
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + flora_Attribute.INV_DT +"."+ flora_Attribute.INV_TM +"."+flora_Attribute.NUM+ "/imges/"
                     val outputsDir = File(outPath)
 
                     if (outputsDir.exists()) {

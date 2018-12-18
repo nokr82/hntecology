@@ -60,6 +60,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         if (dbExist) {
             // do nothing - database already exist
+
         } else {
 
             // By calling this method and empty database will be created into the default system path
@@ -979,7 +980,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deletelayers(String grop_id) {
+        String query = "DELETE FROM layers WHERE grop_id = '" + grop_id + "'";
 
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
 
 
     public void deletereptilia_attribute(Reptilia_attribute reptilia_attribute,String page) {
@@ -1000,6 +1007,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public void deletebiotope_attribute(Biotope_attribute biotope_attribute,String page) {
         String query = "DELETE FROM biotopeAttribute WHERE id = '" + page + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void deletegrop_biotope(String GROP_ID) {
+        String query = "DELETE FROM biotopeAttribute WHERE GROP_ID = '" + GROP_ID + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void deletegrop_stock(String GROP_ID) {
+        String query = "DELETE FROM StockMap WHERE GROP_ID = '" + GROP_ID + "'";
 
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);

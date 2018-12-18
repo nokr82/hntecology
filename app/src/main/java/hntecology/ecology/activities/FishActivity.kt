@@ -329,7 +329,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                 confmodTV.setText(fish_attribute.CONF_MOD)
 
-                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + fish_attribute.INV_DT + "." + fish_attribute.INV_TM + "/imges")
+                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + fish_attribute.INV_DT + "." + fish_attribute.INV_TM + "."+fish_attribute.NUM+"/imges")
                 val fileList = file.listFiles()
                 val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish/imges/")
                 var tmpfileList = tmpfiles.listFiles()
@@ -787,7 +787,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                             dbmanager!!.insertfish_attribute(fish_attribute);
 
                             var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-                            sdPath += "/ecology/tmps/" + fish_attribute.INV_DT +"."+ fish_attribute.INV_TM + "/imges"
+                            sdPath += "/ecology/tmps/" + fish_attribute.INV_DT +"."+ fish_attribute.INV_TM +"."+fish_attribute.NUM+ "/imges"
                             val fish = File(sdPath)
                             fish.mkdir();
 //                          sdPath +="/imgs"
@@ -804,7 +804,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                             for(i   in 0..images!!.size-1){
 
-                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + fish_attribute.INV_DT +"."+ fish_attribute.INV_TM + "/imges/"
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + fish_attribute.INV_DT +"."+ fish_attribute.INV_TM + "."+fish_attribute.NUM+"/imges/"
                                 val outputsDir = File(outPath)
 
                                 if (outputsDir.exists()) {
@@ -1289,7 +1289,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 dbmanager!!.insertfish_attribute(fish_attribute);
 
                 var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-                sdPath += "/ecology/tmps/" + fish_attribute.INV_DT +"."+ fish_attribute.INV_TM + "/imges"
+                sdPath += "/ecology/tmps/" + fish_attribute.INV_DT +"."+ fish_attribute.INV_TM + "."+fish_attribute.NUM+"/imges"
                 val fish = File(sdPath)
                 fish.mkdir();
 //                          sdPath +="/imgs"
@@ -1306,7 +1306,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                 for(i   in 0..images!!.size-1){
 
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + fish_attribute.INV_DT +"."+ fish_attribute.INV_TM + "/imges/"
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "tmps/" + fish_attribute.INV_DT +"."+ fish_attribute.INV_TM +"."+fish_attribute.NUM+ "/imges/"
                     val outputsDir = File(outPath)
 
                     if (outputsDir.exists()) {

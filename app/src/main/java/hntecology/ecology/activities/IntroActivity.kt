@@ -72,7 +72,8 @@ class IntroActivity : Activity() {
     }
 
     private fun toLogin() {
-        PrefUtils.clear(context)
+//        PrefUtils.clear(context)
+        PrefUtils.removePreference(context, "name")
 
         val intent = Intent(context, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

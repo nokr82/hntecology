@@ -76,6 +76,19 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="left|center" />
+                <TextView
+                    style="@style/BiotopeTextView"
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    android:text="프로젝트" />
+
+                <EditText
+                    android:id="@+id/prjnameET"
+                    style="@style/BiotopeTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="left|center" />
             </LinearLayout>
 
             <LinearLayout
@@ -240,6 +253,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:text="1"
                     android:gravity="center" />
             </LinearLayout>
 
@@ -502,7 +516,7 @@
                         android:layout_width="70dp"
                         android:layout_height="match_parent"
                         android:text="추가"
-                        android:id="@+id/btnPIC_FOLDER"
+                        android:id="@+id/btnbPIC_FOLDER"
                         style="@style/dlgcommonButton"
                         />
                 </LinearLayout>

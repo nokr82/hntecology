@@ -31,7 +31,7 @@ class LoginActivity : Activity() {
         this.context = this
 
         window.setGravity(Gravity.CENTER);
-        window.setLayout(Utils.dpToPx(600f).toInt(), Utils.dpToPx(400f).toInt());
+        window.setLayout(Utils.dpToPx(600f).toInt(), Utils.dpToPx(440f).toInt());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, MainActivity.WRITE_EXTERNAL_STORAGE)
@@ -42,6 +42,10 @@ class LoginActivity : Activity() {
             copyAllData()
         }
 
+        if (PrefUtils.getStringPreference(context, "prjname") != null){
+            val prjname = PrefUtils.getStringPreference(context, "prjname");
+            prjnameET.setText(prjname)
+        }
 
         doneTV.setOnClickListener {
 
@@ -50,15 +54,26 @@ class LoginActivity : Activity() {
 
                 Toast.makeText(this, "이름을 입력해 주세요", Toast.LENGTH_LONG).show()
 
-            } else {
+                return@setOnClickListener
 
-                val intent: Intent = Intent(this, MainActivity::class.java);
-
-                PrefUtils.setPreference(this, "name", getName);
-
-                startActivity(intent)
-                finish()
             }
+
+            val prjname:String = prjnameET.text.toString()
+
+            if (prjname == "" || prjname == null) {
+                Toast.makeText(this, "프로젝트 이름을 입력해 주세요", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+
+
+            val intent: Intent = Intent(this, MainActivity::class.java);
+
+            PrefUtils.setPreference(this, "name", getName);
+            PrefUtils.setPreference(this,"prjname",prjname)
+
+            startActivity(intent)
+            finish()
 
         }
     }

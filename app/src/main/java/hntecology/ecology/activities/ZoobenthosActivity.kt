@@ -127,15 +127,23 @@ class ZoobenthosActivity : Activity() {
         images_url = ArrayList()
 
         userName = PrefUtils.getStringPreference(context, "name");
+        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+
+        var todays = today.split("-")
+
+        var texttoday = ""
+
+        for (i in 0 until todays.size){
+            texttoday += todays.get(i)
+        }
+
+        numTV.setText(texttoday + "1")
 
         invpersonTV.setText(userName)
 
         dbManager = DataBaseHelper(this)
 
         db = dbManager!!.createDataBase();
-
-        val num = dbManager!!.zoobenthosNextNum()
-        numTV.setText(num.toString())
 
         var intent: Intent = getIntent();
 
@@ -430,6 +438,7 @@ class ZoobenthosActivity : Activity() {
                         , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
                         , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55))
 
+                prjnameET.setText(zoo.PRJ_NAME)
                 invregionTV.setText(zoo.INV_REGION)
                 numTV.setText(zoo.NUM)
                 invmeanTV.setText(zoo.INV_MEAN)
@@ -494,12 +503,12 @@ class ZoobenthosActivity : Activity() {
 
                 val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + zoo.INV_DT + "." + zoo.INV_TM + "/imges")
                 val fileList = file.listFiles()
-                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "zoobenthos/imges/")
+                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/zoobenthos/imges/")
                 var tmpfileList = tmpfiles.listFiles()
 
                 if (fileList != null) {
                     for (i in 0..fileList.size - 1) {
-                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "zoobenthos/imges/"
+                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/zoobenthos/imges/"
                         val outputsDir = File(outPath)
 
                         if (outputsDir.exists()) {
@@ -519,7 +528,7 @@ class ZoobenthosActivity : Activity() {
                         }
 
                         val tmpfile = fileList.get(i)
-                        val tmpfile2 = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/zoobenthos/imges", pk + "_" + (i + 1) + ".png")
+                        val tmpfile2 = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/zoobenthos/imges", zoo.NUM.toString() + "_"+zoo.INV_TM+"_" + (i + 1) + ".png")
 
                         if (tmpfile.exists()) {
                             tmpfile.renameTo(tmpfile2)
@@ -554,7 +563,7 @@ class ZoobenthosActivity : Activity() {
 
                         for (j in 0..tmpfileList.size - 1) {
 
-                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/zoobenthos/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/zoobenthos/imges/" + zoo.NUM.toString() + "_"+zoo.INV_TM+"_" + (j + 1) + ".png")) {
                                 val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
                                 val v = View.inflate(context, R.layout.item_add_image, null)
                                 val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
@@ -567,6 +576,10 @@ class ZoobenthosActivity : Activity() {
                                 }
                             }
                         }
+                    }
+                    if (file.isDirectory){
+                        val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + zoo.INV_DT + "." + zoo.INV_TM + "."+zoo.NUM)
+                        path.deleteRecursively()
                     }
                 }
             }
@@ -588,10 +601,8 @@ class ZoobenthosActivity : Activity() {
 
                         keyId = intent.getStringExtra("GROP_ID")
 
-                        println("zoooooooooooo$keyId")
-
                         zoobenthos_Attribute.GROP_ID = keyId
-                        zoobenthos_Attribute.PRJ_NAME = ""
+                        zoobenthos_Attribute.PRJ_NAME = prjnameET.text.toString()
                         zoobenthos_Attribute.INV_REGION = invregionTV.text.toString()
                         zoobenthos_Attribute.INV_MEAN = invmeanTV.text.toString()
                         zoobenthos_Attribute.INV_PERSON = invpersonTV.text.toString()
@@ -706,7 +717,7 @@ class ZoobenthosActivity : Activity() {
                                 dbManager!!.updatezoobenthous_attribute(zoobenthos_Attribute, pk)
                             }
 
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "zoobenthos/imges/")
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/zoobenthos/imges/")
                             val pathdir = path.listFiles()
 
                             if (pathdir != null) {
@@ -714,7 +725,7 @@ class ZoobenthosActivity : Activity() {
 
                                     for (j in 0..pathdir.size - 1) {
 
-                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/zoobenthos/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/zoobenthos/imges/" + zoobenthos_Attribute.NUM.toString() + "_"+zoobenthos_Attribute.INV_TM+"_" + (j + 1) + ".png")) {
 
                                             pathdir.get(i).canonicalFile.delete()
 
@@ -726,7 +737,7 @@ class ZoobenthosActivity : Activity() {
 
                             for (i in 0..images!!.size - 1) {
 
-                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "zoobenthos/imges/"
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/zoobenthos/imges/"
                                 val outputsDir = File(outPath)
 
                                 if (outputsDir.exists()) {
@@ -745,7 +756,7 @@ class ZoobenthosActivity : Activity() {
                                     println("made : $made")
                                 }
 
-                                saveVitmapToFile(images!!.get(i), outPath + pk + "_" + (i + 1) + ".png")
+                                saveVitmapToFile(images!!.get(i), outPath + zoobenthos_Attribute.NUM.toString() + "_"+zoobenthos_Attribute.INV_TM+"_" + (i + 1) + ".png")
 
                             }
 
@@ -827,7 +838,7 @@ class ZoobenthosActivity : Activity() {
 
                             if (pk != null) {
 
-                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "zoobenthos/imges/")
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/zoobenthos/imges/")
                                 val pathdir = path.listFiles()
 
                                 if (pathdir != null) {
@@ -835,7 +846,7 @@ class ZoobenthosActivity : Activity() {
 
                                         for (j in 0..pathdir.size - 1) {
 
-                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/zoobenthos/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/zoobenthos/imges/" + zoobenthos_Attribute.NUM.toString() + "_"+zoobenthos_Attribute.INV_TM+"_" + (j + 1) + ".png")) {
 
                                                 pathdir.get(i).canonicalFile.delete()
 
@@ -1027,7 +1038,7 @@ class ZoobenthosActivity : Activity() {
             println("zoooooooooooo$keyId")
 
             zoobenthos_Attribute.GROP_ID = keyId
-            zoobenthos_Attribute.PRJ_NAME = ""
+            zoobenthos_Attribute.PRJ_NAME = prjnameET.text.toString()
             zoobenthos_Attribute.INV_REGION = invregionTV.text.toString()
             zoobenthos_Attribute.INV_MEAN = invmeanTV.text.toString()
             zoobenthos_Attribute.INV_PERSON = invpersonTV.text.toString()
@@ -1141,7 +1152,7 @@ class ZoobenthosActivity : Activity() {
                     dbManager!!.updatezoobenthous_attribute(zoobenthos_Attribute, pk)
                 }
 
-                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "zoobenthos/imges/")
+                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/zoobenthos/imges/")
                 val pathdir = path.listFiles()
 
                 if (pathdir != null) {
@@ -1149,7 +1160,7 @@ class ZoobenthosActivity : Activity() {
 
                         for (j in 0..pathdir.size - 1) {
 
-                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/zoobenthos/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/zoobenthos/imges/" +zoobenthos_Attribute.NUM.toString() + "_"+zoobenthos_Attribute.INV_TM+"_" + (j + 1) + ".png")) {
 
                                 pathdir.get(i).canonicalFile.delete()
 
@@ -1161,7 +1172,7 @@ class ZoobenthosActivity : Activity() {
 
                 for (i in 0..images!!.size - 1) {
 
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "zoobenthos/imges/"
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/zoobenthos/imges/"
                     val outputsDir = File(outPath)
 
                     if (outputsDir.exists()) {
@@ -1180,7 +1191,7 @@ class ZoobenthosActivity : Activity() {
                         println("made : $made")
                     }
 
-                    saveVitmapToFile(images!!.get(i), outPath + pk + "_" + (i + 1) + ".png")
+                    saveVitmapToFile(images!!.get(i), outPath + zoobenthos_Attribute.NUM.toString() + "_"+zoobenthos_Attribute.INV_TM+"_" + (i + 1) + ".png")
 
                 }
 
@@ -1718,8 +1729,12 @@ class ZoobenthosActivity : Activity() {
                         val file_name = paths.get(paths.size - 1)
                         val getPk = file_name.split("_")
                         val pathPk = getPk.get(0)
+                        val pathPk2 = getPk.get(1)
+                        val num = numTV.text.toString()
+                        val invtm = timeTV.text.toString()
 
-                        if (pathPk == pk) {
+
+                        if (pathPk == num && pathPk2 == invtm){
                             val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
                             if (images!!.size == 0) {
                                 images!!.add(add_file)
@@ -1770,8 +1785,11 @@ class ZoobenthosActivity : Activity() {
                         val file_name = paths.get(paths.size - 1)
                         val getPk = file_name.split("_")
                         val pathPk = getPk.get(0)
+                        val pathPk2 = getPk.get(1)
+                        val num = numTV.text.toString()
+                        val invtm = timeTV.text.toString()
 
-                        if (pathPk == pk) {
+                        if (pathPk == num && pathPk2 == invtm){
                             val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
                             if (images!!.size == 0) {
                                 images!!.add(add_file)
@@ -1797,10 +1815,12 @@ class ZoobenthosActivity : Activity() {
 
     fun clear() {
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-        val db = dbManager.createDataBase()
-        val num = dbManager.zoobenthosNextNum()
-        numTV.setText(num.toString())
+        var num = numTV.text.toString()
+        var textnum = num.substring(num.length -1,num.length)
+        var splitnum = num.substring(0,num.length -1 )
+        var plusnum = textnum.toInt() + 1
+        numTV.setText(splitnum.toString() + plusnum.toString())
+
         addPicturesLL!!.removeAllViews()
 
         timeTV.setText("")

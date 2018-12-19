@@ -65,6 +65,7 @@ class DlgDataListActivity : Activity() {
     var GROP_ID:String = ""
     var markerid:String? = null
     var polygonid:String? = null
+    var landuse:String? = null
 
     val BIOTOPE = 1
     val BIRDS = 2
@@ -135,12 +136,17 @@ class DlgDataListActivity : Activity() {
             polygonid = intent.getStringExtra("polygonid")
         }
 
+        if (intent.getIntExtra("landuse",0) != null){
+            val num = intent.getIntExtra("landuse",0)
+            landuse = num.toString()
+        }
+
         if(tableName.equals("biotopeAttribute")) {
 
             val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_PERSON","INV_DT","INV_TM","INV_INDEX","LU_GR_NUM","LU_TY_RATE","STAND_H","LC_GR_NUM","LC_TY","TY_MARK"
                     ,"GV_RATE" ,"GV_STRUCT" ,"DIS_RET" ,"RESTOR_POT" ,"COMP_INTA" ,"VP_INTA" ,"IMP_FORM" ,"BREA_DIA" ,"FIN_EST" ,"TRE_SPEC","TRE_FAMI" ,"TRE_SCIEN","TRE_H","TRE_BREA"
                     ,"TRE_COVE","STRE_SPEC","STRE_FAMI","STRE_SCIEN","STRE_H","STRE_BREA","STRE_COVE","SHR_SPEC","SHR_FAMI","SHR_SCIEN","SHR_H","STR_COVE","HER_SPEC","HER_FAMI"
-                    ,"HER_SCIEN","HER_H","HER_COVE","PIC_FOLDER","WILD_ANI","BIOTOP_POT","UNUS_NOTE","GPS_LAT","GPS_LON","NEED_CONF","CONF_MOD","TEMP_YN");
+                    ,"HER_SCIEN","HER_H","HER_COVE","PIC_FOLDER","WILD_ANI","BIOTOP_POT","UNUS_NOTE","GPS_LAT","GPS_LON","NEED_CONF","CONF_MOD","TEMP_YN","LANDUSE");
 
             val biotopsdata=  db!!.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
 
@@ -305,7 +311,9 @@ class DlgDataListActivity : Activity() {
                 intent!!.putExtra("id", biotopedata.id.toString())
                 intent.putExtra("set",3)
                 intent!!.putExtra("GROP_ID",biotopedata.GROP_ID)
-
+                if (landuse != null) {
+                    intent!!.putExtra("landuse", landuse)
+                }
                 println("gropid_-------------------------------------------------------------${biotopedata.GROP_ID} ----")
                 intent!!.putExtra("polygonid",polygonid)
 
@@ -454,6 +462,9 @@ class DlgDataListActivity : Activity() {
                 intent!!.putExtra("GROP_ID",stockdata.GROP_ID)
                 intent.putExtra("export", 70)
                 intent!!.putExtra("polygonid",polygonid)
+                if (landuse != null) {
+                    intent!!.putExtra("landuse", landuse)
+                }
 
                 startActivityForResult(intent, STOCKMAP_DATA)
 
@@ -480,7 +491,7 @@ class DlgDataListActivity : Activity() {
             , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
             , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
             , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
-            , data.getDouble(50), data.getString(51), data.getString(52),data.getString(53))
+            , data.getDouble(50), data.getString(51), data.getString(52),data.getString(53),data.getString(54))
 
             listdata.add(model)
         }
@@ -620,7 +631,7 @@ class DlgDataListActivity : Activity() {
             model = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                     data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                    , data.getString(22))
+                    , data.getString(22),data.getString(23))
 
             listdata.add(model)
 

@@ -41,6 +41,7 @@ import io.nlopez.smartlocation.SmartLocation
 import io.nlopez.smartlocation.location.config.LocationAccuracy
 import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
+import kotlinx.android.synthetic.main.activity_biotope.*
 import kotlinx.android.synthetic.main.activity_birds.*
 import java.io.File
 import java.io.FileOutputStream
@@ -111,7 +112,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
     var markerid : String? = null
 
-
     var dbManager: DataBaseHelper? = null
 
     private var db: SQLiteDatabase? = null
@@ -140,15 +140,24 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         invDtTV.text = today;
         timeTV.text = time;
 
+        var todays = today.split("-")
+
+        var texttoday = ""
+
+        for (i in 0 until todays.size){
+            texttoday += todays.get(i)
+        }
+
+        numTV.setText(texttoday + "1")
+
         userName = PrefUtils.getStringPreference(context, "name");
         invPersonTV.text = userName;
+
+        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
 
         dbManager = DataBaseHelper(this)
 
         db = dbManager!!.createDataBase();
-
-        val num = dbManager!!.birdsNextNum()
-        numTV.setText(num.toString())
 
         var intent: Intent = getIntent();
 
@@ -298,6 +307,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                 numTV.setText(birds_attribute.NUM.toString())
 
+                prjnameET.setText(birds_attribute.PRJ_NAME)
+
                 birdsTV.setText(birds_attribute.SPEC_NM)
                 familyNameTV.setText(birds_attribute.FAMI_NM)
                 zoologicalTV.setText(birds_attribute.SCIEN_NM)
@@ -341,12 +352,12 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + birds_attribute.INV_DT + "." + birds_attribute.INV_TM + "."+birds_attribute.NUM+ "/imges")
                 val fileList = file.listFiles()
                 val pk = birds_attribute.id
-                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds/imges/")
+                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/birds/imges/")
                 var tmpfileList = tmpfiles.listFiles()
 
                 if (fileList != null) {
                     for (i in 0..fileList.size - 1) {
-                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds/imges/"
+                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/birds/imges/"
                         val outputsDir = File(outPath)
 
                         if (outputsDir.exists()) {
@@ -366,13 +377,15 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         }
 
                         val tmpfile = fileList.get(i)
-                        val tmpfile2 = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/birds/imges" ,   pk +"_" + (i+1) + ".png")
+                        val num = birds_attribute.NUM.toString()
+                        val tmpfile2 = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/birds/imges" ,   num + "_" + birds_attribute.INV_TM +"_" + (i+1) + ".png")
 
                         if(tmpfile.exists()){
                             tmpfile.renameTo(tmpfile2)
                         }
 
                         tmpfileList = tmpfiles.listFiles()
+
 
                     }
                 }
@@ -403,7 +416,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         for(j in 0..tmpfileList.size - 1) {
 
-                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/birds/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/birds/imges/" +birds_attribute.NUM.toString() + "_" + birds_attribute.INV_TM +"_" + (j+1) + ".png")) {
                                 val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
                                 val v = View.inflate(context, R.layout.item_add_image, null)
                                 val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
@@ -421,7 +434,14 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                 data.close()
 
+                if (file.isDirectory){
+                    val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + birds_attribute.INV_DT + "." + birds_attribute.INV_TM + "."+birds_attribute.NUM)
+                    path.deleteRecursively()
+                }
+
             }
+
+
 
         }
 
@@ -484,7 +504,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         birds_attribute.GROP_ID = keyId
 
-                        birds_attribute.PRJ_NAME = ""
+                        birds_attribute.PRJ_NAME = prjnameET.text.toString()
 
                         birds_attribute.INV_REGION = invRegionET.text.toString()
 
@@ -560,7 +580,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                                 dbManager!!.updatebirds_attribute(birds_attribute,pk)
                             }
 
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds/imges/")
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "birds/imges/")
                             val pathdir = path.listFiles()
 
                             if(pathdir != null) {
@@ -568,7 +588,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                                     for(j in 0..pathdir.size-1) {
 
-                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/birds/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/birds/imges/" + birds_attribute.NUM.toString() + "_" + birds_attribute.INV_TM +"_" + (j+1) + ".png")) {
 
                                             pathdir.get(i).canonicalFile.delete()
 
@@ -580,7 +600,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                             for(i   in 0..images!!.size-1){
 
-                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds/imges/"
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "birds/imges/"
                                 val outputsDir = File(outPath)
 
                                 if (outputsDir.exists()) {
@@ -599,7 +619,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                                     println("made : $made")
                                 }
 
-                                saveVitmapToFile(images!!.get(i),outPath+pk+"_"+(i+1)+".png")
+                                saveVitmapToFile(images!!.get(i),outPath+birds_attribute.NUM.toString() + "_" + birds_attribute.INV_TM +"_" + (i+1) + ".png")
 
                             }
 
@@ -688,7 +708,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                                         for (j in 0..pathdir.size - 1) {
 
-                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/birds/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/birds/imges/" + birds_attribute.NUM.toString() + "_" + birds_attribute.INV_TM +"_" + (i+1) + ".png")) {
 
                                                 pathdir.get(i).canonicalFile.delete()
 
@@ -926,7 +946,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
             birds_attribute.GROP_ID = keyId
 
-            birds_attribute.PRJ_NAME = ""
+            birds_attribute.PRJ_NAME = prjnameET.text.toString()
 
             birds_attribute.INV_REGION = invRegionET.text.toString()
 
@@ -1010,7 +1030,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         for(j in 0..pathdir.size-1) {
 
-                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/birds/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/birds/imges/" + birds_attribute.NUM.toString() + "_" + birds_attribute.INV_TM +"_" + (i+1) + ".png")) {
 
                                 pathdir.get(i).canonicalFile.delete()
 
@@ -1023,7 +1043,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                 for(i   in 0..images!!.size-1){
 
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds/imges/"
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "birds/imges/"
                     val outputsDir = File(outPath)
 
                     if (outputsDir.exists()) {
@@ -1042,7 +1062,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         println("made : $made")
                     }
 
-                    saveVitmapToFile(images!!.get(i),outPath+pk+"_"+(i+1)+".png")
+                    saveVitmapToFile(images!!.get(i),outPath+birds_attribute.NUM.toString() + "_" + birds_attribute.INV_TM +"_" + (i+1) + ".png")
 
                 }
 
@@ -1142,7 +1162,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             startActivityForResult(intent, SET_DATA4);
         }
 
-        btnPIC_FOLDER.setOnClickListener {
+        btnbPIC_FOLDER.setOnClickListener {
 
             var ListItems: List<String>
             ListItems = ArrayList();
@@ -1637,8 +1657,14 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         val file_name = paths.get(paths.size - 1)
                         val getPk = file_name.split("_")
                         val pathPk = getPk.get(0)
+                        println("getPk {$getPk}")
+                        val pathPk2 = getPk.get(1)
+                        val num = numTV.text.toString()
+                        val invtm = timeTV.text.toString()
 
-                        if (pathPk == pk){
+                        println("-----pathpk2$pathPk2")
+
+                        if (pathPk == num && pathPk2 == invtm){
                                 val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
                                 if (images!!.size == 0) {
                                     images!!.add(add_file)
@@ -1689,8 +1715,13 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         val file_name = paths.get(paths.size - 1)
                         val getPk = file_name.split("_")
                         val pathPk = getPk.get(0)
+                        val pathPk2 = getPk.get(1)
+                        val num = numTV.text.toString()
+                        val invtm = timeTV.text.toString()
 
-                        if (pathPk == pk){
+                        println("-----pathpk2$pathPk2")
+
+                        if (pathPk == num && pathPk2 == invtm){
                             val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
                             if (images!!.size == 0) {
                                 images!!.add(add_file)
@@ -1736,11 +1767,11 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
     }
 
     fun clear(){
-
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-        val db = dbManager.createDataBase()
-        val num = dbManager.birdsNextNum()
-        numTV.setText(num.toString())
+        var num = numTV.text.toString()
+        var textnum = num.substring(num.length -1,num.length)
+        var splitnum = num.substring(0,num.length -1 )
+        var plusnum = textnum.toInt() + 1
+        numTV.setText(splitnum.toString() + plusnum.toString())
 
         timeTV.setText("")
 
@@ -1787,7 +1818,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 invRegionET.setText("")
             }
 
-            birds_attribute.PRJ_NAME = ""
+            birds_attribute.PRJ_NAME = prjnameET.text.toString()
 
             invDtTV.setText(birds_attribute.INV_DT)
             if(invDtTV.text == null){

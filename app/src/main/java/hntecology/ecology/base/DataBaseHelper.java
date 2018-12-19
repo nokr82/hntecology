@@ -146,7 +146,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 //        InputStream myInput = myContext.getAssets().open(DB_NAME);
 //        InputStream myInput = myContext.getAssets().open(DB_NAME);
 
-        File path = myContext.getDatabasePath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "ecology.db");
+        File path = myContext.getDatabasePath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "source" + File.separator + "ecology.db");
         InputStream myInput = new FileInputStream(path);
 
         System.out.println("open--------------------------");
@@ -201,63 +201,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query = "create table if not exists ";
-        query += "biotopeAttribute ( id String PRIMARY KEY";
-        query += ",GROP_ID	   String";
-        query += ",PRJ_NAME	   String";
-        query += ",INV_REGION	String";
-        query += ",INV_PERSON	String";
-        query += ",INV_DT	    String";
-        query += ",INV_TM	    String";
-        query += ",INV_INDEX	INTEGER";
-        query += ",LU_GR_NUM	String";
-        query += ",LU_TY_RATE	Float";
-        query += ",STAND_H	    Float";
-        query += ",LC_GR_NUM	String";
-        query += ",LC_TY	    String";
-        query += ",TY_MARK	    String";
-        query += ",GV_RATE	    Float";
-        query += ",GV_STRUCT	String";
-        query += ",DIS_RET	    String";
-        query += ",RESTOR_POT	String";
-        query += ",COMP_INTA	String";
-        query += ",VP_INTA	    String";
-        query += ",IMP_FORM	String";
-        query += ",BREA_DIA	String";
-        query += ",FIN_EST	    String";
-        query += ",TRE_SPEC	String";
-        query += ",TRE_FAMI	String";
-        query += ",TRE_SCIEN	String";
-        query += ",TRE_H	    Float";
-        query += ",TRE_BREA	Float";
-        query += ",TRE_COVE	Float";
-        query += ",STRE_SPEC	String";
-        query += ",STRE_FAMI	String";
-        query += ",STRE_SCIEN	String";
-        query += ",STRE_H	    Float";
-        query += ",STRE_BREA	Float";
-        query += ",STRE_COVE	Float";
-        query += ",SHR_SPEC	String";
-        query += ",SHR_FAMI	String";
-        query += ",SHR_SCIEN	String";
-        query += ",SHR_H	    Float";
-        query += ",STR_COVE	Float";
-        query += ",HER_SPEC	String";
-        query += ",HER_FAMI	String";
-        query += ",HER_SCIEN	String";
-        query += ",HER_H	    Float";
-        query += ",HER_COVE	Float";
-        query += ",PIC_FOLDER	String";
-        query += ",WILD_ANI	String";
-        query += ",BIOTOP_POT	String";
-        query += ",UNUS_NOTE	String";
-        query += ",GPS_LAT	    Float";
-        query += ",GPS_LON	    Float";
-        query += ",NEED_CONF	String";
-        query += ",CONF_MOD	String";
-        query += ",TEMP_YN String";
-        query += ");";
-        db.execSQL(query);
+
 
 
         String querybrids = "create table if not exists ";
@@ -436,7 +380,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO biotopeAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,INV_INDEX,LU_GR_NUM,LU_TY_RATE,STAND_H,LC_GR_NUM,LC_TY,TY_MARK,GV_RATE,GV_STRUCT,DIS_RET,RESTOR_POT,COMP_INTA";
         query += ",VP_INTA,IMP_FORM,BREA_DIA,FIN_EST,TRE_SPEC,TRE_FAMI,TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_H,STRE_BREA,STRE_COVE,SHR_SPEC,SHR_FAMI";
-        query += ",SHR_SCIEN,SHR_H,STR_COVE,HER_SPEC,HER_FAMI,HER_SCIEN,HER_H,HER_COVE,PIC_FOLDER,WILD_ANI,BIOTOP_POT,UNUS_NOTE,GPS_LAT,GPS_LON,NEED_CONF,CONF_MOD,TEMP_YN)";
+        query += ",SHR_SCIEN,SHR_H,STR_COVE,HER_SPEC,HER_FAMI,HER_SCIEN,HER_H,HER_COVE,PIC_FOLDER,WILD_ANI,BIOTOP_POT,UNUS_NOTE,GPS_LAT,GPS_LON,NEED_CONF,CONF_MOD,TEMP_YN,LANDUSE)";
 
 
         query += " values (";
@@ -493,6 +437,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + biotope_attribute.getNEED_CONF() + "'";
         query += ", '" + biotope_attribute.getCONF_MOD() + "'";
         query += ", '" + biotope_attribute.getTEMP_YN() + "'";
+        query += ", '" + biotope_attribute.getLANDUSE() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -948,7 +893,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void insertstockmap(StockMap StockMap){
         String query = "INSERT INTO StockMap";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,NUM,FRTP_CD,KOFTR_GROUP_CD,STORUNST_CD,FROR_CD,DMCLS_CD";
-        query += ",AGCLS_CD,DNST_CD,HEIGHT,LDMARK_STNDA_CD,MAP_LABEL,MAP_LABEL2,ETC_PCMTT,GPS_LAT,GPS_LON,CONF_MOD)";
+        query += ",AGCLS_CD,DNST_CD,HEIGHT,LDMARK_STNDA_CD,MAP_LABEL,MAP_LABEL2,ETC_PCMTT,GPS_LAT,GPS_LON,CONF_MOD,LANDUSE)";
 
         query += " values (";
         query += " '" + StockMap.getGROP_ID() + "'";
@@ -973,6 +918,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + StockMap.getGPS_LAT() + "'";
         query += ", '" + StockMap.getGPS_LON() + "'";
         query += ", '" + StockMap.getCONF_MOD() + "'";
+        query += ", '" + StockMap.getLANDUSE() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -1246,7 +1192,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",GPS_LON=" + biotope_attribute.getGPS_LON() + ""
                 + ",NEED_CONF='" + biotope_attribute.getNEED_CONF() + "'"
                 + ",CONF_MOD='" + biotope_attribute.getCONF_MOD() + "'"
-                + ",TEMP_YN='" + biotope_attribute.getTEMP_YN() + "'"+
+                + ",TEMP_YN='" + biotope_attribute.getTEMP_YN() + "'"
+                + ",LANDUSE='" + biotope_attribute.getLANDUSE() + "'"+
                 "where id = '" + page + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1679,6 +1626,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 num = cursor.getInt(0);
             }
         }
+
         cursor.close();
         return num;
     }

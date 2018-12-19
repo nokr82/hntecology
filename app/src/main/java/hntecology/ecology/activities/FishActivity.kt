@@ -122,6 +122,21 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         //this.setFinishOnTouchOutside(true);
 
         userName = PrefUtils.getStringPreference(context, "name");
+        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+
+        var today = Utils.todayStr();
+        val time = Utils.timeStr()
+        fishinvtmTV.setText(time)
+
+        var todays = today.split("-")
+
+        var texttoday = ""
+
+        for (i in 0 until todays.size){
+            texttoday += todays.get(i)
+        }
+
+        fishnumTV.setText(texttoday + "1")
 
         addPicturesLL = findViewById(R.id.addPicturesLL)
 
@@ -255,6 +270,9 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 fishinvregionET.setText(fish_attribute.INV_REGION)
                 fishinvdtET.setText(fish_attribute.INV_DT)
                 fishinvpersonET.setText(fish_attribute.INV_PERSON)
+                fishinvtmTV.setText(fish_attribute.INV_TM)
+
+                prjnameET.setText(fish_attribute.PRJ_NAME)
 
                 fishweatherET.setText(fish_attribute.WEATHER)
                 fishwindET.setText(fish_attribute.WIND)
@@ -331,12 +349,12 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                 val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + fish_attribute.INV_DT + "." + fish_attribute.INV_TM + "."+fish_attribute.NUM+"/imges")
                 val fileList = file.listFiles()
-                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish/imges/")
+                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/fish/imges/")
                 var tmpfileList = tmpfiles.listFiles()
 
                 if (fileList != null) {
                     for (i in 0..fileList.size - 1) {
-                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish/imges/"
+                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/fish/imges/"
                         val outputsDir = File(outPath)
 
                         if (outputsDir.exists()) {
@@ -356,7 +374,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         }
 
                         val tmpfile = fileList.get(i)
-                        val tmpfile2 = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/fish/imges" ,   pk +"_" + (i+1) + ".png")
+                        val tmpfile2 = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/fish/imges" ,   fish_attribute.NUM.toString() +"_"+fish_attribute.INV_TM +"_" + (i+1) + ".png")
 
                         if(tmpfile.exists()){
                             tmpfile.renameTo(tmpfile2)
@@ -391,7 +409,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                         for(j in 0..tmpfileList.size - 1) {
 
-                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/fish/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/fish/imges/" + fish_attribute.NUM.toString() +"_"+fish_attribute.INV_TM +"_" + (j+1) + ".png")) {
                                 val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
                                 val v = View.inflate(context, R.layout.item_add_image, null)
                                 val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
@@ -405,6 +423,10 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                             }
                         }
                     }
+                }
+                if (file.isDirectory){
+                    val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + fish_attribute.INV_DT + "." + fish_attribute.INV_TM + "."+fish_attribute.NUM)
+                    path.deleteRecursively()
                 }
 
             }
@@ -489,7 +511,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             fish_attribute.GROP_ID = keyId
 
-            fish_attribute.PRJ_NAME = ""
+            fish_attribute.PRJ_NAME = prjnameET.text.toString()
 
             fish_attribute.INV_REGION = fishinvregionET.text.toString()
             fish_attribute.INV_DT = fishinvdtET.text.toString()
@@ -632,13 +654,13 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                         fish_attribute.GROP_ID = keyId
 
-                        fish_attribute.PRJ_NAME = ""
+                        fish_attribute.PRJ_NAME = prjnameET.text.toString()
 
                         fish_attribute.INV_REGION = fishinvregionET.text.toString()
 
                         fish_attribute.INV_DT = Utils.todayStr()
 
-                        fish_attribute.INV_TM = Utils.timeStr()
+                        fish_attribute.INV_TM = fishinvtmTV.text.toString()
 
                         fish_attribute.INV_PERSON = fishinvpersonET.text.toString()
 
@@ -737,7 +759,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                                 dbmanager!!.updatefish_attribute(fish_attribute,pk)
                             }
 
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish/imges/")
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/fish/imges/")
                             val pathdir = path.listFiles()
 
                             if(pathdir != null) {
@@ -745,7 +767,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                                     for(j in 0..pathdir.size-1) {
 
-                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/fish/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/fish/imges/" +  fish_attribute.NUM.toString() +"_"+fish_attribute.INV_TM +"_" + (j+1) + ".png")) {
 
                                             pathdir.get(i).canonicalFile.delete()
 
@@ -759,7 +781,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                             for(i   in 0..images!!.size-1){
 
-                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish/imges/"
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/fish/imges/"
                                 val outputsDir = File(outPath)
 
                                 if (outputsDir.exists()) {
@@ -778,7 +800,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                                     println("made : $made")
                                 }
 
-                                saveVitmapToFile(images!!.get(i),outPath+pk+"_"+(i+1)+".png")
+                                saveVitmapToFile(images!!.get(i),outPath+ fish_attribute.NUM.toString() +"_"+fish_attribute.INV_TM +"_" + (i+1) + ".png")
 
                             }
 
@@ -906,7 +928,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                             if (pk != null) {
 
-                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish/imges/")
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/fish/imges/")
                                 val pathdir = path.listFiles()
 
                                 if (pathdir != null) {
@@ -914,7 +936,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                                         for (j in 0..pathdir.size - 1) {
 
-                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/fish/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/fish/imges/" +  fish_attribute.NUM.toString() +"_"+fish_attribute.INV_TM +"_" + (j+1) + ".png")) {
 
                                                 pathdir.get(i).canonicalFile.delete()
 
@@ -1135,13 +1157,13 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             fish_attribute.GROP_ID = keyId
 
-            fish_attribute.PRJ_NAME = ""
+            fish_attribute.PRJ_NAME = prjnameET.text.toString()
 
             fish_attribute.INV_REGION = fishinvregionET.text.toString()
             fish_attribute.INV_DT = Utils.todayStr()
 
             println("inv_dt ===============${fish_attribute.INV_DT}")
-            fish_attribute.INV_TM = Utils.timeStr()
+            fish_attribute.INV_TM = fishinvtmTV.text.toString()
 
             fish_attribute.INV_PERSON = fishinvpersonET.text.toString()
 
@@ -1239,7 +1261,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                     dbmanager!!.updatefish_attribute(fish_attribute,pk)
                 }
 
-                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish/imges/")
+                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/fish/imges/")
                 val pathdir = path.listFiles()
 
                 if(pathdir != null) {
@@ -1247,7 +1269,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                         for(j in 0..pathdir.size-1) {
 
-                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/fish/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/fish/imges/" +  fish_attribute.NUM.toString() +"_"+fish_attribute.INV_TM +"_" + (j+1) + ".png")) {
 
                                 pathdir.get(i).canonicalFile.delete()
 
@@ -1261,7 +1283,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                 for(i   in 0..images!!.size-1){
 
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "fish/imges/"
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/fish/imges/"
                     val outputsDir = File(outPath)
 
                     if (outputsDir.exists()) {
@@ -1280,7 +1302,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         println("made : $made")
                     }
 
-                    saveVitmapToFile(images!!.get(i),outPath+pk+"_"+(i+1)+".png")
+                    saveVitmapToFile(images!!.get(i),outPath+ fish_attribute.NUM.toString() +"_"+fish_attribute.INV_TM +"_" + (i+1) + ".png")
 
                 }
 
@@ -1410,11 +1432,12 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         }
 
         colltoolTV.setOnClickListener {
-            val intent = Intent(this, DlgCollActivity::class.java)
-            intent.putExtra("title", "투망")
-            intent.putExtra("DlgHeight", 450f);
-//            startActivity(intent)
-            startActivityForResult(intent, SET_COLL);
+            var listItems: ArrayList<String> = ArrayList();
+            listItems.add("투망 (망목 9 x 9 mm)");
+            listItems.add("족대 (망목 4 x 4 mm)");
+
+            alert(listItems, "투망,족대", colltoolTV, "colltool");
+
         }
 
         colltool2TV.setOnClickListener {
@@ -1663,11 +1686,11 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
     fun clear(){
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-        val db = dbManager.createDataBase()
-        val num = dbManager.fishsNextNum()
-
-        fishnumTV.setText(num.toString())
+        var num = fishnumTV.text.toString()
+        var textnum = num.substring(num.length -1,num.length)
+        var splitnum = num.substring(0,num.length -1 )
+        var plusnum = textnum.toInt() + 1
+        fishnumTV.setText(splitnum.toString() + plusnum.toString())
 
         fishmidrageET.setText("")
 
@@ -2048,8 +2071,11 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         val file_name = paths.get(paths.size - 1)
                         val getPk = file_name.split("_")
                         val pathPk = getPk.get(0)
+                        val pathPk2 = getPk.get(1)
+                        val num = fishnumTV.text.toString()
+                        val invtm = fishinvtmTV.text.toString()
 
-                        if (pathPk == pk){
+                        if (pathPk == num && pathPk2 == invtm){
                             val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
                             if (images!!.size == 0) {
                                 images!!.add(add_file)
@@ -2101,8 +2127,11 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         val file_name = paths.get(paths.size - 1)
                         val getPk = file_name.split("_")
                         val pathPk = getPk.get(0)
+                        val pathPk2 = getPk.get(1)
+                        val num = fishnumTV.text.toString()
+                        val invtm = fishinvtmTV.text.toString()
 
-                        if (pathPk == pk){
+                        if (pathPk == num && pathPk2 == invtm){
                             val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
                             if (images!!.size == 0) {
                                 images!!.add(add_file)

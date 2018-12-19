@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ecology</string>
+    <string name="app_name">도시생태현황지도</string>
     <string name="google_map_api_key">AIzaSyDwxugiCyvcZY7rQmaZywr6MlOSlgBGlHg</string>
     <string name="title_activity_maps">Map</string>
 

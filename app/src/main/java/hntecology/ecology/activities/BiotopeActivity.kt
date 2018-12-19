@@ -69,7 +69,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
     val SET_DATA6 = 6
 
     val BIOTOPE_BASE = 3000
-
     var keyId: String? = null;
     var pk: String? = null
     var chkdata: Boolean = false;
@@ -122,6 +121,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
     private var db: SQLiteDatabase? = null
 
+    var landuse:String? = null
+
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -149,12 +150,21 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         var intent: Intent = getIntent();
 
-        val num = dbManager!!.biotopesNextNum()
+        var today = Utils.todayStr();
+        var todays = today.split("-")
 
-        tvINV_IndexTV.setText(num.toString())
+        var texttoday = ""
+
+        for (i in 0 until todays.size){
+            texttoday += todays.get(i)
+        }
+
+        tvINV_IndexTV.setText(texttoday + "1")
 
         val userName = PrefUtils.getStringPreference(context, "name");
         tvINV_PERSONTV.setText(userName)
+
+        prjnameTV.setText( PrefUtils.getStringPreference(context, "prjname"))
 
         etINV_DTTV.setText(Utils.todayStr())
 
@@ -177,6 +187,12 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             log = intent.getStringExtra("longitude")
             println("==============$log")
             etGPS_LONTV.setText(log)
+        }
+
+        if (intent.getIntExtra("landuse" ,0)!= null){
+            val color = intent.getIntExtra("landuse",0)
+            landuse = color.toString()
+            println("landuse : $landuse")
         }
 
         if(intent.getStringExtra("longitude") != null && intent.getStringExtra("latitude") != null){
@@ -293,7 +309,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
                         , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
                         , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
-                        , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53))
+                        , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53),data2.getString(54))
 
 //                etinvesRegionET.text        = biotope_attribute.INVES_REGION
 
@@ -306,6 +322,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 etINV_DTTV.setText(biotope_attribute.INV_DT)
                 etINV_TMTV.setText(biotope_attribute.INV_TM)
                 tvINV_IndexTV.setText(biotope_attribute.INV_INDEX.toString())
+
+                prjnameTV.setText(biotope_attribute.PRJ_NAME)
 
                 if (biotope_attribute.LU_GR_NUM == null){
                     TVLU_GR_NumTV.setText("")
@@ -423,12 +441,12 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                     val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM +"." + biotope_attribute.INV_INDEX + "/imges")
                     val fileList = file.listFiles()
-                    val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope/imges/")
+                    val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/imges/")
                     var tmpfileList = tmpfiles.listFiles()
 
                     if (fileList != null) {
                         for (i in 0..fileList.size - 1) {
-                            val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope/imges/"
+                            val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/imges/"
                             val outputsDir = File(outPath)
 
                             if (outputsDir.exists()) {
@@ -448,7 +466,10 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             }
 
                             val tmpfile = fileList.get(i)
-                            val tmpfile2 = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/biotope/imges", pk + "_" + (i + 1) + ".png")
+                            println("filelist.get(i) ${fileList.get(i)}")
+                            val num = biotope_attribute.INV_INDEX.toString()
+                            println("-------------$num")
+                            val tmpfile2 = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/biotope/imges", num + "_" + biotope_attribute.INV_TM +"_" + (i+1) + ".png")
 
                             if (tmpfile.exists()) {
                                 tmpfile.renameTo(tmpfile2)
@@ -483,7 +504,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                             for (j in 0..tmpfileList.size - 1) {
 
-                                if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/biotope/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/biotope/imges/" + biotope_attribute.INV_INDEX + "_" + biotope_attribute.INV_TM +"_" + (j+1) + ".png")) {
                                     val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
                                     val v = View.inflate(context, R.layout.item_add_image, null)
                                     val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
@@ -498,7 +519,10 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             }
                         }
                     }
-
+                    if (file.isDirectory){
+                        val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
+                        path.deleteRecursively()
+                    }
                 }
 
                 val id = biotope_attribute.id
@@ -521,6 +545,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 etINV_TMTV.setText(createId())
                 tvPIC_FOLDERTV.visibility = View.GONE;
             }
+
         }
 
 //        //gps 다시 시작
@@ -622,7 +647,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                         , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
                                         , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
                                         , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
-                                        , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53))
+                                        , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53),data2.getString(54))
 
                                 dataArray.add(biotope_attribute)
 
@@ -660,11 +685,13 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                 , null, null, null, null, null, null, null, null
                                 , null, null, null, null, null, null, null
                                 , null, null, null, null, null, null, null, null
-                                , null, null, null, null, null, null, null, null)
+                                , null, null, null, null, null, null, null, null,null)
 
                         keyId = intent.getStringExtra("GROP_ID")
 
                         biotope_attribute.GROP_ID = keyId
+
+                        biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
 
                         biotope_attribute.INV_REGION = etINV_REGIONET.text.toString();
                         biotope_attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name");
@@ -815,6 +842,9 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         biotope_attribute.TEMP_YN = "Y"
 
                         biotope_attribute.CONF_MOD = "N"
+                        biotope_attribute.LANDUSE = landuse
+
+
 
                         if (chkdata) {
 
@@ -835,7 +865,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                 dbManager!!.updatebiotope_attribute(biotope_attribute, pk)
                             }
 
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope/imges/")
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/imges/")
                             val pathdir = path.listFiles()
 
                             if (pathdir != null) {
@@ -843,7 +873,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                                     for (j in 0..pathdir.size - 1) {
 
-                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/biotope/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/biotope/imges/" + biotope_attribute.INV_INDEX + "_" + biotope_attribute.INV_TM +"_" + (j+1) + ".png")) {
 
                                             pathdir.get(i).canonicalFile.delete()
 
@@ -857,7 +887,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                             for (i in 0..images!!.size - 1) {
 
-                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope/imges/"
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/imges/"
                                 val outputsDir = File(outPath)
 
                                 if (outputsDir.exists()) {
@@ -876,7 +906,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                     println("made : $made")
                                 }
 
-                                saveVitmapToFile(images!!.get(i), outPath + pk + "_" + (i + 1) + ".png")
+                                saveVitmapToFile(images!!.get(i), outPath + biotope_attribute.INV_INDEX + "_" + biotope_attribute.INV_TM +"_" + (i+1) + ".png")
 
                             }
 
@@ -966,7 +996,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                     , null, null, null, null, null, null, null, null
                                     , null, null, null, null, null, null, null
                                     , null, null, null, null, null, null, null, null
-                                    , null, null, null, null, null, null, null, null)
+                                    , null, null, null, null, null, null, null, null,null)
 
                             if (pk != null) {
 
@@ -976,7 +1006,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                 //이미 있다면 삭제. 후 생성
                                 setDirEmpty(sdPath)
 
-                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope/imges/")
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/biotope/imges/")
                                 val pathdir = path.listFiles()
 
                                 if (pathdir != null) {
@@ -984,7 +1014,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                                         for (j in 0..pathdir.size - 1) {
 
-                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/biotope/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/biotope/imges/" +  biotope_attribute.INV_INDEX + "_" + biotope_attribute.INV_TM +"_" + (i+1) + ".png")) {
 
                                                 pathdir.get(i).canonicalFile.delete()
 
@@ -1020,7 +1050,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                                 , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
                                                 , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
                                                 , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
-                                                , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53))
+                                                , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54))
 
                                         dataArray.add(biotope_attribute)
 
@@ -1078,7 +1108,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                     , null, null, null, null, null, null, null, null
                                     , null, null, null, null, null, null, null
                                     , null, null, null, null, null, null, null, null
-                                    , null, null, null, null, null, null, null, null)
+                                    , null, null, null, null, null, null, null, null,null)
 
                             if (intent.getStringExtra("id") != null) {
                                 val id = intent.getStringExtra("id")
@@ -1103,7 +1133,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                             , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
                                             , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
                                             , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
-                                            , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53))
+                                            , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54))
 
                                     dataArray.add(biotope_attribute)
 
@@ -1192,11 +1222,13 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     , null, null, null, null, null, null, null, null
                     , null, null, null, null, null, null, null
                     , null, null, null, null, null, null, null, null
-                    , null, null, null, null, null, null, null, null)
+                    , null, null, null, null, null, null, null, null,null)
 
             keyId = intent.getStringExtra("GROP_ID")
 
             biotope_attribute.GROP_ID = keyId
+
+            biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
 
             biotope_attribute.INV_REGION = etINV_REGIONET.text.toString();
             biotope_attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name");
@@ -1350,6 +1382,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             biotope_attribute.TEMP_YN = "Y"
 
             biotope_attribute.CONF_MOD = "N"
+            biotope_attribute.LANDUSE = landuse
 
             if (chkdata) {
 
@@ -1369,7 +1402,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     dbManager!!.updatebiotope_attribute(biotope_attribute, pk)
                 }
 
-                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope/imges/")
+                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/biotope/imges/")
                 val pathdir = path.listFiles()
 
                 if (pathdir != null) {
@@ -1377,7 +1410,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                         for (j in 0..pathdir.size - 1) {
 
-                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/biotope/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/biotope/imges/" + biotope_attribute.INV_INDEX + "_" + biotope_attribute.INV_TM +"_" + (i+1) + ".png")) {
 
                                 pathdir.get(i).canonicalFile.delete()
 
@@ -1391,7 +1424,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                 for (i in 0..images!!.size - 1) {
 
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope/imges/"
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/biotope/imges/"
                     val outputsDir = File(outPath)
 
                     if (outputsDir.exists()) {
@@ -1410,7 +1443,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         println("made : $made")
                     }
 
-                    saveVitmapToFile(images!!.get(i), outPath + pk + "_" + (i + 1) + ".png")
+                    saveVitmapToFile(images!!.get(i), outPath + biotope_attribute.INV_INDEX + "_" + biotope_attribute.INV_TM +"_" + (i+1) + ".png")
 
                 }
 
@@ -1682,12 +1715,12 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                 val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "." + biotope_attribute.INV_INDEX +"/imges")
                 val fileList = file.listFiles()
-                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope/imges/")
+                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/biotope/imges/")
                 var tmpfileList = tmpfiles.listFiles()
 
                 if (fileList != null) {
                     for (i in 0..fileList.size - 1) {
-                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "biotope/imges/"
+                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/biotope/imges/"
                         val outputsDir = File(outPath)
 
                         if (outputsDir.exists()) {
@@ -1707,7 +1740,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         }
 
                         val tmpfile = fileList.get(i)
-                        val tmpfile2 = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/biotope/imges", pk + "_" + (i + 1) + ".png")
+                        val tmpfile2 = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/biotope/imges", biotope_attribute.INV_INDEX.toString() + "_" + biotope_attribute.INV_TM +"_" + (i+1) + ".png")
 
                         if (tmpfile.exists()) {
                             tmpfile.renameTo(tmpfile2)
@@ -1742,7 +1775,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                         for (j in 0..tmpfileList.size - 1) {
 
-                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/biotope/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecolog/datay/biotope/imges/" +biotope_attribute.INV_INDEX + "_" + biotope_attribute.INV_TM +"_" + (i+1) + ".png")) {
                                 val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
                                 val v = View.inflate(context, R.layout.item_add_image, null)
                                 val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
@@ -2289,7 +2322,12 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         val getPk = file_name.split("_")
                         val pathPk = getPk.get(0)
 
-                        if (pathPk == pk){
+                        println("getPk {$getPk}")
+                        val pathPk2 = getPk.get(1)
+                        val num = tvINV_IndexTV.text.toString()
+                        val invtm = etINV_TMTV.text.toString()
+
+                        if (pathPk == num && pathPk2 == invtm){
                             val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
                             if (images!!.size == 0) {
                                 images!!.add(add_file)
@@ -2343,7 +2381,12 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         val getPk = file_name.split("_")
                         val pathPk = getPk.get(0)
 
-                        if (pathPk == pk){
+                        println("getPk {$getPk}")
+                        val pathPk2 = getPk.get(1)
+                        val num = tvINV_IndexTV.text.toString()
+                        val invtm = etINV_TMTV.text.toString()
+
+                        if (pathPk == num && pathPk2 == invtm){
                             val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
                             if (images!!.size == 0) {
                                 images!!.add(add_file)
@@ -2414,10 +2457,12 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         etINV_DTTV.setText(Utils.todayStr());
         etINV_TMTV.setText(createId())
 
-        val num = dbManager!!.biotopesNextNum()
+        var num = tvINV_IndexTV.text.toString()
+        var textnum = num.substring(num.length -1,num.length)
+        var splitnum = num.substring(0,num.length -1 )
+        var plusnum = textnum.toInt() + 1
 
-        println("num ----- ${num.toString()}")
-        tvINV_IndexTV.setText(num.toString())
+        tvINV_IndexTV.setText(splitnum.toString() + plusnum.toString())
 
         TVLU_GR_NumTV.setText("")
         etLU_TY_RATEET.setText("")
@@ -2507,7 +2552,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
                     , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
                     , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
-                    , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53))
+                    , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54))
 
 //                etinvesRegionET.text        = biotope_attribute.INVES_REGION
 
@@ -2676,7 +2721,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                     , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
                                     , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
                                     , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
-                                    , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53))
+                                    , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54))
 
                             dataArray.add(biotope_attribute)
 

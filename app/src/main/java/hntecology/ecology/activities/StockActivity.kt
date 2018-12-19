@@ -59,6 +59,7 @@ class StockActivity : Activity() {
 
     private var db: SQLiteDatabase? = null
 
+    var landuse:String? = null
 
     var dataArray:ArrayList<StockMap> = ArrayList<StockMap>()
 
@@ -102,6 +103,12 @@ class StockActivity : Activity() {
             log = intent.getStringExtra("longitude")
             println("==============stock$log")
             gpslonTV.setText(log)
+        }
+
+        if (intent.getIntExtra("landuse",0) != null){
+            val num = intent.getIntExtra("landuse",0)
+            println("landuse ------ $num")
+            landuse = num.toString()
         }
 
         if(intent.getStringExtra("longitude") != null && intent.getStringExtra("latitude") != null){
@@ -214,7 +221,7 @@ class StockActivity : Activity() {
 
             var stockMap: StockMap = StockMap(null,null,null,null,null,null,null,null,null,null,
                     null,null,null,null,null,null,null,null,null,null,null,null,
-                    null)
+                    null,null)
 
             val dataList: Array<String> = arrayOf("*");
 
@@ -225,7 +232,7 @@ class StockActivity : Activity() {
                 var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                         data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                        , data.getString(22))
+                        , data.getString(22),data.getString(23))
                 invtmTV.text =  stockMap.INV_TM
                 numTV.text = stockMap.NUM.toString()
                 frtpcdTV.text = stockMap.FRTP_CD
@@ -321,7 +328,7 @@ class StockActivity : Activity() {
                                 var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                         data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                                         , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                        , data.getString(22))
+                                        , data.getString(22),data.getString(23))
 
                                 dataArray.add(stockMap)
 
@@ -355,7 +362,7 @@ class StockActivity : Activity() {
 
                         var stockMap: StockMap = StockMap(null,null,null,null,null,null,null,null,null,null,
                                 null,null,null,null,null,null,null,null,null,null,null,null,
-                                null)
+                                null,null)
 
                         stockMap.GROP_ID = keyId
                         stockMap.PRJ_NAME = ""
@@ -382,6 +389,7 @@ class StockActivity : Activity() {
                         stockMap.GPS_LAT = gpslatTV.text.toString().toFloat()
                         stockMap.GPS_LAT = gpslonTV.text.toString().toFloat()
                         stockMap.CONF_MOD = "N"
+                        stockMap.LANDUSE = landuse
 
                         if (chkdata) {
 
@@ -427,7 +435,7 @@ class StockActivity : Activity() {
 
                             var stockMap: StockMap = StockMap(null,null,null,null,null,null,null,null,null,null,
                                     null,null,null,null,null,null,null,null,null,null,null,null,
-                                    null)
+                                    null,null)
 
                             if (pk != null) {
 
@@ -449,7 +457,7 @@ class StockActivity : Activity() {
                                         var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                                 data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                                                 , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                                , data.getString(22))
+                                                , data.getString(22),data.getString(23))
 
                                         dataArray.add(stockMap)
 
@@ -519,7 +527,7 @@ class StockActivity : Activity() {
                                     var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                             data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                                             , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                            , data.getString(22))
+                                            , data.getString(22), data.getString(23))
                                 }
 
                                 if (chkdata == true) {
@@ -554,7 +562,7 @@ class StockActivity : Activity() {
         addBT.setOnClickListener {
             var stockMap: StockMap = StockMap(null,null,null,null,null,null,null,null,null,null,
                     null,null,null,null,null,null,null,null,null,null,null,null,
-                    null)
+                    null,null)
 
             stockMap.GROP_ID = keyId
             stockMap.PRJ_NAME = ""
@@ -581,6 +589,7 @@ class StockActivity : Activity() {
             stockMap.GPS_LAT = gpslatTV.text.toString().toFloat()
             stockMap.GPS_LAT = gpslonTV.text.toString().toFloat()
             stockMap.CONF_MOD = "N"
+            stockMap.LANDUSE = landuse
 
             if (chkdata) {
 
@@ -769,7 +778,7 @@ class StockActivity : Activity() {
                             var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                     data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                    , data.getString(22))
+                                    , data.getString(22),data.getString(23))
 
                             dataArray.add(stockMap)
 

@@ -76,6 +76,21 @@
                     style="@style/BiotopeTextViewDisabled"
                     android:gravity="left|center"
                     />
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="프로젝트"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/prjnameET"
+                    style="@style/BiotopeTextView"
+                    android:gravity="left|center"
+                    />
             </LinearLayout>
 
             <LinearLayout

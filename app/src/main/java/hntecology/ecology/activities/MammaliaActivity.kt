@@ -120,6 +120,19 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         mammaltimeTV.text = Utils.timeStr()
 
         userName = PrefUtils.getStringPreference(context, "name");
+        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+
+        var today = Utils.todayStr();
+
+        var todays = today.split("-")
+
+        var texttoday = ""
+
+        for (i in 0 until todays.size){
+            texttoday += todays.get(i)
+        }
+
+        mammalnumTV.setText(texttoday + "1")
 
         addPicturesLL = findViewById(R.id.addPicturesLL)
 
@@ -258,6 +271,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 mamtemperatureET.setText(mammal_attribute.TEMPERATUR.toString())
                 mametcET.setText(mammal_attribute.ETC)
 
+                prjnameET.setText(mammal_attribute.PRJ_NAME)
+
                 mammaltimeTV.setText(mammal_attribute.INV_TM)
                 mammalnumTV.setText(mammal_attribute.NUM.toString())
 
@@ -297,12 +312,12 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                 val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + mammal_attribute.INV_DT + "." + mammal_attribute.INV_TM +"."+mammal_attribute.NUM+ "/imges")
                 val fileList = file.listFiles()
-                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia/imges/")
+                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/mammalia/imges/")
                 var tmpfileList = tmpfiles.listFiles()
 
                 if (fileList != null) {
                     for (i in 0..fileList.size - 1) {
-                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia/imges/"
+                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/mammalia/imges/"
                         val outputsDir = File(outPath)
 
                         if (outputsDir.exists()) {
@@ -322,7 +337,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         }
 
                         val tmpfile = fileList.get(i)
-                        val tmpfile2 = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/mammalia/imges" ,   pk +"_" + (i+1) + ".png")
+                        val tmpfile2 = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/mammalia/imges" ,   mammal_attribute.NUM.toString() +"_"+mammal_attribute.INV_TM  +"_" + (i+1) + ".png")
 
                         if(tmpfile.exists()){
                             tmpfile.renameTo(tmpfile2)
@@ -357,7 +372,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                         for(j in 0..tmpfileList.size - 1) {
 
-                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/mammalia/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/mammalia/imges/" + mammal_attribute.NUM.toString() +"_"+mammal_attribute.INV_TM  +"_" + (j+1) + ".png")) {
                                 val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
                                 val v = View.inflate(context, R.layout.item_add_image, null)
                                 val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
@@ -372,7 +387,10 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         }
                     }
                 }
-
+                if (file.isDirectory){
+                    val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + mammal_attribute.INV_DT + "." + mammal_attribute.INV_TM + "."+mammal_attribute.NUM)
+                    path.deleteRecursively()
+                }
             }
             data.close()
 
@@ -451,7 +469,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             mammal_attribute.GROP_ID = keyId
 
-            mammal_attribute.PRJ_NAME = ""
+            mammal_attribute.PRJ_NAME = prjnameET.text.toString()
 
             mammal_attribute.INV_REGION = maminvregionET.text.toString()
 
@@ -560,7 +578,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                         mammal_attribute.GROP_ID = keyId
 
-                        mammal_attribute.PRJ_NAME = ""
+                        mammal_attribute.PRJ_NAME = prjnameET.text.toString()
 
                         mammal_attribute.INV_REGION = maminvregionET.text.toString()
                         mammal_attribute.INV_DT = Utils.todayStr()
@@ -635,7 +653,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                                 dbManager!!.updatemammal_attribute(mammal_attribute,pk)
                             }
 
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia/imges/")
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/mammalia/imges/")
                             val pathdir = path.listFiles()
 
                             if(pathdir != null) {
@@ -643,7 +661,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                                     for(j in 0..pathdir.size-1) {
 
-                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/mammalia/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/mammalia/imges/" + mammal_attribute.NUM.toString() +"_"+mammal_attribute.INV_TM  +"_" + (j+1) + ".png")) {
 
                                             pathdir.get(i).canonicalFile.delete()
 
@@ -657,7 +675,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                             for(i   in 0..images!!.size-1){
 
-                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia/imges/"
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/mammalia/imges/"
                                 val outputsDir = File(outPath)
 
                                 if (outputsDir.exists()) {
@@ -676,7 +694,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                                     println("made : $made")
                                 }
 
-                                saveVitmapToFile(images!!.get(i),outPath+pk+"_"+(i+1)+".png")
+                                saveVitmapToFile(images!!.get(i),outPath+mammal_attribute.NUM.toString() +"_"+mammal_attribute.INV_TM  +"_" + (i+1) + ".png")
 
                             }
 
@@ -759,7 +777,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                             if (pk != null) {
 
-                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia/imges/")
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/mammalia/imges/")
                                 val pathdir = path.listFiles()
 
                                 if (pathdir != null) {
@@ -767,7 +785,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                                         for (j in 0..pathdir.size - 1) {
 
-                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/mammalia/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/mammalia/imges/" +mammal_attribute.NUM.toString() +"_"+mammal_attribute.INV_TM  +"_" + (j+1) + ".png")) {
 
                                                 pathdir.get(i).canonicalFile.delete()
 
@@ -1043,7 +1061,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             mammal_attribute.GROP_ID = keyId
 
-            mammal_attribute.PRJ_NAME = ""
+            mammal_attribute.PRJ_NAME = prjnameET.text.toString()
 
             mammal_attribute.INV_REGION = maminvregionET.text.toString()
             mammal_attribute.INV_DT = Utils.todayStr()
@@ -1118,7 +1136,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                     dbManager!!.updatemammal_attribute(mammal_attribute,pk)
                 }
 
-                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia/imges/")
+                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/mammalia/imges/")
                 val pathdir = path.listFiles()
 
                 if(pathdir != null) {
@@ -1126,7 +1144,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                         for(j in 0..pathdir.size-1) {
 
-                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/mammalia/imges/" + pk + "_" + (j + 1).toString() + ".png")) {
+                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/mammalia/imges/" +mammal_attribute.NUM.toString() +"_"+mammal_attribute.INV_TM  +"_" + (j+1) + ".png")) {
 
                                 pathdir.get(i).canonicalFile.delete()
 
@@ -1140,7 +1158,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                 for(i   in 0..images!!.size-1){
 
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia/imges/"
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/mammalia/imges/"
                     val outputsDir = File(outPath)
 
                     if (outputsDir.exists()) {
@@ -1159,7 +1177,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         println("made : $made")
                     }
 
-                    saveVitmapToFile(images!!.get(i),outPath+pk+"_"+(i+1)+".png")
+                    saveVitmapToFile(images!!.get(i),outPath+mammal_attribute.NUM.toString() +"_"+mammal_attribute.INV_TM  +"_" + (i+1) + ".png")
 
                 }
 
@@ -1335,12 +1353,11 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
     }
 
     fun clear(){
-
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
-        val db = dbManager.createDataBase()
-        val num = dbManager.mammalsNextNum()
-
-        mammalnumTV.setText(num.toString())
+        var num = mammalnumTV.text.toString()
+        var textnum = num.substring(num.length -1,num.length)
+        var splitnum = num.substring(0,num.length -1 )
+        var plusnum = textnum.toInt() + 1
+        mammalnumTV.setText(splitnum.toString() + plusnum.toString())
 
         mammaltimeTV.setText("")
 
@@ -1856,7 +1873,11 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         val getPk = file_name.split("_")
                         val pathPk = getPk.get(0)
 
-                        if (pathPk == pk){
+                        val pathPk2 = getPk.get(1)
+                        val num = mammalnumTV.text.toString()
+                        val invtm = mammaltimeTV.text.toString()
+
+                        if (pathPk == num && pathPk2 == invtm){
                             val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
                             if (images!!.size == 0) {
                                 images!!.add(add_file)
@@ -1909,7 +1930,11 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         val getPk = file_name.split("_")
                         val pathPk = getPk.get(0)
 
-                        if (pathPk == pk){
+                        val pathPk2 = getPk.get(1)
+                        val num = mammalnumTV.text.toString()
+                        val invtm = mammaltimeTV.text.toString()
+
+                        if (pathPk == num && pathPk2 == invtm){
                             val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
                             if (images!!.size == 0) {
                                 images!!.add(add_file)

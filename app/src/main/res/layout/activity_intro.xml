@@ -7,12 +7,13 @@
     android:focusableInTouchMode ="true"
     >
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:layout_marginRight="150dp"
-        android:layout_marginLeft="150dp"
-        android:src="@drawable/logo"
-        android:layout_gravity="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="도시생태현황지도 현장조사 시스템"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="75dp"
+        />
 
 </LinearLayout>

@@ -77,6 +77,20 @@
                     style="@style/BiotopeTextViewDisabled"
                     android:gravity="left|center"
                     />
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="프로젝트"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/prjnameET"
+                    style="@style/BiotopeTextView"
+                    android:gravity="left|center"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -393,14 +407,10 @@
                     android:inputType="number"
                     android:id="@+id/colltoolTV"
                     android:gravity="center"
-                    android:hint="투망 (망목 9 x 9 mm)"
+                    android:hint="투망 (망목 9 x 9 mm),족대 (망목 4 x 4 mm)"
                     />
                 <TextView
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text=","/>
-                <TextView
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -582,6 +592,27 @@
 
                 <TextView
                     android:id="@+id/fishnumTV"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                >
+
+                <TextView
+                    style="@style/BiotopeTextView"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:text="시간" />
+
+                <TextView
+                    android:id="@+id/fishinvtmTV"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

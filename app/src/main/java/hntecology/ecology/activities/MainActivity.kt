@@ -2219,6 +2219,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                 var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
                                                 var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
                                                 var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                                var biotope = Utils.getString(layerInfo.metadata, "biotop")
                                                 if (INV_INDEX == "" || INV_INDEX == null) {
                                                     INV_INDEX = "0"
                                                 }
@@ -2295,6 +2296,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                 intent!!.putExtra("EMD_NM", EMD_NM)
                                                 intent!!.putExtra("polygonid", polygon.id)
                                                 intent!!.putExtra("landuse",polygon.fillColor)
+
+                                                println("biotope -------$biotope")
+
+                                                if (biotope != null && biotope != ""){
+                                                    intent!!.putExtra("biotope",biotope)
+                                                }
 
                                                 endDraw()
 
@@ -3286,8 +3293,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 val grop_id = Utils.getString(layerInfo.metadata , "GROP_ID")
                 val landuse = Utils.getString(layerInfo.metadata, "landuse")
                 val LANDUSE =  Utils.getString(layerInfo.metadata, "LANDUSE")
-
-                println("LANDUSE $LANDUSE")
 
                 if (LANDUSE != null){
                     if (LANDUSE == "-319"){
@@ -4468,6 +4473,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             LAYER_STOCKMAP -> {
                 attributeKey += "stockmap"
+            }
+
+            LAYER_FLORA2 -> {
+                attributeKey += "flora2"
             }
 
         }

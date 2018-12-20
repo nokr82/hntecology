@@ -118,6 +118,7 @@ class Flora2Activity : Activity() {
             gpslonTV.setText(log)
         }
 
+
         if(intent.getStringExtra("longitude") != null && intent.getStringExtra("latitude") != null){
             lat = intent.getStringExtra("latitude")
             log = intent.getStringExtra("longitude")
@@ -181,7 +182,7 @@ class Flora2Activity : Activity() {
                 if (TRE_SPEC!!.length > 0 || TRE_H!! != 0.0f || TRE_BREA!! != 0.0f || TRE_COVE != 0.0f){
                     val data = TreeData1(PK,TRE_NUM,TRE_SPEC,TRE_FAMI,TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE)
                     TreDatas.add(data)
-                    println("TRE_NUM ${data.PAGE}")
+                    println("TRE_NUM ADD ${data.PAGE}")
                     trepage = manyFloraAttribute.TRE_NUM!!
                     trenumTV.setText(manyFloraAttribute.TRE_NUM.toString())
                     etTRE_SPECET.setText(manyFloraAttribute.TRE_SPEC)
@@ -215,7 +216,7 @@ class Flora2Activity : Activity() {
                     etSTRE_HET.setText(manyFloraAttribute.STRE_H.toString())
                     etSTRE_BREAET.setText(manyFloraAttribute.STRE_BREA.toString())
                     etSTRE_COVEET.setText(manyFloraAttribute.STRE_COVE.toString())
-                    println("STRE_NUM ${data.PAGE}")
+                    println("STRE_NUM ADD ${data.PAGE}")
                 }
 
                 //관목층
@@ -239,7 +240,7 @@ class Flora2Activity : Activity() {
                     etSHR_SCIENET.setText(manyFloraAttribute.SHR_SCIEN)
                     etSHR_HET.setText(manyFloraAttribute.SHR_H.toString())
                     etSTR_COVEET.setText(manyFloraAttribute.STRE_COVE.toString())
-                    println("SHR_NUM ${data.PAGE}")
+                    println("SHR_NUM ADD ${data.PAGE}")
                 }
 
                 val HER_NUM = manyFloraAttribute.HER_NUM
@@ -261,7 +262,7 @@ class Flora2Activity : Activity() {
                     etHER_SCIENET.setText(manyFloraAttribute.HER_SCIEN)
                     etHER_HET.setText(manyFloraAttribute.HER_H.toString())
                     etHER_COVEET.setText(manyFloraAttribute.HER_COVE.toString())
-                    println("HER_NUM ${data.PAGE}")
+                    println("HER_NUM ADD ${data.PAGE}")
                 }
 
                 gpslatTV.setText(manyFloraAttribute.GPS_LAT.toString())
@@ -414,26 +415,58 @@ class Flora2Activity : Activity() {
 
             if (trepage == 1){
                 for (i in 0 until TreDatas.size){
-                    if (trepage == TreDatas.get(i).PAGE){
+                    if (TreDatas.get(i).PAGE == trepage){
                         val data = TreDatas.get(i)
-                        TreDatas.remove(data)
+                        TreDatas.removeAt(i)
                         break
                     }
                 }
 
-                etTRE_SPECET.setText("")
-                etTRE_FAMIET.setText("")
-                etTRE_SCIENET.setText("")
-                etTRE_HET.setText("")
-                etTRE_BREAET.setText("")
-                etTRE_COVEET.setText("")
+                var division = false
+
+                for (i in 0 until TreDatas.size){
+                    if (TreDatas.get(i).PAGE!! > 1){
+                        TreDatas.get(i).PAGE = TreDatas.get(i).PAGE!! - 1
+                    }
+                }
+
+                for (i in 0 until TreDatas.size){
+                    if (TreDatas.get(i).PAGE == trepage){
+                        trenumTV.setText(trepage.toString())
+                        etTRE_SPECET.setText(TreDatas.get(i).SPEC)
+                        etTRE_FAMIET.setText(TreDatas.get(i).FAMI)
+                        etTRE_SCIENET.setText(TreDatas.get(i).SCIEN)
+                        etTRE_HET.setText(TreDatas.get(i).H.toString())
+                        etTRE_BREAET.setText(TreDatas.get(i).BREA.toString())
+                        etTRE_COVEET.setText(TreDatas.get(i).COVE.toString())
+                        division = true
+                    }
+                }
+                if (division == false) {
+                    etTRE_SPECET.setText("")
+                    etTRE_FAMIET.setText("")
+                    etTRE_SCIENET.setText("")
+                    etTRE_HET.setText("")
+                    etTRE_BREAET.setText("")
+                    etTRE_COVEET.setText("")
+                }
+
+                val page = trepage
+                var size = trerightpageTV.text.toString().toInt()
+
+                trepageTV.setText(page.toString())
+
+                if (size > 1) {
+                    size = size-1
+                    trerightpageTV.setText(size.toString())
+                }
             }
 
             if (trepage > 1 ){
                 for (i in 0 until TreDatas.size){
-                    if (trepage == TreDatas.get(i).PAGE){
+                    if (TreDatas.get(i).PAGE == trepage){
                         val data = TreDatas.get(i)
-                        TreDatas.remove(data)
+                        TreDatas.removeAt(i)
                         break
                     }
                 }
@@ -441,7 +474,7 @@ class Flora2Activity : Activity() {
                 trepage = trepage - 1
 
                 for (i in 0 until TreDatas.size){
-                    if (trepage == TreDatas.get(i).PAGE){
+                    if (TreDatas.get(i).PAGE == trepage){
                         trenumTV.setText(trepage.toString())
                         etTRE_SPECET.setText(TreDatas.get(i).SPEC)
                         etTRE_FAMIET.setText(TreDatas.get(i).FAMI)
@@ -472,30 +505,67 @@ class Flora2Activity : Activity() {
             if (strepage == 1){
                 for (i in 0 until StreDatas.size){
                     if (strepage == StreDatas.get(i).PAGE){
-                        StreDatas.remove(StreDatas.get(i))
+                        StreDatas.removeAt(i)
+                        break
                     }
                 }
 
-                etSTRE_SPECET.setText("")
-                etSTRE_FAMIET.setText("")
-                etSTRE_SCIENET.setText("")
-                etSTRE_HET.setText("")
-                etSTRE_BREAET.setText("")
-                etSTRE_COVEET.setText("")
+                var division = false
+
+                for (i in 0 until StreDatas.size){
+                    if (StreDatas.get(i).PAGE!! > 1){
+                        StreDatas.get(i).PAGE = StreDatas.get(i).PAGE!! - 1
+                    }
+                }
+
+                for (i in 0 until StreDatas.size){
+                    if (StreDatas.get(i).PAGE == strepage){
+                        strenumTV.setText(strepage.toString())
+                        etSTRE_SPECET.setText(StreDatas.get(i).SPEC)
+                        etSTRE_FAMIET.setText(StreDatas.get(i).FAMI)
+                        etSTRE_SCIENET.setText(StreDatas.get(i).SCIEN)
+                        etSTRE_HET.setText(StreDatas.get(i).H.toString())
+                        etSTRE_BREAET.setText(StreDatas.get(i).BREA.toString())
+                        etSTRE_COVEET.setText(StreDatas.get(i).COVE.toString())
+                        division = true
+                    }
+                }
+
+                if (division == false) {
+
+                    etSTRE_SPECET.setText("")
+                    etSTRE_FAMIET.setText("")
+                    etSTRE_SCIENET.setText("")
+                    etSTRE_HET.setText("")
+                    etSTRE_BREAET.setText("")
+                    etSTRE_COVEET.setText("")
+                }
+
+                val page = strepage
+                var size = strerightpageTV.text.toString().toInt()
+
+                strepageTV.setText(page.toString())
+
+                if (size > 1) {
+                    size = size-1
+                    strerightpageTV.setText(size.toString())
+                }
+
 
             }
 
             if (strepage > 1 ){
                 for (i in 0 until StreDatas.size){
-                    if (strepage == StreDatas.get(i).PAGE){
-                        StreDatas.remove(StreDatas.get(i))
+                    if (StreDatas.get(i).PAGE == strepage){
+                        StreDatas.removeAt(i)
+                        break
                     }
                 }
 
                 strepage = strepage - 1
 
                 for (i in 0 until StreDatas.size){
-                    if (strepage == StreDatas.get(i).PAGE){
+                    if (StreDatas.get(i).PAGE == strepage){
                         strenumTV.setText(strepage.toString())
                         etSTRE_SPECET.setText(StreDatas.get(i).SPEC)
                         etSTRE_FAMIET.setText(StreDatas.get(i).FAMI)
@@ -523,29 +593,64 @@ class Flora2Activity : Activity() {
 
             if (shrpage == 1){
                 for (i in 0 until ShrDatas.size){
-                    if (shrpage == ShrDatas.get(i).PAGE){
-                        ShrDatas.remove(ShrDatas.get(i))
+                    if (ShrDatas.get(i).PAGE == shrpage){
+                        ShrDatas.removeAt(i)
+                        break
                     }
                 }
 
-                etSHR_SPECET.setText("")
-                etSHR_FAMIET.setText("")
-                etSHR_SCIENET.setText("")
-                etSHR_HET.setText("")
-                etSTR_COVEET.setText("")
+                var division = false
+
+                for (i in 0 until ShrDatas.size){
+                    if (ShrDatas.get(i).PAGE!! > 1){
+                        ShrDatas.get(i).PAGE = ShrDatas.get(i).PAGE!! - 1
+                    }
+                }
+
+                for (i in 0 until ShrDatas.size){
+                    if (ShrDatas.get(i).PAGE == shrpage){
+                        shrnumTV.setText(shrpage.toString())
+                        etSHR_SPECET.setText(ShrDatas.get(i).SPEC)
+                        etSHR_FAMIET.setText(ShrDatas.get(i).FAMI)
+                        etSHR_SCIENET.setText(ShrDatas.get(i).SCIEN)
+                        etSHR_HET.setText(ShrDatas.get(i).H.toString())
+                        etSTR_COVEET.setText(ShrDatas.get(i).COVE.toString())
+                        division = true
+                    }
+                }
+
+                if (division == false) {
+                    etSHR_SPECET.setText("")
+                    etSHR_FAMIET.setText("")
+                    etSHR_SCIENET.setText("")
+                    etSHR_HET.setText("")
+                    etSTR_COVEET.setText("")
+                }
+
+                val page = shrpage
+                var size = shrrightpageTV.text.toString().toInt()
+
+                shrpageTV.setText(page.toString())
+
+                if (size > 1) {
+                    size = size-1
+                    shrrightpageTV.setText(size.toString())
+                }
+
             }
 
             if (shrpage > 1 ){
                 for (i in 0 until ShrDatas.size){
-                    if (shrpage == ShrDatas.get(i).PAGE){
-                        ShrDatas.remove(ShrDatas.get(i))
+                    if (ShrDatas.get(i).PAGE == shrpage){
+                        ShrDatas.removeAt(i)
+                        break
                     }
                 }
 
                 shrpage = shrpage - 1
 
                 for (i in 0 until ShrDatas.size){
-                    if (shrpage == ShrDatas.get(i).PAGE){
+                    if (ShrDatas.get(i).PAGE == shrpage){
                         shrnumTV.setText(shrpage.toString())
                         etSHR_SPECET.setText(ShrDatas.get(i).SPEC)
                         etSHR_FAMIET.setText(ShrDatas.get(i).FAMI)
@@ -572,22 +677,55 @@ class Flora2Activity : Activity() {
 
             if (herpage == 1){
                 for (i in 0 until HerDatas.size){
-                    if (herpage == HerDatas.get(i).PAGE){
-                        HerDatas.remove(HerDatas.get(i))
+                    if (HerDatas.get(i).PAGE == herpage){
+                        HerDatas.removeAt(i)
+                        break
                     }
                 }
 
-                etHER_SPECET.setText("")
-                etHER_FAMIET.setText("")
-                etHER_SCIENET.setText("")
-                etHER_HET.setText("")
-                etHER_COVEET.setText("")
+                var division = false
+
+                for (i in 0 until HerDatas.size){
+                    if (HerDatas.get(i).PAGE!! > 1){
+                        HerDatas.get(i).PAGE = HerDatas.get(i).PAGE!! - 1
+                    }
+                }
+
+                for (i in 0 until HerDatas.size){
+                    if (HerDatas.get(i).PAGE == herpage){
+                        hernumTV.setText(herpage.toString())
+                        etHER_SPECET.setText(HerDatas.get(i).SPEC)
+                        etHER_FAMIET.setText(HerDatas.get(i).FAMI)
+                        etHER_SCIENET.setText(HerDatas.get(i).SCIEN)
+                        etHER_HET.setText(HerDatas.get(i).H.toString())
+                        etHER_COVEET.setText(HerDatas.get(i).COVE.toString())
+                        division = true
+                    }
+                }
+
+                if (division == false) {
+                    etHER_SPECET.setText("")
+                    etHER_FAMIET.setText("")
+                    etHER_SCIENET.setText("")
+                    etHER_HET.setText("")
+                    etHER_COVEET.setText("")
+                }
+
+                val page = herpage
+                var size = herrightpageTV.text.toString().toInt()
+
+                herpageTV.setText(page.toString())
+
+                if (size > 1) {
+                    size = size-1
+                    herrightpageTV.setText(size.toString())
+                }
             }
 
             if (herpage > 1 ){
                 for (i in 0 until HerDatas.size){
-                    if (herpage == HerDatas.get(i).PAGE){
-                        HerDatas.remove(HerDatas.get(i))
+                    if (HerDatas.get(i).PAGE == herpage){
+                        HerDatas.removeAt(i)
                         break
                     }
                 }
@@ -595,7 +733,7 @@ class Flora2Activity : Activity() {
                 herpage = herpage - 1
 
                 for (i in 0 until HerDatas.size){
-                    if (herpage == HerDatas.get(i).PAGE){
+                    if (HerDatas.get(i).PAGE == herpage){
                         hernumTV.setText(herpage.toString())
                         etHER_SPECET.setText(HerDatas.get(i).SPEC)
                         etHER_FAMIET.setText(HerDatas.get(i).FAMI)
@@ -951,6 +1089,9 @@ class Flora2Activity : Activity() {
                 builder.setMessage("저장하시겠습니까 ?").setCancelable(false)
                         .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
+                            println("delete-------------------- $keyId")
+                            dbManager!!.deleteAllManyFloraAttribute(keyId)
+
                             dialog.cancel()
 
                             var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null,null,null,null,null,null,null,null,null,null
@@ -1079,26 +1220,15 @@ class Flora2Activity : Activity() {
                             manyFloraAttribute.TEMP_YN = "Y"
                             manyFloraAttribute.CONF_MOD = "N"
 
-                            println("============chkdata $chkdata")
 
-                            if (chkdata) {
+                            val CONF_MOD = manyFloraAttribute.CONF_MOD
 
-                                if(pk != null){
-
-                                    val CONF_MOD = manyFloraAttribute.CONF_MOD
-
-                                    if(CONF_MOD == "C" || CONF_MOD == "N"){
-                                        manyFloraAttribute.CONF_MOD = "M"
-                                    }
-
-                                    dbManager!!.updatemanyflora_attribute(manyFloraAttribute,pk)
-                                }
-
-                            } else {
-
-                                dbManager!!.insertmanyflora_attribute(manyFloraAttribute);
-
+                            if(CONF_MOD == "C" || CONF_MOD == "N"){
+                                manyFloraAttribute.CONF_MOD = "M"
                             }
+
+                            dbManager!!.insertmanyflora_attribute(manyFloraAttribute);
+
 
                             var intent = Intent()
 
@@ -1121,137 +1251,189 @@ class Flora2Activity : Activity() {
 
                             dialog.cancel()
 
+                            println("insert---------------------")
+
+                            val spec = etTRE_SPECET.text.toString()
+                            val fami = etTRE_FAMIET.text.toString()
+                            val scien = etTRE_SCIENET.text.toString()
+
+                            var h: Float = 0.0F
+
+                            if (etTRE_HET.text.isNotEmpty()) {
+                                h = etTRE_HET.text.toString().toFloat()
+                            }
+
+                            var brea = 0.0F
+
+                            if (etTRE_BREAET.text.isNotEmpty()) {
+                                brea = etTRE_BREAET.text.toString().toFloat()
+                            }
+                            var cove = 0.0F
+
+                            if (etTRE_COVEET.text.isNotEmpty()) {
+                                cove = etTRE_COVEET.text.toString().toFloat()
+                            }
+
                             println("delete-------------------- $keyId")
                             dbManager!!.deleteAllManyFloraAttribute(keyId)
 
                             var treChk = false
 
                             for (i in 0 until  TreDatas.size){
-                                if (TreDatas.get(i).PAGE == trenumTV.text.toString().toInt()){
+                                if (TreDatas.get(i).PAGE == trepage){
                                     treChk = true
                                 }
                             }
 
                             if (treChk == false){
-                                val spec = etTRE_SPECET.text.toString()
-                                val fami = etTRE_FAMIET.text.toString()
-                                val scien = etTRE_SCIENET.text.toString()
 
-                                var h: Float = 0.0F
-
-                                if (etTRE_HET.text.isNotEmpty()) {
-                                    h = etTRE_HET.text.toString().toFloat()
-                                }
-
-                                var brea = 0.0F
-
-                                if (etTRE_BREAET.text.isNotEmpty()) {
-                                    brea = etTRE_BREAET.text.toString().toFloat()
-                                }
-                                var cove = 0.0F
-
-                                if (etTRE_COVEET.text.isNotEmpty()) {
-                                    cove = etTRE_COVEET.text.toString().toFloat()
-                                }
-
-                                var tredata = TreeData1(-1 , trenumTV.text.toString().toInt(), spec, fami, scien, h, brea, cove)
+                                var tredata = TreeData1(-1 , trepageTV.text.toString().toInt(), spec, fami, scien, h, brea, cove)
 
                                 TreDatas.add(tredata)
+                            } else {
+                                for (i in 0 until TreDatas.size){
+                                    if (TreDatas.get(i).PAGE == trepage){
+                                        TreDatas.get(i).SPEC = spec
+                                        TreDatas.get(i).FAMI = fami
+                                        TreDatas.get(i).SCIEN = scien
+                                        TreDatas.get(i).H = h
+                                        TreDatas.get(i).BREA = brea
+                                        TreDatas.get(i).COVE = cove
+                                    }
+                                }
                             }
 
                             var streChk = false
 
+                            val strespec = etSTRE_SPECET.text.toString()
+                            val strefami = etSTRE_FAMIET.text.toString()
+                            val strescien = etSTRE_SCIENET.text.toString()
+
+                            var streh: Float = 0.0F
+
+                            if (etSTRE_HET.text.isNotEmpty()) {
+                                streh = etSTRE_HET.text.toString().toFloat()
+                            }
+
+                            var strebrea = 0.0F
+
+                            if (etSTRE_BREAET.text.isNotEmpty()) {
+                                strebrea = etSTRE_BREAET.text.toString().toFloat()
+                            }
+                            var strecove = 0.0F
+
+                            if (etSTRE_COVEET.text.isNotEmpty()) {
+                                strecove = etSTRE_COVEET.text.toString().toFloat()
+                            }
+
                             for (i in 0 until  StreDatas.size){
-                                if (StreDatas.get(i).PAGE == strenumTV.text.toString().toInt()){
+                                if (StreDatas.get(i).PAGE == strepage){
                                     streChk = true
+                                    println("strechk -- true")
                                 }
                             }
 
                             if (streChk == false){
-                                val spec = etSTRE_SPECET.text.toString()
-                                val fami = etSTRE_FAMIET.text.toString()
-                                val scien = etSTRE_SCIENET.text.toString()
 
-                                var h: Float = 0.0F
-
-                                if (etSTRE_HET.text.isNotEmpty()) {
-                                    h = etSTRE_HET.text.toString().toFloat()
-                                }
-
-                                var brea = 0.0F
-
-                                if (etSTRE_BREAET.text.isNotEmpty()) {
-                                    brea = etSTRE_BREAET.text.toString().toFloat()
-                                }
-                                var cove = 0.0F
-
-                                if (etSTRE_COVEET.text.isNotEmpty()) {
-                                    cove = etSTRE_COVEET.text.toString().toFloat()
-                                }
-
-                                var stredata = TreeData1(-1 , strenumTV.text.toString().toInt(), spec, fami, scien, h, brea, cove)
+                                var stredata = TreeData1(-1 , strepageTV.text.toString().toInt(), strespec, strefami, strescien, streh, strebrea, strecove)
 
                                 StreDatas.add(stredata)
+
+                            } else {
+                                for (i in 0 until StreDatas.size){
+                                    if (StreDatas.get(i).PAGE == strepage){
+                                        StreDatas.get(i).SPEC = strespec
+                                        StreDatas.get(i).FAMI = strefami
+                                        StreDatas.get(i).SCIEN = strescien
+                                        StreDatas.get(i).H = streh
+                                        StreDatas.get(i).BREA = strebrea
+                                        StreDatas.get(i).COVE = strecove
+
+                                    }
+                                }
                             }
 
                             var shrChk = false
 
+                            val shrspec = etSHR_SPECET.text.toString()
+                            val shrfami = etSHR_FAMIET.text.toString()
+                            val shrscien = etSHR_SCIENET.text.toString()
+
+                            var shrh: Float = 0.0F
+
+                            if (etSHR_HET.text.isNotEmpty()) {
+                                shrh = etSHR_HET.text.toString().toFloat()
+                            }
+
+                            var shrcove = 0.0F
+
+                            if (etSTR_COVEET.text.isNotEmpty()) {
+                                shrcove = etSTR_COVEET.text.toString().toFloat()
+                            }
+
                             for (i in 0 until  ShrDatas.size){
-                                if (ShrDatas.get(i).PAGE == shrnumTV.text.toString().toInt()){
+                                if (ShrDatas.get(i).PAGE == shrpage){
                                     shrChk = true
                                 }
                             }
 
                             if (shrChk == false){
-                                val spec = etSHR_SPECET.text.toString()
-                                val fami = etSHR_FAMIET.text.toString()
-                                val scien = etSHR_SCIENET.text.toString()
 
-                                var h: Float = 0.0F
-
-                                if (etSHR_HET.text.isNotEmpty()) {
-                                    h = etSHR_HET.text.toString().toFloat()
-                                }
-
-                                var cove = 0.0F
-
-                                if (etSTR_COVEET.text.isNotEmpty()) {
-                                    cove = etSTR_COVEET.text.toString().toFloat()
-                                }
-
-                                var shrdata = TreeData2(-1 , shrnumTV.text.toString().toInt(), spec, fami, scien, h, cove)
+                                var shrdata = TreeData2(-1 , shrpageTV.text.toString().toInt(), shrspec, shrfami, shrscien, shrh, shrcove)
 
                                 ShrDatas.add(shrdata)
+
+                            } else {
+                                for (i in 0 until ShrDatas.size){
+                                    if (ShrDatas.get(i).PAGE == shrpage){
+                                        ShrDatas.get(i).SPEC = shrspec
+                                        ShrDatas.get(i).FAMI = shrfami
+                                        ShrDatas.get(i).SCIEN = shrscien
+                                        ShrDatas.get(i).H = shrh
+                                        ShrDatas.get(i).COVE = shrcove
+                                    }
+                                }
                             }
 
                             var herChk = false
 
+                            val herspec = etHER_SPECET.text.toString()
+                            val herfami = etHER_FAMIET.text.toString()
+                            val herscien = etHER_SCIENET.text.toString()
+
+                            var herh: Float = 0.0F
+
+                            if (etHER_HET.text.isNotEmpty()) {
+                                herh = etHER_HET.text.toString().toFloat()
+                            }
+
+                            var hercove = 0.0F
+
+                            if (etHER_COVEET.text.isNotEmpty()) {
+                                hercove = etHER_COVEET.text.toString().toFloat()
+                            }
+
                             for (i in 0 until  HerDatas.size){
-                                if (HerDatas.get(i).PAGE == hernumTV.text.toString().toInt()){
+                                if (HerDatas.get(i).PAGE == herpage){
                                     herChk = true
                                 }
                             }
 
                             if (herChk == false){
-                                val spec = etHER_SPECET.text.toString()
-                                val fami = etHER_FAMIET.text.toString()
-                                val scien = etHER_SCIENET.text.toString()
 
-                                var h: Float = 0.0F
-
-                                if (etHER_HET.text.isNotEmpty()) {
-                                    h = etHER_HET.text.toString().toFloat()
-                                }
-
-                                var cove = 0.0F
-
-                                if (etHER_COVEET.text.isNotEmpty()) {
-                                    cove = etHER_COVEET.text.toString().toFloat()
-                                }
-
-                                var herdata = TreeData2(-1 , hernumTV.text.toString().toInt(), spec, fami, scien, h, cove)
+                                var herdata = TreeData2(-1 , herpageTV.text.toString().toInt(), herspec, herfami, herscien, herh, hercove)
 
                                 HerDatas.add(herdata)
+                            } else {
+                                for (i in 0 until HerDatas.size){
+                                    if (HerDatas.get(i).PAGE == herpage){
+                                        HerDatas.get(i).SPEC = herspec
+                                        HerDatas.get(i).FAMI = herfami
+                                        HerDatas.get(i).SCIEN = herscien
+                                        HerDatas.get(i).H = herh
+                                        HerDatas.get(i).COVE = hercove
+                                    }
+                                }
                             }
 
                             var MaxLength = 0
@@ -1337,7 +1519,6 @@ class Flora2Activity : Activity() {
 
                                         if (i <= StreDataSize - 1){
                                             manyFloraAttribute.STRE_NUM = StreDatas.get(i).PAGE
-                                            println("insert -----${StreDatas.get(i).PAGE}")
                                             manyFloraAttribute.STRE_SPEC = StreDatas.get(i).SPEC
                                             manyFloraAttribute.STRE_FAMI = StreDatas.get(i).FAMI
                                             manyFloraAttribute.STRE_SCIEN = StreDatas.get(i).SCIEN
@@ -1388,6 +1569,7 @@ class Flora2Activity : Activity() {
                                     }
 
                                     dbManager!!.insertmanyflora_attribute(manyFloraAttribute);
+                                    println("insert-------")
 
                                 }
 
@@ -1687,6 +1869,27 @@ class Flora2Activity : Activity() {
 
     fun AddTreFlora(){
 
+        val spec = etTRE_SPECET.text.toString()
+        val fami = etTRE_FAMIET.text.toString()
+        val scien = etTRE_SCIENET.text.toString()
+
+        var h: Float = 0.0F
+
+        if (etTRE_HET.text.isNotEmpty()) {
+            h = etTRE_HET.text.toString().toFloat()
+        }
+
+        var brea = 0.0F
+
+        if (etTRE_BREAET.text.isNotEmpty()) {
+            brea = etTRE_BREAET.text.toString().toFloat()
+        }
+        var cove = 0.0F
+
+        if (etTRE_COVEET.text.isNotEmpty()) {
+            cove = etTRE_COVEET.text.toString().toFloat()
+        }
+
         var chkData = false
 
         var equlas = false
@@ -1695,109 +1898,137 @@ class Flora2Activity : Activity() {
 
         val maxsize = trerightpageTV.text.toString().toInt()
 
-        if(trepage == maxsize){
+        var division = false
 
-            if (trepage > 1 ){
-
-                val spec = etTRE_SPECET.text.toString()
-                val fami = etTRE_FAMIET.text.toString()
-                val scien = etTRE_SCIENET.text.toString()
-
-                var h: Float = 0.0F
-
-                if (etTRE_HET.text.isNotEmpty()) {
-                    h = etTRE_HET.text.toString().toFloat()
-                }
-
-                var brea = 0.0F
-
-                if (etTRE_BREAET.text.isNotEmpty()) {
-                    brea = etTRE_BREAET.text.toString().toFloat()
-                }
-                var cove = 0.0F
-
-                if (etTRE_COVEET.text.isNotEmpty()) {
-                    cove = etTRE_COVEET.text.toString().toFloat()
-                }
-
-                var tredata = TreeData1(-1 , trepage, spec, fami, scien, h, brea, cove)
-
-                TreDatas.add(tredata)
-
-                trepage = trepage + 1
-
-                for (i in 0..TreDatas.size - 1) {
-                    println("Tredatas ${TreDatas.get(i).PAGE}")
-                }
-
-                val page = trepage
-                val size = trerightpageTV.text.toString().toInt() + 1
-
-                trepageTV.setText(page.toString())
-                trerightpageTV.setText(size.toString())
-                trenumTV.setText(page.toString())
-                etTRE_SPECET.setText("")
-                etTRE_FAMIET.setText("")
-                etTRE_SCIENET.setText("")
-                etTRE_HET.setText("")
-                etTRE_BREAET.setText("")
-                etTRE_COVEET.setText("")
+        for (i in 0 until TreDatas.size){
+            if (TreDatas.get(i).PAGE == trepage){
+                division = true
             }
+        }
 
-            if (trepage == 1 ){
-                val spec = etTRE_SPECET.text.toString()
-                val fami = etTRE_FAMIET.text.toString()
-                val scien = etTRE_SCIENET.text.toString()
+        if(trepage == maxsize) {
 
-                var h: Float = 0.0F
+            if (division == false) {
 
-                if (etTRE_HET.text.isNotEmpty()) {
-                    h = etTRE_HET.text.toString().toFloat()
+                if (trepage > 1) {
+
+                    var tredata = TreeData1(-1, trepage, spec, fami, scien, h, brea, cove)
+
+                    TreDatas.add(tredata)
+
+                    trepage = trepage + 1
+
+                    val page = trepage
+                    val size = trerightpageTV.text.toString().toInt() + 1
+
+                    trepageTV.setText(page.toString())
+                    trerightpageTV.setText(size.toString())
+                    trenumTV.setText(page.toString())
+                    etTRE_SPECET.setText("")
+                    etTRE_FAMIET.setText("")
+                    etTRE_SCIENET.setText("")
+                    etTRE_HET.setText("")
+                    etTRE_BREAET.setText("")
+                    etTRE_COVEET.setText("")
                 }
 
-                var brea = 0.0F
+                if (trepage == 1) {
 
-                if (etTRE_BREAET.text.isNotEmpty()) {
-                    brea = etTRE_BREAET.text.toString().toFloat()
+                    var tredata = TreeData1(-1, trepage, spec, fami, scien, h, brea, cove)
+
+                    TreDatas.add(tredata)
+
+                    trepage = trepage + 1
+
+                    val page = trepage
+                    val size = trerightpageTV.text.toString().toInt() + 1
+
+                    trepageTV.setText(page.toString())
+                    trerightpageTV.setText(size.toString())
+                    trenumTV.setText(page.toString())
+                    etTRE_SPECET.setText("")
+                    etTRE_FAMIET.setText("")
+                    etTRE_SCIENET.setText("")
+                    etTRE_HET.setText("")
+                    etTRE_BREAET.setText("")
+                    etTRE_COVEET.setText("")
+
                 }
-                var cove = 0.0F
+            } else {
 
-                if (etTRE_COVEET.text.isNotEmpty()) {
-                    cove = etTRE_COVEET.text.toString().toFloat()
+                if (trepage > 1) {
+
+                    for (i in 0 until TreDatas.size){
+                        if (TreDatas.get(i).PAGE == trepage){
+                            TreDatas.get(i).SPEC = spec
+                            TreDatas.get(i).FAMI = fami
+                            TreDatas.get(i).SCIEN = scien
+                            TreDatas.get(i).H = h
+                            TreDatas.get(i).BREA = brea
+                            TreDatas.get(i).COVE = cove
+                        }
+                    }
+
+                    trepage = trepage + 1
+
+                    val page = trepage
+                    val size = trerightpageTV.text.toString().toInt() + 1
+
+                    trepageTV.setText(page.toString())
+                    trerightpageTV.setText(size.toString())
+                    trenumTV.setText(page.toString())
+                    etTRE_SPECET.setText("")
+                    etTRE_FAMIET.setText("")
+                    etTRE_SCIENET.setText("")
+                    etTRE_HET.setText("")
+                    etTRE_BREAET.setText("")
+                    etTRE_COVEET.setText("")
                 }
 
-                var tredata = TreeData1(-1 ,trepage, spec, fami, scien, h, brea, cove)
+                if (trepage == 1) {
 
-                TreDatas.add(tredata)
+                    for (i in 0 until TreDatas.size){
+                        if (TreDatas.get(i).PAGE == trepage){
+                            TreDatas.get(i).SPEC = spec
+                            TreDatas.get(i).FAMI = fami
+                            TreDatas.get(i).SCIEN = scien
+                            TreDatas.get(i).H = h
+                            TreDatas.get(i).BREA = brea
+                            TreDatas.get(i).COVE = cove
+                        }
+                    }
 
-                trepage = trepage + 1
+                    trepage = trepage + 1
 
-                for (i in 0..TreDatas.size - 1) {
-                    println("Tredatas ${TreDatas.get(i).PAGE}")
-                    println("Tredatas ${TreDatas.get(i).SPEC}")
-                    println("Tredatas ${TreDatas.get(i).FAMI}")
-                    println("Tredatas ${TreDatas.get(i).SCIEN}")
-                    println("Tredatas ${TreDatas.get(i).H}")
-                    println("Tredatas ${TreDatas.get(i).BREA}")
-                    println("Tredatas ${TreDatas.get(i).COVE}")
+                    val page = trepage
+                    val size = trerightpageTV.text.toString().toInt() + 1
+
+                    trepageTV.setText(page.toString())
+                    trerightpageTV.setText(size.toString())
+                    trenumTV.setText(page.toString())
+                    etTRE_SPECET.setText("")
+                    etTRE_FAMIET.setText("")
+                    etTRE_SCIENET.setText("")
+                    etTRE_HET.setText("")
+                    etTRE_BREAET.setText("")
+                    etTRE_COVEET.setText("")
+
                 }
-
-                val page = trepage
-                val size = trerightpageTV.text.toString().toInt() + 1
-
-                trepageTV.setText(page.toString())
-                trerightpageTV.setText(size.toString())
-                trenumTV.setText(page.toString())
-                etTRE_SPECET.setText("")
-                etTRE_FAMIET.setText("")
-                etTRE_SCIENET.setText("")
-                etTRE_HET.setText("")
-                etTRE_BREAET.setText("")
-                etTRE_COVEET.setText("")
-
             }
         }
         if (trepage < maxsize){
+
+            for (i in 0 until TreDatas.size){
+                if (TreDatas.get(i).PAGE == trepage){
+                    TreDatas.get(i).SPEC = spec
+                    TreDatas.get(i).FAMI = fami
+                    TreDatas.get(i).SCIEN = scien
+                    TreDatas.get(i).H = h
+                    TreDatas.get(i).BREA = brea
+                    TreDatas.get(i).COVE = cove
+                }
+            }
+
             trepage = trepage + 1
             var chk = false
             for (i in 0..TreDatas.size-1) {
@@ -1842,110 +2073,162 @@ class Flora2Activity : Activity() {
 
     fun AddStreFlora(){
 
+        val spec = etSTRE_SPECET.text.toString()
+        val fami = etSTRE_FAMIET.text.toString()
+        val scien = etSTRE_SCIENET.text.toString()
+
+        var h: Float = 0.0F
+
+        if (etSTRE_HET.text.isNotEmpty()) {
+            h = etSTRE_HET.text.toString().toFloat()
+        }
+
+        var brea = 0.0F
+
+        if (etSTRE_BREAET.text.isNotEmpty()) {
+            brea = etSTRE_BREAET.text.toString().toFloat()
+        }
+        var cove = 0.0F
+
+        if (etSTRE_COVEET.text.isNotEmpty()) {
+            cove = etSTRE_COVEET.text.toString().toFloat()
+        }
+
         var chkData = false
 
         var equlas = false
 
-        println("trepage $strepage")
-
         val maxsize = strerightpageTV.text.toString().toInt()
 
-        if(strepage == maxsize){
+        var division = false
 
-            equlas = true
-            if (strepage > 1 ){
-
-                val spec = etSTRE_SPECET.text.toString()
-                val fami = etSTRE_FAMIET.text.toString()
-                val scien = etSTRE_SCIENET.text.toString()
-
-                var h: Float = 0.0F
-
-                if (etSTRE_HET.text.isNotEmpty()) {
-                    h = etSTRE_HET.text.toString().toFloat()
-                }
-
-                var brea = 0.0F
-
-                if (etSTRE_BREAET.text.isNotEmpty()) {
-                    brea = etSTRE_BREAET.text.toString().toFloat()
-                }
-                var cove = 0.0F
-
-                if (etSTRE_COVEET.text.isNotEmpty()) {
-                    cove = etSTRE_COVEET.text.toString().toFloat()
-                }
-
-                var stredata = TreeData1(-1 , strepage, spec, fami, scien, h, brea, cove)
-
-                StreDatas.add(stredata)
-                println("addstre $strepage")
-
-                strepage = strepage + 1
-
-                for (i in 0..StreDatas.size - 1) {
-                    println("Stredatas ${StreDatas.get(i).PAGE}")
-                }
-
-                val page = strepage
-                val size = strerightpageTV.text.toString().toInt() + 1
-
-                strepageTV.setText(page.toString())
-                strerightpageTV.setText(size.toString())
-                strenumTV.setText(page.toString())
-                etSTRE_SPECET.setText("")
-                etSTRE_FAMIET.setText("")
-                etSTRE_SCIENET.setText("")
-                etSTRE_HET.setText("")
-                etSTRE_BREAET.setText("")
-                etSTRE_COVEET.setText("")
+        for (i in 0 until StreDatas.size){
+            if (StreDatas.get(i).PAGE == strepage){
+                division = true
             }
+        }
 
-            if (strepage == 1 ){
-                val spec = etSTRE_SPECET.text.toString()
-                val fami = etSTRE_FAMIET.text.toString()
-                val scien = etSTRE_SCIENET.text.toString()
+        if(strepage == maxsize) {
 
-                var h: Float = 0.0F
+            if (division == false) {
 
-                if (etSTRE_HET.text.isNotEmpty()) {
-                    h = etSTRE_HET.text.toString().toFloat()
+                if (strepage > 1) {
+
+                    var stredata = TreeData1(-1, strepage, spec, fami, scien, h, brea, cove)
+
+                    StreDatas.add(stredata)
+
+                    strepage = strepage + 1
+
+                    val page = strepage
+                    val size = strerightpageTV.text.toString().toInt() + 1
+
+                    strepageTV.setText(page.toString())
+                    strerightpageTV.setText(size.toString())
+                    strenumTV.setText(page.toString())
+                    etSTRE_SPECET.setText("")
+                    etSTRE_FAMIET.setText("")
+                    etSTRE_SCIENET.setText("")
+                    etSTRE_HET.setText("")
+                    etSTRE_BREAET.setText("")
+                    etSTRE_COVEET.setText("")
                 }
 
-                var brea = 0.0F
+                if (strepage == 1) {
 
-                if (etSTRE_BREAET.text.isNotEmpty()) {
-                    brea = etSTRE_BREAET.text.toString().toFloat()
+                    var stredata = TreeData1(-1, strepage, spec, fami, scien, h, brea, cove)
+
+                    StreDatas.add(stredata)
+
+                    strepage = strepage + 1
+
+                    val page = strepage
+                    val size = strerightpageTV.text.toString().toInt() + 1
+
+                    strepageTV.setText(page.toString())
+                    strerightpageTV.setText(size.toString())
+                    strenumTV.setText(page.toString())
+                    etSTRE_SPECET.setText("")
+                    etSTRE_FAMIET.setText("")
+                    etSTRE_SCIENET.setText("")
+                    etSTRE_HET.setText("")
+                    etSTRE_BREAET.setText("")
+                    etSTRE_COVEET.setText("")
+
                 }
-                var cove = 0.0F
+            } else {
+                if (strepage > 1) {
 
-                if (etSTRE_COVEET.text.isNotEmpty()) {
-                    cove = etSTRE_COVEET.text.toString().toFloat()
+                    for (i in 0 until StreDatas.size){
+                        if (StreDatas.get(i).PAGE == strepage){
+                            StreDatas.get(i).SPEC = spec
+                            StreDatas.get(i).FAMI = fami
+                            StreDatas.get(i).SCIEN = scien
+                            StreDatas.get(i).H = h
+                            StreDatas.get(i).BREA = brea
+                            StreDatas.get(i).COVE = cove
+                        }
+                    }
+
+                    strepage = strepage + 1
+
+                    val page = strepage
+                    val size = strerightpageTV.text.toString().toInt() + 1
+
+                    strepageTV.setText(page.toString())
+                    strerightpageTV.setText(size.toString())
+                    strenumTV.setText(page.toString())
+                    etSTRE_SPECET.setText("")
+                    etSTRE_FAMIET.setText("")
+                    etSTRE_SCIENET.setText("")
+                    etSTRE_HET.setText("")
+                    etSTRE_BREAET.setText("")
+                    etSTRE_COVEET.setText("")
                 }
 
-                var stredata = TreeData1(-1 ,strepage, spec, fami, scien, h, brea, cove)
-                println("addstre $strepage")
+                if (strepage == 1) {
 
-                StreDatas.add(stredata)
+                    for (i in 0 until StreDatas.size){
+                        if (StreDatas.get(i).PAGE == strepage){
+                            StreDatas.get(i).SPEC = spec
+                            StreDatas.get(i).FAMI = fami
+                            StreDatas.get(i).SCIEN = scien
+                            StreDatas.get(i).H = h
+                            StreDatas.get(i).BREA = brea
+                            StreDatas.get(i).COVE = cove
+                        }
+                    }
 
-                strepage = strepage + 1
+                    strepage = strepage + 1
 
-                val page = strepage
-                val size = strerightpageTV.text.toString().toInt() + 1
+                    val page = strepage
+                    val size = strerightpageTV.text.toString().toInt() + 1
 
-                strepageTV.setText(page.toString())
-                strerightpageTV.setText(size.toString())
-                strenumTV.setText(page.toString())
-                etSTRE_SPECET.setText("")
-                etSTRE_FAMIET.setText("")
-                etSTRE_SCIENET.setText("")
-                etSTRE_HET.setText("")
-                etSTRE_BREAET.setText("")
-                etSTRE_COVEET.setText("")
+                    strepageTV.setText(page.toString())
+                    strerightpageTV.setText(size.toString())
+                    strenumTV.setText(page.toString())
+                    etSTRE_SPECET.setText("")
+                    etSTRE_FAMIET.setText("")
+                    etSTRE_SCIENET.setText("")
+                    etSTRE_HET.setText("")
+                    etSTRE_BREAET.setText("")
+                    etSTRE_COVEET.setText("")
 
+                }
             }
         }
         if (strepage < maxsize){
+
+            for (i in 0 until StreDatas.size){
+                if (StreDatas.get(i).PAGE == strepage){
+                    StreDatas.get(i).SPEC = spec
+                    StreDatas.get(i).FAMI = fami
+                    StreDatas.get(i).SCIEN = scien
+                    StreDatas.get(i).H = h
+                    StreDatas.get(i).BREA = brea
+                    StreDatas.get(i).COVE = cove
+                }
+            }
             strepage = strepage + 1
             var chk = false
             for (i in 0..StreDatas.size-1) {
@@ -1988,6 +2271,22 @@ class Flora2Activity : Activity() {
     }
 
     fun AddShrFlora(){
+        val spec = etSHR_SPECET.text.toString()
+        val fami = etSHR_FAMIET.text.toString()
+        val scien = etSHR_SCIENET.text.toString()
+
+        var h: Float = 0.0F
+
+        if (etSHR_HET.text.isNotEmpty()) {
+            h = etSHR_HET.text.toString().toFloat()
+        }
+
+        var cove = 0.0F
+
+        if (etSTR_COVEET.text.isNotEmpty()) {
+            cove = etSTR_COVEET.text.toString().toFloat()
+        }
+
         var chkData = false
 
         var equlas = false
@@ -1996,88 +2295,127 @@ class Flora2Activity : Activity() {
 
         val maxsize = shrrightpageTV.text.toString().toInt()
 
-        if(shrpage == maxsize){
+        var division = false
 
-            equlas = true
-            if (shrpage > 1 ){
-
-                val spec = etSHR_SPECET.text.toString()
-                val fami = etSHR_FAMIET.text.toString()
-                val scien = etSHR_SCIENET.text.toString()
-
-                var h: Float = 0.0F
-
-                if (etSHR_HET.text.isNotEmpty()) {
-                    h = etSHR_HET.text.toString().toFloat()
-                }
-
-                var cove = 0.0F
-
-                if (etSTR_COVEET.text.isNotEmpty()) {
-                    cove = etSTR_COVEET.text.toString().toFloat()
-                }
-
-                var shrdata = TreeData2(-1 , shrpage, spec, fami, scien, h, cove)
-
-                ShrDatas.add(shrdata)
-
-                shrpage = shrpage + 1
-
-                for (i in 0..ShrDatas.size - 1) {
-                    println("ShrDatas ${ShrDatas.get(i).PAGE}")
-                }
-
-                val page = shrpage
-                val size = shrrightpageTV.text.toString().toInt() + 1
-
-                shrpageTV.setText(page.toString())
-                shrrightpageTV.setText(size.toString())
-                shrnumTV.setText(page.toString())
-                etSHR_SPECET.setText("")
-                etSHR_FAMIET.setText("")
-                etSHR_SCIENET.setText("")
-                etSHR_HET.setText("")
-                etSTR_COVEET.setText("")
+        for (i in 0 until ShrDatas.size){
+            if (ShrDatas.get(i).PAGE == shrpage){
+                division = true
             }
+        }
 
-            if (shrpage == 1 ){
-                val spec = etSHR_SPECET.text.toString()
-                val fami = etSHR_FAMIET.text.toString()
-                val scien = etSHR_SCIENET.text.toString()
+        if(shrpage == maxsize) {
 
-                var h: Float = 0.0F
+            if (division == false) {
 
-                if (etSHR_HET.text.isNotEmpty()) {
-                    h = etSHR_HET.text.toString().toFloat()
+                if (shrpage > 1) {
+
+                    var shrdata = TreeData2(-1, shrpage, spec, fami, scien, h, cove)
+
+                    ShrDatas.add(shrdata)
+
+                    shrpage = shrpage + 1
+
+                    val page = shrpage
+                    val size = shrrightpageTV.text.toString().toInt() + 1
+
+                    shrpageTV.setText(page.toString())
+                    shrrightpageTV.setText(size.toString())
+                    shrnumTV.setText(page.toString())
+                    etSHR_SPECET.setText("")
+                    etSHR_FAMIET.setText("")
+                    etSHR_SCIENET.setText("")
+                    etSHR_HET.setText("")
+                    etSTR_COVEET.setText("")
                 }
 
-                var cove = 0.0F
+                if (shrpage == 1) {
 
-                if (etSTR_COVEET.text.isNotEmpty()) {
-                    cove = etSTR_COVEET.text.toString().toFloat()
+                    var shrdata = TreeData2(-1, shrpage, spec, fami, scien, h, cove)
+
+                    ShrDatas.add(shrdata)
+
+                    shrpage = shrpage + 1
+
+                    val page = shrpage
+                    val size = shrrightpageTV.text.toString().toInt() + 1
+
+                    shrpageTV.setText(page.toString())
+                    shrrightpageTV.setText(size.toString())
+                    shrnumTV.setText(page.toString())
+                    etSHR_SPECET.setText("")
+                    etSHR_FAMIET.setText("")
+                    etSHR_SCIENET.setText("")
+                    etSHR_HET.setText("")
+                    etSTR_COVEET.setText("")
+
+                }
+            } else {
+                if (shrpage > 1) {
+
+                    for (i in 0 until ShrDatas.size){
+                        if (ShrDatas.get(i).PAGE == shrpage){
+                            ShrDatas.get(i).SPEC = spec
+                            ShrDatas.get(i).FAMI = fami
+                            ShrDatas.get(i).SCIEN = scien
+                            ShrDatas.get(i).H = h
+                            ShrDatas.get(i).COVE = cove
+                        }
+                    }
+
+                    shrpage = shrpage + 1
+
+                    val page = shrpage
+                    val size = shrrightpageTV.text.toString().toInt() + 1
+
+                    shrpageTV.setText(page.toString())
+                    shrrightpageTV.setText(size.toString())
+                    shrnumTV.setText(page.toString())
+                    etSHR_SPECET.setText("")
+                    etSHR_FAMIET.setText("")
+                    etSHR_SCIENET.setText("")
+                    etSHR_HET.setText("")
+                    etSTR_COVEET.setText("")
                 }
 
-                var shrdata = TreeData2(-1 ,shrpage, spec, fami, scien, h, cove)
+                if (shrpage == 1) {
 
-                ShrDatas.add(shrdata)
+                    for (i in 0 until ShrDatas.size){
+                        if (ShrDatas.get(i).PAGE == shrpage){
+                            ShrDatas.get(i).SPEC = spec
+                            ShrDatas.get(i).FAMI = fami
+                            ShrDatas.get(i).SCIEN = scien
+                            ShrDatas.get(i).H = h
+                            ShrDatas.get(i).COVE = cove
+                        }
+                    }
 
-                shrpage = shrpage + 1
+                    shrpage = shrpage + 1
 
-                val page = shrpage
-                val size = shrrightpageTV.text.toString().toInt() + 1
+                    val page = shrpage
+                    val size = shrrightpageTV.text.toString().toInt() + 1
 
-                shrpageTV.setText(page.toString())
-                shrrightpageTV.setText(size.toString())
-                shrnumTV.setText(page.toString())
-                etSHR_SPECET.setText("")
-                etSHR_FAMIET.setText("")
-                etSHR_SCIENET.setText("")
-                etSHR_HET.setText("")
-                etSTR_COVEET.setText("")
+                    shrpageTV.setText(page.toString())
+                    shrrightpageTV.setText(size.toString())
+                    shrnumTV.setText(page.toString())
+                    etSHR_SPECET.setText("")
+                    etSHR_FAMIET.setText("")
+                    etSHR_SCIENET.setText("")
+                    etSHR_HET.setText("")
+                    etSTR_COVEET.setText("")
 
+                }
             }
         }
         if (shrpage < maxsize){
+            for (i in 0 until ShrDatas.size){
+                if (ShrDatas.get(i).PAGE == shrpage){
+                    ShrDatas.get(i).SPEC = spec
+                    ShrDatas.get(i).FAMI = fami
+                    ShrDatas.get(i).SCIEN = scien
+                    ShrDatas.get(i).H = h
+                    ShrDatas.get(i).COVE = cove
+                }
+            }
             shrpage = shrpage + 1
             var chk = false
             for (i in 0..ShrDatas.size-1) {
@@ -2118,96 +2456,148 @@ class Flora2Activity : Activity() {
 
     fun AddHerFlora(){
 
+        val spec = etHER_SPECET.text.toString()
+        val fami = etHER_FAMIET.text.toString()
+        val scien = etHER_SCIENET.text.toString()
+
+        var h: Float = 0.0F
+
+        if (etHER_HET.text.isNotEmpty()) {
+            h = etHER_HET.text.toString().toFloat()
+        }
+
+        var cove = 0.0F
+
+        if (etHER_COVEET.text.isNotEmpty()) {
+            cove = etHER_COVEET.text.toString().toFloat()
+        }
+
         var chkData = false
 
         var equlas = false
 
-        println("herpage $herpage")
+        var division = false
+
+        for (i in 0 until HerDatas.size){
+            if (HerDatas.get(i).PAGE == herpage){
+                division = true
+            }
+        }
 
         val maxsize = herrightpageTV.text.toString().toInt()
 
-        if(herpage == maxsize){
+        if(herpage == maxsize) {
 
-            equlas = true
-            if (herpage > 1 ){
+            if (division == false) {
+                if (herpage > 1) {
 
-                val spec = etHER_SPECET.text.toString()
-                val fami = etHER_FAMIET.text.toString()
-                val scien = etHER_SCIENET.text.toString()
+                    var herdata = TreeData2(-1, herpage, spec, fami, scien, h, cove)
 
-                var h: Float = 0.0F
+                    HerDatas.add(herdata)
 
-                if (etHER_HET.text.isNotEmpty()) {
-                    h = etHER_HET.text.toString().toFloat()
+                    herpage = herpage + 1
+
+                    val page = herpage
+                    val size = herrightpageTV.text.toString().toInt() + 1
+
+                    herpageTV.setText(page.toString())
+                    herrightpageTV.setText(size.toString())
+                    hernumTV.setText(page.toString())
+                    etHER_SPECET.setText("")
+                    etHER_FAMIET.setText("")
+                    etHER_SCIENET.setText("")
+                    etHER_HET.setText("")
+                    etHER_COVEET.setText("")
                 }
 
-                var cove = 0.0F
+                if (herpage == 1) {
 
-                if (etHER_COVEET.text.isNotEmpty()) {
-                    cove = etHER_COVEET.text.toString().toFloat()
+                    var herdata = TreeData2(-1, herpage, spec, fami, scien, h, cove)
+
+                    HerDatas.add(herdata)
+
+                    herpage = herpage + 1
+
+                    val page = herpage
+                    val size = herrightpageTV.text.toString().toInt() + 1
+
+                    herpageTV.setText(page.toString())
+                    herrightpageTV.setText(size.toString())
+                    hernumTV.setText(page.toString())
+                    etHER_SPECET.setText("")
+                    etHER_FAMIET.setText("")
+                    etHER_SCIENET.setText("")
+                    etHER_HET.setText("")
+                    etHER_COVEET.setText("")
+
+                }
+            } else {
+                if (herpage > 1) {
+
+                    for (i in 0 until HerDatas.size){
+                        if (HerDatas.get(i).PAGE == herpage){
+                            HerDatas.get(i).SPEC = spec
+                            HerDatas.get(i).FAMI = fami
+                            HerDatas.get(i).SCIEN = scien
+                            HerDatas.get(i).H = h
+                            HerDatas.get(i).COVE = cove
+                        }
+                    }
+
+                    herpage = herpage + 1
+
+                    val page = herpage
+                    val size = herrightpageTV.text.toString().toInt() + 1
+
+                    herpageTV.setText(page.toString())
+                    herrightpageTV.setText(size.toString())
+                    hernumTV.setText(page.toString())
+                    etHER_SPECET.setText("")
+                    etHER_FAMIET.setText("")
+                    etHER_SCIENET.setText("")
+                    etHER_HET.setText("")
+                    etHER_COVEET.setText("")
                 }
 
-                var herdata = TreeData2(-1 , herpage, spec, fami, scien, h, cove)
+                if (herpage == 1) {
 
-                HerDatas.add(herdata)
+                    for (i in 0 until HerDatas.size){
+                        if (HerDatas.get(i).PAGE == herpage){
+                            HerDatas.get(i).SPEC = spec
+                            HerDatas.get(i).FAMI = fami
+                            HerDatas.get(i).SCIEN = scien
+                            HerDatas.get(i).H = h
+                            HerDatas.get(i).COVE = cove
+                        }
+                    }
 
-                herpage = herpage + 1
+                    herpage = herpage + 1
 
-                for (i in 0..HerDatas.size - 1) {
-                    println("HerDatas ${HerDatas.get(i).PAGE}")
+                    val page = herpage
+                    val size = herrightpageTV.text.toString().toInt() + 1
+
+                    herpageTV.setText(page.toString())
+                    herrightpageTV.setText(size.toString())
+                    hernumTV.setText(page.toString())
+                    etHER_SPECET.setText("")
+                    etHER_FAMIET.setText("")
+                    etHER_SCIENET.setText("")
+                    etHER_HET.setText("")
+                    etHER_COVEET.setText("")
+
                 }
-
-                val page = herpage
-                val size = herrightpageTV.text.toString().toInt() + 1
-
-                herpageTV.setText(page.toString())
-                herrightpageTV.setText(size.toString())
-                hernumTV.setText(page.toString())
-                etHER_SPECET.setText("")
-                etHER_FAMIET.setText("")
-                etHER_SCIENET.setText("")
-                etHER_HET.setText("")
-                etHER_COVEET.setText("")
-            }
-
-            if (herpage == 1 ){
-                val spec = etHER_SPECET.text.toString()
-                val fami = etHER_FAMIET.text.toString()
-                val scien = etHER_SCIENET.text.toString()
-
-                var h: Float = 0.0F
-
-                if (etHER_HET.text.isNotEmpty()) {
-                    h = etHER_HET.text.toString().toFloat()
-                }
-
-                var cove = 0.0F
-
-                if (etHER_COVEET.text.isNotEmpty()) {
-                    cove = etHER_COVEET.text.toString().toFloat()
-                }
-
-                var herdata = TreeData2(-1 ,herpage, spec, fami, scien, h, cove)
-
-                HerDatas.add(herdata)
-
-                herpage = herpage + 1
-
-                val page = herpage
-                val size = herrightpageTV.text.toString().toInt() + 1
-
-                herpageTV.setText(page.toString())
-                herrightpageTV.setText(size.toString())
-                hernumTV.setText(page.toString())
-                etHER_SPECET.setText("")
-                etHER_FAMIET.setText("")
-                etHER_SCIENET.setText("")
-                etHER_HET.setText("")
-                etHER_COVEET.setText("")
-
             }
         }
         if (herpage < maxsize){
+            for (i in 0 until HerDatas.size){
+                if (HerDatas.get(i).PAGE == herpage){
+                    HerDatas.get(i).SPEC = spec
+                    HerDatas.get(i).FAMI = fami
+                    HerDatas.get(i).SCIEN = scien
+                    HerDatas.get(i).H = h
+                    HerDatas.get(i).COVE = cove
+                }
+            }
             herpage = herpage + 1
             var chk = false
             for (i in 0..HerDatas.size-1) {

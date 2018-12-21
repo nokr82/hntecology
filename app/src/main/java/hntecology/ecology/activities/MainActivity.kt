@@ -11,8 +11,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.Typeface
-import android.location.Address
-import android.location.Geocoder
 import android.location.Location
 import android.os.*
 import android.support.v4.app.ActivityCompat
@@ -33,7 +31,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.google.maps.android.SphericalUtil
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
@@ -5694,16 +5691,18 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         var trackingpk: String  = ""
 
+        var i = 0
         while (trackingdata.moveToNext()) {
             trackingChk = true
 
             var tracking : Tracking = Tracking(trackingdata.getInt(0),trackingdata.getDouble(1),trackingdata.getDouble(2))
 
-            TRACKINGS.add(Exporter.ColumnDef("ID",ogr.OFTInteger,tracking.id))
-            println("------------------------------------${ogr.OFTInteger}----------------------")
-            TRACKINGS.add(Exporter.ColumnDef("LATITUDE",ogr.OFTReal,tracking.LATITUDE))
-            TRACKINGS.add(Exporter.ColumnDef("LONGITUDE",ogr.OFTReal,tracking.LONGITUDE))
-
+            if( i == 0) {
+                TRACKINGS.add(Exporter.ColumnDef("ID", ogr.OFTInteger, tracking.id))
+                println("------------------------------------${ogr.OFTInteger}----------------------")
+                TRACKINGS.add(Exporter.ColumnDef("LATITUDE", ogr.OFTReal, tracking.LATITUDE))
+                TRACKINGS.add(Exporter.ColumnDef("LONGITUDE", ogr.OFTReal, tracking.LONGITUDE))
+            }
 
             println("tracking.id ${tracking.id}")
             println("tracking.LATITUDE ${tracking.LATITUDE}")
@@ -5718,6 +5717,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             trackingpk += tracking.id.toString()
 
+            i++
         }
 
         if(trackingDatas.size > 0){
@@ -6340,6 +6340,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     }
 
     override fun onLocationUpdated(location: Location?) {
+
+
+
 
         val geometryFactory = GeometryFactory()
 

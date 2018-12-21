@@ -1,10 +1,8 @@
 package hntecology.ecology.activities
 
-import android.content.Context
 import android.os.Environment
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.Polygon
-import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.Utils
 import org.gdal.ogr.Feature
 import org.gdal.ogr.FieldDefn
@@ -13,7 +11,6 @@ import org.gdal.ogr.ogr
 import org.gdal.osr.SpatialReference
 import java.io.File
 import java.util.*
-import kotlin.coroutines.experimental.coroutineContext
 
 
 object Exporter {
@@ -247,20 +244,15 @@ object Exporter {
 
         // column names
         if(exportItems != null){
-            for (i in 0..exportItems.size-1) {
-                val exportitem = exportItems.get(i)
-                for (columnDef in exportitem.columnDefs) {
-                    layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
-                }
+            for (columnDef in exportItems.first().columnDefs) {
+                layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
             }
         }
 
-        if(exportPointItems != null){
-            for(i in 0..exportPointItems.size-1) {
-                val exportPointitem = exportPointItems.get(i)
-                for (columnDef in exportPointitem.columnDefs) {
-                    layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
-                }
+        if(exportPointItems != null) {
+            val columnDef = exportPointItems.first().columnDefs
+            for (columnDef in columnDef) {
+                layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
             }
         }
 

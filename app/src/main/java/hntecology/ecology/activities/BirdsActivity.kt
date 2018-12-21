@@ -582,6 +582,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                                 }
 
                                 dbManager!!.updatebirds_attribute(birds_attribute,pk)
+                                dbManager!!.updatecommonbirds(birds_attribute,keyId)
                             }
 
                             val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "birds/imges/")
@@ -1024,6 +1025,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                     }
 
                     dbManager!!.updatebirds_attribute(birds_attribute,pk)
+                    dbManager!!.updatecommonbirds(birds_attribute,keyId)
                 }
 
                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "birds/imges/")

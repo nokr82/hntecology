@@ -649,6 +649,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                                 }
 
                                 dbManager!!.updatemammal_attribute(mammal_attribute,pk)
+                                dbManager!!.updatecommonmammal(mammal_attribute,keyId)
                             }
 
                             val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/mammalia/imges/")
@@ -1132,6 +1133,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                     }
 
                     dbManager!!.updatemammal_attribute(mammal_attribute,pk)
+                    dbManager!!.updatecommonmammal(mammal_attribute,keyId)
                 }
 
                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/mammalia/imges/")

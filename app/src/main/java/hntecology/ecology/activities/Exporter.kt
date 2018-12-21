@@ -187,17 +187,6 @@ object Exporter {
         val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"  + File.separator +"data"+ File.separator + layerName + File.separator
         var outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"  + File.separator +"data"+ File.separator + layerName + File.separator + layerName + ".shp"
 
-        if(layerName == "tracking"){
-            val today = Utils.todayStr()
-
-            val time = Utils.timeStr()
-
-            val path = today + " " + time
-
-            outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"  + File.separator +"data"+ File.separator + layerName + File.separator + path + ".shp"
-
-        }
-
         val outputsDir = File(outPath)
 
         if (outputsDir.exists()) {

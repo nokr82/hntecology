@@ -768,11 +768,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public void inserttracking(Tracking tracking){
         String query = "INSERT INTO tracking";
-        query += "(latitude,longitude)";
+        query += "(latitude,longitude,start,finish)";
 
         query += " values (";
         query += " '" + tracking.getLATITUDE() + "'";
         query += ", '" + tracking.getLONGITUDE() + "'";
+        query += ", '" + tracking.getSTART() + "'";
+        query += ", '" + tracking.getFINISH() + "'";
 
         query += " ); ";
 
@@ -1682,6 +1684,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",COORD_E_M='" + Zoobenthos_Attribute.getCOORD_E_M() + "'"
                 + ",COORD_E_S='" + Zoobenthos_Attribute.getCOORD_E_S() + "'" +
 
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void updatecommonstockmap(StockMap StockMap,String GROP_ID) {
+
+        String query = "UPDATE StockMap SET  " +
+                "INV_REGION='" + StockMap.getINV_REGION() + "'"+
                 "where GROP_ID = '" + GROP_ID + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);

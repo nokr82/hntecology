@@ -930,6 +930,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                                 }
 
                                 dbManager!!.updatereptilia_attribute(reptilia_attribute,pk)
+                                dbManager!!.updatecommonreptilia(reptilia_attribute,keyId)
                             }
 
                             val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/reptilia/imges/")
@@ -1130,7 +1131,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                         reptilia_attribute.CONF_MOD = "M"
                     }
 
-                        dbManager!!.updatereptilia_attribute(reptilia_attribute,pk)
+                    dbManager!!.updatereptilia_attribute(reptilia_attribute,pk)
+                    dbManager!!.updatecommonreptilia(reptilia_attribute,keyId)
                 }
 
                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/reptilia/imges/")

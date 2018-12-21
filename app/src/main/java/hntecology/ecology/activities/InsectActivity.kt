@@ -652,6 +652,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                                 }
 
                                 dbManager!!.updateinsect_attribute(insect_attribute,pk)
+                                dbManager!!.updatecommoninsect(insect_attribute,keyId)
                             }
 
                             val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/insect/imges/")
@@ -1148,6 +1149,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                     }
 
                     dbManager!!.updateinsect_attribute(insect_attribute,pk)
+                    dbManager!!.updatecommoninsect(insect_attribute,keyId)
+
                 }
 
                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/insect/imges/")

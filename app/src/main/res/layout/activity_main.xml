@@ -355,7 +355,7 @@
                     android:id="@+id/trackingBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Tracking 켜기"/>
+                    android:text="Tracking 끄기"/>
 
                 <Button
                     android:id="@+id/mytrackingBtn"

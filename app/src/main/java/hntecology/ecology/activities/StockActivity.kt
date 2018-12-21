@@ -413,6 +413,7 @@ class StockActivity : Activity() {
                                 stockMap.MAP_LABEL2 = map_lableET.text.toString()
 
                                 dbManager!!.updatestockmap(stockMap,pk)
+                                dbManager!!.updatecommonstockmap(stockMap,keyId)
                             }
 
                         } else {
@@ -613,6 +614,7 @@ class StockActivity : Activity() {
                     stockMap.MAP_LABEL2 = map_lableET.text.toString()
 
                     dbManager!!.updatestockmap(stockMap,pk)
+                    dbManager!!.updatecommonstockmap(stockMap,keyId)
                 }
 
             } else {

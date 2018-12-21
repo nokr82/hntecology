@@ -631,6 +631,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
 
                                 dbManager!!.updateflora_attribute(flora_Attribute,pk)
+                                dbManager!!.updatecommonflora(flora_Attribute,keyId)
                             }
 
                             val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "/data/flora/imges/")
@@ -1096,6 +1097,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                     }
 
                     dbManager!!.updateflora_attribute(flora_Attribute,pk)
+                    dbManager!!.updatecommonflora(flora_Attribute,keyId)
                 }
 
                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/flora/imges/")

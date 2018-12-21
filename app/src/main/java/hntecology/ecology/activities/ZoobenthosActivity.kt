@@ -719,6 +719,7 @@ class ZoobenthosActivity : Activity() {
                                 }
 
                                 dbManager!!.updatezoobenthous_attribute(zoobenthos_Attribute, pk)
+                                dbManager!!.updatecommonzoobenthos(zoobenthos_Attribute,keyId)
                             }
 
                             val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/zoobenthos/imges/")
@@ -1154,6 +1155,7 @@ class ZoobenthosActivity : Activity() {
                     }
 
                     dbManager!!.updatezoobenthous_attribute(zoobenthos_Attribute, pk)
+                    dbManager!!.updatecommonzoobenthos(zoobenthos_Attribute,keyId)
                 }
 
                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/zoobenthos/imges/")

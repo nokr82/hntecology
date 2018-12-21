@@ -875,6 +875,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                 }
 
                                 dbManager!!.updatebiotope_attribute(biotope_attribute, pk)
+                                dbManager!!.updatecommonbiotope(biotope_attribute,keyId)
                             }
 
                             val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/imges/")
@@ -1416,6 +1417,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     }
 
                     dbManager!!.updatebiotope_attribute(biotope_attribute, pk)
+                    dbManager!!.updatecommonbiotope(biotope_attribute,keyId)
                 }
 
                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/biotope/imges/")

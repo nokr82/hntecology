@@ -758,6 +758,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                                 }
 
                                 dbmanager!!.updatefish_attribute(fish_attribute,pk)
+                                dbmanager!!.updatecommonfish(fish_attribute,keyId)
                             }
 
                             val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/fish/imges/")
@@ -1260,6 +1261,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                     }
 
                     dbmanager!!.updatefish_attribute(fish_attribute,pk)
+                    dbmanager!!.updatecommonfish(fish_attribute,keyId)
                 }
 
                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/fish/imges/")

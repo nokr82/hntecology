@@ -14,11 +14,13 @@ import android.graphics.BitmapFactory
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
+import android.net.Uri
 import android.os.*
 import android.provider.MediaStore
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.FileProvider
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -102,6 +104,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
     private var db: SQLiteDatabase? = null
 
+    var imageUri:Uri? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_flora)
@@ -131,9 +135,9 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
         var todays = today.split("-")
 
-        var texttoday = ""
+        var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
 
-        for (i in 0 until todays.size){
+        for (i in 1 until todays.size){
             texttoday += todays.get(i)
         }
 
@@ -146,9 +150,6 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
         dbManager = DataBaseHelper(this)
 
         db = dbManager!!.createDataBase();
-
-        val num = dbManager!!.floraNextNum()
-        floranumET.setText(num.toString())
 
         var intent: Intent = getIntent();
 
@@ -582,7 +583,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                             flora_Attribute.TEMPERATUR = floratemperaturTV.text.toString().toFloat()
                         }
 
-                        flora_Attribute.INV_TM = Utils.timeStr()
+                        flora_Attribute.INV_TM = florainvtmET.text.toString()
 
                         flora_Attribute.ETC = floraetcET.text.toString()
 
@@ -1048,7 +1049,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                 flora_Attribute.TEMPERATUR = floratemperaturTV.text.toString().toFloat()
             }
 
-            flora_Attribute.INV_TM = Utils.timeStr()
+            flora_Attribute.INV_TM = florainvtmET.text.toString()
 
             flora_Attribute.ETC = floraetcET.text.toString()
 
@@ -1273,10 +1274,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (intent.resolveActivity(packageManager) != null) {
 
-            // File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
             val storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-
-            // File photo = new File(dir, System.currentTimeMillis() + ".jpg");
 
             try {
                 val photo = File.createTempFile(
@@ -1285,19 +1283,12 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                         storageDir      /* directory */
                 )
 
-/*                absolutePath = photo.absolutePath
-                imageUri = Uri.fromFile(photo)
+                cameraPath = photo.absolutePath
                 //imageUri = Uri.fromFile(photo);
-                imageUri = FileProvider.getUriForFile(context, context!!.getApplicationContext().getPackageName() + ".provider", photo)
+                imageUri = FileProvider.getUriForFile(context, context.packageName + ".provider", photo)
+
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-                startActivityForResult(intent, FROM_CAMERA)*/
-
-                val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                if (takePictureIntent.resolveActivity(packageManager) != null) {
-
-                    startActivityForResult(takePictureIntent, FROM_CAMERA)
-                    cameraPath = photo.absolutePath;
-                }
+                startActivityForResult(intent, FROM_CAMERA)
 
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -1305,7 +1296,6 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
         }
     }
-
     private fun imageFromGallery() {
 
         val intent1 = Intent(context, WriteAlbumActivity::class.java)
@@ -1326,12 +1316,18 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
     fun clear(){
 
         var num = floranumET.text.toString()
-        var textnum = num.substring(num.length -1,num.length)
-        var splitnum = num.substring(0,num.length -1 )
-        var plusnum = textnum.toInt() + 1
-        floranumET.setText(splitnum.toString() + plusnum.toString())
 
-        florainvtmET.setText("")
+        if (num.length > 7){
+            var textnum = num.substring(num.length - 2, num.length)
+            var splitnum = num.substring(0, num.length - 2)
+            var plusnum = textnum.toInt() + 1
+            floranumET.setText(splitnum.toString() + plusnum.toString())
+        } else {
+            var textnum = num.substring(num.length - 1, num.length)
+            var splitnum = num.substring(0, num.length - 1)
+            var plusnum = textnum.toInt() + 1
+            floranumET.setText(splitnum.toString() + plusnum.toString())
+        }
 
         floraspecnmET.setText("")
         florafaminmTV.setText("")
@@ -1684,19 +1680,50 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                               }
                           }*/
 
-                        var extras: Bundle = data!!.getExtras();
-                        val bitmap = extras.get("data") as Bitmap
+                        val realPathFromURI = imageUri!!.getPath()
+                        images_path!!.add(cameraPath!!)
+                        context.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://$realPathFromURI")))
+                        try {
+                            val add_file = Utils.getImage(context.contentResolver, cameraPath)
 
-                        val v = View.inflate(context, R.layout.item_add_image, null)
-                        val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
-                        val delIV = v.findViewById<View>(R.id.delIV) as ImageView
-                        imageIV.setImageBitmap(bitmap)
-                        images!!.add(bitmap)
-                        delIV.setTag(images!!.size)
+                            val v = View.inflate(context, R.layout.item_add_image, null)
+                            val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                            val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+                            imageIV.setImageBitmap(add_file)
+                            delIV.setTag(images!!.size)
+                            images!!.add(add_file)
 
-                        if (imgSeq == 0) {
-                            addPicturesLL!!.addView(v)
+                            if (imgSeq == 0) {
+                                addPicturesLL!!.addView(v)
+                            }
+
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
+
+                        val child = addPicturesLL!!.getChildCount()
+                        for (i in 0 until child) {
+
+                            val v = addPicturesLL!!.getChildAt(i)
+
+                            val delIV = v.findViewById(R.id.delIV) as ImageView
+
+                        }
+
+//                        var extras: Bundle = data!!.getExtras();
+//                        val bitmap = extras.get("data") as Bitmap
+//
+//                        val v = View.inflate(context, R.layout.item_add_image, null)
+//                        val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+//                        val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+//                        imageIV.setImageBitmap(bitmap)
+//                        images!!.add(bitmap)
+//                        delIV.setTag(images!!.size)
+//
+//                        if (imgSeq == 0) {
+//                            addPicturesLL!!.addView(v)
+//                        }
 
                     }
                 }
@@ -1794,14 +1821,29 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                         val paths = images_path!!.get(j).split("/")
                         val file_name = paths.get(paths.size - 1)
                         val getPk = file_name.split("_")
-                        val pathPk = getPk.get(0)
-                        val pathPk2 = getPk.get(1)
-                        val num = floranumET.text.toString()
-                        val invtm = florainvtmET.text.toString()
+                        if (getPk.size > 1) {
+                            val pathPk = getPk.get(0)
+                            val pathPk2 = getPk.get(1)
+                            val num = floranumET.text.toString()
+                            val invtm = florainvtmET.text.toString()
 
 
-                        if (pathPk == num && pathPk2 == invtm){
-                            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+                            if (pathPk == num && pathPk2 == invtm) {
+                                val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+                                if (images!!.size == 0) {
+                                    images!!.add(add_file)
+                                } else {
+                                    try {
+                                        images!!.set(images!!.size, add_file)
+                                    } catch (e: IndexOutOfBoundsException) {
+                                        images!!.add(add_file)
+                                    }
+
+                                }
+                                reset(images_path!!.get(j), j)
+                            }
+                        } else {
+                            val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
                             if (images!!.size == 0) {
                                 images!!.add(add_file)
                             } else {
@@ -1846,18 +1888,35 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                             addPicturesLL!!.addView(vv)
                         }
                     }
+
                     for (j in images_path!!.indices) {
 
                         val paths = images_path!!.get(j).split("/")
                         val file_name = paths.get(paths.size - 1)
                         val getPk = file_name.split("_")
-                        val pathPk = getPk.get(0)
-                        val pathPk2 = getPk.get(1)
-                        val num = floranumET.text.toString()
-                        val invtm = florainvtmET.text.toString()
+                        if (getPk.size > 1) {
+                            val pathPk = getPk.get(0)
+                            val pathPk2 = getPk.get(1)
+                            val num = floranumET.text.toString()
+                            val invtm = florainvtmET.text.toString()
 
-                        if (pathPk == num && pathPk2 == invtm){
-                            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+
+                            if (pathPk == num && pathPk2 == invtm) {
+                                val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+                                if (images!!.size == 0) {
+                                    images!!.add(add_file)
+                                } else {
+                                    try {
+                                        images!!.set(images!!.size, add_file)
+                                    } catch (e: IndexOutOfBoundsException) {
+                                        images!!.add(add_file)
+                                    }
+
+                                }
+                                reset(images_path!!.get(j), j)
+                            }
+                        } else {
+                            val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
                             if (images!!.size == 0) {
                                 images!!.add(add_file)
                             } else {
@@ -1871,7 +1930,6 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                             reset(images_path!!.get(j), j)
                         }
                     }
-
 
                 })
                 .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })

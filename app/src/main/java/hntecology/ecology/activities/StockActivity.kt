@@ -82,9 +82,17 @@ class StockActivity : Activity() {
         dbManager = DataBaseHelper(context);
         db = dbManager!!.createDataBase();
 
-        val num = dbManager!!.stockmapNextNum()
-        numTV.setText(num.toString())
+        var today = Utils.todayStr();
 
+        var todays = today.split("-")
+
+        var texttoday = ""
+
+        for (i in 1 until todays.size){
+            texttoday += todays.get(i)
+        }
+
+        numTV.setText(texttoday + "1")
         var intent: Intent = getIntent();
 
         if (intent.getStringExtra("polygonid") != null) {
@@ -634,6 +642,20 @@ class StockActivity : Activity() {
     }
 
     fun clear(){
+
+        var num = numTV.text.toString()
+        if (num.length > 5){
+            var textnum = num.substring(num.length - 2, num.length)
+            var splitnum = num.substring(0, num.length - 2)
+            var plusnum = textnum.toInt() + 1
+            numTV.setText(splitnum.toString() + plusnum.toString())
+        } else {
+            var textnum = num.substring(num.length - 1, num.length)
+            var splitnum = num.substring(0, num.length - 1)
+            var plusnum = textnum.toInt() + 1
+            numTV.setText(splitnum.toString() + plusnum.toString())
+        }
+
         frtpcdTV.text = ""
         koftrTV.text = ""
         storunstTV.text = ""

@@ -33,6 +33,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.maps.android.SphericalUtil
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
@@ -223,10 +224,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     internal var loadDataHandler: Handler = object : Handler() {
         override fun handleMessage(msg: android.os.Message) {
             initGps()
-            var location: Location = Location("route")
-            location.latitude = latitude
-            location.longitude = longitude
-            onLocationUpdated(location)
         }
     }
 
@@ -258,6 +255,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             latitude = gpsset.latitude!!
             longitude = gpsset.longitude!!
+
+            println("-------lat $latitude")
+            println("-------log $longitude")
 
         }
 
@@ -738,7 +738,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             if ( title.equals("Tracking 켜기")){
                 start = true
-                dbManager!!.deletetracking()
+//                dbManager!!.deletetracking()
                 trackingBtn.setText("Tracking 끄기")
                 timerStart()
 
@@ -4674,6 +4674,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 val birds_attribute = birdsDatas.get(i)
 
+                var add = false
+                var idx = 0
+
                 if(points.size > 0) {
 
                     for (j in 0..points.size - 1) {
@@ -4686,44 +4689,56 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                             if (attrubuteKey.equals(grop_id)) {
 
-                                var BIRDSATTRIBUTE:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+                                add = true
+                                idx = j
 
-//                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,birds_attribute.id))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString,birds_attribute.GROP_ID))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString,birds_attribute.PRJ_NAME))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString,birds_attribute.INV_REGION))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString,birds_attribute.INV_DT))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString,birds_attribute.INV_PERSON))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString,birds_attribute.WEATHER))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString,birds_attribute.WIND))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString,birds_attribute.WIND_DIRE))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTReal,birds_attribute.TEMPERATUR))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString,birds_attribute.ETC))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger,birds_attribute.NUM))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString,birds_attribute.INV_TM))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString,birds_attribute.SPEC_NM))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString,birds_attribute.FAMI_NM))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString,birds_attribute.SCIEN_NM))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("ENDANGERED", ogr.OFTString,birds_attribute.ENDANGERED))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger,birds_attribute.INDI_CNT))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("OBS_STAT", ogr.OFTString,birds_attribute.OBS_STAT))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("OBS_ST_ETC", ogr.OFTString,birds_attribute.OBS_ST_ETC))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_TAR", ogr.OFTString,birds_attribute.USE_TAR))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_TAR_SP", ogr.OFTString,birds_attribute.USE_TAR_SP))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_LAYER", ogr.OFTString,birds_attribute.USE_LAYER))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT", ogr.OFTString,birds_attribute.MJ_ACT))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT_PR", ogr.OFTString,birds_attribute.MJ_ACT_PR))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal,birds_attribute.GPS_LAT))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal,birds_attribute.GPS_LON))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString,birds_attribute.TEMP_YN))
-                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString,birds_attribute.CONF_MOD))
+                                println("attrubuteKey ::::::::::::::::::::::::::::::::::::::::::::::::::::: $attrubuteKey")
+                                println("grop_id ::::::::::::::::::::::::::::::::::::::::::::::::::::: $grop_id")
 
-                                val exporter = Exporter.ExportPointItem(LAYER_BIRDS, BIRDSATTRIBUTE, points.get(j))
 
-                                pointsArray.add(exporter)
                             }
                         }
                     }
+                }
+
+                if(add) {
+
+                    var BIRDSATTRIBUTE:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+
+//                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,birds_attribute.id))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString,birds_attribute.GROP_ID))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString,birds_attribute.PRJ_NAME))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString,birds_attribute.INV_REGION))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString,birds_attribute.INV_DT))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString,birds_attribute.INV_PERSON))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString,birds_attribute.WEATHER))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString,birds_attribute.WIND))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString,birds_attribute.WIND_DIRE))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTReal,birds_attribute.TEMPERATUR))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString,birds_attribute.ETC))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger,birds_attribute.NUM))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString,birds_attribute.INV_TM))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString,birds_attribute.SPEC_NM))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString,birds_attribute.FAMI_NM))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString,birds_attribute.SCIEN_NM))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("ENDANGERED", ogr.OFTString,birds_attribute.ENDANGERED))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger,birds_attribute.INDI_CNT))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("OBS_STAT", ogr.OFTString,birds_attribute.OBS_STAT))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("OBS_ST_ETC", ogr.OFTString,birds_attribute.OBS_ST_ETC))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_TAR", ogr.OFTString,birds_attribute.USE_TAR))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_TAR_SP", ogr.OFTString,birds_attribute.USE_TAR_SP))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_LAYER", ogr.OFTString,birds_attribute.USE_LAYER))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT", ogr.OFTString,birds_attribute.MJ_ACT))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT_PR", ogr.OFTString,birds_attribute.MJ_ACT_PR))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal,birds_attribute.GPS_LAT))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal,birds_attribute.GPS_LON))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString,birds_attribute.TEMP_YN))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString,birds_attribute.CONF_MOD))
+
+                    val exporter = Exporter.ExportPointItem(LAYER_BIRDS, BIRDSATTRIBUTE, points.get(idx))
+
+                    pointsArray.add(exporter)
+
                 }
             }
 
@@ -6319,37 +6334,63 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 stopLocation()
             }
         }, (5 * 1000).toLong())
+
+        println("-------lat start$latitude")
+        println("-------log start$longitude")
     }
 
     override fun onLocationUpdated(location: Location?) {
-        val time = System.currentTimeMillis()
-
-        val difference = ((nowTime - time) / 1000)
-
-        println("difference $difference")
 
         val geometryFactory = GeometryFactory()
 
-
         val currentPoint = geometryFactory.createPoint(Coordinate(location!!.latitude, location!!.longitude))
-
-            if(trackingdiv) {
-                val tracking: Tracking = Tracking(null, location.latitude, location.longitude)
-
-                dbManager!!.inserttracking(tracking)
-
-                Toast.makeText(this,"insert.",Toast.LENGTH_SHORT).show()
-            }
-
 
         prevPoint = currentPoint
 
 //         System.out.println("onLocationUpdated : " + location);
 
         if (location != null) {
-            latitude = location.latitude
-            longitude = location.longitude
+
+            if(trackingdiv) {
+                val tracking: Tracking = Tracking(null, location.latitude, location.longitude)
+
+                dbManager!!.inserttracking(tracking)
+
+                Toast.makeText(this,"tracking..",Toast.LENGTH_SHORT).show()
+
+                latitude = location.latitude
+                longitude = location.longitude
+            }
+
+
+//            val latlng = LatLng(location.latitude,location.longitude)
+//            val latlng2 = LatLng(latitude,longitude)
+//
+//            println("-------lat update${location.latitude}")
+//            println("-------log update${location.longitude}")
+//
+//            var distance = SphericalUtil.computeDistanceBetween(latlng, latlng2)
+//
+//            print("--------------distance $distance")
+
+
+//            if (distance.toInt() >= 300){
+//
+//                if(trackingdiv) {
+//                    val tracking: Tracking = Tracking(null, location.latitude, location.longitude)
+//
+//                    dbManager!!.inserttracking(tracking)
+//
+//                    Toast.makeText(this,"tracking..",Toast.LENGTH_SHORT).show()
+//
+//                    latitude = location.latitude
+//                    longitude = location.longitude
+//                }
+//
+//            }
+
         }
+
 
     }
 
@@ -6364,6 +6405,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 builder.setMessage("위치 서비스 이용이 제한되어 있습니다.\n설정에서 위치 서비스 이용을 허용해주세요.")
                 builder.setCancelable(true)
                 builder.setNegativeButton("취소") { dialog, id ->
+                    dialog.cancel()
                     dialog.cancel()
 
                     latitude = 37.5203175

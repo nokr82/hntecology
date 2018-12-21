@@ -244,6 +244,26 @@ public class Utils {
      *            회전 각도
      * @return 회전된 이미지
      */
+
+    public static Bitmap rotates(Bitmap bitmap, int degrees) {
+        if (degrees != 0 && bitmap != null) {
+            Matrix m = new Matrix();
+//            m.setRotate(degrees, (float) bitmap.getWidth() / 2, (float) bitmap.getHeight() / 2);
+
+            try {
+//                Bitmap converted = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true);
+//                if (bitmap != converted) {
+                    bitmap.recycle();
+//                    bitmap = converted;
+//                }
+            } catch (OutOfMemoryError e) {
+                // 메모리가 부족하여 회전을 시키지 못할 경우 그냥 원본을 반환합니다.
+                e.printStackTrace();
+            }
+        }
+        return bitmap;
+    }
+
     public static Bitmap rotate(Bitmap bitmap, int degrees) {
         if (degrees != 0 && bitmap != null) {
             Matrix m = new Matrix();
@@ -360,6 +380,66 @@ public class Utils {
             options.inJustDecodeBounds = false;
             Bitmap bm = BitmapFactory.decodeStream(new FileInputStream(photoPath), null, options);
             return Utils.rotate(bm, orientation);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static Bitmap getImages(ContentResolver resolver, String imageIdOrPath) {
+        try {
+            String photoPath = null;
+            int orientation = 0;
+
+            try {
+                int uid = Integer.parseInt(imageIdOrPath);
+                String[] proj = { Images.Media.DATA, Images.Media.ORIENTATION };
+
+                String selection = Images.Media._ID + " = " + uid;
+
+                Cursor cursor = Images.Media.query(resolver, Images.Media.EXTERNAL_CONTENT_URI, proj, selection, Images.Media.DATE_ADDED + " DESC");
+                if (cursor != null && cursor.moveToFirst()) {
+                    photoPath = cursor.getString(cursor.getColumnIndex(proj[0]));
+                    orientation = cursor.getInt(cursor.getColumnIndex(proj[1]));
+                }
+                cursor.close();
+
+            } catch (NumberFormatException e) {
+                photoPath = imageIdOrPath;
+
+                // rotation
+                ExifInterface exif;
+                try {
+                    exif = new ExifInterface(photoPath);
+                    int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                    orientation = Utils.exifOrientationToDegrees(exifOrientation);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+            }
+
+            // 비트맵 이미지로 가져온다
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(new FileInputStream(photoPath), null, options);
+
+            // Calculate inSampleSize
+//            int reqSize = 654;
+//            if (orientation == 90 || orientation == 270) {
+//                options.inSampleSize = Utils.calculateInSampleSizeByHeight(options, reqSize);
+//            } else if (orientation == 0 || orientation == 180) {
+//                options.inSampleSize = Utils.calculateInSampleSizeByWidth(options, reqSize);
+//            }
+
+            // System.out.println("options.inSampleSize : " + options.inSampleSize + ", orientation : " + orientation);
+
+            // Decode bitmap with inSampleSize set
+            options.inJustDecodeBounds = false;
+            Bitmap bm = BitmapFactory.decodeStream(new FileInputStream(photoPath), null, options);
+            return Utils.rotates(bm, orientation);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

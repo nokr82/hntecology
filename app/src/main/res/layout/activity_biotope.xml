@@ -67,21 +67,6 @@
                         style="@style/BiotopeTextViewDisabled"
                         />
 
-                    <TextView
-                        android:layout_width="70dp"
-                        android:layout_height="match_parent"
-                        android:text="프로젝트"
-                        style="@style/BiotopeTextView"
-                        />
-
-                    <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:id="@+id/prjnameTV"
-                        android:gravity="center"
-                        style="@style/BiotopeTextView"
-                        />
                     </LinearLayout>
 
 
@@ -232,6 +217,22 @@
                         android:id="@+id/tvINV_IndexTV"
                         android:gravity="center"
                         style="@style/BiotopeTextViewDisabled"
+                        />
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:text="프로젝트"
+                        style="@style/BiotopeTextView"
+                        />
+
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/prjnameTV"
+                        android:gravity="center"
+                        style="@style/BiotopeTextView"
                         />
 
                 </LinearLayout>

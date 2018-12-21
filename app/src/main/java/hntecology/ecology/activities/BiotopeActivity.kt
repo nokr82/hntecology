@@ -23,6 +23,7 @@ import android.provider.MediaStore
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.FileProvider
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -155,9 +156,9 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         var today = Utils.todayStr();
         var todays = today.split("-")
 
-        var texttoday = ""
+        var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
 
-        for (i in 0 until todays.size){
+        for (i in 1 until todays.size){
             texttoday += todays.get(i)
         }
 
@@ -2086,36 +2087,70 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     if (resultCode == -1) {
 
                         /*  val options = BitmapFactory.Options()
-                        options.inJustDecodeBounds = true
+                          options.inJustDecodeBounds = true
 
-                        options.inJustDecodeBounds = false
-                        options.inSampleSize = 1
-                        if (options.outWidth > 96) {
-                            val ws = options.outWidth / 96 + 1
-                            if (ws > options.inSampleSize) {
-                                options.inSampleSize = ws
+                          options.inJustDecodeBounds = false
+                          options.inSampleSize = 1
+                          if (options.outWidth > 96) {
+                              val ws = options.outWidth / 96 + 1
+                              if (ws > options.inSampleSize) {
+                                  options.inSampleSize = ws
+                              }
+                          }
+                          if (options.outHeight > 96) {
+                              val hs = options.outHeight / 96 + 1
+                              if (hs > options.inSampleSize) {
+                                  options.inSampleSize = hs
+                              }
+                          }*/
+
+                        val realPathFromURI = imageUri!!.getPath()
+                        images_path!!.add(cameraPath!!)
+                        context!!.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://$realPathFromURI")))
+                        try {
+                            val add_file = Utils.getImages(context!!.contentResolver, cameraPath)
+
+                            val v = View.inflate(context, R.layout.item_add_image, null)
+                            val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                            val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+                            imageIV.setImageBitmap(add_file)
+                            delIV.setTag(images!!.size)
+                            images!!.add(add_file)
+
+                            if (imgSeq == 0) {
+                                addPicturesLL!!.addView(v)
                             }
+
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
-                        if (options.outHeight > 96) {
-                            val hs = options.outHeight / 96 + 1
-                            if (hs > options.inSampleSize) {
-                                options.inSampleSize = hs
-                            }
-                        }*/
 
-                        var extras: Bundle = data!!.getExtras();
-                        val bitmap = extras.get("data") as Bitmap
+                        val child = addPicturesLL!!.getChildCount()
+                        for (i in 0 until child) {
 
-                        val v = View.inflate(context, R.layout.item_add_image, null)
-                        val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
-                        val delIV = v.findViewById<View>(R.id.delIV) as ImageView
-                        imageIV.setImageBitmap(bitmap)
-                        images!!.add(bitmap)
-                        delIV.setTag(images!!.size)
+                            println("test : $i")
 
-                        if (imgSeq == 0) {
-                            addPicturesLL!!.addView(v)
+                            val v = addPicturesLL!!.getChildAt(i)
+
+                            val delIV = v.findViewById(R.id.delIV) as ImageView
+
                         }
+
+//                        var extras: Bundle = data!!.getExtras();
+//                        val bitmap = extras.get("data") as Bitmap
+//
+//                        val v = View.inflate(context, R.layout.item_add_image, null)
+//                        val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+//                        val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+//                        imageIV.setImageBitmap(bitmap)
+//                        images!!.add(bitmap)
+//                        delIV.setTag(images!!.size)
+//
+//                        if (imgSeq == 0) {
+//                            addPicturesLL!!.addView(v)
+//                        }
+
                     }
                 }
 
@@ -2124,7 +2159,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     for (i in result.indices) {
                         val str = result[i]
                         images_path!!.add(str);
-                        val add_file = Utils.getImage(context!!.getContentResolver(), str)
+                        val add_file = Utils.getImages(context!!.getContentResolver(), str)
                         if (images!!.size == 0) {
                             images!!.add(add_file)
                         } else {
@@ -2303,11 +2338,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (intent.resolveActivity(packageManager) != null) {
 
-            // File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
             val storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-
-
-            // File photo = new File(dir, System.currentTimeMillis() + ".jpg");
 
             try {
                 val photo = File.createTempFile(
@@ -2316,19 +2347,12 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         storageDir      /* directory */
                 )
 
-/*                absolutePath = photo.absolutePath
-                imageUri = Uri.fromFile(photo)
+                cameraPath = photo.absolutePath
                 //imageUri = Uri.fromFile(photo);
-                imageUri = FileProvider.getUriForFile(context, context!!.getApplicationContext().getPackageName() + ".provider", photo)
+                imageUri = FileProvider.getUriForFile(context, context!!.packageName + ".provider", photo)
+
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-                startActivityForResult(intent, FROM_CAMERA)*/
-
-                val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                if (takePictureIntent.resolveActivity(packageManager) != null) {
-
-                    startActivityForResult(takePictureIntent, FROM_CAMERA)
-                    cameraPath = photo.absolutePath;
-                }
+                startActivityForResult(intent, FROM_CAMERA)
 
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -2404,15 +2428,30 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         val paths = images_path!!.get(j).split("/")
                         val file_name = paths.get(paths.size - 1)
                         val getPk = file_name.split("_")
-                        val pathPk = getPk.get(0)
 
-                        println("getPk {$getPk}")
-                        val pathPk2 = getPk.get(1)
-                        val num = tvINV_IndexTV.text.toString()
-                        val invtm = etINV_TMTV.text.toString()
+                        if (getPk.size > 1) {
+                            val pathPk = getPk.get(0)
+                            println("getPk {$getPk}")
+                            val pathPk2 = getPk.get(1)
+                            val num = tvINV_IndexTV.text.toString()
+                            val invtm = etINV_TMTV.text.toString()
 
-                        if (pathPk == num && pathPk2 == invtm){
-                            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+                            if (pathPk == num && pathPk2 == invtm) {
+                                val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
+                                if (images!!.size == 0) {
+                                    images!!.add(add_file)
+                                } else {
+                                    try {
+                                        images!!.set(images!!.size, add_file)
+                                    } catch (e: IndexOutOfBoundsException) {
+                                        images!!.add(add_file)
+                                    }
+
+                                }
+                                reset(images_path!!.get(j), j)
+                            }
+                        } else {
+                            val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
                             if (images!!.size == 0) {
                                 images!!.add(add_file)
                             } else {
@@ -2463,15 +2502,30 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         val paths = images_path!!.get(j).split("/")
                         val file_name = paths.get(paths.size - 1)
                         val getPk = file_name.split("_")
-                        val pathPk = getPk.get(0)
 
-                        println("getPk {$getPk}")
-                        val pathPk2 = getPk.get(1)
-                        val num = tvINV_IndexTV.text.toString()
-                        val invtm = etINV_TMTV.text.toString()
+                        if (getPk.size > 1) {
+                            val pathPk = getPk.get(0)
+                            println("getPk {$getPk}")
+                            val pathPk2 = getPk.get(1)
+                            val num = tvINV_IndexTV.text.toString()
+                            val invtm = etINV_TMTV.text.toString()
 
-                        if (pathPk == num && pathPk2 == invtm){
-                            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+                            if (pathPk == num && pathPk2 == invtm) {
+                                val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
+                                if (images!!.size == 0) {
+                                    images!!.add(add_file)
+                                } else {
+                                    try {
+                                        images!!.set(images!!.size, add_file)
+                                    } catch (e: IndexOutOfBoundsException) {
+                                        images!!.add(add_file)
+                                    }
+
+                                }
+                                reset(images_path!!.get(j), j)
+                            }
+                        } else {
+                            val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
                             if (images!!.size == 0) {
                                 images!!.add(add_file)
                             } else {
@@ -2542,11 +2596,18 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         etINV_TMTV.setText(createId())
 
         var num = tvINV_IndexTV.text.toString()
-        var textnum = num.substring(num.length -1,num.length)
-        var splitnum = num.substring(0,num.length -1 )
-        var plusnum = textnum.toInt() + 1
 
-        tvINV_IndexTV.setText(splitnum.toString() + plusnum.toString())
+        if (num.length > 7){
+            var textnum = num.substring(num.length - 2, num.length)
+            var splitnum = num.substring(0, num.length - 2)
+            var plusnum = textnum.toInt() + 1
+            tvINV_IndexTV.setText(splitnum.toString() + plusnum.toString())
+        } else {
+            var textnum = num.substring(num.length - 1, num.length)
+            var splitnum = num.substring(0, num.length - 1)
+            var plusnum = textnum.toInt() + 1
+            tvINV_IndexTV.setText(splitnum.toString() + plusnum.toString())
+        }
 
         TVLU_GR_NumTV.setText("")
         etLU_TY_RATEET.setText("")

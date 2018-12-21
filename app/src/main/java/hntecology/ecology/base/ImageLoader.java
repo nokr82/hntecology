@@ -84,7 +84,7 @@ public class ImageLoader {
                 photoPath = mini.getString(mini.getColumnIndex(proj[0]));
             }
 
-            Bitmap bitmap = Utils.getImage(resolver, photoPath, 200);
+            Bitmap bitmap = Utils.getImages(resolver, photoPath);
 
             /*
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -108,7 +108,7 @@ public class ImageLoader {
             Bitmap bitmap = BitmapFactory.decodeFile(path, options);
             */
 
-            return Utils.rotate(bitmap, orientation);
+            return Utils.rotates(bitmap, orientation);
         }
 
         @Override

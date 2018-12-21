@@ -52,8 +52,6 @@ class WriteAlbumActivity : Activity() , AdapterView.OnItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_write_album)
-
-
         this.context = this
         progressDialog = ProgressDialog(context)
 

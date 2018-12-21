@@ -1560,6 +1560,56 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public void updatecommonbiotope(Biotope_attribute biotope_attribute,String GROP_ID) {
+
+        String query = "UPDATE biotopeAttribute SET  " +
+                "PRJ_NAME='" + biotope_attribute.getPRJ_NAME() + "'"
+                + ",INV_PERSON='" + biotope_attribute.getINV_PERSON() + "'"
+                + ",INV_PERSON='" + biotope_attribute.getINV_PERSON() + "'"
+                + ",INV_DT='" + biotope_attribute.getINV_DT() + "'"
+                + ",INV_TM='" + biotope_attribute.getINV_TM() + "'"+
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+    public void updatecommonbirds(Birds_attribute birds_attribute,String GROP_ID) {
+
+        String query = "UPDATE birdsAttribute SET  " +
+                "INV_REGION='" + birds_attribute.getINV_REGION() + "'"
+                + ",INV_DT='" + birds_attribute.getINV_DT() + "'"
+                + ",INV_PERSON='" + birds_attribute.getINV_PERSON() + "'"
+                + ",WEATHER='" + birds_attribute.getWEATHER() + "'"
+                + ",WIND='" + birds_attribute.getWIND() + "'"
+                + ",WIND_DIRE='" + birds_attribute.getWIND_DIRE() + "'"
+                + ",TEMPERATUR='" + birds_attribute.getTEMPERATUR() + "'"+
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+    public void updatecommonreptilia(Reptilia_attribute reptilia_attribute,String GROP_ID) {
+
+        String query = "UPDATE reptiliaAttribute SET  " +
+                "INV_REGION='" + reptilia_attribute.getINV_REGION() + "'"
+                + ",INV_DT='" + reptilia_attribute.getINV_DT() + "'"
+                + ",INV_PERSON='" + reptilia_attribute.getINV_PERSON() + "'"
+                + ",WEATHER='" + reptilia_attribute.getWEATHER() + "'"
+                + ",WIND='" + reptilia_attribute.getWIND() + "'"
+                + ",WIND_DIRE='" + reptilia_attribute.getWIND_DIRE() + "'"
+                + ",TEMPERATUR='" + reptilia_attribute.getTEMPERATUR() + "'"+
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+
     public void insertGpsSet(GpsSet gpsset) {
         //37 column
         String query = "INSERT INTO gps_set";

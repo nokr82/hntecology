@@ -14,11 +14,13 @@ import android.graphics.BitmapFactory
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
+import android.net.Uri
 import android.os.*
 import android.provider.MediaStore
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.FileProvider
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -106,6 +108,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
     private var db: SQLiteDatabase? = null
 
+    var imageUri:Uri? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mammalia)
@@ -126,9 +130,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         var todays = today.split("-")
 
-        var texttoday = ""
+        var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
 
-        for (i in 0 until todays.size){
+        for (i in 1 until todays.size){
             texttoday += todays.get(i)
         }
 
@@ -145,10 +149,6 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         dbManager = DataBaseHelper(this)
 
         db = dbManager!!.createDataBase();
-
-        val num = dbManager!!.mammalsNextNum()
-
-        mammalnumTV.setText(num.toString())
 
         window.setLayout(Utils.dpToPx(700f).toInt(), WindowManager.LayoutParams.WRAP_CONTENT);
 
@@ -498,8 +498,6 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             mammal_attribute.ETC = mametcET.text.toString()
 
-            mammal_attribute.INV_TM = Utils.timeStr()
-
             mammal_attribute.SPEC_NM = mamspecnmET.text.toString()
             mammal_attribute.FAMI_NM = mamfaminmTV.text.toString()
             mammal_attribute.SCIEN_NM = mamsciennmTV.text.toString()
@@ -603,7 +601,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                             mammal_attribute.NUM = mammalnumTV.text.toString().toInt()
                         }
 
-                        mammal_attribute.INV_TM = Utils.timeStr()
+                        mammal_attribute.INV_TM = mammaltimeTV.text.toString()
 
                         mammal_attribute.SPEC_NM = mamspecnmET.text.toString()
                         mammal_attribute.FAMI_NM = mamfaminmTV.text.toString()
@@ -1311,10 +1309,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (intent.resolveActivity(packageManager) != null) {
 
-            // File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
             val storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-
-            // File photo = new File(dir, System.currentTimeMillis() + ".jpg");
 
             try {
                 val photo = File.createTempFile(
@@ -1323,19 +1318,12 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         storageDir      /* directory */
                 )
 
-/*                absolutePath = photo.absolutePath
-                imageUri = Uri.fromFile(photo)
+                cameraPath = photo.absolutePath
                 //imageUri = Uri.fromFile(photo);
-                imageUri = FileProvider.getUriForFile(context, context!!.getApplicationContext().getPackageName() + ".provider", photo)
+                imageUri = FileProvider.getUriForFile(context, context.packageName + ".provider", photo)
+
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-                startActivityForResult(intent, FROM_CAMERA)*/
-
-                val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                if (takePictureIntent.resolveActivity(packageManager) != null) {
-
-                    startActivityForResult(takePictureIntent, FROM_CAMERA)
-                    cameraPath = photo.absolutePath;
-                }
+                startActivityForResult(intent, FROM_CAMERA)
 
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -1343,6 +1331,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         }
     }
+
 
     private fun imageFromGallery() {
 
@@ -1354,12 +1343,17 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
     fun clear(){
         var num = mammalnumTV.text.toString()
-        var textnum = num.substring(num.length -1,num.length)
-        var splitnum = num.substring(0,num.length -1 )
-        var plusnum = textnum.toInt() + 1
-        mammalnumTV.setText(splitnum.toString() + plusnum.toString())
-
-        mammaltimeTV.setText("")
+        if (num.length > 7){
+            var textnum = num.substring(num.length - 2, num.length)
+            var splitnum = num.substring(0, num.length - 2)
+            var plusnum = textnum.toInt() + 1
+            mammalnumTV.setText(splitnum.toString() + plusnum.toString())
+        } else {
+            var textnum = num.substring(num.length - 1, num.length)
+            var splitnum = num.substring(0, num.length - 1)
+            var plusnum = textnum.toInt() + 1
+            mammalnumTV.setText(splitnum.toString() + plusnum.toString())
+        }
 
         mamspecnmET.setText("")
         mamfaminmTV.setText("")
@@ -1758,19 +1752,51 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                               }
                           }*/
 
-                        var extras: Bundle = data!!.getExtras();
-                        val bitmap = extras.get("data") as Bitmap
+                        val realPathFromURI = imageUri!!.getPath()
+                        images_path!!.add(cameraPath!!)
 
-                        val v = View.inflate(context, R.layout.item_add_image, null)
-                        val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
-                        val delIV = v.findViewById<View>(R.id.delIV) as ImageView
-                        imageIV.setImageBitmap(bitmap)
-                        images!!.add(bitmap)
-                        delIV.setTag(images!!.size)
+                        context.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://$realPathFromURI")))
+                        try {
+                            val add_file = Utils.getImage(context.contentResolver, cameraPath)
 
-                        if (imgSeq == 0) {
-                            addPicturesLL!!.addView(v)
+                            val v = View.inflate(context, R.layout.item_add_image, null)
+                            val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                            val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+                            imageIV.setImageBitmap(add_file)
+                            delIV.setTag(images!!.size)
+                            images!!.add(add_file)
+
+                            if (imgSeq == 0) {
+                                addPicturesLL!!.addView(v)
+                            }
+
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
+
+                        val child = addPicturesLL!!.getChildCount()
+                        for (i in 0 until child) {
+
+                            val v = addPicturesLL!!.getChildAt(i)
+
+                            val delIV = v.findViewById(R.id.delIV) as ImageView
+
+                        }
+
+//                        var extras: Bundle = data!!.getExtras();
+//                        val bitmap = extras.get("data") as Bitmap
+//
+//                        val v = View.inflate(context, R.layout.item_add_image, null)
+//                        val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+//                        val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+//                        imageIV.setImageBitmap(bitmap)
+//                        images!!.add(bitmap)
+//                        delIV.setTag(images!!.size)
+//
+//                        if (imgSeq == 0) {
+//                            addPicturesLL!!.addView(v)
+//                        }
 
                     }
                 }
@@ -1780,7 +1806,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                     for (i in result.indices) {
                         val str = result[i]
                         images_path!!.add(str);
-                        val add_file = Utils.getImage(context!!.getContentResolver(), str)
+                        val add_file = Utils.getImages(context!!.getContentResolver(), str)
                         if (images!!.size == 0) {
                             images!!.add(add_file)
                         } else {
@@ -1878,7 +1904,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         val invtm = mammaltimeTV.text.toString()
 
                         if (pathPk == num && pathPk2 == invtm){
-                            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+                            val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
                             if (images!!.size == 0) {
                                 images!!.add(add_file)
                             } else {
@@ -1935,7 +1961,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         val invtm = mammaltimeTV.text.toString()
 
                         if (pathPk == num && pathPk2 == invtm){
-                            val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+                            val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
                             if (images!!.size == 0) {
                                 images!!.add(add_file)
                             } else {

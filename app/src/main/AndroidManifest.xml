@@ -27,7 +27,7 @@
         android:theme="@style/NoTitleDialog">
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="hntecology.ecology.android.provider"
+            android:authorities="hntecology.ecology.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

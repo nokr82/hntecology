@@ -51,7 +51,6 @@
                 <TextView
                     android:layout_width="50dp"
                     android:layout_height="25dp"
-                    android:background="@drawable/bg_rnd_30000000"
                     android:gravity="center"
                     android:text="올리기"
                     android:textColor="#ffffff"

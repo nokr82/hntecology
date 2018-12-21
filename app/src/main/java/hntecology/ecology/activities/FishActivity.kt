@@ -1164,7 +1164,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             fish_attribute.INV_REGION = fishinvregionET.text.toString()
             fish_attribute.INV_DT = Utils.todayStr()
 
-            println("inv_dt ===============${fish_attribute.INV_DT}")
             fish_attribute.INV_TM = fishinvtmTV.text.toString()
 
             fish_attribute.INV_PERSON = fishinvpersonET.text.toString()

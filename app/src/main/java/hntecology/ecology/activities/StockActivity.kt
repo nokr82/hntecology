@@ -86,7 +86,7 @@ class StockActivity : Activity() {
 
         var todays = today.split("-")
 
-        var texttoday = ""
+        var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
 
         for (i in 1 until todays.size){
             texttoday += todays.get(i)
@@ -646,7 +646,7 @@ class StockActivity : Activity() {
     fun clear(){
 
         var num = numTV.text.toString()
-        if (num.length > 5){
+        if (num.length > 7){
             var textnum = num.substring(num.length - 2, num.length)
             var splitnum = num.substring(0, num.length - 2)
             var plusnum = textnum.toInt() + 1

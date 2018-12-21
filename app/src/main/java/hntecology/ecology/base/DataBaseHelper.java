@@ -1583,7 +1583,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",WEATHER='" + birds_attribute.getWEATHER() + "'"
                 + ",WIND='" + birds_attribute.getWIND() + "'"
                 + ",WIND_DIRE='" + birds_attribute.getWIND_DIRE() + "'"
-                + ",TEMPERATUR='" + birds_attribute.getTEMPERATUR() + "'"+
+                + ",TEMPERATUR='" + birds_attribute.getTEMPERATUR() + "'"
+                + ",ETC='" + birds_attribute.getETC() + "'"+
                 "where GROP_ID = '" + GROP_ID + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1599,7 +1600,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",WEATHER='" + reptilia_attribute.getWEATHER() + "'"
                 + ",WIND='" + reptilia_attribute.getWIND() + "'"
                 + ",WIND_DIRE='" + reptilia_attribute.getWIND_DIRE() + "'"
-                + ",TEMPERATUR='" + reptilia_attribute.getTEMPERATUR() + "'"+
+                + ",TEMPERATUR='" + reptilia_attribute.getTEMPERATUR() + "'"
+                + ",ETC='" + reptilia_attribute.getETC() + "'"+
                 "where GROP_ID = '" + GROP_ID + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1615,7 +1617,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",WEATHER='" + mammal_attribute.getWEATHER() + "'"
                 + ",WIND='" + mammal_attribute.getWIND() + "'"
                 + ",WIND_DIRE='" + mammal_attribute.getWIND_DIRE() + "'"
-                + ",TEMPERATUR='" + mammal_attribute.getTEMPERATUR() + "'"+
+                + ",TEMPERATUR='" + mammal_attribute.getTEMPERATUR() + "'"
+                + ",ETC='" + mammal_attribute.getETC() + "'"+
                 "where GROP_ID = '" + GROP_ID + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1632,12 +1635,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",WEATHER='" + fish_attribute.getWEATHER() + "'"
                 + ",WIND='" + fish_attribute.getWIND() + "'"
                 + ",WIND_DIRE='" + fish_attribute.getWIND_DIRE() + "'"
-                + ",TEMPERATUR='" + fish_attribute.getTEMPERATUR() + "'"+
-
-                "where GROP_ID '" + GROP_ID + "'";
+                + ",TEMPERATUR='" + fish_attribute.getTEMPERATUR() + "'"
+                + ",ETC='" + fish_attribute.getETC() + "'"+
+                "where GROP_ID = '" + GROP_ID + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();
+
 
     }
 
@@ -1649,7 +1653,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",WEATHER='" + insect_attribute.getWEATHER() + "'"
                 + ",WIND='" + insect_attribute.getWIND() + "'"
                 + ",WIND_DIRE='" + insect_attribute.getWIND_DIRE() + "'"
-                + ",TEMPERATUR='" + insect_attribute.getTEMPERATUR() + "'"+
+                + ",TEMPERATUR='" + insect_attribute.getTEMPERATUR() + "'"
+                + ",ETC='" + insect_attribute.getETC() + "'"+
                 "where GROP_ID = '" + GROP_ID + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1664,7 +1669,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",WEATHER='" + flora_attribute.getWEATHER() + "'"
                 + ",WIND='" + flora_attribute.getWIND() + "'"
                 + ",WIND_DIRE='" + flora_attribute.getWIND_DIRE() + "'"
-                + ",TEMPERATUR='" + flora_attribute.getTEMPERATUR() + "'"+
+                + ",TEMPERATUR='" + flora_attribute.getTEMPERATUR() + "'"
+                + ",ETC='" + flora_attribute.getETC() + "'"+
 
                 "where GROP_ID = '" + GROP_ID + "'";
         SQLiteDatabase db = getWritableDatabase();
@@ -1682,7 +1688,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",COORD_N_S='" + Zoobenthos_Attribute.getCOORD_N_S() + "'"
                 + ",COORD_E_D='" + Zoobenthos_Attribute.getCOORD_E_D() + "'"
                 + ",COORD_E_M='" + Zoobenthos_Attribute.getCOORD_E_M() + "'"
-                + ",COORD_E_S='" + Zoobenthos_Attribute.getCOORD_E_S() + "'" +
+                + ",COORD_E_S='" + Zoobenthos_Attribute.getCOORD_E_S() + "'"
+                + ",WEATHER='" + Zoobenthos_Attribute.getWEATHER() + "'"+
 
                 "where GROP_ID = '" + GROP_ID + "'";
         SQLiteDatabase db = getWritableDatabase();

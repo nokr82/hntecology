@@ -3763,8 +3763,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     layerInfo.attrubuteKey = grop_id
                 }
 
-                println("id : $id  grop_id : $grop_id  landuse $landuse")
-
                 marker.tag = layerInfo
 
                 points.add(marker)

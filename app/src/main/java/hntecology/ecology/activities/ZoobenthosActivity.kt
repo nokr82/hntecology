@@ -444,6 +444,7 @@ class ZoobenthosActivity : Activity() {
 
                 prjnameET.setText(zoo.PRJ_NAME)
                 invregionTV.setText(zoo.INV_REGION)
+                mapsysnmET.setText(zoo.MAP_SYS_NM)
                 numTV.setText(zoo.NUM)
                 invmeanTV.setText(zoo.INV_MEAN)
                 coordndET.setText(zoo.COORD_N_D.toString())

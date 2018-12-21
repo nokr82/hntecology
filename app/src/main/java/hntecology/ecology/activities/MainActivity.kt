@@ -1,5 +1,6 @@
 package hntecology.ecology.activities
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog
@@ -26,6 +27,7 @@ import android.widget.Toast
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesUtil
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -39,7 +41,6 @@ import hntecology.ecology.base.Utils
 import hntecology.ecology.model.*
 import io.nlopez.smartlocation.OnLocationUpdatedListener
 import io.nlopez.smartlocation.SmartLocation
-import io.nlopez.smartlocation.location.providers.LocationGooglePlayServicesWithFallbackProvider
 import kotlinx.android.synthetic.main.activity_main.*
 import org.gdal.ogr.ogr
 import org.geotools.data.DataUtilities
@@ -158,8 +159,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     var mammaliaPk:String? = String()
     var reptiliaPk:String? = String()
 
-    var TRACKINGS:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
-
     private val latlngs: ArrayList<LatLng> = ArrayList<LatLng>()
     private val latlngsGPS: ArrayList<BiotopeBaseGPS> = ArrayList<BiotopeBaseGPS>()
 
@@ -169,9 +168,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     var myLocation: Tracking? = null
 
-    var trackingdiv = true
+    // var trackingdiv = true
 
-    var prevPoint: Geometry? = null
+    // var prevPoint: Geometry? = null
 
     private var showLoading = false
 
@@ -229,6 +228,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 //            onLocationUpdated(location)
         }
     }
+
+    private lateinit var locationCallback: LocationCallback
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -730,10 +732,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             offUnionBtn()
         }
 
-
-        initGps()
-        timerStart()
-
         trackingBtn.setOnClickListener {
 
             currentLayer = TRACKING
@@ -752,16 +750,21 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 //                dbManager.inserttracking(tracking1)
 //                dbManager.inserttracking(tracking2)
 
-                trackingdiv = true
+                // trackingdiv = true
+
+                startLocation()
+
             } else if(title.equals("Tracking 끄기")){
                 start = false
                 trackingFinish = 1
                 trackingBtn.setText("Tracking 켜기")
-                trackingdiv = false
+                // trackingdiv = false
                 if (timer != null) {
                     timer!!.cancel()
                 }
                 exportTracking()
+
+                fusedLocationClient.removeLocationUpdates(locationCallback)
             }
 
         }
@@ -822,9 +825,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 if (trackingDatas.size > 0 && trackingDatas != null){
                     var latlngs:ArrayList<LatLng> = ArrayList<LatLng>()
-
-                    println("Trackingsize ${trackingDatas.size}")
-
                     for (i in 0 until trackingDatas.size){
                         val data = trackingDatas.get(i)
                         println("data.START = ${data.START}")
@@ -921,6 +921,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         myLocation = Tracking(null, latitude, longitude, -1, -1)
 //        getLoadLayer()
 
+        // location
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        initGps()
+        // timerStart()
 
     }
 
@@ -3033,7 +3038,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
 //        layerNameTV.text = currentLayerName
 
-        println("fileName : fileName")
 
         val bounds = googleMap.projection.visibleRegion.latLngBounds
         val loadLayerTask = LoadLayerTask(fileName,Type,added).execute(bounds)
@@ -3231,6 +3235,29 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 Thread.sleep(10)
                             }
+                        }
+                    } else if (geometryType == ogr.wkbLineString) {
+
+                        val polylineOptions = PolylineOptions()
+                        polylineOptions.width(5.0f)
+                        polylineOptions.color(Color.RED)
+                        polylineOptions.jointType(JointType.BEVEL)
+
+                        val pointCount = geometryRef.GetPointCount()
+
+                        for (pc in 0 until pointCount) {
+                            val point = geometryRef.GetPoint(pc)
+                            val x = point[0]
+                            val y = point[1]
+
+                            val latlng = LatLng(y, x)
+                            polylineOptions.add(latlng)
+                        }
+
+                        if (pointCount > 0) {
+                            publishProgress(polylineOptions, JSONObject(metadata).toString())
+
+                            Thread.sleep(10)
                         }
 
                     }
@@ -3767,6 +3794,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 points.add(marker)
 
+            } else if(geoms[0] is PolylineOptions) {
+                googleMap.addPolyline(geoms[0] as PolylineOptions)
             }
 
         }
@@ -5953,12 +5982,20 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     }
 
     fun exportTracking(){
-        var trackingPointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
+        var trackingPointsArray: ArrayList<Exporter.ExportLatLngItem> = ArrayList<Exporter.ExportLatLngItem>()
         val dataList: Array<String> = arrayOf("*")
 
         val trackingdata = db!!.query("tracking", dataList, null, null, null, null, "id", null)
 
         var trackingpk: String  = ""
+
+
+        var TRACKINGS:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+        TRACKINGS.add(Exporter.ColumnDef("ID", ogr.OFTInteger, -1))
+        TRACKINGS.add(Exporter.ColumnDef("LATITUDE", ogr.OFTReal, -1))
+        TRACKINGS.add(Exporter.ColumnDef("LONGITUDE", ogr.OFTReal, -1))
+        TRACKINGS.add(Exporter.ColumnDef("START", ogr.OFTReal, -1))
+        TRACKINGS.add(Exporter.ColumnDef("FINISH", ogr.OFTReal, -1))
 
         var i = 0
         while (trackingdata.moveToNext()) {
@@ -5967,18 +6004,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             var tracking : Tracking = Tracking(trackingdata.getInt(0),trackingdata.getDouble(1),trackingdata.getDouble(2),trackingdata.getInt(3),trackingdata.getInt(4))
 
             if(i == 0) {
-                TRACKINGS.add(Exporter.ColumnDef("ID", ogr.OFTInteger, tracking.id))
-                println("------------------------------------${ogr.OFTInteger}----------------------")
-                TRACKINGS.add(Exporter.ColumnDef("LATITUDE", ogr.OFTReal, tracking.LATITUDE))
-                TRACKINGS.add(Exporter.ColumnDef("LONGITUDE", ogr.OFTReal, tracking.LONGITUDE))
-                TRACKINGS.add(Exporter.ColumnDef("START", ogr.OFTReal, tracking.START))
-                TRACKINGS.add(Exporter.ColumnDef("FINISH", ogr.OFTReal, tracking.FINISH))
             }
             trackingDatas.add(tracking)
 
             val latlng = LatLng(tracking.LATITUDE!!,tracking.LONGITUDE!!)
 
-            drawPoint(latlng)
+            // drawPoint(latlng)
 
             trackingBtn.setText("Tracking 켜기")
 
@@ -5989,9 +6020,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         if(trackingDatas.size > 0){
 
-            for (i in 0..trackpoints.size -1 ){
+            for (tracking in trackingDatas) {
+                val latlng = LatLng(tracking.LATITUDE!!,tracking.LONGITUDE!!)
 
-                val exporter = Exporter.ExportPointItem(TRACKING, TRACKINGS,trackpoints.get(i))
+                val exporter = Exporter.ExportLatLngItem(TRACKING, TRACKINGS, latlng)
 
                 trackingPointsArray.add(exporter)
             }
@@ -6019,7 +6051,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "tracking" + File.separator + "tracking","이동경로", "tracking","Y","tracking")
             }
 
-            Exporter.exportPoint(trackingPointsArray)
+            Exporter.exportLine(trackingPointsArray)
             trackingPointsArray.clear()
             trackingDatas.clear()
 
@@ -6587,6 +6619,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun startLocation() {
 
         if (showLoading) {
@@ -6595,8 +6628,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
         }
 
-        val smartLocation = SmartLocation.Builder(context).logging(true).build()
-        smartLocation.location(LocationGooglePlayServicesWithFallbackProvider(context)).start(this)
+        // SmartLocation.with(context).location().start(this)
 
 //        val myLooper = Looper.myLooper()
 //        val myHandler = Handler(myLooper)
@@ -6606,17 +6638,37 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 //            }
 //        }, (5 * 1000).toLong())
 
+
+
+        val locationRequest = LocationRequest.create()?.apply {
+            interval = 10000
+            fastestInterval = 5000
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+                for (location in locationResult.locations){
+                    onLocationUpdated(location)
+                }
+            }
+        }
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
+
     }
 
     override fun onLocationUpdated(location: Location?) {
 
-        val geometryFactory = GeometryFactory()
+        //val geometryFactory = GeometryFactory()
+        // val currentPoint = geometryFactory.createPoint(Coordinate(location!!.latitude, location!!.longitude))
+        // prevPoint = currentPoint
 
-        val currentPoint = geometryFactory.createPoint(Coordinate(location!!.latitude, location!!.longitude))
+        System.out.println("onLocationUpdated : $location")
 
-        prevPoint = currentPoint
+        Toast.makeText(context, "onLocationUpdated : $location", Toast.LENGTH_SHORT).show()
 
-         System.out.println("onLocationUpdated : " + location);
 
         if (location != null) {
 
@@ -6636,19 +6688,17 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             var distance = SphericalUtil.computeDistanceBetween(latlng, latlng2)
 
+            println("distance : $distance")
+
             if (distance.toInt() >= 3){
+                val tracking: Tracking = Tracking(null, location.latitude, location.longitude,-1,-1)
 
-                if (trackingdiv) {
-                    val tracking: Tracking = Tracking(null, location.latitude, location.longitude,-1,-1)
+                dbManager!!.inserttracking(tracking)
 
-                    dbManager!!.inserttracking(tracking)
+                Toast.makeText(this,"tracking..",Toast.LENGTH_SHORT).show()
 
-                    Toast.makeText(this,"tracking..",Toast.LENGTH_SHORT).show()
-
-                    latitude = location.latitude
-                    longitude = location.longitude
-                }
-
+                latitude = location.latitude
+                longitude = location.longitude
             }
 
             if (trackingFinish == 1){

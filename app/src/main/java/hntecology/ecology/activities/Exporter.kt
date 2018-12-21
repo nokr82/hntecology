@@ -1,9 +1,9 @@
 package hntecology.ecology.activities
 
 import android.os.Environment
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.Polygon
-import hntecology.ecology.base.Utils
 import org.gdal.ogr.Feature
 import org.gdal.ogr.FieldDefn
 import org.gdal.ogr.Geometry
@@ -30,6 +30,12 @@ object Exporter {
         var point : Marker = point
     }
 
+    class ExportLatLngItem constructor(layerInt:Int, columnDefs: ArrayList<ColumnDef>, latlng : LatLng) {
+        val layerInt:Int = layerInt
+        var columnDefs: ArrayList<ColumnDef> = columnDefs
+        var latlng : LatLng = latlng
+    }
+
     class ColumnDef constructor(columnName: String, columnType: Int, columnValue: Any?) {
         val columnName = columnName
         val columnType = columnType
@@ -37,14 +43,18 @@ object Exporter {
     }
 
     fun export(exportItems:ArrayList<ExportItem>) {
-        export(exportItems, null)
+        export(exportItems, null, null)
     }
 
     fun exportPoint(exportPointItems:ArrayList<ExportPointItem>) {
-        export(null, exportPointItems)
+        export(null, exportPointItems, null)
     }
 
-    private fun export(exportItems:ArrayList<ExportItem>?, exportPointItems:ArrayList<ExportPointItem>?) {
+    fun exportLine(exportLineItems:ArrayList<ExportLatLngItem>) {
+        export(null, null, exportLineItems)
+    }
+
+    private fun export(exportItems:ArrayList<ExportItem>?, exportPointItems:ArrayList<ExportPointItem>?, exportLineItems:ArrayList<ExportLatLngItem>?) {
 
         if (exportItems != null) {
             if (exportItems.isEmpty()) {
@@ -58,13 +68,21 @@ object Exporter {
             }
         }
 
+        println("exportLineItems $exportLineItems")
+
+        if (exportLineItems != null) {
+            if (exportLineItems.isEmpty()) {
+                return
+            }
+        }
+
         ogr.RegisterAll()
 
-        val GetDriverCount = ogr.GetDriverCount()
+        // val GetDriverCount = ogr.GetDriverCount()
 
-        println("GetDriverCount : $GetDriverCount")
+        // println("GetDriverCount : $GetDriverCount")
 
-        var layerName = ""
+        var layerName = "shp"
 
         if (exportItems != null){
             exportItem = exportItems!!.get(0)
@@ -179,6 +197,10 @@ object Exporter {
 
         }
 
+        if(exportLineItems != null) {
+            layerName = "tracking"
+        }
+
         // set up the shapefile driver
         val driver = ogr.GetDriverByName("ESRI Shapefile")
 
@@ -218,6 +240,8 @@ object Exporter {
         var layerType = ogr.wkbPolygon
         if (exportPointItems != null) {
             layerType = ogr.wkbPoint
+        } else if (exportLineItems != null) {
+            layerType = ogr.wkbLineString
         }
 
         if(exportItems != null) {
@@ -245,18 +269,25 @@ object Exporter {
             }
         }
 
+        if(exportLineItems != null) {
+            val columnDef = exportLineItems.first().columnDefs
+            for (columnDef in columnDef) {
+                layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
+            }
+        }
+
         if(exportItems != null) {
             for (exportItem in exportItems) {
                 // create the feature
                 var feature: Feature = Feature(layer.GetLayerDefn()) ?: return
 
                 // Set the attributes using the values from the delimited text file
-                for(columnDef in exportItem.columnDefs) {
-                    if(columnDef.columnValue is Double) {
+                for (columnDef in exportItem.columnDefs) {
+                    if (columnDef.columnValue is Double) {
                         feature.SetField(columnDef.columnName, columnDef.columnValue)
-                    } else if(columnDef.columnValue is Int) {
+                    } else if (columnDef.columnValue is Int) {
                         feature.SetField(columnDef.columnName, columnDef.columnValue)
-                    } else if(columnDef.columnValue is String) {
+                    } else if (columnDef.columnValue is String) {
                         feature.SetField(columnDef.columnName, columnDef.columnValue)
                     }
                 }
@@ -265,7 +296,7 @@ object Exporter {
                 val ring = Geometry(ogr.wkbLinearRing)
 
                 val points = exportItem.polygon.points
-                for(point in points) {
+                for (point in points) {
                     ring.AddPoint(point.longitude, point.latitude)
                 }
 
@@ -278,41 +309,73 @@ object Exporter {
                 // Create the feature in the layer (shapefile)
                 val created = layer.CreateFeature(feature)
             }
-        } else {
-            if(exportPointItems != null) {
-                for (exportPointItem in exportPointItems) {
-                    // create the feature
-                    var feature: Feature = Feature(layer.GetLayerDefn()) ?: return
+        } else if(exportPointItems != null) {
+            for (exportPointItem in exportPointItems) {
+                // create the feature
+                var feature: Feature = Feature(layer.GetLayerDefn()) ?: return
 
-                    // Set the attributes using the values from the delimited text file
-                    for(columnDef in exportPointItem.columnDefs) {
-                        if(columnDef.columnValue is Double) {
-                            feature.SetField(columnDef.columnName, columnDef.columnValue)
-                        } else if(columnDef.columnValue is Int) {
-                            feature.SetField(columnDef.columnName, columnDef.columnValue)
-                        } else if(columnDef.columnValue is String) {
-                            feature.SetField(columnDef.columnName, columnDef.columnValue)
-                        }
+                // Set the attributes using the values from the delimited text file
+                for(columnDef in exportPointItem.columnDefs) {
+                    if(columnDef.columnValue is Double) {
+                        feature.SetField(columnDef.columnName, columnDef.columnValue)
+                    } else if(columnDef.columnValue is Int) {
+                        feature.SetField(columnDef.columnName, columnDef.columnValue)
+                    } else if(columnDef.columnValue is String) {
+                        feature.SetField(columnDef.columnName, columnDef.columnValue)
                     }
+                }
 
-                    // create the WKT for the feature using Python string formatting
-                    val ring = Geometry(ogr.wkbLinearRing)
+                // create the WKT for the feature using Python string formatting
+                val ring = Geometry(ogr.wkbLinearRing)
 
 //                    val points = exportItem.polygon.points
 //                    for(point in points) {
 //                        ring.AddPoint(point.longitude, point.latitude)
 //                    }
 
-                    val point = Geometry(ogr.wkbPoint)
-                    point.AddPoint(exportPointItem.point.position.longitude, exportPointItem.point.position.latitude)
+                val point = Geometry(ogr.wkbPoint)
+                point.AddPoint(exportPointItem.point.position.longitude, exportPointItem.point.position.latitude)
 
-                    // Set the feature geometry using the point
-                    feature.SetGeometry(point)
+                // Set the feature geometry using the point
+                feature.SetGeometry(point)
 
-                    // Create the feature in the layer (shapefile)
-                    val created = layer.CreateFeature(feature)
+                // Create the feature in the layer (shapefile)
+                val created = layer.CreateFeature(feature)
+            }
+        } else if(exportLineItems != null) {
+
+            // create the feature
+            var feature: Feature = Feature(layer.GetLayerDefn()) ?: return
+
+            // Set the attributes using the values from the delimited text file
+            for(columnDef in exportLineItems.first().columnDefs) {
+                if(columnDef.columnValue is Double) {
+                    feature.SetField(columnDef.columnName, columnDef.columnValue)
+                } else if(columnDef.columnValue is Int) {
+                    feature.SetField(columnDef.columnName, columnDef.columnValue)
+                } else if(columnDef.columnValue is String) {
+                    feature.SetField(columnDef.columnName, columnDef.columnValue)
                 }
             }
+
+            val line = Geometry(ogr.wkbLineString)
+            for (exportLineItem in exportLineItems) {
+
+                println("exportLineItem : ${exportLineItem.latlng.longitude}")
+                println("exportLineItem : ${exportLineItem.latlng.latitude}")
+
+                line.AddPoint(exportLineItem.latlng.longitude, exportLineItem.latlng.latitude)
+            }
+
+            println("line : $line")
+
+            // Set the feature geometry using the point
+            feature.SetGeometry(line)
+
+            // Create the feature in the layer (shapefile)
+            val created = layer.CreateFeature(feature)
+
+            println("created : $created")
         }
 
         // Dereference the feature

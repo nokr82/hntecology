@@ -5741,7 +5741,23 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val path = today + " " + time
 
-            dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "tracking" + File.separator + path,"이동경로 : " + path, "tracking","Y","tracking")
+            var chkData = false
+
+            val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "tracking" + File.separator + "tracking"
+
+            val layerData= db!!.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+
+            while (layerData.moveToNext()){
+                chkData = true
+            }
+
+            if(chkData){
+
+            }else {
+                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "tracking" + File.separator + "tracking","이동경로", "tracking","Y","tracking")
+            }
+
+
 
             Exporter.exportPoint(trackingPointsArray)
             trackingPointsArray.clear()
@@ -6362,7 +6378,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 longitude = location.longitude
             }
 
-
 //            val latlng = LatLng(location.latitude,location.longitude)
 //            val latlng2 = LatLng(latitude,longitude)
 //
@@ -6708,12 +6723,16 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         val trackingPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "tracking" )
         if (!trackingPath.isDirectory) {
             dbManager!!.deletelayers("tracking")
+            dbManager!!.deletetracking()
         }
 
         val stockmapPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "stockmap" + File.separator + "stockmap.shp")
         if (!stockmapPath.exists()) {
             dbManager!!.deletelayers("stockmap")
         }
+
+
+
 
     }
 

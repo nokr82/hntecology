@@ -1565,9 +1565,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "UPDATE biotopeAttribute SET  " +
                 "PRJ_NAME='" + biotope_attribute.getPRJ_NAME() + "'"
                 + ",INV_PERSON='" + biotope_attribute.getINV_PERSON() + "'"
-                + ",INV_PERSON='" + biotope_attribute.getINV_PERSON() + "'"
-                + ",INV_DT='" + biotope_attribute.getINV_DT() + "'"
-                + ",INV_TM='" + biotope_attribute.getINV_TM() + "'"+
+                + ",INV_PERSON='" + biotope_attribute.getINV_PERSON() + "'"+
                 "where GROP_ID = '" + GROP_ID + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1579,7 +1577,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String query = "UPDATE birdsAttribute SET  " +
                 "INV_REGION='" + birds_attribute.getINV_REGION() + "'"
-                + ",INV_DT='" + birds_attribute.getINV_DT() + "'"
                 + ",INV_PERSON='" + birds_attribute.getINV_PERSON() + "'"
                 + ",WEATHER='" + birds_attribute.getWEATHER() + "'"
                 + ",WIND='" + birds_attribute.getWIND() + "'"
@@ -1596,7 +1593,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String query = "UPDATE reptiliaAttribute SET  " +
                 "INV_REGION='" + reptilia_attribute.getINV_REGION() + "'"
-                + ",INV_DT='" + reptilia_attribute.getINV_DT() + "'"
                 + ",INV_PERSON='" + reptilia_attribute.getINV_PERSON() + "'"
                 + ",WEATHER='" + reptilia_attribute.getWEATHER() + "'"
                 + ",WIND='" + reptilia_attribute.getWIND() + "'"
@@ -1607,6 +1603,89 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
         db.close();
 
+    }
+
+    public void updatecommonmammal(Mammal_attribute mammal_attribute,String GROP_ID) {
+
+        String query = "UPDATE mammalAttribute SET  " +
+                "INV_REGION='" + mammal_attribute.getINV_REGION() + "'"
+                + ",INV_PERSON='" + mammal_attribute.getINV_PERSON() + "'"
+                + ",WEATHER='" + mammal_attribute.getWEATHER() + "'"
+                + ",WIND='" + mammal_attribute.getWIND() + "'"
+                + ",WIND_DIRE='" + mammal_attribute.getWIND_DIRE() + "'"
+                + ",TEMPERATUR='" + mammal_attribute.getTEMPERATUR() + "'"+
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+
+    public void updatecommonfish(Fish_attribute fish_attribute,String GROP_ID) {
+
+        String query = "UPDATE fishAttribute SET  " +
+                "INV_REGION='" + fish_attribute.getINV_REGION() + "'"
+                + ",INV_PERSON='" + fish_attribute.getINV_PERSON() + "'"
+                + ",WEATHER='" + fish_attribute.getWEATHER() + "'"
+                + ",WIND='" + fish_attribute.getWIND() + "'"
+                + ",WIND_DIRE='" + fish_attribute.getWIND_DIRE() + "'"
+                + ",TEMPERATUR='" + fish_attribute.getTEMPERATUR() + "'"+
+
+                "where GROP_ID '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+    public void updatecommoninsect(Insect_attribute insect_attribute,String GROP_ID) {
+
+        String query = "UPDATE insectAttribute SET  " +
+                "INV_REGION='" + insect_attribute.getINV_REGION() + "'"
+                + ",INV_PERSON='" + insect_attribute.getINV_PERSON() + "'"
+                + ",WEATHER='" + insect_attribute.getWEATHER() + "'"
+                + ",WIND='" + insect_attribute.getWIND() + "'"
+                + ",WIND_DIRE='" + insect_attribute.getWIND_DIRE() + "'"
+                + ",TEMPERATUR='" + insect_attribute.getTEMPERATUR() + "'"+
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void updatecommonflora(Flora_Attribute flora_attribute,String GROP_ID) {
+
+        String query = "UPDATE floraAttribute SET  " +
+                "INV_REGION='" + flora_attribute.getINV_REGION() + "'"
+                + ",INV_PERSON='" + flora_attribute.getINV_PERSON() + "'"
+                + ",WEATHER='" + flora_attribute.getWEATHER() + "'"
+                + ",WIND='" + flora_attribute.getWIND() + "'"
+                + ",WIND_DIRE='" + flora_attribute.getWIND_DIRE() + "'"
+                + ",TEMPERATUR='" + flora_attribute.getTEMPERATUR() + "'"+
+
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void updatecommonzoobenthos(Zoobenthos_Attribute Zoobenthos_Attribute,String GROP_ID) {
+
+        String query = "UPDATE ZoobenthosAttribute SET  " +
+                "INV_MEAN='" + Zoobenthos_Attribute.getINV_MEAN() + "'"
+                + ",MAP_SYS_NM='" + Zoobenthos_Attribute.getMAP_SYS_NM() + "'"
+                + ",COORD_N_D='" + Zoobenthos_Attribute.getCOORD_N_D() + "'"
+                + ",COORD_N_M='" + Zoobenthos_Attribute.getCOORD_N_M() + "'"
+                + ",COORD_N_S='" + Zoobenthos_Attribute.getCOORD_N_S() + "'"
+                + ",COORD_E_D='" + Zoobenthos_Attribute.getCOORD_E_D() + "'"
+                + ",COORD_E_M='" + Zoobenthos_Attribute.getCOORD_E_M() + "'"
+                + ",COORD_E_S='" + Zoobenthos_Attribute.getCOORD_E_S() + "'" +
+
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
     }
 
 

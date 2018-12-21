@@ -6617,9 +6617,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if (trackingdiv) {
                     val tracking: Tracking = Tracking(null, location.latitude, location.longitude,-1,-1)
 
-                    if (latitude != 37.39627){
-                        dbManager!!.inserttracking(tracking)
-                    }
+                    dbManager!!.inserttracking(tracking)
 
                     Toast.makeText(this,"tracking..",Toast.LENGTH_SHORT).show()
 
@@ -6631,9 +6629,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             if (trackingFinish == 1){
                 val tracking: Tracking = Tracking(null, location.latitude, location.longitude,0,0)
-                if (latitude != 37.39627){
-                    dbManager!!.inserttracking(tracking)
-                }
+                dbManager!!.inserttracking(tracking)
                 latitude = location.latitude
                 longitude = location.longitude
                 trackingFinish = 0

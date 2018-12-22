@@ -4,33 +4,18 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteDatabase
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.util.Base64
-import android.util.Log
 import hntecology.ecology.R
-import hntecology.ecology.base.AlertListener
-import hntecology.ecology.base.DataBaseHelper
-import hntecology.ecology.base.PrefUtils
-import hntecology.ecology.base.Utils
+import hntecology.ecology.base.*
+import hntecology.ecology.model.GpsSet
 import java.io.File
-import java.io.FileInputStream
-import java.io.IOException
-import java.io.UnsupportedEncodingException
-import java.net.NetworkInterface
 import java.nio.charset.Charset
-import java.security.InvalidAlgorithmParameterException
-import java.security.InvalidKeyException
-import java.security.NoSuchAlgorithmException
-import java.security.spec.InvalidKeySpecException
-import java.security.spec.InvalidParameterSpecException
-import java.util.*
-import javax.crypto.*
-import javax.crypto.spec.SecretKeySpec
 
 class IntroActivity : Activity() {
 
@@ -40,18 +25,14 @@ class IntroActivity : Activity() {
     private val _active = true
     lateinit var splashThread: Thread
 
-    //Android 6.0 : Access to mac address from WifiManager forbidden
-    private val marshmallowMacAddress = "02:00:00:00:00:00"
-    private val fileAddressMac = "/sys/class/net/wlan0/address"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro)
 
         this.context = this
 
-        val dataBaseHelper = DataBaseHelper(this)
-//        dataBaseHelper.deleteDataBase()
+        // val dataBaseHelper = DataBaseHelper(this)
+        // dataBaseHelper.deleteDataBase()
 
         splashThread = object : Thread() {
             override fun run() {
@@ -151,36 +132,12 @@ class IntroActivity : Activity() {
 
         val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
 
-        var macAddress = recupAdresseMAC(wifiManager)
+        val macAddress = EncUtils.recupAdresseMAC(wifiManager)
+        val secretKey = EncUtils.generateKey(wifiManager, macAddress);
 
-        println("macAddress : $macAddress")
-
-
-        val macAddressLength = macAddress!!.length
-
-        var macAddressWithPadding = macAddress
-
-        if(macAddressLength < 16) {
-            for (idx in 0 until (16 - macAddressLength)) {
-                macAddressWithPadding += "$"
-            }
-        } else if(macAddressLength < 24) {
-            for (idx in 0 until (24 - macAddressLength)) {
-                macAddressWithPadding += "$"
-            }
-        } else if(macAddressLength < 32) {
-            for (idx in 0 until (32 - macAddressLength)) {
-                macAddressWithPadding += "$"
-            }
-        }
-
-        println("macAddress.length : ${macAddressWithPadding.length}")
-
-        val secretKey = generateKey(macAddressWithPadding!!);
-
-        val decryptedBytes = licenseFile.readBytes()
-
-        val decrypted = decryptMsg(decryptedBytes, secretKey)
+        val bytes = licenseFile.readBytes()
+        val decryptedBytes = EncUtils.decrypt(bytes, secretKey)
+        val decrypted = String(decryptedBytes, Charset.forName("UTF-8"))
 
         println("decrypted : $decrypted")
 
@@ -199,7 +156,9 @@ class IntroActivity : Activity() {
             return
         }
 
-        val  dbVersion = decryptedSplts.last()
+        val  phrase = decryptedSplts.last()
+
+        println("phrase : $phrase")
 
         var idx = 0
         var mac = ""
@@ -231,125 +190,8 @@ class IntroActivity : Activity() {
             return
         }
 
-        toLogin()
+        copyAllData(phrase)
     }
-
-    fun recupAdresseMAC(wifiMan: WifiManager): String? {
-        val wifiInf = wifiMan.connectionInfo
-
-        if (wifiInf.macAddress == marshmallowMacAddress) {
-            var ret: String? = null
-            try {
-                ret = getAdressMacByInterface()
-                if (ret != null && ret.isNotEmpty()) {
-                    return ret
-                } else {
-                    ret = getAddressMacByFile(wifiMan)
-                    return ret
-                }
-            } catch (e: IOException) {
-                Log.e("MobileAccess", "Erreur lecture propriete Adresse MAC")
-            } catch (e: Exception) {
-                Log.e("MobileAcces", "Erreur lecture propriete Adresse MAC ")
-            }
-
-        } else {
-            return wifiInf.macAddress
-        }
-        return marshmallowMacAddress
-    }
-
-    private fun getAdressMacByInterface(): String? {
-        try {
-            val all = Collections.list(NetworkInterface.getNetworkInterfaces())
-            for (nif in all) {
-                if (nif.name.equals("wlan0", ignoreCase = true)) {
-                    val macBytes = nif.hardwareAddress ?: return ""
-
-                    val res1 = StringBuilder()
-                    for (b in macBytes) {
-                        res1.append(String.format("%02X:", b))
-                    }
-
-                    if (res1.length > 0) {
-                        res1.deleteCharAt(res1.length - 1)
-                    }
-                    return res1.toString()
-                }
-            }
-
-        } catch (e: Exception) {
-            Log.e("MobileAcces", "Erreur lecture propriete Adresse MAC ")
-        }
-
-        return null
-    }
-
-    @Throws(Exception::class)
-    private fun getAddressMacByFile(wifiMan: WifiManager): String {
-        val ret: String
-        val wifiState = wifiMan.wifiState
-
-        wifiMan.isWifiEnabled = true
-        val fl = File(fileAddressMac)
-        val fin = FileInputStream(fl)
-        val builder = StringBuilder()
-        while (true) {
-            val ch = fin.read()
-            if(ch != -1) {
-                break
-            }
-            builder.append(ch.toChar())
-        }
-
-        ret = builder.toString()
-        fin.close()
-
-        val enabled = WifiManager.WIFI_STATE_ENABLED == wifiState
-        wifiMan.isWifiEnabled = enabled
-        return ret
-    }
-
-    @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class)
-    fun generateKey(password:String): SecretKey {
-        return SecretKeySpec(password.toByteArray(), "AES")
-    }
-
-    @Throws(
-            NoSuchAlgorithmException::class,
-            NoSuchPaddingException::class,
-            InvalidKeyException::class,
-            InvalidParameterSpecException::class,
-            IllegalBlockSizeException::class,
-            BadPaddingException::class,
-            UnsupportedEncodingException::class
-    )
-    fun encryptMsg(message: String, secret: SecretKey): ByteArray {
-        /* Encrypt the message. */
-        var cipher: Cipher? = null
-        cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
-        cipher!!.init(Cipher.ENCRYPT_MODE, secret)
-        return cipher!!.doFinal(message.toByteArray(charset("UTF-8")))
-    }
-
-    @Throws(
-            NoSuchPaddingException::class,
-            NoSuchAlgorithmException::class,
-            InvalidParameterSpecException::class,
-            InvalidAlgorithmParameterException::class,
-            InvalidKeyException::class,
-            BadPaddingException::class,
-            IllegalBlockSizeException::class,
-            UnsupportedEncodingException::class
-    )
-    fun decryptMsg(cipherText: ByteArray, secret: SecretKey): String {
-        /* Decrypt the message, given derived encContentValues and initialization vector. */
-        var cipher: Cipher? = null
-        cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
-        cipher!!.init(Cipher.DECRYPT_MODE, secret)
-        return String(cipher!!.doFinal(cipherText), Charset.forName("UTF-8"))
-    }
-
 
 
     private fun loadPermissions(perm: String, requestCode: Int) {
@@ -408,5 +250,145 @@ class IntroActivity : Activity() {
 
     }
 
+
+    private fun copyAllData(phrase: String) {
+        val sourceDirectory = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "source")
+        val targetDirectory = File(applicationInfo.dataDir)
+
+        println("sourceDirectory : $sourceDirectory")
+
+        val sourceDirectoryFiles = sourceDirectory.listFiles()
+
+        println("sourceDirectoryFiles : $sourceDirectoryFiles")
+
+        if(sourceDirectoryFiles == null) {
+            Utils.alert(context, "비정상적인 접근입니다.[4]", object:AlertListener {
+                override fun before(): Boolean {
+                    return true
+                }
+
+                override fun after() {
+                    finish()
+                }
+            })
+            return
+        }
+
+
+        val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+
+        var macAddress = EncUtils.recupAdresseMAC(wifiManager)
+
+        val secretKey = EncUtils.generateKey(wifiManager, "$macAddress:$phrase");
+
+        var canGo = true;
+
+        for (sourceDirectoryFile in sourceDirectoryFiles) {
+            var fileName = sourceDirectoryFile.name
+            fileName = fileName.replace("_enc", "")
+
+            val targetDirectoryFile = File("$targetDirectory${File.separator}${fileName}")
+
+            println(targetDirectoryFile.absolutePath)
+
+            try {
+                val decryptedBytes = EncUtils.decrypt(sourceDirectoryFile.readBytes(), secretKey)
+                targetDirectoryFile.writeBytes(decryptedBytes)
+            } catch (e : Exception) {
+                e.printStackTrace()
+
+                canGo = false
+
+                break
+            }
+
+        }
+
+        if(canGo) {
+            // check database
+            checkDatabase()
+        } else {
+            Utils.alert(context, "비정상적인 접근입니다.[5]", object:AlertListener {
+                override fun before(): Boolean {
+                    return true
+                }
+
+                override fun after() {
+                    finish()
+                }
+            })
+        }
+    }
+
+    private fun checkDatabase() {
+        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        if(!dbManager.checkDataBase()) {
+
+            dbManager.createDataBase()
+
+            toLogin()
+
+        } else {
+
+            // 기존 DB정보와 비교
+
+            var currentDBVersion = -1
+            var newDBVersion = -1
+
+            val db = dbManager.createDataBase();
+
+            val dataList: Array<String> = arrayOf("*")
+            val data = db!!.query("settings", dataList, null, null, null, null, "id desc", "1")
+
+            while (data.moveToNext()) {
+
+                var gpsset: GpsSet = GpsSet(data.getInt(0), data.getDouble(1), data.getDouble(2),data.getString(3), data.getInt(4))
+                if(gpsset.dbVersion != null) {
+                    currentDBVersion= gpsset.dbVersion!!.toInt()
+                }
+
+                break
+            }
+
+            // 신규 db
+            val myPath = "${applicationInfo.dataDir}${File.separator}ecology.db"
+
+            println("myPath : $myPath")
+
+            val newDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY)
+
+            println("newDB : $newDB")
+
+            val newData = newDB!!.query("settings", dataList, null, null, null, null, "id desc", "1")
+
+            println("newData : $newData")
+
+            while (newData.moveToFirst()) {
+
+                var gpsset: GpsSet = GpsSet(newData.getInt(0), newData.getDouble(1), newData.getDouble(2), newData.getString(3), newData.getInt(4))
+
+                println("gpsset : ${gpsset.id}")
+                println("gpsset : ${gpsset.latitude}")
+                println("gpsset : ${gpsset.prjname}")
+
+                if(gpsset.dbVersion != null) {
+                    newDBVersion= gpsset.dbVersion!!.toInt()
+                }
+
+                break
+            }
+
+            println("currentDBVersion : $currentDBVersion, newDBVersion : $newDBVersion")
+
+            if(currentDBVersion < newDBVersion) {
+                dbManager.deleteDataBase()
+                dbManager.createDataBase()
+            }
+
+            toLogin()
+        }
+
+
+    }
 
 }

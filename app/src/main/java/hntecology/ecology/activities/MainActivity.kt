@@ -256,7 +256,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         PrefUtils.setPreference(this, "longitude", longitude);*/
         while (data.moveToNext()) {
 
-            var gpsset: GpsSet = GpsSet(data.getInt(0), data.getDouble(1), data.getDouble(2),data.getString(3))
+            var gpsset: GpsSet = GpsSet(data.getInt(0), data.getDouble(1), data.getDouble(2),data.getString(3), data.getInt(4))
 
             latitude = gpsset.latitude!!
             longitude = gpsset.longitude!!
@@ -1068,7 +1068,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
 
 
-                    val gpsSet: GpsSet = GpsSet(null, latitude, longitude,prjname)
+                    val gpsSet: GpsSet = GpsSet(null, latitude, longitude,prjname, -1)
                     dbManager!!.insertGpsSet(gpsSet)
                     onMapReady(googleMap)
                 }

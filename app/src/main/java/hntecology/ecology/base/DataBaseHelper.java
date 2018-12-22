@@ -6,7 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Environment;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -102,7 +101,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         try {
             String myPath = DB_PATH + DB_NAME;
 
-            // System.out.println("myPath : " + myPath);
+            System.out.println("myPath : " + myPath);
+
+            File file = new File(myPath);
+            if(!file.exists()) {
+                return false;
+            }
 
             checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
         } catch (SQLiteException e) {
@@ -113,6 +117,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         if (checkDB != null) {
             checkDB.close();
         }
+
+        System.out.println("checkDB : " + checkDB);
 
         return checkDB != null ? true : false;
     }
@@ -146,7 +152,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 //        InputStream myInput = myContext.getAssets().open(DB_NAME);
 //        InputStream myInput = myContext.getAssets().open(DB_NAME);
 
-        File path = myContext.getDatabasePath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "source" + File.separator + "ecology.db");
+        // File path = myContext.getDatabasePath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "source" + File.separator + "ecology.db");
+        File path = myContext.getDatabasePath(myContext.getApplicationInfo().dataDir + File.separator + "ecology.db");
         InputStream myInput = new FileInputStream(path);
 
         System.out.println("open--------------------------");

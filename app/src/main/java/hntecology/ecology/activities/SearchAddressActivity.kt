@@ -3,15 +3,13 @@ package hntecology.ecology.activities
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
-import android.graphics.Bitmap
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import hntecology.ecology.R
 import hntecology.ecology.base.Utils
-import kotlinx.android.synthetic.main.activity_search_address.*
 
 class SearchAddressActivity : Activity() {
 
@@ -24,56 +22,52 @@ class SearchAddressActivity : Activity() {
 
         var intent: Intent = getIntent()
 
-        val url = intent.getStringExtra("url")
-
+        // var url = getIntent().getStringExtra("url")
+        // val url = "http://www.juso.go.kr/addrlink/addrCoordUrl.do?confmKey=U01TX0FVVEgyMDE4MTEyOTE1NTkzODEwODMzODg=&returnUrl=http://devstories.com&resultType=4"
+        // val url = "file:///android_asset/juso.html"
+        val url = "http://devstories.com/juso/";
 
         webWV = findViewById(R.id.webviewWV)
 
         webWV.settings.javaScriptEnabled = true
-        webWV.loadUrl(url)
+        // webWV.loadUrl(url)
+        // webWV.webViewClient = InterceptingWebViewClient(this, webWV)
         webWV.webViewClient = WebViewClientClass()
+        webWV.webChromeClient = WebChromeClientClass()
         webWV.isVerticalScrollBarEnabled = false
         webWV.isScrollbarFadingEnabled = true
         webWV.settings.databaseEnabled = true
         webWV.settings.domStorageEnabled = true
-        
+
+        webWV.loadUrl(url);
+    }
+
+    private class WebChromeClientClass : WebChromeClient() {
+
     }
 
 
     private inner class WebViewClientClass : WebViewClient() {
+
         override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
 
-            println("url-------------$request")
+            val url = request.url.toString()
 
-            println("url-------------${request.url}")
+            if (url.startsWith("http://devstories.com/GET_DETAIL")) {
+                val x = Utils.getParameter(url, "x")
+                val y = Utils.getParameter(url, "y")
 
-            /*
-            if (url.startsWith("http://postcode.map.daum.net/search?region_name=")) {
-                val type = Utils.getParameter(url, "type")
-                println("type -------$type")
-                if(type == "postcode_click"){
-                    val addr = Utils.getParameter(url, "addr")
+                intent.putExtra("x", x)
+                intent.putExtra("y", y)
+                setResult(RESULT_OK, intent);
 
-                    val addrArr = addr.split("|".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                    if (addrArr.size > 2) {
-                        val address = addrArr[2]
-                        println("address$address")
-                    }
-                    view.loadUrl(url)
-                    return true
+                finish()
 
-                }
-            }else {
                 return false
             }
-            */
 
-//            intent.putExtra("url",url)
-//            setResult(RESULT_OK, intent);
-//
-//            finish()
+            return true
 
-            return false
 
         }
 

@@ -529,6 +529,37 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         TVtimeTV.text = Utils.getToday("yyyy-MM-dd")
 
+        transparentSB.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+
+                // println("progress : $progress")
+
+                for (polygon in polygons) {
+                    val fillColor = polygon.fillColor
+
+                    val red = Color.red(fillColor)
+                    val green = Color.green(fillColor)
+                    val blue = Color.blue(fillColor)
+                    var alpha = progress
+
+                    val newColor = Color.argb(alpha, red, green, blue)
+
+                    // println("alpha : $alpha, $red, $green $blue")
+
+                    polygon.fillColor = newColor
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+
         logoutBtn.setOnClickListener {
 
 
@@ -610,6 +641,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 if (chkData){
                     layersDatas.clear()
+
+                    transparentSB.progress = 255
 
                     runOnUiThread(Runnable {
                         for (i in 0..datas.size-1){
@@ -902,11 +935,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             var intent = Intent()
 
             intent = Intent(this, SearchAddressActivity::class.java)
-
-            val url = "http://postcode.map.daum.net/search?origin=http%3A%2F%2Fpostcode.map.daum.net&indaum=off&banner=on&mode=transmit&vt=layer&am=on&ani=off&sd=on&plrg=&plrgt=1.5&hmb=off&heb=off&asea=off&smh=off&zo=off&us=on&msi=5&ahs=off&whas=275&sm=on&a51=off&zn=Y&fullpath=%2Fguide"
-
-            intent.putExtra("url",url)
-
             startActivityForResult(intent, SEARCHADDRESS)
 
         }
@@ -1441,6 +1469,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                         progressDialog?.show()
 
+                        transparentSB.progress = 255
+
                         runOnUiThread(Runnable {
                             for (i in 0..jsonOb.size - 1) {
 
@@ -1462,15 +1492,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 SEARCHADDRESS -> {
 
-                    if(data!!.getStringExtra("url") != null){
-                        val url = data!!.getStringExtra("url")
+                    if(data != null) {
+                        val x = data.getStringExtra("x")
+                        val y = data.getStringExtra("y")
 
-                        val reverse = "https://maps.googleapis.com/maps/api/geocode/json?address=$url,+Mountain+View,+CA&key=AIzaSyDwxugiCyvcZY7rQmaZywr6MlOSlgBGlHg"
-
-                        println("reverse $reverse")
-
+                        val mapCenter = LatLng(y.toDouble(), x.toDouble())
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mapCenter, 15.6f))
                     }
-
                 }
 
                 else -> super.onActivityResult(requestCode, resultCode, data)
@@ -6720,7 +6748,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             var distance = SphericalUtil.computeDistanceBetween(latlng, latlng2)
 
-            println("distance : $distance")
+            // println("distance : $distance")
 
             if (distance.toInt() in MIN_DISTANCE..(MAX_DISTANCE - 1) || (prevLatitude == -1.0 && prevLongitude == -1.0)) {
                 val tracking: Tracking = Tracking(null, location.latitude, location.longitude,-1,-1)

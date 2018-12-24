@@ -108,9 +108,15 @@ class BiotopeClassAdapter(var context: Context, var itemList : ArrayList<Biotope
             itemList.set(i,bioListModel)
         }*/
 
-        var BiotopeClass:BiotopeClass = itemList.get(selectIndex);
-        BiotopeClass.chkSelect = false
-        itemList.set(selectIndex,BiotopeClass)
+//        var BiotopeClass:BiotopeClass = itemList.get(selectIndex);
+//        BiotopeClass.chkSelect = false
+//        itemList.set(selectIndex,BiotopeClass)
+
+        for (i in 0 until itemList.size){
+            val item = itemList.get(i)
+            item.chkSelect = false
+            itemList.set(i,item)
+        }
 
         var biotopeModel = getItem(position);
 

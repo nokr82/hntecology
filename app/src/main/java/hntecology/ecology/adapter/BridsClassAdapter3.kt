@@ -108,9 +108,15 @@ class BridsClassAdapter3(var context: Context, var itemList : ArrayList<Region>)
             itemList.set(i,bioListModel)
         }*/
 
-        var Region:Region = itemList.get(selectIndex);
-        Region.chkSelect = false
-        itemList.set(selectIndex,Region)
+//        var Region:Region = itemList.get(selectIndex);
+//        Region.chkSelect = false
+//        itemList.set(selectIndex,Region)
+
+        for (i in 0 until itemList.size){
+            val item = itemList.get(i)
+            item.chkSelect = false
+            itemList.set(i,item)
+        }
 
         var biotopeModel = getItem(position);
 

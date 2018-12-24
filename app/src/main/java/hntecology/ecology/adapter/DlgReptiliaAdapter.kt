@@ -110,15 +110,21 @@ class DlgReptiliaAdapter(var context: Context, var itemList : ArrayList<Reptilia
             itemList.set(i,bioListModel)
         }*/
 
-        var Reptilia:Reptilia = itemList.get(selectIndex);
-        Reptilia.chkSelect = false
-        itemList.set(selectIndex,Reptilia)
+//        var Reptilia:Reptilia = itemList.get(selectIndex);
+//        Reptilia.chkSelect = false
+//        itemList.set(selectIndex,Reptilia)
 
-        var Reptiliad = getItem(position);
+        for (i in 0 until itemList.size){
+            val item = itemList.get(i)
+            item.chkSelect = false
+            itemList.set(i,item)
+        }
 
-        Reptiliad.chkSelect = true
+        var biotopeModel = getItem(position);
+
+        biotopeModel.chkSelect = true
         selectIndex= position
-        itemList.set(position,Reptiliad)
+        itemList.set(position,biotopeModel)
         notifyDataSetChanged()
     }
 

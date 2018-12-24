@@ -106,10 +106,16 @@ class BiotopeClassAdapter5(var context: Context, var itemList : ArrayList<hnteco
             bioListModel.chkSelect = false
             itemList.set(i,bioListModel)
         }*/
+//
+//        var Number:hntecology.ecology.model.Number = itemList.get(selectIndex);
+//        Number.chkSelect = false
+//        itemList.set(selectIndex,Number)
 
-        var Number:hntecology.ecology.model.Number = itemList.get(selectIndex);
-        Number.chkSelect = false
-        itemList.set(selectIndex,Number)
+        for (i in 0 until itemList.size){
+            val item = itemList.get(i)
+            item.chkSelect = false
+            itemList.set(i,item)
+        }
 
         var biotopeModel = getItem(position);
 

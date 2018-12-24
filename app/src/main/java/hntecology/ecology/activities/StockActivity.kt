@@ -258,6 +258,8 @@ class StockActivity : Activity() {
                 gpslonTV.setText(stockMap.GPS_LAT.toString())
                 confmodTV.setText(stockMap.CONF_MOD)
 
+
+
             }
 
         }

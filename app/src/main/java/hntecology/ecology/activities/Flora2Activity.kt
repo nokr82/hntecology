@@ -463,31 +463,60 @@ class Flora2Activity : Activity() {
             }
 
             if (trepage > 1 ){
-                for (i in 0 until TreDatas.size){
-                    if (TreDatas.get(i).PAGE == trepage){
-                        val data = TreDatas.get(i)
-                        TreDatas.removeAt(i)
-                        break
-                    }
-                }
+                    if (trepage == 2){
+                        for (i in 0 until TreDatas.size){
+                            if (TreDatas.get(i).PAGE == trepage){
+                                val data = TreDatas.get(i)
+                                TreDatas.removeAt(i)
+                                break
+                            }
+                        }
 
-                trepage = trepage - 1
+                        trepage = trepage - 1
 
-                for (i in 0 until TreDatas.size){
-                    if (TreDatas.get(i).PAGE == trepage){
-                        trenumTV.setText(trepage.toString())
-                        etTRE_SPECET.setText(TreDatas.get(i).SPEC)
-                        etTRE_FAMIET.setText(TreDatas.get(i).FAMI)
-                        etTRE_SCIENET.setText(TreDatas.get(i).SCIEN)
-                        etTRE_HET.setText(TreDatas.get(i).H.toString())
-                        etTRE_BREAET.setText(TreDatas.get(i).BREA.toString())
-                        etTRE_COVEET.setText(TreDatas.get(i).COVE.toString())
-                    }
+                        for (i in 0 until TreDatas.size){
+                            if (TreDatas.get(i).PAGE == trepage){
+                                trenumTV.setText(trepage.toString())
+                                etTRE_SPECET.setText(TreDatas.get(i).SPEC)
+                                etTRE_FAMIET.setText(TreDatas.get(i).FAMI)
+                                etTRE_SCIENET.setText(TreDatas.get(i).SCIEN)
+                                etTRE_HET.setText(TreDatas.get(i).H.toString())
+                                etTRE_BREAET.setText(TreDatas.get(i).BREA.toString())
+                                etTRE_COVEET.setText(TreDatas.get(i).COVE.toString())
+                            }
 
-                    if (TreDatas.get(i).PAGE!! > 1){
-                        TreDatas.get(i).PAGE = TreDatas.get(i).PAGE!! - 1
+                            if (TreDatas.get(i).PAGE!! > 1){
+                                TreDatas.get(i).PAGE = TreDatas.get(i).PAGE!! - 1
+                            }
+                        }
+
+                    } else if (trepage > 2){
+                        for (i in 0 until TreDatas.size){
+                            if (TreDatas.get(i).PAGE == trepage){
+                                val data = TreDatas.get(i)
+                                TreDatas.removeAt(i)
+                                break
+                            }
+                        }
+
+                        trepage = trepage - 1
+
+                        for (i in 0 until TreDatas.size){
+                            if (TreDatas.get(i).PAGE == trepage){
+                                trenumTV.setText(trepage.toString())
+                                etTRE_SPECET.setText(TreDatas.get(i).SPEC)
+                                etTRE_FAMIET.setText(TreDatas.get(i).FAMI)
+                                etTRE_SCIENET.setText(TreDatas.get(i).SCIEN)
+                                etTRE_HET.setText(TreDatas.get(i).H.toString())
+                                etTRE_BREAET.setText(TreDatas.get(i).BREA.toString())
+                                etTRE_COVEET.setText(TreDatas.get(i).COVE.toString())
+                            }
+
+                            if (TreDatas.get(i).PAGE!! > trepage){
+                                TreDatas.get(i).PAGE = TreDatas.get(i).PAGE!! - 1
+                            }
+                        }
                     }
-                }
 
                 val page = trepage
                 val size = trerightpageTV.text.toString().toInt() - 1
@@ -555,28 +584,56 @@ class Flora2Activity : Activity() {
             }
 
             if (strepage > 1 ){
-                for (i in 0 until StreDatas.size){
-                    if (StreDatas.get(i).PAGE == strepage){
-                        StreDatas.removeAt(i)
-                        break
-                    }
-                }
 
-                strepage = strepage - 1
-
-                for (i in 0 until StreDatas.size){
-                    if (StreDatas.get(i).PAGE == strepage){
-                        strenumTV.setText(strepage.toString())
-                        etSTRE_SPECET.setText(StreDatas.get(i).SPEC)
-                        etSTRE_FAMIET.setText(StreDatas.get(i).FAMI)
-                        etSTRE_SCIENET.setText(StreDatas.get(i).SCIEN)
-                        etSTRE_HET.setText(StreDatas.get(i).H.toString())
-                        etSTRE_BREAET.setText(StreDatas.get(i).BREA.toString())
-                        etSTRE_COVEET.setText(StreDatas.get(i).COVE.toString())
+                if (strepage == 2){
+                    for (i in 0 until StreDatas.size){
+                        if (StreDatas.get(i).PAGE == strepage){
+                            StreDatas.removeAt(i)
+                            break
+                        }
                     }
 
-                    if (StreDatas.get(i).PAGE!! > 1){
-                        StreDatas.get(i).PAGE = StreDatas.get(i).PAGE!! - 1
+                    strepage = strepage - 1
+
+                    for (i in 0 until StreDatas.size){
+                        if (StreDatas.get(i).PAGE == strepage){
+                            strenumTV.setText(strepage.toString())
+                            etSTRE_SPECET.setText(StreDatas.get(i).SPEC)
+                            etSTRE_FAMIET.setText(StreDatas.get(i).FAMI)
+                            etSTRE_SCIENET.setText(StreDatas.get(i).SCIEN)
+                            etSTRE_HET.setText(StreDatas.get(i).H.toString())
+                            etSTRE_BREAET.setText(StreDatas.get(i).BREA.toString())
+                            etSTRE_COVEET.setText(StreDatas.get(i).COVE.toString())
+                        }
+
+                        if (StreDatas.get(i).PAGE!! > strepage){
+                            StreDatas.get(i).PAGE = StreDatas.get(i).PAGE!! - 1
+                        }
+                    }
+                } else if (strepage > 2){
+                    for (i in 0 until StreDatas.size){
+                        if (StreDatas.get(i).PAGE == strepage){
+                            StreDatas.removeAt(i)
+                            break
+                        }
+                    }
+
+                    strepage = strepage - 1
+
+                    for (i in 0 until StreDatas.size){
+                        if (StreDatas.get(i).PAGE == strepage){
+                            strenumTV.setText(strepage.toString())
+                            etSTRE_SPECET.setText(StreDatas.get(i).SPEC)
+                            etSTRE_FAMIET.setText(StreDatas.get(i).FAMI)
+                            etSTRE_SCIENET.setText(StreDatas.get(i).SCIEN)
+                            etSTRE_HET.setText(StreDatas.get(i).H.toString())
+                            etSTRE_BREAET.setText(StreDatas.get(i).BREA.toString())
+                            etSTRE_COVEET.setText(StreDatas.get(i).COVE.toString())
+                        }
+
+                        if (StreDatas.get(i).PAGE!! > 2){
+                            StreDatas.get(i).PAGE = StreDatas.get(i).PAGE!! - 1
+                        }
                     }
                 }
 
@@ -640,29 +697,56 @@ class Flora2Activity : Activity() {
             }
 
             if (shrpage > 1 ){
-                for (i in 0 until ShrDatas.size){
-                    if (ShrDatas.get(i).PAGE == shrpage){
-                        ShrDatas.removeAt(i)
-                        break
+                if (shrpage == 2){
+                    for (i in 0 until ShrDatas.size){
+                        if (ShrDatas.get(i).PAGE == shrpage){
+                            ShrDatas.removeAt(i)
+                            break
+                        }
+                    }
+
+                    shrpage = shrpage - 1
+
+                    for (i in 0 until ShrDatas.size){
+                        if (ShrDatas.get(i).PAGE == shrpage){
+                            shrnumTV.setText(shrpage.toString())
+                            etSHR_SPECET.setText(ShrDatas.get(i).SPEC)
+                            etSHR_FAMIET.setText(ShrDatas.get(i).FAMI)
+                            etSHR_SCIENET.setText(ShrDatas.get(i).SCIEN)
+                            etSHR_HET.setText(ShrDatas.get(i).H.toString())
+                            etSTR_COVEET.setText(ShrDatas.get(i).COVE.toString())
+                        }
+
+                        if (ShrDatas.get(i).PAGE!! > 1){
+                            ShrDatas.get(i).PAGE = ShrDatas.get(i).PAGE!! - 1
+                        }
+                    }
+                } else if (shrpage > 2){
+                    for (i in 0 until ShrDatas.size){
+                        if (ShrDatas.get(i).PAGE == shrpage){
+                            ShrDatas.removeAt(i)
+                            break
+                        }
+                    }
+
+                    shrpage = shrpage - 1
+
+                    for (i in 0 until ShrDatas.size){
+                        if (ShrDatas.get(i).PAGE == shrpage){
+                            shrnumTV.setText(shrpage.toString())
+                            etSHR_SPECET.setText(ShrDatas.get(i).SPEC)
+                            etSHR_FAMIET.setText(ShrDatas.get(i).FAMI)
+                            etSHR_SCIENET.setText(ShrDatas.get(i).SCIEN)
+                            etSHR_HET.setText(ShrDatas.get(i).H.toString())
+                            etSTR_COVEET.setText(ShrDatas.get(i).COVE.toString())
+                        }
+
+                        if (ShrDatas.get(i).PAGE!! > shrpage){
+                            ShrDatas.get(i).PAGE = ShrDatas.get(i).PAGE!! - 1
+                        }
                     }
                 }
 
-                shrpage = shrpage - 1
-
-                for (i in 0 until ShrDatas.size){
-                    if (ShrDatas.get(i).PAGE == shrpage){
-                        shrnumTV.setText(shrpage.toString())
-                        etSHR_SPECET.setText(ShrDatas.get(i).SPEC)
-                        etSHR_FAMIET.setText(ShrDatas.get(i).FAMI)
-                        etSHR_SCIENET.setText(ShrDatas.get(i).SCIEN)
-                        etSHR_HET.setText(ShrDatas.get(i).H.toString())
-                        etSTR_COVEET.setText(ShrDatas.get(i).COVE.toString())
-                    }
-
-                    if (ShrDatas.get(i).PAGE!! > 1){
-                        ShrDatas.get(i).PAGE = ShrDatas.get(i).PAGE!! - 1
-                    }
-                }
 
                 val page = shrpage
                 val size = shrrightpageTV.text.toString().toInt() - 1
@@ -723,27 +807,53 @@ class Flora2Activity : Activity() {
             }
 
             if (herpage > 1 ){
-                for (i in 0 until HerDatas.size){
-                    if (HerDatas.get(i).PAGE == herpage){
-                        HerDatas.removeAt(i)
-                        break
-                    }
-                }
-
-                herpage = herpage - 1
-
-                for (i in 0 until HerDatas.size){
-                    if (HerDatas.get(i).PAGE == herpage){
-                        hernumTV.setText(herpage.toString())
-                        etHER_SPECET.setText(HerDatas.get(i).SPEC)
-                        etHER_FAMIET.setText(HerDatas.get(i).FAMI)
-                        etHER_SCIENET.setText(HerDatas.get(i).SCIEN)
-                        etHER_HET.setText(HerDatas.get(i).H.toString())
-                        etHER_COVEET.setText(HerDatas.get(i).COVE.toString())
+                if (herpage == 2){
+                    for (i in 0 until HerDatas.size){
+                        if (HerDatas.get(i).PAGE == herpage){
+                            HerDatas.removeAt(i)
+                            break
+                        }
                     }
 
-                    if (HerDatas.get(i).PAGE!! > 1){
-                        HerDatas.get(i).PAGE = HerDatas.get(i).PAGE!! - 1
+                    herpage = herpage - 1
+
+                    for (i in 0 until HerDatas.size){
+                        if (HerDatas.get(i).PAGE == herpage){
+                            hernumTV.setText(herpage.toString())
+                            etHER_SPECET.setText(HerDatas.get(i).SPEC)
+                            etHER_FAMIET.setText(HerDatas.get(i).FAMI)
+                            etHER_SCIENET.setText(HerDatas.get(i).SCIEN)
+                            etHER_HET.setText(HerDatas.get(i).H.toString())
+                            etHER_COVEET.setText(HerDatas.get(i).COVE.toString())
+                        }
+
+                        if (HerDatas.get(i).PAGE!! > 1){
+                            HerDatas.get(i).PAGE = HerDatas.get(i).PAGE!! - 1
+                        }
+                    }
+                } else if (herpage > 2){
+                    for (i in 0 until HerDatas.size){
+                        if (HerDatas.get(i).PAGE == herpage){
+                            HerDatas.removeAt(i)
+                            break
+                        }
+                    }
+
+                    herpage = herpage - 1
+
+                    for (i in 0 until HerDatas.size){
+                        if (HerDatas.get(i).PAGE == herpage){
+                            hernumTV.setText(herpage.toString())
+                            etHER_SPECET.setText(HerDatas.get(i).SPEC)
+                            etHER_FAMIET.setText(HerDatas.get(i).FAMI)
+                            etHER_SCIENET.setText(HerDatas.get(i).SCIEN)
+                            etHER_HET.setText(HerDatas.get(i).H.toString())
+                            etHER_COVEET.setText(HerDatas.get(i).COVE.toString())
+                        }
+
+                        if (HerDatas.get(i).PAGE!! > herpage){
+                            HerDatas.get(i).PAGE = HerDatas.get(i).PAGE!! - 1
+                        }
                     }
                 }
 
@@ -1906,100 +2016,156 @@ class Flora2Activity : Activity() {
             }
         }
 
-        if(trepage == maxsize) {
+        if (spec == "" && h == 0.0F && cove == 0.0F && brea == 0.0F){
+            Toast.makeText(context, "빈칸은 입력하실수 없습니다..", Toast.LENGTH_SHORT).show()
+        } else {
 
-            if (division == false) {
+            if (trepage == maxsize) {
 
-                if (trepage > 1) {
+                if (division == false) {
 
-                    var tredata = TreeData1(-1, trepage, spec, fami, scien, h, brea, cove)
+                    if (trepage > 1) {
 
-                    TreDatas.add(tredata)
+                        var tredata = TreeData1(-1, trepage, spec, fami, scien, h, brea, cove)
 
-                    trepage = trepage + 1
+                        TreDatas.add(tredata)
 
-                    val page = trepage
-                    val size = trerightpageTV.text.toString().toInt() + 1
+                        trepage = trepage + 1
 
-                    trepageTV.setText(page.toString())
-                    trerightpageTV.setText(size.toString())
-                    trenumTV.setText(page.toString())
-                    etTRE_SPECET.setText("")
-                    etTRE_FAMIET.setText("")
-                    etTRE_SCIENET.setText("")
-                    etTRE_HET.setText("")
-                    etTRE_BREAET.setText("")
-                    etTRE_COVEET.setText("")
-                }
+                        val page = trepage
+                        val size = trerightpageTV.text.toString().toInt() + 1
 
-                if (trepage == 1) {
-
-                    var tredata = TreeData1(-1, trepage, spec, fami, scien, h, brea, cove)
-
-                    TreDatas.add(tredata)
-
-                    trepage = trepage + 1
-
-                    val page = trepage
-                    val size = trerightpageTV.text.toString().toInt() + 1
-
-                    trepageTV.setText(page.toString())
-                    trerightpageTV.setText(size.toString())
-                    trenumTV.setText(page.toString())
-                    etTRE_SPECET.setText("")
-                    etTRE_FAMIET.setText("")
-                    etTRE_SCIENET.setText("")
-                    etTRE_HET.setText("")
-                    etTRE_BREAET.setText("")
-                    etTRE_COVEET.setText("")
-
-                }
-            } else {
-
-                if (trepage > 1) {
-
-                    for (i in 0 until TreDatas.size){
-                        if (TreDatas.get(i).PAGE == trepage){
-                            TreDatas.get(i).SPEC = spec
-                            TreDatas.get(i).FAMI = fami
-                            TreDatas.get(i).SCIEN = scien
-                            TreDatas.get(i).H = h
-                            TreDatas.get(i).BREA = brea
-                            TreDatas.get(i).COVE = cove
-                        }
+                        trepageTV.setText(page.toString())
+                        trerightpageTV.setText(size.toString())
+                        trenumTV.setText(page.toString())
+                        etTRE_SPECET.setText("")
+                        etTRE_FAMIET.setText("")
+                        etTRE_SCIENET.setText("")
+                        etTRE_HET.setText("")
+                        etTRE_BREAET.setText("")
+                        etTRE_COVEET.setText("")
                     }
 
-                    trepage = trepage + 1
+                    if (trepage == 1) {
 
-                    val page = trepage
-                    val size = trerightpageTV.text.toString().toInt() + 1
+                        var tredata = TreeData1(-1, trepage, spec, fami, scien, h, brea, cove)
 
-                    trepageTV.setText(page.toString())
-                    trerightpageTV.setText(size.toString())
-                    trenumTV.setText(page.toString())
-                    etTRE_SPECET.setText("")
-                    etTRE_FAMIET.setText("")
-                    etTRE_SCIENET.setText("")
-                    etTRE_HET.setText("")
-                    etTRE_BREAET.setText("")
-                    etTRE_COVEET.setText("")
-                }
+                        TreDatas.add(tredata)
 
-                if (trepage == 1) {
+                        trepage = trepage + 1
 
-                    for (i in 0 until TreDatas.size){
-                        if (TreDatas.get(i).PAGE == trepage){
-                            TreDatas.get(i).SPEC = spec
-                            TreDatas.get(i).FAMI = fami
-                            TreDatas.get(i).SCIEN = scien
-                            TreDatas.get(i).H = h
-                            TreDatas.get(i).BREA = brea
-                            TreDatas.get(i).COVE = cove
+                        val page = trepage
+                        val size = trerightpageTV.text.toString().toInt() + 1
+
+                        trepageTV.setText(page.toString())
+                        trerightpageTV.setText(size.toString())
+                        trenumTV.setText(page.toString())
+                        etTRE_SPECET.setText("")
+                        etTRE_FAMIET.setText("")
+                        etTRE_SCIENET.setText("")
+                        etTRE_HET.setText("")
+                        etTRE_BREAET.setText("")
+                        etTRE_COVEET.setText("")
+
+                    }
+                } else {
+
+                    if (trepage > 1) {
+
+                        for (i in 0 until TreDatas.size) {
+                            if (TreDatas.get(i).PAGE == trepage) {
+                                TreDatas.get(i).SPEC = spec
+                                TreDatas.get(i).FAMI = fami
+                                TreDatas.get(i).SCIEN = scien
+                                TreDatas.get(i).H = h
+                                TreDatas.get(i).BREA = brea
+                                TreDatas.get(i).COVE = cove
+                            }
                         }
+
+                        trepage = trepage + 1
+
+                        val page = trepage
+                        val size = trerightpageTV.text.toString().toInt() + 1
+
+                        trepageTV.setText(page.toString())
+                        trerightpageTV.setText(size.toString())
+                        trenumTV.setText(page.toString())
+                        etTRE_SPECET.setText("")
+                        etTRE_FAMIET.setText("")
+                        etTRE_SCIENET.setText("")
+                        etTRE_HET.setText("")
+                        etTRE_BREAET.setText("")
+                        etTRE_COVEET.setText("")
                     }
 
-                    trepage = trepage + 1
+                    if (trepage == 1) {
 
+                        for (i in 0 until TreDatas.size) {
+                            if (TreDatas.get(i).PAGE == trepage) {
+                                TreDatas.get(i).SPEC = spec
+                                TreDatas.get(i).FAMI = fami
+                                TreDatas.get(i).SCIEN = scien
+                                TreDatas.get(i).H = h
+                                TreDatas.get(i).BREA = brea
+                                TreDatas.get(i).COVE = cove
+                            }
+                        }
+
+                        trepage = trepage + 1
+
+                        val page = trepage
+                        val size = trerightpageTV.text.toString().toInt() + 1
+
+                        trepageTV.setText(page.toString())
+                        trerightpageTV.setText(size.toString())
+                        trenumTV.setText(page.toString())
+                        etTRE_SPECET.setText("")
+                        etTRE_FAMIET.setText("")
+                        etTRE_SCIENET.setText("")
+                        etTRE_HET.setText("")
+                        etTRE_BREAET.setText("")
+                        etTRE_COVEET.setText("")
+
+                    }
+                }
+            }
+            if (trepage < maxsize) {
+
+                for (i in 0 until TreDatas.size) {
+                    if (TreDatas.get(i).PAGE == trepage) {
+                        TreDatas.get(i).SPEC = spec
+                        TreDatas.get(i).FAMI = fami
+                        TreDatas.get(i).SCIEN = scien
+                        TreDatas.get(i).H = h
+                        TreDatas.get(i).BREA = brea
+                        TreDatas.get(i).COVE = cove
+                    }
+                }
+
+                trepage = trepage + 1
+                var chk = false
+                for (i in 0..TreDatas.size - 1) {
+                    if (trepage == TreDatas.get(i).PAGE) {
+                        chk = true
+                        val data = TreDatas.get(i)
+                        etTRE_SPECET.setText(data.SPEC)
+                        etTRE_FAMIET.setText(data.FAMI)
+                        etTRE_SCIENET.setText(data.SCIEN)
+                        etTRE_HET.setText(data.H.toString())
+                        etTRE_BREAET.setText(data.BREA.toString())
+                        etTRE_COVEET.setText(data.COVE.toString())
+
+                        val page = trepage
+                        val size = trerightpageTV.text.toString().toInt()
+
+                        trepageTV.setText(page.toString())
+                        trerightpageTV.setText(size.toString())
+                        trenumTV.setText(page.toString())
+                    }
+                }
+
+                if (chk == false) {
                     val page = trepage
                     val size = trerightpageTV.text.toString().toInt() + 1
 
@@ -2012,62 +2178,11 @@ class Flora2Activity : Activity() {
                     etTRE_HET.setText("")
                     etTRE_BREAET.setText("")
                     etTRE_COVEET.setText("")
-
                 }
             }
+
+            deleteBT.visibility = View.GONE
         }
-        if (trepage < maxsize){
-
-            for (i in 0 until TreDatas.size){
-                if (TreDatas.get(i).PAGE == trepage){
-                    TreDatas.get(i).SPEC = spec
-                    TreDatas.get(i).FAMI = fami
-                    TreDatas.get(i).SCIEN = scien
-                    TreDatas.get(i).H = h
-                    TreDatas.get(i).BREA = brea
-                    TreDatas.get(i).COVE = cove
-                }
-            }
-
-            trepage = trepage + 1
-            var chk = false
-            for (i in 0..TreDatas.size-1) {
-                if (trepage == TreDatas.get(i).PAGE) {
-                    chk = true
-                    val data = TreDatas.get(i)
-                    etTRE_SPECET.setText(data.SPEC)
-                    etTRE_FAMIET.setText(data.FAMI)
-                    etTRE_SCIENET.setText(data.SCIEN)
-                    etTRE_HET.setText(data.H.toString())
-                    etTRE_BREAET.setText(data.BREA.toString())
-                    etTRE_COVEET.setText(data.COVE.toString())
-
-                    val page = trepage
-                    val size = trerightpageTV.text.toString().toInt()
-
-                    trepageTV.setText(page.toString())
-                    trerightpageTV.setText(size.toString())
-                    trenumTV.setText(page.toString())
-                }
-            }
-
-            if (chk == false){
-                val page = trepage
-                val size = trerightpageTV.text.toString().toInt() + 1
-
-                trepageTV.setText(page.toString())
-                trerightpageTV.setText(size.toString())
-                trenumTV.setText(page.toString())
-                etTRE_SPECET.setText("")
-                etTRE_FAMIET.setText("")
-                etTRE_SCIENET.setText("")
-                etTRE_HET.setText("")
-                etTRE_BREAET.setText("")
-                etTRE_COVEET.setText("")
-            }
-        }
-
-        deleteBT.visibility = View.GONE
 
     }
 
@@ -2108,99 +2223,153 @@ class Flora2Activity : Activity() {
             }
         }
 
-        if(strepage == maxsize) {
+        if (spec == "" && h == 0.0F && cove == 0.0F && brea == 0.0F){
+            Toast.makeText(context, "빈칸은 입력하실수 없습니다..", Toast.LENGTH_SHORT).show()
+        } else {
+            if(strepage == maxsize) {
 
-            if (division == false) {
+                if (division == false) {
 
-                if (strepage > 1) {
+                    if (strepage > 1) {
 
-                    var stredata = TreeData1(-1, strepage, spec, fami, scien, h, brea, cove)
+                        var stredata = TreeData1(-1, strepage, spec, fami, scien, h, brea, cove)
 
-                    StreDatas.add(stredata)
+                        StreDatas.add(stredata)
 
-                    strepage = strepage + 1
+                        strepage = strepage + 1
 
-                    val page = strepage
-                    val size = strerightpageTV.text.toString().toInt() + 1
+                        val page = strepage
+                        val size = strerightpageTV.text.toString().toInt() + 1
 
-                    strepageTV.setText(page.toString())
-                    strerightpageTV.setText(size.toString())
-                    strenumTV.setText(page.toString())
-                    etSTRE_SPECET.setText("")
-                    etSTRE_FAMIET.setText("")
-                    etSTRE_SCIENET.setText("")
-                    etSTRE_HET.setText("")
-                    etSTRE_BREAET.setText("")
-                    etSTRE_COVEET.setText("")
-                }
-
-                if (strepage == 1) {
-
-                    var stredata = TreeData1(-1, strepage, spec, fami, scien, h, brea, cove)
-
-                    StreDatas.add(stredata)
-
-                    strepage = strepage + 1
-
-                    val page = strepage
-                    val size = strerightpageTV.text.toString().toInt() + 1
-
-                    strepageTV.setText(page.toString())
-                    strerightpageTV.setText(size.toString())
-                    strenumTV.setText(page.toString())
-                    etSTRE_SPECET.setText("")
-                    etSTRE_FAMIET.setText("")
-                    etSTRE_SCIENET.setText("")
-                    etSTRE_HET.setText("")
-                    etSTRE_BREAET.setText("")
-                    etSTRE_COVEET.setText("")
-
-                }
-            } else {
-                if (strepage > 1) {
-
-                    for (i in 0 until StreDatas.size){
-                        if (StreDatas.get(i).PAGE == strepage){
-                            StreDatas.get(i).SPEC = spec
-                            StreDatas.get(i).FAMI = fami
-                            StreDatas.get(i).SCIEN = scien
-                            StreDatas.get(i).H = h
-                            StreDatas.get(i).BREA = brea
-                            StreDatas.get(i).COVE = cove
-                        }
+                        strepageTV.setText(page.toString())
+                        strerightpageTV.setText(size.toString())
+                        strenumTV.setText(page.toString())
+                        etSTRE_SPECET.setText("")
+                        etSTRE_FAMIET.setText("")
+                        etSTRE_SCIENET.setText("")
+                        etSTRE_HET.setText("")
+                        etSTRE_BREAET.setText("")
+                        etSTRE_COVEET.setText("")
                     }
 
-                    strepage = strepage + 1
+                    if (strepage == 1) {
 
-                    val page = strepage
-                    val size = strerightpageTV.text.toString().toInt() + 1
+                        var stredata = TreeData1(-1, strepage, spec, fami, scien, h, brea, cove)
 
-                    strepageTV.setText(page.toString())
-                    strerightpageTV.setText(size.toString())
-                    strenumTV.setText(page.toString())
-                    etSTRE_SPECET.setText("")
-                    etSTRE_FAMIET.setText("")
-                    etSTRE_SCIENET.setText("")
-                    etSTRE_HET.setText("")
-                    etSTRE_BREAET.setText("")
-                    etSTRE_COVEET.setText("")
-                }
+                        StreDatas.add(stredata)
 
-                if (strepage == 1) {
+                        strepage = strepage + 1
 
-                    for (i in 0 until StreDatas.size){
-                        if (StreDatas.get(i).PAGE == strepage){
-                            StreDatas.get(i).SPEC = spec
-                            StreDatas.get(i).FAMI = fami
-                            StreDatas.get(i).SCIEN = scien
-                            StreDatas.get(i).H = h
-                            StreDatas.get(i).BREA = brea
-                            StreDatas.get(i).COVE = cove
+                        val page = strepage
+                        val size = strerightpageTV.text.toString().toInt() + 1
+
+                        strepageTV.setText(page.toString())
+                        strerightpageTV.setText(size.toString())
+                        strenumTV.setText(page.toString())
+                        etSTRE_SPECET.setText("")
+                        etSTRE_FAMIET.setText("")
+                        etSTRE_SCIENET.setText("")
+                        etSTRE_HET.setText("")
+                        etSTRE_BREAET.setText("")
+                        etSTRE_COVEET.setText("")
+
+                    }
+                } else {
+                    if (strepage > 1) {
+
+                        for (i in 0 until StreDatas.size){
+                            if (StreDatas.get(i).PAGE == strepage){
+                                StreDatas.get(i).SPEC = spec
+                                StreDatas.get(i).FAMI = fami
+                                StreDatas.get(i).SCIEN = scien
+                                StreDatas.get(i).H = h
+                                StreDatas.get(i).BREA = brea
+                                StreDatas.get(i).COVE = cove
+                            }
                         }
+
+                        strepage = strepage + 1
+
+                        val page = strepage
+                        val size = strerightpageTV.text.toString().toInt() + 1
+
+                        strepageTV.setText(page.toString())
+                        strerightpageTV.setText(size.toString())
+                        strenumTV.setText(page.toString())
+                        etSTRE_SPECET.setText("")
+                        etSTRE_FAMIET.setText("")
+                        etSTRE_SCIENET.setText("")
+                        etSTRE_HET.setText("")
+                        etSTRE_BREAET.setText("")
+                        etSTRE_COVEET.setText("")
                     }
 
-                    strepage = strepage + 1
+                    if (strepage == 1) {
 
+                        for (i in 0 until StreDatas.size){
+                            if (StreDatas.get(i).PAGE == strepage){
+                                StreDatas.get(i).SPEC = spec
+                                StreDatas.get(i).FAMI = fami
+                                StreDatas.get(i).SCIEN = scien
+                                StreDatas.get(i).H = h
+                                StreDatas.get(i).BREA = brea
+                                StreDatas.get(i).COVE = cove
+                            }
+                        }
+
+                        strepage = strepage + 1
+
+                        val page = strepage
+                        val size = strerightpageTV.text.toString().toInt() + 1
+
+                        strepageTV.setText(page.toString())
+                        strerightpageTV.setText(size.toString())
+                        strenumTV.setText(page.toString())
+                        etSTRE_SPECET.setText("")
+                        etSTRE_FAMIET.setText("")
+                        etSTRE_SCIENET.setText("")
+                        etSTRE_HET.setText("")
+                        etSTRE_BREAET.setText("")
+                        etSTRE_COVEET.setText("")
+
+                    }
+                }
+            }
+            if (strepage < maxsize){
+
+                for (i in 0 until StreDatas.size){
+                    if (StreDatas.get(i).PAGE == strepage){
+                        StreDatas.get(i).SPEC = spec
+                        StreDatas.get(i).FAMI = fami
+                        StreDatas.get(i).SCIEN = scien
+                        StreDatas.get(i).H = h
+                        StreDatas.get(i).BREA = brea
+                        StreDatas.get(i).COVE = cove
+                    }
+                }
+                strepage = strepage + 1
+                var chk = false
+                for (i in 0..StreDatas.size-1) {
+                    if (strepage == StreDatas.get(i).PAGE) {
+                        chk = true
+                        val data = StreDatas.get(i)
+                        etSTRE_SPECET.setText(data.SPEC)
+                        etSTRE_FAMIET.setText(data.FAMI)
+                        etSTRE_SCIENET.setText(data.SCIEN)
+                        etSTRE_HET.setText(data.H.toString())
+                        etSTRE_BREAET.setText(data.BREA.toString())
+                        etSTRE_COVEET.setText(data.COVE.toString())
+
+                        val page = strepage
+                        val size = strerightpageTV.text.toString().toInt()
+
+                        strepageTV.setText(page.toString())
+                        strerightpageTV.setText(size.toString())
+                        strenumTV.setText(page.toString())
+                    }
+                }
+
+                if (chk == false){
                     val page = strepage
                     val size = strerightpageTV.text.toString().toInt() + 1
 
@@ -2213,61 +2382,12 @@ class Flora2Activity : Activity() {
                     etSTRE_HET.setText("")
                     etSTRE_BREAET.setText("")
                     etSTRE_COVEET.setText("")
-
-                }
-            }
-        }
-        if (strepage < maxsize){
-
-            for (i in 0 until StreDatas.size){
-                if (StreDatas.get(i).PAGE == strepage){
-                    StreDatas.get(i).SPEC = spec
-                    StreDatas.get(i).FAMI = fami
-                    StreDatas.get(i).SCIEN = scien
-                    StreDatas.get(i).H = h
-                    StreDatas.get(i).BREA = brea
-                    StreDatas.get(i).COVE = cove
-                }
-            }
-            strepage = strepage + 1
-            var chk = false
-            for (i in 0..StreDatas.size-1) {
-                if (strepage == StreDatas.get(i).PAGE) {
-                    chk = true
-                    val data = StreDatas.get(i)
-                    etSTRE_SPECET.setText(data.SPEC)
-                    etSTRE_FAMIET.setText(data.FAMI)
-                    etSTRE_SCIENET.setText(data.SCIEN)
-                    etSTRE_HET.setText(data.H.toString())
-                    etSTRE_BREAET.setText(data.BREA.toString())
-                    etSTRE_COVEET.setText(data.COVE.toString())
-
-                    val page = strepage
-                    val size = strerightpageTV.text.toString().toInt()
-
-                    strepageTV.setText(page.toString())
-                    strerightpageTV.setText(size.toString())
-                    strenumTV.setText(page.toString())
                 }
             }
 
-            if (chk == false){
-                val page = strepage
-                val size = strerightpageTV.text.toString().toInt() + 1
-
-                strepageTV.setText(page.toString())
-                strerightpageTV.setText(size.toString())
-                strenumTV.setText(page.toString())
-                etSTRE_SPECET.setText("")
-                etSTRE_FAMIET.setText("")
-                etSTRE_SCIENET.setText("")
-                etSTRE_HET.setText("")
-                etSTRE_BREAET.setText("")
-                etSTRE_COVEET.setText("")
-            }
+            deleteBT.visibility = View.GONE
         }
 
-        deleteBT.visibility = View.GONE
     }
 
     fun AddShrFlora(){
@@ -2303,94 +2423,144 @@ class Flora2Activity : Activity() {
             }
         }
 
-        if(shrpage == maxsize) {
+        if (spec == "" && h == 0.0F && cove == 0.0F ){
+            Toast.makeText(context, "빈칸은 입력하실수 없습니다..", Toast.LENGTH_SHORT).show()
+        } else {
+            if(shrpage == maxsize) {
 
-            if (division == false) {
+                if (division == false) {
 
-                if (shrpage > 1) {
+                    if (shrpage > 1) {
 
-                    var shrdata = TreeData2(-1, shrpage, spec, fami, scien, h, cove)
+                        var shrdata = TreeData2(-1, shrpage, spec, fami, scien, h, cove)
 
-                    ShrDatas.add(shrdata)
+                        ShrDatas.add(shrdata)
 
-                    shrpage = shrpage + 1
+                        shrpage = shrpage + 1
 
-                    val page = shrpage
-                    val size = shrrightpageTV.text.toString().toInt() + 1
+                        val page = shrpage
+                        val size = shrrightpageTV.text.toString().toInt() + 1
 
-                    shrpageTV.setText(page.toString())
-                    shrrightpageTV.setText(size.toString())
-                    shrnumTV.setText(page.toString())
-                    etSHR_SPECET.setText("")
-                    etSHR_FAMIET.setText("")
-                    etSHR_SCIENET.setText("")
-                    etSHR_HET.setText("")
-                    etSTR_COVEET.setText("")
-                }
-
-                if (shrpage == 1) {
-
-                    var shrdata = TreeData2(-1, shrpage, spec, fami, scien, h, cove)
-
-                    ShrDatas.add(shrdata)
-
-                    shrpage = shrpage + 1
-
-                    val page = shrpage
-                    val size = shrrightpageTV.text.toString().toInt() + 1
-
-                    shrpageTV.setText(page.toString())
-                    shrrightpageTV.setText(size.toString())
-                    shrnumTV.setText(page.toString())
-                    etSHR_SPECET.setText("")
-                    etSHR_FAMIET.setText("")
-                    etSHR_SCIENET.setText("")
-                    etSHR_HET.setText("")
-                    etSTR_COVEET.setText("")
-
-                }
-            } else {
-                if (shrpage > 1) {
-
-                    for (i in 0 until ShrDatas.size){
-                        if (ShrDatas.get(i).PAGE == shrpage){
-                            ShrDatas.get(i).SPEC = spec
-                            ShrDatas.get(i).FAMI = fami
-                            ShrDatas.get(i).SCIEN = scien
-                            ShrDatas.get(i).H = h
-                            ShrDatas.get(i).COVE = cove
-                        }
+                        shrpageTV.setText(page.toString())
+                        shrrightpageTV.setText(size.toString())
+                        shrnumTV.setText(page.toString())
+                        etSHR_SPECET.setText("")
+                        etSHR_FAMIET.setText("")
+                        etSHR_SCIENET.setText("")
+                        etSHR_HET.setText("")
+                        etSTR_COVEET.setText("")
                     }
 
-                    shrpage = shrpage + 1
+                    if (shrpage == 1) {
 
-                    val page = shrpage
-                    val size = shrrightpageTV.text.toString().toInt() + 1
+                        var shrdata = TreeData2(-1, shrpage, spec, fami, scien, h, cove)
 
-                    shrpageTV.setText(page.toString())
-                    shrrightpageTV.setText(size.toString())
-                    shrnumTV.setText(page.toString())
-                    etSHR_SPECET.setText("")
-                    etSHR_FAMIET.setText("")
-                    etSHR_SCIENET.setText("")
-                    etSHR_HET.setText("")
-                    etSTR_COVEET.setText("")
-                }
+                        ShrDatas.add(shrdata)
 
-                if (shrpage == 1) {
+                        shrpage = shrpage + 1
 
-                    for (i in 0 until ShrDatas.size){
-                        if (ShrDatas.get(i).PAGE == shrpage){
-                            ShrDatas.get(i).SPEC = spec
-                            ShrDatas.get(i).FAMI = fami
-                            ShrDatas.get(i).SCIEN = scien
-                            ShrDatas.get(i).H = h
-                            ShrDatas.get(i).COVE = cove
+                        val page = shrpage
+                        val size = shrrightpageTV.text.toString().toInt() + 1
+
+                        shrpageTV.setText(page.toString())
+                        shrrightpageTV.setText(size.toString())
+                        shrnumTV.setText(page.toString())
+                        etSHR_SPECET.setText("")
+                        etSHR_FAMIET.setText("")
+                        etSHR_SCIENET.setText("")
+                        etSHR_HET.setText("")
+                        etSTR_COVEET.setText("")
+
+                    }
+                } else {
+                    if (shrpage > 1) {
+
+                        for (i in 0 until ShrDatas.size){
+                            if (ShrDatas.get(i).PAGE == shrpage){
+                                ShrDatas.get(i).SPEC = spec
+                                ShrDatas.get(i).FAMI = fami
+                                ShrDatas.get(i).SCIEN = scien
+                                ShrDatas.get(i).H = h
+                                ShrDatas.get(i).COVE = cove
+                            }
                         }
+
+                        shrpage = shrpage + 1
+
+                        val page = shrpage
+                        val size = shrrightpageTV.text.toString().toInt() + 1
+
+                        shrpageTV.setText(page.toString())
+                        shrrightpageTV.setText(size.toString())
+                        shrnumTV.setText(page.toString())
+                        etSHR_SPECET.setText("")
+                        etSHR_FAMIET.setText("")
+                        etSHR_SCIENET.setText("")
+                        etSHR_HET.setText("")
+                        etSTR_COVEET.setText("")
                     }
 
-                    shrpage = shrpage + 1
+                    if (shrpage == 1) {
 
+                        for (i in 0 until ShrDatas.size){
+                            if (ShrDatas.get(i).PAGE == shrpage){
+                                ShrDatas.get(i).SPEC = spec
+                                ShrDatas.get(i).FAMI = fami
+                                ShrDatas.get(i).SCIEN = scien
+                                ShrDatas.get(i).H = h
+                                ShrDatas.get(i).COVE = cove
+                            }
+                        }
+
+                        shrpage = shrpage + 1
+
+                        val page = shrpage
+                        val size = shrrightpageTV.text.toString().toInt() + 1
+
+                        shrpageTV.setText(page.toString())
+                        shrrightpageTV.setText(size.toString())
+                        shrnumTV.setText(page.toString())
+                        etSHR_SPECET.setText("")
+                        etSHR_FAMIET.setText("")
+                        etSHR_SCIENET.setText("")
+                        etSHR_HET.setText("")
+                        etSTR_COVEET.setText("")
+
+                    }
+                }
+            }
+            if (shrpage < maxsize){
+                for (i in 0 until ShrDatas.size){
+                    if (ShrDatas.get(i).PAGE == shrpage){
+                        ShrDatas.get(i).SPEC = spec
+                        ShrDatas.get(i).FAMI = fami
+                        ShrDatas.get(i).SCIEN = scien
+                        ShrDatas.get(i).H = h
+                        ShrDatas.get(i).COVE = cove
+                    }
+                }
+                shrpage = shrpage + 1
+                var chk = false
+                for (i in 0..ShrDatas.size-1) {
+                    if (shrpage == ShrDatas.get(i).PAGE) {
+                        chk = true
+                        val data = ShrDatas.get(i)
+                        etSHR_SPECET.setText(data.SPEC)
+                        etSHR_FAMIET.setText(data.FAMI)
+                        etSHR_SCIENET.setText(data.SCIEN)
+                        etSHR_HET.setText(data.H.toString())
+                        etSTR_COVEET.setText(data.COVE.toString())
+
+                        val page = shrpage
+                        val size = shrrightpageTV.text.toString().toInt()
+
+                        shrpageTV.setText(page.toString())
+                        shrrightpageTV.setText(size.toString())
+                        shrnumTV.setText(page.toString())
+                    }
+                }
+
+                if (chk == false){
                     val page = shrpage
                     val size = shrrightpageTV.text.toString().toInt() + 1
 
@@ -2402,56 +2572,11 @@ class Flora2Activity : Activity() {
                     etSHR_SCIENET.setText("")
                     etSHR_HET.setText("")
                     etSTR_COVEET.setText("")
-
                 }
             }
+            deleteBT.visibility = View.GONE
         }
-        if (shrpage < maxsize){
-            for (i in 0 until ShrDatas.size){
-                if (ShrDatas.get(i).PAGE == shrpage){
-                    ShrDatas.get(i).SPEC = spec
-                    ShrDatas.get(i).FAMI = fami
-                    ShrDatas.get(i).SCIEN = scien
-                    ShrDatas.get(i).H = h
-                    ShrDatas.get(i).COVE = cove
-                }
-            }
-            shrpage = shrpage + 1
-            var chk = false
-            for (i in 0..ShrDatas.size-1) {
-                if (shrpage == ShrDatas.get(i).PAGE) {
-                    chk = true
-                    val data = ShrDatas.get(i)
-                    etSHR_SPECET.setText(data.SPEC)
-                    etSHR_FAMIET.setText(data.FAMI)
-                    etSHR_SCIENET.setText(data.SCIEN)
-                    etSHR_HET.setText(data.H.toString())
-                    etSTR_COVEET.setText(data.COVE.toString())
 
-                    val page = shrpage
-                    val size = shrrightpageTV.text.toString().toInt()
-
-                    shrpageTV.setText(page.toString())
-                    shrrightpageTV.setText(size.toString())
-                    shrnumTV.setText(page.toString())
-                }
-            }
-
-            if (chk == false){
-                val page = shrpage
-                val size = shrrightpageTV.text.toString().toInt() + 1
-
-                shrpageTV.setText(page.toString())
-                shrrightpageTV.setText(size.toString())
-                shrnumTV.setText(page.toString())
-                etSHR_SPECET.setText("")
-                etSHR_FAMIET.setText("")
-                etSHR_SCIENET.setText("")
-                etSHR_HET.setText("")
-                etSTR_COVEET.setText("")
-            }
-        }
-        deleteBT.visibility = View.GONE
     }
 
     fun AddHerFlora(){
@@ -2484,95 +2609,145 @@ class Flora2Activity : Activity() {
             }
         }
 
-        val maxsize = herrightpageTV.text.toString().toInt()
+        if (spec == "" && h == 0.0F && cove == 0.0F ){
+            Toast.makeText(context, "빈칸은 입력하실수 없습니다..", Toast.LENGTH_SHORT).show()
+        } else {
+            val maxsize = herrightpageTV.text.toString().toInt()
 
-        if(herpage == maxsize) {
+            if(herpage == maxsize) {
 
-            if (division == false) {
-                if (herpage > 1) {
+                if (division == false) {
+                    if (herpage > 1) {
 
-                    var herdata = TreeData2(-1, herpage, spec, fami, scien, h, cove)
+                        var herdata = TreeData2(-1, herpage, spec, fami, scien, h, cove)
 
-                    HerDatas.add(herdata)
+                        HerDatas.add(herdata)
 
-                    herpage = herpage + 1
+                        herpage = herpage + 1
 
-                    val page = herpage
-                    val size = herrightpageTV.text.toString().toInt() + 1
+                        val page = herpage
+                        val size = herrightpageTV.text.toString().toInt() + 1
 
-                    herpageTV.setText(page.toString())
-                    herrightpageTV.setText(size.toString())
-                    hernumTV.setText(page.toString())
-                    etHER_SPECET.setText("")
-                    etHER_FAMIET.setText("")
-                    etHER_SCIENET.setText("")
-                    etHER_HET.setText("")
-                    etHER_COVEET.setText("")
-                }
-
-                if (herpage == 1) {
-
-                    var herdata = TreeData2(-1, herpage, spec, fami, scien, h, cove)
-
-                    HerDatas.add(herdata)
-
-                    herpage = herpage + 1
-
-                    val page = herpage
-                    val size = herrightpageTV.text.toString().toInt() + 1
-
-                    herpageTV.setText(page.toString())
-                    herrightpageTV.setText(size.toString())
-                    hernumTV.setText(page.toString())
-                    etHER_SPECET.setText("")
-                    etHER_FAMIET.setText("")
-                    etHER_SCIENET.setText("")
-                    etHER_HET.setText("")
-                    etHER_COVEET.setText("")
-
-                }
-            } else {
-                if (herpage > 1) {
-
-                    for (i in 0 until HerDatas.size){
-                        if (HerDatas.get(i).PAGE == herpage){
-                            HerDatas.get(i).SPEC = spec
-                            HerDatas.get(i).FAMI = fami
-                            HerDatas.get(i).SCIEN = scien
-                            HerDatas.get(i).H = h
-                            HerDatas.get(i).COVE = cove
-                        }
+                        herpageTV.setText(page.toString())
+                        herrightpageTV.setText(size.toString())
+                        hernumTV.setText(page.toString())
+                        etHER_SPECET.setText("")
+                        etHER_FAMIET.setText("")
+                        etHER_SCIENET.setText("")
+                        etHER_HET.setText("")
+                        etHER_COVEET.setText("")
                     }
 
-                    herpage = herpage + 1
+                    if (herpage == 1) {
 
-                    val page = herpage
-                    val size = herrightpageTV.text.toString().toInt() + 1
+                        var herdata = TreeData2(-1, herpage, spec, fami, scien, h, cove)
 
-                    herpageTV.setText(page.toString())
-                    herrightpageTV.setText(size.toString())
-                    hernumTV.setText(page.toString())
-                    etHER_SPECET.setText("")
-                    etHER_FAMIET.setText("")
-                    etHER_SCIENET.setText("")
-                    etHER_HET.setText("")
-                    etHER_COVEET.setText("")
-                }
+                        HerDatas.add(herdata)
 
-                if (herpage == 1) {
+                        herpage = herpage + 1
 
-                    for (i in 0 until HerDatas.size){
-                        if (HerDatas.get(i).PAGE == herpage){
-                            HerDatas.get(i).SPEC = spec
-                            HerDatas.get(i).FAMI = fami
-                            HerDatas.get(i).SCIEN = scien
-                            HerDatas.get(i).H = h
-                            HerDatas.get(i).COVE = cove
+                        val page = herpage
+                        val size = herrightpageTV.text.toString().toInt() + 1
+
+                        herpageTV.setText(page.toString())
+                        herrightpageTV.setText(size.toString())
+                        hernumTV.setText(page.toString())
+                        etHER_SPECET.setText("")
+                        etHER_FAMIET.setText("")
+                        etHER_SCIENET.setText("")
+                        etHER_HET.setText("")
+                        etHER_COVEET.setText("")
+
+                    }
+                } else {
+                    if (herpage > 1) {
+
+                        for (i in 0 until HerDatas.size){
+                            if (HerDatas.get(i).PAGE == herpage){
+                                HerDatas.get(i).SPEC = spec
+                                HerDatas.get(i).FAMI = fami
+                                HerDatas.get(i).SCIEN = scien
+                                HerDatas.get(i).H = h
+                                HerDatas.get(i).COVE = cove
+                            }
                         }
+
+                        herpage = herpage + 1
+
+                        val page = herpage
+                        val size = herrightpageTV.text.toString().toInt() + 1
+
+                        herpageTV.setText(page.toString())
+                        herrightpageTV.setText(size.toString())
+                        hernumTV.setText(page.toString())
+                        etHER_SPECET.setText("")
+                        etHER_FAMIET.setText("")
+                        etHER_SCIENET.setText("")
+                        etHER_HET.setText("")
+                        etHER_COVEET.setText("")
                     }
 
-                    herpage = herpage + 1
+                    if (herpage == 1) {
 
+                        for (i in 0 until HerDatas.size){
+                            if (HerDatas.get(i).PAGE == herpage){
+                                HerDatas.get(i).SPEC = spec
+                                HerDatas.get(i).FAMI = fami
+                                HerDatas.get(i).SCIEN = scien
+                                HerDatas.get(i).H = h
+                                HerDatas.get(i).COVE = cove
+                            }
+                        }
+
+                        herpage = herpage + 1
+
+                        val page = herpage
+                        val size = herrightpageTV.text.toString().toInt() + 1
+
+                        herpageTV.setText(page.toString())
+                        herrightpageTV.setText(size.toString())
+                        hernumTV.setText(page.toString())
+                        etHER_SPECET.setText("")
+                        etHER_FAMIET.setText("")
+                        etHER_SCIENET.setText("")
+                        etHER_HET.setText("")
+                        etHER_COVEET.setText("")
+
+                    }
+                }
+            }
+            if (herpage < maxsize){
+                for (i in 0 until HerDatas.size){
+                    if (HerDatas.get(i).PAGE == herpage){
+                        HerDatas.get(i).SPEC = spec
+                        HerDatas.get(i).FAMI = fami
+                        HerDatas.get(i).SCIEN = scien
+                        HerDatas.get(i).H = h
+                        HerDatas.get(i).COVE = cove
+                    }
+                }
+                herpage = herpage + 1
+                var chk = false
+                for (i in 0..HerDatas.size-1) {
+                    if (herpage == HerDatas.get(i).PAGE) {
+                        chk = true
+                        val data = HerDatas.get(i)
+                        etHER_SPECET.setText(data.SPEC)
+                        etHER_FAMIET.setText(data.FAMI)
+                        etHER_SCIENET.setText(data.SCIEN)
+                        etHER_HET.setText(data.H.toString())
+                        etHER_COVEET.setText(data.COVE.toString())
+
+                        val page = herpage
+                        val size = herrightpageTV.text.toString().toInt()
+
+                        herpageTV.setText(page.toString())
+                        herrightpageTV.setText(size.toString())
+                        hernumTV.setText(page.toString())
+                    }
+                }
+
+                if (chk == false){
                     val page = herpage
                     val size = herrightpageTV.text.toString().toInt() + 1
 
@@ -2584,57 +2759,12 @@ class Flora2Activity : Activity() {
                     etHER_SCIENET.setText("")
                     etHER_HET.setText("")
                     etHER_COVEET.setText("")
-
-                }
-            }
-        }
-        if (herpage < maxsize){
-            for (i in 0 until HerDatas.size){
-                if (HerDatas.get(i).PAGE == herpage){
-                    HerDatas.get(i).SPEC = spec
-                    HerDatas.get(i).FAMI = fami
-                    HerDatas.get(i).SCIEN = scien
-                    HerDatas.get(i).H = h
-                    HerDatas.get(i).COVE = cove
-                }
-            }
-            herpage = herpage + 1
-            var chk = false
-            for (i in 0..HerDatas.size-1) {
-                if (herpage == HerDatas.get(i).PAGE) {
-                    chk = true
-                    val data = HerDatas.get(i)
-                    etHER_SPECET.setText(data.SPEC)
-                    etHER_FAMIET.setText(data.FAMI)
-                    etHER_SCIENET.setText(data.SCIEN)
-                    etHER_HET.setText(data.H.toString())
-                    etHER_COVEET.setText(data.COVE.toString())
-
-                    val page = herpage
-                    val size = herrightpageTV.text.toString().toInt()
-
-                    herpageTV.setText(page.toString())
-                    herrightpageTV.setText(size.toString())
-                    hernumTV.setText(page.toString())
                 }
             }
 
-            if (chk == false){
-                val page = herpage
-                val size = herrightpageTV.text.toString().toInt() + 1
-
-                herpageTV.setText(page.toString())
-                herrightpageTV.setText(size.toString())
-                hernumTV.setText(page.toString())
-                etHER_SPECET.setText("")
-                etHER_FAMIET.setText("")
-                etHER_SCIENET.setText("")
-                etHER_HET.setText("")
-                etHER_COVEET.setText("")
-            }
+            deleteBT.visibility = View.GONE
         }
 
-        deleteBT.visibility = View.GONE
     }
 
     fun clear(){

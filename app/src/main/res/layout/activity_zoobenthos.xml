@@ -302,44 +302,6 @@
                     />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <TextView
-                    android:layout_width="70dp"
-                    android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="번호"/>
-                <TextView
-                    android:id="@+id/numTV"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    style="@style/BiotopeTextView"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <TextView
-                    android:layout_width="70dp"
-                    android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="시간"/>
-                <TextView
-                    android:id="@+id/timeTV"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:gravity="center"
-                    />
-            </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -893,7 +855,6 @@
                                 android:visibility="gone"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:hint="click"
                                 style="@style/BiotopeTextView"
                                 android:gravity="center"/>
                         </LinearLayout>
@@ -923,7 +884,6 @@
                             android:visibility="gone"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:hint="click"
                             android:layout_weight="1"
                             style="@style/BiotopeTextView"
                             android:gravity="center"/>
@@ -975,7 +935,6 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:hint="click"
                             style="@style/BiotopeTextView"
                             android:gravity="center"/>
                     </LinearLayout>
@@ -1001,7 +960,6 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:visibility="gone"
-                            android:hint="click"
                             style="@style/BiotopeTextView"
                             android:gravity="center"/>
                     </LinearLayout>
@@ -1057,6 +1015,45 @@
                     style="@style/BiotopeTextView"
                     />
 
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="번호"/>
+                <TextView
+                    android:id="@+id/numTV"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    style="@style/BiotopeTextView"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="시간"/>
+                <TextView
+                    android:id="@+id/timeTV"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    android:gravity="center"
+                    />
             </LinearLayout>
 
             <LinearLayout

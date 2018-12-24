@@ -110,15 +110,21 @@ class DlgStokeMapAdapter1(var context: Context, var itemList : ArrayList<StockMa
             itemList.set(i,bioListModel)
         }*/
 
-        var StockMapSelect:StockMapSelect = itemList.get(selectIndex);
-        StockMapSelect.chkSelect = false
-        itemList.set(selectIndex,StockMapSelect)
+//        var StockMapSelect:StockMapSelect = itemList.get(selectIndex);
+//        StockMapSelect.chkSelect = false
+//        itemList.set(selectIndex,StockMapSelect)
 
-        var StockMapSelectd = getItem(position);
+        for (i in 0 until itemList.size){
+            val item = itemList.get(i)
+            item.chkSelect = false
+            itemList.set(i,item)
+        }
 
-        StockMapSelectd.chkSelect = true
+        var biotopeModel = getItem(position);
+
+        biotopeModel.chkSelect = true
         selectIndex= position
-        itemList.set(position,StockMapSelectd)
+        itemList.set(position,biotopeModel)
         notifyDataSetChanged()
     }
 

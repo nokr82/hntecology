@@ -110,15 +110,21 @@ class DlgMammalAdapter(var context: Context, var itemList : ArrayList<Mammal>) :
             itemList.set(i,bioListModel)
         }*/
 
-        var Mammal:Mammal = itemList.get(selectIndex);
-        Mammal.chkSelect = false
-        itemList.set(selectIndex,Mammal)
+//        var Mammal:Mammal = itemList.get(selectIndex);
+//        Mammal.chkSelect = false
+//        itemList.set(selectIndex,Mammal)
 
-        var Mammald = getItem(position);
+        for (i in 0 until itemList.size){
+            val item = itemList.get(i)
+            item.chkSelect = false
+            itemList.set(i,item)
+        }
 
-        Mammald.chkSelect = true
+        var biotopeModel = getItem(position);
+
+        biotopeModel.chkSelect = true
         selectIndex= position
-        itemList.set(position,Mammald)
+        itemList.set(position,biotopeModel)
         notifyDataSetChanged()
     }
 

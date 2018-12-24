@@ -107,10 +107,16 @@ class DlgBiotopeTypeAdapter3(var context: Context, var itemList : ArrayList<Biot
             bioListModel.chkSelect = false
             itemList.set(i,bioListModel)
         }*/
+//
+//        var BiotopeType:BiotopeType = itemList.get(selectIndex);
+//        BiotopeType.chkSelect = false
+//        itemList.set(selectIndex,BiotopeType)
 
-        var BiotopeType:BiotopeType = itemList.get(selectIndex);
-        BiotopeType.chkSelect = false
-        itemList.set(selectIndex,BiotopeType)
+        for (i in 0 until itemList.size){
+            val item = itemList.get(i)
+            item.chkSelect = false
+            itemList.set(i,item)
+        }
 
         var biotopeModel = getItem(position);
 

@@ -2320,6 +2320,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                 var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
                                                 var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
                                                 var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                                var landuse = Utils.getString(layerInfo.metadata , "landuse")
+
+                                                println("landuseclick ------ $landuse")
+                                                println("LANDUSEclick ------ $LANDUSE")
                                                 var biotope = Utils.getString(layerInfo.metadata, "biotop")
                                                 if (INV_INDEX == "" || INV_INDEX == null) {
                                                     INV_INDEX = "0"
@@ -2388,7 +2392,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                 val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), LC_GR_NUM, LC_TY, TY_MARK, GV_RATE.toFloat()
                                                         , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
                                                         STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
-                                                        BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y",LANDUSE)
+                                                        BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y",landuse)
+
+                                                if (LANDUSE != null && LANDUSE != ""){
+                                                    data.LANDUSE = LANDUSE
+                                                }
 
                                                 intent!!.putExtra("biotopedata", data)
                                                 intent!!.putExtra("GROP_ID", attrubuteKey.toString())
@@ -2396,7 +2404,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                 intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
                                                 intent!!.putExtra("EMD_NM", EMD_NM)
                                                 intent!!.putExtra("polygonid", polygon.id)
-                                                intent!!.putExtra("landuse",polygon.fillColor)
+                                                intent!!.putExtra("landuse", polygon.fillColor)
 
                                                 println("biotope -------$biotope")
 
@@ -2424,6 +2432,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                         intent.putExtra("GROP_ID", attrubuteKey)
                                         intent.putExtra("polygonid", polygon.id)
                                         intent!!.putExtra("landuse",polygon.fillColor)
+                                        println("polygonclicklanduse.size1 -------- ${polygon.fillColor}")
                                         startActivityForResult(intent, BIOTOPE_DATA);
 
                                         if (latlngs != null) {
@@ -3411,14 +3420,16 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     layerInfo.layer = LAYER_STOCKMAP
                 }
 
-                // metadata
-
                 val id = Utils.getString(layerInfo.metadata , "ID")
                 val grop_id = Utils.getString(layerInfo.metadata , "GROP_ID")
                 val landuse = Utils.getString(layerInfo.metadata, "landuse")
                 val LANDUSE =  Utils.getString(layerInfo.metadata, "LANDUSE")
 
+                polygon.fillColor = Color.parseColor("#BDBDBD")
+
+                println("loadlayer-----LANDUSE ---- $LANDUSE")
                 if (LANDUSE != null){
+
                     if (LANDUSE == "-319"){
                         polygon.fillColor = Color.parseColor("#FFFEC1")
                     }
@@ -3443,163 +3454,167 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         polygon.fillColor = Color.parseColor("#FCE9C4")
                     }
 
-                    if (landuse == "A11"){
-                        polygon.fillColor = Color.parseColor("#FEE6C2")
-                    }
-
-                    if (landuse == "A12"){
-                        polygon.fillColor = Color.parseColor("#DFC16F")
-                    }
-
-                    if (landuse == "A21"){
-                        polygon.fillColor = Color.parseColor("#C08484")
-                    }
-
-                    if (landuse == "A31"){
-                        polygon.fillColor = Color.parseColor("#ED83B8")
-                    }
-
-                    if (landuse == "A32"){
-                        polygon.fillColor = Color.parseColor("#DFB0A4")
-                    }
-
-                    if (landuse == "A41"){
-                        polygon.fillColor = Color.parseColor("#F6718A")
-                    }
-
-                    if (landuse == "A51"){
-                        polygon.fillColor = Color.parseColor("#E526FE")
-                    }
-
-                    if (landuse == "A52"){
-                        polygon.fillColor = Color.parseColor("#C53251")
-                    }
-
-                    if (landuse == "A53"){
-                        polygon.fillColor = Color.parseColor("#FC044E")
-                    }
-
-                    if (landuse == "A54"){
+                    if (LANDUSE == "0701"){
                         polygon.fillColor = Color.parseColor("#F7412A")
                     }
 
-                    if (landuse == "A55"){
+                    if (LANDUSE == "A11"){
+                        polygon.fillColor = Color.parseColor("#FEE6C2")
+                    }
+
+                    if (LANDUSE == "A12"){
+                        polygon.fillColor = Color.parseColor("#DFC16F")
+                    }
+
+                    if (LANDUSE == "A21"){
+                        polygon.fillColor = Color.parseColor("#C08484")
+                    }
+
+                    if (LANDUSE == "A31"){
+                        polygon.fillColor = Color.parseColor("#ED83B8")
+                    }
+
+                    if (LANDUSE == "A32"){
+                        polygon.fillColor = Color.parseColor("#DFB0A4")
+                    }
+
+                    if (LANDUSE == "A41"){
+                        polygon.fillColor = Color.parseColor("#F6718A")
+                    }
+
+                    if (LANDUSE == "A51"){
+                        polygon.fillColor = Color.parseColor("#E526FE")
+                    }
+
+                    if (LANDUSE == "A52"){
+                        polygon.fillColor = Color.parseColor("#C53251")
+                    }
+
+                    if (LANDUSE == "A53"){
+                        polygon.fillColor = Color.parseColor("#FC044E")
+                    }
+
+                    if (LANDUSE == "A54"){
+                        polygon.fillColor = Color.parseColor("#F7412A")
+                    }
+
+                    if (LANDUSE == "A55"){
                         polygon.fillColor = Color.parseColor("#730000")
                     }
 
-                    if (landuse == "A61"){
+                    if (LANDUSE == "A61"){
                         polygon.fillColor = Color.parseColor("#F6B112")
                     }
 
-                    if (landuse == "A62"){
+                    if (LANDUSE == "A62"){
                         polygon.fillColor = Color.parseColor("#FF7A00")
                     }
 
-                    if (landuse == "A63"){
+                    if (LANDUSE == "A63"){
                         polygon.fillColor = Color.parseColor("#C7581B")
                     }
 
-                    if (landuse == "B11"){
+                    if (LANDUSE == "B11"){
                         polygon.fillColor = Color.parseColor("#FFFFBF")
                     }
 
-                    if (landuse == "B12"){
+                    if (LANDUSE == "B12"){
                         polygon.fillColor = Color.parseColor("#F4E6A8")
                     }
 
-                    if (landuse == "B21"){
+                    if (LANDUSE == "B21"){
                         polygon.fillColor = Color.parseColor("#F7F966")
                     }
 
-                    if (landuse == "B31"){
+                    if (LANDUSE == "B31"){
                         polygon.fillColor = Color.parseColor("#DFDC73")
                     }
 
-                    if (landuse == "B41"){
+                    if (LANDUSE == "B41"){
                         polygon.fillColor = Color.parseColor("#B8B12C")
                     }
 
-                    if (landuse == "B51"){
+                    if (LANDUSE == "B51"){
                         polygon.fillColor = Color.parseColor("#B89112")
                     }
 
-                    if (landuse == "B52"){
+                    if (LANDUSE == "B52"){
                         polygon.fillColor = Color.parseColor("#AA6400")
                     }
 
-                    if (landuse == "C11"){
+                    if (LANDUSE == "C11"){
                         polygon.fillColor = Color.parseColor("#33A02C")
                     }
 
-                    if (landuse == "C21"){
+                    if (LANDUSE == "C21"){
                         polygon.fillColor = Color.parseColor("#0A4F40")
                     }
 
-                    if (landuse == "C31"){
+                    if (LANDUSE == "C31"){
                         polygon.fillColor = Color.parseColor("#336633")
                     }
 
-                    if (landuse == "D11"){
+                    if (LANDUSE == "D11"){
                         polygon.fillColor = Color.parseColor("#A1D594")
                     }
 
-                    if (landuse == "D21"){
+                    if (LANDUSE == "D21"){
                         polygon.fillColor = Color.parseColor("#80E45A")
                     }
 
-                    if (landuse == "D22"){
+                    if (LANDUSE == "D22"){
                         polygon.fillColor = Color.parseColor("#71B05A")
                     }
 
-                    if (landuse == "D23"){
+                    if (LANDUSE == "D23"){
                         polygon.fillColor = Color.parseColor("#607E33")
                     }
 
-                    if (landuse == "E11"){
+                    if (LANDUSE == "E11"){
                         polygon.fillColor = Color.parseColor("#B4A7D0")
                     }
 
-                    if (landuse == "E21"){
+                    if (LANDUSE == "E21"){
                         polygon.fillColor = Color.parseColor("#997499")
                     }
 
-                    if (landuse == "E22"){
+                    if (LANDUSE == "E22"){
                         polygon.fillColor = Color.parseColor("#7C1EA2")
                     }
 
-                    if (landuse == "F11"){
+                    if (LANDUSE == "F11"){
                         polygon.fillColor = Color.parseColor("#C1DBEC")
                     }
 
-                    if (landuse == "F12"){
+                    if (LANDUSE == "F12"){
                         polygon.fillColor = Color.parseColor("#ABC5CA")
                     }
 
-                    if (landuse == "F13"){
+                    if (LANDUSE == "F13"){
                         polygon.fillColor = Color.parseColor("#ABB6A5")
                     }
 
-                    if (landuse == "F21"){
+                    if (LANDUSE == "F21"){
                         polygon.fillColor = Color.parseColor("#585A8A")
                     }
 
-                    if (landuse == "F22"){
+                    if (LANDUSE == "F22"){
                         polygon.fillColor = Color.parseColor("#7BB5AC")
                     }
 
-                    if (landuse == "F23"){
+                    if (LANDUSE == "F23"){
                         polygon.fillColor = Color.parseColor("#9FF2FF")
                     }
 
-                    if (landuse == "G11"){
+                    if (LANDUSE == "G11"){
                         polygon.fillColor = Color.parseColor("#3EA7FF")
                     }
 
-                    if (landuse == "G12"){
+                    if (LANDUSE == "G12"){
                         polygon.fillColor = Color.parseColor("#5D6DFF")
                     }
 
-                    if (landuse == "G21"){
+                    if (LANDUSE == "G21"){
                         polygon.fillColor = Color.parseColor("#1739FF")
                     }
 
@@ -3610,7 +3625,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     println("grop_id $grop_id")
                 }
 
+                println("loadlayer-----landuse ---- $landuse")
                 if (landuse != null){
+
                     if (landuse == "A11"){
                         polygon.fillColor = Color.parseColor("#FEE6C2")
                     }
@@ -4839,12 +4856,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, biotope_attribute.INV_TM))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_INDEX", ogr.OFTInteger, biotope_attribute.INV_INDEX))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LU_GR_NUM", ogr.OFTString, biotope_attribute.LU_GR_NUM))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LU_TY_RATE", ogr.OFTReal, biotope_attribute.LU_TY_RATE))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STAND_H", ogr.OFTReal, biotope_attribute.STAND_H))
+                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LU_TY_RATE", ogr.OFTString, biotope_attribute.LU_TY_RATE.toString()))
+                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STAND_H", ogr.OFTString, biotope_attribute.STAND_H.toString()))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LC_GR_NUM", ogr.OFTString, biotope_attribute.LC_GR_NUM))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LC_TY", ogr.OFTString, biotope_attribute.LC_TY))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TY_MARK", ogr.OFTString, biotope_attribute.TY_MARK))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GV_RATE", ogr.OFTReal, biotope_attribute.GV_RATE))
+                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GV_RATE", ogr.OFTString, biotope_attribute.GV_RATE.toString()))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GV_STRUCT", ogr.OFTString, biotope_attribute.GV_STRUCT))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("DIS_RET", ogr.OFTString, biotope_attribute.DIS_RET))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("RESTOR_POT", ogr.OFTString, biotope_attribute.RESTOR_POT))
@@ -4856,34 +4873,33 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SPEC", ogr.OFTString, biotope_attribute.TRE_SPEC))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_FAMI", ogr.OFTString, biotope_attribute.TRE_FAMI))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SCIEN", ogr.OFTString, biotope_attribute.TRE_SCIEN))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_H", ogr.OFTReal, biotope_attribute.TRE_H))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_BREA", ogr.OFTReal, biotope_attribute.TRE_BREA))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_COVE", ogr.OFTReal, biotope_attribute.TRE_COVE))
+                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_H", ogr.OFTString, biotope_attribute.TRE_H.toString()))
+                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_BREA", ogr.OFTString, biotope_attribute.TRE_BREA.toString()))
+                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_COVE", ogr.OFTString, biotope_attribute.TRE_COVE.toString()))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_SPEC", ogr.OFTString, biotope_attribute.STRE_SPEC))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_FAMI", ogr.OFTString, biotope_attribute.STRE_FAMI))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_SCIEN", ogr.OFTString, biotope_attribute.STRE_SCIEN))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_H", ogr.OFTReal, biotope_attribute.STRE_H))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_BREA", ogr.OFTReal, biotope_attribute.STRE_BREA))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_COVE", ogr.OFTReal, biotope_attribute.STRE_COVE))
+                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_H", ogr.OFTString, biotope_attribute.STRE_H.toString()))
+                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_BREA", ogr.OFTString, biotope_attribute.STRE_BREA.toString()))
+                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_COVE", ogr.OFTString, biotope_attribute.STRE_COVE.toString()))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_SPEC", ogr.OFTString, biotope_attribute.SHR_SPEC))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_FAMI", ogr.OFTString, biotope_attribute.SHR_FAMI))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_SCIEN", ogr.OFTString, biotope_attribute.SHR_SCIEN))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_H", ogr.OFTReal, biotope_attribute.SHR_H))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STR_COVE", ogr.OFTReal, biotope_attribute.STR_COVE))
+                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_H", ogr.OFTString, biotope_attribute.SHR_H.toString()))
+                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STR_COVE", ogr.OFTString, biotope_attribute.STR_COVE.toString()))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_SPEC", ogr.OFTString, biotope_attribute.HER_SPEC))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_FAMI", ogr.OFTString, biotope_attribute.HER_FAMI))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_SCIEN", ogr.OFTString, biotope_attribute.HER_SCIEN))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_H", ogr.OFTReal, biotope_attribute.HER_H))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_COVE", ogr.OFTReal, biotope_attribute.HER_COVE))
+                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_H", ogr.OFTString, biotope_attribute.HER_H.toString()))
+                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_COVE", ogr.OFTString, biotope_attribute.HER_COVE.toString()))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("PIC_FOLDER", ogr.OFTString, biotope_attribute.PIC_FOLDER))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("WILD_ANI", ogr.OFTString, biotope_attribute.WILD_ANI))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("BIOTOP_POT", ogr.OFTString, biotope_attribute.BIOTOP_POT))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("UNUS_NOTE", ogr.OFTString, biotope_attribute.UNUS_NOTE))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal, biotope_attribute.GPS_LAT))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal, biotope_attribute.GPS_LON))
+                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, biotope_attribute.GPS_LAT.toString()))
+                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, biotope_attribute.GPS_LON.toString()))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("NEED_CONF", ogr.OFTString, biotope_attribute.NEED_CONF))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, biotope_attribute.CONF_MOD))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString, biotope_attribute.TEMP_YN))
                         BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LANDUSE", ogr.OFTString, biotope_attribute.LANDUSE))
 
                         val exporter = Exporter.ExportItem(LAYER_BIOTOPE, BIOTOPEATTRIBUTE, polygons.get(idx))
@@ -5005,7 +5021,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         BIRDSATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, birds_attribute.WEATHER))
                         BIRDSATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, birds_attribute.WIND))
                         BIRDSATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, birds_attribute.WIND_DIRE))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTReal, birds_attribute.TEMPERATUR))
+                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, birds_attribute.TEMPERATUR.toString()))
                         BIRDSATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, birds_attribute.ETC))
                         BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, birds_attribute.INV_TM))
                         BIRDSATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, birds_attribute.SPEC_NM))
@@ -5020,9 +5036,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_LAYER", ogr.OFTString, birds_attribute.USE_LAYER))
                         BIRDSATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT", ogr.OFTString, birds_attribute.MJ_ACT))
                         BIRDSATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT_PR", ogr.OFTString, birds_attribute.MJ_ACT_PR))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal, birds_attribute.GPS_LAT))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal, birds_attribute.GPS_LON))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString, birds_attribute.TEMP_YN))
+                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, birds_attribute.GPS_LAT.toString()))
+                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, birds_attribute.GPS_LON.toString()))
                         BIRDSATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, birds_attribute.CONF_MOD))
                     }
 
@@ -5148,7 +5163,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, reptilia_attribute.WEATHER))
                         REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, reptilia_attribute.WIND))
                         REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, reptilia_attribute.WIND_DIRE))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTReal, reptilia_attribute.TEMPERATUR))
+                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, reptilia_attribute.TEMPERATUR.toString()))
                         REPTILIAATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, reptilia_attribute.ETC))
                         REPTILIAATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, reptilia_attribute.INV_TM))
                         REPTILIAATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, reptilia_attribute.SPEC_NM))
@@ -5166,9 +5181,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WATER_DEPT", ogr.OFTInteger, reptilia_attribute.WATER_DEPT))
                         REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA_W", ogr.OFTInteger, reptilia_attribute.HAB_AREA_W))
                         REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA_H", ogr.OFTInteger, reptilia_attribute.HAB_AREA_H))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal, reptilia_attribute.GPS_LAT))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal, reptilia_attribute.GPS_LON))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString, reptilia_attribute.TEMP_YN))
+                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, reptilia_attribute.GPS_LAT.toString()))
+                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, reptilia_attribute.GPS_LON.toString()))
                         REPTILIAATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, reptilia_attribute.CONF_MOD))
                     }
 
@@ -5290,7 +5304,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, mammal_attribute.WEATHER))
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, mammal_attribute.WIND))
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, mammal_attribute.WIND_DIRE))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTReal, mammal_attribute.TEMPERATUR))
+                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, mammal_attribute.TEMPERATUR.toString()))
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, mammal_attribute.ETC))
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, mammal_attribute.INV_TM))
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, mammal_attribute.SPEC_NM))
@@ -5302,13 +5316,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger, mammal_attribute.INDI_CNT))
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("OB_PT_CHAR", ogr.OFTString, mammal_attribute.OB_PT_CHAR))
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("UNUS_NOTE", ogr.OFTString, mammal_attribute.UNUS_NOTE))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal, mammal_attribute.GPS_LAT))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal, mammal_attribute.GPS_LON))
+                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, mammal_attribute.GPS_LAT.toString()))
+                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, mammal_attribute.GPS_LON.toString()))
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("UN_SPEC", ogr.OFTString, mammal_attribute.UN_SPEC))
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("UN_SPEC_RE", ogr.OFTString, mammal_attribute.UN_SPEC_RE))
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("TR_EASY", ogr.OFTString, mammal_attribute.TR_EASY))
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("TR_EASY_RE", ogr.OFTString, mammal_attribute.TR_EASY_RE))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString, mammal_attribute.TEMP_YN))
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, mammal_attribute.CONF_MOD))
                     }
 
@@ -5426,7 +5439,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         FISHATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, fish_attribute.WEATHER))
                         FISHATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, fish_attribute.WIND))
                         FISHATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, fish_attribute.WIND_DIRE))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTReal, fish_attribute.TEMPERATUR))
+                        FISHATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, fish_attribute.TEMPERATUR.toString()))
                         FISHATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, fish_attribute.ETC))
                         FISHATTRIBUTE.add(Exporter.ColumnDef("MID_RAGE", ogr.OFTString, fish_attribute.MID_RAGE))
                         FISHATTRIBUTE.add(Exporter.ColumnDef("CODE_NUM", ogr.OFTString, fish_attribute.CODE_NUM))
@@ -5435,8 +5448,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         FISHATTRIBUTE.add(Exporter.ColumnDef("NET_CNT", ogr.OFTInteger, fish_attribute.NET_CNT))
                         FISHATTRIBUTE.add(Exporter.ColumnDef("NET_MIN", ogr.OFTInteger, fish_attribute.NET_MIN))
                         FISHATTRIBUTE.add(Exporter.ColumnDef("AD_DIST_NM", ogr.OFTString, fish_attribute.AD_DIST_NM))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal, fish_attribute.GPS_LAT))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal, fish_attribute.GPS_LON))
+                        FISHATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, fish_attribute.GPS_LAT.toString()))
+                        FISHATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, fish_attribute.GPS_LON.toString()))
                         FISHATTRIBUTE.add(Exporter.ColumnDef("COLL_TOOL", ogr.OFTString, fish_attribute.COLL_TOOL))
                         FISHATTRIBUTE.add(Exporter.ColumnDef("STREAM_W", ogr.OFTString, fish_attribute.STREAM_W))
                         FISHATTRIBUTE.add(Exporter.ColumnDef("WATER_W", ogr.OFTInteger, fish_attribute.WATER_W))
@@ -5452,7 +5465,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         FISHATTRIBUTE.add(Exporter.ColumnDef("UNIDENT", ogr.OFTString, fish_attribute.UNIDENT))
                         FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_FM_CH", ogr.OFTString, fish_attribute.RIV_FM_CH))
                         FISHATTRIBUTE.add(Exporter.ColumnDef("UN_FISH_CH", ogr.OFTString, fish_attribute.UN_FISH_CH))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString, fish_attribute.TEMP_YN))
                         FISHATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, fish_attribute.CONF_MOD))
                     }
 
@@ -5574,7 +5586,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         INSECTATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, insect_attribute.WEATHER))
                         INSECTATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, insect_attribute.WIND))
                         INSECTATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, insect_attribute.WIND_DIRE))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTReal, insect_attribute.TEMPERATUR))
+                        INSECTATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, insect_attribute.TEMPERATUR.toString()))
                         INSECTATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, insect_attribute.ETC))
                         INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, insect_attribute.INV_TM))
                         INSECTATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, insect_attribute.SPEC_NM))
@@ -5590,9 +5602,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_MEAN", ogr.OFTString, insect_attribute.INV_MEAN))
                         INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_MN_ETC", ogr.OFTString, insect_attribute.INV_MN_ETC))
                         INSECTATTRIBUTE.add(Exporter.ColumnDef("UNUS_NOTE", ogr.OFTString, insect_attribute.UNUS_NOTE))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal, insect_attribute.GPS_LAT))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal, insect_attribute.GPS_LON))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString, insect_attribute.TEMP_YN))
+                        INSECTATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, insect_attribute.GPS_LAT.toString()))
+                        INSECTATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, insect_attribute.GPS_LON.toString()))
                         INSECTATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, insect_attribute.CONF_MOD))
                     }
 
@@ -5705,7 +5716,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         FLORAATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, flora_Attribute.WEATHER))
                         FLORAATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, flora_Attribute.WIND))
                         FLORAATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, flora_Attribute.WIND_DIRE))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTReal, flora_Attribute.TEMPERATUR))
+                        FLORAATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, flora_Attribute.TEMPERATUR.toString()))
                         FLORAATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, flora_Attribute.ETC))
                         FLORAATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, flora_Attribute.INV_TM))
                         FLORAATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, flora_Attribute.SPEC_NM))
@@ -5717,9 +5728,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         FLORAATTRIBUTE.add(Exporter.ColumnDef("HAB_ETC", ogr.OFTString, flora_Attribute.HAB_ETC))
                         FLORAATTRIBUTE.add(Exporter.ColumnDef("COL_IN_CNT", ogr.OFTInteger, flora_Attribute.COL_IN_CNT))
                         FLORAATTRIBUTE.add(Exporter.ColumnDef("THRE_CAU", ogr.OFTString, flora_Attribute.THRE_CAU))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal, flora_Attribute.GPS_LAT))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal, flora_Attribute.GPS_LON))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString, flora_Attribute.TEMP_YN))
+                        FLORAATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, flora_Attribute.GPS_LAT.toString()))
+                        FLORAATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, flora_Attribute.GPS_LON.toString()))
                         FLORAATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, flora_Attribute.CONF_MOD))
                     }
 
@@ -5857,19 +5867,19 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         ZOOBENTHOUS.add(Exporter.ColumnDef("HAB_TY", ogr.OFTString, zoo.HAB_TY))
                         ZOOBENTHOUS.add(Exporter.ColumnDef("HAB_TY_ETC", ogr.OFTString, zoo.HAB_TY_ETC))
                         ZOOBENTHOUS.add(Exporter.ColumnDef("FILT_AREA", ogr.OFTString, zoo.FILT_AREA))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTReal, zoo.TEMPERATUR))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("WATER_TEM", ogr.OFTReal, zoo.WATER_TEM))
+                        ZOOBENTHOUS.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, zoo.TEMPERATUR.toString()))
+                        ZOOBENTHOUS.add(Exporter.ColumnDef("WATER_TEM", ogr.OFTString, zoo.WATER_TEM.toString()))
                         ZOOBENTHOUS.add(Exporter.ColumnDef("TURBIDITY", ogr.OFTString, zoo.TURBIDITY))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("MUD", ogr.OFTReal, zoo.MUD))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("SAND", ogr.OFTReal, zoo.SAND))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("COR_SAND", ogr.OFTReal, zoo.COR_SAND))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("GRAVEL", ogr.OFTReal, zoo.GRAVEL))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("STONE_S", ogr.OFTReal, zoo.STONE_S))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("STONE_B", ogr.OFTReal, zoo.STONE_B))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("CONCRETE", ogr.OFTReal, zoo.CONCRETE))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("BED_ROCK", ogr.OFTReal, zoo.BED_ROCK))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("BANK_L", ogr.OFTString, zoo.BANK_L))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("BANK_L_ETC", ogr.OFTString, zoo.BANK_L_ETC))
+                        ZOOBENTHOUS.add(Exporter.ColumnDef("MUD", ogr.OFTString, zoo.MUD.toString()))
+                        ZOOBENTHOUS.add(Exporter.ColumnDef("SAND", ogr.OFTString, zoo.SAND.toString()))
+                        ZOOBENTHOUS.add(Exporter.ColumnDef("COR_SAND", ogr.OFTString, zoo.COR_SAND.toString()))
+                        ZOOBENTHOUS.add(Exporter.ColumnDef("GRAVEL", ogr.OFTString, zoo.GRAVEL.toString()))
+                        ZOOBENTHOUS.add(Exporter.ColumnDef("STONE_S", ogr.OFTString, zoo.STONE_S.toString()))
+                        ZOOBENTHOUS.add(Exporter.ColumnDef("STONE_B", ogr.OFTString, zoo.STONE_B.toString()))
+                        ZOOBENTHOUS.add(Exporter.ColumnDef("CONCRETE", ogr.OFTString, zoo.CONCRETE.toString()))
+                        ZOOBENTHOUS.add(Exporter.ColumnDef("BED_ROCK", ogr.OFTString, zoo.BED_ROCK.toString()))
+                        ZOOBENTHOUS.add(Exporter.ColumnDef("BANK_L", ogr.OFTString, zoo.BANK_L.toString()))
+                        ZOOBENTHOUS.add(Exporter.ColumnDef("BANK_L_ETC", ogr.OFTString, zoo.BANK_L_ETC.toString()))
                         ZOOBENTHOUS.add(Exporter.ColumnDef("BANK_R", ogr.OFTString, zoo.BANK_R))
                         ZOOBENTHOUS.add(Exporter.ColumnDef("BANK_R_ETC", ogr.OFTString, zoo.BANK_R_ETC))
                         ZOOBENTHOUS.add(Exporter.ColumnDef("BAS_L", ogr.OFTString, zoo.BAS_L))
@@ -5879,12 +5889,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         ZOOBENTHOUS.add(Exporter.ColumnDef("DIST_CAU", ogr.OFTString, zoo.DIST_CAU))
                         ZOOBENTHOUS.add(Exporter.ColumnDef("DIST_ETC", ogr.OFTString, zoo.DIST_ETC))
                         ZOOBENTHOUS.add(Exporter.ColumnDef("UNUS_NOTE", ogr.OFTString, zoo.UNUS_NOTE))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal, zoo.GPS_LAT))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal, zoo.GPS_LON))
+                        ZOOBENTHOUS.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, zoo.GPS_LAT.toString()))
+                        ZOOBENTHOUS.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, zoo.GPS_LON.toString()))
                         ZOOBENTHOUS.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, zoo.SPEC_NM))
                         ZOOBENTHOUS.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, zoo.FAMI_NM))
                         ZOOBENTHOUS.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, zoo.SCIEN_NM))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString, zoo.TEMP_YN))
                         ZOOBENTHOUS.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, zoo.CONF_MOD))
                     }
 
@@ -5974,6 +5983,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if (add){
                     var MANYFLORA: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
                     if (index == 0 ) {
+                        println("tre,h,brea,cove${zoo.TRE_H},${zoo.TRE_BREA},${zoo.TRE_COVE} stre,h,brea,cove ${zoo.STRE_H},${zoo.STRE_BREA},${zoo.STRE_COVE} ")
                         MANYFLORA.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, zoo.GROP_ID))
                         MANYFLORA.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, zoo.INV_REGION))
                         MANYFLORA.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, zoo.INV_PERSON))
@@ -5983,32 +5993,31 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         MANYFLORA.add(Exporter.ColumnDef("TRE_SPEC", ogr.OFTString, zoo.TRE_SPEC))
                         MANYFLORA.add(Exporter.ColumnDef("TRE_FAMI", ogr.OFTString, zoo.TRE_FAMI))
                         MANYFLORA.add(Exporter.ColumnDef("TRE_SCIEN", ogr.OFTString, zoo.TRE_SCIEN))
-                        MANYFLORA.add(Exporter.ColumnDef("TRE_H", ogr.OFTReal, zoo.TRE_H))
-                        MANYFLORA.add(Exporter.ColumnDef("TRE_BREA", ogr.OFTReal, zoo.TRE_BREA))
-                        MANYFLORA.add(Exporter.ColumnDef("TRE_COVE", ogr.OFTString, zoo.TRE_COVE))
+                        MANYFLORA.add(Exporter.ColumnDef("TRE_H", ogr.OFTString, zoo.TRE_H.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("TRE_BREA", ogr.OFTString, zoo.TRE_BREA.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("TRE_COVE", ogr.OFTString, zoo.TRE_COVE.toString()))
                         MANYFLORA.add(Exporter.ColumnDef("STRE_NUM", ogr.OFTString, zoo.STRE_NUM))
                         MANYFLORA.add(Exporter.ColumnDef("STRE_SPEC", ogr.OFTString, zoo.STRE_SPEC))
                         MANYFLORA.add(Exporter.ColumnDef("STRE_FAMI", ogr.OFTString, zoo.STRE_FAMI))
                         MANYFLORA.add(Exporter.ColumnDef("STRE_SCIEN", ogr.OFTString, zoo.STRE_SCIEN))
-                        MANYFLORA.add(Exporter.ColumnDef("STRE_H", ogr.OFTReal, zoo.STRE_H))
-                        MANYFLORA.add(Exporter.ColumnDef("STRE_BREA", ogr.OFTInteger, zoo.STRE_BREA))
-                        MANYFLORA.add(Exporter.ColumnDef("STRE_COVE", ogr.OFTInteger, zoo.STRE_COVE))
+                        MANYFLORA.add(Exporter.ColumnDef("STRE_H", ogr.OFTString, zoo.STRE_H.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("STRE_BREA", ogr.OFTString, zoo.STRE_BREA.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("STRE_COVE", ogr.OFTString, zoo.STRE_COVE.toString()))
                         MANYFLORA.add(Exporter.ColumnDef("SHR_NUM", ogr.OFTInteger, zoo.SHR_NUM))
                         MANYFLORA.add(Exporter.ColumnDef("SHR_SPEC", ogr.OFTString, zoo.SHR_SPEC))
                         MANYFLORA.add(Exporter.ColumnDef("SHR_FAMI", ogr.OFTString, zoo.SHR_FAMI))
                         MANYFLORA.add(Exporter.ColumnDef("SHR_SCIEN", ogr.OFTString, zoo.SHR_SCIEN))
-                        MANYFLORA.add(Exporter.ColumnDef("SHR_H", ogr.OFTString, zoo.SHR_H))
-                        MANYFLORA.add(Exporter.ColumnDef("SHR_COVE", ogr.OFTString, zoo.SHR_COVE))
+                        MANYFLORA.add(Exporter.ColumnDef("SHR_H", ogr.OFTString, zoo.SHR_H.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("SHR_COVE", ogr.OFTString, zoo.SHR_COVE.toString()))
                         MANYFLORA.add(Exporter.ColumnDef("HER_NUM", ogr.OFTInteger, zoo.HER_NUM))
                         MANYFLORA.add(Exporter.ColumnDef("HER_SPEC", ogr.OFTString, zoo.HER_SPEC))
                         MANYFLORA.add(Exporter.ColumnDef("HER_FAMI", ogr.OFTString, zoo.HER_FAMI))
                         MANYFLORA.add(Exporter.ColumnDef("HER_SCIEN", ogr.OFTString, zoo.HER_SCIEN))
-                        MANYFLORA.add(Exporter.ColumnDef("HER_H", ogr.OFTReal, zoo.HER_H))
-                        MANYFLORA.add(Exporter.ColumnDef("HER_COVE", ogr.OFTReal, zoo.HER_COVE))
-                        MANYFLORA.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTReal, zoo.GPS_LAT))
-                        MANYFLORA.add(Exporter.ColumnDef("GPS_LON", ogr.OFTReal, zoo.GPS_LON))
-                        MANYFLORA.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTReal, zoo.TEMP_YN))
-                        MANYFLORA.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTReal, zoo.CONF_MOD))
+                        MANYFLORA.add(Exporter.ColumnDef("HER_H", ogr.OFTString, zoo.HER_H.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("HER_COVE", ogr.OFTString, zoo.HER_COVE.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, zoo.GPS_LAT.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, zoo.GPS_LON.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, zoo.CONF_MOD))
                     }
                     val exporter = Exporter.ExportPointItem(LAYER_FLORA2, MANYFLORA, points.get(idx))
 
@@ -6185,7 +6194,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     STOKEMAP.add(Exporter.ColumnDef("FROR_CD", ogr.OFTString, stockMap.FROR_CD))
                     STOKEMAP.add(Exporter.ColumnDef("DMCLS_CD", ogr.OFTString, stockMap.DMCLS_CD))
                     STOKEMAP.add(Exporter.ColumnDef("AGCLS_CD", ogr.OFTString, stockMap.AGCLS_CD))
-                    STOKEMAP.add(Exporter.ColumnDef("DNST_CD", ogr.OFTReal, stockMap.DNST_CD))
+                    STOKEMAP.add(Exporter.ColumnDef("DNST_CD", ogr.OFTString, stockMap.DNST_CD.toString()))
                     STOKEMAP.add(Exporter.ColumnDef("HEIGHT", ogr.OFTString, stockMap.HEIGHT))
                     STOKEMAP.add(Exporter.ColumnDef("LDMARK_STNDA_CD", ogr.OFTString, stockMap.LDMARK_STNDA_CD))
                     STOKEMAP.add(Exporter.ColumnDef("MAP_LABEL", ogr.OFTString, stockMap.MAP_LABEL))
@@ -6526,6 +6535,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 if("GROP_ID" == columnName) {
                     value = newKeyId
+                }
+
+                if ("LANDUSE" == columnName){
+                    value = po.fillColor.toString()
                 }
 
                 values.add("\"$value\"")

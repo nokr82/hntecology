@@ -107,9 +107,15 @@ class AreaItem1Adapte(var context: Context, var itemList : ArrayList<BiotopeMode
             itemList.set(i,bioListModel)
         }*/
 
-        var bioListModel:BiotopeModel = itemList.get(selectIndex);
-        bioListModel.chkSelect = false
-        itemList.set(selectIndex,bioListModel)
+//        var bioListModel:BiotopeModel = itemList.get(selectIndex);
+//        bioListModel.chkSelect = false
+//        itemList.set(selectIndex,bioListModel)
+
+        for (i in 0 until itemList.size){
+            val item = itemList.get(i)
+            item.chkSelect = false
+            itemList.set(i,item)
+        }
 
         var biotopeModel = getItem(position);
 

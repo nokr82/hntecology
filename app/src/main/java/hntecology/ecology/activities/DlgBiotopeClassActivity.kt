@@ -110,6 +110,9 @@ class DlgBiotopeClassActivity : Activity() {
 
         listView1.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
             listAdapte2.clearItem()
+            listAdapte3.clearItem()
+            listAdapte4.clearItem()
+            listAdapte5.clearItem()
 
             var veData =  listAdapte1.getItem(position)
 
@@ -128,6 +131,10 @@ class DlgBiotopeClassActivity : Activity() {
         listView2.setOnItemClickListener (AdapterView.OnItemClickListener{ adapterView, view, position, l ->
 
             listAdapte3.clearItem()
+            listAdapte4.clearItem()
+            listAdapte5.clearItem()
+
+            println("position ------- $position")
 
             var veData:BiotopeClass = listAdapte2.getItem(position)
 
@@ -147,6 +154,7 @@ class DlgBiotopeClassActivity : Activity() {
 
         listView3.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
             listAdapte4.clearItem()
+            listAdapte5.clearItem()
 
             var biotopeClass:BiotopeClass = listAdapte3.getItem(position)
 

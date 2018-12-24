@@ -84,7 +84,7 @@ public class ImageLoader {
                 photoPath = mini.getString(mini.getColumnIndex(proj[0]));
             }
 
-            Bitmap bitmap = Utils.getImages(resolver, photoPath);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Bitmap bitmap = Utils.getImages(resolver, photoPath);
 
             /*
             BitmapFactory.Options options = new BitmapFactory.Options();

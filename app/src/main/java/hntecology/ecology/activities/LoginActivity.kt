@@ -83,11 +83,12 @@ class LoginActivity : Activity() {
 
         }
 
-        prjnameTV.setOnClickListener {
+        changeprjTV.setOnClickListener {
             val intent = Intent(this, DlgProjectActivity::class.java)
 //            startActivity(intent)
             startActivityForResult(intent, SET_PRJNAME);
         }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -1532,7 +1532,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                               }
                           }*/
 
-                        val realPathFromURI = imageUri!!.getPath()
+                        val realPathFromURI = cameraPath!!
                         images_path!!.add(cameraPath!!)
                         context.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://$realPathFromURI")))
                         try {
@@ -1546,6 +1546,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                             imageIV.setImageBitmap(add_file)
                             delIV.setTag(images!!.size)
                             images!!.add(add_file)
+
 
                             println("----------------v.tag${v.tag to Int}")
 

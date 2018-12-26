@@ -337,9 +337,12 @@ public class Utils {
                 int uid = Integer.parseInt(imageIdOrPath);
                 String[] proj = { Images.Media.DATA, Images.Media.ORIENTATION };
 
+                System.out.println("-------getImage");
+
                 String selection = Images.Media._ID + " = " + uid;
 
                 Cursor cursor = Images.Media.query(resolver, Images.Media.EXTERNAL_CONTENT_URI, proj, selection, Images.Media.DATE_ADDED + " DESC");
+
                 if (cursor != null && cursor.moveToFirst()) {
                     photoPath = cursor.getString(cursor.getColumnIndex(proj[0]));
                     orientation = cursor.getInt(cursor.getColumnIndex(proj[1]));
@@ -400,6 +403,7 @@ public class Utils {
                 String selection = Images.Media._ID + " = " + uid;
 
                 Cursor cursor = Images.Media.query(resolver, Images.Media.EXTERNAL_CONTENT_URI, proj, selection, Images.Media.DATE_ADDED + " DESC");
+                System.out.println("-------getImage");
                 if (cursor != null && cursor.moveToFirst()) {
                     photoPath = cursor.getString(cursor.getColumnIndex(proj[0]));
                     orientation = cursor.getInt(cursor.getColumnIndex(proj[1]));

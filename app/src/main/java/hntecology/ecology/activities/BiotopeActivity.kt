@@ -2156,7 +2156,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                               }
                           }*/
 
-                        val realPathFromURI = imageUri!!.getPath()
+                        val realPathFromURI = cameraPath!!
                         images_path!!.add(cameraPath!!)
                         context!!.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://$realPathFromURI")))
                         try {

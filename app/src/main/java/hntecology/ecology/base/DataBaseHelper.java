@@ -23,6 +23,7 @@ import hntecology.ecology.model.GpsSet;
 import hntecology.ecology.model.Insect_attribute;
 import hntecology.ecology.model.Mammal_attribute;
 import hntecology.ecology.model.ManyFloraAttribute;
+import hntecology.ecology.model.Projects;
 import hntecology.ecology.model.Reptilia_attribute;
 import hntecology.ecology.model.StockMap;
 import hntecology.ecology.model.Tracking;
@@ -809,6 +810,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+
+    public void insertproject(Projects projects){
+        String query = "INSERT INTO Projects";
+        query += "(name)";
+
+        query += " values (";
+        query += " '" + projects.getTitle() + "'";
+
+        query += " ); ";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
     public void insertlayers(String file_name , String layer_name , String type,String Y, String grop_id){
         String query = "INSERT INTO layers";
         query += "(file_name,layer_name,min_scale,max_scale,type,added,grop_id)";
@@ -929,6 +945,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + StockMap.getCONF_MOD() + "'";
         query += ", '" + StockMap.getLANDUSE() + "'";
         query += " ); ";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void deleteproject(String id) {
+        String query = "DELETE FROM Projects WHERE id = '" + id + "'";
 
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1586,6 +1610,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String query = "UPDATE birdsAttribute SET  " +
                 "INV_REGION='" + birds_attribute.getINV_REGION() + "'"
+                + ",PRJ_NAME='" + birds_attribute.getPRJ_NAME() + "'"
                 + ",INV_PERSON='" + birds_attribute.getINV_PERSON() + "'"
                 + ",WEATHER='" + birds_attribute.getWEATHER() + "'"
                 + ",WIND='" + birds_attribute.getWIND() + "'"
@@ -1603,6 +1628,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String query = "UPDATE reptiliaAttribute SET  " +
                 "INV_REGION='" + reptilia_attribute.getINV_REGION() + "'"
+                + ",PRJ_NAME='" + reptilia_attribute.getPRJ_NAME() + "'"
                 + ",INV_PERSON='" + reptilia_attribute.getINV_PERSON() + "'"
                 + ",WEATHER='" + reptilia_attribute.getWEATHER() + "'"
                 + ",WIND='" + reptilia_attribute.getWIND() + "'"
@@ -1638,6 +1664,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String query = "UPDATE fishAttribute SET  " +
                 "INV_REGION='" + fish_attribute.getINV_REGION() + "'"
+                + ",PRJ_NAME='" + fish_attribute.getPRJ_NAME() + "'"
                 + ",INV_PERSON='" + fish_attribute.getINV_PERSON() + "'"
                 + ",WEATHER='" + fish_attribute.getWEATHER() + "'"
                 + ",WIND='" + fish_attribute.getWIND() + "'"
@@ -1674,6 +1701,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String query = "UPDATE insectAttribute SET  " +
                 "INV_REGION='" + insect_attribute.getINV_REGION() + "'"
+                + ",PRJ_NAME='" + insect_attribute.getPRJ_NAME() + "'"
                 + ",INV_PERSON='" + insect_attribute.getINV_PERSON() + "'"
                 + ",WEATHER='" + insect_attribute.getWEATHER() + "'"
                 + ",WIND='" + insect_attribute.getWIND() + "'"
@@ -1690,6 +1718,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String query = "UPDATE floraAttribute SET  " +
                 "INV_REGION='" + flora_attribute.getINV_REGION() + "'"
+                + ",PRJ_NAME='" + flora_attribute.getPRJ_NAME() + "'"
                 + ",INV_PERSON='" + flora_attribute.getINV_PERSON() + "'"
                 + ",WEATHER='" + flora_attribute.getWEATHER() + "'"
                 + ",WIND='" + flora_attribute.getWIND() + "'"
@@ -1707,6 +1736,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String query = "UPDATE ZoobenthosAttribute SET  " +
                 "INV_MEAN='" + Zoobenthos_Attribute.getINV_MEAN() + "'"
+                + ",PRJ_NAME='" + Zoobenthos_Attribute.getPRJ_NAME() + "'"
                 + ",MAP_SYS_NM='" + Zoobenthos_Attribute.getMAP_SYS_NM() + "'"
                 + ",COORD_N_D='" + Zoobenthos_Attribute.getCOORD_N_D() + "'"
                 + ",COORD_N_M='" + Zoobenthos_Attribute.getCOORD_N_M() + "'"
@@ -1757,7 +1787,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void updatecommonstockmap(StockMap StockMap,String GROP_ID) {
 
         String query = "UPDATE StockMap SET  " +
-                "INV_REGION='" + StockMap.getINV_REGION() + "'"+
+                "INV_REGION='" + StockMap.getINV_REGION() + "'"
+                + ",PRJ_NAME='" + StockMap.getPRJ_NAME() + "'" +
                 "where GROP_ID = '" + GROP_ID + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);

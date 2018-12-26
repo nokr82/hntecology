@@ -140,11 +140,14 @@ class StockActivity : Activity() {
 
         }
 
+        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
         keyId = intent.getStringExtra("GROP_ID")
 
         if (intent.getStringExtra("id") != null) {
             pk = intent.getStringExtra("id")
         }
+
+
 
         if (intent.getStringExtra("polygonid") != null) {
             polygonid = intent.getStringExtra("polygonid")
@@ -166,6 +169,8 @@ class StockActivity : Activity() {
 
             gpslatTV.setText(base.GPS_LAT)
             gpslonTV.setText(base.GPS_LON)
+
+
 
             lat = base.GPS_LAT!!
             log = base.GPS_LON!!
@@ -242,6 +247,7 @@ class StockActivity : Activity() {
                         , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
                         , data.getString(22),data.getString(23))
                 invtmTV.text =  stockMap.INV_TM
+                prjnameET.setText(stockMap.PRJ_NAME)
                 numTV.text = stockMap.NUM.toString()
                 frtpcdTV.text = stockMap.FRTP_CD
                 koftrTV.text = stockMap.KOFTR_GROUP_CD
@@ -375,7 +381,7 @@ class StockActivity : Activity() {
                                 null,null)
 
                         stockMap.GROP_ID = keyId
-                        stockMap.PRJ_NAME = ""
+                        stockMap.PRJ_NAME = prjnameET.text.toString()
                         stockMap.INV_REGION = invregionTV.text.toString()
                         stockMap.INV_PERSON = invpersonTV.text.toString()
                         stockMap.INV_DT = Utils.todayStr()
@@ -576,7 +582,7 @@ class StockActivity : Activity() {
                     null,null)
 
             stockMap.GROP_ID = keyId
-            stockMap.PRJ_NAME = ""
+            stockMap.PRJ_NAME = prjnameET.text.toString()
             stockMap.INV_REGION = invregionTV.text.toString()
             stockMap.INV_PERSON = invpersonTV.text.toString()
             stockMap.INV_DT = Utils.todayStr()

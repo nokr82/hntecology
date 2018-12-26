@@ -232,7 +232,10 @@
         <activity
             android:name=".activities.DlgStockSelectActivity"
             android:theme="@style/full_screen_dialog1" />
-        <activity android:name=".activities.DlgCollActivity"
+        <activity
+            android:name=".activities.DlgCollActivity"
+            android:theme="@style/full_screen_dialog1" />
+        <activity android:name=".activities.DlgProjectActivity"
             android:theme="@style/full_screen_dialog1"></activity>
     </application>
 

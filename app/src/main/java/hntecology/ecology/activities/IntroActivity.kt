@@ -378,6 +378,8 @@ class IntroActivity : Activity() {
                 break
             }
 
+
+
             println("currentDBVersion : $currentDBVersion, newDBVersion : $newDBVersion")
 
             if(currentDBVersion < newDBVersion) {

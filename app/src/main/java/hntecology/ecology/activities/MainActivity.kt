@@ -5339,7 +5339,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 Exporter.exportPoint(pointsArray)
             }
 
-            val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "mammalia" + File.separator + "mammalia"
+            val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "mammalia" + File.separator + "mammalia"
 
             val layerData= db!!.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
 

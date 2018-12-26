@@ -77,6 +77,22 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ListView
+                        android:id="@+id/class_list_view4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:divider="@null">
+                    </ListView>
+
+                </LinearLayout>
+
 
 
                 <LinearLayout
@@ -95,7 +111,7 @@
                         android:gravity="center"/>
 
                     <ListView
-                        android:id="@+id/class_list_view4"
+                        android:id="@+id/class_list_view5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
@@ -106,7 +122,7 @@
 
 
                 <ListView
-                    android:id="@+id/class_list_view5"
+                    android:id="@+id/class_list_view6"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

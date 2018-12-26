@@ -21,6 +21,8 @@ class LoginActivity : Activity() {
     private val marshmallowMacAddress = "02:00:00:00:00:00"
     private val fileAddressMac = "/sys/class/net/wlan0/address"
 
+    val SET_PRJNAME = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -34,16 +36,20 @@ class LoginActivity : Activity() {
         val db = dbManager.createDataBase();
 
         val dataList: Array<String> = arrayOf("*")
-        val data = db!!.query("settings", dataList, null, null, null, null, "id desc", "1")
+//        val data = db!!.query("settings", dataList, null, null, null, null, "id desc", "1")
+//
+//        while (data.moveToNext()) {
+//
+//            var gpsset: GpsSet = GpsSet(data.getInt(0), data.getDouble(1), data.getDouble(2),data.getString(3), data.getInt(4))
+//
+//            val prjname = Utils.getString(gpsset.prjname)
+//            prjnameTV.setText(prjname)
+//
+//            break
+//        }
 
-        while (data.moveToNext()) {
-
-            var gpsset: GpsSet = GpsSet(data.getInt(0), data.getDouble(1), data.getDouble(2),data.getString(3), data.getInt(4))
-
-            val prjname = Utils.getString(gpsset.prjname)
-            prjnameTV.setText(prjname)
-
-            break
+        if (PrefUtils.getStringPreference(context, "prjname") != null){
+            prjnameTV.setText(PrefUtils.getStringPreference(context, "prjname"))
         }
 
         doneTV.setOnClickListener {
@@ -67,7 +73,6 @@ class LoginActivity : Activity() {
             }
             */
 
-
             val intent: Intent = Intent(this, MainActivity::class.java);
 
             PrefUtils.setPreference(this, "name", getName);
@@ -77,6 +82,31 @@ class LoginActivity : Activity() {
             finish()
 
         }
+
+        prjnameTV.setOnClickListener {
+            val intent = Intent(this, DlgProjectActivity::class.java)
+//            startActivity(intent)
+            startActivityForResult(intent, SET_PRJNAME);
+        }
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        super.onActivityResult(requestCode, resultCode, data)
+
+        var number: Number
+
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                SET_PRJNAME -> {
+                    if (data!!.getStringExtra("name") != null){
+                        val name = data!!.getStringExtra("name")
+                        prjnameTV.setText(name)
+                    }
+                }
+            }
+        }
+    }
+
 
 }

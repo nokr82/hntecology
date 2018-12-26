@@ -318,7 +318,9 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
 //                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + insect_attribute.INV_DT + "." + insect_attribute.INV_TM +"."+insect_attribute.NUM + "/images")
 //                val fileList = file.listFiles()
-                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/insect/images/")
+                val tmpfiles =  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "insect/images"+ File.separator +keyId+ File.separator)
+//                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "insect"+ File.separator +keyId+ File.separator +"images/")
+//                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/insect/images/")
                 var tmpfileList = tmpfiles.listFiles()
 
 //                if (fileList != null) {
@@ -378,7 +380,9 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                         for(j in 0..tmpfileList.size - 1) {
 
-                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/insect/images/" + insect_attribute.NUM.toString() +"_"+insect_attribute.INV_TM+"_" + (j+1) + ".png")) {
+
+                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "insect/images"+ File.separator +keyId+ File.separator + insect_attribute.NUM.toString() + "_" + insect_attribute.INV_TM +"_" + (j+1) + ".png")) {
+//                                if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/insect/images/" + insect_attribute.NUM.toString() +"_"+insect_attribute.INV_TM+"_" + (j+1) + ".png")) {
                                 val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
                                 val v = View.inflate(context, R.layout.item_add_image, null)
                                 val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
@@ -655,7 +659,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                                 dbManager!!.updatecommoninsect(insect_attribute,keyId)
                             }
 
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/insect/images/")
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "insect/images"+ File.separator +keyId+ File.separator)
+//                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/insect/images/")
                             val pathdir = path.listFiles()
 
                             if(pathdir != null) {
@@ -663,7 +668,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                                     for(j in 0..pathdir.size-1) {
 
-                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/insect/images/" + insect_attribute.NUM.toString() +"_"+insect_attribute.INV_TM+"_" + (j+1) + ".png")) {
+                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "insect/images"+ File.separator +keyId+ File.separator + insect_attribute.NUM.toString() + "_" + insect_attribute.INV_TM +"_" + (j+1) + ".png")) {
+//                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/insect/images/" + insect_attribute.NUM.toString() +"_"+insect_attribute.INV_TM+"_" + (j+1) + ".png")) {
 
                                             pathdir.get(i).canonicalFile.delete()
 
@@ -677,7 +683,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                             for(i   in 0..images!!.size-1){
 
-                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/insect/images/"
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "insect/images"+ File.separator +keyId+ File.separator
+//                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/insect/images/"
                                 val outputsDir = File(outPath)
 
                                 if (outputsDir.exists()) {
@@ -698,6 +705,15 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                                 saveVitmapToFile(images!!.get(i),outPath+insect_attribute.NUM.toString() +"_"+insect_attribute.INV_TM+"_" + (i+1) + ".png")
 
+                            }
+
+
+                            val deletedir = path.listFiles()
+                            if (deletedir.size == 0){
+                                if (path.isDirectory){
+                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "insect/images"+ File.separator +keyId+ File.separator)
+                                    deletepath.deleteRecursively()
+                                }
                             }
 
                         } else {
@@ -722,7 +738,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                             for(i   in 0..images!!.size-1){
 
-                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() +   "/ecology/data/insect/images/"
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "insect/images"+ File.separator +keyId+ File.separator
+//                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() +   "/ecology/data/insect/images/"
                                 val outputsDir = File(outPath)
 
                                 if (outputsDir.exists()) {
@@ -834,8 +851,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                                             , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27),data.getString(28),data.getString(29))
 
                                 }
-
-                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/insect/images/")
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "insect/images"+ File.separator +keyId+ File.separator)
+//                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/insect/images/")
                                 val pathdir = path.listFiles()
 
                                 if (pathdir != null) {
@@ -843,7 +860,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                                         for (j in 0..pathdir.size - 1) {
 
-                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/insect/images/" + insect_attribute.NUM.toString() + "_" + insect_attribute.INV_TM +"_" + (j+1) + ".png")) {
+                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "insect/images"+ File.separator +keyId+ File.separator + insect_attribute.NUM.toString() + "_" + insect_attribute.INV_TM +"_" + (j+1) + ".png")) {
+//                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/insect/images/" + insect_attribute.NUM.toString() + "_" + insect_attribute.INV_TM +"_" + (j+1) + ".png")) {
 
                                                 pathdir.get(i).canonicalFile.delete()
 
@@ -852,6 +870,21 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                                             }
                                         }
 
+                                    }
+                                    val deletedir = path.listFiles()
+                                    println("deletedir.size ${deletedir.size}")
+                                    if (deletedir.size == 0 ){
+                                        if (path.isDirectory){
+                                            val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "insect/images"+ File.separator +keyId+ File.separator)
+//                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
+                                            path.deleteRecursively()
+                                        }
+                                    }
+                                } else {
+                                    if (path.isDirectory){
+                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "insect/images"+ File.separator +keyId+ File.separator)
+//                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
+                                        path.deleteRecursively()
                                     }
                                 }
                                 if (intent.getStringExtra("GROP_ID") != null) {
@@ -1164,7 +1197,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                 }
 
-                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/insect/images/")
+                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "insect"+ File.separator +keyId+ File.separator +"images/")
+//                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/insect/images/")
                 val pathdir = path.listFiles()
 
                 if(pathdir != null) {
@@ -1172,7 +1206,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                         for(j in 0..pathdir.size-1) {
 
-                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/insect/images/" +insect_attribute.NUM.toString() +"_"+insect_attribute.INV_TM+"_" + (j+1) + ".png")) {
+                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "insect"+ File.separator +keyId+ File.separator +"images/" + insect_attribute.NUM.toString() + "_" + insect_attribute.INV_TM +"_" + (j+1) + ".png")) {
+//                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/insect/images/" +insect_attribute.NUM.toString() +"_"+insect_attribute.INV_TM+"_" + (j+1) + ".png")) {
 
                                 pathdir.get(i).canonicalFile.delete()
 
@@ -1186,7 +1221,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                 for(i   in 0..images!!.size-1){
 
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/insect/images/"
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "insect"+ File.separator +keyId+ File.separator +"images/"
+//                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/insect/images/"
                     val outputsDir = File(outPath)
 
                     if (outputsDir.exists()) {
@@ -1231,7 +1267,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                 for(i   in 0..images!!.size-1){
 
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "insect/images/"
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "insect"+ File.separator +keyId+ File.separator +"images/"
+//                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "insect/images/"
                     val outputsDir = File(outPath)
 
                     if (outputsDir.exists()) {
@@ -1396,6 +1433,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             insectnumET.setText(splitnum.toString() + plusnum.toString())
         }
 
+        insecttimeET.setText(Utils.timeStr())
         insectspecnmET.setText("")
         insectfaminmET.setText("")
         insectsciennmET.setText("")

@@ -264,6 +264,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                 weatherTV.setText(reptilia_attribute.WEATHER)
                 windTV.setText(reptilia_attribute.WIND)
                 windDireTV.setText(reptilia_attribute.WIND_DIRE)
+                prjnameET.setText(reptilia_attribute.PRJ_NAME)
 
                 temperaturET.setText(reptilia_attribute.TEMPERATUR.toString())
                 etcET.setText(reptilia_attribute.ETC)
@@ -307,9 +308,10 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                 confmodTV.setText(reptilia_attribute.CONF_MOD)
 
-                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + reptilia_attribute.INV_DT + "." + reptilia_attribute.INV_TM + "." + reptilia_attribute.NUM + "/images")
-                val fileList = file.listFiles()
-                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/reptilia/images/")
+//                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + reptilia_attribute.INV_DT + "." + reptilia_attribute.INV_TM + "." + reptilia_attribute.NUM + "/images")
+//                val fileList = file.listFiles()
+                val tmpfiles =  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator)
+//                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/reptilia/images/")
                 var tmpfileList = tmpfiles.listFiles()
 
 //                if (fileList != null) {
@@ -370,8 +372,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                         images_path!!.add(tmpfileList.get(i).path)
 
                         for(j in 0..tmpfileList.size - 1) {
-
-                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/reptilia/images/" +reptilia_attribute.NUM + "_" + reptilia_attribute.INV_TM +"_" + (j+1) + ".png")) {
+                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator + reptilia_attribute.NUM.toString() + "_" + reptilia_attribute.INV_TM +"_" + (j+1) + ".png")) {
+//                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/reptilia/images/" +reptilia_attribute.NUM + "_" + reptilia_attribute.INV_TM +"_" + (j+1) + ".png")) {
                                 val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
                                 val v = View.inflate(context, R.layout.item_add_image, null)
                                 val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
@@ -636,7 +638,6 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         btn_reptiliaDelete.setOnClickListener {
 
-
             if(pk != null) {
                 val builder = AlertDialog.Builder(context)
                 builder.setMessage("삭제하시겠습니까?").setCancelable(false)
@@ -661,15 +662,16 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                                 }
 
-                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/reptilia/images/")
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator)
+//                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/reptilia/images/")
                                 val pathdir = path.listFiles()
 
                                 if (pathdir != null) {
                                     for (i in 0..pathdir.size - 1) {
 
                                         for (j in 0..pathdir.size - 1) {
-
-                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/reptilia/images/" + reptilia_attribute.NUM + "_" + reptilia_attribute.INV_TM +"_" + (j+1) + ".png")) {
+                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator + reptilia_attribute.NUM.toString() + "_" + reptilia_attribute.INV_TM +"_" + (j+1) + ".png")) {
+//                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/reptilia/images/" + reptilia_attribute.NUM + "_" + reptilia_attribute.INV_TM +"_" + (j+1) + ".png")) {
 
                                                 pathdir.get(i).canonicalFile.delete()
 
@@ -678,6 +680,20 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                                             }
                                         }
 
+                                    }
+                                    val deletedir = path.listFiles()
+                                    if (deletedir.size == 0 ){
+                                        if (path.isDirectory){
+                                            val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator)
+//                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + reptilia_attribute.INV_DT + "." + reptilia_attribute.INV_TM + "."+reptilia_attribute.INV_INDEX)
+                                            deletepath.deleteRecursively()
+                                        }
+                                    }
+                                } else {
+                                    if (path.isDirectory){
+                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator)
+//                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + reptilia_attribute.INV_DT + "." + reptilia_attribute.INV_TM + "."+reptilia_attribute.INV_INDEX)
+                                        deletepath.deleteRecursively()
                                     }
                                 }
 
@@ -944,7 +960,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                                 dbManager!!.updatecommonreptilia(reptilia_attribute,keyId)
                             }
 
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/reptilia/images/")
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator)
+//                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/reptilia/images/")
                             val pathdir = path.listFiles()
 
                             if(pathdir != null) {
@@ -952,7 +969,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                                     for(j in 0..pathdir.size-1) {
 
-                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/reptilia/images/" + reptilia_attribute.NUM + "_" + reptilia_attribute.INV_TM +"_" + (j+1) + ".png")) {
+                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator + reptilia_attribute.NUM.toString() + "_" + reptilia_attribute.INV_TM +"_" + (j+1) + ".png")) {
+//                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/reptilia/images/" + reptilia_attribute.NUM + "_" + reptilia_attribute.INV_TM +"_" + (j+1) + ".png")) {
 
                                             pathdir.get(i).canonicalFile.delete()
 
@@ -965,8 +983,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                             }
 
                             for(i   in 0..images!!.size-1){
-
-                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/reptilia/images/"
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator
+//                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/reptilia/images/"
                                 val outputsDir = File(outPath)
 
                                 if (outputsDir.exists()) {
@@ -989,28 +1007,37 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                             }
 
+                            val deletedir = path.listFiles()
+                            if (deletedir.size == 0){
+                                if (path.isDirectory){
+                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator)
+                                    deletepath.deleteRecursively()
+                                }
+                            }
+
                         } else {
 
                             dbManager!!.insertreptilia_attribute(reptilia_attribute);
 
-                            var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-                            sdPath += "/ecology/tmps/" + reptilia_attribute.INV_DT +"."+ reptilia_attribute.INV_TM + "." + reptilia_attribute.NUM + "/images"
-                            val reptilia = File(sdPath)
-                            reptilia.mkdir();
-//                          sdPath +="/imgs"
-//                          sdPath +="/"+biotope_attribute.PIC_FOLDER
-
-                            val file = File(sdPath)
-                            file.mkdir();
-                            //이미 있다면 삭제. 후 생성
-//                            setDirEmpty(sdPath)
-
-                            sdPath+="/"
+//                            var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+//                            sdPath += "/ecology/tmps/" + reptilia_attribute.INV_DT +"."+ reptilia_attribute.INV_TM + "." + reptilia_attribute.NUM + "/images"
+//                            val reptilia = File(sdPath)
+//                            reptilia.mkdir();
+////                          sdPath +="/imgs"
+////                          sdPath +="/"+biotope_attribute.PIC_FOLDER
+//
+//                            val file = File(sdPath)
+//                            file.mkdir();
+//                            //이미 있다면 삭제. 후 생성
+////                            setDirEmpty(sdPath)
+//
+//                            sdPath+="/"
 
                             var pathArray:ArrayList<String> = ArrayList<String>()
 
                             for(i   in 0..images!!.size-1){
-                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/reptilia/images/"
+                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator
+//                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/reptilia/images/"
                                 val outputsDir = File(outPath)
 
                                 if (outputsDir.exists()) {
@@ -1145,7 +1172,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                     dbManager!!.updatecommonreptilia(reptilia_attribute,keyId)
                 }
 
-                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/reptilia/images/")
+                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator)
+//                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/reptilia/images/")
                 val pathdir = path.listFiles()
 
                 if(pathdir != null) {
@@ -1153,7 +1181,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                         for(j in 0..pathdir.size-1) {
 
-                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/reptilia/images/" + reptilia_attribute.NUM + "_" + reptilia_attribute.INV_TM +"_" + (j+1) + ".png")) {
+                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator + reptilia_attribute.NUM.toString() + "_" + reptilia_attribute.INV_TM +"_" + (j+1) + ".png")) {
+//                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/reptilia/images/" + reptilia_attribute.NUM + "_" + reptilia_attribute.INV_TM +"_" + (j+1) + ".png")) {
 
                                 pathdir.get(i).canonicalFile.delete()
 
@@ -1168,7 +1197,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                 for(i   in 0..images!!.size-1){
 
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/reptilia/images/"
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator
+//                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/reptilia/images/"
                     val outputsDir = File(outPath)
 
                     if (outputsDir.exists()) {
@@ -1213,7 +1243,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                 for(i   in 0..images!!.size-1){
 
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/reptilia/images/"
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator
+//                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/reptilia/images/"
                     val outputsDir = File(outPath)
 
                     if (outputsDir.exists()) {
@@ -1728,6 +1759,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             numET.setText(splitnum.toString() + plusnum.toString())
         }
 
+        invtmTV.setText(Utils.timeStr())
         specnmET.setText("")
         famiET.setText("")
         scienET.setText("")

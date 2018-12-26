@@ -29,18 +29,21 @@ class DlgBiotopeClassActivity : Activity() {
     private lateinit var listView3: ListView
     private lateinit var listView4: ListView
     private lateinit var listView5: ListView
+    private lateinit var listView6: ListView
 
     private lateinit var listdata1 : ArrayList<BiotopeClass>
     private lateinit var listdata2 : ArrayList<BiotopeClass>
     private lateinit var listdata3 : ArrayList<BiotopeClass>
-    private lateinit var listdata4 : ArrayList<Vegetation>
-    private lateinit var listdata5 : ArrayList<Number>
+    private lateinit var listdata4 : ArrayList<Number>
+    private lateinit var listdata5 : ArrayList<Vegetation>
+    private lateinit var listdata6 : ArrayList<Number>
 
     private lateinit var listAdapte1: BiotopeClassAdapter;
     private lateinit var listAdapte2: BiotopeClassAdapter2;
     private lateinit var listAdapte3: BiotopeClassAdapter3;
-    private lateinit var listAdapte4: BiotopeClassAdapter4;
-    private lateinit var listAdapte5: BiotopeClassAdapter5;
+    private lateinit var listAdapte4: BiotopeClassAdapter5;
+    private lateinit var listAdapte5: BiotopeClassAdapter4;
+    private lateinit var listAdapte6: BiotopeClassAdapter5;
 
     private lateinit var copylistdata3 : ArrayList<Vegetation>
 
@@ -53,7 +56,6 @@ class DlgBiotopeClassActivity : Activity() {
     var dbManager: DataBaseHelper? = null
 
     private var db: SQLiteDatabase? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,26 +87,30 @@ class DlgBiotopeClassActivity : Activity() {
         listView3 = findViewById(R.id.class_list_view3)
         listView4 = findViewById(R.id.class_list_view4)
         listView5 = findViewById(R.id.class_list_view5)
+        listView6 = findViewById(R.id.class_list_view6)
 
         listdata1 = ArrayList()
         listdata2 = ArrayList()
         listdata3 = ArrayList()
         listdata4 = ArrayList()
         listdata5 = ArrayList()
+        listdata6 = ArrayList()
 
         copylistdata3 = ArrayList()
 
         listAdapte1 = BiotopeClassAdapter(context, listdata1);
         listAdapte2 = BiotopeClassAdapter2(context, listdata2);
         listAdapte3 = BiotopeClassAdapter3(context, listdata3);
-        listAdapte4 = BiotopeClassAdapter4(context, listdata4);
-        listAdapte5 = BiotopeClassAdapter5(context,listdata5)
+        listAdapte4 = BiotopeClassAdapter5(context,listdata4)
+        listAdapte5 = BiotopeClassAdapter4(context, listdata5);
+        listAdapte6 = BiotopeClassAdapter5(context,listdata6)
 
         listView1.adapter = listAdapte1
         listView2.adapter = listAdapte2
         listView3.adapter = listAdapte3
         listView4.adapter = listAdapte4
         listView5.adapter = listAdapte5
+        listView6.adapter = listAdapte6
 
         dataList(listdata1,data1);
 
@@ -113,6 +119,7 @@ class DlgBiotopeClassActivity : Activity() {
             listAdapte3.clearItem()
             listAdapte4.clearItem()
             listAdapte5.clearItem()
+            listAdapte6.clearItem()
 
             var veData =  listAdapte1.getItem(position)
 
@@ -133,6 +140,7 @@ class DlgBiotopeClassActivity : Activity() {
             listAdapte3.clearItem()
             listAdapte4.clearItem()
             listAdapte5.clearItem()
+            listAdapte6.clearItem()
 
             println("position ------- $position")
 
@@ -155,6 +163,7 @@ class DlgBiotopeClassActivity : Activity() {
         listView3.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
             listAdapte4.clearItem()
             listAdapte5.clearItem()
+            listAdapte6.clearItem()
 
             var biotopeClass:BiotopeClass = listAdapte3.getItem(position)
 
@@ -163,20 +172,15 @@ class DlgBiotopeClassActivity : Activity() {
 
                 val dataList:Array<String> = arrayOf("categorycode","category","classcode","sign","correspondingname");
 
-                val vegedata=  db!!.query("Vegetation",dataList,null,null,null,null,"SIGN",null);
 
                 listAdapte3.setItemSelect(position)
 
-                class_probar.visibility= View.VISIBLE
-                data3List(listdata4,vegedata)
-                class_probar.visibility= View.GONE
-
-                copylistdata3.addAll(listdata4)
-
                 listAdapte3.notifyDataSetChanged()
 
-                vegedata.close()
-
+                val item2 = Number("식재림",false)
+                val item = Number("자연림",false)
+                listAdapte4.addItem(item2)
+                listAdapte4.addItem(item)
             }else {
 
                 var intent = Intent();
@@ -195,14 +199,48 @@ class DlgBiotopeClassActivity : Activity() {
 
             list4position = position
 
-            val dataList:Array<String> = arrayOf("COUNT");
+            val data = listAdapte4.getItem(position)
+            val name = data.COUNT
 
-            val numdata=  db!!.query("Number",dataList,null,null,null,null,"COUNT",null);
+            val dataList:Array<String> = arrayOf("*");
+            var numdata=  db!!.query("Vegetation",dataList,null,null,null,null,"CORRESPONDINGNAME",null);
+
+            class_probar.visibility= View.VISIBLE
+            data3List(listdata5,numdata)
+            class_probar.visibility= View.GONE
+
+            copylistdata3.addAll(listdata5)
+            if (name == "식재림"){
+                numdata=  db!!.query("Vegetation",dataList,"CATEGORY = '$name'",null,null,null,"CORRESPONDINGNAME",null);
+            } else {
+                numdata=  db!!.query("Vegetation",dataList,"CATEGORY = '$name'",null,null,null,"CORRESPONDINGNAME",null);
+            }
 
             listAdapte4.setItemSelect(position)
 
             class_probar.visibility= View.VISIBLE
-            data4List(listdata5,numdata)
+            data3List(listdata5,numdata)
+            class_probar.visibility= View.GONE
+
+            listAdapte4.notifyDataSetChanged()
+
+            numdata.close()
+
+        })
+
+        listView5.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
+            listAdapte6.clearItem()
+
+            list4position = position
+
+            val dataList:Array<String> = arrayOf("COUNT");
+
+            val numdata=  db!!.query("Number",dataList,null,null,null,null,"COUNT",null);
+
+            listAdapte5.setItemSelect(position)
+
+            class_probar.visibility= View.VISIBLE
+            data4List(listdata6,numdata)
             class_probar.visibility= View.GONE
 
             listAdapte5.notifyDataSetChanged()
@@ -211,10 +249,10 @@ class DlgBiotopeClassActivity : Activity() {
 
         })
 
-        listView5.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
+        listView6.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
 
-            val vegetation : Vegetation = listAdapte4.getItem(list4position)
-            val number:Number = listAdapte5.getItem(position)
+            val vegetation : Vegetation = listAdapte5.getItem(list4position)
+            val number:Number = listAdapte6.getItem(position)
 
             var intent = Intent();
 
@@ -280,15 +318,15 @@ class DlgBiotopeClassActivity : Activity() {
     }
 
     fun search(charText: String){
-        for(i in 0.. listdata4.size-1){
-            listdata4.get(i).chkSelect = false
+        for(i in 0.. listdata5.size-1){
+            listdata5.get(i).chkSelect = false
         }
 
-        listdata4.clear()
+        listdata5.clear()
 
         if(charText.length == 0){
 
-            listdata4.addAll(copylistdata3)
+            listdata5.addAll(copylistdata3)
 
         }else {
 
@@ -305,14 +343,14 @@ class DlgBiotopeClassActivity : Activity() {
             for(i in 0..names.size-1){
 
                 if(names.get(i).toLowerCase().contains(charText)){
-                    listdata4.add(copylistdata3.get(i))
+                    listdata5.add(copylistdata3.get(i))
                 }
 
             }
 
         }
 
-        listAdapte4.notifyDataSetChanged()
+        listAdapte5.notifyDataSetChanged()
 
     }
 

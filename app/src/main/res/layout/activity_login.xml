@@ -52,6 +52,7 @@
                         android:id="@+id/prjnameTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:hint="선택해주세요."
                         android:textSize="20dp"
                         android:background="@null" />
                 </LinearLayout>
@@ -93,6 +94,7 @@
                         android:textSize="14sp"
                         android:layout_marginTop="40dp"/>
                 </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>

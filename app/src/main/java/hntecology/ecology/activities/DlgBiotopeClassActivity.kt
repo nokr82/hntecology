@@ -196,8 +196,13 @@ class DlgBiotopeClassActivity : Activity() {
 
         listView4.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
             listAdapte5.clearItem()
+            listAdapte6.clearItem()
 
             list4position = position
+
+            if (listdata5 != null){
+                listdata5.clear()
+            }
 
             val data = listAdapte4.getItem(position)
             val name = data.COUNT
@@ -206,14 +211,17 @@ class DlgBiotopeClassActivity : Activity() {
             var numdata=  db!!.query("Vegetation",dataList,null,null,null,null,"CORRESPONDINGNAME",null);
 
             class_probar.visibility= View.VISIBLE
-            data3List(listdata5,numdata)
             class_probar.visibility= View.GONE
+
+            val search = "식재림"
 
             copylistdata3.addAll(listdata5)
             if (name == "식재림"){
-                numdata=  db!!.query("Vegetation",dataList,"CATEGORY = '$name'",null,null,null,"CORRESPONDINGNAME",null);
+                println("nick------biotope -- $name")
+                numdata=  db!!.query("Vegetation",dataList,"CATEGORY == '$search'",null,null,null,"CORRESPONDINGNAME",null);
             } else {
-                numdata=  db!!.query("Vegetation",dataList,"CATEGORY = '$name'",null,null,null,"CORRESPONDINGNAME",null);
+                println("nick------biotope -- $name")
+                numdata=  db!!.query("Vegetation",dataList,"CATEGORY != '$search'",null,null,null,"CORRESPONDINGNAME",null);
             }
 
             listAdapte4.setItemSelect(position)

@@ -1546,8 +1546,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                             images!!.add(add_file)
 
 
-                            println("----------------v.tag${v.tag to Int}")
-
                         if (imgSeq == 0) {
                             addPicturesLL!!.addView(v)
                         }

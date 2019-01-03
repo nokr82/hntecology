@@ -1879,7 +1879,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
 
                             if (pathPk == num && pathPk2 == invtm) {
-                                val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+                                val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
                                 if (images!!.size == 0) {
                                     images!!.add(add_file)
                                 } else {
@@ -1952,7 +1952,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
 
                             if (pathPk == num && pathPk2 == invtm) {
-                                val add_file = Utils.getImage(context!!.getContentResolver(), images_path!!.get(j))
+                                val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
                                 if (images!!.size == 0) {
                                     images!!.add(add_file)
                                 } else {

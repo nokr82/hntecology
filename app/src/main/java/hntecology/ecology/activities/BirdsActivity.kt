@@ -1536,9 +1536,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         images_path!!.add(cameraPath!!)
                         context.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://$realPathFromURI")))
                         try {
-                            println("realPathFromURI $realPathFromURI")
-                            println("cameraPath $cameraPath")
-                            val add_file = Utils.getImage(context.contentResolver, cameraPath)
+                            val add_file = Utils.getImages(context.contentResolver, cameraPath)
 
                             val v = View.inflate(context, R.layout.item_add_image, null)
                             val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView

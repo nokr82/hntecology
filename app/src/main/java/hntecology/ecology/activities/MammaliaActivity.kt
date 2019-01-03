@@ -1804,7 +1804,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                         context.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://$realPathFromURI")))
                         try {
-                            val add_file = Utils.getImage(context.contentResolver, cameraPath)
+                            val add_file = Utils.getImages(context.contentResolver, cameraPath)
 
                             val v = View.inflate(context, R.layout.item_add_image, null)
                             val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView

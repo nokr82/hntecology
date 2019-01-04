@@ -248,6 +248,9 @@ class StockActivity : Activity() {
                         , data.getString(22),data.getString(23))
                 invtmTV.text =  stockMap.INV_TM
                 prjnameET.setText(stockMap.PRJ_NAME)
+                if (stockMap.PRJ_NAME != "" || stockMap.PRJ_NAME != null){
+                    prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+                }
                 numTV.text = stockMap.NUM.toString()
                 frtpcdTV.text = stockMap.FRTP_CD
                 koftrTV.text = stockMap.KOFTR_GROUP_CD
@@ -261,7 +264,7 @@ class StockActivity : Activity() {
 //                map_lable2ET.setText(stockMap.MAP_LABEL2)
                 etcpcmttET.setText(stockMap.ETC_PCMTT)
                 gpslatTV.setText(stockMap.GPS_LAT.toString())
-                gpslonTV.setText(stockMap.GPS_LAT.toString())
+                gpslonTV.setText(stockMap.GPS_LON.toString())
                 confmodTV.setText(stockMap.CONF_MOD)
 
 
@@ -403,9 +406,14 @@ class StockActivity : Activity() {
 //                        stockMap.MAP_LABEL2 = map_lable2ET.text.toString()
                         stockMap.ETC_PCMTT = etcpcmttET.text.toString()
                         stockMap.GPS_LAT = gpslatTV.text.toString().toFloat()
-                        stockMap.GPS_LAT = gpslonTV.text.toString().toFloat()
+                        stockMap.GPS_LON = gpslonTV.text.toString().toFloat()
                         stockMap.CONF_MOD = "N"
-                        stockMap.LANDUSE = landuse
+                        println("stockmap.LANDUSE----${stockMap.LANDUSE}")
+                        if (stockMap.LANDUSE != null || stockMap.LANDUSE != ""){
+
+                        } else {
+                            stockMap.LANDUSE = landuse
+                        }
 
                         if (chkdata) {
 
@@ -604,9 +612,13 @@ class StockActivity : Activity() {
 //            stockMap.MAP_LABEL2 = map_lable2ET.text.toString()
             stockMap.ETC_PCMTT = etcpcmttET.text.toString()
             stockMap.GPS_LAT = gpslatTV.text.toString().toFloat()
-            stockMap.GPS_LAT = gpslonTV.text.toString().toFloat()
+            stockMap.GPS_LON = gpslonTV.text.toString().toFloat()
             stockMap.CONF_MOD = "N"
-            stockMap.LANDUSE = landuse
+            if (stockMap.LANDUSE != null || stockMap.LANDUSE != ""){
+
+            } else {
+                stockMap.LANDUSE = landuse
+            }
 
             if (chkdata) {
 

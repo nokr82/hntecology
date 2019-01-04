@@ -110,6 +110,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         var trackingFinish = 0
 
+        var polygoncolor = 0
+
     }
 
     var types : ArrayList<String> = ArrayList<String>()
@@ -842,7 +844,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 val trackingdata = db!!.query("tracking", dataList, null, null, null, null, "id", null)
 
                 while (trackingdata.moveToNext()) {
-                    var tracking : Tracking = Tracking(trackingdata.getInt(0),trackingdata.getDouble(1),trackingdata.getDouble(2),trackingdata.getInt(3),trackingdata.getInt(4))
+                    var tracking : Tracking = Tracking(trackingdata.getInt(0),trackingdata.getDouble(1),trackingdata.getDouble(2))
 
                     trackingDatas.add(tracking)
 //                    val latlng = LatLng(tracking.LATITUDE!!,tracking.LONGITUDE!!)
@@ -965,7 +967,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
 
 
-        myLocation = Tracking(null, latitude, longitude, -1, -1)
+        myLocation = Tracking(null, latitude, longitude)
 //        getLoadLayer()
 
         // location
@@ -2147,16 +2149,374 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 // 도형 분리 중이면.....
                 if(splitRL.isSelected) {
 
+                    val layerInfo = polygon.tag as LayerInfo
+                    var myLayer = layerInfo.layer
+                    var attrubuteKey = layerInfo.attrubuteKey
+
+                    println("polygon.split.tag ${polygon.tag}")
+                    println("polygon.split.myLayer ${myLayer}")
+                    println("polygon.split.attrubuteKey ${attrubuteKey}")
+
                     splittingPolygon = polygon
                     splittingPolygon!!.strokeWidth = 10.0f
                     splittingPolygon!!.strokeColor = Color.RED
-
 
                     drawer_view.visibility = View.VISIBLE
 
                     Utils.alert(context, "분리선을 추가해 주세요.");
 
-                    return@setOnPolygonClickListener
+                    val type = typeST.isChecked
+                    var chkData = false
+
+                    if (!typeST.isChecked) {
+                        when (myLayer) {
+
+                            LAYER_BIOTOPE -> {
+                                val dataList: Array<String> = arrayOf("*");
+
+                                val data = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                                if (biotopedataArray != null) {
+                                    biotopedataArray.clear()
+                                }
+                                while (data.moveToNext()) {
+                                    chkData = true
+                                }
+
+                                if (chkData == false) {
+                                    val layerinfo = polygon.tag as LayerInfo
+                                    for (i in 0..polygons.size - 1) {
+                                        if (polygons.get(i).tag == polygon.tag) {
+                                            println("layerinfo.metadata ${layerinfo.metadata}")
+                                            var GPS_LON = Utils.getString(layerInfo.metadata, "GPS_LON")
+                                            var BREA_DIA = Utils.getString(layerInfo.metadata, "BREA_DIA")
+                                            var HER_COVE = Utils.getString(layerInfo.metadata, "HER_COVE")
+                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                            var IMP_FORM = Utils.getString(layerInfo.metadata, "IMP_FORM")
+                                            var LU_GR_NUM = Utils.getString(layerInfo.metadata, "LU_GR_NUM")
+                                            var UNUS_NOTE = Utils.getString(layerInfo.metadata, "UNUS_NOTE")
+                                            var TRE_H = Utils.getString(layerInfo.metadata, "TRE_H")
+                                            var LC_TY = Utils.getString(layerInfo.metadata, "LC_TY")
+                                            var TY_MARK = Utils.getString(layerInfo.metadata, "TY_MARK")
+                                            var HER_SCIEN = Utils.getString(layerInfo.metadata, "HER_SCIEN")
+                                            var PIC_FOLDER = Utils.getString(layerInfo.metadata, "PIC_FOLDER")
+                                            var LU_k = Utils.getString(layerInfo.metadata, "LU_k")
+                                            var COMP_INTA = Utils.getString(layerInfo.metadata, "COMP_INTA")
+                                            var DIS_RET = Utils.getString(layerInfo.metadata, "DIS_RET")
+                                            var WILD_ANI = Utils.getString(layerInfo.metadata, "WILD_ANI")
+                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CONF_MOD")
+                                            var SHR_SPEC = Utils.getString(layerInfo.metadata, "SHR_SPEC")
+                                            var STAND_H = Utils.getString(layerInfo.metadata, "STAND_H")
+                                            var SHR_FAMI = Utils.getString(layerInfo.metadata, "SHR_FAMI")
+                                            var EMD_CD = Utils.getString(layerInfo.metadata, "EMD_CD")
+                                            var BIOTOP_POT = Utils.getString(layerInfo.metadata, "BIOTOP_POT")
+                                            var TRE_FAMI = Utils.getString(layerInfo.metadata, "TRE_FAMI")
+                                            var LU_TY_RATE = Utils.getString(layerInfo.metadata, "LU_TY_RATE")
+                                            var HER_SPEC = Utils.getString(layerInfo.metadata, "HER_SPEC")
+                                            var STRE_BREA = Utils.getString(layerInfo.metadata, "STRE_BREA")
+                                            var STR_COVE = Utils.getString(layerInfo.metadata, "STR_COVE")
+                                            var STRE_H = Utils.getString(layerInfo.metadata, "STRE_H")
+                                            var RESTOR_POT = Utils.getString(layerInfo.metadata, "RESTOR_POT")
+                                            var STRE_SCIEN = Utils.getString(layerInfo.metadata, "STRE_SCIEN")
+                                            var TRE_SPEC = Utils.getString(layerInfo.metadata, "TRE_SPEC")
+                                            var SHR_H = Utils.getString(layerInfo.metadata, "SHR_H")
+                                            var UFID = Utils.getString(layerInfo.metadata, "UFID")
+                                            var GV_RATE = Utils.getString(layerInfo.metadata, "GV_RATE")
+                                            var STRE_COVE = Utils.getString(layerInfo.metadata, "STRE_COVE")
+                                            var NEED_CONF = Utils.getString(layerInfo.metadata, "NEED_CONF")
+                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                            var SHR_SCIEN = Utils.getString(layerInfo.metadata, "SHR_SCIEN")
+                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                            var STRE_SPEC = Utils.getString(layerInfo.metadata, "STRE_SPEC")
+                                            var LC_GR_NUM = Utils.getString(layerInfo.metadata, "LC_GR_NUM")
+                                            var TRE_COVE = Utils.getString(layerInfo.metadata, "TRE_COVE")
+                                            var HER_H = Utils.getString(layerInfo.metadata, "HER_H")
+                                            var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
+                                            var TRE_SCIEN = Utils.getString(layerInfo.metadata, "TRE_SCIEN")
+                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                            var GV_STRUCT = Utils.getString(layerInfo.metadata, "GV_STRUCT")
+                                            var GPS_LAT = Utils.getString(layerInfo.metadata, "GPS_LAT")
+                                            var TRE_BREA = Utils.getString(layerInfo.metadata, "TRE_BREA")
+                                            var FIN_EST = Utils.getString(layerInfo.metadata, "FIN_EST")
+                                            var VP_INTA = Utils.getString(layerInfo.metadata, "VP_INTA")
+                                            var HER_FAMI = Utils.getString(layerInfo.metadata, "HER_FAMI")
+                                            var INV_INDEX = Utils.getString(layerInfo.metadata, "INV_INDEX")
+                                            var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
+                                            var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+
+                                            println("landuseclick ------ $landuse")
+                                            println("LANDUSEclick ------ $LANDUSE")
+                                            var biotope = Utils.getString(layerInfo.metadata, "biotop")
+                                            if (INV_INDEX == "" || INV_INDEX == null) {
+                                                INV_INDEX = "0"
+                                            }
+
+                                            if (LU_TY_RATE == "" || LU_TY_RATE == null) {
+                                                LU_TY_RATE = "0"
+                                            }
+
+                                            if (STAND_H == "" || STAND_H == null) {
+                                                STAND_H = "0"
+                                            }
+
+                                            if (GV_RATE == "" || GV_RATE == null) {
+                                                GV_RATE = "0"
+                                            }
+
+                                            if (TRE_H == "" || TRE_H == null) {
+                                                TRE_H = "0"
+                                            }
+
+                                            if (TRE_BREA == "" || TRE_BREA == null) {
+                                                TRE_BREA = "0"
+                                            }
+
+                                            if (TRE_COVE == "" || TRE_COVE == null) {
+                                                TRE_COVE = "0"
+                                            }
+
+                                            if (STRE_H == "" || STRE_H == null) {
+                                                STRE_H = "0"
+                                            }
+
+                                            if (STRE_BREA == "" || STRE_BREA == null) {
+                                                STRE_BREA = "0"
+                                            }
+
+                                            if (STRE_COVE == "" || STRE_COVE == null) {
+                                                STRE_COVE = "0"
+                                            }
+
+                                            if (SHR_H == "" || SHR_H == null) {
+                                                SHR_H = "0"
+                                            }
+
+                                            if (STR_COVE == "" || STR_COVE == null) {
+                                                STR_COVE = "0"
+                                            }
+
+                                            if (HER_H == "" || HER_H == null) {
+                                                HER_H = "0"
+                                            }
+
+                                            if (HER_COVE == "" || HER_COVE == null) {
+                                                HER_COVE = "0"
+                                            }
+
+                                            if (GPS_LAT == "" || GPS_LAT == null) {
+                                                GPS_LAT = "0"
+                                            }
+
+                                            if (GPS_LON == "" || GPS_LON == null) {
+                                                GPS_LON = "0"
+                                            }
+
+                                            val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, biotope, TY_MARK, GV_RATE.toFloat()
+                                                    , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
+                                                    STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
+                                                    BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", polygon.fillColor.toString())
+
+                                            if (LANDUSE != null && LANDUSE != "") {
+                                                data.LANDUSE = LANDUSE
+                                            }
+
+                                            dbManager!!.insertbiotope_attribute(data)
+                                        }
+                                    }
+                                }
+                            }
+
+                            LAYER_STOCKMAP -> {
+                                var chkdata = false
+                                val dataList: Array<String> = arrayOf("*");
+
+                                val stockdata = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                                if (stockdataArray != null) {
+                                    stockdataArray.clear()
+                                }
+
+                                while (stockdata.moveToNext()) {
+                                    chkdata = true
+                                }
+
+                                if (chkdata == false) {
+                                    val layerinfo = polygon.tag as LayerInfo
+
+                                    for (i in 0..polygons.size - 1) {
+                                        if (polygons.get(i).tag == polygon.tag) {
+                                            println("layerinfo.metadata ${layerinfo.metadata}")
+
+                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                            var NUM = Utils.getString(layerInfo.metadata, "NUM")
+                                            var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
+                                            var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
+                                            var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
+                                            var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
+                                            var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
+                                            var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
+                                            var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
+                                            var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
+                                            var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
+                                            var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
+                                            var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
+                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
+                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+
+                                            if (landuse != null && landuse != ""){
+                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                            }
+
+                                            if (NUM == "" || NUM == null) {
+                                                NUM = "0"
+                                            }
+
+                                            val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
+                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString())
+
+                                            dbManager!!.insertstockmap(data)
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    } else {
+                        when (myLayer) {
+
+                            LAYER_BIOTOPE -> {
+                                val dataList: Array<String> = arrayOf("*");
+
+
+                                var chkdata = false
+
+                                val stockdata = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                                if (stockdataArray != null) {
+                                    stockdataArray.clear()
+                                }
+
+                                while (stockdata.moveToNext()) {
+                                    chkdata = true
+                                }
+
+                                if (chkdata == false) {
+                                    val layerinfo = polygon.tag as LayerInfo
+
+                                    for (i in 0..polygons.size - 1) {
+                                        if (polygons.get(i).tag == polygon.tag) {
+                                            println("layerinfo.metadata.stockmap----------${layerinfo.metadata}")
+
+                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                            var NUM = Utils.getString(layerInfo.metadata, "NUM")
+                                            var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
+                                            var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
+                                            var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
+                                            var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
+                                            var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
+                                            var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
+                                            var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
+                                            var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
+                                            var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
+                                            var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
+                                            var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
+                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
+                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+
+                                            if (landuse != null && landuse != ""){
+                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+
+                                            }
+
+                                            if (NUM == "" || NUM == null) {
+                                                NUM = "0"
+                                            }
+
+                                            val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
+                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD,polygon.fillColor.toString())
+
+                                            dbManager!!.insertstockmap(data)
+
+                                        }
+                                    }
+                                }
+                            }
+
+                            LAYER_STOCKMAP -> {
+                                var chkdata = false
+                                val dataList: Array<String> = arrayOf("*");
+
+                                val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                                if (stockdataArray != null) {
+                                    stockdataArray.clear()
+                                }
+
+                                while (data.moveToNext()) {
+                                    chkdata = true
+                                }
+
+                                if (chkdata == false) {
+                                    val layerinfo = polygon.tag as LayerInfo
+
+                                    for (i in 0..polygons.size - 1) {
+                                        if (polygons.get(i).tag == polygon.tag) {
+                                            println("layerinfo.stock-----metadata ${layerinfo.metadata}")
+
+                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                            var NUM = Utils.getString(layerInfo.metadata, "NUM")
+                                            var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
+                                            var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
+                                            var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
+                                            var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
+                                            var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
+                                            var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
+                                            var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
+                                            var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
+                                            var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
+                                            var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
+                                            var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
+                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
+                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+
+                                            if (landuse != null && landuse != ""){
+                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                            }
+
+                                            if (NUM == "" || NUM == null) {
+                                                NUM = "0"
+                                            }
+
+                                            val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
+                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString())
+
+                                            dbManager!!.insertstockmap(data)
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                        return@setOnPolygonClickListener
                 }
 
                 val builder = AlertDialog.Builder(context)
@@ -2197,8 +2557,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                     var attrubuteKey = layerInfo.attrubuteKey
 
-                    println("=========================================attrubuteKey $attrubuteKey")
-
                     var intent: Intent? = null
 
                     when (myLayer) {
@@ -2222,6 +2580,362 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 polygonsToUnion.add(polygon)
                                 polygon.strokeWidth = 10.0f
                                 polygon.strokeColor = Color.RED
+
+                                if (polygonsToUnion.size == 1){
+
+                                    polygoncolor = getColor()
+                                    println("-------polygoncolor $polygoncolor")
+
+                                    var chkData = false
+
+                                    val layerInfo = polygon.tag as LayerInfo
+                                    var myLayer = layerInfo.layer
+                                    var attrubuteKey = layerInfo.attrubuteKey
+
+                                    if (!typeST.isChecked) {
+                                        when (myLayer) {
+
+                                            LAYER_BIOTOPE -> {
+                                                val dataList: Array<String> = arrayOf("*");
+
+                                                val data = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                                                if (biotopedataArray != null) {
+                                                    biotopedataArray.clear()
+                                                }
+                                                while (data.moveToNext()) {
+                                                    chkData = true
+                                                }
+
+                                                if (chkData == false) {
+                                                    val layerinfo = polygon.tag as LayerInfo
+                                                    for (i in 0..polygons.size - 1) {
+                                                        if (polygons.get(i).tag == polygon.tag) {
+                                                            println("layerinfo.metadata ${layerinfo.metadata}")
+                                                            var GPS_LON = Utils.getString(layerInfo.metadata, "GPS_LON")
+                                                            var BREA_DIA = Utils.getString(layerInfo.metadata, "BREA_DIA")
+                                                            var HER_COVE = Utils.getString(layerInfo.metadata, "HER_COVE")
+                                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                                            var IMP_FORM = Utils.getString(layerInfo.metadata, "IMP_FORM")
+                                                            var LU_GR_NUM = Utils.getString(layerInfo.metadata, "LU_GR_NUM")
+                                                            var UNUS_NOTE = Utils.getString(layerInfo.metadata, "UNUS_NOTE")
+                                                            var TRE_H = Utils.getString(layerInfo.metadata, "TRE_H")
+                                                            var LC_TY = Utils.getString(layerInfo.metadata, "LC_TY")
+                                                            var TY_MARK = Utils.getString(layerInfo.metadata, "TY_MARK")
+                                                            var HER_SCIEN = Utils.getString(layerInfo.metadata, "HER_SCIEN")
+                                                            var PIC_FOLDER = Utils.getString(layerInfo.metadata, "PIC_FOLDER")
+                                                            var LU_k = Utils.getString(layerInfo.metadata, "LU_k")
+                                                            var COMP_INTA = Utils.getString(layerInfo.metadata, "COMP_INTA")
+                                                            var DIS_RET = Utils.getString(layerInfo.metadata, "DIS_RET")
+                                                            var WILD_ANI = Utils.getString(layerInfo.metadata, "WILD_ANI")
+                                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CONF_MOD")
+                                                            var SHR_SPEC = Utils.getString(layerInfo.metadata, "SHR_SPEC")
+                                                            var STAND_H = Utils.getString(layerInfo.metadata, "STAND_H")
+                                                            var SHR_FAMI = Utils.getString(layerInfo.metadata, "SHR_FAMI")
+                                                            var EMD_CD = Utils.getString(layerInfo.metadata, "EMD_CD")
+                                                            var BIOTOP_POT = Utils.getString(layerInfo.metadata, "BIOTOP_POT")
+                                                            var TRE_FAMI = Utils.getString(layerInfo.metadata, "TRE_FAMI")
+                                                            var LU_TY_RATE = Utils.getString(layerInfo.metadata, "LU_TY_RATE")
+                                                            var HER_SPEC = Utils.getString(layerInfo.metadata, "HER_SPEC")
+                                                            var STRE_BREA = Utils.getString(layerInfo.metadata, "STRE_BREA")
+                                                            var STR_COVE = Utils.getString(layerInfo.metadata, "STR_COVE")
+                                                            var STRE_H = Utils.getString(layerInfo.metadata, "STRE_H")
+                                                            var RESTOR_POT = Utils.getString(layerInfo.metadata, "RESTOR_POT")
+                                                            var STRE_SCIEN = Utils.getString(layerInfo.metadata, "STRE_SCIEN")
+                                                            var TRE_SPEC = Utils.getString(layerInfo.metadata, "TRE_SPEC")
+                                                            var SHR_H = Utils.getString(layerInfo.metadata, "SHR_H")
+                                                            var UFID = Utils.getString(layerInfo.metadata, "UFID")
+                                                            var GV_RATE = Utils.getString(layerInfo.metadata, "GV_RATE")
+                                                            var STRE_COVE = Utils.getString(layerInfo.metadata, "STRE_COVE")
+                                                            var NEED_CONF = Utils.getString(layerInfo.metadata, "NEED_CONF")
+                                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                                            var SHR_SCIEN = Utils.getString(layerInfo.metadata, "SHR_SCIEN")
+                                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                                            var STRE_SPEC = Utils.getString(layerInfo.metadata, "STRE_SPEC")
+                                                            var LC_GR_NUM = Utils.getString(layerInfo.metadata, "LC_GR_NUM")
+                                                            var TRE_COVE = Utils.getString(layerInfo.metadata, "TRE_COVE")
+                                                            var HER_H = Utils.getString(layerInfo.metadata, "HER_H")
+                                                            var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
+                                                            var TRE_SCIEN = Utils.getString(layerInfo.metadata, "TRE_SCIEN")
+                                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                                            var GV_STRUCT = Utils.getString(layerInfo.metadata, "GV_STRUCT")
+                                                            var GPS_LAT = Utils.getString(layerInfo.metadata, "GPS_LAT")
+                                                            var TRE_BREA = Utils.getString(layerInfo.metadata, "TRE_BREA")
+                                                            var FIN_EST = Utils.getString(layerInfo.metadata, "FIN_EST")
+                                                            var VP_INTA = Utils.getString(layerInfo.metadata, "VP_INTA")
+                                                            var HER_FAMI = Utils.getString(layerInfo.metadata, "HER_FAMI")
+                                                            var INV_INDEX = Utils.getString(layerInfo.metadata, "INV_INDEX")
+                                                            var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
+                                                            var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+
+                                                            println("landuseclick ------ $landuse")
+                                                            println("LANDUSEclick ------ $LANDUSE")
+                                                            var biotope = Utils.getString(layerInfo.metadata, "biotop")
+                                                            if (INV_INDEX == "" || INV_INDEX == null) {
+                                                                INV_INDEX = "0"
+                                                            }
+
+                                                            if (LU_TY_RATE == "" || LU_TY_RATE == null) {
+                                                                LU_TY_RATE = "0"
+                                                            }
+
+                                                            if (STAND_H == "" || STAND_H == null) {
+                                                                STAND_H = "0"
+                                                            }
+
+                                                            if (GV_RATE == "" || GV_RATE == null) {
+                                                                GV_RATE = "0"
+                                                            }
+
+                                                            if (TRE_H == "" || TRE_H == null) {
+                                                                TRE_H = "0"
+                                                            }
+
+                                                            if (TRE_BREA == "" || TRE_BREA == null) {
+                                                                TRE_BREA = "0"
+                                                            }
+
+                                                            if (TRE_COVE == "" || TRE_COVE == null) {
+                                                                TRE_COVE = "0"
+                                                            }
+
+                                                            if (STRE_H == "" || STRE_H == null) {
+                                                                STRE_H = "0"
+                                                            }
+
+                                                            if (STRE_BREA == "" || STRE_BREA == null) {
+                                                                STRE_BREA = "0"
+                                                            }
+
+                                                            if (STRE_COVE == "" || STRE_COVE == null) {
+                                                                STRE_COVE = "0"
+                                                            }
+
+                                                            if (SHR_H == "" || SHR_H == null) {
+                                                                SHR_H = "0"
+                                                            }
+
+                                                            if (STR_COVE == "" || STR_COVE == null) {
+                                                                STR_COVE = "0"
+                                                            }
+
+                                                            if (HER_H == "" || HER_H == null) {
+                                                                HER_H = "0"
+                                                            }
+
+                                                            if (HER_COVE == "" || HER_COVE == null) {
+                                                                HER_COVE = "0"
+                                                            }
+
+                                                            if (GPS_LAT == "" || GPS_LAT == null) {
+                                                                GPS_LAT = "0"
+                                                            }
+
+                                                            if (GPS_LON == "" || GPS_LON == null) {
+                                                                GPS_LON = "0"
+                                                            }
+
+                                                            val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, biotope, TY_MARK, GV_RATE.toFloat()
+                                                                    , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
+                                                                    STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
+                                                                    BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", polygoncolor.toString())
+
+                                                            if (LANDUSE != null && LANDUSE != "") {
+                                                                data.LANDUSE = LANDUSE
+                                                            }
+
+                                                            dbManager!!.insertbiotope_attribute(data)
+                                                        }
+                                                    }
+
+                                                }
+                                            }
+
+                                            LAYER_STOCKMAP -> {
+                                                var chkdata = false
+                                                val dataList: Array<String> = arrayOf("*");
+
+                                                val stockdata = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                                                if (stockdataArray != null) {
+                                                    stockdataArray.clear()
+                                                }
+
+                                                while (stockdata.moveToNext()) {
+                                                    chkdata = true
+                                                }
+
+                                                if (chkdata == false) {
+                                                    val layerinfo = polygon.tag as LayerInfo
+
+                                                    for (i in 0..polygons.size - 1) {
+                                                        if (polygons.get(i).tag == polygon.tag) {
+                                                            println("layerinfo.metadata ${layerinfo.metadata}")
+
+                                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                                            var NUM = Utils.getString(layerInfo.metadata, "NUM")
+                                                            var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
+                                                            var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
+                                                            var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
+                                                            var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
+                                                            var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
+                                                            var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
+                                                            var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
+                                                            var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
+                                                            var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
+                                                            var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
+                                                            var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
+                                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
+                                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+
+                                                            if (landuse != null && landuse != ""){
+                                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+
+                                                            }
+                                                            if (NUM == "" || NUM == null) {
+                                                                NUM = "0"
+                                                            }
+
+                                                            val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
+                                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD,polygoncolor.toString())
+
+                                                            dbManager!!.insertstockmap(data)
+
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                    } else {
+                                        when (myLayer) {
+
+                                            LAYER_BIOTOPE -> {
+                                                val dataList: Array<String> = arrayOf("*");
+
+
+                                                var chkdata = false
+
+                                                val stockdata = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                                                if (stockdataArray != null) {
+                                                    stockdataArray.clear()
+                                                }
+
+                                                while (stockdata.moveToNext()) {
+                                                    chkdata = true
+                                                }
+
+                                                if (chkdata == false) {
+                                                    val layerinfo = polygon.tag as LayerInfo
+
+                                                    for (i in 0..polygons.size - 1) {
+                                                        if (polygons.get(i).tag == polygon.tag) {
+                                                            println("layerinfo.metadata.stockmap----------${layerinfo.metadata}")
+
+                                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                                            var NUM = Utils.getString(layerInfo.metadata, "NUM")
+                                                            var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
+                                                            var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
+                                                            var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
+                                                            var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
+                                                            var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
+                                                            var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
+                                                            var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
+                                                            var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
+                                                            var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
+                                                            var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
+                                                            var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
+                                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
+                                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+
+                                                            if (NUM == "" || NUM == null) {
+                                                                NUM = "0"
+                                                            }
+
+                                                            val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
+                                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygoncolor.toString())
+
+                                                            dbManager!!.insertstockmap(data)
+
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            LAYER_STOCKMAP -> {
+                                                var chkdata = false
+                                                val dataList: Array<String> = arrayOf("*");
+
+                                                val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                                                if (stockdataArray != null) {
+                                                    stockdataArray.clear()
+                                                }
+
+                                                while (data.moveToNext()) {
+                                                    chkdata = true
+                                                }
+
+                                                if (chkdata == false) {
+                                                    val layerinfo = polygon.tag as LayerInfo
+
+                                                    for (i in 0..polygons.size - 1) {
+                                                        if (polygons.get(i).tag == polygon.tag) {
+                                                            println("layerinfo.stock-----metadata ${layerinfo.metadata}")
+
+                                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                                            var NUM = Utils.getString(layerInfo.metadata, "NUM")
+                                                            var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
+                                                            var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
+                                                            var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
+                                                            var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
+                                                            var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
+                                                            var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
+                                                            var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
+                                                            var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
+                                                            var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
+                                                            var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
+                                                            var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
+                                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
+                                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+
+                                                            if (landuse != null && landuse != ""){
+                                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                                                println("------------------합치기 $LANDUSE")
+                                                            }
+                                                            if (NUM == "" || NUM == null) {
+                                                                NUM = "0"
+                                                            }
+
+                                                            val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
+                                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygoncolor.toString())
+
+                                                            dbManager!!.insertstockmap(data)
+
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
 
                                 return@setOnPolygonClickListener
 
@@ -2392,7 +3106,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                 val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), LC_GR_NUM, LC_TY, TY_MARK, GV_RATE.toFloat()
                                                         , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
                                                         STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
-                                                        BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y",landuse)
+                                                        BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y",polygoncolor.toString())
 
                                                 if (LANDUSE != null && LANDUSE != ""){
                                                     data.LANDUSE = LANDUSE
@@ -2530,7 +3244,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                 }
 
                                                 val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                        , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD,LANDUSE)
+                                                        , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD,polygoncolor.toString())
 
                                                 intent!!.putExtra("stokedata", data)
                                                 intent!!.putExtra("GROP_ID", attrubuteKey.toString())
@@ -3356,8 +4070,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 var layerInfo = LayerInfo()
 
-                layerInfo.layer = LAYER_BIOTOPE
                 currentLayer = LAYER_BIOTOPE
+                if (typeST.isChecked){
+                    currentLayer = LAYER_STOCKMAP
+                }
 
                 layerInfo.attrubuteKey = getAttributeKey(layerInfo.layer)
                 layerInfo.layer = currentLayer
@@ -3370,6 +4086,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 polygon.tag = layerInfo
                 polygon.isClickable = true
 
+                val landuse = Utils.getString(layerInfo.metadata, "landuse")
+                val LANDUSE =  Utils.getString(layerInfo.metadata, "LANDUSE")
                 // println("polygon.tag : ${polygon.tag}")
 
                 var attrubuteKey = layerInfo.attrubuteKey
@@ -3422,8 +4140,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 val id = Utils.getString(layerInfo.metadata , "ID")
                 val grop_id = Utils.getString(layerInfo.metadata , "GROP_ID")
-                val landuse = Utils.getString(layerInfo.metadata, "landuse")
-                val LANDUSE =  Utils.getString(layerInfo.metadata, "LANDUSE")
 
                 polygon.fillColor = Color.parseColor("#BDBDBD")
 
@@ -3456,6 +4172,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                     if (LANDUSE == "0701"){
                         polygon.fillColor = Color.parseColor("#F7412A")
+                    }
+
+                    if (LANDUSE == "-1056771"){
+                        polygon.fillColor = Color.parseColor("#EFDFFD")
                     }
 
                     if (LANDUSE == "A11"){
@@ -6057,25 +6777,24 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         var trackingPointsArray: ArrayList<Exporter.ExportLatLngItem> = ArrayList<Exporter.ExportLatLngItem>()
         val dataList: Array<String> = arrayOf("*")
 
+        println("exportTracking")
+
         val trackingdata = db!!.query("tracking", dataList, null, null, null, null, "id", null)
 
         var trackingpk: String  = ""
 
+//          TRACKINGS.add(Exporter.ColumnDef("TRACKING", ogr.OFTString, "이동경로"))
 
-        var TRACKINGS:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
-        TRACKINGS.add(Exporter.ColumnDef("ID", ogr.OFTInteger, -1))
-        TRACKINGS.add(Exporter.ColumnDef("LATITUDE", ogr.OFTReal, -1))
-        TRACKINGS.add(Exporter.ColumnDef("LONGITUDE", ogr.OFTReal, -1))
-        TRACKINGS.add(Exporter.ColumnDef("START", ogr.OFTReal, -1))
-        TRACKINGS.add(Exporter.ColumnDef("FINISH", ogr.OFTReal, -1))
+//        TRACKINGS.add(Exporter.ColumnDef("ID", ogr.OFTInteger, -1))
 
         var i = 0
         while (trackingdata.moveToNext()) {
             trackingChk = true
 
-            var tracking : Tracking = Tracking(trackingdata.getInt(0),trackingdata.getDouble(1),trackingdata.getDouble(2),trackingdata.getInt(3),trackingdata.getInt(4))
+            var tracking : Tracking = Tracking(trackingdata.getInt(0),trackingdata.getDouble(1),trackingdata.getDouble(2))
 
             if(i == 0) {
+
             }
             trackingDatas.add(tracking)
 
@@ -6094,6 +6813,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             for (tracking in trackingDatas) {
                 val latlng = LatLng(tracking.LATITUDE!!,tracking.LONGITUDE!!)
+
+                var TRACKINGS:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+                TRACKINGS.add(Exporter.ColumnDef("LATITUDE", ogr.OFTString,tracking.LATITUDE))
+                TRACKINGS.add(Exporter.ColumnDef("LONGITUDE", ogr.OFTString, tracking.LONGITUDE))
 
                 val exporter = Exporter.ExportLatLngItem(TRACKING, TRACKINGS, latlng)
 
@@ -6389,10 +7112,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 val polygonOptions = PolygonOptions()
-                polygonOptions.fillColor(getColor())
+                polygonOptions.fillColor(polygoncolor)
                 polygonOptions.strokeWidth(1.0f)
                 polygonOptions.strokeColor(Color.BLACK)
-
 
                 for(coordinate in unioned.coordinates) {
                     polygonOptions.add(LatLng(coordinate.y, coordinate.x))
@@ -6432,27 +7154,74 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 if(typeST.isChecked) {
                     exportStockMap()
+                    var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "stockmap" + File.separator + "stockmap"
+                    var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "stockmap" + File.separator + "stockmap", "임상도", 1,99,"stokemap", "Y","stokemap",false)
+                    var division = false
+
+                    for (i in 0 until layersDatas.size){
+                        if (layersDatas.get(i).grop_id == "stokemap"){
+                            division = true
+                        }
+                    }
+
+                    if (division == false) {
+                        layersDatas.add(model)
+                    }
+
+                    val dataList: Array<String> = arrayOf("*");
+
+                    var chkData = false
+
+                    val layerData= db!!.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+
+                    while (layerData.moveToNext()){
+                        chkData = true
+                    }
+
+                    if(chkData){
+
+                    }else {
+                        dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "stockmap" + File.separator + "stockmap", "임상도", "stokemap", "Y","stokemap")
+                    }
                 } else {
                     exportBiotope()
+                    var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "biotope" + File.separator + "biotope"
+                    var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "biotope" + File.separator + "biotope", "비오톱", 1,99,"biotope", "Y","biotope",false)
+                    var chkData = false
+
+                    var division = false
+
+                    for (i in 0 until layersDatas.size){
+                        if (layersDatas.get(i).grop_id == "biotope"){
+                            division = true
+                        }
+                    }
+
+                    if (division == false) {
+                        layersDatas.add(model)
+                    }
+
+                    val dataList: Array<String> = arrayOf("*");
+
+                    val layerData= db!!.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+
+                    while (layerData.moveToNext()){
+                        chkData = true
+                    }
+
+                    if(chkData){
+
+                    }else {
+                        dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "biotope" + File.separator + "biotope", "비오톱", "biotope", "Y","biotope")
+                    }
                 }
 
                 polygonsToUnion.clear()
 
                 offUnionBtn()
-                var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "biotope" + File.separator + "biotope", "비오톱", 1,99,"biotope", "Y","biotope",false)
 
-                var division = false
-
-                for (i in 0 until layersDatas.size){
-                    if (layersDatas.get(i).grop_id == "biotope"){
-                        division = true
-                    }
-                }
-
-                if (division == false) {
-                    layersDatas.add(model)
-                }
                 println("합치기----------------------------")
+
             }
 
         } catch (e:Exception) {
@@ -6764,7 +7533,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             // println("distance : $distance")
 
             if (distance.toInt() in MIN_DISTANCE..(MAX_DISTANCE - 1) || (prevLatitude == -1.0 && prevLongitude == -1.0)) {
-                val tracking: Tracking = Tracking(null, location.latitude, location.longitude,-1,-1)
+                val tracking: Tracking = Tracking(null, location.latitude, location.longitude)
 
                 dbManager!!.inserttracking(tracking)
             }
@@ -6968,7 +7737,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(typeST.isChecked) {
                 copyRow("StockMap", oldAttributeKey, newAttributeKey, po)
                 exportStockMap()
-                var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "stockmap" + File.separator + "stockmap", "임상도", 1,19,"stokemap", "Y","stokemap",false)
+                var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "stockmap" + File.separator + "stockmap"
+                var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "stockmap" + File.separator + "stockmap", "임상도", 1,99,"stokemap", "Y","stokemap",false)
 
                 var division = false
 
@@ -6981,10 +7751,29 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if (division == false) {
                     layersDatas.add(model)
                 }
+
+                val dataList: Array<String> = arrayOf("*");
+
+                var chkData = false
+
+                val layerData= db!!.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+
+                while (layerData.moveToNext()){
+                    chkData = true
+                }
+
+                if(chkData){
+
+                }else {
+                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "stockmap" + File.separator + "stockmap", "임상도", "stokemap", "Y","stokemap")
+                }
             } else {
+                println("-----splitbiotope")
                 copyRow("biotopeAttribute", oldAttributeKey, newAttributeKey, po)
                 exportBiotope()
+                var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "biotope" + File.separator + "biotope"
                 var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "biotope" + File.separator + "biotope", "비오톱", 1,99,"biotope", "Y","biotope",false)
+                var chkData = false
 
                 var division = false
 
@@ -6997,9 +7786,21 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if (division == false) {
                     layersDatas.add(model)
                 }
+
+                val dataList: Array<String> = arrayOf("*");
+
+                val layerData= db!!.query("layers", dataList, "file_name = '$file_path'", null, null ,null, "", null)
+
+                while (layerData.moveToNext()){
+                    chkData = true
+                }
+
+                if(chkData){
+
+                }else {
+                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "biotope" + File.separator + "biotope", "비오톱", "biotope", "Y","biotope")
+                }
             }
-
-
         }
 
         if(typeST.isChecked) {

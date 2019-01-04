@@ -776,13 +776,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public void inserttracking(Tracking tracking){
         String query = "INSERT INTO tracking";
-        query += "(latitude,longitude,start,finish)";
+        query += "(latitude,longitude)";
 
         query += " values (";
         query += " '" + tracking.getLATITUDE() + "'";
         query += ", '" + tracking.getLONGITUDE() + "'";
-        query += ", '" + tracking.getSTART() + "'";
-        query += ", '" + tracking.getFINISH() + "'";
 
         query += " ); ";
 

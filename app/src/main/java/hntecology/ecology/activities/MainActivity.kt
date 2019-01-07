@@ -220,6 +220,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     var prjname = ""
 
+    var POLYGONCOLOR:ArrayList<String> = ArrayList<String>()
+    var getColor = ""
+
     var polyLines:ArrayList<Polyline> = ArrayList<Polyline>()
     internal var loadDataHandler: Handler = object : Handler() {
         override fun handleMessage(msg: android.os.Message) {
@@ -489,6 +492,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             googleMap.clear()
 
+            println("polygons.size ${polygons.size}")
+
             points.clear()
             latlngs.clear()
             polygonsToUnion.clear()
@@ -589,18 +594,17 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         resetTV.setOnClickListener {
 
-            for(polygon in polygons) {
-                polygon.remove()
-            }
-
-            polygons?.clear()
+//            for(polygon in polygons) {
+//                polygon.remove()
+//            }
+//
+//            polygons?.clear()
 
             for(point in points) {
                 point.remove()
             }
 
             points?.clear()
-
 
             googleMap.clear()
 
@@ -929,7 +933,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         typeST.setOnClickListener {
             val chk = typeST.isChecked
-            println("chk =====$chk")
+            if (POLYGONCOLOR.size > 0){
+                POLYGONCOLOR.clear()
+            }
         }
 
         searchaddressBT.setOnClickListener {
@@ -1036,6 +1042,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
 
         polygonsToUnion.clear()
+        POLYGONCOLOR.clear()
+        getColor = ""
 
         cancelUnionRL.visibility = View.GONE
 
@@ -2144,7 +2152,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             val zoom = googleMap.cameraPosition.zoom
 
             if (zoom.toInt() >= 17) {
-                println("polygoncolor ${polygon.fillColor}")
+
+//                if (getColor == ""){
+//                    polygongetcolor(polygon)
+//                } else {
+//                    getColor = ""
+//                }
+
+//                POLYGONCOLOR.add(polygon.fillColor.toString())
 
                 // 도형 분리 중이면.....
                 if(splitRL.isSelected) {
@@ -2152,10 +2167,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     val layerInfo = polygon.tag as LayerInfo
                     var myLayer = layerInfo.layer
                     var attrubuteKey = layerInfo.attrubuteKey
-
-                    println("polygon.split.tag ${polygon.tag}")
-                    println("polygon.split.myLayer ${myLayer}")
-                    println("polygon.split.attrubuteKey ${attrubuteKey}")
 
                     splittingPolygon = polygon
                     splittingPolygon!!.strokeWidth = 10.0f
@@ -2246,8 +2257,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                                             var landuse = Utils.getString(layerInfo.metadata, "landuse")
 
-                                            println("landuseclick ------ $landuse")
-                                            println("LANDUSEclick ------ $LANDUSE")
                                             var biotope = Utils.getString(layerInfo.metadata, "biotop")
                                             if (INV_INDEX == "" || INV_INDEX == null) {
                                                 INV_INDEX = "0"
@@ -2313,10 +2322,16 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                 GPS_LON = "0"
                                             }
 
-                                            val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, biotope, TY_MARK, GV_RATE.toFloat()
+                                            val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, LC_TY, TY_MARK, GV_RATE.toFloat()
                                                     , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
                                                     STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                     BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", polygon.fillColor.toString())
+
+                                            if (landuse != null && landuse != ""){
+                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                            }
+
+                                            POLYGONCOLOR.add(LANDUSE)
 
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
@@ -2373,6 +2388,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             if (landuse != null && landuse != ""){
                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
                                             }
+
+                                            POLYGONCOLOR.add(LANDUSE)
 
                                             if (NUM == "" || NUM == null) {
                                                 NUM = "0"
@@ -2438,8 +2455,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                             if (landuse != null && landuse != ""){
                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
-
                                             }
+
+                                            POLYGONCOLOR.add(LANDUSE)
 
                                             if (NUM == "" || NUM == null) {
                                                 NUM = "0"
@@ -2500,6 +2518,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             if (landuse != null && landuse != ""){
                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
                                             }
+
+                                            POLYGONCOLOR.add(LANDUSE)
 
                                             if (NUM == "" || NUM == null) {
                                                 NUM = "0"
@@ -2583,9 +2603,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                 if (polygonsToUnion.size == 1){
 
-                                    polygoncolor = getColor()
-                                    println("-------polygoncolor $polygoncolor")
-
                                     var chkData = false
 
                                     val layerInfo = polygon.tag as LayerInfo
@@ -2604,6 +2621,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                     biotopedataArray.clear()
                                                 }
                                                 while (data.moveToNext()) {
+                                                    var biotope_attribute: Biotope_attribute = Biotope_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                                                            data.getString(8), data.getFloat(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getFloat(14)
+                                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+                                                            , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getFloat(28)
+                                                            , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
+                                                            , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
+                                                            , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
+                                                            , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54))
+                                                    biotopedataArray.add(biotope_attribute)
                                                     chkData = true
                                                 }
 
@@ -2670,8 +2696,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                                                             var landuse = Utils.getString(layerInfo.metadata, "landuse")
 
-                                                            println("landuseclick ------ $landuse")
-                                                            println("LANDUSEclick ------ $LANDUSE")
                                                             var biotope = Utils.getString(layerInfo.metadata, "biotop")
                                                             if (INV_INDEX == "" || INV_INDEX == null) {
                                                                 INV_INDEX = "0"
@@ -2737,10 +2761,17 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                                 GPS_LON = "0"
                                                             }
 
-                                                            val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, biotope, TY_MARK, GV_RATE.toFloat()
+                                                            if (landuse != null && landuse != ""){
+                                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                                            }
+
+                                                            POLYGONCOLOR.add(LANDUSE)
+                                                            getColor = LANDUSE
+
+                                                            val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, LC_TY, TY_MARK, GV_RATE.toFloat()
                                                                     , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
                                                                     STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
-                                                                    BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", polygoncolor.toString())
+                                                                    BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE)
 
                                                             if (LANDUSE != null && LANDUSE != "") {
                                                                 data.LANDUSE = LANDUSE
@@ -2750,6 +2781,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                         }
                                                     }
 
+                                                } else {
+                                                    getColor = biotopedataArray!!.get(0).LANDUSE!!
                                                 }
                                             }
 
@@ -2757,13 +2790,18 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                 var chkdata = false
                                                 val dataList: Array<String> = arrayOf("*");
 
-                                                val stockdata = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+                                                val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
 
                                                 if (stockdataArray != null) {
                                                     stockdataArray.clear()
                                                 }
 
-                                                while (stockdata.moveToNext()) {
+                                                while (data.moveToNext()) {
+                                                    var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                                                            data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
+                                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
+                                                            , data.getString(22),data.getString(23))
+                                                    stockdataArray.add(stockMap)
                                                     chkdata = true
                                                 }
 
@@ -2797,19 +2835,24 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                                             if (landuse != null && landuse != ""){
                                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
-
                                                             }
+
+                                                            POLYGONCOLOR.add(LANDUSE)
+                                                            getColor = LANDUSE
+
                                                             if (NUM == "" || NUM == null) {
                                                                 NUM = "0"
                                                             }
 
                                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD,polygoncolor.toString())
+                                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD,LANDUSE)
 
                                                             dbManager!!.insertstockmap(data)
 
                                                         }
                                                     }
+                                                } else {
+                                                    getColor = stockdataArray!!.get(0).LANDUSE!!
                                                 }
                                             }
                                         }
@@ -2823,13 +2866,18 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                                 var chkdata = false
 
-                                                val stockdata = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+                                                val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
 
                                                 if (stockdataArray != null) {
                                                     stockdataArray.clear()
                                                 }
 
-                                                while (stockdata.moveToNext()) {
+                                                while (data.moveToNext()) {
+                                                    var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                                                            data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
+                                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
+                                                            , data.getString(22),data.getString(23))
+                                                    stockdataArray.add(stockMap)
                                                     chkdata = true
                                                 }
 
@@ -2859,18 +2907,28 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                             var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
                                                             var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
                                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+
+                                                            if (landuse != null && landuse != ""){
+                                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                                                getColor = LANDUSE
+                                                            }
+
+                                                            POLYGONCOLOR.add(LANDUSE)
 
                                                             if (NUM == "" || NUM == null) {
                                                                 NUM = "0"
                                                             }
 
                                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygoncolor.toString())
+                                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE)
 
                                                             dbManager!!.insertstockmap(data)
 
                                                         }
                                                     }
+                                                } else {
+                                                    getColor = stockdataArray!!.get(0).LANDUSE!!
                                                 }
                                             }
 
@@ -2885,6 +2943,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                 }
 
                                                 while (data.moveToNext()) {
+                                                    var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                                                            data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
+                                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
+                                                            , data.getString(22),data.getString(23))
+                                                    stockdataArray.add(stockMap)
                                                     chkdata = true
                                                 }
 
@@ -2893,7 +2956,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                                     for (i in 0..polygons.size - 1) {
                                                         if (polygons.get(i).tag == polygon.tag) {
-                                                            println("layerinfo.stock-----metadata ${layerinfo.metadata}")
 
                                                             var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
                                                             var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
@@ -2918,19 +2980,24 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                                             if (landuse != null && landuse != ""){
                                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
-                                                                println("------------------합치기 $LANDUSE")
+                                                                getColor = LANDUSE
                                                             }
+
+                                                            POLYGONCOLOR.add(LANDUSE)
+
                                                             if (NUM == "" || NUM == null) {
                                                                 NUM = "0"
                                                             }
 
                                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygoncolor.toString())
+                                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE)
 
                                                             dbManager!!.insertstockmap(data)
 
                                                         }
                                                     }
+                                                } else {
+                                                    getColor = stockdataArray!!.get(0).LANDUSE!!
                                                 }
                                             }
                                         }
@@ -3103,10 +3170,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                     GPS_LON = "0"
                                                 }
 
-                                                val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), LC_GR_NUM, LC_TY, TY_MARK, GV_RATE.toFloat()
+                                                if (landuse != null && landuse != ""){
+                                                    LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                                }
+
+                                                val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, LC_TY, TY_MARK, GV_RATE.toFloat()
                                                         , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
                                                         STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
-                                                        BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y",polygoncolor.toString())
+                                                        BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y",LANDUSE)
 
                                                 if (LANDUSE != null && LANDUSE != ""){
                                                     data.LANDUSE = LANDUSE
@@ -3238,13 +3309,18 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                 var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
                                                 var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
                                                 var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                                var landuse = Utils.getString(layerInfo.metadata,"landuse")
 
                                                 if (NUM == "" || NUM == null) {
                                                     NUM = "0"
                                                 }
 
+                                                if (landuse != null && landuse != ""){
+                                                    LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                                }
+
                                                 val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                        , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD,polygoncolor.toString())
+                                                        , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD,LANDUSE)
 
                                                 intent!!.putExtra("stokedata", data)
                                                 intent!!.putExtra("GROP_ID", attrubuteKey.toString())
@@ -4345,7 +4421,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     println("grop_id $grop_id")
                 }
 
-                println("loadlayer-----landuse ---- $landuse")
                 if (landuse != null){
 
                     if (landuse == "A11"){
@@ -4520,7 +4595,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 marker.zIndex = 0.0f
                 marker.tag = layerName
 
-                println("layerName .layer ===== $layerName")
 
                 val layerInfo = LayerInfo()
 
@@ -5533,13 +5607,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         if (biotopeDatas.size != null) {
 
-            println("biotopeDatas.size ${biotopeDatas.size}")
-
             for (i in 0..biotopeDatas.size - 1) {
 
                 val grop_id = biotopeDatas.get(i).GROP_ID
-
-                println("grop_id export : $grop_id")
 
                 val biotope_attribute = biotopeDatas.get(i)
 
@@ -5556,6 +5626,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                             var attrubuteKey = layerInfo.attrubuteKey
                             if (attrubuteKey.equals(grop_id)) {
+                                println("-------------------------------------exportbiotopeequlas")
                                 add = true
                                 idx = j
                             }
@@ -6912,19 +6983,19 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     STOKEMAP.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, stockMap.INV_DT))
                     STOKEMAP.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, stockMap.INV_TM))
                     STOKEMAP.add(Exporter.ColumnDef("FRTP_CD", ogr.OFTString, stockMap.FRTP_CD))
-                    STOKEMAP.add(Exporter.ColumnDef("KOFTR_GROUP_CD", ogr.OFTString, stockMap.KOFTR_GROUP_CD))
-                    STOKEMAP.add(Exporter.ColumnDef("STORUNST_CD", ogr.OFTString, stockMap.STORUNST_CD))
+                    STOKEMAP.add(Exporter.ColumnDef("KOFTR_GROUP", ogr.OFTString, stockMap.KOFTR_GROUP_CD.toString()))
+                    STOKEMAP.add(Exporter.ColumnDef("STORUNST", ogr.OFTString, stockMap.STORUNST_CD.toString()))
                     STOKEMAP.add(Exporter.ColumnDef("FROR_CD", ogr.OFTString, stockMap.FROR_CD))
                     STOKEMAP.add(Exporter.ColumnDef("DMCLS_CD", ogr.OFTString, stockMap.DMCLS_CD))
                     STOKEMAP.add(Exporter.ColumnDef("AGCLS_CD", ogr.OFTString, stockMap.AGCLS_CD))
                     STOKEMAP.add(Exporter.ColumnDef("DNST_CD", ogr.OFTString, stockMap.DNST_CD.toString()))
                     STOKEMAP.add(Exporter.ColumnDef("HEIGHT", ogr.OFTString, stockMap.HEIGHT))
-                    STOKEMAP.add(Exporter.ColumnDef("LDMARK_STNDA_CD", ogr.OFTString, stockMap.LDMARK_STNDA_CD))
+                    STOKEMAP.add(Exporter.ColumnDef("LDMARK_STN", ogr.OFTString, stockMap.LDMARK_STNDA_CD.toString()))
                     STOKEMAP.add(Exporter.ColumnDef("MAP_LABEL", ogr.OFTString, stockMap.MAP_LABEL))
                     STOKEMAP.add(Exporter.ColumnDef("MAP_LABEL2", ogr.OFTString, stockMap.MAP_LABEL2))
                     STOKEMAP.add(Exporter.ColumnDef("ETC_PCMTT", ogr.OFTString, stockMap.ETC_PCMTT))
-                    STOKEMAP.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, stockMap.GPS_LAT))
-                    STOKEMAP.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, stockMap.GPS_LON))
+                    STOKEMAP.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, stockMap.GPS_LAT.toString()))
+                    STOKEMAP.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, stockMap.GPS_LON.toString()))
                     STOKEMAP.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, stockMap.CONF_MOD))
                     STOKEMAP.add(Exporter.ColumnDef("LANDUSE", ogr.OFTString, stockMap.LANDUSE))
 
@@ -7089,6 +7160,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 println("firstLayerInfo : ${firstLayerInfo.attrubuteKey}")
 
+
+
                 // delete row
                 for (idx in 1..(polygonsToUnion.size - 1)) {
                     val polygon = polygonsToUnion.get(idx)
@@ -7112,7 +7185,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 val polygonOptions = PolygonOptions()
-                polygonOptions.fillColor(polygoncolor)
+//                polygonOptions.fillColor(polygoncolor)
+                println("합치기 color $getColor")
+                polygonsetcolor(getColor,polygonOptions)
                 polygonOptions.strokeWidth(1.0f)
                 polygonOptions.strokeColor(Color.BLACK)
 
@@ -7217,6 +7292,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 polygonsToUnion.clear()
+//                POLYGONCOLOR.clear()
+                getColor = ""
 
                 offUnionBtn()
 
@@ -7726,6 +7803,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             newLayerInfo.attrubuteKey = newAttributeKey
             newLayerInfo.layer = layerInfo.layer
 
+            println("newlayerinfo.attrubutekey ${newLayerInfo.attrubuteKey}")
+
             po.tag = newLayerInfo
 
             po.isClickable = true
@@ -7736,7 +7815,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             // copy data
             if(typeST.isChecked) {
                 copyRow("StockMap", oldAttributeKey, newAttributeKey, po)
-                exportStockMap()
+//                exportStockMap()
                 var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "stockmap" + File.separator + "stockmap"
                 var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "stockmap" + File.separator + "stockmap", "임상도", 1,99,"stokemap", "Y","stokemap",false)
 
@@ -7770,7 +7849,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             } else {
                 println("-----splitbiotope")
                 copyRow("biotopeAttribute", oldAttributeKey, newAttributeKey, po)
-                exportBiotope()
+//                exportBiotope()
                 var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "biotope" + File.separator + "biotope"
                 var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "biotope" + File.separator + "biotope", "비오톱", 1,99,"biotope", "Y","biotope",false)
                 var chkData = false
@@ -7805,8 +7884,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         if(typeST.isChecked) {
             deleteRow("StockMap", oldAttributeKey)
+            exportStockMap()
         } else {
             deleteRow("biotopeAttribute", oldAttributeKey)
+            exportBiotope()
         }
 
     }
@@ -7919,6 +8000,405 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         stopTracking()
 
         super.onDestroy()
+
+    }
+
+
+    fun polygonsetcolor(LANDUSE: String,polygonOptions: PolygonOptions){
+        polygonOptions.fillColor(Color.parseColor("#BDBDBD"))
+
+        if (LANDUSE != null){
+
+            if (LANDUSE == "-319"){
+                polygonOptions.fillColor(Color.parseColor("#FFFEC1"))
+            }
+
+            if (LANDUSE == "-404085"){
+                polygonOptions.fillColor(Color.parseColor("#F9D58B"))
+            }
+
+            if (LANDUSE == "-1377289"){
+                polygonOptions.fillColor(Color.parseColor("#EAFBF7"))
+            }
+
+            if (LANDUSE == "-1427007"){
+                polygonOptions.fillColor(Color.parseColor("#EA39C1"))
+            }
+
+            if (LANDUSE == "-13995018"){
+                polygonOptions.fillColor(Color.parseColor("#2A73F6"))
+            }
+
+            if (LANDUSE == "-202300"){
+                polygonOptions.fillColor(Color.parseColor("#FCE9C4"))
+            }
+
+            if (LANDUSE == "0701"){
+                polygonOptions.fillColor(Color.parseColor("#F7412A"))
+            }
+
+            if (LANDUSE == "-1056771"){
+                polygonOptions.fillColor(Color.parseColor("#EFDFFD"))
+            }
+
+            if (LANDUSE == "A11"){
+                polygonOptions.fillColor(Color.parseColor("#FEE6C2"))
+            }
+
+            if (LANDUSE == "A12"){
+                polygonOptions.fillColor(Color.parseColor("#DFC16F"))
+            }
+
+            if (LANDUSE == "A21"){
+                polygonOptions.fillColor(Color.parseColor("#C08484"))
+            }
+
+            if (LANDUSE == "A31"){
+                polygonOptions.fillColor(Color.parseColor("#ED83B8"))
+            }
+
+            if (LANDUSE == "A32"){
+                polygonOptions.fillColor(Color.parseColor("#DFB0A4"))
+            }
+
+            if (LANDUSE == "A41"){
+                polygonOptions.fillColor(Color.parseColor("#F6718A"))
+            }
+
+            if (LANDUSE == "A51"){
+                polygonOptions.fillColor(Color.parseColor("#E526FE"))
+            }
+
+            if (LANDUSE == "A52"){
+                polygonOptions.fillColor(Color.parseColor("#C53251"))
+            }
+
+            if (LANDUSE == "A53"){
+                polygonOptions.fillColor(Color.parseColor("#FC044E"))
+            }
+
+            if (LANDUSE == "A54"){
+                polygonOptions.fillColor(Color.parseColor("#F7412A"))
+            }
+
+            if (LANDUSE == "A55"){
+                polygonOptions.fillColor(Color.parseColor("#730000"))
+            }
+
+            if (LANDUSE == "A61"){
+                polygonOptions.fillColor(Color.parseColor("#F6B112"))
+            }
+
+            if (LANDUSE == "A62"){
+                polygonOptions.fillColor(Color.parseColor("#FF7A00"))
+            }
+
+            if (LANDUSE == "A63"){
+                polygonOptions.fillColor(Color.parseColor("#C7581B"))
+            }
+
+            if (LANDUSE == "B11"){
+                polygonOptions.fillColor(Color.parseColor("#FFFFBF"))
+            }
+
+            if (LANDUSE == "B12"){
+                polygonOptions.fillColor(Color.parseColor("#F4E6A8"))
+            }
+
+            if (LANDUSE == "B21"){
+                polygonOptions.fillColor(Color.parseColor("#F7F966"))
+            }
+
+            if (LANDUSE == "B31"){
+                polygonOptions.fillColor(Color.parseColor("#DFDC73"))
+            }
+
+            if (LANDUSE == "B41"){
+                polygonOptions.fillColor(Color.parseColor("#B8B12C"))
+            }
+
+            if (LANDUSE == "B51"){
+                polygonOptions.fillColor(Color.parseColor("#B89112"))
+            }
+
+            if (LANDUSE == "B52"){
+                polygonOptions.fillColor(Color.parseColor("#AA6400"))
+            }
+
+            if (LANDUSE == "C11"){
+                polygonOptions.fillColor(Color.parseColor("#33A02C"))
+            }
+
+            if (LANDUSE == "C21"){
+                polygonOptions.fillColor(Color.parseColor("#0A4F40"))
+            }
+
+            if (LANDUSE == "C31"){
+                polygonOptions.fillColor(Color.parseColor("#336633"))
+            }
+
+            if (LANDUSE == "D11"){
+                polygonOptions.fillColor(Color.parseColor("#A1D594"))
+            }
+
+            if (LANDUSE == "D21"){
+                polygonOptions.fillColor(Color.parseColor("#80E45A"))
+            }
+
+            if (LANDUSE == "D22"){
+                polygonOptions.fillColor(Color.parseColor("#71B05A"))
+            }
+
+            if (LANDUSE == "D23"){
+                polygonOptions.fillColor(Color.parseColor("#607E33"))
+            }
+
+            if (LANDUSE == "E11"){
+                polygonOptions.fillColor(Color.parseColor("#B4A7D0"))
+            }
+
+            if (LANDUSE == "E21"){
+                polygonOptions.fillColor(Color.parseColor("#997499"))
+            }
+
+            if (LANDUSE == "E22"){
+                polygonOptions.fillColor(Color.parseColor("#7C1EA2"))
+            }
+
+            if (LANDUSE == "F11"){
+                polygonOptions.fillColor( Color.parseColor("#C1DBEC"))
+            }
+
+            if (LANDUSE == "F12"){
+                polygonOptions.fillColor(Color.parseColor("#ABC5CA"))
+            }
+
+            if (LANDUSE == "F13"){
+                polygonOptions.fillColor(Color.parseColor("#ABB6A5"))
+            }
+
+            if (LANDUSE == "F21"){
+                polygonOptions.fillColor(Color.parseColor("#585A8A"))
+            }
+
+            if (LANDUSE == "F22"){
+                polygonOptions.fillColor(Color.parseColor("#7BB5AC"))
+            }
+
+            if (LANDUSE == "F23"){
+                polygonOptions.fillColor(Color.parseColor("#9FF2FF"))
+            }
+
+            if (LANDUSE == "G11"){
+                polygonOptions.fillColor(Color.parseColor("#3EA7FF"))
+            }
+
+            if (LANDUSE == "G12"){
+                polygonOptions.fillColor(Color.parseColor("#5D6DFF"))
+            }
+
+            if (LANDUSE == "G21"){
+                polygonOptions.fillColor(Color.parseColor("#1739FF"))
+            }
+
+        }
+    }
+
+
+    fun polygongetcolor(polygon: Polygon){
+        println("polygongetColor ${polygon.fillColor as Color}")
+        if (polygon.fillColor == Color.parseColor("#FFFEC1")){
+            getColor = "-319"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#F9D58B")){
+            getColor = "-404085"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#EAFBF7")){
+            getColor = "-1377289"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#EA39C1")){
+            getColor = "-1427007"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#2A73F6")){
+            getColor = "-13995018"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#FCE9C4")){
+            getColor = "-202300"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#F7412A")){
+            getColor = "-0701"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#EFDFFD")){
+            getColor = "-1056771"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#FEE6C2")){
+            getColor = "A11"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#DFC16F")){
+            getColor = "A12"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#DFC16F")){
+            getColor = "A21"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#ED83B8")){
+            getColor = "A31"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#DFB0A4")){
+            getColor = "A32"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#F6718A")){
+            getColor = "A41"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#E526FE")){
+            getColor = "A51"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#C53251")){
+            getColor = "A52"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#FC044E")){
+            getColor = "A53"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#F7412A")){
+            getColor = "A54"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#730000")){
+            getColor = "A55"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#F6B112")){
+            getColor = "A61"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#FF7A00")){
+            getColor = "A62"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#C7581B")){
+            getColor = "A63"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#FFFFBF")){
+            getColor = "B11"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#F4E6A8")){
+            getColor = "B12"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#F7F966")){
+            getColor = "B21"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#DFDC73")){
+            getColor = "B31"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#B8B12C")){
+            getColor = "B41"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#B89112")){
+            getColor = "B51"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#AA6400")){
+            getColor = "B52"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#33A02C")){
+            getColor = "C11"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#0A4F40")){
+            getColor = "C21"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#336633")){
+            getColor = "C31"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#A1D594")){
+            getColor = "D11"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#80E45A")){
+            getColor = "D21"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#71B05A")){
+            getColor = "D22"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#607E33")){
+            getColor = "D23"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#B4A7D0")){
+            getColor = "E11"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#997499")){
+            getColor = "E21"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#7C1EA2")){
+            getColor = "E22"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#C1DBEC")){
+            getColor = "F11"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#ABC5CA")){
+            getColor = "F12"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#ABB6A5")){
+            getColor = "F13"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#585A8A")){
+            getColor = "F21"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#7BB5AC")){
+            getColor = "F22"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#9FF2FF")){
+            getColor = "F23"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#3EA7FF")){
+            getColor = "G11"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#5D6DFF")){
+            getColor = "G12"
+        }
+
+        if (polygon.fillColor == Color.parseColor("#1739FF")){
+            getColor = "G21"
+        }
+
 
     }
 

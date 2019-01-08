@@ -52,7 +52,7 @@ class DlgStokeMapAdapter1(var context: Context, var itemList : ArrayList<StockMa
 
         var StockMapSelect : StockMapSelect = getItem(position)
 
-        viewHoldar.search_item.text = StockMapSelect.Title;
+        viewHoldar.search_item.text = StockMapSelect.Title + StockMapSelect.Content;
 
         if(StockMapSelect.chkSelect == true){
 

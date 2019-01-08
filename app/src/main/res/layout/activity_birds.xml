@@ -398,15 +398,26 @@
                     android:hint="click"
                     android:gravity="center" />
 
-                <EditText
+                <RelativeLayout
                     android:visibility="gone"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:hint="입력해주세요."
-                    style="@style/BiotopeTextView"
-                    android:id="@+id/obsstatET"
-                    android:gravity="center"/>
+                    android:id="@+id/obsstatLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="입력해주세요."
+                        style="@style/BiotopeTextView"
+                        android:id="@+id/obsstatET"
+                        android:gravity="center"/>
+                    <Button
+                        android:id="@+id/resetBT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="변경"
+                        android:layout_alignParentRight="true"
+                        style="@style/dlgcommonButton"/>
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout

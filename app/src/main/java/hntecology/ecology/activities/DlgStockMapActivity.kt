@@ -2,6 +2,7 @@ package hntecology.ecology.activities
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.database.Cursor
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -9,11 +10,14 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.ListView
 import hntecology.ecology.R
+import hntecology.ecology.adapter.DlgFloraAdapter
 import hntecology.ecology.adapter.DlgStokeMapAdapter1
 import hntecology.ecology.adapter.DlgStokeMapAdapter2
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.Jaso
 import hntecology.ecology.base.Utils
+import hntecology.ecology.model.Endangered
+import hntecology.ecology.model.Floras
 import hntecology.ecology.model.StockMapSelect
 import hntecology.ecology.model.Vegetation
 import kotlinx.android.synthetic.main.activity_dlg_stock_map.*
@@ -22,7 +26,7 @@ class DlgStockMapActivity : Activity() {
 
     private lateinit var context: Context;
 
-    private var copyadapterData :ArrayList<Vegetation> = ArrayList<Vegetation>()
+    private var copyadapterData :ArrayList<Floras> = ArrayList<Floras>()
 
     var tableName:String = ""
     var titleName:String=""
@@ -31,13 +35,8 @@ class DlgStockMapActivity : Activity() {
     var chkData = false
 
     private lateinit var listView1: ListView
-    private lateinit var listView2: ListView
-
-    private lateinit var listdata1 : java.util.ArrayList<StockMapSelect>
-    private lateinit var listdata2 : java.util.ArrayList<Vegetation>
-
-    private lateinit var listAdapter1: DlgStokeMapAdapter1;
-    private lateinit var listAdapter2: DlgStokeMapAdapter2;
+    private lateinit var listdata1 : java.util.ArrayList<Floras>
+    private lateinit var listAdapter1: DlgFloraAdapter;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,114 +54,47 @@ class DlgStockMapActivity : Activity() {
         window.setLayout(Utils.dpToPx(800F).toInt(), Utils.dpToPx(DlgHeight).toInt());
         this.setFinishOnTouchOutside(true);
 
-        val selectitem1 = StockMapSelect("자연림","N",false)
-        val selectitem2 = StockMapSelect("식재림","A",false)
-        val selectitem3 = StockMapSelect("기타","기타",false)
-
         listView1 = findViewById(R.id.listLV)
-        listView2 = findViewById(R.id.listLV2)
-
         listdata1 = java.util.ArrayList()
-        listdata2 = java.util.ArrayList()
-
-        listAdapter1 = DlgStokeMapAdapter1(context,listdata1)
-        listAdapter2 = DlgStokeMapAdapter2(context,listdata2)
-
-        listdata1.add(selectitem1)
-        listdata1.add(selectitem2)
-        listdata1.add(selectitem3)
-
+        listAdapter1 = DlgFloraAdapter(context,listdata1)
         listView1.adapter = listAdapter1
-        listView2.adapter = listAdapter2
+        val dataList:Array<String> = arrayOf("*");
+        val data = db!!.query("vascular_plant", dataList, null, null, null, null, "name_kr", null);
+        setDataList(listdata1,data);
+        copyadapterData.addAll(listdata1)
 
-
-        listView1.setOnItemClickListener { adapterView, view, position, l ->
-
-            if(listdata2 != null){
-                listdata2.clear()
-            }
-
-            listAdapter1.setItemSelect(position)
-
-            for(i in 0..listdata1.size-1){
-                listdata1.get(i).chkSelect = false
-            }
-
-            listAdapter2.clearItem()
+        listView1.setOnItemClickListener { parent, view, position, id ->
 
             var data = listdata1.get(position)
+            var name = data.name_kr
+            var family_name = data.Family_name
+            var zoological = data.zoological
 
-            if(data.chkSelect == false){
-                data.chkSelect = true
-                listAdapter1.notifyDataSetChanged()
-            }else {
-                data.chkSelect = false
-                listAdapter1.notifyDataSetChanged()
+            val dataEndangeredList:Array<String> = arrayOf("ID","TITLE","SCIENTIFICNAME","CLASS","DANGERCLASS","CONTRYCLASS");
+
+            val EndangeredData = db!!.query("ENDANGERED", dataEndangeredList, "TITLE = '$name'", null, null, null, null, null);
+
+            while (EndangeredData.moveToNext()) {
+
+                var endangered = Endangered(EndangeredData.getString(0),EndangeredData.getString(1),EndangeredData.getString(2),EndangeredData.getString(3),EndangeredData.getString(4),EndangeredData.getString(5))
+
+                chkData = true
+
             }
 
-            if (data.Title == "기타"){
-
-                intent.putExtra("CODE", data.code)
-
+            if(chkData){
+                val intent = Intent();
+                intent.putExtra("name",name + "(멸종 위기)")
                 setResult(RESULT_OK, intent);
-
                 finish()
-
-
-            } else if(data.Title == "자연림"){
-
-                val dataList:Array<String> = arrayOf("CATEGORYCODE","CATEGORY","CLASSCODE","SIGN","CORRESPONDINGNAME");
-
-                val title = "식재림"
-
-                val data = db.query("Vegetation", dataList, "CATEGORY != '$title'", null, null, null, "CORRESPONDINGNAME", null);
-
-                dataVegetationList(listdata2,data)
-
-                if(copyadapterData != null){
-                    copyadapterData.clear()
-                }
-
-                copyadapterData.addAll(listdata2)
-
-                listAdapter2.notifyDataSetChanged()
-
-                data.close()
-
-            } else if(data.Title == "식재림"){
-                val dataList:Array<String> = arrayOf("CATEGORYCODE","CATEGORY","CLASSCODE","SIGN","CORRESPONDINGNAME");
-
-                val title = "식재림"
-
-                val data = db.query("Vegetation", dataList, "CATEGORY = '$title'", null, null, null, "CORRESPONDINGNAME", null);
-
-                dataVegetationList(listdata2,data)
-
-                copyadapterData.addAll(listdata2)
-
-                listAdapter2.notifyDataSetChanged()
-
-                data.close()
-
+            }else {
+                val intent = Intent();
+                intent.putExtra("name",name)
+                setResult(RESULT_OK, intent);
+                finish()
             }
 
-        }
-
-        listView2.setOnItemClickListener { adapterView, view, position, l ->
-
-            var data = listdata2.get(position)
-
-            if (data.CATEGORY == "식재림"){
-                intent.putExtra("division", "A")
-            } else {
-                intent.putExtra("division", "N")
-            }
-
-            intent.putExtra("CODE", data.SIGN)
-
-            setResult(RESULT_OK, intent);
-
-            finish()
+            EndangeredData.close()
 
         }
 
@@ -182,25 +114,28 @@ class DlgStockMapActivity : Activity() {
 
     }
 
-    fun dataVegetationList(listdata: java.util.ArrayList<Vegetation>, data: Cursor) {
+    fun setDataList(listdata: java.util.ArrayList<Floras>,data: Cursor){
 
         while (data.moveToNext()){
 
-            var model : Vegetation;
+            var model: Floras;
 
-            model = Vegetation(data.getInt(0),data.getString(1),data.getInt(2),data.getString(3),data.getString(4),false);
+            model = Floras(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7), data.getString(8), data.getString(9), data.getString(10)
+                    , data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getString(16), data.getString(17),  data.getString(18), data.getString(19),data.getString(20),
+                    data.getString(21),data.getString(22),data.getString(23),data.getString(24),data.getString(25),data.getString(26),false);
+
 
             listdata.add(model)
-
         }
+
     }
 
     fun search(charText: String){
-        listdata2.clear()
+        listdata1.clear()
 
         if(charText.length == 0){
 
-            listdata2.addAll(copyadapterData)
+            listdata1.addAll(copyadapterData)
 
         }else {
 
@@ -208,7 +143,7 @@ class DlgStockMapActivity : Activity() {
 
             for (i in 0..copyadapterData.size-1){
 
-                val name =  Utils.getString(copyadapterData.get(i).CORRESPONDINGNAME, copyadapterData.get(i).CORRESPONDINGNAME);
+                val name =  Utils.getString(copyadapterData.get(i).name_kr, copyadapterData.get(i).name_kr);
 
                 names.add(name)
 
@@ -218,18 +153,15 @@ class DlgStockMapActivity : Activity() {
 
                 if (Jaso.startsWith(names.get(i), charText)
                         || names.get(i).toLowerCase().contains(charText)) {
-                    listdata2.add(copyadapterData.get(i))
+                    listdata1.add(copyadapterData.get(i))
                 }
 
             }
 
         }
 
-        listAdapter2.notifyDataSetChanged()
+        listAdapter1.notifyDataSetChanged()
 
     }
-
-
-
 
 }

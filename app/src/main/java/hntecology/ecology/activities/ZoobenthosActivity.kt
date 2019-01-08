@@ -252,6 +252,44 @@ class ZoobenthosActivity : Activity() {
 
         }
 
+        habresetBT.setOnClickListener {
+            habtyetcRL.visibility = View.GONE
+            habtyetcTV.visibility = View.VISIBLE
+            habtyetcTV.setText("")
+        }
+
+        bankresetBT.setOnClickListener {
+            banklRL.visibility = View.GONE
+            banklTV.visibility = View.VISIBLE
+            banklTV.setText("")
+        }
+
+        krresetBT.setOnClickListener {
+            bankrRL.visibility = View.GONE
+            bankrTV.visibility = View.VISIBLE
+            bankrTV.setText("")
+        }
+
+        baslresetBT.setOnClickListener {
+            baslRL.visibility = View.GONE
+            baslTV.visibility = View.VISIBLE
+            baslTV.setText("")
+        }
+
+        basrresetBT.setOnClickListener {
+            basrRL.visibility = View.GONE
+            basrTV.visibility = View.VISIBLE
+            basrTV.setText("")
+        }
+
+        distresetBT.setOnClickListener {
+            distcauRL.visibility = View.GONE
+            distcauTV.visibility = View.VISIBLE
+            distcauTV.setText("")
+        }
+
+
+
         weatherTV.setOnClickListener {
 
             var listItems: java.util.ArrayList<String> = java.util.ArrayList();
@@ -1617,7 +1655,7 @@ class ZoobenthosActivity : Activity() {
 
                 SET_HABTYETC -> {
                     if (data!!.getStringExtra("title") != null) {
-                        habtyetcET.visibility = View.VISIBLE
+                        habtyetcRL.visibility = View.VISIBLE
                         habtyetcTV.visibility = View.GONE
                     }
 
@@ -1629,7 +1667,7 @@ class ZoobenthosActivity : Activity() {
                             for (i in 0..item.size - 1) {
                                 title += item.get(i).title + " "
                                 if (item.get(i).title == "기타") {
-                                    habtyetcET.visibility = View.VISIBLE
+                                    habtyetcRL.visibility = View.VISIBLE
                                     habtyetcTV.visibility = View.GONE
                                     title += ""
                                 }
@@ -1642,7 +1680,7 @@ class ZoobenthosActivity : Activity() {
 
                 SET_BANK_L -> {
                     if (data!!.getStringExtra("title") != null) {
-                        banklET.visibility = View.VISIBLE
+                        banklRL.visibility = View.VISIBLE
                         banklTV.visibility = View.GONE
                     }
 
@@ -1654,7 +1692,7 @@ class ZoobenthosActivity : Activity() {
                             for (i in 0..item.size - 1) {
                                 title += item.get(i).title + " "
                                 if (item.get(i).title == "기타") {
-                                    banklET.visibility = View.VISIBLE
+                                    banklRL.visibility = View.VISIBLE
                                     banklTV.visibility = View.GONE
                                     title += ""
                                 }
@@ -1668,7 +1706,7 @@ class ZoobenthosActivity : Activity() {
 
                 SET_BANK_R -> {
                     if (data!!.getStringExtra("title") != null) {
-                        bankrET.visibility = View.VISIBLE
+                        bankrRL.visibility = View.VISIBLE
                         bankrTV.visibility = View.GONE
                     }
 
@@ -1680,7 +1718,7 @@ class ZoobenthosActivity : Activity() {
                             for (i in 0..item.size - 1) {
                                 title += item.get(i).title + " "
                                 if (item.get(i).title == "기타") {
-                                    bankrET.visibility = View.VISIBLE
+                                    bankrRL.visibility = View.VISIBLE
                                     bankrTV.visibility = View.GONE
                                     title += ""
                                 }
@@ -1694,7 +1732,7 @@ class ZoobenthosActivity : Activity() {
 
                 SET_BAS_L -> {
                     if (data!!.getStringExtra("title") != null) {
-                        baslET.visibility = View.VISIBLE
+                        baslRL.visibility = View.VISIBLE
                         baslTV.visibility = View.GONE
                     }
 
@@ -1706,7 +1744,7 @@ class ZoobenthosActivity : Activity() {
                             for (i in 0..item.size - 1) {
                                 title += item.get(i).title + " "
                                 if (item.get(i).title == "기타") {
-                                    baslET.visibility = View.VISIBLE
+                                    baslRL.visibility = View.VISIBLE
                                     baslTV.visibility = View.GONE
                                     title += ""
                                 }
@@ -1720,7 +1758,7 @@ class ZoobenthosActivity : Activity() {
 
                 SET_BAS_R -> {
                     if (data!!.getStringExtra("title") != null) {
-                        basrET.visibility = View.VISIBLE
+                        basrRL.visibility = View.VISIBLE
                         basrTV.visibility = View.GONE
                     }
 
@@ -1732,7 +1770,7 @@ class ZoobenthosActivity : Activity() {
                             for (i in 0..item.size - 1) {
                                 title += item.get(i).title + " "
                                 if (item.get(i).title == "기타") {
-                                    basrET.visibility = View.VISIBLE
+                                    basrRL.visibility = View.VISIBLE
                                     basrTV.visibility = View.GONE
                                     title += ""
                                 }
@@ -1746,7 +1784,7 @@ class ZoobenthosActivity : Activity() {
 
                 SET_DIST_CAU -> {
                     if (data!!.getStringExtra("title") != null) {
-                        distcauET.visibility = View.VISIBLE
+                        distcauRL.visibility = View.VISIBLE
                         distcauTV.visibility = View.GONE
                     }
 
@@ -1758,7 +1796,7 @@ class ZoobenthosActivity : Activity() {
                             for (i in 0..item.size - 1) {
                                 title += item.get(i).title + " "
                                 if (item.get(i).title == "기타") {
-                                    distcauET.visibility = View.VISIBLE
+                                    distcauRL.visibility = View.VISIBLE
                                     distcauTV.visibility = View.GONE
                                     title += ""
                                 }

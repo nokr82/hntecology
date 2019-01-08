@@ -368,16 +368,27 @@
                     style="@style/BiotopeTextView"
                     android:gravity="center"
                     />
-                <EditText
+                <RelativeLayout
                     android:visibility="gone"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:hint="입력해주세요."
-                    android:id="@+id/mammalobstyET"
-                    style="@style/BiotopeTextView"
-                    android:gravity="center"
-                    />
+                    android:id="@+id/mammalobstyRL"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="입력해주세요."
+                        android:id="@+id/mammalobstyET"
+                        style="@style/BiotopeTextView"
+                        android:gravity="center"
+                        />
+                    <Button
+                        android:id="@+id/resetBT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="변경"
+                        style="@style/dlgcommonButton"
+                        android:layout_alignParentRight="true"/>
+                </RelativeLayout>
 
             </LinearLayout>
 

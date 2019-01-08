@@ -204,7 +204,7 @@
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
-                    android:text="수중그룹"/>
+                    android:text="수종그룹"/>
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -215,16 +215,29 @@
                     android:gravity="center"
                     />
 
-                <EditText
+                <RelativeLayout
                     android:visibility="gone"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:hint="입력해주세요."
-                    android:id="@+id/koftrET"
-                    style="@style/BiotopeTextView"
-                    android:gravity="center"
-                    />
+                    android:id="@+id/koftrLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="입력해주세요."
+                        android:id="@+id/koftrET"
+                        android:singleLine="true"
+                        style="@style/BiotopeTextView"
+                        android:gravity="center"
+                        android:layout_centerInParent="true"
+                        />
+                    <Button
+                        android:id="@+id/resetBT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        style="@style/dlgcommonButton"
+                        android:text="변경"/>
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout

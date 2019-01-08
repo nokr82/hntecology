@@ -266,7 +266,7 @@
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
                     android:text="시간"/>
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -368,16 +368,28 @@
                     style="@style/BiotopeTextView"
                     android:gravity="center"
                     />
-                <EditText
+                <RelativeLayout
                     android:visibility="gone"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:hint="입력해주세요."
-                    android:id="@+id/insectobsstatET"
-                    style="@style/BiotopeTextView"
-                    android:gravity="center"
-                    />
+                    android:id="@+id/insectobsstatLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:hint="입력해주세요."
+                        android:id="@+id/insectobsstatET"
+                        style="@style/BiotopeTextView"
+                        android:gravity="center"
+                        />
+                    <Button
+                        android:id="@+id/resetBT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        style="@style/dlgcommonButton"
+                        android:layout_alignParentRight="true"
+                        android:text="변경"/>
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -398,16 +410,27 @@
                     style="@style/BiotopeTextView"
                     android:gravity="center"
                     />
-                <EditText
+                <RelativeLayout
                     android:visibility="gone"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:hint="입력해주세요."
-                    android:id="@+id/insectusetarET"
-                    style="@style/BiotopeTextView"
-                    android:gravity="center"
-                    />
+                    android:id="@+id/insectusetarRL"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="입력해주세요."
+                        android:id="@+id/insectusetarET"
+                        style="@style/BiotopeTextView"
+                        android:gravity="center"
+                        />
+                    <Button
+                        android:id="@+id/useresetBT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        style="@style/dlgcommonButton"
+                        android:layout_alignParentRight="true"
+                        android:text="변경"/>
+                </RelativeLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -427,16 +450,28 @@
                     style="@style/BiotopeTextView"
                     android:gravity="center"
                     />
-                <EditText
+                <RelativeLayout
                     android:visibility="gone"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:hint="입력해주세요."
-                    android:id="@+id/insectmjactET"
-                    style="@style/BiotopeTextView"
-                    android:gravity="center"
-                    />
+                    android:id="@+id/insectmjactRL"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:hint="입력해주세요."
+                        android:id="@+id/insectmjactET"
+                        style="@style/BiotopeTextView"
+                        android:gravity="center"
+                        />
+                    <Button
+                        android:id="@+id/mjresetBT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="변경"
+                        android:layout_alignParentRight="true"
+                        style="@style/dlgcommonButton"/>
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -457,16 +492,28 @@
                     style="@style/BiotopeTextView"
                     android:gravity="center"
                     />
-                <EditText
+
+                <RelativeLayout
                     android:visibility="gone"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:hint="입력해주세요."
-                    android:id="@+id/insectinvmeanET"
-                    style="@style/BiotopeTextView"
-                    android:gravity="center"
-                    />
+                    android:id="@+id/insectinvmeanRL"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="입력해주세요."
+                        android:id="@+id/insectinvmeanET"
+                        style="@style/BiotopeTextView"
+                        android:gravity="center"
+                        />
+                    <Button
+                        android:id="@+id/invresetBT"
+                        style="@style/dlgcommonButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:text="변경" />
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout

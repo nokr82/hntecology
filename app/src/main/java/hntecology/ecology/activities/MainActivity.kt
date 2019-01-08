@@ -2256,6 +2256,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                                             var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                            var landcover = Utils.getString(layerInfo.metadata, "landcover")
+
 
                                             var biotope = Utils.getString(layerInfo.metadata, "biotop")
                                             if (INV_INDEX == "" || INV_INDEX == null) {
@@ -2335,6 +2337,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
+                                                data.LU_GR_NUM = LANDUSE
+                                                data.LC_GR_NUM = landcover
                                             }
 
                                             dbManager!!.insertbiotope_attribute(data)
@@ -2695,6 +2699,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                             var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
                                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                                                             var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                                            var landcover = Utils.getString(layerInfo.metadata,"landcover")
 
                                                             var biotope = Utils.getString(layerInfo.metadata, "biotop")
                                                             if (INV_INDEX == "" || INV_INDEX == null) {
@@ -2775,6 +2780,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                                             if (LANDUSE != null && LANDUSE != "") {
                                                                 data.LANDUSE = LANDUSE
+                                                                data.LU_GR_NUM = LANDUSE
+                                                                data.LC_GR_NUM = landcover
                                                             }
 
                                                             dbManager!!.insertbiotope_attribute(data)
@@ -3102,9 +3109,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                 var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
                                                 var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                                                 var landuse = Utils.getString(layerInfo.metadata , "landuse")
+                                                var landcover = Utils.getString(layerInfo.metadata,"landcover")
 
-                                                println("landuseclick ------ $landuse")
-                                                println("LANDUSEclick ------ $LANDUSE")
                                                 var biotope = Utils.getString(layerInfo.metadata, "biotop")
                                                 if (INV_INDEX == "" || INV_INDEX == null) {
                                                     INV_INDEX = "0"
@@ -3181,6 +3187,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                                                 if (LANDUSE != null && LANDUSE != ""){
                                                     data.LANDUSE = LANDUSE
+                                                    data.LU_GR_NUM = LANDUSE
+                                                    data.LC_GR_NUM = landcover
                                                 }
 
                                                 intent!!.putExtra("biotopedata", data)
@@ -3555,6 +3563,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                 var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
                                                 var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
                                                 var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                                var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                                var landcover = Utils.getString(layerInfo.metadata,"landcover")
 
                                                 if (INV_INDEX == "" || INV_INDEX == null) {
                                                     INV_INDEX = "0"
@@ -3620,10 +3630,20 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                     GPS_LON = "0"
                                                 }
 
+                                                if (landuse != null && landuse != ""){
+                                                    LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                                }
+
                                                 val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), LC_GR_NUM, LC_TY, TY_MARK, GV_RATE.toFloat()
                                                         , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
                                                         STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                         BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y",LANDUSE)
+
+                                                if (LANDUSE != null && LANDUSE != ""){
+                                                    data.LANDUSE = LANDUSE
+                                                    data.LU_GR_NUM = LANDUSE
+                                                    data.LC_GR_NUM = landcover
+                                                }
 
                                                 intent!!.putExtra("biotopedata", data)
                                                 intent!!.putExtra("GROP_ID", attrubuteKey.toString())
@@ -6841,21 +6861,23 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         }
 
-
     }
 
     fun exportTracking(){
         var trackingPointsArray: ArrayList<Exporter.ExportLatLngItem> = ArrayList<Exporter.ExportLatLngItem>()
         val dataList: Array<String> = arrayOf("*")
 
-        println("exportTracking")
-
         val trackingdata = db!!.query("tracking", dataList, null, null, null, null, "id", null)
 
         var trackingpk: String  = ""
 
-//          TRACKINGS.add(Exporter.ColumnDef("TRACKING", ogr.OFTString, "이동경로"))
+        var TRACKINGS:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+        TRACKINGS.add(Exporter.ColumnDef("DSC", ogr.OFTString, "TRACKING LINE"))
+//        TRACKINGS.add(Exporter.ColumnDef("ID", ogr.OFTInteger, -1))
+//        TRACKINGS.add(Exporter.ColumnDef("LATITUDE", ogr.OFTReal, -1))
+//        TRACKINGS.add(Exporter.ColumnDef("LONGITUDE", ogr.OFTReal, -1))
 
+//          TRACKINGS.add(Exporter.ColumnDef("TRACKING", ogr.OFTString, "이동경로"))
 //        TRACKINGS.add(Exporter.ColumnDef("ID", ogr.OFTInteger, -1))
 
         var i = 0
@@ -6885,10 +6907,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             for (tracking in trackingDatas) {
                 val latlng = LatLng(tracking.LATITUDE!!,tracking.LONGITUDE!!)
 
-                var TRACKINGS:ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
-                TRACKINGS.add(Exporter.ColumnDef("LATITUDE", ogr.OFTString,tracking.LATITUDE))
-                TRACKINGS.add(Exporter.ColumnDef("LONGITUDE", ogr.OFTString, tracking.LONGITUDE))
-
                 val exporter = Exporter.ExportLatLngItem(TRACKING, TRACKINGS, latlng)
 
                 trackingPointsArray.add(exporter)
@@ -6914,7 +6932,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if(chkData){
 
             }else {
-                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "tracking" + File.separator + "tracking","이동경로", "tracking","Y","tracking")
+//                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator +"data"+ File.separator + "tracking" + File.separator + "tracking","이동경로", "tracking","Y","tracking")
             }
 
             Exporter.exportLine(trackingPointsArray)

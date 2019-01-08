@@ -1779,7 +1779,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                 while (data.moveToNext()) {
 
-                    TVLU_GR_NumTV.setText(data.getString(0))
+                    TVLU_GR_NumTV.setText(data.getString(1))
                     if (TVLU_GR_NumTV.text == null) {
                         TVLU_GR_NumTV.setText("")
                     }
@@ -1867,71 +1867,71 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
             etIMP_FORMET.setText(biotope_attribute.IMP_FORM.toString())
 
-            if (intent.getStringExtra("biotope") != null){
-                biotope = intent.getStringExtra("biotope")
-
-                println("biotope--------$biotope")
-
-                val data = db!!.query("biotopeM", dataList, "code = '" + biotope + "'", null, null, null, "", null);
-
-                while (data.moveToNext()) {
-                    TVLU_GR_NumTV.setText(data.getString(1))
-                    if (TVLU_GR_NumTV.text == null) {
-                        TVLU_GR_NumTV.setText("")
-                    }
-                    ETLU_GR_NumET.setText(data.getString(1))
-                    if (ETLU_GR_NumET.text == null) {
-                        ETLU_GR_NumET.setText("")
-                    }
-                }
-            }
-
-            if (intent.getStringExtra("biotope") != null) {
-                biotope = intent.getStringExtra("biotope")
-                var chk = false
-
-                val dataSelectList: Array<String> = arrayOf("name", "code");
-                val data = db!!.query("biotopeS", dataList, "code = '" + biotope + "'", null, null, null, "", null);
-
-                while (data.moveToNext()) {
-
-                    TVLC_GR_NUMTV.setText(data.getString(1))
-                    if (TVLC_GR_NUMTV.text == null) {
-                        TVLC_GR_NUMTV.setText("")
-                    }
-                    ETlcmGR_NumET.setText(data.getString(1))
-                    if (ETlcmGR_NumET.text == null) {
-                        ETlcmGR_NumET.setText("")
-                    }
-
-                    chk = true
-
-                }
-
-                landuse = biotope_attribute.LANDUSE
-
-                var num = biotope
-                var textnum = num!!.substring(0, 1)
-
-                //투수
-                if (chk == true) {
-                    if (textnum == "B") {
-
-                        etlcmTypepET.setText(biotope)
-                        //불투수
-                    } else if (textnum == "A") {
-
-                        etlcmTypeiET.setText(biotope)
-                        //녹지
-                    } else if (textnum == "C") {
-
-                        etlcmTypegET.setText(biotope)
-                        //수공간
-                    } else if (textnum == "D") {
-                        etlcmTypewET.setText(biotope)
-                    }
-                }
-            }
+//            if (intent.getStringExtra("biotope") != null){
+//                biotope = intent.getStringExtra("biotope")
+//
+//                println("biotope--------$biotope")
+//
+//                val data = db!!.query("biotopeM", dataList, "code = '" + biotope + "'", null, null, null, "", null);
+//
+//                while (data.moveToNext()) {
+//                    TVLU_GR_NumTV.setText(data.getString(1))
+//                    if (TVLU_GR_NumTV.text == null) {
+//                        TVLU_GR_NumTV.setText("")
+//                    }
+//                    ETLU_GR_NumET.setText(data.getString(1))
+//                    if (ETLU_GR_NumET.text == null) {
+//                        ETLU_GR_NumET.setText("")
+//                    }
+//                }
+//            }
+//
+//            if (intent.getStringExtra("biotope") != null) {
+//                biotope = intent.getStringExtra("biotope")
+//                var chk = false
+//
+//                val dataSelectList: Array<String> = arrayOf("name", "code");
+//                val data = db!!.query("biotopeS", dataList, "code = '" + biotope + "'", null, null, null, "", null);
+//
+//                while (data.moveToNext()) {
+//
+//                    TVLC_GR_NUMTV.setText(data.getString(1))
+//                    if (TVLC_GR_NUMTV.text == null) {
+//                        TVLC_GR_NUMTV.setText("")
+//                    }
+//                    ETlcmGR_NumET.setText(data.getString(1))
+//                    if (ETlcmGR_NumET.text == null) {
+//                        ETlcmGR_NumET.setText("")
+//                    }
+//
+//                    chk = true
+//
+//                }
+//
+//                landuse = biotope_attribute.LANDUSE
+//
+//                var num = biotope
+//                var textnum = num!!.substring(0, 1)
+//
+//                //투수
+//                if (chk == true) {
+//                    if (textnum == "B") {
+//
+//                        etlcmTypepET.setText(biotope)
+//                        //불투수
+//                    } else if (textnum == "A") {
+//
+//                        etlcmTypeiET.setText(biotope)
+//                        //녹지
+//                    } else if (textnum == "C") {
+//
+//                        etlcmTypegET.setText(biotope)
+//                        //수공간
+//                    } else if (textnum == "D") {
+//                        etlcmTypewET.setText(biotope)
+//                    }
+//                }
+//            }
 
 //            if (biotope_attribute.PIC_FOLDER == "null" || biotope_attribute.PIC_FOLDER == "" || biotope_attribute.PIC_FOLDER == null) {
 //

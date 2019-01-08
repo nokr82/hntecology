@@ -436,6 +436,10 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         }
 
+        hideBT.setOnClickListener {
+            detailLL.visibility = View.GONE
+        }
+
         fishleftLL.setOnClickListener {
 
 
@@ -1177,13 +1181,12 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             val intent = Intent(this, DlgCommonSubActivity::class.java)
             intent.putExtra("title", "형태")
-            intent.putExtra("DlgHeight", 290f);
+            intent.putExtra("DlgHeight", 350f);
             intent.putExtra("selectDlg", 100);
 
             startActivityForResult(intent, SET_FISH);
 
         }
-
 
         rivstrTV.setOnClickListener {
 

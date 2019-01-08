@@ -534,8 +534,8 @@
                     />
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/detailLL"
                 android:visibility="gone"
+                android:id="@+id/detailLL"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 >
@@ -544,16 +544,27 @@
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
                     android:text="하상구조 상세입력"/>
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:inputType="number"
-                    android:hint="입력해주세요."
-                    android:id="@+id/rivstrdetET"
-                    style="@style/BiotopeTextView"
-                    android:gravity="center"
-                    />
+                <RelativeLayout
+                    android:id="@+id/rivstrdetRL"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="number"
+                        android:hint="입력해주세요."
+                        android:id="@+id/rivstrdetET"
+                        style="@style/BiotopeTextView"
+                        android:gravity="center"
+                        />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="숨기기"
+                        style="@style/dlgcommonButton"
+                        android:id="@+id/hideBT"
+                        android:layout_alignParentRight="true"/>
+                </RelativeLayout>
 
             </LinearLayout>
 

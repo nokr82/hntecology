@@ -150,6 +150,7 @@
                         android:id="@+id/prjnameET"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="@null"
                         android:gravity="center"/>
                 </LinearLayout>
 
@@ -471,14 +472,29 @@
                     style="@style/BiotopeTextView"
                     android:gravity="center"/>
 
-                <EditText
+                <RelativeLayout
                     android:visibility="gone"
-                    android:id="@+id/habtyetcET"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:singleLine="true"/>
+                    android:id="@+id/habtyetcRL"
+                    style="@style/BiotopeTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:id="@+id/habtyetcET"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:background="@null"
+                        android:hint="입력해주세요."
+                        style="@style/BiotopeTextView"
+                        android:singleLine="true"/>
+                    <Button
+                        android:id="@+id/habresetBT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="변경"
+                        android:layout_alignParentRight="true"
+                        style="@style/dlgcommonButton"/>
+                </RelativeLayout>
 
             </LinearLayout>
 
@@ -850,13 +866,25 @@
                               android:hint="click"
                               style="@style/BiotopeTextView"
                               android:gravity="center"/>
-                            <TextView
-                                android:id="@+id/banklET"
-                                android:visibility="gone"
+                            <RelativeLayout
+                                android:id="@+id/banklRL"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                style="@style/BiotopeTextView"
-                                android:gravity="center"/>
+                                android:layout_height="match_parent">
+                                <EditText
+                                    android:id="@+id/banklET"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    style="@style/BiotopeTextView"
+                                    android:hint="입력해주세요"
+                                    android:gravity="center"/>
+                                <Button
+                                    android:id="@+id/bankresetBT"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="변경"
+                                    style="@style/dlgcommonButton"
+                                    android:layout_alignParentRight="true"/>
+                            </RelativeLayout>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -879,17 +907,26 @@
                             android:layout_weight="1"
                             style="@style/BiotopeTextView"
                             android:gravity="center"/>
-                        <EditText
-                            android:id="@+id/bankrET"
+                        <RelativeLayout
                             android:visibility="gone"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            style="@style/BiotopeTextView"
-                            android:gravity="center"/>
-
-
-
+                            android:id="@+id/bankrRL"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <EditText
+                                android:id="@+id/bankrET"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                style="@style/BiotopeTextView"
+                                android:hint="입력해주세요."
+                                android:gravity="center"/>
+                            <Button
+                                android:id="@+id/krresetBT"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                style="@style/dlgcommonButton"
+                                android:layout_alignParentRight="true"
+                                android:text="변경" />
+                        </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -929,14 +966,26 @@
                             style="@style/BiotopeTextView"
                             android:gravity="center"/>
 
-                        <EditText
-                            android:id="@+id/baslET"
+                        <RelativeLayout
                             android:visibility="gone"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            style="@style/BiotopeTextView"
-                            android:gravity="center"/>
+                            android:id="@+id/baslRL"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <EditText
+                                android:id="@+id/baslET"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:hint="입력해주세요."
+                                style="@style/BiotopeTextView"
+                                android:gravity="center"/>
+                            <Button
+                                android:id="@+id/baslresetBT"
+                                style="@style/dlgcommonButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="변경"
+                                android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -954,14 +1003,26 @@
                             android:hint="click"
                             style="@style/BiotopeTextView"
                             android:gravity="center"/>
-                        <EditText
-                            android:id="@+id/basrET"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
+                        <RelativeLayout
                             android:visibility="gone"
-                            style="@style/BiotopeTextView"
-                            android:gravity="center"/>
+                            android:id="@+id/basrRL"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <EditText
+                                android:id="@+id/basrET"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:hint="입력해주세요."
+                                style="@style/BiotopeTextView"
+                                android:gravity="center"/>
+                            <Button
+                                android:id="@+id/basrresetBT"
+                                style="@style/dlgcommonButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="변경"
+                                android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -985,13 +1046,26 @@
                     android:hint="click"
                     style="@style/BiotopeTextView"
                     android:gravity="center"/>
-                <EditText
+                <RelativeLayout
                     android:visibility="gone"
-                    android:id="@+id/distcauET"
+                    android:id="@+id/distcauRL"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:gravity="center"/>
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:id="@+id/distcauET"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="입력해주세요."
+                        style="@style/BiotopeTextView"
+                        android:gravity="center"/>
+                    <Button
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/distresetBT"
+                        style="@style/dlgcommonButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="변경"/>
+                </RelativeLayout>
 
             </LinearLayout>
 

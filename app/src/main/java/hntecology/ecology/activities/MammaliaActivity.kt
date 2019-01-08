@@ -409,6 +409,12 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         }
 
+        resetBT.setOnClickListener {
+            mammalobstyRL.visibility = View.GONE
+            mammalobstyTV.visibility = View.VISIBLE
+            mammalobstyTV.setText("")
+        }
+
         mamleftLL.setOnClickListener {
 
             val dataList: Array<String> = arrayOf("*");
@@ -1609,8 +1615,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             // 주요행동
             if ("obsty" == type) {
                 if (selectItem == "기타") {
-                    mammalobstyET.visibility = View.VISIBLE
                     mammalobstyTV.visibility = View.GONE
+                    mammalobstyRL.visibility = View.VISIBLE
                 }
             }
 

@@ -465,6 +465,12 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
         }
 
+        resetBT.setOnClickListener {
+            obsstatTV.visibility = View.VISIBLE
+            obsstatLL.visibility = View.GONE
+            obsstatTV.setText("")
+        }
+
         cancelBtn.setOnClickListener {
             val builder = AlertDialog.Builder(context)
             builder.setMessage("작성을 취소하시겠습니까?").setCancelable(false)
@@ -1535,7 +1541,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         val count = data!!.getIntExtra("Other",0)
 
                         if(count == 1000){
-                        obsstatET.visibility = View.VISIBLE
+                        obsstatLL.visibility = View.VISIBLE
                         obsstatTV.visibility = View.GONE
                         }
                     }

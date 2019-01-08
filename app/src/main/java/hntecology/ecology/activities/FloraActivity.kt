@@ -401,6 +401,12 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
         }
 
+        resetBT.setOnClickListener {
+            florahabstatRL.visibility = View.GONE
+            florahabstatTV.visibility = View.VISIBLE
+            florahabstatTV.setText("")
+        }
+
         floraleftLL.setOnClickListener {
 
             val dataList: Array<String> = arrayOf("*");
@@ -1585,7 +1591,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
             if ("habstat" == type){
                 if (selectItem == "기타") {
-                    florahabstatET.visibility = View.VISIBLE
+                    florahabstatRL.visibility = View.VISIBLE
                     florahabstatTV.visibility = View.GONE
                 }
             }

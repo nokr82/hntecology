@@ -28,7 +28,7 @@ class DlgCommonSubActivity : Activity() {
 
     var tableName:String = ""
     var titleName:String=""
-    var DlgHeight:Float=430F;
+    var DlgHeight:Float=480F;
     var selectDlg:Int = 1
 
     @SuppressLint("ResourceAsColor")
@@ -39,7 +39,6 @@ class DlgCommonSubActivity : Activity() {
         context = applicationContext;
 
         val intent = getIntent()
-
 
         titleName = intent.getStringExtra("title")
         DlgHeight = intent.getFloatExtra("DlgHeight",430F);

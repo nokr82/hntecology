@@ -412,6 +412,33 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
         }
 
+        resetBT.setOnClickListener {
+            insectobsstatLL.visibility = View.GONE
+            insectobsstatTV.visibility = View.VISIBLE
+            insectobsstatTV.setText("")
+        }
+
+        useresetBT.setOnClickListener {
+            insectusetarTV.visibility = View.VISIBLE
+            insectusetarRL.visibility = View.GONE
+            insectusetarTV.setText("")
+        }
+
+        mjresetBT.setOnClickListener {
+            insectmjactRL.visibility = View.GONE
+            insectmjactTV.visibility = View.VISIBLE
+            insectmjactTV.setText("")
+        }
+
+        invresetBT.setOnClickListener {
+            insectinvmeanRL.visibility = View.GONE
+            insectinvmeanTV.visibility = View.VISIBLE
+            insectinvmeanTV.setText("")
+        }
+
+
+
+
         insectleftLL.setOnClickListener {
 
             val dataList: Array<String> = arrayOf("*");
@@ -1654,35 +1681,35 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             // 주요행동
             if ("obsstat" == type) {
                 if (selectItem == "기타") {
-                    insectobsstatET.visibility = View.VISIBLE
+                    insectobsstatLL.visibility = View.VISIBLE
                     insectobsstatTV.visibility = View.GONE
                 }else {
-                    insectobsstatET.visibility = View.GONE
+                    insectobsstatLL.visibility = View.GONE
                     insectobsstatTV.visibility = View.VISIBLE
                 }
             } else if ("usetar" == type) {
                 if (selectItem == "식물명") {
-                    insectusetarET.visibility = View.VISIBLE
+                    insectusetarRL.visibility = View.VISIBLE
                     insectusetarTV.visibility = View.GONE
                 }else {
-                    insectusetarET.visibility = View.GONE
+                    insectusetarRL.visibility = View.GONE
                     insectusetarTV.visibility = View.VISIBLE
                 }
             } else if("mjact" == type){
                 if (selectItem == "기타") {
-                    insectmjactET.visibility = View.VISIBLE
+                    insectmjactRL.visibility = View.VISIBLE
                     insectmjactTV.visibility = View.GONE
                 }else {
-                    insectmjactET.visibility = View.GONE
+                    insectmjactRL.visibility = View.GONE
                     insectmjactTV.visibility = View.VISIBLE
                 }
             }else if("invmean" == type){
                 if(selectItem == "기타"){
-                    insectinvmeanET.visibility = View.VISIBLE
+                    insectinvmeanRL.visibility = View.VISIBLE
                     insectinvmeanTV.visibility = View.GONE
                 }else {
 
-                    insectinvmeanET.visibility = View.GONE
+                    insectinvmeanRL.visibility = View.GONE
                     insectinvmeanTV.visibility = View.VISIBLE
                 }
             }
@@ -1829,7 +1856,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                     if(data!!.getSerializableExtra("Region") != null) {
                         region = data!!.getSerializableExtra("Region") as Region
-                        insectobsstatET.visibility = View.GONE
+                        insectobsstatLL.visibility = View.GONE
                         insectobsstatTV.visibility = View.VISIBLE
                         insectobsstatTV.setText(region.SMALLCATEGORY)
                     }
@@ -1838,7 +1865,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                         val count = data!!.getIntExtra("Other",0)
 
                         if(count == 1000){
-                            insectobsstatET.visibility = View.VISIBLE
+                            insectobsstatLL.visibility = View.VISIBLE
                             insectobsstatTV.visibility = View.GONE
                         }
                     }

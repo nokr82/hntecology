@@ -22,6 +22,7 @@ import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.Base
 import hntecology.ecology.model.StockMap
+import hntecology.ecology.model.StockMapSelect
 import hntecology.ecology.model.Vegetation
 import kotlinx.android.synthetic.main.activity_stock.*
 import java.io.File
@@ -55,6 +56,14 @@ class StockActivity : Activity() {
     val AGCLS_CD = 105
     val DNST_CD = 106
 
+    var FRTP_CD_CODE = ""
+    var SET_FRTPCD_CODE = ""
+    var STORUNST_CD_CODE = ""
+    var FROR_CD_CODE = ""
+    var DMCLS_CD_CODE = ""
+    var AGCLS_CD_CODE = ""
+    var DNST_CD_CODE = ""
+
     var dbManager: DataBaseHelper? = null
 
     private var db: SQLiteDatabase? = null
@@ -63,11 +72,22 @@ class StockActivity : Activity() {
 
     var dataArray:ArrayList<StockMap> = ArrayList<StockMap>()
 
+    var frtpdata : java.util.ArrayList<StockMapSelect> = ArrayList<StockMapSelect>()
+    var frtpcddata : java.util.ArrayList<StockMapSelect> = ArrayList<StockMapSelect>()
+    var storunstdata : java.util.ArrayList<StockMapSelect> = ArrayList<StockMapSelect>()
+    var frordata : java.util.ArrayList<StockMapSelect> = ArrayList<StockMapSelect>()
+    var dmclsdata : java.util.ArrayList<StockMapSelect> = ArrayList<StockMapSelect>()
+    var agclsdata : java.util.ArrayList<StockMapSelect> = ArrayList<StockMapSelect>()
+    var dnstdata : java.util.ArrayList<StockMapSelect> = ArrayList<StockMapSelect>()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stock)
 
         this.context = this;
+
+        addSelectItem()
 
         invdtTV.setText(Utils.todayStr())
         invtmTV.setText(Utils.timeStr())
@@ -147,8 +167,6 @@ class StockActivity : Activity() {
             pk = intent.getStringExtra("id")
         }
 
-
-
         if (intent.getStringExtra("polygonid") != null) {
             polygonid = intent.getStringExtra("polygonid")
         }
@@ -169,8 +187,6 @@ class StockActivity : Activity() {
 
             gpslatTV.setText(base.GPS_LAT)
             gpslonTV.setText(base.GPS_LON)
-
-
 
             lat = base.GPS_LAT!!
             log = base.GPS_LON!!
@@ -213,13 +229,78 @@ class StockActivity : Activity() {
 
             val dataList: Array<String> = arrayOf("*");
 
-            frtpcdTV.setText(stockMap.FRTP_CD)
-            koftrTV.setText(stockMap.KOFTR_GROUP_CD)
-            storunstTV.setText(stockMap.STORUNST_CD)
-            frorcdTV.setText(stockMap.FROR_CD)
-            dmclscdTV.setText(stockMap.DMCLS_CD)
-            agclsTV.setText(stockMap.AGCLS_CD)
-            dnstTV.setText(stockMap.DNST_CD)
+//            frtpcdTV.setText(stockMap.FRTP_CD)
+//            koftrTV.setText(stockMap.KOFTR_GROUP_CD)
+//            storunstTV.setText(stockMap.STORUNST_CD)
+//            frorcdTV.setText(stockMap.FROR_CD)
+//            dmclscdTV.setText(stockMap.DMCLS_CD)
+//            agclsTV.setText(stockMap.AGCLS_CD)
+//            dnstTV.setText(stockMap.DNST_CD)
+
+            for (i in 0 until frtpdata.size){
+                if (stockMap.FRTP_CD == frtpdata.get(i).code){
+                    frtpcdTV.text = frtpdata.get(i).Title
+                }
+            }
+            FROR_CD_CODE = stockMap.FRTP_CD.toString()
+//                frtpcdTV.text = stockMap.FRTP_CD
+
+//            for (i in 0 until frtpcddata.size){
+//                if (stockMap.KOFTR_GROUP_CD == frtpcddata.get(i).code){
+//                    koftrTV.text = frtpcddata.get(i).Title
+//                }
+//            }
+//            SET_FRTPCD_CODE = stockMap.KOFTR_GROUP_CD.toString()
+//                koftrTV.text = stockMap.KOFTR_GROUP_CD
+            koftrTV.text = stockMap.KOFTR_GROUP_CD
+
+            val codedata = db!!.query("Dropsygroup", dataList, "CODE = '${stockMap.KOFTR_GROUP_CD}'", null, null, null, "", null)
+            while (codedata.moveToNext()) {
+                val item = StockMapSelect(codedata.getString(1),codedata.getString(2), codedata.getString(3),false)
+                koftrTV.setText(item.Title)
+            }
+
+            for (i in 0 until storunstdata.size){
+                if (stockMap.STORUNST_CD == storunstdata.get(i).code){
+                    storunstTV.text = storunstdata.get(i).Title
+                }
+            }
+            STORUNST_CD_CODE = stockMap.STORUNST_CD.toString()
+//                storunstTV.text = stockMap.STORUNST_CD
+
+            for (i in 0 until frordata.size){
+                if (stockMap.FROR_CD == frordata.get(i).code){
+                    frorcdTV.text = frordata.get(i).Title
+                }
+            }
+
+            FROR_CD_CODE = stockMap.FROR_CD.toString()
+//                frorcdTV.text = stockMap.FROR_CD
+
+            for (i in 0 until dmclsdata.size){
+                if (stockMap.DMCLS_CD == dmclsdata.get(i).code){
+                    dmclscdTV.text = dmclsdata.get(i).Title
+                }
+            }
+            DMCLS_CD_CODE = stockMap.DMCLS_CD.toString()
+//                dmclscdTV.text = stockMap.DMCLS_CD
+
+            for (i in 0 until agclsdata.size){
+                if (stockMap.AGCLS_CD == agclsdata.get(i).code){
+                    agclsTV.text = agclsdata.get(i).Title
+                }
+            }
+            AGCLS_CD_CODE = stockMap.AGCLS_CD.toString()
+//                agclsTV.text = stockMap.AGCLS_CD
+
+            for (i in 0 until dnstdata.size){
+                if (stockMap.DNST_CD == dnstdata.get(i).code){
+                    dnstTV.text = dnstdata.get(i).Title
+                }
+            }
+            DNST_CD_CODE = stockMap.DNST_CD.toString()
+//                dnstTV.text = stockMap.DNST_CD
+
             heightET.setText(stockMap.HEIGHT)
             map_lableET.setText(stockMap.MAP_LABEL)
 //            map_lable2ET.setText(stockMap.MAP_LABEL2)
@@ -252,13 +333,69 @@ class StockActivity : Activity() {
                     prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
                 }
                 numTV.text = stockMap.NUM.toString()
-                frtpcdTV.text = stockMap.FRTP_CD
+                for (i in 0 until frtpdata.size){
+                    if (stockMap.FRTP_CD == frtpdata.get(i).code){
+                        frtpcdTV.text = frtpdata.get(i).Title
+                    }
+                }
+
+                FROR_CD_CODE = stockMap.FRTP_CD.toString()
+//                frtpcdTV.text = stockMap.FRTP_CD
+
+                for (i in 0 until frtpcddata.size){
+                    if (stockMap.KOFTR_GROUP_CD == frtpcddata.get(i).code){
+                        koftrTV.text = frtpcddata.get(i).Title
+                    }
+                }
+//                SET_FRTPCD_CODE = stockMap.KOFTR_GROUP_CD.toString()
                 koftrTV.text = stockMap.KOFTR_GROUP_CD
-                storunstTV.text = stockMap.STORUNST_CD
-                frorcdTV.text = stockMap.FROR_CD
-                dmclscdTV.text = stockMap.DMCLS_CD
-                agclsTV.text = stockMap.AGCLS_CD
-                dnstTV.text = stockMap.DNST_CD
+
+                val codedata = db!!.query("Dropsygroup", dataList, "CODE = '${stockMap.KOFTR_GROUP_CD}'", null, null, null, "", null)
+                while (codedata.moveToNext()) {
+                    val item = StockMapSelect(codedata.getString(1),codedata.getString(2), codedata.getString(3),false)
+                    koftrTV.setText(item.Title)
+                }
+
+                for (i in 0 until storunstdata.size){
+                    if (stockMap.STORUNST_CD == storunstdata.get(i).code){
+                        storunstTV.text = storunstdata.get(i).Title
+                    }
+                }
+                STORUNST_CD_CODE = stockMap.STORUNST_CD.toString()
+//                storunstTV.text = stockMap.STORUNST_CD
+
+                for (i in 0 until frordata.size){
+                    if (stockMap.FROR_CD == frordata.get(i).code){
+                        frorcdTV.text = frordata.get(i).Title
+                    }
+                }
+                FROR_CD_CODE = stockMap.FROR_CD.toString()
+//                frorcdTV.text = stockMap.FROR_CD
+
+                for (i in 0 until dmclsdata.size){
+                    if (stockMap.DMCLS_CD == dmclsdata.get(i).code){
+                        dmclscdTV.text = dmclsdata.get(i).Title
+                    }
+                }
+                DMCLS_CD_CODE = stockMap.DMCLS_CD.toString()
+//                dmclscdTV.text = stockMap.DMCLS_CD
+
+                for (i in 0 until agclsdata.size){
+                    if (stockMap.AGCLS_CD == agclsdata.get(i).code){
+                        agclsTV.text = agclsdata.get(i).Title
+                    }
+                }
+                AGCLS_CD_CODE = stockMap.AGCLS_CD.toString()
+//                agclsTV.text = stockMap.AGCLS_CD
+
+                for (i in 0 until dnstdata.size){
+                    if (stockMap.DNST_CD == dnstdata.get(i).code){
+                        dnstTV.text = dnstdata.get(i).Title
+                    }
+                }
+                DNST_CD_CODE = stockMap.DNST_CD.toString()
+//                dnstTV.text = stockMap.DNST_CD
+
                 heightET.setText(stockMap.HEIGHT)
                 map_lableET.setText(stockMap.MAP_LABEL)
 //                map_lable2ET.setText(stockMap.MAP_LABEL2)
@@ -266,8 +403,6 @@ class StockActivity : Activity() {
                 gpslatTV.setText(stockMap.GPS_LAT.toString())
                 gpslonTV.setText(stockMap.GPS_LON.toString())
                 confmodTV.setText(stockMap.CONF_MOD)
-
-
 
             }
 
@@ -322,6 +457,12 @@ class StockActivity : Activity() {
             intent.putExtra("title", "밀도 선택")
             intent.putExtra("DlgHeight", 600f);
             startActivityForResult(intent, DNST_CD);
+        }
+
+        resetBT.setOnClickListener {
+            koftrLL.visibility = View.GONE
+            koftrTV.visibility = View.VISIBLE
+            koftrTV.setText("")
         }
 
         cancleBT.setOnClickListener {
@@ -390,16 +531,17 @@ class StockActivity : Activity() {
                         stockMap.INV_DT = Utils.todayStr()
                         stockMap.INV_TM = Utils.timeStr()
                         stockMap.NUM = numTV.text.toString().toInt()
-                        stockMap.FRTP_CD = frtpcdTV.text.toString()
+                        stockMap.FRTP_CD = FRTP_CD_CODE
+//                        stockMap.KOFTR_GROUP_CD = SET_FRTPCD_CODE
                         stockMap.KOFTR_GROUP_CD = koftrTV.text.toString()
                         if (koftrET.text.toString() != "" && koftrET.text.toString() != null){
                             stockMap.KOFTR_GROUP_CD = koftrET.text.toString()
                         }
-                        stockMap.STORUNST_CD = storunstTV.text.toString()
-                        stockMap.FROR_CD = frorcdTV.text.toString()
-                        stockMap.DMCLS_CD = dmclscdTV.text.toString()
-                        stockMap.AGCLS_CD = agclsTV.text.toString()
-                        stockMap.DNST_CD = dnstTV.text.toString()
+                        stockMap.STORUNST_CD = STORUNST_CD_CODE
+                        stockMap.FROR_CD = FROR_CD_CODE
+                        stockMap.DMCLS_CD = DMCLS_CD_CODE
+                        stockMap.AGCLS_CD = AGCLS_CD_CODE
+                        stockMap.DNST_CD = DNST_CD_CODE
                         stockMap.HEIGHT = heightET.text.toString()
                         stockMap.LDMARK_STNDA_CD = ""
                         stockMap.MAP_LABEL = map_lableET.text.toString()
@@ -596,16 +738,17 @@ class StockActivity : Activity() {
             stockMap.INV_DT = Utils.todayStr()
             stockMap.INV_TM = Utils.timeStr()
             stockMap.NUM = numTV.text.toString().toInt()
-            stockMap.FRTP_CD = frtpcdTV.text.toString()
+            stockMap.FRTP_CD = FRTP_CD_CODE
+//            stockMap.KOFTR_GROUP_CD = SET_FRTPCD_CODE
             stockMap.KOFTR_GROUP_CD = koftrTV.text.toString()
             if (koftrET.text.toString() != "" && koftrET.text.toString() != null){
                 stockMap.KOFTR_GROUP_CD = koftrET.text.toString()
             }
-            stockMap.STORUNST_CD = storunstTV.text.toString()
-            stockMap.FROR_CD = frorcdTV.text.toString()
-            stockMap.DMCLS_CD = dmclscdTV.text.toString()
-            stockMap.AGCLS_CD = agclsTV.text.toString()
-            stockMap.DNST_CD = dnstTV.text.toString()
+            stockMap.STORUNST_CD = STORUNST_CD_CODE
+            stockMap.FROR_CD = FROR_CD_CODE
+            stockMap.DMCLS_CD = DMCLS_CD_CODE
+            stockMap.AGCLS_CD = AGCLS_CD_CODE
+            stockMap.DNST_CD = DNST_CD_CODE
             stockMap.HEIGHT = heightET.text.toString()
             stockMap.LDMARK_STNDA_CD = ""
             stockMap.MAP_LABEL = map_lableET.text.toString()
@@ -690,6 +833,16 @@ class StockActivity : Activity() {
 //        map_lable2ET.setText("")
         etcpcmttET.setText("")
         confmodTV.setText("")
+
+        FRTP_CD_CODE = ""
+        SET_FRTPCD_CODE = ""
+        STORUNST_CD_CODE = ""
+        FROR_CD_CODE = ""
+        DMCLS_CD_CODE = ""
+        AGCLS_CD_CODE = ""
+        DNST_CD_CODE = ""
+
+
     }
 
 
@@ -705,76 +858,108 @@ class StockActivity : Activity() {
                 FRTP_CD -> {
                     if (data!!.getStringExtra("CODE") != null){
                         val code = data!!.getStringExtra("CODE")
+                        val title = data!!.getStringExtra("Title")
 
-                        frtpcdTV.setText(code)
-                        setCode()
+                        FRTP_CD_CODE = code
+
+//                        frtpcdTV.setText(code)
+                        frtpcdTV.setText(title)
+//                        setCode()
                     }
                 }
 
                 SET_FRTPCD -> {
+                    if (data!!.getStringExtra("name") != null) {
+                        val name = data!!.getStringExtra("name")
+                        koftrTV.setText(name)
+                    }
 
-                    if (data!!.getStringExtra("CODE") != null){
+                        if (data!!.getStringExtra("CODE") != null){
                         val code = data!!.getStringExtra("CODE")
+                        val title = data!!.getStringExtra("Title")
+
+                        SET_FRTPCD_CODE = code
 
                         if (code == "기타") {
-                            koftrET.visibility = View.VISIBLE
+                            koftrLL.visibility = View.VISIBLE
                             koftrTV.visibility = View.GONE
                         } else {
-                            koftrTV.setText(code)
+//                            koftrTV.setText(code)
+                            koftrTV.setText(title)
                         }
-                        setCode()
+//                        setCode()
                     }
 
                     if (data!!.getStringExtra("division") != null){
                         val division = data!!.getStringExtra("division")
 
                         div = division
-                        codeModify(div)
+//                        codeModify(div)
                     }
                 }
 
                 STORUNST_CD -> {
                     if (data!!.getStringExtra("CODE") != null){
                         val code = data!!.getStringExtra("CODE")
+                        val title = data!!.getStringExtra("Title")
 
-                        storunstTV.setText(code)
-                        setCode()
+                        STORUNST_CD_CODE = code
+
+//                        storunstTV.setText(code)
+                        storunstTV.setText(title)
+//                        setCode()
                     }
                 }
 
                 FROR_CD -> {
                     if (data!!.getStringExtra("CODE") != null){
                         val code = data!!.getStringExtra("CODE")
+                        val title = data!!.getStringExtra("Title")
 
-                        frorcdTV.setText(code)
-                        setCode()
+                        FROR_CD_CODE = code
+
+//                        frorcdTV.setText(code)
+                        frorcdTV.setText(title)
+//                        setCode()
                     }
                 }
 
                 DMCLS_CD -> {
                     if (data!!.getStringExtra("CODE") != null){
                         val code = data!!.getStringExtra("CODE")
+                        val title = data!!.getStringExtra("Title")
 
-                        dmclscdTV.setText(code)
-                        setCode()
+                        DMCLS_CD_CODE = code
+
+//                        dmclscdTV.setText(code)
+                        dmclscdTV.setText(title)
+//                        setCode()
                     }
                 }
 
                 AGCLS_CD -> {
                     if (data!!.getStringExtra("CODE") != null){
                         val code = data!!.getStringExtra("CODE")
+                        val title = data!!.getStringExtra("Title")
 
-                        agclsTV.setText(code)
-                        setCode()
+                        AGCLS_CD_CODE = code
+
+//                        agclsTV.setText(code)
+                        agclsTV.setText(title)
+//                        setCode()
                     }
                 }
 
                 DNST_CD -> {
                     if (data!!.getStringExtra("CODE") != null){
                         val code = data!!.getStringExtra("CODE")
+                        val title = data!!.getStringExtra("Title")
 
-                        dnstTV.setText(code)
-                        setCode()
+                        DNST_CD_CODE = code
+
+//                        dnstTV.setText(code)
+                        dnstTV.setText(title)
+//                        setCode()
                     }
                 }
             }
@@ -850,31 +1035,31 @@ class StockActivity : Activity() {
     fun codeModify(div : String?) {
 
         var content = ""
-        val koftr = koftrTV.text.toString()
+        val koftr = SET_FRTPCD_CODE
 
         if (koftr != "" && koftr != null) {
             if (div != "" && div != null) {
                 content += div
                 content += koftr
-                val frorcd = frorcdTV.text.toString()
+                val frorcd = FROR_CD_CODE
 
                 if (frorcd != "" && frorcd != null) {
                     content += frorcd
                 }
 
-                val dmclscd = dmclscdTV.text.toString()
+                val dmclscd = DMCLS_CD_CODE
 
                 if (dmclscd != "" && dmclscd != null) {
                     content += dmclscd
                 }
 
-                val agcls = agclsTV.text.toString()
+                val agcls = AGCLS_CD_CODE
 
                 if (agcls != "" && agcls != null) {
                     content += agcls
                 }
 
-                val dnst = dnstTV.text.toString()
+                val dnst = DNST_CD_CODE
 
                 if (dnst != "" && dnst != null) {
                     content += dnst
@@ -890,8 +1075,8 @@ class StockActivity : Activity() {
         val dataList: Array<String> = arrayOf("*");
         var div = ""
 
-        if (koftr != "" && koftr != null) {
-            var data = db!!.query("Vegetation", dataList, "SIGN = '$koftr'", null, null, null, "", null)
+        if (SET_FRTPCD_CODE != "" && SET_FRTPCD_CODE != null) {
+            var data = db!!.query("Vegetation", dataList, "SIGN = '$SET_FRTPCD_CODE'", null, null, null, "", null)
             while (data.moveToNext()){
 
                 var model : Vegetation;
@@ -909,5 +1094,83 @@ class StockActivity : Activity() {
             data.close()
         }
     }
+
+    fun addSelectItem(){
+        val selectitem1 = StockMapSelect("입목지"," : 산림의 정의에 따른 구분","1",false)
+        val selectitem2 = StockMapSelect("무립목지"," : 미립목지, 제지","2",false)
+        val selectitem3 = StockMapSelect("비산림"," : 산림이외의 지역과 산림으로 둘러싸여 있는 초지, 경작지, 하천 과수원, 기타","0",false)
+
+        val selectitem4 = StockMapSelect("침엽수림"," : 침엽수의 수관 점유면적이 75% 이상","1",false)
+        val selectitem5 = StockMapSelect("활엽수림"," : 활엽수의 수관 점유면적이 75% 이상","2",false)
+        val selectitem6 = StockMapSelect("혼효림"," : 침활이 25% 이상, 75% 미만인 임분","3",false)
+        val selectitem7 = StockMapSelect("죽림"," : 대나무림","4",false)
+        val selectitem8 = StockMapSelect("무립목지/비산림"," : 산림의 구분이 무립목지/비산림인 경우","0",false)
+
+        val selectitem9 = StockMapSelect("인공림"," : 조림이나 파종 등에 의해 인위적으로 형성된 산림","1",false)
+        val selectitem10 = StockMapSelect("천연림"," : 인간의 간섭을 받지 않고 자연적으로 형성된 산림","2",false)
+        val selectitem11 = StockMapSelect("무립목지/비산림"," : 산림의 구분이 무립목지/비산림인 경우","0",false)
+
+        val selectitem12 = StockMapSelect("치수"," : 흉고직경 6cm 미만 입목의 수관점유면적 비율이 51% 이상","0",false)
+        val selectitem13 = StockMapSelect("소경목"," : 흉고직경 6cm 이상 18cm 미만 입목의 수관점유면적 비율이 51% 이상","1",false)
+        val selectitem14 = StockMapSelect("중경목"," : 흉고직경 18cm 이상 30cm 미만 입목의 수관점유면적 비율이 51% 이상","2",false)
+        val selectitem15 = StockMapSelect("중경목"," : 흉고직경 30cm 이상 입목의 수관점유면적 비율이 51% 이상","3",false)
+
+        val selectitem16 = StockMapSelect("1영급"," : 1~10 년생의 수관점유 비율이 50% 이상","1",false)
+        val selectitem17 = StockMapSelect("2영급"," : 11~20 년생의 수관점유 비율이 50% 이상","2",false)
+        val selectitem18 = StockMapSelect("3영급"," : 21~30 년생의 수관점유 비율이 50% 이상","3",false)
+        val selectitem19 = StockMapSelect("4영급"," : 31~40 년생의 수관점유 비율이 50% 이상","4",false)
+        val selectitem20 = StockMapSelect("5영급"," : 41~50 년생의 수관점유 비율이 50% 이상","5",false)
+        val selectitem21 = StockMapSelect("6영급"," : 51~60 년생의 수관점유 비율이 50% 이상(25,000 임상도에서는 51 년생 입목의 수관점유비율이 50% 이상인 임분의 의미로 사용)","6",false)
+        val selectitem22 = StockMapSelect("7영급"," : 61~70 년생의 수관점유 비율이 50% 이상","7",false)
+        val selectitem23 = StockMapSelect("8영급"," : 71~80 년생의 수관점유 비율이 50% 이상","8",false)
+        val selectitem24 = StockMapSelect("9영급"," : 81 년생의 수관점유 비율이 50% 이상","9",false)
+
+        val selectitem25 = StockMapSelect("소"," : 교목의 수관점유 면적이 50% 이하인 임분","A",false)
+        val selectitem26 = StockMapSelect("2영급"," : 교목의 수관점유 면적이 51%~70% 이하인 임분","B",false)
+        val selectitem27 = StockMapSelect("3영급"," : 교목의 수관점유 면적이 71% 이상인 임분","C",false)
+
+
+        frtpdata.add(selectitem4)
+        frtpdata.add(selectitem5)
+        frtpdata.add(selectitem6)
+        frtpdata.add(selectitem7)
+        frtpdata.add(selectitem8)
+
+        frtpcddata.add(selectitem4)
+        frtpcddata.add(selectitem5)
+        frtpcddata.add(selectitem6)
+        frtpcddata.add(selectitem7)
+        frtpcddata.add(selectitem8)
+
+        storunstdata.add(selectitem1)
+        storunstdata.add(selectitem2)
+        storunstdata.add(selectitem3)
+
+        frordata.add(selectitem9)
+        frordata.add(selectitem10)
+        frordata.add(selectitem11)
+
+        dmclsdata.add(selectitem12)
+        dmclsdata.add(selectitem13)
+        dmclsdata.add(selectitem14)
+        dmclsdata.add(selectitem15)
+
+
+        agclsdata.add(selectitem16)
+        agclsdata.add(selectitem17)
+        agclsdata.add(selectitem18)
+        agclsdata.add(selectitem19)
+        agclsdata.add(selectitem20)
+        agclsdata.add(selectitem21)
+        agclsdata.add(selectitem22)
+        agclsdata.add(selectitem23)
+        agclsdata.add(selectitem24)
+
+        dnstdata.add(selectitem25)
+        dnstdata.add(selectitem26)
+        dnstdata.add(selectitem27)
+    }
+
+
 
 }

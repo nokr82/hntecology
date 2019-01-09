@@ -127,10 +127,11 @@ class DlgLayersActivity : Activity() {
 
             if(intent.getSerializableExtra("layerFileName") != null){
                 var filename: ArrayList<String> = intent.getSerializableExtra("layerFileName") as ArrayList<String>
+                val gropid:ArrayList<String> = intent.getSerializableExtra("layerGropId") as ArrayList<String>
 
-                for(i in 0..filename.size-1){
+                for(i in 0..gropid.size-1){
                     for(j in 0..adapterData.size-1){
-                        if(filename.get(i) == adapterData.get(j).file_name){
+                        if(gropid.get(i) == adapterData.get(j).grop_id){
                             adapterData.get(j).is_checked = true
                         }
                     }

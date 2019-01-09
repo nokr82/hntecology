@@ -1866,6 +1866,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             etUNUS_NOTEET.setText(biotope_attribute.UNUS_NOTE.toString())
 
             etIMP_FORMET.setText(biotope_attribute.IMP_FORM.toString())
+            landuse = biotope_attribute.LANDUSE
+
 
 //            if (intent.getStringExtra("biotope") != null){
 //                biotope = intent.getStringExtra("biotope")

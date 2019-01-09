@@ -139,6 +139,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     private var db: SQLiteDatabase? = null
 
     var layerFileName:ArrayList<String> = ArrayList<String>()
+    var layerGropId:ArrayList<String> = ArrayList<String>()
 
     var biotopeDatas:ArrayList<Biotope_attribute> = ArrayList<Biotope_attribute>()
     var birdsDatas:ArrayList<Birds_attribute> = ArrayList<Birds_attribute>()
@@ -284,6 +285,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             intent.putExtra("zoom", zoom)
             if(layerFileName != null){
                 intent.putExtra("layerFileName",layerFileName)
+                intent.putExtra("layerGropId",layerGropId)
             }
             startActivityForResult(intent, REQUEST_LAYER)
 
@@ -500,6 +502,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             if(layerFileName != null){
                 layerFileName.clear()
+            }
+
+            if (layerGropId != null){
+                layerGropId.clear()
+            }
+
+            if (layersDatas != null){
+                layersDatas.clear()
             }
 
             splitRL.isSelected = false
@@ -1464,6 +1474,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             layerFileName.clear()
                         }
 
+                        if (layerGropId != null){
+                            layerGropId.clear()
+                        }
+
                         if (jsonOb.size == 0) {
                             println("000000")
                             loadLayer("", "", "", "")
@@ -1491,11 +1505,25 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 // println("jsonOB . filename ${jsonOb.get(i).file_name}")
 
                                 layerFileName.add(jsonOb.get(i).file_name)
+                                layerGropId.add(jsonOb.get(i).grop_id!!)
                                 layersDatas.add(jsonOb.get(i))
                             }
                         })
                     } else {
                         googleMap.clear()
+
+                        if (layerFileName != null) {
+                            layerFileName.clear()
+                        }
+
+                        if (layerGropId != null){
+                            layerGropId.clear()
+                        }
+
+                        if (layersDatas != null){
+                            layersDatas.clear()
+                        }
+
                     }
 
                 }

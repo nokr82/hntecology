@@ -65,13 +65,13 @@ class LoginActivity : Activity() {
 
             val prjname:String = prjnameTV.text.toString()
 
-            /*
+
 
             if (prjname == "" || prjname == null) {
-                Toast.makeText(this, "프로젝트 이름을 입력해 주세요", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "프로젝트 이름을 선택해 주세요", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-            */
+
 
             val intent: Intent = Intent(this, MainActivity::class.java);
 

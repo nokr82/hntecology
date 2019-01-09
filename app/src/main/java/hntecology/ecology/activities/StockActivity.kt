@@ -306,6 +306,11 @@ class StockActivity : Activity() {
 //            map_lable2ET.setText(stockMap.MAP_LABEL2)
             etcpcmttET.setText(stockMap.ETC_PCMTT)
             confmodTV.setText(stockMap.CONF_MOD)
+            landuse = stockMap.LANDUSE
+
+            println("landuse------$landuse")
+
+
 
         }
 
@@ -551,10 +556,11 @@ class StockActivity : Activity() {
                         stockMap.GPS_LON = gpslonTV.text.toString().toFloat()
                         stockMap.CONF_MOD = "N"
                         println("stockmap.LANDUSE----${stockMap.LANDUSE}")
+                        stockMap.LANDUSE = landuse
                         if (stockMap.LANDUSE != null || stockMap.LANDUSE != ""){
 
                         } else {
-                            stockMap.LANDUSE = landuse
+
                         }
 
                         if (chkdata) {

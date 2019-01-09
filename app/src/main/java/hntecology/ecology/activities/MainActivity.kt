@@ -7572,7 +7572,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
 
         val locationRequest = LocationRequest.create()?.apply {
-            interval = 1000 * 30
+            interval = 1000 * 10
             fastestInterval = 5000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
@@ -7625,7 +7625,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             var distance = SphericalUtil.computeDistanceBetween(latlng, latlng2)
 
-            // println("distance : $distance")
+            println("distance : $distance")
 
             if (distance.toInt() in MIN_DISTANCE..(MAX_DISTANCE - 1) || (prevLatitude == -1.0 && prevLongitude == -1.0)) {
                 val tracking: Tracking = Tracking(null, location.latitude, location.longitude)

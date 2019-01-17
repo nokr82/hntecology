@@ -1109,12 +1109,22 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 dlg_gpsCallbackData -> {
-                    latitude = data!!.getDoubleExtra("latitude", 37.39627)
-                    longitude = data.getDoubleExtra("longitude", 126.79235)
+
+
+                    val dataList: Array<String> = arrayOf("*")
+                    val data = db!!.query("settings", dataList, null, null, null, null, "id desc", "1")
+
+                    while (data.moveToNext()) {
+
+                        var gpsset: GpsSet = GpsSet(data.getInt(0), data.getDouble(1), data.getDouble(2),data.getString(3), data.getInt(4))
+
+                        latitude = gpsset.latitude!!
+                        longitude = gpsset.longitude!!
+
+
+                    }
 
                     prjname = PrefUtils.getStringPreference(context, "prjname");
-
-
 
                     val gpsSet: GpsSet = GpsSet(null, latitude, longitude,prjname, -1)
                     dbManager!!.insertGpsSet(gpsSet)

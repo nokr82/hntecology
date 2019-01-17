@@ -66,6 +66,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
     val SET_DATA4 = 4
     val SET_DATA5 = 5
     val SET_DATA6 = 6
+    val SET_RATE = 7
 
     val BIOTOPE_BASE = 3000
     var keyId: String? = null;
@@ -261,6 +262,15 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         }
 
+        etLU_TY_RATEET.setOnClickListener {
+            val intent = Intent(this, DlgCommonSubActivity::class.java)
+            intent.putExtra("title", "토지이용유형(%)")
+            intent.putExtra("DlgHeight", 600f);
+            intent.putExtra("selectDlg", 500);
+
+            startActivityForResult(intent, SET_RATE);
+        }
+
         etTRE_SPECET.setOnClickListener {
             val intent = Intent(this, DlgVascularActivity::class.java)
             intent.putExtra("title", "교목층")
@@ -399,49 +409,68 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                 if (biotope_attribute.LU_GR_NUM != null && biotope_attribute.LU_GR_NUM != "") {
 
-                    var text = biotope_attribute.LU_GR_NUM!!.split(":")
-
-                    println("text ------ $text")
-
-                    val dataSelectList: Array<String> = arrayOf("name")
-                    val data = db!!.query("biotopeM", dataList, "code = '" + text.get(0) + "'", null, null, null, "", null);
-
-                    while (data.moveToNext()) {
-                        TVLU_GR_NumTV.setText(data.getString(1))
-                        if (TVLU_GR_NumTV.text == null) {
-                            TVLU_GR_NumTV.setText("")
-                        }
-                        ETLU_GR_NumET.setText(data.getString(1))
-                        if (ETLU_GR_NumET.text == null) {
-                            ETLU_GR_NumET.setText("")
-                        }
-
+                    TVLU_GR_NumTV.setText(biotope_attribute.LU_GR_NUM)
+                    if (TVLU_GR_NumTV.text == null) {
+                        TVLU_GR_NumTV.setText("")
                     }
+                    ETLU_GR_NumET.setText(biotope_attribute.LU_GR_NUM)
+                    if (ETLU_GR_NumET.text == null) {
+                        ETLU_GR_NumET.setText("")
+                    }
+//                    var text = biotope_attribute.LU_GR_NUM!!.split(":")
+//
+//                    println("text ------ $text")
+//
+//                    val dataSelectList: Array<String> = arrayOf("name")
+//                    val data = db!!.query("biotopeM", dataList, "code = '" + text.get(0) + "'", null, null, null, "", null);
+//
+//                    while (data.moveToNext()) {
+//                        TVLU_GR_NumTV.setText(data.getString(1))
+//                        if (TVLU_GR_NumTV.text == null) {
+//                            TVLU_GR_NumTV.setText("")
+//                        }
+//                        ETLU_GR_NumET.setText(data.getString(1))
+//                        if (ETLU_GR_NumET.text == null) {
+//                            ETLU_GR_NumET.setText("")
+//                        }
+//
+//                    }
                 }
 
                 if (biotope_attribute.LC_TY != null&& biotope_attribute.LC_TY != "") {
 
-                    val dataSelectList: Array<String> = arrayOf("name", "code");
-                    val data = db!!.query("biotopeS", dataList, "code = '" + biotope_attribute.LC_TY + "'", null, null, null, "", null);
-
-                    while (data.moveToNext()) {
-
-                        TVLC_GR_NUMTV.setText(data.getString(1))
-                        if (TVLC_GR_NUMTV.text == null) {
-                            TVLC_GR_NUMTV.setText("")
-                        }
-                        ETlcmGR_NumET.setText(data.getString(1) )
-                        if (ETlcmGR_NumET.text == null) {
-                            ETlcmGR_NumET.setText("")
-                        }
+                    TVLC_GR_NUMTV.setText(biotope_attribute.LC_TY)
+                    if (TVLC_GR_NUMTV.text == null) {
+                        TVLC_GR_NUMTV.setText("")
                     }
+                    ETlcmGR_NumET.setText(biotope_attribute.LC_TY)
+                    if (ETlcmGR_NumET.text == null) {
+                        ETlcmGR_NumET.setText("")
+                    }
+
+//                    TVLC_GR_NUMTV.setText(data.getString(1))
+//                    val dataSelectList: Array<String> = arrayOf("name", "code");
+//                    val data = db!!.query("biotopeS", dataList, "code = '" + biotope_attribute.LC_TY + "'", null, null, null, "", null);
+//
+//                    while (data.moveToNext()) {
+//
+//                        TVLC_GR_NUMTV.setText(data.getString(1))
+//                        if (TVLC_GR_NUMTV.text == null) {
+//                            TVLC_GR_NUMTV.setText("")
+//                        }
+//                        ETlcmGR_NumET.setText(data.getString(1) )
+//                        if (ETlcmGR_NumET.text == null) {
+//                            ETlcmGR_NumET.setText("")
+//                        }
+//                    }
                 }
 
                 var num = biotope_attribute.LC_TY
-                var textnum = ""
-                if (num != null && num.length > 1) {
-                    var textnum = num!!.substring(0, 1)
-                }
+                var textnum = num
+//                var textnum = ""
+//                if (num != null && num.length > 1) {
+//                    var textnum = num!!.substring(0, 1)
+//                }
 
                 //투수
                 if (textnum == "B") {
@@ -807,7 +836,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                         if (etLU_TY_RATEET.text.isNotEmpty()) {
 
-                            biotope_attribute.LU_TY_RATE = Utils.getString(etLU_TY_RATEET).toFloat();
+//                            biotope_attribute.LU_TY_RATE = Utils.getString(etLU_TY_RATEET).toFloat();
+                            biotope_attribute.LU_TY_RATE = etLU_TY_RATEET.text.toString().toFloat()
                         }
                         if (etSTAND_HET.text.isNotEmpty()) {
 
@@ -816,6 +846,10 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                         biotope_attribute.LC_GR_NUM = ETlcmGR_NumET.text.toString()
                         biotope_attribute.TY_MARK = TVTY_MARKTV.text.toString()
+
+                        if (ETTY_MARKET.text.toString() != null && ETTY_MARKET.text.toString() != "") {
+                            biotope_attribute.TY_MARK = ETTY_MARKET.text.toString()
+                        }
 
                         if (etGV_RATEET.text.isNotEmpty()) {
 
@@ -1385,7 +1419,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
             if (etLU_TY_RATEET.text.isNotEmpty()) {
 
-                biotope_attribute.LU_TY_RATE = Utils.getString(etLU_TY_RATEET).toFloat();
+//                biotope_attribute.LU_TY_RATE = Utils.getString(etLU_TY_RATEET).toFloat();
+                biotope_attribute.LU_TY_RATE = etLU_TY_RATEET.text.toString().toFloat()
             }
             if (etSTAND_HET.text.isNotEmpty()) {
 
@@ -1402,6 +1437,10 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 biotope_attribute.LC_GR_NUM = ETlcmGR_NumET.text.toString()
             }
             biotope_attribute.TY_MARK = TVTY_MARKTV.text.toString()
+
+            if (ETTY_MARKET.text.toString() != null && ETTY_MARKET.text.toString() != "") {
+                biotope_attribute.TY_MARK = ETTY_MARKET.text.toString()
+            }
 
             if (etGV_RATEET.text.isNotEmpty()) {
 
@@ -1774,39 +1813,61 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
             if (biotope_attribute.LU_GR_NUM != null) {
 
-                val dataSelectList: Array<String> = arrayOf("name")
-                val data = db.query("biotopeM", dataList, "code = '" + biotope_attribute.LU_GR_NUM + "'", null, null, null, "", null);
+                var substring = biotope_attribute.LU_GR_NUM!!.substring(0, 1)
 
-                while (data.moveToNext()) {
-
-                    TVLU_GR_NumTV.setText(data.getString(1))
-                    if (TVLU_GR_NumTV.text == null) {
-                        TVLU_GR_NumTV.setText("")
-                    }
-                    ETLU_GR_NumET.setText(data.getString(1))
-                    if (ETLU_GR_NumET.text == null) {
-                        ETLU_GR_NumET.setText("")
-                    }
-
+                TVLU_GR_NumTV.setText(substring)
+                if (TVLU_GR_NumTV.text == null) {
+                    TVLU_GR_NumTV.setText("")
                 }
+                ETLU_GR_NumET.setText(substring)
+                if (ETLU_GR_NumET.text == null) {
+                    ETLU_GR_NumET.setText("")
+                }
+
+//                val dataSelectList: Array<String> = arrayOf("name")
+//                val data = db.query("biotopeM", dataList, "code = '" + biotope_attribute.LU_GR_NUM + "'", null, null, null, "", null);
+//
+//                while (data.moveToNext()) {
+//
+//                    TVLU_GR_NumTV.setText(data.getString(1))
+//                    if (TVLU_GR_NumTV.text == null) {
+//                        TVLU_GR_NumTV.setText("")
+//                    }
+//                    ETLU_GR_NumET.setText(data.getString(1))
+//                    if (ETLU_GR_NumET.text == null) {
+//                        ETLU_GR_NumET.setText("")
+//                    }
+//
+//                }
             }
 
             if (biotope_attribute.LC_GR_NUM != null) {
 
-                val dataSelectList: Array<String> = arrayOf("name", "code");
-                val data = db.query("biotopeS", dataList, "code = '" + biotope_attribute.LC_GR_NUM + "'", null, null, null, "", null);
+                var substring = biotope_attribute.LC_GR_NUM!!.substring(0, 1)
 
-                while (data.moveToNext()) {
-
-                    TVLC_GR_NUMTV.setText(data.getString(1))
-                    if (TVLC_GR_NUMTV.text == null) {
-                        TVLC_GR_NUMTV.setText("")
-                    }
-                    ETlcmGR_NumET.setText(data.getString(1))
-                    if (ETlcmGR_NumET.text == null) {
-                        ETlcmGR_NumET.setText("")
-                    }
+                TVLC_GR_NUMTV.setText(substring)
+                if (TVLC_GR_NUMTV.text == null) {
+                    TVLC_GR_NUMTV.setText("")
                 }
+                ETlcmGR_NumET.setText(substring)
+                if (ETlcmGR_NumET.text == null) {
+                    ETlcmGR_NumET.setText("")
+                }
+
+//                val dataSelectList: Array<String> = arrayOf("name", "code");
+//                val data = db.query("biotopeS", dataList, "code = '" + biotope_attribute.LC_GR_NUM + "'", null, null, null, "", null);
+//
+//                while (data.moveToNext()) {
+//
+//                    TVLC_GR_NUMTV.setText(data.getString(1))
+//                    if (TVLC_GR_NUMTV.text == null) {
+//                        TVLC_GR_NUMTV.setText("")
+//                    }
+//                    ETlcmGR_NumET.setText(data.getString(1))
+//                    if (ETlcmGR_NumET.text == null) {
+//                        ETlcmGR_NumET.setText("")
+//                    }
+//                }
             }
 
             //투수
@@ -2093,18 +2154,24 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     //토지이용현황
                     if (biotopeModel.codeType == "biotopeM") {
 
-                        TVLU_GR_NumTV.setText(biotopeModel.code)
+//                        TVLU_GR_NumTV.setText(biotopeModel.code)
+                        var substring = biotopeModel.code!!.substring(0, 1)
+
+//                        TVLU_GR_NumTV.setText(biotopeModel.code)
+                        TVLU_GR_NumTV.setText(substring)
                         if (TVLU_GR_NumTV.text == null) {
                             TVLU_GR_NumTV.setText("")
                         }
-                        ETLU_GR_NumET.setText(biotopeModel.code)
+//                        ETLU_GR_NumET.setText(biotopeModel.code)
+                        ETLU_GR_NumET.setText(substring)
                         if (ETLU_GR_NumET.text == null) {
                             ETLU_GR_NumET.setText("")
                         }
                         //토지피복현황
                     } else if (biotopeModel.codeType == "biotopeS") {
-
-                        ETlcmGR_NumET.setText(biotopeModel.code)
+                        var substring = biotopeModel.code!!.substring(0, 1)
+//                        ETlcmGR_NumET.setText(biotopeModel.code)
+                        ETlcmGR_NumET.setText(substring)
                         if (ETlcmGR_NumET.text == null) {
                             ETlcmGR_NumET.setText("")
                         }
@@ -2121,24 +2188,29 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         //불투수
                         if (bioModelParent.code == "A") {
 
-                            etlcmTypeiET.setText(biotopeModel.code)
-                            TVLC_GR_NUMTV.setText(biotopeModel.code)
-                            println("biotopeModel ${biotopeModel.code}")
+//                            etlcmTypeiET.setText(biotopeModel.code)
+//                            TVLC_GR_NUMTV.setText(biotopeModel.code)
+                            etlcmTypeiET.setText(substring)
+                            TVLC_GR_NUMTV.setText(substring)
                             //투수
                         } else if (bioModelParent.code == "B") {
 
-                            etlcmTypepET.setText(biotopeModel.code)
-                            TVLC_GR_NUMTV.setText(biotopeModel.code)
+//                            etlcmTypepET.setText(biotopeModel.code)
+//                            TVLC_GR_NUMTV.setText(biotopeModel.code)
+                            etlcmTypepET.setText(substring)
+                            TVLC_GR_NUMTV.setText(substring)
                             //녹지
                         } else if (bioModelParent.code == "C") {
-
-                            etlcmTypegET.setText(biotopeModel.code)
-                            TVLC_GR_NUMTV.setText(biotopeModel.code)
+                            etlcmTypegET.setText(substring)
+                            TVLC_GR_NUMTV.setText(substring)
+//                            etlcmTypegET.setText(biotopeModel.code)
+//                            TVLC_GR_NUMTV.setText(biotopeModel.code)
                             //수공간
                         } else if (bioModelParent.code == "D") {
-
-                            etlcmTypewET.setText(biotopeModel.code)
-                            TVLC_GR_NUMTV.setText(biotopeModel.code)
+                            etlcmTypewET.setText(substring)
+                            TVLC_GR_NUMTV.setText(substring)
+//                            etlcmTypewET.setText(biotopeModel.code)
+//                            TVLC_GR_NUMTV.setText(biotopeModel.code)
                         }
 
                         //현존식생현황  아직 테이블 명 코드 미정
@@ -2213,11 +2285,33 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         vegetation = data!!.getSerializableExtra("Vegetation") as Vegetation
                         if (data!!.getSerializableExtra("Number") != null) {
                             number = data!!.getSerializableExtra("Number") as Number
-                            TVTY_MARKTV.setText(vegetation.SIGN + number.COUNT)
+                            val category = vegetation.CATEGORY
+                            if (category == "기타"){
+                                TVTY_MARKTV.setText("")
+                                ETTY_MARKET.setText("")
+                                TVTY_MARKTV.visibility = View.GONE
+                                ETTY_MARKET.visibility = View.VISIBLE
+                            } else {
+                                ETTY_MARKET.setText("")
+                                ETTY_MARKET.visibility = View.GONE
+                                TVTY_MARKTV.visibility = View.VISIBLE
+                                TVTY_MARKTV.setText(vegetation.SIGN + number.COUNT)
+                            }
                         }
 
                     }
 
+                    if (data!!.getStringExtra("etc")!= null){
+                        TVTY_MARKTV.setText("")
+                        ETTY_MARKET.setText("")
+                        TVTY_MARKTV.visibility = View.GONE
+                        ETTY_MARKET.visibility = View.VISIBLE
+                    }
+
+                }
+
+                SET_RATE -> {
+                    etLU_TY_RATEET.setText(data!!.getStringExtra("selectDlg"))
                 }
 
                 BIOTOPE_BASE -> {

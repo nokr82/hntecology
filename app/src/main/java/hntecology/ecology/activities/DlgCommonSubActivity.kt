@@ -97,6 +97,29 @@ class DlgCommonSubActivity : Activity() {
 
             }
 
+            500 -> {
+                listdata1.add("5")
+                listdata1.add("10")
+                listdata1.add("15")
+                listdata1.add("20")
+                listdata1.add("25")
+                listdata1.add("30")
+                listdata1.add("35")
+                listdata1.add("40")
+                listdata1.add("45")
+                listdata1.add("50")
+                listdata1.add("55")
+                listdata1.add("60")
+                listdata1.add("65")
+                listdata1.add("70")
+                listdata1.add("75")
+                listdata1.add("80")
+                listdata1.add("85")
+                listdata1.add("90")
+                listdata1.add("95")
+                listdata1.add("100")
+            }
+
         }
 
         //대분류 데이터 셋팅

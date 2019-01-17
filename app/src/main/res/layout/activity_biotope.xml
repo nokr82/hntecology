@@ -311,7 +311,9 @@
                                 style="@style/BiotopeTextView"
                                 />
 
-                            <EditText
+                            <TextView
+                                android:hint="click"
+                                style="@style/BiotopeEditText"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="2"
@@ -319,7 +321,6 @@
                                 android:maxLength="10"
                                 android:id="@+id/etLU_TY_RATEET"
                                 android:gravity="center"
-                                style="@style/BiotopeEditText"
                                 />
 
 
@@ -572,6 +573,7 @@
                                 />
 
                             <TextView
+                                android:visibility="visible"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="2"
@@ -580,8 +582,12 @@
                                 android:gravity="center"
                                 />
                             <EditText
+                                android:visibility="gone"
                                 android:layout_width="0dp"
-                                android:layout_height="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="2"
+                                android:background="@null"
+                                style="@style/BiotopeEditText"
                                 android:id="@+id/ETTY_MARKET"
                                 />
                             <Button

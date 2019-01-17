@@ -241,19 +241,32 @@ class DlgBiotopeClassActivity : Activity() {
 
             list4position = position
 
-            val dataList:Array<String> = arrayOf("COUNT");
+            val vegetation : Vegetation = listAdapte5.getItem(position)
+            val cate = vegetation.CATEGORY
 
-            val numdata=  db!!.query("Number",dataList,null,null,null,null,"COUNT",null);
+            if (cate == "기타"){
+                var intent = Intent();
 
-            listAdapte5.setItemSelect(position)
+                intent.putExtra("etc",cate)
 
-            class_probar.visibility= View.VISIBLE
-            data4List(listdata6,numdata)
-            class_probar.visibility= View.GONE
+                setResult(RESULT_OK, intent);
+                finish()
+            } else {
+                val dataList:Array<String> = arrayOf("COUNT");
 
-            listAdapte5.notifyDataSetChanged()
+                val numdata=  db!!.query("Number",dataList,null,null,null,null,"COUNT",null);
 
-            numdata.close()
+                listAdapte5.setItemSelect(position)
+
+                class_probar.visibility= View.VISIBLE
+                data4List(listdata6,numdata)
+                class_probar.visibility= View.GONE
+
+                listAdapte5.notifyDataSetChanged()
+
+                numdata.close()
+            }
+
 
         })
 
@@ -311,6 +324,9 @@ class DlgBiotopeClassActivity : Activity() {
 
             listdata.add(model)
         }
+
+        var additem = Vegetation(1,"기타",1,"기타","기타",false)
+        listdata.add(additem)
     }
 
     fun data4List(listdata:ArrayList<Number>, data: Cursor) {

@@ -727,9 +727,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void insertmanyflora_attribute(ManyFloraAttribute ManyFloraAttribute){
         String query = "INSERT INTO ManyFloraAttribute";
         query += "(GROP_ID,INV_REGION,INV_PERSON,INV_DT,INV_TM,TRE_NUM,TRE_SPEC,TRE_FAMI";
-        query += ",TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE,STRE_NUM,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_H,STRE_BREA";
-        query += ",STRE_COVE,SHR_NUM,SHR_SPEC,SHR_FAMI,SHR_SCIEN,SHR_H,SHR_COVE,HER_NUM,HER_SPEC,HER_FAMI";
-        query += ",HER_SCIEN,HER_H,HER_COVE,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD)";
+        query += ",TRE_SCIEN,TRE_DBH,TRE_TOIL,TRE_UNDER,TRE_WATER,TRE_TYPE,STRE_NUM,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_DBH,STRE_TOIL,STRE_UNDER,STRE_WATER,STRE_TYPE";
+        query += ",SHR_NUM,SHR_SPEC,SHR_FAMI,SHR_SCIEN,SHR_TOIL,SHR_WATER,SHR_UNDER,HER_NUM,HER_SPEC,HER_FAMI";
+        query += ",HER_SCIEN,HER_DOMIN,HER_GUNDO,HER_HEIGHT,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD)";
 
         query += " values (";
         query += " '" + ManyFloraAttribute.getGROP_ID() + "'";
@@ -741,28 +741,38 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + ManyFloraAttribute.getTRE_SPEC() + "'";
         query += ", '" + ManyFloraAttribute.getTRE_FAMI() + "'";
         query += ", '" + ManyFloraAttribute.getTRE_SCIEN() + "'";
-        query += ", '" + ManyFloraAttribute.getTRE_H() + "'";
-        query += ", '" + ManyFloraAttribute.getTRE_BREA() + "'";
-        query += ", '" + ManyFloraAttribute.getTRE_COVE() + "'";
+        query += ", '" + ManyFloraAttribute.getTRE_DBH() + "'";
+        query += ", '" + ManyFloraAttribute.getTRE_TOIL() + "'";
+        query += ", '" + ManyFloraAttribute.getTRE_UNDER() + "'";
+        query += ", '" + ManyFloraAttribute.getTRE_WATER() + "'";
+        query += ", '" + ManyFloraAttribute.getTRE_TYPE() + "'";
+
         query += ", '" + ManyFloraAttribute.getSTRE_NUM() + "'";
         query += ", '" + ManyFloraAttribute.getSTRE_SPEC() + "'";
         query += ", '" + ManyFloraAttribute.getSTRE_FAMI() + "'";
         query += ", '" + ManyFloraAttribute.getSTRE_SCIEN() + "'";
-        query += ", '" + ManyFloraAttribute.getSTRE_H() + "'";
-        query += ", '" + ManyFloraAttribute.getSTRE_BREA() + "'";
-        query += ", '" + ManyFloraAttribute.getSTRE_COVE() + "'";
+        query += ", '" + ManyFloraAttribute.getSTRE_DBH() + "'";
+        query += ", '" + ManyFloraAttribute.getSTRE_TOIL() + "'";
+        query += ", '" + ManyFloraAttribute.getSTRE_UNDER() + "'";
+        query += ", '" + ManyFloraAttribute.getSTRE_WATER() + "'";
+        query += ", '" + ManyFloraAttribute.getSTRE_TYPE() + "'";
+
         query += ", '" + ManyFloraAttribute.getSHR_NUM() + "'";
         query += ", '" + ManyFloraAttribute.getSHR_SPEC() + "'";
         query += ", '" + ManyFloraAttribute.getSHR_FAMI() + "'";
         query += ", '" + ManyFloraAttribute.getSHR_SCIEN() + "'";
-        query += ", '" + ManyFloraAttribute.getSHR_H() + "'";
-        query += ", '" + ManyFloraAttribute.getSHR_COVE() + "'";
+        query += ", '" + ManyFloraAttribute.getSHR_TOIL() + "'";
+        query += ", '" + ManyFloraAttribute.getSHR_WATER() + "'";
+        query += ", '" + ManyFloraAttribute.getSHR_UNDER() + "'";
+
         query += ", '" + ManyFloraAttribute.getHER_NUM() + "'";
         query += ", '" + ManyFloraAttribute.getHER_SPEC() + "'";
         query += ", '" + ManyFloraAttribute.getHER_FAMI() + "'";
         query += ", '" + ManyFloraAttribute.getHER_SCIEN() + "'";
-        query += ", '" + ManyFloraAttribute.getHER_H() + "'";
-        query += ", '" + ManyFloraAttribute.getHER_COVE() + "'";
+        query += ", '" + ManyFloraAttribute.getHER_DOMIN() + "'";
+        query += ", '" + ManyFloraAttribute.getHER_GUNDO() + "'";
+        query += ", '" + ManyFloraAttribute.getHER_HEIGHT() + "'";
+
         query += ", '" + ManyFloraAttribute.getGPS_LAT() + "'";
         query += ", '" + ManyFloraAttribute.getGPS_LON() + "'";
         query += ", '" + ManyFloraAttribute.getTEMP_YN() + "'";
@@ -1459,28 +1469,38 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",TRE_SPEC='" + ManyFloraAttribute.getTRE_SPEC() + "'"
                 + ",TRE_FAMI='" + ManyFloraAttribute.getTRE_FAMI() + "'"
                 + ",TRE_SCIEN='" + ManyFloraAttribute.getTRE_SCIEN() + "'"
-                + ",TRE_H='" + ManyFloraAttribute.getTRE_H() + "'"
-                + ",TRE_BREA='" + ManyFloraAttribute.getTRE_BREA() + "'"
-                + ",TRE_COVE='" + ManyFloraAttribute.getTRE_COVE() + "'"
+                + ",TRE_DBH='" + ManyFloraAttribute.getTRE_DBH() + "'"
+                + ",TRE_TOIL='" + ManyFloraAttribute.getTRE_TOIL() + "'"
+                + ",TRE_UNDER='" + ManyFloraAttribute.getTRE_UNDER() + "'"
+                + ",TRE_WATER='" + ManyFloraAttribute.getTRE_WATER() + "'"
+                + ",TRE_TYPE='" + ManyFloraAttribute.getTRE_TYPE() + "'"
+
                 + ",STRE_NUM='" + ManyFloraAttribute.getSTRE_NUM() + "'"
                 + ",STRE_SPEC='" + ManyFloraAttribute.getSTRE_SPEC() + "'"
                 + ",STRE_FAMI='" + ManyFloraAttribute.getSTRE_FAMI() + "'"
                 + ",STRE_SCIEN='" + ManyFloraAttribute.getSTRE_SCIEN() + "'"
-                + ",STRE_H='" + ManyFloraAttribute.getSTRE_H() + "'"
-                + ",STRE_BREA='" + ManyFloraAttribute.getSTRE_BREA() + "'"
-                + ",STRE_COVE='" + ManyFloraAttribute.getSTRE_COVE() + "'"
+                + ",STRE_DBH='" + ManyFloraAttribute.getSTRE_DBH() + "'"
+                + ",STRE_TOIL='" + ManyFloraAttribute.getSTRE_TOIL() + "'"
+                + ",STRE_UNDER='" + ManyFloraAttribute.getSTRE_UNDER() + "'"
+                + ",STRE_WATER='" + ManyFloraAttribute.getSTRE_WATER() + "'"
+                + ",STRE_UNDER='" + ManyFloraAttribute.getSTRE_UNDER() + "'"
+
                 + ",SHR_NUM='" + ManyFloraAttribute.getSHR_NUM() + "'"
                 + ",SHR_SPEC='" + ManyFloraAttribute.getSHR_SPEC() + "'"
                 + ",SHR_FAMI='" + ManyFloraAttribute.getSHR_FAMI() + "'"
                 + ",SHR_SCIEN='" + ManyFloraAttribute.getSHR_SCIEN() + "'"
-                + ",SHR_H='" + ManyFloraAttribute.getSHR_H() + "'"
-                + ",SHR_COVE='" + ManyFloraAttribute.getSHR_COVE() + "'"
+                + ",SHR_TOIL='" + ManyFloraAttribute.getSHR_TOIL() + "'"
+                + ",SHR_WATER='" + ManyFloraAttribute.getSHR_WATER() + "'"
+                + ",SHR_UNDER='" + ManyFloraAttribute.getSHR_UNDER() + "'"
+
                 + ",HER_NUM='" + ManyFloraAttribute.getHER_NUM() + "'"
                 + ",HER_SPEC='" + ManyFloraAttribute.getHER_SPEC() + "'"
                 + ",HER_FAMI='" + ManyFloraAttribute.getHER_FAMI() + "'"
                 + ",HER_SCIEN='" + ManyFloraAttribute.getHER_SCIEN() + "'"
-                + ",HER_H='" + ManyFloraAttribute.getHER_H() + "'"
-                + ",HER_COVE='" + ManyFloraAttribute.getHER_COVE() + "'"
+                + ",HER_DOMIN='" + ManyFloraAttribute.getHER_DOMIN() + "'"
+                + ",getHER_GUNDO='" + ManyFloraAttribute.getHER_GUNDO() + "'"
+                + ",HER_HEIGHT='" + ManyFloraAttribute.getHER_HEIGHT() + "'"
+
                 + ",GPS_LAT='" + ManyFloraAttribute.getGPS_LAT() + "'"
                 + ",GPS_LON='" + ManyFloraAttribute.getGPS_LON() + "'"
                 + ",TEMP_YN='" + ManyFloraAttribute.getTEMP_YN() + "'"
@@ -1516,75 +1536,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",GPS_LON='" + StockMap.getGPS_LON() + "'"
                 + ",CONF_MOD='" + StockMap.getCONF_MOD() + "'"+
                 "where id = '" + pk + "'";
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL(query);
-        db.close();
-
-    }
-
-    public void updatefloratre(TreeData1 TreeData1, String GROP_ID, int TRE_NUM) {
-
-        String query = "UPDATE ManyFloraAttribute SET  " +
-                  "TRE_NUM='" + TreeData1.getPAGE() + "'"
-                + ",TRE_SPEC='" + TreeData1.getSPEC() + "'"
-                + ",TRE_FAMI='" + TreeData1.getFAMI() + "'"
-                + ",TRE_SCIEN='" + TreeData1.getSCIEN() + "'"
-                + ",TRE_H='" + TreeData1.getH() + "'"
-                + ",TRE_BREA='" + TreeData1.getBREA() + "'"
-                + ",TRE_COVE='" + TreeData1.getCOVE() + "'" +
-
-                "where GROP_ID = '" + GROP_ID + "' and TRE_NUM = '" + TRE_NUM + "'";
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL(query);
-        db.close();
-
-    }
-
-    public void updateflorastre(ManyFloraAttribute ManyFloraAttribute,String GROP_ID,int STRE_NUM) {
-
-        String query = "UPDATE ManyFloraAttribute SET  " +
-                "STRE_NUM='" + ManyFloraAttribute.getSTRE_NUM() + "'"
-                + ",STRE_SPEC='" + ManyFloraAttribute.getSTRE_SPEC() + "'"
-                + ",STRE_FAMI='" + ManyFloraAttribute.getSTRE_FAMI() + "'"
-                + ",STRE_SCIEN='" + ManyFloraAttribute.getSTRE_SCIEN() + "'"
-                + ",STRE_H='" + ManyFloraAttribute.getSTRE_H() + "'"
-                + ",STRE_BREA='" + ManyFloraAttribute.getSTRE_BREA() + "'"
-                + ",STRE_COVE='" + ManyFloraAttribute.getSTRE_COVE() + "'" +
-
-                "where GROP_ID = '" + GROP_ID + "' and STRE_NUM = '" + STRE_NUM + "'";
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL(query);
-        db.close();
-
-    }
-
-    public void updateflorashr(ManyFloraAttribute ManyFloraAttribute,String GROP_ID,int SHR_NUM) {
-
-        String query = "UPDATE ManyFloraAttribute SET  " +
-                "SHR_NUM='" + ManyFloraAttribute.getSHR_NUM() + "'"
-                + ",SHR_SPEC='" + ManyFloraAttribute.getSHR_SPEC() + "'"
-                + ",SHR_FAMI='" + ManyFloraAttribute.getSHR_FAMI() + "'"
-                + ",SHR_SCIEN='" + ManyFloraAttribute.getSHR_SCIEN() + "'"
-                + ",SHR_H='" + ManyFloraAttribute.getSHR_H() + "'"
-                + ",SHR_COVE='" + ManyFloraAttribute.getSHR_COVE() + "'" +
-
-                "where GROP_ID = '" + GROP_ID + "' and SHR_NUM = '" + SHR_NUM + "'";
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL(query);
-        db.close();
-
-    }
-    public void updatefloraher(ManyFloraAttribute ManyFloraAttribute,String GROP_ID,int HER_NUM) {
-
-        String query = "UPDATE ManyFloraAttribute SET  " +
-                "HER_NUM='" + ManyFloraAttribute.getHER_NUM() + "'"
-                + ",HER_SPEC='" + ManyFloraAttribute.getHER_SPEC() + "'"
-                + ",HER_FAMI='" + ManyFloraAttribute.getHER_FAMI() + "'"
-                + ",HER_SCIEN='" + ManyFloraAttribute.getHER_SCIEN() + "'"
-                + ",HER_H='" + ManyFloraAttribute.getHER_H() + "'"
-                + ",HER_COVE='" + ManyFloraAttribute.getHER_COVE() + "'" +
-
-                "where GROP_ID = '" + GROP_ID + "' and HER_NUM = '" + HER_NUM + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();

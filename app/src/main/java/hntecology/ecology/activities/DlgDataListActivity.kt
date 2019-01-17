@@ -612,11 +612,11 @@ class DlgDataListActivity : Activity() {
 
             var model : ManyFloraAttribute;
 
-            model =ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
-                    data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getFloat(12), data.getInt(13), data.getString(14)
-                    , data.getString(15),data.getString(16), data.getFloat(17), data.getFloat(18), data.getFloat(19), data.getInt(20), data.getString(21), data.getString(22)
-                    , data.getString(23), data.getFloat(24), data.getFloat(25), data.getInt(26), data.getString(27), data.getString(28),data.getString(29),data.getFloat(30),data.getFloat(31),data.getFloat(32)
-                    ,data.getFloat(33),data.getString(34),data.getString(35))
+            model = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
+                    data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
+                    , data.getInt(15),data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
+                    , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28),data.getFloat(29),data.getString(30),data.getInt(31),data.getString(32)
+                    ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41))
 
             listdata.add(model)
         }
@@ -1103,11 +1103,9 @@ class DlgDataListActivity : Activity() {
                         println("listdata reset $reset")
                         if(reset == 100){
 
-                            val data:Array<String> = arrayOf("id","GROP_ID","INV_REGION","INV_PERSON","INV_DT","INV_TM","TRE_NUM","TRE_SPEC","TRE_FAMI","TRE_SCIEN","TRE_H"
-                                    ,"TRE_BREA" ,"TRE_COVE" ,"STRE_NUM" ,"STRE_SPEC" ,"STRE_FAMI" ,"STRE_SCIEN" ,"STRE_H" ,"STRE_BREA" ,"STRE_COVE" ,"SHR_NUM","SHR_SPEC" ,"SHR_FAMI","SHR_SCIEN"
-                                    ,  "SHR_H","SHR_COVE","HER_NUM","HER_SPEC","HER_FAMI","HER_SCIEN","HER_H","HER_COVE","GPS_LAT","GPS_LON","TEMP_YN","CONF_MOD")
+                            val dataList: Array<String> = arrayOf("*");
 
-                            val manyFloraData = db.query(tableName,data,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null)
+                            val manyFloraData = db.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null)
 
                             if(manyflorasData != null){
                                 manyflorasData.clear()

@@ -155,10 +155,10 @@ class Flora2Activity : Activity() {
             while(data.moveToNext()){
 
                 var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
-                        data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getFloat(12), data.getInt(13), data.getString(14)
-                        , data.getString(15),data.getString(16), data.getFloat(17), data.getFloat(18), data.getFloat(19), data.getInt(20), data.getString(21), data.getString(22)
-                        , data.getString(23), data.getFloat(24), data.getFloat(25), data.getInt(26), data.getString(27), data.getString(28),data.getString(29),data.getFloat(30),data.getFloat(31),data.getFloat(32)
-                        ,data.getFloat(33),data.getString(34),data.getString(35))
+                        data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
+                        , data.getInt(15),data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
+                        , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28),data.getFloat(29),data.getString(30),data.getInt(31),data.getString(32)
+                        ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41))
 
                 // 교목층
 
@@ -173,14 +173,16 @@ class Flora2Activity : Activity() {
                 val TRE_SPEC =  manyFloraAttribute.TRE_SPEC
                 val TRE_FAMI =  manyFloraAttribute.TRE_FAMI
                 val TRE_SCIEN =  manyFloraAttribute.TRE_SCIEN
-                val TRE_H =  manyFloraAttribute.TRE_H
-                val TRE_BREA =  manyFloraAttribute.TRE_BREA
-                val TRE_COVE =  manyFloraAttribute.TRE_COVE
+                val TRE_DBH =  manyFloraAttribute.TRE_DBH
+                val TRE_TOIL =  manyFloraAttribute.TRE_TOIL
+                val TRE_UNDER =  manyFloraAttribute.TRE_UNDER
+                val TRE_WATERWIDTH =  manyFloraAttribute.TRE_WATER
+                val TRE_TYPE =  manyFloraAttribute.TRE_TYPE
 
-                println("TRE_NUM $TRE_NUM TRE_SCIEN $TRE_SCIEN TRE_BREA $TRE_BREA TRE_COVE $TRE_COVE TRE_H $TRE_H")
+                println("TRE_NUM $TRE_NUM TRE_SCIEN $TRE_SCIEN TRE_DBH $TRE_DBH TRE_TOIL $TRE_TOIL TRE_UNDER $TRE_UNDER")
 
-                if (TRE_SPEC!!.length > 0 || TRE_H!! != 0.0f || TRE_BREA!! != 0.0f || TRE_COVE != 0.0f){
-                    val data = TreeData1(PK,TRE_NUM,TRE_SPEC,TRE_FAMI,TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE)
+                if (TRE_SPEC!!.length > 0 || TRE_DBH!! != 0.0f || TRE_TOIL!! != 0.0f || TRE_WATERWIDTH != 0){
+                    val data = TreeData1(PK,TRE_NUM,TRE_SPEC,TRE_FAMI,TRE_SCIEN,TRE_DBH,TRE_TOIL,TRE_UNDER,TRE_WATERWIDTH,TRE_TYPE)
                     TreDatas.add(data)
                     println("TRE_NUM ADD ${data.PAGE}")
                     trepage = manyFloraAttribute.TRE_NUM!!
@@ -188,9 +190,11 @@ class Flora2Activity : Activity() {
                     etTRE_SPECET.setText(manyFloraAttribute.TRE_SPEC)
                     etTRE_FAMIET.setText(manyFloraAttribute.TRE_FAMI)
                     etTRE_SCIENET.setText(manyFloraAttribute.TRE_SCIEN)
-                    etTRE_HET.setText(manyFloraAttribute.TRE_H.toString())
-                    etTRE_BREAET.setText(manyFloraAttribute.TRE_BREA.toString())
-                    etTRE_COVEET.setText(manyFloraAttribute.TRE_COVE.toString())
+                    etTRE_HET.setText(manyFloraAttribute.TRE_DBH.toString())
+                    etTRE_BREAET.setText(manyFloraAttribute.TRE_TOIL.toString())
+                    etTRE_COVEET.setText(manyFloraAttribute.TRE_UNDER.toString())
+                    etTRE_WATERWIDTH.setText(manyFloraAttribute.TRE_WATER.toString())
+                    etTRE_TYPE.setText(manyFloraAttribute.TRE_TYPE.toString())
                 }
 
                 // 아교목층
@@ -199,24 +203,28 @@ class Flora2Activity : Activity() {
                 val STRE_SPEC = manyFloraAttribute.STRE_SPEC
                 val STRE_FAMI = manyFloraAttribute.STRE_FAMI
                 val STRE_SCIEN = manyFloraAttribute.STRE_SCIEN
-                val STRE_H = manyFloraAttribute.STRE_H
-                val STRE_BREA = manyFloraAttribute.STRE_BREA
-                val STRE_COVE = manyFloraAttribute.STRE_COVE
+                val STRE_DBH = manyFloraAttribute.STRE_DBH
+                val STRE_TOIL = manyFloraAttribute.STRE_TOIL
+                val STRE_UNDER = manyFloraAttribute.STRE_UNDER
+                val STRE_WATER = manyFloraAttribute.STRE_WATER
+                val STRE_TYPE = manyFloraAttribute.STRE_TYPE
 
-                println("STRE_NUM $STRE_NUM STRE_SPEC $STRE_FAMI STRE_FAMI $STRE_FAMI STRE_SCIEN $STRE_SCIEN STRE_H $STRE_H")
+                println("STRE_NUM $STRE_NUM STRE_SPEC $STRE_FAMI STRE_FAMI $STRE_FAMI STRE_SCIEN $STRE_SCIEN STRE_H $STRE_DBH")
 
-                if (STRE_SPEC!!.length > 0 || STRE_H!! != 0.0f || STRE_BREA!! != 0.0f || STRE_COVE != 0.0f){
-                    val data = TreeData1(PK,STRE_NUM,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_H,STRE_BREA,STRE_COVE)
+                if (STRE_SPEC!!.length > 0 || STRE_DBH!! != 0.0f || STRE_TOIL!! != 0.0f || STRE_WATER != 0){
+                    val data = TreeData1(PK,STRE_NUM,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_DBH,STRE_TOIL,STRE_UNDER,STRE_WATER,STRE_TYPE)
                     StreDatas.add(data)
                     strepage = manyFloraAttribute.STRE_NUM!!
                     strenumTV.setText(manyFloraAttribute.STRE_NUM.toString())
                     etSTRE_SPECET.setText(manyFloraAttribute.STRE_SPEC)
                     etSTRE_FAMIET.setText(manyFloraAttribute.STRE_FAMI)
                     etSTRE_SCIENET.setText(manyFloraAttribute.STRE_SCIEN)
-                    etSTRE_HET.setText(manyFloraAttribute.STRE_H.toString())
-                    etSTRE_BREAET.setText(manyFloraAttribute.STRE_BREA.toString())
-                    etSTRE_COVEET.setText(manyFloraAttribute.STRE_COVE.toString())
-                    println("STRE_NUM ADD ${data.PAGE}")
+                    etSTRE_HET.setText(manyFloraAttribute.STRE_DBH.toString())
+                    etSTRE_BREAET.setText(manyFloraAttribute.STRE_TOIL.toString())
+                    etSTRE_COVEET.setText(manyFloraAttribute.STRE_UNDER.toString())
+                    etSTRE_WATERWIDTH.setText(manyFloraAttribute.STRE_WATER.toString())
+                    etSTRE_TYPE.setText(manyFloraAttribute.STRE_TYPE.toString())
+
                 }
 
                 //관목층
@@ -225,44 +233,46 @@ class Flora2Activity : Activity() {
                 val SHR_SPEC = manyFloraAttribute.SHR_SPEC
                 val SHR_FAMI = manyFloraAttribute.SHR_FAMI
                 val SHR_SCIEN = manyFloraAttribute.SHR_SCIEN
-                val SHR_H = manyFloraAttribute.SHR_H
-                val SHR_COVE = manyFloraAttribute.SHR_COVE
+                val SHR_TOIL = manyFloraAttribute.SHR_TOIL
+                val SHR_WATERWIDTH = manyFloraAttribute.SHR_WATER
+                val SHR_UNDER = manyFloraAttribute.SHR_UNDER
 
-                println("SHR_NUM $SHR_NUM SHR_SPEC $SHR_SPEC SHR_FAMI $SHR_FAMI SHR_SCIEN $SHR_SCIEN SHR_H $SHR_H")
+                println("SHR_NUM $SHR_NUM SHR_SPEC $SHR_SPEC SHR_FAMI $SHR_FAMI SHR_SCIEN $SHR_SCIEN SHR_TOIL $SHR_TOIL")
 
-                if (SHR_SPEC!!.length > 0 || SHR_H!! != 0.0f || SHR_COVE != 0.0f){
+                if (SHR_SPEC!!.length > 0 || SHR_TOIL!! != 0.0f || SHR_WATERWIDTH != 0.0f){
                     shrpage = manyFloraAttribute.SHR_NUM!!
-                    val data = TreeData2(PK,SHR_NUM,SHR_SPEC,SHR_FAMI,SHR_SCIEN,SHR_H,SHR_COVE)
+                    val data = TreeData2(PK,SHR_NUM,SHR_SPEC,SHR_FAMI,SHR_SCIEN,SHR_TOIL.toString(),SHR_WATERWIDTH.toString(),SHR_UNDER)
                     ShrDatas.add(data)
                     shrnumTV.setText(manyFloraAttribute.SHR_NUM.toString())
                     etSHR_SPECET.setText(manyFloraAttribute.SHR_SPEC)
                     etSHR_FAMIET.setText(manyFloraAttribute.SHR_FAMI)
                     etSHR_SCIENET.setText(manyFloraAttribute.SHR_SCIEN)
-                    etSHR_HET.setText(manyFloraAttribute.SHR_H.toString())
-                    etSTR_COVEET.setText(manyFloraAttribute.STRE_COVE.toString())
-                    println("SHR_NUM ADD ${data.PAGE}")
+                    etSHR_HET.setText(manyFloraAttribute.SHR_TOIL.toString())
+                    etSTR_COVEET.setText(manyFloraAttribute.SHR_WATER.toString())
+                    etSHR_UNDER.setText(manyFloraAttribute.SHR_UNDER.toString())
                 }
 
                 val HER_NUM = manyFloraAttribute.HER_NUM
                 val HER_SPEC = manyFloraAttribute.HER_SPEC
                 val HER_FAMI = manyFloraAttribute.HER_FAMI
                 val HER_SCIEN = manyFloraAttribute.HER_SCIEN
-                val HER_H = manyFloraAttribute.HER_H
-                val HER_COVE = manyFloraAttribute.HER_COVE
+                val HER_DOMIN = manyFloraAttribute.HER_DOMIN
+                val HER_GUNDO = manyFloraAttribute.HER_GUNDO
+                val HER_HEIGHT = manyFloraAttribute.HER_HEIGHT
 
-                println("HER_NUM $HER_NUM HER_SPEC $HER_SPEC HER_FAMI $HER_FAMI HER_SCIEN $HER_SCIEN HER_H $HER_H")
+                println("HER_NUM $HER_NUM HER_SPEC $HER_SPEC HER_FAMI $HER_FAMI HER_SCIEN $HER_SCIEN HER_DOMIN $HER_DOMIN")
 
-                if (HER_SPEC!!.length > 0 || HER_H!! != 0.0f || HER_COVE != 0.0f){
+                if (HER_SPEC!!.length > 0 || HER_DOMIN!! != 0.0f || HER_GUNDO != 0.0f){
                     herpage = manyFloraAttribute.HER_NUM!!
-                    val data = TreeData2(PK,HER_NUM,HER_SPEC,HER_FAMI,HER_SCIEN,HER_H,HER_COVE)
+                    val data = TreeData2(PK,HER_NUM,HER_SPEC,HER_FAMI,HER_SCIEN,HER_DOMIN.toString(),HER_GUNDO.toString(),HER_HEIGHT.toString())
                     HerDatas.add(data)
                     hernumTV.setText(manyFloraAttribute.HER_NUM.toString())
                     etHER_SPECET.setText(manyFloraAttribute.HER_SPEC)
                     etHER_FAMIET.setText(manyFloraAttribute.HER_FAMI)
                     etHER_SCIENET.setText(manyFloraAttribute.HER_SCIEN)
-                    etHER_HET.setText(manyFloraAttribute.HER_H.toString())
-                    etHER_COVEET.setText(manyFloraAttribute.HER_COVE.toString())
-                    println("HER_NUM ADD ${data.PAGE}")
+                    etHER_HET.setText(manyFloraAttribute.HER_DOMIN.toString())
+                    etHER_COVEET.setText(manyFloraAttribute.HER_GUNDO.toString())
+                    etHER_HEIGHT.setText(manyFloraAttribute.HER_HEIGHT.toString())
                 }
 
                 gpslatTV.setText(manyFloraAttribute.GPS_LAT.toString())
@@ -436,9 +446,11 @@ class Flora2Activity : Activity() {
                         etTRE_SPECET.setText(TreDatas.get(i).SPEC)
                         etTRE_FAMIET.setText(TreDatas.get(i).FAMI)
                         etTRE_SCIENET.setText(TreDatas.get(i).SCIEN)
-                        etTRE_HET.setText(TreDatas.get(i).H.toString())
-                        etTRE_BREAET.setText(TreDatas.get(i).BREA.toString())
-                        etTRE_COVEET.setText(TreDatas.get(i).COVE.toString())
+                        etTRE_HET.setText(TreDatas.get(i).DBH.toString())
+                        etTRE_BREAET.setText(TreDatas.get(i).TOIL.toString())
+                        etTRE_COVEET.setText(TreDatas.get(i).UNDER.toString())
+                        etTRE_WATERWIDTH.setText(TreDatas.get(i).WATERWIDTH.toString())
+                        etTRE_TYPE.setText(TreDatas.get(i).TYPE.toString())
                         division = true
                     }
                 }
@@ -449,6 +461,8 @@ class Flora2Activity : Activity() {
                     etTRE_HET.setText("")
                     etTRE_BREAET.setText("")
                     etTRE_COVEET.setText("")
+                    etTRE_WATERWIDTH.setText("")
+                    etTRE_TYPE.setText("")
                 }
 
                 val page = trepage
@@ -480,9 +494,11 @@ class Flora2Activity : Activity() {
                                 etTRE_SPECET.setText(TreDatas.get(i).SPEC)
                                 etTRE_FAMIET.setText(TreDatas.get(i).FAMI)
                                 etTRE_SCIENET.setText(TreDatas.get(i).SCIEN)
-                                etTRE_HET.setText(TreDatas.get(i).H.toString())
-                                etTRE_BREAET.setText(TreDatas.get(i).BREA.toString())
-                                etTRE_COVEET.setText(TreDatas.get(i).COVE.toString())
+                                etTRE_HET.setText(TreDatas.get(i).DBH.toString())
+                                etTRE_BREAET.setText(TreDatas.get(i).TOIL.toString())
+                                etTRE_COVEET.setText(TreDatas.get(i).UNDER.toString())
+                                etTRE_WATERWIDTH.setText(TreDatas.get(i).WATERWIDTH.toString())
+                                etTRE_TYPE.setText(TreDatas.get(i).TYPE.toString())
                             }
 
                             if (TreDatas.get(i).PAGE!! > 1){
@@ -507,9 +523,11 @@ class Flora2Activity : Activity() {
                                 etTRE_SPECET.setText(TreDatas.get(i).SPEC)
                                 etTRE_FAMIET.setText(TreDatas.get(i).FAMI)
                                 etTRE_SCIENET.setText(TreDatas.get(i).SCIEN)
-                                etTRE_HET.setText(TreDatas.get(i).H.toString())
-                                etTRE_BREAET.setText(TreDatas.get(i).BREA.toString())
-                                etTRE_COVEET.setText(TreDatas.get(i).COVE.toString())
+                                etTRE_HET.setText(TreDatas.get(i).DBH.toString())
+                                etTRE_BREAET.setText(TreDatas.get(i).TOIL.toString())
+                                etTRE_COVEET.setText(TreDatas.get(i).UNDER.toString())
+                                etTRE_WATERWIDTH.setText(TreDatas.get(i).WATERWIDTH.toString())
+                                etTRE_TYPE.setText(TreDatas.get(i).TYPE.toString())
                             }
 
                             if (TreDatas.get(i).PAGE!! > trepage){
@@ -553,9 +571,11 @@ class Flora2Activity : Activity() {
                         etSTRE_SPECET.setText(StreDatas.get(i).SPEC)
                         etSTRE_FAMIET.setText(StreDatas.get(i).FAMI)
                         etSTRE_SCIENET.setText(StreDatas.get(i).SCIEN)
-                        etSTRE_HET.setText(StreDatas.get(i).H.toString())
-                        etSTRE_BREAET.setText(StreDatas.get(i).BREA.toString())
-                        etSTRE_COVEET.setText(StreDatas.get(i).COVE.toString())
+                        etSTRE_HET.setText(StreDatas.get(i).DBH.toString())
+                        etSTRE_BREAET.setText(StreDatas.get(i).TOIL.toString())
+                        etSTRE_COVEET.setText(StreDatas.get(i).UNDER.toString())
+                        etSTRE_WATERWIDTH.setText(StreDatas.get(i).WATERWIDTH.toString())
+                        etSTRE_TYPE.setText(StreDatas.get(i).TYPE.toString())
                         division = true
                     }
                 }
@@ -568,6 +588,8 @@ class Flora2Activity : Activity() {
                     etSTRE_HET.setText("")
                     etSTRE_BREAET.setText("")
                     etSTRE_COVEET.setText("")
+                    etSTRE_WATERWIDTH.setText("")
+                    etSTRE_TYPE.setText("")
                 }
 
                 val page = strepage
@@ -601,9 +623,11 @@ class Flora2Activity : Activity() {
                             etSTRE_SPECET.setText(StreDatas.get(i).SPEC)
                             etSTRE_FAMIET.setText(StreDatas.get(i).FAMI)
                             etSTRE_SCIENET.setText(StreDatas.get(i).SCIEN)
-                            etSTRE_HET.setText(StreDatas.get(i).H.toString())
-                            etSTRE_BREAET.setText(StreDatas.get(i).BREA.toString())
-                            etSTRE_COVEET.setText(StreDatas.get(i).COVE.toString())
+                            etSTRE_HET.setText(StreDatas.get(i).DBH.toString())
+                            etSTRE_BREAET.setText(StreDatas.get(i).TOIL.toString())
+                            etSTRE_COVEET.setText(StreDatas.get(i).UNDER.toString())
+                            etSTRE_WATERWIDTH.setText(StreDatas.get(i).WATERWIDTH.toString())
+                            etSTRE_TYPE.setText(StreDatas.get(i).TYPE.toString())
                         }
 
                         if (StreDatas.get(i).PAGE!! > strepage){
@@ -626,9 +650,11 @@ class Flora2Activity : Activity() {
                             etSTRE_SPECET.setText(StreDatas.get(i).SPEC)
                             etSTRE_FAMIET.setText(StreDatas.get(i).FAMI)
                             etSTRE_SCIENET.setText(StreDatas.get(i).SCIEN)
-                            etSTRE_HET.setText(StreDatas.get(i).H.toString())
-                            etSTRE_BREAET.setText(StreDatas.get(i).BREA.toString())
-                            etSTRE_COVEET.setText(StreDatas.get(i).COVE.toString())
+                            etSTRE_HET.setText(StreDatas.get(i).DBH.toString())
+                            etSTRE_BREAET.setText(StreDatas.get(i).TOIL.toString())
+                            etSTRE_COVEET.setText(StreDatas.get(i).UNDER.toString())
+                            etSTRE_WATERWIDTH.setText(StreDatas.get(i).WATERWIDTH.toString())
+                            etSTRE_TYPE.setText(StreDatas.get(i).TYPE.toString())
                         }
 
                         if (StreDatas.get(i).PAGE!! > 2){
@@ -672,6 +698,7 @@ class Flora2Activity : Activity() {
                         etSHR_SCIENET.setText(ShrDatas.get(i).SCIEN)
                         etSHR_HET.setText(ShrDatas.get(i).H.toString())
                         etSTR_COVEET.setText(ShrDatas.get(i).COVE.toString())
+                        etSHR_UNDER.setText(ShrDatas.get(i).ETC.toString())
                         division = true
                     }
                 }
@@ -682,6 +709,7 @@ class Flora2Activity : Activity() {
                     etSHR_SCIENET.setText("")
                     etSHR_HET.setText("")
                     etSTR_COVEET.setText("")
+                    etSHR_UNDER.setText("")
                 }
 
                 val page = shrpage
@@ -715,6 +743,7 @@ class Flora2Activity : Activity() {
                             etSHR_SCIENET.setText(ShrDatas.get(i).SCIEN)
                             etSHR_HET.setText(ShrDatas.get(i).H.toString())
                             etSTR_COVEET.setText(ShrDatas.get(i).COVE.toString())
+                            etSHR_UNDER.setText(ShrDatas.get(i).ETC.toString())
                         }
 
                         if (ShrDatas.get(i).PAGE!! > 1){
@@ -739,6 +768,7 @@ class Flora2Activity : Activity() {
                             etSHR_SCIENET.setText(ShrDatas.get(i).SCIEN)
                             etSHR_HET.setText(ShrDatas.get(i).H.toString())
                             etSTR_COVEET.setText(ShrDatas.get(i).COVE.toString())
+                            etSHR_UNDER.setText(ShrDatas.get(i).ETC.toString())
                         }
 
                         if (ShrDatas.get(i).PAGE!! > shrpage){
@@ -783,6 +813,7 @@ class Flora2Activity : Activity() {
                         etHER_SCIENET.setText(HerDatas.get(i).SCIEN)
                         etHER_HET.setText(HerDatas.get(i).H.toString())
                         etHER_COVEET.setText(HerDatas.get(i).COVE.toString())
+                        etHER_HEIGHT.setText(HerDatas.get(i).ETC.toString())
                         division = true
                     }
                 }
@@ -793,6 +824,7 @@ class Flora2Activity : Activity() {
                     etHER_SCIENET.setText("")
                     etHER_HET.setText("")
                     etHER_COVEET.setText("")
+                    etHER_HEIGHT.setText("")
                 }
 
                 val page = herpage
@@ -825,6 +857,7 @@ class Flora2Activity : Activity() {
                             etHER_SCIENET.setText(HerDatas.get(i).SCIEN)
                             etHER_HET.setText(HerDatas.get(i).H.toString())
                             etHER_COVEET.setText(HerDatas.get(i).COVE.toString())
+                            etHER_HEIGHT.setText(HerDatas.get(i).ETC.toString())
                         }
 
                         if (HerDatas.get(i).PAGE!! > 1){
@@ -849,6 +882,7 @@ class Flora2Activity : Activity() {
                             etHER_SCIENET.setText(HerDatas.get(i).SCIEN)
                             etHER_HET.setText(HerDatas.get(i).H.toString())
                             etHER_COVEET.setText(HerDatas.get(i).COVE.toString())
+                            etHER_HEIGHT.setText(HerDatas.get(i).ETC.toString())
                         }
 
                         if (HerDatas.get(i).PAGE!! > herpage){
@@ -883,24 +917,31 @@ class Flora2Activity : Activity() {
                 val fami = etTRE_FAMIET.text.toString()
                 val scien = etTRE_SCIENET.text.toString()
 
-                var h: Float = 0.0F
+                var dbh: Float = 0.0F
 
                 if (etTRE_HET.text.isNotEmpty()) {
-                    h = etTRE_HET.text.toString().toFloat()
+                    dbh = etTRE_HET.text.toString().toFloat()
                 }
 
-                var brea = 0.0F
+                var toil = 0.0F
 
                 if (etTRE_BREAET.text.isNotEmpty()) {
-                    brea = etTRE_BREAET.text.toString().toFloat()
+                    toil = etTRE_BREAET.text.toString().toFloat()
                 }
-                var cove = 0.0F
+//                var cove = 0.0F
+//
+//                if (etTRE_COVEET.text.isNotEmpty()) {
+//                    cove = etTRE_COVEET.text.toString().toFloat()
+//                }
 
-                if (etTRE_COVEET.text.isNotEmpty()) {
-                    cove = etTRE_COVEET.text.toString().toFloat()
+                var under = etTRE_COVEET.text.toString()
+                var waterwidth = 0
+                if (etTRE_BREAET.text.isNotEmpty()) {
+                    waterwidth = etTRE_WATERWIDTH.text.toString().toInt()
                 }
+                var type = etTRE_TYPE.text.toString()
 
-                var tredata = TreeData1(-1 , trepage, spec, fami, scien, h, brea, cove)
+                var tredata = TreeData1(-1 , trepage, spec, fami, scien, dbh, toil, under.toString(),waterwidth,type)
 
                 TreDatas.add(tredata)
             }
@@ -913,16 +954,22 @@ class Flora2Activity : Activity() {
                         TreDatas.get(i).SCIEN = etTRE_SCIENET.text.toString()
 
                         if (etTRE_HET.text.isNotEmpty()) {
-                            TreDatas.get(i).H = etTRE_HET.text.toString().toFloat()
+                            TreDatas.get(i).DBH = etTRE_HET.text.toString().toFloat()
                         }
 
                         if (etTRE_BREAET.text.isNotEmpty()) {
-                            TreDatas.get(i).BREA = etTRE_BREAET.text.toString().toFloat()
+                            TreDatas.get(i).TOIL = etTRE_BREAET.text.toString().toFloat()
                         }
 
                         if (etTRE_COVEET.text.isNotEmpty()) {
-                            TreDatas.get(i).COVE = etTRE_COVEET.text.toString().toFloat()
+                            TreDatas.get(i).UNDER = etTRE_COVEET.text.toString()
                         }
+
+                        if (etTRE_WATERWIDTH.text.isNotEmpty()) {
+                            TreDatas.get(i).WATERWIDTH = etTRE_WATERWIDTH.text.toString().toInt()
+                        }
+                        TreDatas.get(i).TYPE = etTRE_TYPE.toString()
+
                     }
                 }
 
@@ -935,9 +982,11 @@ class Flora2Activity : Activity() {
                         etTRE_SPECET.setText(data.SPEC)
                         etTRE_FAMIET.setText(data.FAMI)
                         etTRE_SCIENET.setText(data.SCIEN)
-                        etTRE_HET.setText(data.H.toString())
-                        etTRE_BREAET.setText(data.BREA.toString())
-                        etTRE_COVEET.setText(data.COVE.toString())
+                        etTRE_HET.setText(data.DBH.toString())
+                        etTRE_BREAET.setText(data.TOIL.toString())
+                        etTRE_COVEET.setText(data.UNDER.toString())
+                        etTRE_WATERWIDTH.setText(data.WATERWIDTH.toString())
+                        etTRE_TYPE.setText(data.TYPE.toString())
 
                         val size = trerightpageTV.text.toString().toInt()
 
@@ -969,24 +1018,33 @@ class Flora2Activity : Activity() {
                 val fami = etSTRE_FAMIET.text.toString()
                 val scien = etSTRE_SCIENET.text.toString()
 
-                var h: Float = 0.0F
+                var dbh: Float = 0.0F
 
                 if (etSTRE_HET.text.isNotEmpty()) {
-                    h = etSTRE_HET.text.toString().toFloat()
+                    dbh = etSTRE_HET.text.toString().toFloat()
                 }
 
-                var brea = 0.0F
+                var toil = 0.0F
 
                 if (etSTRE_BREAET.text.isNotEmpty()) {
-                    brea = etSTRE_BREAET.text.toString().toFloat()
+                    toil = etSTRE_BREAET.text.toString().toFloat()
                 }
-                var cove = 0.0F
+//                var under = 0.0F
+//
+//                if (etSTRE_COVEET.text.isNotEmpty()) {
+//                    under = etSTRE_COVEET.text.toString().toFloat()
+//                }
 
-                if (etSTRE_COVEET.text.isNotEmpty()) {
-                    cove = etSTRE_COVEET.text.toString().toFloat()
+                var under = etSTRE_COVEET.text.toString()
+
+                var waterwidth = 0
+                if (etSTRE_WATERWIDTH.text.isNotEmpty()) {
+                    waterwidth = etSTRE_WATERWIDTH.text.toString().toInt()
                 }
 
-                var stredata = TreeData1(-1 , strepage, spec, fami, scien, h, brea, cove)
+                var type = etSTRE_TYPE.text.toString()
+
+                var stredata = TreeData1(-1 , strepage, spec, fami, scien, dbh, toil, under,waterwidth,type)
 
                 StreDatas.add(stredata)
             }
@@ -999,16 +1057,21 @@ class Flora2Activity : Activity() {
                         StreDatas.get(i).SCIEN = etSTRE_SCIENET.text.toString()
 
                         if (etSTRE_HET.text.isNotEmpty()) {
-                            StreDatas.get(i).H = etSTRE_HET.text.toString().toFloat()
+                            StreDatas.get(i).DBH = etSTRE_HET.text.toString().toFloat()
                         }
 
                         if (etSTRE_BREAET.text.isNotEmpty()) {
-                            StreDatas.get(i).BREA = etSTRE_BREAET.text.toString().toFloat()
+                            StreDatas.get(i).TOIL = etSTRE_BREAET.text.toString().toFloat()
                         }
 
                         if (etSTRE_COVEET.text.isNotEmpty()) {
-                            StreDatas.get(i).COVE = etSTRE_COVEET.text.toString().toFloat()
+                            StreDatas.get(i).UNDER = etSTRE_COVEET.text.toString()
                         }
+
+                        if (etSTRE_WATERWIDTH.text.isNotEmpty()) {
+                            StreDatas.get(i).WATERWIDTH = etSTRE_WATERWIDTH.text.toString().toInt()
+                        }
+                        StreDatas.get(i).TYPE = etSTRE_TYPE.toString()
                     }
                 }
 
@@ -1021,9 +1084,11 @@ class Flora2Activity : Activity() {
                         etSTRE_SPECET.setText(data.SPEC)
                         etSTRE_FAMIET.setText(data.FAMI)
                         etSTRE_SCIENET.setText(data.SCIEN)
-                        etSTRE_HET.setText(data.H.toString())
-                        etSTRE_BREAET.setText(data.BREA.toString())
-                        etSTRE_COVEET.setText(data.COVE.toString())
+                        etSTRE_HET.setText(data.DBH.toString())
+                        etSTRE_BREAET.setText(data.TOIL.toString())
+                        etSTRE_COVEET.setText(data.UNDER.toString())
+                        etSTRE_WATERWIDTH.setText(data.WATERWIDTH.toString())
+                        etSTRE_TYPE.setText(data.TYPE.toString())
 
                         val size = strerightpageTV.text.toString().toInt()
 
@@ -1067,7 +1132,9 @@ class Flora2Activity : Activity() {
                     cove = etSTR_COVEET.text.toString().toFloat()
                 }
 
-                var shrdata = TreeData2(-1 , shrpage, spec, fami, scien, h, cove)
+                var etc = etSHR_UNDER.text.toString()
+
+                var shrdata = TreeData2(-1 , shrpage, spec, fami, scien, h.toString(), cove.toString(),etc)
 
                 ShrDatas.add(shrdata)
             }
@@ -1078,14 +1145,17 @@ class Flora2Activity : Activity() {
                         ShrDatas.get(i).SPEC = etSHR_SPECET.text.toString()
                         ShrDatas.get(i).FAMI = etSHR_FAMIET.text.toString()
                         ShrDatas.get(i).SCIEN = etSHR_SCIENET.text.toString()
+                        ShrDatas.get(i).H = etSHR_HET.text.toString()
+                        ShrDatas.get(i).COVE = etSTR_COVEET.text.toString()
+                        ShrDatas.get(i).ETC = etSHR_UNDER.text.toString()
 
-                        if (etSHR_HET.text.isNotEmpty()) {
-                            ShrDatas.get(i).H = etSHR_HET.text.toString().toFloat()
-                        }
-
-                        if (etSTR_COVEET.text.isNotEmpty()) {
-                            ShrDatas.get(i).COVE = etSTR_COVEET.text.toString().toFloat()
-                        }
+//                        if (etSHR_HET.text.isNotEmpty()) {
+//                            ShrDatas.get(i).H = etSHR_HET.text.toString().toFloat()
+//                        }
+//
+//                        if (etSTR_COVEET.text.isNotEmpty()) {
+//                            ShrDatas.get(i).COVE = etSTR_COVEET.text.toString().toFloat()
+//                        }
                     }
                 }
 
@@ -1100,6 +1170,7 @@ class Flora2Activity : Activity() {
                         etSHR_SCIENET.setText(data.SCIEN)
                         etSHR_HET.setText(data.H.toString())
                         etSTR_COVEET.setText(data.COVE.toString())
+                        etSHR_UNDER.setText(data.ETC.toString())
 
                         val size = shrrightpageTV.text.toString().toInt()
 
@@ -1143,7 +1214,12 @@ class Flora2Activity : Activity() {
                     cove = etHER_COVEET.text.toString().toFloat()
                 }
 
-                var herdata = TreeData2(-1 , herpage, spec, fami, scien, h, cove)
+                var etc = 0.0f
+                if (etHER_HEIGHT.text.isNotEmpty()) {
+                    etc = etHER_HEIGHT.text.toString().toFloat()
+                }
+
+                var herdata = TreeData2(-1 , herpage, spec, fami, scien, h.toString(), cove.toString(), etc.toString())
 
                 HerDatas.add(herdata)
             }
@@ -1154,14 +1230,16 @@ class Flora2Activity : Activity() {
                         HerDatas.get(i).SPEC = etHER_SPECET.text.toString()
                         HerDatas.get(i).FAMI = etHER_FAMIET.text.toString()
                         HerDatas.get(i).SCIEN = etHER_SCIENET.text.toString()
-
-                        if (etHER_HET.text.isNotEmpty()) {
-                            HerDatas.get(i).H = etHER_HET.text.toString().toFloat()
-                        }
-
-                        if (etHER_COVEET.text.isNotEmpty()) {
-                            HerDatas.get(i).COVE = etHER_COVEET.text.toString().toFloat()
-                        }
+                        HerDatas.get(i).H = etHER_HET.text.toString()
+                        HerDatas.get(i).COVE = etHER_COVEET.text.toString()
+                        HerDatas.get(i).ETC = etHER_HEIGHT.text.toString()
+//                        if (etHER_HET.text.isNotEmpty()) {
+//                            HerDatas.get(i).H = etHER_HET.text.toString().toFloat()
+//                        }
+//
+//                        if (etHER_COVEET.text.isNotEmpty()) {
+//                            HerDatas.get(i).COVE = etHER_COVEET.text.toString().toFloat()
+//                        }
                     }
                 }
 
@@ -1176,6 +1254,7 @@ class Flora2Activity : Activity() {
                         etHER_SCIENET.setText(data.SCIEN)
                         etHER_HET.setText(data.H.toString())
                         etHER_COVEET.setText(data.COVE.toString())
+                        etHER_HEIGHT.setText(data.ETC.toString())
 
                         val size = herrightpageTV.text.toString().toInt()
 
@@ -1206,7 +1285,8 @@ class Flora2Activity : Activity() {
 
                             var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null,null,null,null,null,null,null,null,null,null
                                     ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                                    ,null,null,null,null,null,null,null,null,null,null,null,null,null)
+                                    ,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null
+                            ,null,null)
 
                             keyId = intent.getStringExtra("GROP_ID")
 
@@ -1236,16 +1316,21 @@ class Flora2Activity : Activity() {
                             manyFloraAttribute.TRE_SCIEN = etTRE_SCIENET.text.toString()
 
                             if (etTRE_HET.text.isNotEmpty()) {
-                                manyFloraAttribute.TRE_H = etTRE_HET.text.toString().toFloat()
+                                manyFloraAttribute.TRE_DBH = etTRE_HET.text.toString().toFloat()
                             }
 
                             if (etTRE_BREAET.text.isNotEmpty()) {
-                                manyFloraAttribute.TRE_BREA = etTRE_BREAET.text.toString().toFloat()
+                                manyFloraAttribute.TRE_TOIL = etTRE_BREAET.text.toString().toFloat()
                             }
 
-                            if (etTRE_COVEET.text.isNotEmpty()) {
-                                manyFloraAttribute.TRE_COVE = etTRE_COVEET.text.toString().toFloat()
+                            manyFloraAttribute.TRE_UNDER = etTRE_COVEET.text.toString()
+                            if (etTRE_WATERWIDTH.text.isNotEmpty()) {
+                                manyFloraAttribute.TRE_WATER = etTRE_WATERWIDTH.text.toString().toInt()
                             }
+                            manyFloraAttribute.TRE_TYPE = etTRE_TYPE.text.toString()
+//                            if (etTRE_COVEET.text.isNotEmpty()) {
+//                                manyFloraAttribute.TRE_UNDER = etTRE_COVEET.text.toString().toFloat()
+//                            }
 
                             val TRE_SPEC = etTRE_SPECET.text.toString()
                             if(TRE_SPEC != "" && TRE_SPEC != null){
@@ -1261,16 +1346,22 @@ class Flora2Activity : Activity() {
                             manyFloraAttribute.STRE_SCIEN = etSTRE_SCIENET.text.toString()
 
                             if (etSTRE_HET.text.isNotEmpty()) {
-                                manyFloraAttribute.STRE_H = etSTRE_HET.text.toString().toFloat()
+                                manyFloraAttribute.STRE_DBH = etSTRE_HET.text.toString().toFloat()
                             }
 
                             if (etSTRE_BREAET.text.isNotEmpty()) {
-                                manyFloraAttribute.STRE_BREA = etSTRE_BREAET.text.toString().toFloat()
+                                manyFloraAttribute.STRE_TOIL = etSTRE_BREAET.text.toString().toFloat()
                             }
 
-                            if (etSTRE_COVEET.text.isNotEmpty()) {
-                                manyFloraAttribute.STRE_COVE = etSTRE_COVEET.text.toString().toFloat()
+                            manyFloraAttribute.STRE_UNDER = etSTRE_COVEET.text.toString()
+//                            if (etSTRE_COVEET.text.isNotEmpty()) {
+//                                manyFloraAttribute.STRE_UNDER = etSTRE_COVEET.text.toString().toFloat()
+//                            }
+
+                            if (etSTRE_WATERWIDTH.text.isNotEmpty()) {
+                                manyFloraAttribute.STRE_WATER = etSTRE_WATERWIDTH.text.toString().toInt()
                             }
+                            manyFloraAttribute.STRE_TYPE = etSTRE_TYPE.text.toString()
 
                             val STRE_SPEC = etSTRE_SPECET.text.toString()
                             if(STRE_SPEC != "" && STRE_SPEC != null){
@@ -1286,12 +1377,14 @@ class Flora2Activity : Activity() {
                             manyFloraAttribute.SHR_SCIEN = etSHR_SCIENET.text.toString()
 
                             if (etSTR_COVEET.text.isNotEmpty()) {
-                                manyFloraAttribute.SHR_H = etSTRE_HET.text.toString().toFloat()
+                                manyFloraAttribute.SHR_TOIL = etSTRE_HET.text.toString().toFloat()
                             }
 
                             if (etSTR_COVEET.text.isNotEmpty()) {
-                                manyFloraAttribute.SHR_COVE = etSTR_COVEET.text.toString().toFloat()
+                                manyFloraAttribute.SHR_WATER = etSTR_COVEET.text.toString().toFloat()
                             }
+
+                            manyFloraAttribute.SHR_UNDER = etSHR_UNDER.text.toString()
 
                             val SHR_SPEC = etSHR_SPECET.text.toString()
                             if(SHR_SPEC != "" && SHR_SPEC != null){
@@ -1307,11 +1400,15 @@ class Flora2Activity : Activity() {
                             manyFloraAttribute.HER_SCIEN = etHER_SCIENET.text.toString()
 
                             if (etHER_HET.text.isNotEmpty()) {
-                                manyFloraAttribute.HER_H = etHER_HET.text.toString().toFloat()
+                                manyFloraAttribute.HER_DOMIN = etHER_HET.text.toString().toFloat()
                             }
 
                             if (etHER_COVEET.text.isNotEmpty()) {
-                                manyFloraAttribute.HER_COVE = etHER_COVEET.text.toString().toFloat()
+                                manyFloraAttribute.HER_GUNDO = etHER_COVEET.text.toString().toFloat()
+                            }
+
+                            if (etHER_HEIGHT.text.isNotEmpty()) {
+                                manyFloraAttribute.HER_HEIGHT = etHER_HEIGHT.text.toString().toInt()
                             }
 
                             val HER_SPEC = etHER_COVEET.text.toString()
@@ -1367,22 +1464,30 @@ class Flora2Activity : Activity() {
                             val fami = etTRE_FAMIET.text.toString()
                             val scien = etTRE_SCIENET.text.toString()
 
-                            var h: Float = 0.0F
+                            var dbh: Float = 0.0F
 
                             if (etTRE_HET.text.isNotEmpty()) {
-                                h = etTRE_HET.text.toString().toFloat()
+                                dbh = etTRE_HET.text.toString().toFloat()
                             }
 
-                            var brea = 0.0F
+                            var toil = 0.0F
 
                             if (etTRE_BREAET.text.isNotEmpty()) {
-                                brea = etTRE_BREAET.text.toString().toFloat()
+                                toil = etTRE_BREAET.text.toString().toFloat()
                             }
                             var cove = 0.0F
 
                             if (etTRE_COVEET.text.isNotEmpty()) {
                                 cove = etTRE_COVEET.text.toString().toFloat()
                             }
+
+                            var under = etTRE_COVEET.text.toString()
+                            var waterwidth = 0
+                            if (etTRE_WATERWIDTH.text.isNotEmpty()) {
+                                waterwidth = etTRE_WATERWIDTH.text.toString().toInt()
+                            }
+
+                            var type = etTRE_TYPE.text.toString()
 
                             println("delete-------------------- $keyId")
                             dbManager!!.deleteAllManyFloraAttribute(keyId)
@@ -1397,7 +1502,7 @@ class Flora2Activity : Activity() {
 
                             if (treChk == false){
 
-                                var tredata = TreeData1(-1 , trepageTV.text.toString().toInt(), spec, fami, scien, h, brea, cove)
+                                var tredata = TreeData1(-1 , trepage, spec, fami, scien, dbh, toil, under.toString(),waterwidth,type)
 
                                 TreDatas.add(tredata)
                             } else {
@@ -1406,9 +1511,11 @@ class Flora2Activity : Activity() {
                                         TreDatas.get(i).SPEC = spec
                                         TreDatas.get(i).FAMI = fami
                                         TreDatas.get(i).SCIEN = scien
-                                        TreDatas.get(i).H = h
-                                        TreDatas.get(i).BREA = brea
-                                        TreDatas.get(i).COVE = cove
+                                        TreDatas.get(i).DBH = dbh
+                                        TreDatas.get(i).TOIL = toil
+                                        TreDatas.get(i).UNDER = cove.toString()
+                                        TreDatas.get(i).WATERWIDTH = waterwidth
+                                        TreDatas.get(i).TYPE = type
                                     }
                                 }
                             }
@@ -1436,6 +1543,13 @@ class Flora2Activity : Activity() {
                                 strecove = etSTRE_COVEET.text.toString().toFloat()
                             }
 
+                            var strewatherrwidth = 0
+                            if (etSTRE_WATERWIDTH.text.isNotEmpty()) {
+                                strewatherrwidth = etSTRE_WATERWIDTH.text.toString().toInt()
+                            }
+                            var stretype = etSTRE_TYPE.text.toString()
+
+
                             for (i in 0 until  StreDatas.size){
                                 if (StreDatas.get(i).PAGE == strepage){
                                     streChk = true
@@ -1445,7 +1559,7 @@ class Flora2Activity : Activity() {
 
                             if (streChk == false){
 
-                                var stredata = TreeData1(-1 , strepageTV.text.toString().toInt(), strespec, strefami, strescien, streh, strebrea, strecove)
+                                var stredata = TreeData1(-1 , strepageTV.text.toString().toInt(), strespec, strefami, strescien, streh, strebrea, strecove.toString(),waterwidth,type)
 
                                 StreDatas.add(stredata)
 
@@ -1455,9 +1569,11 @@ class Flora2Activity : Activity() {
                                         StreDatas.get(i).SPEC = strespec
                                         StreDatas.get(i).FAMI = strefami
                                         StreDatas.get(i).SCIEN = strescien
-                                        StreDatas.get(i).H = streh
-                                        StreDatas.get(i).BREA = strebrea
-                                        StreDatas.get(i).COVE = strecove
+                                        StreDatas.get(i).DBH = streh
+                                        StreDatas.get(i).TOIL = strebrea
+                                        StreDatas.get(i).UNDER = strecove.toString()
+                                        StreDatas.get(i).WATERWIDTH = waterwidth
+                                        StreDatas.get(i).TYPE = type
 
                                     }
                                 }
@@ -1481,6 +1597,11 @@ class Flora2Activity : Activity() {
                                 shrcove = etSTR_COVEET.text.toString().toFloat()
                             }
 
+                            var shretc = 0.0f
+                            if (etSHR_UNDER.text.isNotEmpty()) {
+                                shretc = etSHR_UNDER.text.toString().toFloat()
+                            }
+
                             for (i in 0 until  ShrDatas.size){
                                 if (ShrDatas.get(i).PAGE == shrpage){
                                     shrChk = true
@@ -1489,7 +1610,7 @@ class Flora2Activity : Activity() {
 
                             if (shrChk == false){
 
-                                var shrdata = TreeData2(-1 , shrpageTV.text.toString().toInt(), shrspec, shrfami, shrscien, shrh, shrcove)
+                                var shrdata = TreeData2(-1 , shrpageTV.text.toString().toInt(), shrspec, shrfami, shrscien, shrh.toString(), shrcove.toString(),shretc.toString())
 
                                 ShrDatas.add(shrdata)
 
@@ -1499,8 +1620,9 @@ class Flora2Activity : Activity() {
                                         ShrDatas.get(i).SPEC = shrspec
                                         ShrDatas.get(i).FAMI = shrfami
                                         ShrDatas.get(i).SCIEN = shrscien
-                                        ShrDatas.get(i).H = shrh
-                                        ShrDatas.get(i).COVE = shrcove
+                                        ShrDatas.get(i).H = shrh.toString()
+                                        ShrDatas.get(i).COVE = shrcove.toString()
+                                        ShrDatas.get(i).ETC = shretc.toString()
                                     }
                                 }
                             }
@@ -1523,6 +1645,11 @@ class Flora2Activity : Activity() {
                                 hercove = etHER_COVEET.text.toString().toFloat()
                             }
 
+                            var heretc = 0.0f
+                            if (etHER_HEIGHT.text.isNotEmpty()) {
+                                heretc = etHER_HEIGHT.text.toString().toFloat()
+                            }
+
                             for (i in 0 until  HerDatas.size){
                                 if (HerDatas.get(i).PAGE == herpage){
                                     herChk = true
@@ -1531,7 +1658,7 @@ class Flora2Activity : Activity() {
 
                             if (herChk == false){
 
-                                var herdata = TreeData2(-1 , herpageTV.text.toString().toInt(), herspec, herfami, herscien, herh, hercove)
+                                var herdata = TreeData2(-1 , herpageTV.text.toString().toInt(), herspec, herfami, herscien, herh.toString(), hercove.toString(),heretc.toString())
 
                                 HerDatas.add(herdata)
                             } else {
@@ -1540,8 +1667,9 @@ class Flora2Activity : Activity() {
                                         HerDatas.get(i).SPEC = herspec
                                         HerDatas.get(i).FAMI = herfami
                                         HerDatas.get(i).SCIEN = herscien
-                                        HerDatas.get(i).H = herh
-                                        HerDatas.get(i).COVE = hercove
+                                        HerDatas.get(i).H = herh.toString()
+                                        HerDatas.get(i).COVE = hercove.toString()
+                                        HerDatas.get(i).ETC = heretc.toString()
                                     }
                                 }
                             }
@@ -1571,7 +1699,8 @@ class Flora2Activity : Activity() {
                                 for(i in 0..MaxLength-1) {
                                     var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null, null, null, null, null, null, null, null, null, null
                                             , null, null, null, null, null, null, null, null, null, null, null, null, null
-                                            , null, null, null, null, null, null, null, null, null, null, null, null, null)
+                                            , null, null, null, null, null, null, null, null, null, null, null, null, null
+                                    ,null,null,null,null,null,null)
 
                                     keyId = intent.getStringExtra("GROP_ID")
 
@@ -1600,9 +1729,11 @@ class Flora2Activity : Activity() {
                                             manyFloraAttribute.TRE_SPEC = ""
                                             manyFloraAttribute.TRE_FAMI = ""
                                             manyFloraAttribute.TRE_SCIEN = ""
-                                            manyFloraAttribute.TRE_H = 0.0f
-                                            manyFloraAttribute.TRE_BREA = 0.0f
-                                            manyFloraAttribute.TRE_COVE = 0.0f
+                                            manyFloraAttribute.TRE_DBH = 0.0f
+                                            manyFloraAttribute.TRE_TOIL = 0.0f
+                                            manyFloraAttribute.TRE_UNDER = ""
+                                            manyFloraAttribute.TRE_WATER = 0
+                                            manyFloraAttribute.TRE_TYPE = ""
                                         }
 
                                         if (i <= TreDataSize - 1){
@@ -1610,9 +1741,11 @@ class Flora2Activity : Activity() {
                                             manyFloraAttribute.TRE_SPEC = TreDatas.get(i).SPEC
                                             manyFloraAttribute.TRE_FAMI = TreDatas.get(i).FAMI
                                             manyFloraAttribute.TRE_SCIEN = TreDatas.get(i).SCIEN
-                                            manyFloraAttribute.TRE_H = TreDatas.get(i).H
-                                            manyFloraAttribute.TRE_BREA = TreDatas.get(i).BREA
-                                            manyFloraAttribute.TRE_COVE = TreDatas.get(i).COVE
+                                            manyFloraAttribute.TRE_DBH = TreDatas.get(i).DBH
+                                            manyFloraAttribute.TRE_TOIL = TreDatas.get(i).TOIL
+                                            manyFloraAttribute.TRE_UNDER = TreDatas.get(i).UNDER
+                                            manyFloraAttribute.TRE_WATER = TreDatas.get(i).WATERWIDTH
+                                            manyFloraAttribute.TRE_TYPE = TreDatas.get(i).TYPE
                                         }
                                     }
 
@@ -1622,9 +1755,11 @@ class Flora2Activity : Activity() {
                                             manyFloraAttribute.STRE_SPEC = ""
                                             manyFloraAttribute.STRE_FAMI = ""
                                             manyFloraAttribute.STRE_SCIEN = ""
-                                            manyFloraAttribute.STRE_H = 0.0f
-                                            manyFloraAttribute.STRE_BREA = 0.0f
-                                            manyFloraAttribute.STRE_COVE = 0.0f
+                                            manyFloraAttribute.STRE_DBH = 0.0f
+                                            manyFloraAttribute.STRE_TOIL = 0.0f
+                                            manyFloraAttribute.STRE_UNDER = ""
+                                            manyFloraAttribute.STRE_WATER = 0
+                                            manyFloraAttribute.STRE_TYPE = ""
                                         }
 
                                         if (i <= StreDataSize - 1){
@@ -1632,9 +1767,11 @@ class Flora2Activity : Activity() {
                                             manyFloraAttribute.STRE_SPEC = StreDatas.get(i).SPEC
                                             manyFloraAttribute.STRE_FAMI = StreDatas.get(i).FAMI
                                             manyFloraAttribute.STRE_SCIEN = StreDatas.get(i).SCIEN
-                                            manyFloraAttribute.STRE_H = StreDatas.get(i).H
-                                            manyFloraAttribute.STRE_BREA = StreDatas.get(i).BREA
-                                            manyFloraAttribute.STRE_COVE = StreDatas.get(i).COVE
+                                            manyFloraAttribute.STRE_DBH = StreDatas.get(i).DBH
+                                            manyFloraAttribute.STRE_TOIL = StreDatas.get(i).TOIL
+                                            manyFloraAttribute.STRE_UNDER = StreDatas.get(i).UNDER
+                                            manyFloraAttribute.STRE_WATER = StreDatas.get(i).WATERWIDTH
+                                            manyFloraAttribute.STRE_TYPE = StreDatas.get(i).TYPE
                                         }
                                     }
 
@@ -1645,8 +1782,9 @@ class Flora2Activity : Activity() {
                                             manyFloraAttribute.SHR_SPEC = ""
                                             manyFloraAttribute.SHR_FAMI = ""
                                             manyFloraAttribute.SHR_SCIEN = ""
-                                            manyFloraAttribute.SHR_H = 0.0f
-                                            manyFloraAttribute.SHR_COVE = 0.0f
+                                            manyFloraAttribute.SHR_TOIL = 0.0f
+                                            manyFloraAttribute.SHR_WATER = 0.0f
+                                            manyFloraAttribute.SHR_UNDER = ""
 
                                         }
                                         if (i <= ShrDataSize - 1){
@@ -1654,8 +1792,18 @@ class Flora2Activity : Activity() {
                                             manyFloraAttribute.SHR_SPEC = ShrDatas.get(i).SPEC
                                             manyFloraAttribute.SHR_FAMI = ShrDatas.get(i).FAMI
                                             manyFloraAttribute.SHR_SCIEN = ShrDatas.get(i).SCIEN
-                                            manyFloraAttribute.SHR_H = ShrDatas.get(i).H
-                                            manyFloraAttribute.SHR_COVE = ShrDatas.get(i).COVE
+                                            if (ShrDatas.get(i).H != null) {
+                                                manyFloraAttribute.SHR_TOIL = ShrDatas.get(i).H!!.toFloat()
+                                            } else {
+                                                manyFloraAttribute.SHR_TOIL = 0.0f
+                                            }
+
+                                            if (ShrDatas.get(i).COVE != null) {
+                                                manyFloraAttribute.SHR_WATER = ShrDatas.get(i).COVE!!.toFloat()
+                                            } else {
+                                                manyFloraAttribute.SHR_WATER = 0.0f
+                                            }
+                                            manyFloraAttribute.SHR_UNDER = ShrDatas.get(i).ETC
                                         }
                                     }
 
@@ -1665,16 +1813,33 @@ class Flora2Activity : Activity() {
                                             manyFloraAttribute.HER_SPEC = ""
                                             manyFloraAttribute.HER_FAMI = ""
                                             manyFloraAttribute.HER_SCIEN = ""
-                                            manyFloraAttribute.HER_H = 0.0f
-                                            manyFloraAttribute.HER_COVE = 0.0f
+                                            manyFloraAttribute.HER_DOMIN = 0.0f
+                                            manyFloraAttribute.HER_GUNDO = 0.0f
+                                            manyFloraAttribute.HER_HEIGHT = 0
                                         }
                                         if (i <= HerDataSize - 1){
                                             manyFloraAttribute.HER_NUM = HerDatas.get(i).PAGE
                                             manyFloraAttribute.HER_SPEC = HerDatas.get(i).SPEC
                                             manyFloraAttribute.HER_FAMI = HerDatas.get(i).FAMI
                                             manyFloraAttribute.HER_SCIEN = HerDatas.get(i).SCIEN
-                                            manyFloraAttribute.HER_H = HerDatas.get(i).H
-                                            manyFloraAttribute.HER_COVE = HerDatas.get(i).COVE
+                                            if (HerDatas.get(i).H != null){
+                                                manyFloraAttribute.HER_DOMIN = HerDatas.get(i).H!!.toFloat()
+                                            } else {
+                                                manyFloraAttribute.HER_DOMIN = 0.0f
+                                            }
+
+                                            if (HerDatas.get(i).COVE != null){
+                                                manyFloraAttribute.HER_DOMIN = HerDatas.get(i).H!!.toFloat()
+                                            } else {
+                                                manyFloraAttribute.HER_DOMIN = 0.0f
+                                            }
+
+                                            if (HerDatas.get(i).ETC != null){
+                                                manyFloraAttribute.HER_HEIGHT = HerDatas.get(i).ETC!!.toInt()
+                                            } else {
+                                                manyFloraAttribute.HER_HEIGHT = 0
+                                            }
+
                                         }
                                     }
 
@@ -1721,10 +1886,10 @@ class Flora2Activity : Activity() {
                         while (data.moveToNext()) {
 
                             var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
-                                    data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getFloat(12), data.getInt(13), data.getString(14)
-                                    , data.getString(15),data.getString(16), data.getFloat(17), data.getFloat(18), data.getFloat(19), data.getInt(20), data.getString(21), data.getString(22)
-                                    , data.getString(23), data.getFloat(24), data.getFloat(25), data.getInt(26), data.getString(27), data.getString(28),data.getString(29),data.getFloat(30),data.getFloat(31),data.getFloat(32)
-                                    ,data.getFloat(33),data.getString(34),data.getString(35))
+                                    data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
+                                    , data.getInt(15),data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
+                                    , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28),data.getFloat(29),data.getString(30),data.getInt(31),data.getString(32)
+                                    ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41))
 
                             dataArray.add(manyFloraAttribute)
                         }
@@ -1761,7 +1926,8 @@ class Flora2Activity : Activity() {
                             dialog.cancel()
                             var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null,null,null,null,null,null,null,null,null,null
                                     ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                                    ,null,null,null,null,null,null,null,null,null,null,null,null,null)
+                                    ,null,null,null,null,null,null,null,null,null,null,null,null,null
+                            ,null,null,null,null,null,null)
 
 
                             if (pk != null) {
@@ -1782,10 +1948,10 @@ class Flora2Activity : Activity() {
                                         chkdata = true
 
                                         var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
-                                                data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getFloat(12), data.getInt(13), data.getString(14)
-                                                , data.getString(15),data.getString(16), data.getFloat(17), data.getFloat(18), data.getFloat(19), data.getInt(20), data.getString(21), data.getString(22)
-                                                , data.getString(23), data.getFloat(24), data.getFloat(25), data.getInt(26), data.getString(27), data.getString(28),data.getString(29),data.getFloat(30),data.getFloat(31),data.getFloat(32)
-                                                ,data.getFloat(33),data.getString(34),data.getString(35))
+                                                data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
+                                                , data.getInt(15),data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
+                                                , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28),data.getFloat(29),data.getString(30),data.getInt(31),data.getString(32)
+                                                ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41))
 
                                         dataArray.add(manyFloraAttribute)
 
@@ -1837,10 +2003,10 @@ class Flora2Activity : Activity() {
                                     chkdata = true
 
                                     var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
-                                            data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getFloat(12), data.getInt(13), data.getString(14)
-                                            , data.getString(15),data.getString(16), data.getFloat(17), data.getFloat(18), data.getFloat(19), data.getInt(20), data.getString(21), data.getString(22)
-                                            , data.getString(23), data.getFloat(24), data.getFloat(25), data.getInt(26), data.getString(27), data.getString(28),data.getString(29),data.getFloat(30),data.getFloat(31),data.getFloat(32)
-                                            ,data.getFloat(33),data.getString(34),data.getString(35))
+                                            data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
+                                            , data.getInt(15),data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
+                                            , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28),data.getFloat(29),data.getString(30),data.getInt(31),data.getString(32)
+                                            ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41))
 
 
                                 }
@@ -1955,10 +2121,10 @@ class Flora2Activity : Activity() {
         while (data.moveToNext()) {
 
             var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
-                    data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getFloat(12), data.getInt(13), data.getString(14)
-                    , data.getString(15),data.getString(16), data.getFloat(17), data.getFloat(18), data.getFloat(19), data.getInt(20), data.getString(21), data.getString(22)
-                    , data.getString(23), data.getFloat(24), data.getFloat(25), data.getInt(26), data.getString(27), data.getString(28),data.getString(29),data.getFloat(30),data.getFloat(31),data.getFloat(32)
-                    ,data.getFloat(33),data.getString(34),data.getString(35))
+                    data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
+                    , data.getInt(15),data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
+                    , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28),data.getFloat(29),data.getString(30),data.getInt(31),data.getString(32)
+                    ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41))
 
             dataArray.add(manyFloraAttribute)
         }
@@ -1983,22 +2149,30 @@ class Flora2Activity : Activity() {
         val fami = etTRE_FAMIET.text.toString()
         val scien = etTRE_SCIENET.text.toString()
 
-        var h: Float = 0.0F
+        var dbh: Float = 0.0F
 
         if (etTRE_HET.text.isNotEmpty()) {
-            h = etTRE_HET.text.toString().toFloat()
+            dbh = etTRE_HET.text.toString().toFloat()
         }
 
-        var brea = 0.0F
+        var toil = 0.0F
 
         if (etTRE_BREAET.text.isNotEmpty()) {
-            brea = etTRE_BREAET.text.toString().toFloat()
+            toil = etTRE_BREAET.text.toString().toFloat()
         }
-        var cove = 0.0F
 
-        if (etTRE_COVEET.text.isNotEmpty()) {
-            cove = etTRE_COVEET.text.toString().toFloat()
+//        var cove = 0.0F
+//
+//        if (etTRE_COVEET.text.isNotEmpty()) {
+//            cove = etTRE_COVEET.text.toString().toFloat()
+//        }
+
+        var under = etTRE_COVEET.text.toString()
+        var waterwidth = 0
+        if (etTRE_BREAET.text.isNotEmpty()) {
+            waterwidth = etTRE_WATERWIDTH.text.toString().toInt()
         }
+        var type = etTRE_TYPE.text.toString()
 
         var chkData = false
 
@@ -2016,7 +2190,7 @@ class Flora2Activity : Activity() {
             }
         }
 
-        if (spec == "" && h == 0.0F && cove == 0.0F && brea == 0.0F){
+        if (spec == "" && dbh == 0.0F && toil == 0.0F && under == "" && waterwidth == 0 && type == ""){
             Toast.makeText(context, "빈칸은 입력하실수 없습니다..", Toast.LENGTH_SHORT).show()
         } else {
 
@@ -2026,7 +2200,7 @@ class Flora2Activity : Activity() {
 
                     if (trepage > 1) {
 
-                        var tredata = TreeData1(-1, trepage, spec, fami, scien, h, brea, cove)
+                        var tredata = TreeData1(-1 , trepage, spec, fami, scien, dbh, toil, under.toString(),waterwidth,type)
 
                         TreDatas.add(tredata)
 
@@ -2044,11 +2218,13 @@ class Flora2Activity : Activity() {
                         etTRE_HET.setText("")
                         etTRE_BREAET.setText("")
                         etTRE_COVEET.setText("")
+                        etTRE_WATERWIDTH.setText("")
+                        etTRE_TYPE.setText("")
                     }
 
                     if (trepage == 1) {
 
-                        var tredata = TreeData1(-1, trepage, spec, fami, scien, h, brea, cove)
+                        var tredata = TreeData1(-1 , trepage, spec, fami, scien, dbh, toil, under.toString(),waterwidth,type)
 
                         TreDatas.add(tredata)
 
@@ -2066,6 +2242,8 @@ class Flora2Activity : Activity() {
                         etTRE_HET.setText("")
                         etTRE_BREAET.setText("")
                         etTRE_COVEET.setText("")
+                        etTRE_WATERWIDTH.setText("")
+                        etTRE_TYPE.setText("")
 
                     }
                 } else {
@@ -2077,9 +2255,11 @@ class Flora2Activity : Activity() {
                                 TreDatas.get(i).SPEC = spec
                                 TreDatas.get(i).FAMI = fami
                                 TreDatas.get(i).SCIEN = scien
-                                TreDatas.get(i).H = h
-                                TreDatas.get(i).BREA = brea
-                                TreDatas.get(i).COVE = cove
+                                TreDatas.get(i).DBH = dbh
+                                TreDatas.get(i).TOIL = toil
+                                TreDatas.get(i).UNDER = under
+                                TreDatas.get(i).WATERWIDTH = waterwidth
+                                TreDatas.get(i).TYPE = type
                             }
                         }
 
@@ -2097,6 +2277,8 @@ class Flora2Activity : Activity() {
                         etTRE_HET.setText("")
                         etTRE_BREAET.setText("")
                         etTRE_COVEET.setText("")
+                        etTRE_WATERWIDTH.setText("")
+                        etTRE_TYPE.setText("")
                     }
 
                     if (trepage == 1) {
@@ -2106,9 +2288,11 @@ class Flora2Activity : Activity() {
                                 TreDatas.get(i).SPEC = spec
                                 TreDatas.get(i).FAMI = fami
                                 TreDatas.get(i).SCIEN = scien
-                                TreDatas.get(i).H = h
-                                TreDatas.get(i).BREA = brea
-                                TreDatas.get(i).COVE = cove
+                                TreDatas.get(i).DBH = dbh
+                                TreDatas.get(i).TOIL = toil
+                                TreDatas.get(i).UNDER = under
+                                TreDatas.get(i).WATERWIDTH = waterwidth
+                                TreDatas.get(i).TYPE = type
                             }
                         }
 
@@ -2126,6 +2310,8 @@ class Flora2Activity : Activity() {
                         etTRE_HET.setText("")
                         etTRE_BREAET.setText("")
                         etTRE_COVEET.setText("")
+                        etTRE_WATERWIDTH.setText("")
+                        etTRE_TYPE.setText("")
 
                     }
                 }
@@ -2137,9 +2323,11 @@ class Flora2Activity : Activity() {
                         TreDatas.get(i).SPEC = spec
                         TreDatas.get(i).FAMI = fami
                         TreDatas.get(i).SCIEN = scien
-                        TreDatas.get(i).H = h
-                        TreDatas.get(i).BREA = brea
-                        TreDatas.get(i).COVE = cove
+                        TreDatas.get(i).DBH = dbh
+                        TreDatas.get(i).TOIL = toil
+                        TreDatas.get(i).UNDER = under
+                        TreDatas.get(i).WATERWIDTH = waterwidth
+                        TreDatas.get(i).TYPE = type
                     }
                 }
 
@@ -2152,9 +2340,11 @@ class Flora2Activity : Activity() {
                         etTRE_SPECET.setText(data.SPEC)
                         etTRE_FAMIET.setText(data.FAMI)
                         etTRE_SCIENET.setText(data.SCIEN)
-                        etTRE_HET.setText(data.H.toString())
-                        etTRE_BREAET.setText(data.BREA.toString())
-                        etTRE_COVEET.setText(data.COVE.toString())
+                        etTRE_HET.setText(data.DBH.toString())
+                        etTRE_BREAET.setText(data.TOIL.toString())
+                        etTRE_COVEET.setText(data.UNDER.toString())
+                        etTRE_WATERWIDTH.setText(data.WATERWIDTH.toString())
+                        etTRE_TYPE.setText(data.TYPE.toString())
 
                         val page = trepage
                         val size = trerightpageTV.text.toString().toInt()
@@ -2178,6 +2368,8 @@ class Flora2Activity : Activity() {
                     etTRE_HET.setText("")
                     etTRE_BREAET.setText("")
                     etTRE_COVEET.setText("")
+                    etTRE_WATERWIDTH.setText("")
+                    etTRE_TYPE.setText("")
                 }
             }
 
@@ -2192,22 +2384,31 @@ class Flora2Activity : Activity() {
         val fami = etSTRE_FAMIET.text.toString()
         val scien = etSTRE_SCIENET.text.toString()
 
-        var h: Float = 0.0F
+        var dbh: Float = 0.0F
 
         if (etSTRE_HET.text.isNotEmpty()) {
-            h = etSTRE_HET.text.toString().toFloat()
+            dbh = etSTRE_HET.text.toString().toFloat()
         }
 
-        var brea = 0.0F
+        var toil = 0.0F
 
         if (etSTRE_BREAET.text.isNotEmpty()) {
-            brea = etSTRE_BREAET.text.toString().toFloat()
+            toil = etSTRE_BREAET.text.toString().toFloat()
         }
-        var cove = 0.0F
+//                var under = 0.0F
+//
+//                if (etSTRE_COVEET.text.isNotEmpty()) {
+//                    under = etSTRE_COVEET.text.toString().toFloat()
+//                }
 
-        if (etSTRE_COVEET.text.isNotEmpty()) {
-            cove = etSTRE_COVEET.text.toString().toFloat()
+        var under = etSTRE_COVEET.text.toString()
+
+        var waterwidth = 0
+        if (etSTRE_WATERWIDTH.text.isNotEmpty()) {
+            waterwidth = etSTRE_WATERWIDTH.text.toString().toInt()
         }
+
+        var type = etSTRE_TYPE.text.toString()
 
         var chkData = false
 
@@ -2223,7 +2424,7 @@ class Flora2Activity : Activity() {
             }
         }
 
-        if (spec == "" && h == 0.0F && cove == 0.0F && brea == 0.0F){
+        if (spec == "" && dbh == 0.0F && toil == 0.0F && under == "" && waterwidth == 0 && type == ""){
             Toast.makeText(context, "빈칸은 입력하실수 없습니다..", Toast.LENGTH_SHORT).show()
         } else {
             if(strepage == maxsize) {
@@ -2232,7 +2433,7 @@ class Flora2Activity : Activity() {
 
                     if (strepage > 1) {
 
-                        var stredata = TreeData1(-1, strepage, spec, fami, scien, h, brea, cove)
+                        var stredata = TreeData1(-1 , strepage, spec, fami, scien, dbh, toil, under,waterwidth,type)
 
                         StreDatas.add(stredata)
 
@@ -2250,11 +2451,13 @@ class Flora2Activity : Activity() {
                         etSTRE_HET.setText("")
                         etSTRE_BREAET.setText("")
                         etSTRE_COVEET.setText("")
+                        etSTRE_WATERWIDTH.setText("")
+                        etSTRE_TYPE.setText("")
                     }
 
                     if (strepage == 1) {
 
-                        var stredata = TreeData1(-1, strepage, spec, fami, scien, h, brea, cove)
+                        var stredata = TreeData1(-1 , strepage, spec, fami, scien, dbh, toil, under,waterwidth,type)
 
                         StreDatas.add(stredata)
 
@@ -2272,6 +2475,8 @@ class Flora2Activity : Activity() {
                         etSTRE_HET.setText("")
                         etSTRE_BREAET.setText("")
                         etSTRE_COVEET.setText("")
+                        etSTRE_WATERWIDTH.setText("")
+                        etSTRE_TYPE.setText("")
 
                     }
                 } else {
@@ -2282,9 +2487,11 @@ class Flora2Activity : Activity() {
                                 StreDatas.get(i).SPEC = spec
                                 StreDatas.get(i).FAMI = fami
                                 StreDatas.get(i).SCIEN = scien
-                                StreDatas.get(i).H = h
-                                StreDatas.get(i).BREA = brea
-                                StreDatas.get(i).COVE = cove
+                                StreDatas.get(i).DBH = dbh
+                                StreDatas.get(i).TOIL = toil
+                                StreDatas.get(i).UNDER = under
+                                StreDatas.get(i).WATERWIDTH = waterwidth
+                                StreDatas.get(i).TYPE = type
                             }
                         }
 
@@ -2302,6 +2509,8 @@ class Flora2Activity : Activity() {
                         etSTRE_HET.setText("")
                         etSTRE_BREAET.setText("")
                         etSTRE_COVEET.setText("")
+                        etSTRE_WATERWIDTH.setText("")
+                        etSTRE_TYPE.setText("")
                     }
 
                     if (strepage == 1) {
@@ -2311,9 +2520,11 @@ class Flora2Activity : Activity() {
                                 StreDatas.get(i).SPEC = spec
                                 StreDatas.get(i).FAMI = fami
                                 StreDatas.get(i).SCIEN = scien
-                                StreDatas.get(i).H = h
-                                StreDatas.get(i).BREA = brea
-                                StreDatas.get(i).COVE = cove
+                                StreDatas.get(i).DBH = dbh
+                                StreDatas.get(i).TOIL = toil
+                                StreDatas.get(i).UNDER = under
+                                StreDatas.get(i).WATERWIDTH = waterwidth
+                                StreDatas.get(i).TYPE = type
                             }
                         }
 
@@ -2331,7 +2542,8 @@ class Flora2Activity : Activity() {
                         etSTRE_HET.setText("")
                         etSTRE_BREAET.setText("")
                         etSTRE_COVEET.setText("")
-
+                        etSTRE_WATERWIDTH.setText("")
+                        etSTRE_TYPE.setText("")
                     }
                 }
             }
@@ -2342,9 +2554,11 @@ class Flora2Activity : Activity() {
                         StreDatas.get(i).SPEC = spec
                         StreDatas.get(i).FAMI = fami
                         StreDatas.get(i).SCIEN = scien
-                        StreDatas.get(i).H = h
-                        StreDatas.get(i).BREA = brea
-                        StreDatas.get(i).COVE = cove
+                        StreDatas.get(i).DBH = dbh
+                        StreDatas.get(i).TOIL = toil
+                        StreDatas.get(i).UNDER = under
+                        StreDatas.get(i).WATERWIDTH = waterwidth
+                        StreDatas.get(i).TYPE = type
                     }
                 }
                 strepage = strepage + 1
@@ -2356,9 +2570,11 @@ class Flora2Activity : Activity() {
                         etSTRE_SPECET.setText(data.SPEC)
                         etSTRE_FAMIET.setText(data.FAMI)
                         etSTRE_SCIENET.setText(data.SCIEN)
-                        etSTRE_HET.setText(data.H.toString())
-                        etSTRE_BREAET.setText(data.BREA.toString())
-                        etSTRE_COVEET.setText(data.COVE.toString())
+                        etSTRE_HET.setText(data.DBH.toString())
+                        etSTRE_BREAET.setText(data.TOIL.toString())
+                        etSTRE_COVEET.setText(data.UNDER.toString())
+                        etSTRE_WATERWIDTH.setText(data.WATERWIDTH.toString())
+                        etSTRE_TYPE.setText(data.TYPE.toString())
 
                         val page = strepage
                         val size = strerightpageTV.text.toString().toInt()
@@ -2382,6 +2598,8 @@ class Flora2Activity : Activity() {
                     etSTRE_HET.setText("")
                     etSTRE_BREAET.setText("")
                     etSTRE_COVEET.setText("")
+                    etSTRE_WATERWIDTH.setText("")
+                    etSTRE_TYPE.setText("")
                 }
             }
 
@@ -2407,6 +2625,8 @@ class Flora2Activity : Activity() {
             cove = etSTR_COVEET.text.toString().toFloat()
         }
 
+        var etc = etSHR_UNDER.text.toString()
+
         var chkData = false
 
         var equlas = false
@@ -2423,7 +2643,7 @@ class Flora2Activity : Activity() {
             }
         }
 
-        if (spec == "" && h == 0.0F && cove == 0.0F ){
+        if (spec == "" && h == 0.0F && cove == 0.0F && etc == ""){
             Toast.makeText(context, "빈칸은 입력하실수 없습니다..", Toast.LENGTH_SHORT).show()
         } else {
             if(shrpage == maxsize) {
@@ -2432,7 +2652,7 @@ class Flora2Activity : Activity() {
 
                     if (shrpage > 1) {
 
-                        var shrdata = TreeData2(-1, shrpage, spec, fami, scien, h, cove)
+                        var shrdata = TreeData2(-1 , shrpage, spec, fami, scien, h.toString(), cove.toString(),etc)
 
                         ShrDatas.add(shrdata)
 
@@ -2449,11 +2669,12 @@ class Flora2Activity : Activity() {
                         etSHR_SCIENET.setText("")
                         etSHR_HET.setText("")
                         etSTR_COVEET.setText("")
+                        etSHR_UNDER.setText("")
                     }
 
                     if (shrpage == 1) {
 
-                        var shrdata = TreeData2(-1, shrpage, spec, fami, scien, h, cove)
+                        var shrdata = TreeData2(-1 , shrpage, spec, fami, scien, h.toString(), cove.toString(),etc)
 
                         ShrDatas.add(shrdata)
 
@@ -2470,6 +2691,7 @@ class Flora2Activity : Activity() {
                         etSHR_SCIENET.setText("")
                         etSHR_HET.setText("")
                         etSTR_COVEET.setText("")
+                        etSHR_UNDER.setText("")
 
                     }
                 } else {
@@ -2480,8 +2702,9 @@ class Flora2Activity : Activity() {
                                 ShrDatas.get(i).SPEC = spec
                                 ShrDatas.get(i).FAMI = fami
                                 ShrDatas.get(i).SCIEN = scien
-                                ShrDatas.get(i).H = h
-                                ShrDatas.get(i).COVE = cove
+                                ShrDatas.get(i).H = h.toString()
+                                ShrDatas.get(i).COVE = cove.toString()
+                                ShrDatas.get(i).ETC = etc.toString()
                             }
                         }
 
@@ -2498,6 +2721,7 @@ class Flora2Activity : Activity() {
                         etSHR_SCIENET.setText("")
                         etSHR_HET.setText("")
                         etSTR_COVEET.setText("")
+                        etSHR_UNDER.setText("")
                     }
 
                     if (shrpage == 1) {
@@ -2507,8 +2731,9 @@ class Flora2Activity : Activity() {
                                 ShrDatas.get(i).SPEC = spec
                                 ShrDatas.get(i).FAMI = fami
                                 ShrDatas.get(i).SCIEN = scien
-                                ShrDatas.get(i).H = h
-                                ShrDatas.get(i).COVE = cove
+                                ShrDatas.get(i).H = h.toString()
+                                ShrDatas.get(i).COVE = cove.toString()
+                                ShrDatas.get(i).ETC = etc.toString()
                             }
                         }
 
@@ -2525,6 +2750,7 @@ class Flora2Activity : Activity() {
                         etSHR_SCIENET.setText("")
                         etSHR_HET.setText("")
                         etSTR_COVEET.setText("")
+                        etSHR_UNDER.setText("")
 
                     }
                 }
@@ -2535,8 +2761,9 @@ class Flora2Activity : Activity() {
                         ShrDatas.get(i).SPEC = spec
                         ShrDatas.get(i).FAMI = fami
                         ShrDatas.get(i).SCIEN = scien
-                        ShrDatas.get(i).H = h
-                        ShrDatas.get(i).COVE = cove
+                        ShrDatas.get(i).H = h.toString()
+                        ShrDatas.get(i).COVE = cove.toString()
+                        ShrDatas.get(i).ETC = etc.toString()
                     }
                 }
                 shrpage = shrpage + 1
@@ -2550,6 +2777,7 @@ class Flora2Activity : Activity() {
                         etSHR_SCIENET.setText(data.SCIEN)
                         etSHR_HET.setText(data.H.toString())
                         etSTR_COVEET.setText(data.COVE.toString())
+                        etSHR_UNDER.setText(data.ETC.toString())
 
                         val page = shrpage
                         val size = shrrightpageTV.text.toString().toInt()
@@ -2572,6 +2800,7 @@ class Flora2Activity : Activity() {
                     etSHR_SCIENET.setText("")
                     etSHR_HET.setText("")
                     etSTR_COVEET.setText("")
+                    etSHR_UNDER.setText("")
                 }
             }
             deleteBT.visibility = View.GONE
@@ -2597,6 +2826,11 @@ class Flora2Activity : Activity() {
             cove = etHER_COVEET.text.toString().toFloat()
         }
 
+        var etc = 0.0f
+        if (etHER_HEIGHT.text.isNotEmpty()) {
+            etc = etHER_HEIGHT.text.toString().toFloat()
+        }
+
         var chkData = false
 
         var equlas = false
@@ -2609,7 +2843,7 @@ class Flora2Activity : Activity() {
             }
         }
 
-        if (spec == "" && h == 0.0F && cove == 0.0F ){
+        if (spec == "" && h == 0.0F && cove == 0.0F && etc == 0.0f ){
             Toast.makeText(context, "빈칸은 입력하실수 없습니다..", Toast.LENGTH_SHORT).show()
         } else {
             val maxsize = herrightpageTV.text.toString().toInt()
@@ -2619,7 +2853,7 @@ class Flora2Activity : Activity() {
                 if (division == false) {
                     if (herpage > 1) {
 
-                        var herdata = TreeData2(-1, herpage, spec, fami, scien, h, cove)
+                        var herdata = TreeData2(-1 , herpage, spec, fami, scien, h.toString(), cove.toString(), etc.toString())
 
                         HerDatas.add(herdata)
 
@@ -2636,11 +2870,12 @@ class Flora2Activity : Activity() {
                         etHER_SCIENET.setText("")
                         etHER_HET.setText("")
                         etHER_COVEET.setText("")
+                        etHER_HEIGHT.setText("")
                     }
 
                     if (herpage == 1) {
 
-                        var herdata = TreeData2(-1, herpage, spec, fami, scien, h, cove)
+                        var herdata = TreeData2(-1 , herpage, spec, fami, scien, h.toString(), cove.toString(), etc.toString())
 
                         HerDatas.add(herdata)
 
@@ -2657,7 +2892,7 @@ class Flora2Activity : Activity() {
                         etHER_SCIENET.setText("")
                         etHER_HET.setText("")
                         etHER_COVEET.setText("")
-
+                        etHER_HEIGHT.setText("")
                     }
                 } else {
                     if (herpage > 1) {
@@ -2667,8 +2902,9 @@ class Flora2Activity : Activity() {
                                 HerDatas.get(i).SPEC = spec
                                 HerDatas.get(i).FAMI = fami
                                 HerDatas.get(i).SCIEN = scien
-                                HerDatas.get(i).H = h
-                                HerDatas.get(i).COVE = cove
+                                HerDatas.get(i).H = h.toString()
+                                HerDatas.get(i).COVE = cove.toString()
+                                HerDatas.get(i).ETC = etc.toString()
                             }
                         }
 
@@ -2685,6 +2921,7 @@ class Flora2Activity : Activity() {
                         etHER_SCIENET.setText("")
                         etHER_HET.setText("")
                         etHER_COVEET.setText("")
+                        etHER_HEIGHT.setText("")
                     }
 
                     if (herpage == 1) {
@@ -2694,8 +2931,9 @@ class Flora2Activity : Activity() {
                                 HerDatas.get(i).SPEC = spec
                                 HerDatas.get(i).FAMI = fami
                                 HerDatas.get(i).SCIEN = scien
-                                HerDatas.get(i).H = h
-                                HerDatas.get(i).COVE = cove
+                                HerDatas.get(i).H = h.toString()
+                                HerDatas.get(i).COVE = cove.toString()
+                                HerDatas.get(i).ETC = etc.toString()
                             }
                         }
 
@@ -2712,7 +2950,7 @@ class Flora2Activity : Activity() {
                         etHER_SCIENET.setText("")
                         etHER_HET.setText("")
                         etHER_COVEET.setText("")
-
+                        etHER_HEIGHT.setText("")
                     }
                 }
             }
@@ -2722,8 +2960,9 @@ class Flora2Activity : Activity() {
                         HerDatas.get(i).SPEC = spec
                         HerDatas.get(i).FAMI = fami
                         HerDatas.get(i).SCIEN = scien
-                        HerDatas.get(i).H = h
-                        HerDatas.get(i).COVE = cove
+                        HerDatas.get(i).H = h.toString()
+                        HerDatas.get(i).COVE = cove.toString()
+                        HerDatas.get(i).ETC = etc.toString()
                     }
                 }
                 herpage = herpage + 1
@@ -2737,6 +2976,7 @@ class Flora2Activity : Activity() {
                         etHER_SCIENET.setText(data.SCIEN)
                         etHER_HET.setText(data.H.toString())
                         etHER_COVEET.setText(data.COVE.toString())
+                        etHER_HEIGHT.setText(data.ETC.toString())
 
                         val page = herpage
                         val size = herrightpageTV.text.toString().toInt()
@@ -2759,6 +2999,7 @@ class Flora2Activity : Activity() {
                     etHER_SCIENET.setText("")
                     etHER_HET.setText("")
                     etHER_COVEET.setText("")
+                    etHER_HEIGHT.setText("")
                 }
             }
 
@@ -2803,6 +3044,13 @@ class Flora2Activity : Activity() {
         etHER_SCIENET.setText("")
         etHER_HET.setText("")
         etHER_COVEET.setText("")
+
+        etTRE_WATERWIDTH.setText("")
+        etTRE_TYPE.setText("")
+        etSTRE_WATERWIDTH.setText("")
+        etSTRE_TYPE.setText("")
+        etSHR_UNDER.setText("")
+        etHER_HEIGHT.setText("")
     }
 
     fun TreClear(page: String){
@@ -2861,160 +3109,161 @@ class Flora2Activity : Activity() {
 
     fun insert(){
 
-        var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null,null,null,null,null,null,null,null,null,null
-                ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                ,null,null,null,null,null,null,null,null,null,null,null,null,null)
-
-        keyId = intent.getStringExtra("GROP_ID")
-
-        println("insertkeyid $keyId")
-
-        manyFloraAttribute.GROP_ID = keyId
-
-        manyFloraAttribute.INV_REGION = invregionTV.text.toString()
-
-        manyFloraAttribute.INV_DT = Utils.todayStr()
-
-        if(invpersonTV.text == null || invpersonTV.text.equals("")){
-            manyFloraAttribute.INV_PERSON = userName
-        }else {
-            manyFloraAttribute.INV_PERSON = invpersonTV.text.toString()
-        }
-
-        manyFloraAttribute.INV_TM = Utils.timeStr()
-
-        var treChk = false
-
-        for (i in 0 until  TreDatas.size){
-            if (TreDatas.get(i).PAGE == trenumTV.text.toString().toInt()){
-              treChk = true
-            }
-        }
-
-        if (treChk == false){
-            if (trenumTV.text.isNotEmpty()) {
-                manyFloraAttribute.TRE_NUM = trenumTV.text.toString().toInt()
-            }
-
-            manyFloraAttribute.TRE_SPEC = etTRE_SPECET.text.toString()
-            manyFloraAttribute.TRE_FAMI = etTRE_FAMIET.text.toString()
-            manyFloraAttribute.TRE_SCIEN = etTRE_SCIENET.text.toString()
-
-            if (etTRE_HET.text.isNotEmpty()) {
-                manyFloraAttribute.TRE_H = etTRE_HET.text.toString().toFloat()
-            }
-
-            if (etTRE_BREAET.text.isNotEmpty()) {
-                manyFloraAttribute.TRE_BREA = etTRE_BREAET.text.toString().toFloat()
-            }
-
-            if (etTRE_COVEET.text.isNotEmpty()) {
-                manyFloraAttribute.TRE_COVE = etTRE_COVEET.text.toString().toFloat()
-            }
-        }
-
-        var streChk = false
-
-        for (i in 0 until  StreDatas.size){
-            if (StreDatas.get(i).PAGE == strenumTV.text.toString().toInt()){
-                streChk = true
-            }
-        }
-
-        if (streChk == false){
-            if (strenumTV.text.isNotEmpty()) {
-                manyFloraAttribute.STRE_NUM = strenumTV.text.toString().toInt()
-            }
-
-            manyFloraAttribute.STRE_SPEC = etSTRE_SPECET.text.toString()
-            manyFloraAttribute.STRE_FAMI = etSTRE_FAMIET.text.toString()
-            manyFloraAttribute.STRE_SCIEN = etSTRE_SCIENET.text.toString()
-
-            if (etSTRE_HET.text.isNotEmpty()) {
-                manyFloraAttribute.STRE_H = etSTRE_HET.text.toString().toFloat()
-            }
-
-            if (etSTRE_BREAET.text.isNotEmpty()) {
-                manyFloraAttribute.STRE_BREA = etSTRE_BREAET.text.toString().toFloat()
-            }
-
-            if (etSTRE_COVEET.text.isNotEmpty()) {
-                manyFloraAttribute.STRE_COVE = etSTRE_COVEET.text.toString().toFloat()
-            }
-        }
-
-        var shrChk = false
-
-        for (i in 0 until  ShrDatas.size){
-            if (ShrDatas.get(i).PAGE == shrnumTV.text.toString().toInt()){
-                shrChk = true
-            }
-        }
-
-        if (shrChk == false){
-            if (shrnumTV.text.isNotEmpty()) {
-                manyFloraAttribute.SHR_NUM = shrnumTV.text.toString().toInt()
-            }
-
-            manyFloraAttribute.SHR_SPEC = etSHR_SPECET.text.toString()
-            manyFloraAttribute.SHR_FAMI = etSHR_FAMIET.text.toString()
-            manyFloraAttribute.SHR_SCIEN = etSHR_SCIENET.text.toString()
-
-            if (etSTR_COVEET.text.isNotEmpty()) {
-                manyFloraAttribute.SHR_H = etSTRE_HET.text.toString().toFloat()
-            }
-
-            if (etSTR_COVEET.text.isNotEmpty()) {
-                manyFloraAttribute.SHR_COVE = etSTR_COVEET.text.toString().toFloat()
-            }
-        }
-
-        var herChk = false
-
-        for (i in 0 until  HerDatas.size){
-            if (HerDatas.get(i).PAGE == hernumTV.text.toString().toInt()){
-                herChk = true
-            }
-        }
-
-        if (herChk == false){
-            if (hernumTV.text.isNotEmpty()) {
-                manyFloraAttribute.HER_NUM = hernumTV.text.toString().toInt()
-            }
-
-            manyFloraAttribute.HER_SPEC = etHER_SPECET.text.toString()
-            manyFloraAttribute.HER_FAMI = etHER_FAMIET.text.toString()
-            manyFloraAttribute.HER_SCIEN = etHER_SCIENET.text.toString()
-
-            if (etHER_HET.text.isNotEmpty()) {
-                manyFloraAttribute.HER_H = etHER_HET.text.toString().toFloat()
-            }
-
-            if (etHER_COVEET.text.isNotEmpty()) {
-                manyFloraAttribute.HER_COVE = etHER_COVEET.text.toString().toFloat()
-            }
-        }
-
-        if (gpslatTV.text.isNotEmpty()) {
-            manyFloraAttribute.GPS_LAT = gpslatTV.text.toString().toFloat()
-        }
-
-        if (gpslonTV.text.isNotEmpty()) {
-            manyFloraAttribute.GPS_LON = gpslonTV.text.toString().toFloat()
-        }
-
-        manyFloraAttribute.TEMP_YN = "Y"
-        manyFloraAttribute.CONF_MOD = "N"
-
-        dbManager!!.insertmanyflora_attribute(manyFloraAttribute);
-
-        var intent = Intent()
-
-        intent.putExtra("export", 70);
-
-        setResult(RESULT_OK, intent);
-
-        finish()
+//        var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null,null,null,null,null,null,null,null,null,null
+//                ,null,null,null,null,null,null,null,null,null,null,null,null,null
+//                ,null,null,null,null,null,null,null,null,null,null,null,null,null
+//        ,null,null,null,null,null,null)
+//
+//        keyId = intent.getStringExtra("GROP_ID")
+//
+//        println("insertkeyid $keyId")
+//
+//        manyFloraAttribute.GROP_ID = keyId
+//
+//        manyFloraAttribute.INV_REGION = invregionTV.text.toString()
+//
+//        manyFloraAttribute.INV_DT = Utils.todayStr()
+//
+//        if(invpersonTV.text == null || invpersonTV.text.equals("")){
+//            manyFloraAttribute.INV_PERSON = userName
+//        }else {
+//            manyFloraAttribute.INV_PERSON = invpersonTV.text.toString()
+//        }
+//
+//        manyFloraAttribute.INV_TM = Utils.timeStr()
+//
+//        var treChk = false
+//
+//        for (i in 0 until  TreDatas.size){
+//            if (TreDatas.get(i).PAGE == trenumTV.text.toString().toInt()){
+//              treChk = true
+//            }
+//        }
+//
+//        if (treChk == false){
+//            if (trenumTV.text.isNotEmpty()) {
+//                manyFloraAttribute.TRE_NUM = trenumTV.text.toString().toInt()
+//            }
+//
+//            manyFloraAttribute.TRE_SPEC = etTRE_SPECET.text.toString()
+//            manyFloraAttribute.TRE_FAMI = etTRE_FAMIET.text.toString()
+//            manyFloraAttribute.TRE_SCIEN = etTRE_SCIENET.text.toString()
+//
+//            if (etTRE_HET.text.isNotEmpty()) {
+//                manyFloraAttribute.TRE_H = etTRE_HET.text.toString().toFloat()
+//            }
+//
+//            if (etTRE_BREAET.text.isNotEmpty()) {
+//                manyFloraAttribute.TRE_BREA = etTRE_BREAET.text.toString().toFloat()
+//            }
+//
+//            if (etTRE_COVEET.text.isNotEmpty()) {
+//                manyFloraAttribute.TRE_COVE = etTRE_COVEET.text.toString().toFloat()
+//            }
+//        }
+//
+//        var streChk = false
+//
+//        for (i in 0 until  StreDatas.size){
+//            if (StreDatas.get(i).PAGE == strenumTV.text.toString().toInt()){
+//                streChk = true
+//            }
+//        }
+//
+//        if (streChk == false){
+//            if (strenumTV.text.isNotEmpty()) {
+//                manyFloraAttribute.STRE_NUM = strenumTV.text.toString().toInt()
+//            }
+//
+//            manyFloraAttribute.STRE_SPEC = etSTRE_SPECET.text.toString()
+//            manyFloraAttribute.STRE_FAMI = etSTRE_FAMIET.text.toString()
+//            manyFloraAttribute.STRE_SCIEN = etSTRE_SCIENET.text.toString()
+//
+//            if (etSTRE_HET.text.isNotEmpty()) {
+//                manyFloraAttribute.STRE_H = etSTRE_HET.text.toString().toFloat()
+//            }
+//
+//            if (etSTRE_BREAET.text.isNotEmpty()) {
+//                manyFloraAttribute.STRE_BREA = etSTRE_BREAET.text.toString().toFloat()
+//            }
+//
+//            if (etSTRE_COVEET.text.isNotEmpty()) {
+//                manyFloraAttribute.STRE_COVE = etSTRE_COVEET.text.toString().toFloat()
+//            }
+//        }
+//
+//        var shrChk = false
+//
+//        for (i in 0 until  ShrDatas.size){
+//            if (ShrDatas.get(i).PAGE == shrnumTV.text.toString().toInt()){
+//                shrChk = true
+//            }
+//        }
+//
+//        if (shrChk == false){
+//            if (shrnumTV.text.isNotEmpty()) {
+//                manyFloraAttribute.SHR_NUM = shrnumTV.text.toString().toInt()
+//            }
+//
+//            manyFloraAttribute.SHR_SPEC = etSHR_SPECET.text.toString()
+//            manyFloraAttribute.SHR_FAMI = etSHR_FAMIET.text.toString()
+//            manyFloraAttribute.SHR_SCIEN = etSHR_SCIENET.text.toString()
+//
+//            if (etSTR_COVEET.text.isNotEmpty()) {
+//                manyFloraAttribute.SHR_H = etSTRE_HET.text.toString().toFloat()
+//            }
+//
+//            if (etSTR_COVEET.text.isNotEmpty()) {
+//                manyFloraAttribute.SHR_COVE = etSTR_COVEET.text.toString().toFloat()
+//            }
+//        }
+//
+//        var herChk = false
+//
+//        for (i in 0 until  HerDatas.size){
+//            if (HerDatas.get(i).PAGE == hernumTV.text.toString().toInt()){
+//                herChk = true
+//            }
+//        }
+//
+//        if (herChk == false){
+//            if (hernumTV.text.isNotEmpty()) {
+//                manyFloraAttribute.HER_NUM = hernumTV.text.toString().toInt()
+//            }
+//
+//            manyFloraAttribute.HER_SPEC = etHER_SPECET.text.toString()
+//            manyFloraAttribute.HER_FAMI = etHER_FAMIET.text.toString()
+//            manyFloraAttribute.HER_SCIEN = etHER_SCIENET.text.toString()
+//
+//            if (etHER_HET.text.isNotEmpty()) {
+//                manyFloraAttribute.HER_H = etHER_HET.text.toString().toFloat()
+//            }
+//
+//            if (etHER_COVEET.text.isNotEmpty()) {
+//                manyFloraAttribute.HER_COVE = etHER_COVEET.text.toString().toFloat()
+//            }
+//        }
+//
+//        if (gpslatTV.text.isNotEmpty()) {
+//            manyFloraAttribute.GPS_LAT = gpslatTV.text.toString().toFloat()
+//        }
+//
+//        if (gpslonTV.text.isNotEmpty()) {
+//            manyFloraAttribute.GPS_LON = gpslonTV.text.toString().toFloat()
+//        }
+//
+//        manyFloraAttribute.TEMP_YN = "Y"
+//        manyFloraAttribute.CONF_MOD = "N"
+//
+//        dbManager!!.insertmanyflora_attribute(manyFloraAttribute);
+//
+//        var intent = Intent()
+//
+//        intent.putExtra("export", 70);
+//
+//        setResult(RESULT_OK, intent);
+//
+//        finish()
     }
 
 }

@@ -2108,12 +2108,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             var title = ""
 
                             while (data.moveToNext()) {
-
                                 var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
-                                        data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getFloat(12), data.getInt(13), data.getString(14)
-                                        , data.getString(15), data.getString(16), data.getFloat(17), data.getFloat(18), data.getFloat(19), data.getInt(20), data.getString(21), data.getString(22)
-                                        , data.getString(23), data.getFloat(24), data.getFloat(25), data.getInt(26), data.getString(27), data.getString(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32)
-                                        , data.getFloat(33), data.getString(34), data.getString(35))
+                                        data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
+                                        , data.getInt(15),data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
+                                        , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28),data.getFloat(29),data.getString(30),data.getInt(31),data.getString(32)
+                                        ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41))
                                 manyfloradataArray.add(manyFloraAttribute)
 
                             }
@@ -6791,10 +6790,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         while (data.moveToNext()) {
 
             var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
-                    data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getFloat(12), data.getInt(13), data.getString(14)
-                    , data.getString(15),data.getString(16), data.getFloat(17), data.getFloat(18), data.getFloat(19), data.getInt(20), data.getString(21), data.getString(22)
-                    , data.getString(23), data.getFloat(24), data.getFloat(25), data.getInt(26), data.getString(27), data.getString(28),data.getString(29),data.getFloat(30),data.getFloat(31),data.getFloat(32)
-                    ,data.getFloat(33),data.getString(34),data.getString(35))
+                    data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
+                    , data.getInt(15),data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
+                    , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28),data.getFloat(29),data.getString(30),data.getInt(31),data.getString(32)
+                    ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41))
 
             manyflorasDatas.add(manyFloraAttribute)
 
@@ -6832,7 +6831,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if (add){
                     var MANYFLORA: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
                     if (index == 0 ) {
-                        println("tre,h,brea,cove${zoo.TRE_H},${zoo.TRE_BREA},${zoo.TRE_COVE} stre,h,brea,cove ${zoo.STRE_H},${zoo.STRE_BREA},${zoo.STRE_COVE} ")
                         MANYFLORA.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, zoo.GROP_ID))
                         MANYFLORA.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, zoo.INV_REGION))
                         MANYFLORA.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, zoo.INV_PERSON))
@@ -6842,28 +6840,38 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         MANYFLORA.add(Exporter.ColumnDef("TRE_SPEC", ogr.OFTString, zoo.TRE_SPEC))
                         MANYFLORA.add(Exporter.ColumnDef("TRE_FAMI", ogr.OFTString, zoo.TRE_FAMI))
                         MANYFLORA.add(Exporter.ColumnDef("TRE_SCIEN", ogr.OFTString, zoo.TRE_SCIEN))
-                        MANYFLORA.add(Exporter.ColumnDef("TRE_H", ogr.OFTString, zoo.TRE_H.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("TRE_BREA", ogr.OFTString, zoo.TRE_BREA.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("TRE_COVE", ogr.OFTString, zoo.TRE_COVE.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("TRE_DBH", ogr.OFTString, zoo.TRE_DBH.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("TRE_TOIL", ogr.OFTString, zoo.TRE_TOIL.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("TRE_UNDER", ogr.OFTString, zoo.TRE_UNDER.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("TRE_WATER", ogr.OFTString, zoo.TRE_WATER.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("TRE_TYPE", ogr.OFTString, zoo.TRE_TYPE.toString()))
+
                         MANYFLORA.add(Exporter.ColumnDef("STRE_NUM", ogr.OFTString, zoo.STRE_NUM))
                         MANYFLORA.add(Exporter.ColumnDef("STRE_SPEC", ogr.OFTString, zoo.STRE_SPEC))
                         MANYFLORA.add(Exporter.ColumnDef("STRE_FAMI", ogr.OFTString, zoo.STRE_FAMI))
                         MANYFLORA.add(Exporter.ColumnDef("STRE_SCIEN", ogr.OFTString, zoo.STRE_SCIEN))
-                        MANYFLORA.add(Exporter.ColumnDef("STRE_H", ogr.OFTString, zoo.STRE_H.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("STRE_BREA", ogr.OFTString, zoo.STRE_BREA.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("STRE_COVE", ogr.OFTString, zoo.STRE_COVE.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("STRE_DBH", ogr.OFTString, zoo.STRE_DBH.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("STRE_TOIL", ogr.OFTString, zoo.STRE_TOIL.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("STRE_UNDER", ogr.OFTString, zoo.STRE_UNDER.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("STRE_WATER", ogr.OFTString, zoo.STRE_WATER.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("STRE_TYPE", ogr.OFTString, zoo.STRE_TYPE.toString()))
+
                         MANYFLORA.add(Exporter.ColumnDef("SHR_NUM", ogr.OFTInteger, zoo.SHR_NUM))
                         MANYFLORA.add(Exporter.ColumnDef("SHR_SPEC", ogr.OFTString, zoo.SHR_SPEC))
                         MANYFLORA.add(Exporter.ColumnDef("SHR_FAMI", ogr.OFTString, zoo.SHR_FAMI))
                         MANYFLORA.add(Exporter.ColumnDef("SHR_SCIEN", ogr.OFTString, zoo.SHR_SCIEN))
-                        MANYFLORA.add(Exporter.ColumnDef("SHR_H", ogr.OFTString, zoo.SHR_H.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("SHR_COVE", ogr.OFTString, zoo.SHR_COVE.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("SHR_TOIL", ogr.OFTString, zoo.SHR_TOIL.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("SHR_WATER", ogr.OFTString, zoo.SHR_WATER.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("SHR_UNDER", ogr.OFTString, zoo.SHR_UNDER.toString()))
+
                         MANYFLORA.add(Exporter.ColumnDef("HER_NUM", ogr.OFTInteger, zoo.HER_NUM))
                         MANYFLORA.add(Exporter.ColumnDef("HER_SPEC", ogr.OFTString, zoo.HER_SPEC))
                         MANYFLORA.add(Exporter.ColumnDef("HER_FAMI", ogr.OFTString, zoo.HER_FAMI))
                         MANYFLORA.add(Exporter.ColumnDef("HER_SCIEN", ogr.OFTString, zoo.HER_SCIEN))
-                        MANYFLORA.add(Exporter.ColumnDef("HER_H", ogr.OFTString, zoo.HER_H.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("HER_COVE", ogr.OFTString, zoo.HER_COVE.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("HER_DOMIN", ogr.OFTString, zoo.HER_DOMIN.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("HER_GUNDO", ogr.OFTString, zoo.HER_GUNDO.toString()))
+                        MANYFLORA.add(Exporter.ColumnDef("HER_HEIGHT", ogr.OFTString, zoo.HER_HEIGHT.toString()))
+
                         MANYFLORA.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, zoo.GPS_LAT.toString()))
                         MANYFLORA.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, zoo.GPS_LON.toString()))
                         MANYFLORA.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, zoo.CONF_MOD))

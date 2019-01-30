@@ -471,6 +471,12 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             obsstatTV.setText("")
         }
 
+        birdsresetBT.setOnClickListener {
+            birdsET.setText("")
+            birdsLL.visibility = View.GONE
+            birdsTV.visibility = View.VISIBLE
+        }
+
         cancelBtn.setOnClickListener {
             val builder = AlertDialog.Builder(context)
             builder.setMessage("작성을 취소하시겠습니까?").setCancelable(false)
@@ -581,6 +587,10 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         birds_attribute.INV_TM = timeTV.text.toString()
 
                         birds_attribute.SPEC_NM = birdsTV.text.toString()
+                        var birdsET = birdsET.text.toString()
+                        if (birdsET != "" && birdsET != null){
+                            birds_attribute.SPEC_NM = birdsET
+                        }
 
                         birds_attribute.FAMI_NM = familyNameTV.text.toString()
 
@@ -1062,6 +1072,10 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             birds_attribute.INV_TM = timeTV.text.toString()
 
             birds_attribute.SPEC_NM = birdsTV.text.toString()
+            var birdsET = birdsET.text.toString()
+            if (birdsET != "" && birdsET != null){
+                birds_attribute.SPEC_NM = birdsET
+            }
 
             birds_attribute.FAMI_NM = familyNameTV.text.toString()
 
@@ -1512,9 +1526,18 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         }
 
                         endangeredTV.setText(codeText)
+                        if (codeText != "") {
+                            name += "(멸종위기)"
+                        }
                     }
 
-                    birdsTV.text = name
+                    if (name == "SP(미동정)"){
+                        birdsTV.text = name
+                        birdsLL.visibility = View.VISIBLE
+                        birdsTV.visibility = View.GONE
+                    } else {
+                        birdsTV.text = name
+                    }
                     familyNameTV.text = family_name
                     zoologicalTV.text = zoological
 

@@ -1796,6 +1796,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         }
 
                         endangeredTV.setText(codeText)
+                        if (codeText != "") {
+                            name += "(멸종위기)"
+                        }
                     }
 
                     mamspecnmET.text = name

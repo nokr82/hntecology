@@ -24,7 +24,7 @@
                 android:textColor="#333333"
                 android:textSize="20.2sp"
                 android:textStyle="bold"
-                android:text="양서ㆍ파충류 조사야장"
+                android:text="양서ㆍ파충류 조사표"
                 style="@style/BiotopeTextView"
                 android:gravity="center"
                 />
@@ -297,6 +297,28 @@
                     style="@style/BiotopeTextView"
                     android:gravity="center"
                     />
+                <RelativeLayout
+                    android:visibility="gone"
+                    android:id="@+id/specLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:id="@+id/specET"
+                        android:layout_width="match_parent"
+                        style="@style/BiotopeTextView"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:hint="입력해주세요."
+                        android:singleLine="true"
+                        android:gravity="center"/>
+                    <Button
+                        android:id="@+id/reptiliaresetBT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        style="@style/dlgcommonButton"
+                        android:layout_alignParentRight="true"
+                        android:text="변경"/>
+                </RelativeLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"

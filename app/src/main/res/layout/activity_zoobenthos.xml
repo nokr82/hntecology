@@ -25,7 +25,7 @@
                 android:textColor="#333333"
                 android:textSize="20.2sp"
                 android:textStyle="bold"
-                android:text="저서무척추동물 조사야장"
+                android:text="저서무척추동물 조사표"
                 style="@style/BiotopeTextView"
                 android:gravity="center"
                 />

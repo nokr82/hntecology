@@ -47,8 +47,8 @@ class Flora2Activity : Activity() {
 
     var dataArray:ArrayList<ManyFloraAttribute> = ArrayList<ManyFloraAttribute>()
 
-    val SET_DATA1 = 1;
     val SET_DATA2 = 2
+    val SET_DATA1 = 1;
     val SET_DATA3 = 3
     val SET_DATA4 = 4
     val SET_DATA5 = 5

@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:gravity="center"
-                android:text="야생조류 조사야장"
+                android:text="조류 조사표"
                 android:textColor="#333333"
                 android:textSize="20.2sp"
                 android:textStyle="bold" />
@@ -297,6 +297,31 @@
                     android:hint="click"
                     android:gravity="center" />
 
+
+
+                <RelativeLayout
+                    android:visibility="gone"
+                    android:id="@+id/birdsLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:id="@+id/birdsET"
+                        android:layout_width="match_parent"
+                        style="@style/BiotopeTextView"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:hint="입력해주세요."
+                        android:singleLine="true"
+                        android:gravity="center"/>
+                    <Button
+                        android:id="@+id/birdsresetBT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        style="@style/dlgcommonButton"
+                        android:layout_alignParentRight="true"
+                        android:text="변경"/>
+                </RelativeLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -490,7 +515,7 @@
                     style="@style/BiotopeTextView"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
-                    android:text="주요행위" />
+                    android:text="주요행동" />
 
                 <TextView
                     android:id="@+id/mjActTV"

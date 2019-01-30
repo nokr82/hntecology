@@ -645,6 +645,12 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             alert(listItems, "수계", watercontET, "watercont");
         }
 
+        reptiliaresetBT.setOnClickListener {
+            specLL.visibility = View.GONE
+            specnmET.visibility = View.VISIBLE
+            specET.setText("")
+        }
+
         btn_reptiliaDelete.setOnClickListener {
 
             if(pk != null) {
@@ -924,6 +930,10 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                         reptilia_attribute.INV_TM = invtmTV.text.toString()
 
                         reptilia_attribute.SPEC_NM = specnmET.text.toString()
+                        var specet = specET.text.toString()
+                        if (specet != null && specet != ""){
+                            reptilia_attribute.SPEC_NM = specet
+                        }
                         reptilia_attribute.FAMI_NM = famiET.text.toString()
                         reptilia_attribute.SCIEN_NM = scienET.text.toString()
 
@@ -1136,6 +1146,10 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             reptilia_attribute.INV_TM = invtmTV.text.toString()
 
             reptilia_attribute.SPEC_NM = specnmET.text.toString()
+            var specet = specET.text.toString()
+            if (specet != null && specet != ""){
+                reptilia_attribute.SPEC_NM = specet
+            }
             reptilia_attribute.FAMI_NM = famiET.text.toString()
             reptilia_attribute.SCIEN_NM = scienET.text.toString()
 
@@ -1451,6 +1465,11 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                     var name = data!!.getStringExtra("name");
                     var family_name = data!!.getStringExtra("family_name");
                     var zoological = data!!.getStringExtra("zoological");
+
+                    if (name == "SP(미동정)"){
+                        specnmET.visibility = View.GONE
+                        specLL.visibility = View.VISIBLE
+                    }
 
                     specnmET.text = name
                     famiET.text = family_name

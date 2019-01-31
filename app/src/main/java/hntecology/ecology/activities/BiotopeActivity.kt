@@ -717,6 +717,30 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         }
 
+        etTRE_SPECETreset.setOnClickListener {
+            etTRE_SPECETLL.visibility = View.GONE
+            etTRE_SPECETtmp.setText("")
+            etTRE_SPECET.visibility = View.VISIBLE
+        }
+
+        etSTRE_SPECETreset.setOnClickListener {
+            etSTRE_SPECETLL.visibility = View.GONE
+            etSTRE_SPECETtmp.setText("")
+            etSTRE_SPECET.visibility = View.VISIBLE
+        }
+
+        etSHR_SPECETreset.setOnClickListener {
+            etSHR_SPECETLL.visibility = View.GONE
+            etSHR_SPECETtmp.setText("")
+            etSHR_SPECET.visibility = View.VISIBLE
+        }
+
+        etHER_SPECETreset.setOnClickListener {
+            etHER_SPECETLL.visibility = View.GONE
+            etHER_SPECETtmp.setText("")
+            etHER_SPECET.visibility = View.VISIBLE
+        }
+
         btn_biotopCancle1.setOnClickListener {
 
             if (intent.getSerializableExtra("biotopedata") == null){
@@ -865,6 +889,9 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         biotope_attribute.BREA_DIA = etBREA_DIAET.text.toString()
                         biotope_attribute.FIN_EST = etFIN_ESTET.text.toString()
                         biotope_attribute.TRE_SPEC = etTRE_SPECET.text.toString()
+                        if (etTRE_SPECETtmp.text.toString().length > 0){
+                        biotope_attribute.TRE_SPEC = etTRE_SPECETtmp.text.toString()
+                    }
 
                         biotope_attribute.TRE_FAMI = etTRE_FAMIET.text.toString()
                         biotope_attribute.TRE_SCIEN = etTRE_SCIENET.text.toString()
@@ -1455,6 +1482,9 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             biotope_attribute.BREA_DIA = etBREA_DIAET.text.toString()
             biotope_attribute.FIN_EST = etFIN_ESTET.text.toString()
             biotope_attribute.TRE_SPEC = etTRE_SPECET.text.toString()
+            if (etTRE_SPECETtmp.text.toString().length > 0){
+                biotope_attribute.TRE_SPEC = etTRE_SPECETtmp.text.toString()
+            }
 
             biotope_attribute.TRE_FAMI = etTRE_FAMIET.text.toString()
             biotope_attribute.TRE_SCIEN = etTRE_SCIENET.text.toString()
@@ -2229,6 +2259,10 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     var zoological = data!!.getStringExtra("zoological");
 
                     etTRE_SPECET.setText(name)
+                    if (name == "SP(미동정)"){
+                        etTRE_SPECETLL.visibility = View.VISIBLE
+                        etTRE_SPECET.visibility = View.GONE
+                    }
                     etTRE_FAMIET.setText(family_name)
                     etTRE_SCIENET.setText(zoological)
 
@@ -2241,6 +2275,10 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     var zoological = data!!.getStringExtra("zoological");
 
                     etSTRE_SPECET.setText(name)
+                    if (name == "SP(미동정)"){
+                        etSTRE_SPECETLL.visibility = View.VISIBLE
+                        etSTRE_SPECET.visibility = View.GONE
+                    }
                     etSTRE_FAMIET.setText(family_name)
                     etSTRE_SCIENET.setText(zoological)
 
@@ -2253,6 +2291,10 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     var zoological = data!!.getStringExtra("zoological");
 
                     etSHR_SPECET.setText(name)
+                    if (name == "SP(미동정)"){
+                        etSHR_SPECETLL.visibility = View.VISIBLE
+                        etSHR_SPECET.visibility = View.GONE
+                    }
                     etSHR_FAMIET.setText(family_name)
                     etSHR_SCIENET.setText(zoological)
 
@@ -2265,6 +2307,10 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     var zoological = data!!.getStringExtra("zoological");
 
                     etHER_SPECET.setText(name)
+                    if (name == "SP(미동정)"){
+                        etHER_SPECETLL.visibility = View.VISIBLE
+                        etHER_SPECET.visibility = View.GONE
+                    }
                     etHER_FAMIET.setText(family_name)
                     etHER_SCIENET.setText(zoological)
 
@@ -2897,6 +2943,11 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         TVLC_GR_NUMTV.setText("")
         ETLU_GR_NumET.setText("")
         ETlcmGR_NumET.setText("")
+
+        etTRE_SPECETtmp.setText("")
+        etSTRE_SPECETtmp.setText("")
+        etSHR_SPECETtmp.setText("")
+        etHER_SPECETtmp.setText("")
 
         TVTY_MARKTV.setText("")
 

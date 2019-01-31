@@ -215,6 +215,8 @@
                     android:gravity="center"
                     />
 
+
+
                 <RelativeLayout
                     android:visibility="gone"
                     android:id="@+id/koftrLL"

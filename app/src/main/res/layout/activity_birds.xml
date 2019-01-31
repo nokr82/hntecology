@@ -529,6 +529,26 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    style="@style/BiotopeTextView"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:text="서식지 판단 기준" />
+
+                <TextView
+                    android:id="@+id/standardTV"
+                    style="@style/BiotopeTextView"
+                    android:layout_width="0dp"
+                    android:hint="click"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:orientation="horizontal"
 

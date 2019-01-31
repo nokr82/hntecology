@@ -827,6 +827,7 @@ class StockActivity : Activity() {
             numTV.setText(splitnum.toString() + plusnum.toString())
         }
 
+        koftrET.setText("")
         frtpcdTV.text = ""
         koftrTV.text = ""
         storunstTV.text = ""
@@ -878,6 +879,10 @@ class StockActivity : Activity() {
                     if (data!!.getStringExtra("name") != null) {
                         val name = data!!.getStringExtra("name")
                         koftrTV.setText(name)
+                        if (name == "SP(미동정)"){
+                            koftrLL.visibility = View.VISIBLE
+                            koftrTV.visibility = View.GONE
+                        }
                     }
 
                         if (data!!.getStringExtra("CODE") != null){

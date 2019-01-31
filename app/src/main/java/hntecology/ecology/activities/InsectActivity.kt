@@ -538,6 +538,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             insect_attribute.INV_TM = insecttimeET.text.toString()
 
             insect_attribute.SPEC_NM = insectspecnmET.text.toString()
+
             insect_attribute.FAMI_NM = insectfaminmET.text.toString()
             insect_attribute.SCIEN_NM = insectsciennmET.text.toString()
 
@@ -650,6 +651,9 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                         insect_attribute.INV_TM = insecttimeET.text.toString()
 
                         insect_attribute.SPEC_NM = insectspecnmET.text.toString()
+                        if (insectspecnmtmp.length() > 0 ){
+                            insect_attribute.SPEC_NM = insectspecnmtmp.text.toString()
+                        }
                         insect_attribute.FAMI_NM = insectfaminmET.text.toString()
                         insect_attribute.SCIEN_NM = insectsciennmET.text.toString()
 
@@ -1155,6 +1159,12 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
         }
 
+        insectspecnmreset.setOnClickListener {
+            insectspecnmLL.visibility = View.GONE
+            insectspecnmtmp.setText("")
+            insectspecnmET.visibility = View.VISIBLE
+        }
+
         insectspecnmET.setOnClickListener {
             startDlgInsect()
         }
@@ -1205,6 +1215,9 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             insect_attribute.INV_TM = insecttimeET.text.toString()
 
             insect_attribute.SPEC_NM = insectspecnmET.text.toString()
+            if (insectspecnmtmp.length() > 0 ){
+                insect_attribute.SPEC_NM = insectspecnmtmp.text.toString()
+            }
             insect_attribute.FAMI_NM = insectfaminmET.text.toString()
             insect_attribute.SCIEN_NM = insectsciennmET.text.toString()
 
@@ -1490,6 +1503,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
         insectsciennmET.setText("")
 
         insectindicntET.setText("")
+
+        insectspecnmtmp.setText("")
 
         insectobsstatTV.setText("")
 
@@ -1847,6 +1862,10 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                     var zoological = data!!.getStringExtra("zoological");
 
                     insectspecnmET.text = name
+                    if (name == "SP(미동정)"){
+                        insectspecnmLL.visibility = View.VISIBLE
+                        insectspecnmET.visibility = View.GONE
+                    }
                     insectfaminmET.text = family_name
                     insectsciennmET.text = zoological
 

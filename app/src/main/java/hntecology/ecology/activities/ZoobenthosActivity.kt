@@ -288,6 +288,11 @@ class ZoobenthosActivity : Activity() {
             distcauTV.setText("")
         }
 
+        specnmreset.setOnClickListener {
+            specnmLL.visibility = View.GONE
+            specnmtmp.setText("")
+            specnmTV.visibility = View.VISIBLE
+        }
 
 
         weatherTV.setOnClickListener {
@@ -751,6 +756,9 @@ class ZoobenthosActivity : Activity() {
                         zoobenthos_Attribute.GPS_LON = gpslonTV.text.toString().toFloat()
 
                         zoobenthos_Attribute.SPEC_NM = specnmTV.text.toString()
+                        if (specnmtmp.length() > 0){
+                            zoobenthos_Attribute.SPEC_NM = specnmtmp.text.toString()
+                        }
                         zoobenthos_Attribute.FAMI_NM = faminmTV.text.toString()
                         zoobenthos_Attribute.SCIEN_NM = sciennmTV.text.toString()
 
@@ -1231,6 +1239,9 @@ class ZoobenthosActivity : Activity() {
             zoobenthos_Attribute.GPS_LON = gpslonTV.text.toString().toFloat()
 
             zoobenthos_Attribute.SPEC_NM = specnmTV.text.toString()
+            if (specnmtmp.length() > 0){
+                zoobenthos_Attribute.SPEC_NM = specnmtmp.text.toString()
+            }
             zoobenthos_Attribute.FAMI_NM = faminmTV.text.toString()
             zoobenthos_Attribute.SCIEN_NM = sciennmTV.text.toString()
 
@@ -1820,6 +1831,10 @@ class ZoobenthosActivity : Activity() {
                     var zoological = data!!.getStringExtra("zoological");
 
                     specnmTV.setText(name)
+                    if (name == "SP(미동정)"){
+                        specnmLL.visibility = View.VISIBLE
+                        specnmTV.visibility = View.GONE
+                    }
                     faminmTV.setText(family_name)
                     sciennmTV.setText(zoological)
 
@@ -2023,6 +2038,8 @@ class ZoobenthosActivity : Activity() {
         }
 
         addPicturesLL!!.removeAllViews()
+
+        specnmtmp.setText("")
 
         timeTV.setText(Utils.timeStr())
         specnmTV.setText("")

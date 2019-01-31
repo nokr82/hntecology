@@ -74,6 +74,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
     val SET_MAMMAL = 1
     val SET_UNSPEC = 2
+    val SET_STANDARD = 500
 
     val SET_DATA = 1000
 
@@ -264,8 +265,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 chkdata = true
                 var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getFloat(22)
-                        , data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29))
+                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
+                        , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30))
 
                 maminvregionET.setText(mammal_attribute.INV_REGION)
                 maminvdtTV.setText(mammal_attribute.INV_DT)
@@ -306,6 +307,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                 mamtreasyET.setText(mammal_attribute.TR_EASY)
                 mamtreasyreET.setText(mammal_attribute.TR_EASY_RE)
+
+                standardTV.setText(mammal_attribute.STANDARD)
 
                 val id = mammal_attribute.id
 
@@ -431,8 +434,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                 var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getFloat(22)
-                        , data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29))
+                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
+                        , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30))
 
                 dataArray.add(mammal_attribute)
             }
@@ -472,17 +475,17 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                 chkdata = true
 
-                var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                var mammal_attribute: Mammal_attribute =Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getFloat(22)
-                        , data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29))
+                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
+                        , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30))
 
                 dataArray.add(mammal_attribute)
             }
 
             var mammal_attribute:Mammal_attribute = Mammal_attribute(null,null,null,null,null,null,null,null,null
                     ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                    ,null,null,null,null,null,null,null,null)
+                    ,null,null,null,null,null,null,null,null,null)
 
             mammal_attribute.id = keyId + page.toString()
 
@@ -562,8 +565,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                 var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getFloat(22)
-                        , data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29))
+                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
+                        , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30))
 
                 dataArray.add(mammal_attribute)
 
@@ -589,7 +592,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                         var mammal_attribute:Mammal_attribute = Mammal_attribute(null,null,null,null,null,null,null,null,null
                                 ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                                ,null,null,null,null,null,null,null,null)
+                                ,null,null,null,null,null,null,null,null,null)
 
                         keyId = intent.getStringExtra("GROP_ID")
 
@@ -623,6 +626,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         mammal_attribute.INV_TM = mammaltimeTV.text.toString()
 
                         mammal_attribute.SPEC_NM = mamspecnmET.text.toString()
+                        if (mamspecnmtmp.length() >  0){
+                            mammal_attribute.SPEC_NM = mamspecnmtmp.text.toString()
+                        }
                         mammal_attribute.FAMI_NM = mamfaminmTV.text.toString()
                         mammal_attribute.SCIEN_NM = mamsciennmTV.text.toString()
                         mammal_attribute.ENDANGERED = endangeredTV.text.toString()
@@ -649,6 +655,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                         mammal_attribute.UN_SPEC = mamunspecET.text.toString()
                         mammal_attribute.UN_SPEC_RE = mamunspecreET.text.toString()
+
+                        mammal_attribute.STANDARD = standardTV.text.toString()
 
                         mammal_attribute.TR_EASY = mamtreasyET.text.toString()
                         mammal_attribute.TR_EASY_RE = mamtreasyreET.text.toString()
@@ -802,7 +810,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                             var mammal_attribute: Mammal_attribute = Mammal_attribute(null, null, null, null, null, null, null, null, null
                                     , null, null, null, null, null, null, null, null, null, null, null, null, null
-                                    , null, null, null, null, null, null,null,null)
+                                    , null, null, null, null, null, null,null,null,null)
 
                             if (pk != null) {
 
@@ -812,8 +820,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                                     mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                             data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getFloat(22)
-                                            , data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29))
+                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
+                                            , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30))
                                 }
 
                                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "mammalia/images"+ File.separator +keyId+ File.separator)
@@ -867,8 +875,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                                         var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                                 data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                                , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getFloat(22)
-                                                , data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29))
+                                                , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
+                                                , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30))
 
                                         dataArray.add(mammal_attribute)
 
@@ -936,8 +944,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                                     var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                             data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getFloat(22)
-                                            , data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29))
+                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
+                                            , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30))
                                 }
 
                                 if (chkdata == true) {
@@ -1013,8 +1021,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                             var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getFloat(22)
-                                    , data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29))
+                                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
+                                    , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30))
 
                             dataArray.add(mammal_attribute)
 
@@ -1123,11 +1131,24 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             alert(listItems, "풍향", mamtreasyET, "treasy");
         }
 
+        mamspecnmreset.setOnClickListener {
+            mamspecnmLL.visibility = View.GONE
+            mamspecnmET.visibility = View.VISIBLE
+            mamspecnmtmp.setText("")
+        }
+
+        standardTV.setOnClickListener {
+            val intent = Intent(context, DlgStandardActivity::class.java)
+            intent.putExtra("type", "mammal")
+
+            startActivityForResult(intent, SET_STANDARD);
+        }
+
         btn_add.setOnClickListener {
 
             var mammal_attribute:Mammal_attribute = Mammal_attribute(null,null,null,null,null,null,null,null,null
                     ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                    ,null,null,null,null,null,null,null,null)
+                    ,null,null,null,null,null,null,null,null,null)
 
             keyId = intent.getStringExtra("GROP_ID")
 
@@ -1161,6 +1182,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             mammal_attribute.INV_TM = Utils.timeStr()
 
             mammal_attribute.SPEC_NM = mamspecnmET.text.toString()
+            if (mamspecnmtmp.length() >  0){
+                mammal_attribute.SPEC_NM = mamspecnmtmp.text.toString()
+            }
             mammal_attribute.FAMI_NM = mamfaminmTV.text.toString()
             mammal_attribute.SCIEN_NM = mamsciennmTV.text.toString()
             mammal_attribute.ENDANGERED = endangeredTV.text.toString()
@@ -1187,6 +1211,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             mammal_attribute.UN_SPEC = mamunspecET.text.toString()
             mammal_attribute.UN_SPEC_RE = mamunspecreET.text.toString()
+
+            mammal_attribute.STANDARD = standardTV.text.toString()
 
             mammal_attribute.TR_EASY = mamtreasyET.text.toString()
             mammal_attribute.TR_EASY_RE = mamtreasyreET.text.toString()
@@ -1440,6 +1466,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         mamsciennmTV.setText("")
         endangeredTV.setText("")
 
+        mamspecnmtmp.setText("")
 
         mammalobstyTV.setText("")
 
@@ -1485,8 +1512,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getFloat(22)
-                    , data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29))
+                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
+                    , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30))
 
             dataArray.add(mammal_attribute)
 
@@ -1802,6 +1829,10 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                     }
 
                     mamspecnmET.text = name
+                    if (name == "SP(미동정)"){
+                        mamspecnmLL.visibility = View.VISIBLE
+                        mamspecnmET.visibility = View.GONE
+                    }
                     mamfaminmTV.text = family_name
                     mamsciennmTV.text = zoological
 
@@ -1811,6 +1842,21 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                     var name = data!!.getStringExtra("name");
 
                     mamunspecET.text = name
+                }
+
+                SET_STANDARD -> {
+                    var code:ArrayList<String> = ArrayList<String>()
+
+                    if(data!!.getSerializableExtra("code") != null) {
+                        code = data!!.getSerializableExtra("code") as ArrayList<String>
+                        var codeText:String = ""
+
+                        for (i in 0..code.size-1){
+                            codeText += code.get(i) + " "
+                        }
+                        standardTV.setText(codeText)
+
+                    }
                 }
 
                 FROM_CAMERA -> {
@@ -2195,8 +2241,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getFloat(22)
-                    , data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29))
+                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
+                    , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30))
 
             dataArray.add(mammal_attribute)
 

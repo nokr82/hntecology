@@ -1149,6 +1149,31 @@
                     android:hint="click"
                     android:gravity="center" />
 
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/specnmLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:maxLength="30"
+                        android:id="@+id/specnmtmp"
+                        android:gravity="center"
+                        android:hint="입력해주세요."
+                        style="@style/BiotopeTextView"
+                        />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="변경"
+                        android:id="@+id/specnmreset"
+                        style="@style/dlgcommonButton"
+                        />
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout

@@ -878,6 +878,31 @@
                                         style="@style/BiotopeTextView"
                                         />
 
+                                    <LinearLayout
+                                        android:visibility="gone"
+                                        android:id="@+id/etTRE_SPECETLL"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent">
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="2"
+                                            android:maxLength="30"
+                                            android:id="@+id/etTRE_SPECETtmp"
+                                            android:gravity="center"
+                                            android:hint="입력해주세요."
+                                            style="@style/BiotopeTextView"
+                                            />
+                                        <Button
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="변경"
+                                            android:id="@+id/etTRE_SPECETreset"
+                                            style="@style/dlgcommonButton"
+                                            />
+
+                                    </LinearLayout>
+
                                 </LinearLayout>
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -902,6 +927,8 @@
                                         android:gravity="center"
                                         style="@style/BiotopeTextViewDisabled"
                                         />
+
+
 
                                 </LinearLayout>
                                 <LinearLayout
@@ -1054,6 +1081,31 @@
                                         android:gravity="center"
                                         style="@style/BiotopeTextView"
                                         />
+
+                                    <LinearLayout
+                                        android:visibility="gone"
+                                        android:id="@+id/etSTRE_SPECETLL"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent">
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="2"
+                                            android:maxLength="30"
+                                            android:id="@+id/etSTRE_SPECETtmp"
+                                            android:gravity="center"
+                                            android:hint="입력해주세요."
+                                            style="@style/BiotopeTextView"
+                                            />
+                                        <Button
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="변경"
+                                            android:id="@+id/etSTRE_SPECETreset"
+                                            style="@style/dlgcommonButton"
+                                            />
+
+                                    </LinearLayout>
 
                                 </LinearLayout>
                                <LinearLayout
@@ -1236,6 +1288,31 @@
                                         style="@style/BiotopeTextView"
                                         />
 
+                                    <LinearLayout
+                                        android:visibility="gone"
+                                        android:id="@+id/etSHR_SPECETLL"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent">
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="2"
+                                            android:maxLength="30"
+                                            android:id="@+id/etSHR_SPECETtmp"
+                                            android:gravity="center"
+                                            android:hint="입력해주세요."
+                                            style="@style/BiotopeTextView"
+                                            />
+                                        <Button
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="변경"
+                                            android:id="@+id/etSHR_SPECETreset"
+                                            style="@style/dlgcommonButton"
+                                            />
+
+                                    </LinearLayout>
+
                                 </LinearLayout>
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -1388,6 +1465,31 @@
                                         android:gravity="center"
                                         style="@style/BiotopeTextView"
                                         />
+
+                                    <LinearLayout
+                                        android:visibility="gone"
+                                        android:id="@+id/etHER_SPECETLL"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent">
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="2"
+                                            android:maxLength="30"
+                                            android:id="@+id/etHER_SPECETtmp"
+                                            android:gravity="center"
+                                            android:hint="입력해주세요."
+                                            style="@style/BiotopeTextView"
+                                            />
+                                        <Button
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="변경"
+                                            android:id="@+id/etHER_SPECETreset"
+                                            style="@style/dlgcommonButton"
+                                            />
+
+                                    </LinearLayout>
 
                                 </LinearLayout>
 

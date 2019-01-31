@@ -28,6 +28,7 @@ import hntecology.ecology.model.Reptilia_attribute;
 import hntecology.ecology.model.StockMap;
 import hntecology.ecology.model.Tracking;
 import hntecology.ecology.model.TreeData1;
+import hntecology.ecology.model.Waypoint;
 import hntecology.ecology.model.Zoobenthos_Attribute;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
@@ -458,7 +459,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO birdsAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,ENDANGERED,INDI_CNT,OBS_STAT,OBS_ST_ETC";
-        query += ",USE_TAR,USE_TAR_SP,USE_LAYER,MJ_ACT,MJ_ACT_PR,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD)";
+        query += ",USE_TAR,USE_TAR_SP,USE_LAYER,MJ_ACT,MJ_ACT_PR,STANDARD,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD)";
 
         query += " values (";
         query += " '" + birds_attribute.getGROP_ID() + "'";
@@ -485,6 +486,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + birds_attribute.getUSE_LAYER() + "'";
         query += ", '" + birds_attribute.getMJ_ACT() + "'";
         query += ", '" + birds_attribute.getMJ_ACT_PR() + "'";
+        query += ", '" + birds_attribute.getSTANDARD() + "'";
         query += ", '" + birds_attribute.getGPS_LAT() + "'";
         query += ", '" + birds_attribute.getGPS_LON() + "'";
         query += ", '" + birds_attribute.getTEMP_YN() + "'";
@@ -548,7 +550,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO mammalAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,ENDANGERED,OBS_TY,OBS_TY_ETC,INDI_CNT";
-        query += ",OB_PT_CHAR,UNUS_NOTE,GPS_LAT,GPS_LON,UN_SPEC,UN_SPEC_RE,TR_EASY,TR_EASY_RE,TEMP_YN,CONF_MOD)";
+        query += ",OB_PT_CHAR,UNUS_NOTE,STANDARD,GPS_LAT,GPS_LON,UN_SPEC,UN_SPEC_RE,TR_EASY,TR_EASY_RE,TEMP_YN,CONF_MOD)";
 
         query += " values (";
         query += " '" + mammal_attribute.getGROP_ID() + "'";
@@ -572,6 +574,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + mammal_attribute.getINDI_CNT() + "'";
         query += ", '" + mammal_attribute.getOB_PT_CHAR() + "'";
         query += ", '" + mammal_attribute.getUNUS_NOTE() + "'";
+        query += ", '" + mammal_attribute.getSTANDARD() + "'";
         query += ", '" + mammal_attribute.getGPS_LAT() + "'";
         query += ", '" + mammal_attribute.getGPS_LON() + "'";
         query += ", '" + mammal_attribute.getUN_SPEC() + "'";
@@ -959,6 +962,29 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void insertWayPoint(Waypoint waypoint) {
+        String query = "INSERT INTO Waypoint";
+        query += "(GROP_ID,INV_REGION,INV_DT,INV_TM,NUM,INV_PERSON,PRJ_NAME,GPS_LAT,GPS_LON,MEMO)";
+
+
+        query += " values (";
+        query += " '" + waypoint.getGROP_ID() + "'";
+        query += ", '" + waypoint.getINV_REGION() + "'";
+        query += ", '" + waypoint.getINV_DT() + "'";
+        query += ", '" + waypoint.getINV_TM() + "'";
+        query += ", '" + waypoint.getNUM() + "'";
+        query += ", '" + waypoint.getINV_PERSON() + "'";
+        query += ", '" + waypoint.getPRJ_NAME() + "'";
+        query += ", '" + waypoint.getGPS_LAT() + "'";
+        query += ", '" + waypoint.getGPS_LON() + "'";
+        query += ", '" + waypoint.getMEMO() + "'";
+        query += " ); ";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
     public void deleteproject(String id) {
         String query = "DELETE FROM Projects WHERE id = '" + id + "'";
 
@@ -1091,6 +1117,33 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deletewaypoint(String id) {
+        String query = "DELETE FROM Waypoint WHERE id = '" + id + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void updatewaypoint(Waypoint waypoint,String pk) {
+
+        String query = "UPDATE waypoint SET  " +
+                "INV_REGION='" + waypoint.getINV_REGION() + "'"
+                + ",INV_DT='" + waypoint.getINV_DT() + "'"
+                + ",INV_TM='" + waypoint.getINV_TM() + "'"
+                + ",NUM='" + waypoint.getNUM() + "'"
+                + ",INV_PERSON='" + waypoint.getINV_PERSON() + "'"
+                + ",PRJ_NAME='" + waypoint.getPRJ_NAME() + "'"
+                + ",GPS_LAT='" + waypoint.getGPS_LAT() + "'"
+                + ",GPS_LON='" + waypoint.getGPS_LON() + "'"
+                + ",MEMO='" + waypoint.getMEMO() + "'"+
+                "where id = '" + pk + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
     public void updatereptilia_attribute(Reptilia_attribute reptilia_attribute,String pk) {
 
         String query = "UPDATE reptiliaAttribute SET  " +
@@ -1154,6 +1207,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",USE_LAYER='" + birds_attribute.getUSE_LAYER() + "'"
                 + ",MJ_ACT='" + birds_attribute.getMJ_ACT() + "'"
                 + ",MJ_ACT_PR='" + birds_attribute.getMJ_ACT_PR() + "'"
+                + ",STANDARD='" + birds_attribute.getSTANDARD() + "'"
                 + ",GPS_LAT='" + birds_attribute.getGPS_LAT() + "'"
                 + ",GPS_LON='" + birds_attribute.getGPS_LON() + "'"
                 + ",TEMP_YN='" + birds_attribute.getTEMP_YN() + "'"
@@ -1263,6 +1317,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",INDI_CNT='" + mammal_attribute.getINDI_CNT() + "'"
                 + ",OB_PT_CHAR='" + mammal_attribute.getOB_PT_CHAR() + "'"
                 + ",UNUS_NOTE='" + mammal_attribute.getUNUS_NOTE() + "'"
+                + ",STANDARD='" + mammal_attribute.getSTANDARD() + "'"
                 + ",GPS_LAT='" + mammal_attribute.getGPS_LAT() + "'"
                 + ",GPS_LON='" + mammal_attribute.getGPS_LON() + "'"
                 + ",UN_SPEC='" + mammal_attribute.getUN_SPEC() + "'"
@@ -1758,6 +1813,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
         db.close();
     }
+
 
 
 

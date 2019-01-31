@@ -138,6 +138,8 @@ class Flora2Activity : Activity() {
             }
         }
 
+
+
         keyId = intent.getStringExtra("GROP_ID")
 
         if(intent.getStringExtra("GROP_ID") != null){
@@ -423,6 +425,10 @@ class Flora2Activity : Activity() {
 
         trecloseLL.setOnClickListener {
 
+            etTRE_SPECET.visibility = View.VISIBLE
+            etTRE_SPECLL.visibility = View.GONE
+            etTRE_SPECtmp.setText("")
+
             if (trepage == 1){
                 for (i in 0 until TreDatas.size){
                     if (TreDatas.get(i).PAGE == trepage){
@@ -456,6 +462,7 @@ class Flora2Activity : Activity() {
                 }
                 if (division == false) {
                     etTRE_SPECET.setText("")
+                    etTRE_SPECtmp.setText("")
                     etTRE_FAMIET.setText("")
                     etTRE_SCIENET.setText("")
                     etTRE_HET.setText("")
@@ -548,6 +555,9 @@ class Flora2Activity : Activity() {
         }
 
         strecloseLL.setOnClickListener {
+            etSTRE_SPECET.visibility = View.VISIBLE
+            etSTRE_SPECLL.visibility = View.GONE
+            etSTRE_SPECtmp.setText("")
 
             if (strepage == 1){
                 for (i in 0 until StreDatas.size){
@@ -583,6 +593,7 @@ class Flora2Activity : Activity() {
                 if (division == false) {
 
                     etSTRE_SPECET.setText("")
+                    etSTRE_SPECtmp.setText("")
                     etSTRE_FAMIET.setText("")
                     etSTRE_SCIENET.setText("")
                     etSTRE_HET.setText("")
@@ -674,6 +685,10 @@ class Flora2Activity : Activity() {
 
         shrcloseLL.setOnClickListener {
 
+            etSHR_SPECET.visibility = View.VISIBLE
+            etSHR_SPECLL.visibility = View.GONE
+            etSHR_SPECtmp.setText("")
+
             if (shrpage == 1){
                 for (i in 0 until ShrDatas.size){
                     if (ShrDatas.get(i).PAGE == shrpage){
@@ -705,6 +720,7 @@ class Flora2Activity : Activity() {
 
                 if (division == false) {
                     etSHR_SPECET.setText("")
+                    etSHR_SPECtmp.setText("")
                     etSHR_FAMIET.setText("")
                     etSHR_SCIENET.setText("")
                     etSHR_HET.setText("")
@@ -789,6 +805,10 @@ class Flora2Activity : Activity() {
 
         hercloseLL.setOnClickListener {
 
+            etHER_SPECET.visibility = View.VISIBLE
+            etHER_SPECLL.visibility = View.GONE
+            etHER_SPECtmp.setText("")
+
             if (herpage == 1){
                 for (i in 0 until HerDatas.size){
                     if (HerDatas.get(i).PAGE == herpage){
@@ -820,6 +840,7 @@ class Flora2Activity : Activity() {
 
                 if (division == false) {
                     etHER_SPECET.setText("")
+                    etHER_SPECtmp.setText("")
                     etHER_FAMIET.setText("")
                     etHER_SCIENET.setText("")
                     etHER_HET.setText("")
@@ -904,7 +925,6 @@ class Flora2Activity : Activity() {
 
         treleftTV.setOnClickListener {
 
-            println("leftPage $trepage")
             var division = false
             for (i in 0 until TreDatas.size){
                 if (trepage == TreDatas.get(i).PAGE){
@@ -913,7 +933,10 @@ class Flora2Activity : Activity() {
             }
 
             if (division == false){
-                val spec = etTRE_SPECET.text.toString()
+                var spec = etTRE_SPECET.text.toString()
+                if (etTRE_SPECtmp.length() > 0){
+                    spec = etTRE_SPECtmp.text.toString()
+                }
                 val fami = etTRE_FAMIET.text.toString()
                 val scien = etTRE_SCIENET.text.toString()
 
@@ -947,9 +970,17 @@ class Flora2Activity : Activity() {
             }
 
             if(trepage > 1){
+
+                etTRE_SPECET.visibility = View.VISIBLE
+                etTRE_SPECLL.visibility = View.GONE
+                etTRE_SPECtmp.setText("")
+
                 for (i in 0 until TreDatas.size){
                     if (trepage == TreDatas.get(i).PAGE){
                         TreDatas.get(i).SPEC = etTRE_SPECET.text.toString()
+                        if (etTRE_SPECtmp.length() > 0){
+                            TreDatas.get(i).SPEC = etTRE_SPECtmp.text.toString()
+                        }
                         TreDatas.get(i).FAMI = etTRE_FAMIET.text.toString()
                         TreDatas.get(i).SCIEN = etTRE_SCIENET.text.toString()
 
@@ -1014,7 +1045,10 @@ class Flora2Activity : Activity() {
             }
 
             if (division == false){
-                val spec = etSTRE_SPECET.text.toString()
+                var spec = etSTRE_SPECET.text.toString()
+                if (etSTRE_SPECtmp.length() > 0){
+                    spec = etSTRE_SPECtmp.text.toString()
+                }
                 val fami = etSTRE_FAMIET.text.toString()
                 val scien = etSTRE_SCIENET.text.toString()
 
@@ -1050,9 +1084,17 @@ class Flora2Activity : Activity() {
             }
 
             if(strepage > 1){
+
+                etSTRE_SPECET.visibility = View.VISIBLE
+                etSTRE_SPECLL.visibility = View.GONE
+                etSTRE_SPECtmp.setText("")
+
                 for (i in 0 until StreDatas.size){
                     if (strepage == StreDatas.get(i).PAGE){
                         StreDatas.get(i).SPEC = etSTRE_SPECET.text.toString()
+                        if (etSTRE_SPECtmp.length() > 0){
+                            StreDatas.get(i).SPEC = etSTRE_SPECtmp.text.toString()
+                        }
                         StreDatas.get(i).FAMI = etSTRE_FAMIET.text.toString()
                         StreDatas.get(i).SCIEN = etSTRE_SCIENET.text.toString()
 
@@ -1116,7 +1158,10 @@ class Flora2Activity : Activity() {
             }
 
             if (division == false){
-                val spec = etSHR_SPECET.text.toString()
+                var spec = etSHR_SPECET.text.toString()
+                if (etSHR_SPECtmp.length() > 0 ){
+                    spec = etSHR_SPECtmp.text.toString()
+                }
                 val fami = etSHR_FAMIET.text.toString()
                 val scien = etSHR_SCIENET.text.toString()
 
@@ -1140,6 +1185,11 @@ class Flora2Activity : Activity() {
             }
 
             if(shrpage > 1){
+
+                etSHR_SPECET.visibility = View.VISIBLE
+                etSHR_SPECLL.visibility = View.GONE
+                etSHR_SPECtmp.setText("")
+
                 for (i in 0 until ShrDatas.size){
                     if (shrpage == ShrDatas.get(i).PAGE){
                         ShrDatas.get(i).SPEC = etSHR_SPECET.text.toString()
@@ -1198,7 +1248,10 @@ class Flora2Activity : Activity() {
             }
 
             if (division == false){
-                val spec = etHER_SPECET.text.toString()
+                var spec = etHER_SPECET.text.toString()
+                if (etHER_SPECtmp.length() > 0){
+                    spec = etHER_SPECtmp.text.toString()
+                }
                 val fami = etHER_FAMIET.text.toString()
                 val scien = etHER_SCIENET.text.toString()
 
@@ -1225,6 +1278,11 @@ class Flora2Activity : Activity() {
             }
 
             if(herpage > 1){
+
+                etHER_SPECET.visibility = View.VISIBLE
+                etHER_SPECLL.visibility = View.GONE
+                etHER_SPECtmp.setText("")
+
                 for (i in 0 until HerDatas.size){
                     if (herpage == HerDatas.get(i).PAGE){
                         HerDatas.get(i).SPEC = etHER_SPECET.text.toString()
@@ -1373,6 +1431,9 @@ class Flora2Activity : Activity() {
                             }
 
                             manyFloraAttribute.SHR_SPEC = etSHR_SPECET.text.toString()
+                            if (etSHR_SPECtmp.length() > 0){
+                                manyFloraAttribute.SHR_SPEC = etSHR_SPECtmp.text.toString()
+                            }
                             manyFloraAttribute.SHR_FAMI = etSHR_FAMIET.text.toString()
                             manyFloraAttribute.SHR_SCIEN = etSHR_SCIENET.text.toString()
 
@@ -1391,11 +1452,18 @@ class Flora2Activity : Activity() {
                                 manyFloraAttribute.SHR_NUM = 1
                             }
 
+                            if (etSHR_SPECtmp.length() > 0){
+                                manyFloraAttribute.SHR_NUM = etSHR_SPECtmp.text.toString().toInt()
+                            }
+
                             if (hernumTV.text.isNotEmpty()) {
                                 manyFloraAttribute.HER_NUM = hernumTV.text.toString().toInt()
                             }
 
                             manyFloraAttribute.HER_SPEC = etHER_SPECET.text.toString()
+                            if (etHER_SPECtmp.length() > 0){
+                                manyFloraAttribute.HER_SPEC = etHER_SPECtmp.text.toString()
+                            }
                             manyFloraAttribute.HER_FAMI = etHER_FAMIET.text.toString()
                             manyFloraAttribute.HER_SCIEN = etHER_SCIENET.text.toString()
 
@@ -1581,7 +1649,10 @@ class Flora2Activity : Activity() {
 
                             var shrChk = false
 
-                            val shrspec = etSHR_SPECET.text.toString()
+                            var shrspec = etSHR_SPECET.text.toString()
+                            if (etSHR_SPECtmp.length() > 0){
+                                shrspec = etSHR_SPECtmp.text.toString()
+                            }
                             val shrfami = etSHR_FAMIET.text.toString()
                             val shrscien = etSHR_SCIENET.text.toString()
 
@@ -2043,6 +2114,30 @@ class Flora2Activity : Activity() {
 
         }
 
+        etTRE_SPECreset.setOnClickListener {
+            etTRE_SPECtmp.setText("")
+            etTRE_SPECLL.visibility = View.GONE
+            etTRE_SPECET.visibility = View.VISIBLE
+        }
+
+        etSTRE_SPECreset.setOnClickListener {
+            etSTRE_SPECtmp.setText("")
+            etSTRE_SPECLL.visibility = View.GONE
+            etSTRE_SPECET.visibility = View.VISIBLE
+        }
+
+        etSHR_SPECreset.setOnClickListener {
+            etSHR_SPECtmp.setText("")
+            etSHR_SPECLL.visibility = View.GONE
+            etSHR_SPECET.visibility = View.VISIBLE
+        }
+
+        etHER_SPECreset.setOnClickListener {
+            etHER_SPECtmp.setText("")
+            etHER_SPECLL.visibility = View.GONE
+            etHER_SPECET.visibility = View.VISIBLE
+        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -2062,6 +2157,10 @@ class Flora2Activity : Activity() {
                     var zoological = data!!.getStringExtra("zoological");
 
                     etTRE_SPECET.setText(name)
+                    if (name == "SP(미동정)"){
+                        etTRE_SPECET.visibility = View.GONE
+                        etTRE_SPECLL.visibility = View.VISIBLE
+                    }
                     etTRE_FAMIET.setText(family_name)
                     etTRE_SCIENET.setText(zoological)
 
@@ -2074,6 +2173,10 @@ class Flora2Activity : Activity() {
                     var zoological = data!!.getStringExtra("zoological");
 
                     etSTRE_SPECET.setText(name)
+                    if (name == "SP(미동정)"){
+                        etSTRE_SPECET.visibility = View.GONE
+                        etSTRE_SPECLL.visibility = View.VISIBLE
+                    }
                     etSTRE_FAMIET.setText(family_name)
                     etSTRE_SCIENET.setText(zoological)
 
@@ -2086,6 +2189,10 @@ class Flora2Activity : Activity() {
                     var zoological = data!!.getStringExtra("zoological");
 
                     etSHR_SPECET.setText(name)
+                    if (name == "SP(미동정)"){
+                        etSHR_SPECET.visibility = View.GONE
+                        etSHR_SPECLL.visibility = View.VISIBLE
+                    }
                     etSHR_FAMIET.setText(family_name)
                     etSHR_SCIENET.setText(zoological)
 
@@ -2098,6 +2205,10 @@ class Flora2Activity : Activity() {
                     var zoological = data!!.getStringExtra("zoological");
 
                     etHER_SPECET.setText(name)
+                    if (name == "SP(미동정)"){
+                        etHER_SPECET.visibility = View.GONE
+                        etHER_SPECLL.visibility = View.VISIBLE
+                    }
                     etHER_FAMIET.setText(family_name)
                     etHER_SCIENET.setText(zoological)
 
@@ -2145,7 +2256,11 @@ class Flora2Activity : Activity() {
 
     fun AddTreFlora(){
 
-        val spec = etTRE_SPECET.text.toString()
+        var spec = etTRE_SPECET.text.toString()
+        if (etTRE_SPECtmp.length() > 0){
+            spec = etTRE_SPECtmp.text.toString()
+        }
+
         val fami = etTRE_FAMIET.text.toString()
         val scien = etTRE_SCIENET.text.toString()
 
@@ -2374,13 +2489,20 @@ class Flora2Activity : Activity() {
             }
 
             deleteBT.visibility = View.GONE
+            etTRE_SPECET.visibility = View.VISIBLE
+            etTRE_SPECLL.visibility = View.GONE
+            etTRE_SPECtmp.setText("")
         }
 
     }
 
     fun AddStreFlora(){
 
-        val spec = etSTRE_SPECET.text.toString()
+        var spec = etSTRE_SPECET.text.toString()
+        if (etSTRE_SPECtmp.length() > 0){
+            spec = etSTRE_SPECtmp.text.toString()
+        }
+
         val fami = etSTRE_FAMIET.text.toString()
         val scien = etSTRE_SCIENET.text.toString()
 
@@ -2445,6 +2567,8 @@ class Flora2Activity : Activity() {
                         strepageTV.setText(page.toString())
                         strerightpageTV.setText(size.toString())
                         strenumTV.setText(page.toString())
+                        etSTRE_SPECLL.visibility = View.GONE
+                        etSTRE_SPECET.visibility = View.VISIBLE
                         etSTRE_SPECET.setText("")
                         etSTRE_FAMIET.setText("")
                         etSTRE_SCIENET.setText("")
@@ -2469,6 +2593,8 @@ class Flora2Activity : Activity() {
                         strepageTV.setText(page.toString())
                         strerightpageTV.setText(size.toString())
                         strenumTV.setText(page.toString())
+                        etSTRE_SPECLL.visibility = View.GONE
+                        etSTRE_SPECET.visibility = View.VISIBLE
                         etSTRE_SPECET.setText("")
                         etSTRE_FAMIET.setText("")
                         etSTRE_SCIENET.setText("")
@@ -2503,6 +2629,8 @@ class Flora2Activity : Activity() {
                         strepageTV.setText(page.toString())
                         strerightpageTV.setText(size.toString())
                         strenumTV.setText(page.toString())
+                        etSTRE_SPECLL.visibility = View.GONE
+                        etSTRE_SPECET.visibility = View.VISIBLE
                         etSTRE_SPECET.setText("")
                         etSTRE_FAMIET.setText("")
                         etSTRE_SCIENET.setText("")
@@ -2536,6 +2664,8 @@ class Flora2Activity : Activity() {
                         strepageTV.setText(page.toString())
                         strerightpageTV.setText(size.toString())
                         strenumTV.setText(page.toString())
+                        etSTRE_SPECLL.visibility = View.GONE
+                        etSTRE_SPECET.visibility = View.VISIBLE
                         etSTRE_SPECET.setText("")
                         etSTRE_FAMIET.setText("")
                         etSTRE_SCIENET.setText("")
@@ -2592,6 +2722,8 @@ class Flora2Activity : Activity() {
                     strepageTV.setText(page.toString())
                     strerightpageTV.setText(size.toString())
                     strenumTV.setText(page.toString())
+                    etSTRE_SPECLL.visibility = View.GONE
+                    etSTRE_SPECET.visibility = View.VISIBLE
                     etSTRE_SPECET.setText("")
                     etSTRE_FAMIET.setText("")
                     etSTRE_SCIENET.setText("")
@@ -2604,12 +2736,18 @@ class Flora2Activity : Activity() {
             }
 
             deleteBT.visibility = View.GONE
+            etSTRE_SPECET.visibility = View.VISIBLE
+            etSTRE_SPECLL.visibility = View.GONE
+            etSTRE_SPECtmp.setText("")
         }
 
     }
 
     fun AddShrFlora(){
-        val spec = etSHR_SPECET.text.toString()
+        var spec = etSHR_SPECET.text.toString()
+        if (etSHR_SPECtmp.length() > 0){
+            spec = etSHR_SPECtmp.text.toString()
+        }
         val fami = etSHR_FAMIET.text.toString()
         val scien = etSHR_SCIENET.text.toString()
 
@@ -2664,7 +2802,10 @@ class Flora2Activity : Activity() {
                         shrpageTV.setText(page.toString())
                         shrrightpageTV.setText(size.toString())
                         shrnumTV.setText(page.toString())
+                        etSHR_SPECLL.visibility = View.GONE
+                        etSHR_SPECET.visibility = View.VISIBLE
                         etSHR_SPECET.setText("")
+                        etSHR_SPECtmp.setText("")
                         etSHR_FAMIET.setText("")
                         etSHR_SCIENET.setText("")
                         etSHR_HET.setText("")
@@ -2686,7 +2827,10 @@ class Flora2Activity : Activity() {
                         shrpageTV.setText(page.toString())
                         shrrightpageTV.setText(size.toString())
                         shrnumTV.setText(page.toString())
+                        etSHR_SPECLL.visibility = View.GONE
+                        etSHR_SPECET.visibility = View.VISIBLE
                         etSHR_SPECET.setText("")
+                        etSHR_SPECtmp.setText("")
                         etSHR_FAMIET.setText("")
                         etSHR_SCIENET.setText("")
                         etSHR_HET.setText("")
@@ -2716,7 +2860,10 @@ class Flora2Activity : Activity() {
                         shrpageTV.setText(page.toString())
                         shrrightpageTV.setText(size.toString())
                         shrnumTV.setText(page.toString())
+                        etSHR_SPECLL.visibility = View.GONE
+                        etSHR_SPECET.visibility = View.VISIBLE
                         etSHR_SPECET.setText("")
+                        etSHR_SPECtmp.setText("")
                         etSHR_FAMIET.setText("")
                         etSHR_SCIENET.setText("")
                         etSHR_HET.setText("")
@@ -2745,7 +2892,10 @@ class Flora2Activity : Activity() {
                         shrpageTV.setText(page.toString())
                         shrrightpageTV.setText(size.toString())
                         shrnumTV.setText(page.toString())
+                        etSHR_SPECLL.visibility = View.GONE
+                        etSHR_SPECET.visibility = View.VISIBLE
                         etSHR_SPECET.setText("")
+                        etSHR_SPECtmp.setText("")
                         etSHR_FAMIET.setText("")
                         etSHR_SCIENET.setText("")
                         etSHR_HET.setText("")
@@ -2795,7 +2945,10 @@ class Flora2Activity : Activity() {
                     shrpageTV.setText(page.toString())
                     shrrightpageTV.setText(size.toString())
                     shrnumTV.setText(page.toString())
+                    etSHR_SPECLL.visibility = View.GONE
+                    etSHR_SPECET.visibility = View.VISIBLE
                     etSHR_SPECET.setText("")
+                    etSHR_SPECtmp.setText("")
                     etSHR_FAMIET.setText("")
                     etSHR_SCIENET.setText("")
                     etSHR_HET.setText("")
@@ -2804,13 +2957,19 @@ class Flora2Activity : Activity() {
                 }
             }
             deleteBT.visibility = View.GONE
+            etSHR_SPECET.visibility = View.VISIBLE
+            etSHR_SPECLL.visibility = View.GONE
+            etSHR_SPECtmp.setText("")
         }
 
     }
 
     fun AddHerFlora(){
 
-        val spec = etHER_SPECET.text.toString()
+        var spec = etHER_SPECET.text.toString()
+        if (etHER_SPECtmp.length() > 0){
+            spec = etHER_SPECtmp.text.toString()
+        }
         val fami = etHER_FAMIET.text.toString()
         val scien = etHER_SCIENET.text.toString()
 
@@ -2865,7 +3024,10 @@ class Flora2Activity : Activity() {
                         herpageTV.setText(page.toString())
                         herrightpageTV.setText(size.toString())
                         hernumTV.setText(page.toString())
+                        etHER_SPECLL.visibility = View.GONE
+                        etHER_SPECET.visibility = View.VISIBLE
                         etHER_SPECET.setText("")
+                        etHER_SPECtmp.setText("")
                         etHER_FAMIET.setText("")
                         etHER_SCIENET.setText("")
                         etHER_HET.setText("")
@@ -2887,7 +3049,10 @@ class Flora2Activity : Activity() {
                         herpageTV.setText(page.toString())
                         herrightpageTV.setText(size.toString())
                         hernumTV.setText(page.toString())
+                        etHER_SPECLL.visibility = View.GONE
+                        etHER_SPECET.visibility = View.VISIBLE
                         etHER_SPECET.setText("")
+                        etHER_SPECtmp.setText("")
                         etHER_FAMIET.setText("")
                         etHER_SCIENET.setText("")
                         etHER_HET.setText("")
@@ -2916,7 +3081,10 @@ class Flora2Activity : Activity() {
                         herpageTV.setText(page.toString())
                         herrightpageTV.setText(size.toString())
                         hernumTV.setText(page.toString())
+                        etHER_SPECLL.visibility = View.GONE
+                        etHER_SPECET.visibility = View.VISIBLE
                         etHER_SPECET.setText("")
+                        etHER_SPECtmp.setText("")
                         etHER_FAMIET.setText("")
                         etHER_SCIENET.setText("")
                         etHER_HET.setText("")
@@ -2945,7 +3113,10 @@ class Flora2Activity : Activity() {
                         herpageTV.setText(page.toString())
                         herrightpageTV.setText(size.toString())
                         hernumTV.setText(page.toString())
+                        etHER_SPECLL.visibility = View.GONE
+                        etHER_SPECET.visibility = View.VISIBLE
                         etHER_SPECET.setText("")
+                        etHER_SPECtmp.setText("")
                         etHER_FAMIET.setText("")
                         etHER_SCIENET.setText("")
                         etHER_HET.setText("")
@@ -2994,7 +3165,10 @@ class Flora2Activity : Activity() {
                     herpageTV.setText(page.toString())
                     herrightpageTV.setText(size.toString())
                     hernumTV.setText(page.toString())
+                    etHER_SPECLL.visibility = View.GONE
+                    etHER_SPECET.visibility = View.VISIBLE
                     etHER_SPECET.setText("")
+                    etHER_SPECtmp.setText("")
                     etHER_FAMIET.setText("")
                     etHER_SCIENET.setText("")
                     etHER_HET.setText("")
@@ -3005,6 +3179,10 @@ class Flora2Activity : Activity() {
 
             deleteBT.visibility = View.GONE
         }
+
+        etHER_SPECET.visibility = View.VISIBLE
+        etHER_SPECLL.visibility = View.GONE
+        etHER_SPECtmp.setText("")
 
     }
 
@@ -3040,10 +3218,16 @@ class Flora2Activity : Activity() {
         etSHR_HET.setText("")
         etSTR_COVEET.setText("")
         etHER_SPECET.setText("")
+        etHER_SPECtmp.setText("")
         etHER_FAMIET.setText("")
         etHER_SCIENET.setText("")
         etHER_HET.setText("")
         etHER_COVEET.setText("")
+
+        etSHR_SPECtmp.setText("")
+        etHER_SPECtmp.setText("")
+        etSTRE_SPECtmp.setText("")
+        etTRE_SPECtmp.setText("")
 
         etTRE_WATERWIDTH.setText("")
         etTRE_TYPE.setText("")
@@ -3101,6 +3285,7 @@ class Flora2Activity : Activity() {
 
         hernumTV.setText(page)
         etHER_SPECET.setText("")
+        etHER_SPECtmp.setText("")
         etHER_FAMIET.setText("")
         etHER_SCIENET.setText("")
         etHER_HET.setText("")

@@ -504,6 +504,9 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             flora_Attribute.INV_TM = florainvtmET.text.toString()
 
             flora_Attribute.SPEC_NM = floraspecnmET.text.toString()
+            if (floraspecnmtmp.length() > 0 ){
+                flora_Attribute.SPEC_NM = floraspecnmtmp.text.toString()
+            }
             flora_Attribute.FAMI_NM = florafaminmTV.text.toString()
             flora_Attribute.SCIEN_NM = florasciennmTV.text.toString()
 
@@ -608,6 +611,9 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                         }
 
                         flora_Attribute.SPEC_NM = floraspecnmET.text.toString()
+                        if (floraspecnmtmp.length() > 0 ){
+                            flora_Attribute.SPEC_NM = floraspecnmtmp.text.toString()
+                        }
                         flora_Attribute.FAMI_NM = florafaminmTV.text.toString()
                         flora_Attribute.SCIEN_NM = florasciennmTV.text.toString()
 
@@ -1094,6 +1100,12 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             startDlgFlora()
         }
 
+        floraspecnmreset.setOnClickListener {
+            floraspecnmLL.visibility = View.GONE
+            floraspecnmET.visibility = View.VISIBLE
+            floraspecnmtmp.setText("")
+        }
+
         floraaddBT.setOnClickListener {
             var flora_Attribute: Flora_Attribute = Flora_Attribute(null,null,null,null,null,null,null,null,null,null
                     ,null,null,null,null,null,null,null,null,null,null,null,null,null
@@ -1132,6 +1144,9 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             }
 
             flora_Attribute.SPEC_NM = floraspecnmET.text.toString()
+            if (floraspecnmtmp.length() > 0 ){
+                flora_Attribute.SPEC_NM = floraspecnmtmp.text.toString()
+            }
             flora_Attribute.FAMI_NM = florafaminmTV.text.toString()
             flora_Attribute.SCIEN_NM = florasciennmTV.text.toString()
 
@@ -1412,6 +1427,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
         floraspecnmET.setText("")
         florafaminmTV.setText("")
         florasciennmTV.setText("")
+
+        floraspecnmtmp.setText("")
 
         florafloreyynTV.setText("")
         floraplantynTV.setText("")
@@ -1726,6 +1743,10 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                     var zoological = data!!.getStringExtra("zoological");
 
                     floraspecnmET.text = name
+                    if (name == "SP(미동정)"){
+                        floraspecnmLL.visibility = View.VISIBLE
+                        floraspecnmET.visibility = View.GONE
+                    }
                     florafaminmTV.text = family_name
                     florasciennmTV.text = zoological
 

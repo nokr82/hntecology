@@ -731,6 +731,9 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         }
 
                         fish_attribute.SPEC_NM = fishspecnmET.text.toString()
+                        if (fishspecnmtmp.length() > 0){
+                            fish_attribute.SPEC_NM = fishspecnmtmp.text.toString()
+                        }
                         fish_attribute.FAMI_NM = fishfaminmET.text.toString()
                         fish_attribute.SCIEN_NM = fishsciennmET.text.toString()
 
@@ -1202,6 +1205,12 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         }
 
+        fishspecnmreset.setOnClickListener {
+            fishspecnmtmp.setText("")
+            fishspecnmLL.visibility = View.GONE
+            fishspecnmET.visibility = View.VISIBLE
+        }
+
         btn_add.setOnClickListener {
             var fish_attribute: Fish_attribute = Fish_attribute(null, null, null, null, null, null, null, null, null, null, null
                     , null, null, null, null, null, null, null, null, null, null, null, null, null
@@ -1278,6 +1287,9 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             }
 
             fish_attribute.SPEC_NM = fishspecnmET.text.toString()
+            if (fishspecnmtmp.length() > 0){
+                fish_attribute.SPEC_NM = fishspecnmtmp.text.toString()
+            }
             fish_attribute.FAMI_NM = fishfaminmET.text.toString()
             fish_attribute.SCIEN_NM = fishsciennmET.text.toString()
 
@@ -1748,6 +1760,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         fishfaminmET.setText("")
         fishsciennmET.setText("")
 
+        fishspecnmtmp.setText("")
+
         fishindicntET.setText("")
 
         fishunidentET.setText("")
@@ -1937,6 +1951,10 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                     var zoological = data!!.getStringExtra("zoological");
 
                     fishspecnmET.text = name
+                    if (name == "SP(미동정)"){
+                        fishspecnmET.visibility = View.GONE
+                        fishspecnmLL.visibility = View.VISIBLE
+                    }
                     fishfaminmET.text = family_name
                     fishsciennmET.text = zoological
 

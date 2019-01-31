@@ -11,7 +11,6 @@ import android.widget.*
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.model.*
-import kotlinx.android.synthetic.main.item_class_select.view.*
 
 class DlgBirdsAdapter2(var context: Context, var itemList : ArrayList<EndangeredSelect>) : BaseAdapter() {
 
@@ -71,6 +70,27 @@ class DlgBirdsAdapter2(var context: Context, var itemList : ArrayList<Endangered
         }
 
         return view as View
+    }
+
+    fun setItemSelect(position: Int){
+        //전체 선택값 초기화.
+/*        for(i in 0.. (itemList.size-1)){
+
+            var bioListModel:BiotopeModel = itemList.get(i);
+            bioListModel.chkSelect = false
+            itemList.set(i,bioListModel)
+        }*/
+
+        var EndangeredSelect:EndangeredSelect = itemList.get(selectIndex);
+        EndangeredSelect.is_checked = false
+        itemList.set(selectIndex,EndangeredSelect)
+
+        var biotopeModel = getItem(position);
+
+        biotopeModel.is_checked = true
+        selectIndex= position
+        itemList.set(position,biotopeModel)
+        notifyDataSetChanged()
     }
 
     override fun getItem(position: Int): EndangeredSelect {

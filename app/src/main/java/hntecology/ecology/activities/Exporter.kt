@@ -139,6 +139,10 @@ object Exporter {
                 MainActivity.LAYER_STOCKMAP -> {
                     layerName = "stockmap"
                 }
+
+                MainActivity.LAYER_WAYPOINT -> {
+                    layerName = "waypoint"
+                }
             }
         }
 
@@ -191,6 +195,9 @@ object Exporter {
                 }
                 MainActivity.LAYER_STOCKMAP -> {
                     layerName = "stockmap"
+                }
+                MainActivity.LAYER_WAYPOINT -> {
+                    layerName = "waypoint"
                 }
 
             }

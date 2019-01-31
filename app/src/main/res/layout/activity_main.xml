@@ -285,140 +285,192 @@
                     android:id="@+id/btn_layer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="레이어"/>
+                    android:text="레이어"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp"/>
 
                 <Button
                     android:id="@+id/btn_gps_select"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="좌표 지정"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp"/>
 
                 <Button
                     android:id="@+id/btn_satellite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="위성 지도" />
+                    android:text="위성 지도"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp" />
 
                 <Button
                     android:id="@+id/btn_stokemap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="식생조사 추가" />
+                    android:text="식생조사 추가"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp"/>
 
                 <Button
                     android:id="@+id/btn_flora2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="식생조사 위치 추가" />
+                    android:text="식생조사 위치 추가"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp" />
 
                 <Button
                     android:id="@+id/btn_biotope"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="비오톱 추가" />
+                    android:text="비오톱 추가"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp" />
 
                 <Button
                     android:id="@+id/btn_birds"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="조류 추가" />
+                    android:text="조류 추가"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp"/>
 
                 <Button
                     android:id="@+id/btn_Reptilia"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="양서ㆍ파충류 추가" />
+                    android:text="양서ㆍ파충류 추가"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp"/>
 
                 <Button
                     android:id="@+id/btn_mammalia"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="포유류 추가" />
+                    android:text="포유류 추가"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp"/>
 
                 <Button
                     android:id="@+id/btn_fish"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="어류 추가" />
+                    android:text="어류 추가"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp" />
 
                 <Button
                     android:id="@+id/btn_insect"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="곤충 추가" />
+                    android:text="곤충 추가"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp" />
 
                 <Button
                     android:id="@+id/btn_flora"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="식물 추가" />
+                    android:text="식물 추가"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp" />
 
 
                 <Button
                     android:id="@+id/btn_zoobenthos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="저서무척추동물 추가"/>
+                    android:text="저서무척추동물 추가"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp"/>
+
+                <Button
+                    android:id="@+id/btn_waypoint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="웨이포인트"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp"/>
 
 
                 <Button
                     android:id="@+id/btn_mygps"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="내 위치로 이동" />
+                    android:text="내 위치로 이동"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp" />
 
                 <Button
                     android:id="@+id/exportBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Export"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp" />
 
                 <Button
                     android:id="@+id/trackingBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Tracking 끄기"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp"/>
 
                 <Button
                     android:id="@+id/mytrackingBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="이동경로 보기" />
+                    android:text="이동경로 보기"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp" />
 
                 <Button
                     android:visibility="gone"
                     android:id="@+id/markerdeleteBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="마커 삭제" />
+                    android:text="마커 삭제"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp" />
 
                 <Button
                     android:visibility="gone"
                     android:id="@+id/polygondeleteBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="비오톱 삭제" />
+                    android:text="비오톱 삭제"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp"/>
 
                 <Button
                     android:id="@+id/btn_clear_all"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="화면 지우기" />
+                    android:text="화면 지우기"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp"/>
 
                 <Button
                     android:id="@+id/searchaddressBT"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="주소 찾기"/>
+                    android:text="주소 찾기"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp"/>
 
                 <Button
                     android:id="@+id/logoutBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="로그아웃" />
+                    android:text="로그아웃"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp"/>
 
             </LinearLayout>
 

@@ -291,6 +291,31 @@
                     style="@style/BiotopeTextView"
                     android:gravity="center"
                     />
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/mamspecnmLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:maxLength="30"
+                        android:id="@+id/mamspecnmtmp"
+                        android:gravity="center"
+                        android:hint="입력해주세요."
+                        style="@style/BiotopeTextView"
+                        />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="변경"
+                        android:id="@+id/mamspecnmreset"
+                        style="@style/dlgcommonButton"
+                        />
+
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -450,6 +475,26 @@
                     style="@style/BiotopeTextView"
                     android:gravity="center"
                     />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    style="@style/BiotopeTextView"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:text="서식지 판단 기준" />
+
+                <TextView
+                    android:id="@+id/standardTV"
+                    style="@style/BiotopeTextView"
+                    android:layout_width="0dp"
+                    android:hint="click"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center" />
             </LinearLayout>
 
             <LinearLayout

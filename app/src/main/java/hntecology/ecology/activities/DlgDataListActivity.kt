@@ -5,12 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.AdapterView
 import android.widget.ListView
-import com.google.android.gms.maps.model.Polygon
 import hntecology.ecology.R
 import hntecology.ecology.adapter.*
 import hntecology.ecology.base.DataBaseHelper
@@ -140,13 +136,9 @@ class DlgDataListActivity : Activity() {
             val num = intent.getIntExtra("landuse",0)
             landuse = num.toString()
         }
-
+        val dataList: Array<String> = arrayOf("*");
         if(tableName.equals("biotopeAttribute")) {
 
-            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_PERSON","INV_DT","INV_TM","INV_INDEX","LU_GR_NUM","LU_TY_RATE","STAND_H","LC_GR_NUM","LC_TY","TY_MARK"
-                    ,"GV_RATE" ,"GV_STRUCT" ,"DIS_RET" ,"RESTOR_POT" ,"COMP_INTA" ,"VP_INTA" ,"IMP_FORM" ,"BREA_DIA" ,"FIN_EST" ,"TRE_SPEC","TRE_FAMI" ,"TRE_SCIEN","TRE_H","TRE_BREA"
-                    ,"TRE_COVE","STRE_SPEC","STRE_FAMI","STRE_SCIEN","STRE_H","STRE_BREA","STRE_COVE","SHR_SPEC","SHR_FAMI","SHR_SCIEN","SHR_H","STR_COVE","HER_SPEC","HER_FAMI"
-                    ,"HER_SCIEN","HER_H","HER_COVE","PIC_FOLDER","WILD_ANI","BIOTOP_POT","UNUS_NOTE","GPS_LAT","GPS_LON","NEED_CONF","CONF_MOD","TEMP_YN","LANDUSE");
 
             val biotopsdata=  db!!.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
 
@@ -160,9 +152,6 @@ class DlgDataListActivity : Activity() {
 
         if(tableName.equals("birdsAttribute")){
 
-            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","NUM","INV_TM"
-            ,"SPEC_NM" ,"FAMI_NM" ,"SCIEN_NM","ENDANGERED" ,"INDI_CNT" ,"OBS_STAT" ,"OBS_ST_ETC" ,"USE_TAR" ,"USE_TAR_SP" ,"USE_LAYER" ,"MJ_ACT" ,"MJ_ACT_PR" ,"GPS_LAT" ,"GPS_LON" ,"TEMP_YN", "CONF_MOD");
-
             val birdsdata=  db!!.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
 
             birdsdataList(birdsData,birdsdata)
@@ -175,9 +164,6 @@ class DlgDataListActivity : Activity() {
 
         if(tableName.equals("reptiliaAttribute")){
 
-            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","NUM","INV_TM"
-                    ,"SPEC_NM" ,"FAMI_NM" ,"SCIEN_NM","ENDANGERED" ,"IN_CNT_ADU" ,"IN_CNT_LAR" ,"IN_CNT_EGG" ,"HAB_RIVEER" ,"HAB_EDGE" ,"WATER_IN" ,"WATER_OUT" ,"WATER_CONT" ,"WATER_QUAL" ,"WATER_DEPT"
-                    ,"HAB_AREA_W","HAB_AREA_H","GPS_LAT","GPS_LON","TEMP_YN","CONF_MOD");
 
             val reptiliasdata=  db!!.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
 
@@ -190,9 +176,6 @@ class DlgDataListActivity : Activity() {
 
         if(tableName.equals("mammalAttribute")) {
 
-            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","NUM","INV_TM"
-                    ,"SPEC_NM" ,"FAMI_NM" ,"SCIEN_NM","ENDANGERED" ,"OBS_TY" ,"OBS_TY_ETC" ,"INDI_CNT" ,"OB_PT_CHAR" ,"UNUS_NOTE" ,"GPS_LAT" ,"GPS_LON" ,"UN_SPEC" ,"UN_SPEC_RE" ,"TR_EASY"
-                    ,"TR_EASY_RE","TEMP_YN","CONF_MOD");
 
             val mammalsdata=  db!!.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
 
@@ -206,10 +189,6 @@ class DlgDataListActivity : Activity() {
 
         if(tableName.equals("fishAttribute")) {
 
-            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_TM","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","MID_RAGE","CODE_NUM"
-                    ,"RIVER_NUM" ,"RIVER_NM" ,"NET_CNT" ,"NET_MIN" ,"AD_DIST_NM" ,"GPS_LAT" ,"GPS_LON" ,"COLL_TOOL" ,"COLL_TOOL2","STREAM_W" ,"WATER_W" ,"WATER_D" ,"WATER_CUR" ,"RIV_STR"
-                    ,"RIV_STR_IN","RIV_FORM","NUM","SPEC_NM","FAMI_NM","SCIEN_NM","INDI_CNT","UNIDENT","RIV_FM_CH","UN_FISH_CH","TEMP_YN","CONF_MOD");
-
             val fishsdata=  db!!.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
 
             fishsdataList(fishsData,fishsdata)
@@ -222,9 +201,6 @@ class DlgDataListActivity : Activity() {
 
         if(tableName.equals("insectAttribute")) {
 
-            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","NUM","INV_TM"
-                    ,"SPEC_NM" ,"FAMI_NM" ,"SCIEN_NM" ,"INDI_CNT" ,"OBS_STAT" ,"OBS_ST_ETC" ,"USE_TAR" ,"USER_TA_ETC" ,"MJ_ACT" ,"MJ_ACT_ETC" ,"INV_MEAN" ,"INV_MN_ETC" ,"UNUS_NOTE"
-                    ,"GPS_LAT","GPS_LON","NUM","TEMP_YN","CONF_MOD");
 
             val insectsdata=  db!!.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
 
@@ -238,8 +214,6 @@ class DlgDataListActivity : Activity() {
 
         if(tableName.equals("floraAttribute")) {
 
-            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","NUM","INV_TM"
-                    ,"SPEC_NM" ,"FAMI_NM" ,"SCIEN_NM" ,"FLORE_YN" ,"PLANT_YN" ,"HAB_STAT" ,"HAB_ETC" ,"COL_IN_CNT" ,"THRE_CAU" ,"GPS_LAT","GPS_LON" ,"TEMP_YN","CONF_MOD");
 
             val florasdata=  db!!.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
 
@@ -252,13 +226,7 @@ class DlgDataListActivity : Activity() {
 
         if(tableName.equals("ZoobenthosAttribute")){
 
-            val data:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_MEAN","INV_PERSON","MAP_SYS_NM","COORD_N_D","COORD_N_M","COORD_N_S","COORD_E_D","COORD_E_M","COORD_E_S"
-                    ,"INV_DT" ,"NUM" ,"INV_TM" ,"WEATHER" ,"INV_TOOL" ,"AD_DIST_NM" ,"RIV_W1" ,"RIV_W2" ,"RUN_RIV_W1" ,"RUN_RIV_W2","WATER_DEPT" ,"HAB_TY","HAB_TY_ETC"
-                  ,  "FILT_AREA","TEMPERATUR","WATER_TEM","TURBIDITY","MUD","SAND","COR_SAND","GRAVEL","STONE_S","STONE_B","CONCRETE","BED_ROCK","BANK_L"
-            ,"BANK_L_ETC" ,"BANK_R" ,"BANK_R_ETC" ,"BAS_L" ,"BAS_L_ETC" ,"BAS_R" ,"BAS_R_ETC" ,"DIST_CAU" ,"DIST_ETC" ,"UNUS_NOTE","GPS_LAT" ,"GPS_LON","SPEC_NM"
-                    ,"FAMI_NM","SCIEN_NM","TEMP_YN","CONF_MOD")
-
-            val zoobentousdata = db!!.query(tableName,data,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null)
+            val zoobentousdata = db!!.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null)
 
             zoobenthossdataList(zoobenthosData,zoobentousdata)
 
@@ -270,11 +238,9 @@ class DlgDataListActivity : Activity() {
 
         if(tableName.equals("ManyFloraAttribute")){
 
-            val data:Array<String> = arrayOf("id","GROP_ID","INV_REGION","INV_PERSON","INV_DT","INV_TM","TRE_NUM","TRE_SPEC","TRE_FAMI","TRE_SCIEN","TRE_H"
-                    ,"TRE_BREA" ,"TRE_COVE" ,"STRE_NUM" ,"STRE_SPEC" ,"STRE_FAMI" ,"STRE_SCIEN" ,"STRE_H" ,"STRE_BREA" ,"STRE_COVE" ,"SHR_NUM","SHR_SPEC" ,"SHR_FAMI","SHR_SCIEN"
-                    ,  "SHR_H","SHR_COVE","HER_NUM","HER_SPEC","HER_FAMI","HER_SCIEN","HER_H","HER_COVE","GPS_LAT","GPS_LON","TEMP_YN","CONF_MOD")
 
-            val manyFloraData = db!!.query(tableName,data,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null)
+
+            val manyFloraData = db!!.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null)
 
             manyflorasdataList(manyflorasData,manyFloraData)
 
@@ -506,7 +472,7 @@ class DlgDataListActivity : Activity() {
             model = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15),data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21), data.getString(22)
-                    , data.getString(23), data.getString(24), data.getFloat(25), data.getFloat(26), data.getString(27), data.getString(28))
+                    , data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getString(28), data.getString(29))
 
             listdata.add(model)
         }
@@ -536,8 +502,8 @@ class DlgDataListActivity : Activity() {
 
             model =  Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getFloat(22)
-                    , data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29))
+                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
+                    , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30))
 
             listdata.add(model)
         }
@@ -646,6 +612,8 @@ class DlgDataListActivity : Activity() {
 
         val db = dbManager.createDataBase();
 
+        val dataList: Array<String> = arrayOf("*");
+
         if (resultCode == Activity.RESULT_OK) {
 
             when (requestCode) {
@@ -653,11 +621,6 @@ class DlgDataListActivity : Activity() {
                 BIOTOPE_DATA -> {
 
                     if (data!!.getIntExtra("reset",0) != null) {
-
-                        val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_PERSON","INV_DT","INV_TM","INV_INDEX","LU_GR_NUM","LU_TY_RATE","STAND_H","LC_GR_NUM","LC_TY","TY_MARK"
-                                ,"GV_RATE" ,"GV_STRUCT" ,"DIS_RET" ,"RESTOR_POT" ,"COMP_INTA" ,"VP_INTA" ,"IMP_FORM" ,"BREA_DIA" ,"FIN_EST" ,"TRE_SPEC","TRE_FAMI" ,"TRE_SCIEN","TRE_H","TRE_BREA"
-                                ,"TRE_COVE","STRE_SPEC","STRE_FAMI","STRE_SCIEN","STRE_H","STRE_BREA","STRE_COVE","SHR_SPEC","SHR_FAMI","SHR_SCIEN","SHR_H","STR_COVE","HER_SPEC","HER_FAMI"
-                                ,"HER_SCIEN","HER_H","HER_COVE","PIC_FOLDER","WILD_ANI","BIOTOP_POT","UNUS_NOTE","GPS_LAT","GPS_LON","NEED_CONF","CONF_MOD","TEMP_YN");
 
                         val biotopsdata=  db.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
 
@@ -709,9 +672,6 @@ class DlgDataListActivity : Activity() {
                         println("listdata reset $reset")
                         if(reset == 100){
 
-                            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","NUM","INV_TM"
-                                    ,"SPEC_NM" ,"FAMI_NM" ,"SCIEN_NM","ENDANGERED" ,"INDI_CNT" ,"OBS_STAT" ,"OBS_ST_ETC" ,"USE_TAR" ,"USE_TAR_SP" ,"USE_LAYER" ,"MJ_ACT" ,"MJ_ACT_PR" ,"GPS_LAT" ,"GPS_LON" ,"TEMP_YN","CONF_MOD");
-
                             val birdsdata=  db.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
 
                             if(birdsData != null){
@@ -761,10 +721,6 @@ class DlgDataListActivity : Activity() {
                         val reset = data!!.getIntExtra("reset",0)
                         println("listdata reset $reset")
                         if(reset == 100){
-
-                                val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","NUM","INV_TM"
-                                        ,"SPEC_NM" ,"FAMI_NM" ,"SCIEN_NM" ,"ENDANGERED","IN_CNT_ADU" ,"IN_CNT_LAR" ,"IN_CNT_EGG" ,"HAB_RIVEER" ,"HAB_EDGE" ,"WATER_IN" ,"WATER_OUT" ,"WATER_CONT" ,"WATER_QUAL" ,"WATER_DEPT"
-                                        ,"HAB_AREA_W","HAB_AREA_H","GPS_LAT","GPS_LON","TEMP_YN","CONF_MOD");
 
                                 val reptiliasdata=  db.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
 
@@ -818,10 +774,6 @@ class DlgDataListActivity : Activity() {
                         println("listdata reset $reset")
                         if(reset == 100){
 
-                            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","NUM","INV_TM"
-                                    ,"SPEC_NM" ,"FAMI_NM" ,"SCIEN_NM","ENDANGERED" ,"OBS_TY" ,"OBS_TY_ETC" ,"INDI_CNT" ,"OB_PT_CHAR" ,"UNUS_NOTE" ,"GPS_LAT" ,"GPS_LON" ,"UN_SPEC" ,"UN_SPEC_RE" ,"TR_EASY"
-                                    ,"TR_EASY_RE","TEMP_YN","CONF_MOD");
-
                             val mammalsdata=  db.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
 
                             if(mammalsData != null){
@@ -873,10 +825,6 @@ class DlgDataListActivity : Activity() {
                         println("listdata reset $reset")
                         if(reset == 100){
 
-                            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_TM","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","MID_RAGE","CODE_NUM"
-                                    ,"RIVER_NUM" ,"RIVER_NM" ,"NET_CNT" ,"NET_MIN" ,"AD_DIST_NM" ,"GPS_LAT" ,"GPS_LON" ,"COLL_TOOL","COLL_TOOL2" ,"STREAM_W" ,"WATER_W" ,"WATER_D" ,"WATER_CUR" ,"RIV_STR"
-                                    ,"RIV_STR_IN","RIV_FORM","NUM","SPEC_NM","FAMI_NM","SCIEN_NM","INDI_CNT","UNIDENT","RIV_FM_CH","UN_FISH_CH","TEMP_YN","CONF_MOD");
-
                             val fishsdata=  db.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
 
                             if(fishsData != null){
@@ -927,10 +875,6 @@ class DlgDataListActivity : Activity() {
                         val reset = data!!.getIntExtra("reset",0)
                         println("listdata reset $reset")
                         if(reset == 100){
-
-                            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","NUM","INV_TM"
-                                    ,"SPEC_NM" ,"FAMI_NM" ,"SCIEN_NM" ,"INDI_CNT" ,"OBS_STAT" ,"OBS_ST_ETC" ,"USE_TAR" ,"USER_TA_ETC" ,"MJ_ACT" ,"MJ_ACT_ETC" ,"INV_MEAN" ,"INV_MN_ETC" ,"UNUS_NOTE"
-                                    ,"GPS_LAT","GPS_LON","NUM","TEMP_YN","CONF_MOD");
 
                             val insectsdata=  db.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
 
@@ -994,9 +938,6 @@ class DlgDataListActivity : Activity() {
                         println("listdata reset $reset")
                         if(reset == 100){
 
-                            val dataList:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_DT","INV_PERSON","WEATHER","WIND","WIND_DIRE","TEMPERATUR","ETC","NUM","INV_TM"
-                                    ,"SPEC_NM" ,"FAMI_NM" ,"SCIEN_NM" ,"FLORE_YN" ,"PLANT_YN" ,"HAB_STAT" ,"HAB_ETC" ,"COL_IN_CNT" ,"THRE_CAU" ,"GPS_LAT","GPS_LON" ,"TEMP_YN","CONF_MOD");
-
                             val florasdata=  db.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
 
                             if(florasData != null){
@@ -1047,13 +988,7 @@ class DlgDataListActivity : Activity() {
                         println("listdata reset $reset")
                         if(reset == 100){
 
-                            val data:Array<String> = arrayOf("id","GROP_ID","PRJ_NAME","INV_REGION","INV_MEAN","INV_PERSON","MAP_SYS_NM","COORD_N_D","COORD_N_M","COORD_N_S","COORD_E_D","COORD_E_M","COORD_E_S"
-                                    ,"INV_DT" ,"NUM" ,"INV_TM" ,"WEATHER" ,"INV_TOOL" ,"AD_DIST_NM" ,"RIV_W1" ,"RIV_W2" ,"RUN_RIV_W1" ,"RUN_RIV_W2","WATER_DEPT" ,"HAB_TY","HAB_TY_ETC"
-                                    ,  "FILT_AREA","TEMPERATUR","WATER_TEM","TURBIDITY","MUD","SAND","COR_SAND","GRAVEL","STONE_S","STONE_B","CONCRETE","BED_ROCK","BANK_L"
-                                    ,"BANK_L_ETC" ,"BANK_R" ,"BANK_R_ETC" ,"BAS_L" ,"BAS_L_ETC" ,"BAS_R" ,"BAS_R_ETC" ,"DIST_CAU" ,"DIST_ETC" ,"UNUS_NOTE","GPS_LAT" ,"GPS_LON","SPEC_NM"
-                                    ,"FAMI_NM","SCIEN_NM","TEMP_YN","CONF_MOD")
-
-                            val zoobenthoussdata=  db.query(tableName,data,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
+                            val zoobenthoussdata=  db.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
 
                             if(zoobenthosData != null){
                                 zoobenthosData.clear()
@@ -1172,8 +1107,6 @@ class DlgDataListActivity : Activity() {
                     if(data!!.getStringExtra("polygonid") != null){
 
                         val polygonid = data!!.getStringExtra("polygonid")
-
-                        println("polygonid ----------------------------------$polygonid")
 
                         var intent = Intent()
                         intent.putExtra("polygonid", polygonid)

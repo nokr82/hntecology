@@ -124,6 +124,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
     var albumcount = 1
 
+    var prjname = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_birds)
@@ -159,14 +161,13 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
         invtm = timesplit.get(0) + timesplit.get(1)
 
-        println("invtm---------$invtm")
-
         numTV.setText(texttoday + "1")
 
         userName = PrefUtils.getStringPreference(context, "name");
         invPersonTV.text = userName;
 
-        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+//        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+        prjname = PrefUtils.getStringPreference(context, "prjname")
 
         dbManager = DataBaseHelper(this)
 
@@ -176,19 +177,16 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
         if(intent.getStringExtra("markerid") != null){
             markerid = intent.getStringExtra("markerid")
-            println("markerid ---birds $markerid")
         }
 
         if(intent.getStringExtra("latitude")!= null){
             lat = intent.getStringExtra("latitude")
 
-            println("==============$lat")
             gpslatTV.setText(lat)
         }
 
         if(intent.getStringExtra("longitude")!= null){
             log = intent.getStringExtra("longitude")
-            println("==============$log")
             gpslonTV.setText(log)
         }
 
@@ -223,9 +221,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             basechkdata = true
 
             var base : Base = Base(basedata.getInt(0) , basedata.getString(1), basedata.getString(2), basedata.getString(3), basedata.getString(4), basedata.getString(5) , basedata.getString(6),basedata.getString(7))
-
-            println("keyid ==== $keyId")
-            println("base ==== ${base.GROP_ID}")
 
             invPersonTV.setText(base.INV_PERSON)
             invDtTV.setText(base.INV_DT)
@@ -286,8 +281,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                     }
 
                     data.close()
-
-                    println("dataArrayList ${dataArray.size}")
                 }
 
         if (intent.getStringExtra("id") != null) {
@@ -331,7 +324,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 timeTV.setText(birds_attribute.INV_TM)
                 var timesplit = birds_attribute.INV_TM!!.split(":")
                 invtm = timesplit.get(0) + timesplit.get(1)
-                println("invtm---------$invtm")
 
                 obsstatTV.setText(birds_attribute.OBS_STAT)
                 useTarTV.setText(birds_attribute.USE_TAR)
@@ -566,7 +558,12 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         birds_attribute.GROP_ID = keyId
 
-                        birds_attribute.PRJ_NAME = prjnameET.text.toString()
+//                        birds_attribute.PRJ_NAME = prjnameET.text.toString()
+                        if (prjnameET.length() > 0){
+                            birds_attribute.PRJ_NAME = prjnameET.text.toString()
+                        } else {
+                            birds_attribute.PRJ_NAME = prjname
+                        }
 
                         birds_attribute.INV_REGION = invRegionET.text.toString()
 
@@ -1058,6 +1055,11 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             birds_attribute.GROP_ID = keyId
 
             birds_attribute.PRJ_NAME = prjnameET.text.toString()
+            if (prjnameET.length() > 0){
+                birds_attribute.PRJ_NAME = prjnameET.text.toString()
+            } else {
+                birds_attribute.PRJ_NAME = prjname
+            }
 
             birds_attribute.INV_REGION = invRegionET.text.toString()
 
@@ -1530,21 +1532,25 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                     var family_name = data!!.getStringExtra("family_name");
                     var zoological = data!!.getStringExtra("zoological");
 
+                    if (data!!.getStringExtra("ENDANGERED") != null){
+                        name += "(멸종위기)"
+                    }
+
                     var code:ArrayList<String> = ArrayList<String>()
 
-                    if(data!!.getSerializableExtra("code") != null){
-                        code = data!!.getSerializableExtra("code") as ArrayList<String>
-                        var codeText:String = ""
-
-                        for (i in 0..code.size-1){
-                            codeText += code.get(i) + " "
-                        }
-
-                        endangeredTV.setText(codeText)
-                        if (codeText != "") {
-                            name += "(멸종위기)"
-                        }
-                    }
+//                    if(data!!.getSerializableExtra("code") != null){
+//                        code = data!!.getSerializableExtra("code") as ArrayList<String>
+//                        var codeText:String = ""
+//
+//                        for (i in 0..code.size-1){
+//                            codeText += code.get(i) + " "
+//                        }
+//
+//                        endangeredTV.setText(codeText)
+//                        if (codeText != "") {
+//                            name += "(멸종위기)"
+//                        }
+//                    }
 
                     if (name == "SP(미동정)"){
                         birdsTV.text = name

@@ -23,7 +23,6 @@ import hntecology.ecology.model.GpsSet;
 import hntecology.ecology.model.Insect_attribute;
 import hntecology.ecology.model.Mammal_attribute;
 import hntecology.ecology.model.ManyFloraAttribute;
-import hntecology.ecology.model.Projects;
 import hntecology.ecology.model.Reptilia_attribute;
 import hntecology.ecology.model.StockMap;
 import hntecology.ecology.model.Tracking;
@@ -821,21 +820,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-
-    public void insertproject(Projects projects){
-        String query = "INSERT INTO Projects";
-        query += "(name)";
-
-        query += " values (";
-        query += " '" + projects.getTitle() + "'";
-
-        query += " ); ";
-
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL(query);
-        db.close();
-    }
-
     public void insertlayers(String file_name , String layer_name , String type,String Y, String grop_id){
         String query = "INSERT INTO layers";
         query += "(file_name,layer_name,min_scale,max_scale,type,added,grop_id)";
@@ -985,13 +969,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteproject(String id) {
-        String query = "DELETE FROM Projects WHERE id = '" + id + "'";
-
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL(query);
-        db.close();
-    }
 
     public void deletelayers(String grop_id) {
         String query = "DELETE FROM layers WHERE grop_id = '" + grop_id + "'";

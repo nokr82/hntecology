@@ -262,6 +262,10 @@ class DlgBirdsActivity : Activity() {
 
             var data = listdata1.get(position)
 
+            var data_name: String = data.name_kr!!
+            var family_name: String = data.Family_name_kr!!
+            var zoological: String = data!!.zoological!!
+
             if (data.chkSelect == false) {
                 data.chkSelect = true
                 listAdapte1.notifyDataSetChanged()
@@ -284,29 +288,39 @@ class DlgBirdsActivity : Activity() {
 
             }
 
+            var intent = Intent()
+
             if (chkData) {
-                selectTV.visibility = View.VISIBLE
-                birds_probars.visibility = View.VISIBLE
-                listdata2.add(item)
-                listdata2.add(item2)
-                listdata2.add(item3)
-                listdata2.add(item4)
-                listdata2.add(item5)
-                listdata2.add(item6)
-                listdata2.add(item7)
-                listdata2.add(item8)
-                listdata2.add(item9)
-                listdata2.add(item10)
-                listdata2.add(item11)
-                listdata2.add(item12)
-                listdata2.add(item13)
-                listdata2.add(item14)
-                birds_probars.visibility = View.GONE
+//                selectTV.visibility = View.VISIBLE
+//                birds_probars.visibility = View.VISIBLE
+//                listdata2.add(item)
+//                listdata2.add(item2)
+//                listdata2.add(item3)
+//                listdata2.add(item4)
+//                listdata2.add(item5)
+//                listdata2.add(item6)
+//                listdata2.add(item7)
+//                listdata2.add(item8)
+//                listdata2.add(item9)
+//                listdata2.add(item10)
+//                listdata2.add(item11)
+//                listdata2.add(item12)
+//                listdata2.add(item13)
+//                listdata2.add(item14)
+//                birds_probars.visibility = View.GONE
+                intent.putExtra("ENDANGERED","ENDANGERED")
             } else {
-                if (listdata2 != null) {
-                    listdata2.clear()
-                }
+//                if (listdata2 != null) {
+//                    listdata2.clear()
+//                }
             }
+
+            intent.putExtra("name", name)
+            intent.putExtra("family_name", family_name)
+            intent.putExtra("zoological", zoological)
+            setResult(RESULT_OK, intent);
+
+            finish()
 
             EndangeredData.close()
 

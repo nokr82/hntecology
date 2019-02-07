@@ -117,6 +117,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
     var invtm = ""
 
+    var prjname = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fish)
@@ -128,7 +130,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         //this.setFinishOnTouchOutside(true);
 
         userName = PrefUtils.getStringPreference(context, "name");
-        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+//        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+        prjname = PrefUtils.getStringPreference(context, "prjname")
 
         var today = Utils.todayStr();
         val time = Utils.timeStr()
@@ -659,7 +662,12 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                         fish_attribute.GROP_ID = keyId
 
-                        fish_attribute.PRJ_NAME = prjnameET.text.toString()
+//                        fish_attribute.PRJ_NAME = prjnameET.text.toString()
+                        if (prjnameET.length() > 0){
+                            fish_attribute.PRJ_NAME = prjnameET.text.toString()
+                        } else {
+                            fish_attribute.PRJ_NAME = prjname
+                        }
 
                         fish_attribute.INV_REGION = fishinvregionET.text.toString()
 
@@ -1220,7 +1228,12 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             fish_attribute.GROP_ID = keyId
 
-            fish_attribute.PRJ_NAME = prjnameET.text.toString()
+//            fish_attribute.PRJ_NAME = prjnameET.text.toString()
+            if (prjnameET.length() > 0){
+                fish_attribute.PRJ_NAME = prjnameET.text.toString()
+            } else {
+                fish_attribute.PRJ_NAME = prjname
+            }
 
             fish_attribute.INV_REGION = fishinvregionET.text.toString()
             fish_attribute.INV_DT = Utils.todayStr()

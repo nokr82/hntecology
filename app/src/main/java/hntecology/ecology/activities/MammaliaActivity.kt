@@ -113,6 +113,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
     var invtm = ""
 
+    var prjname = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mammalia)
@@ -131,7 +133,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         invtm = timesplit.get(0) + timesplit.get(1)
 
         userName = PrefUtils.getStringPreference(context, "name");
-        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+//        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+        prjname = PrefUtils.getStringPreference(context, "prjname")
 
         var today = Utils.todayStr();
 
@@ -598,7 +601,12 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                         mammal_attribute.GROP_ID = keyId
 
-                        mammal_attribute.PRJ_NAME = prjnameET.text.toString()
+//                        mammal_attribute.PRJ_NAME = prjnameET.text.toString()
+                        if (prjnameET.length() > 0){
+                            mammal_attribute.PRJ_NAME = prjnameET.text.toString()
+                        } else {
+                            mammal_attribute.PRJ_NAME = prjname
+                        }
 
                         mammal_attribute.INV_REGION = maminvregionET.text.toString()
                         mammal_attribute.INV_DT = Utils.todayStr()
@@ -1154,7 +1162,13 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             mammal_attribute.GROP_ID = keyId
 
-            mammal_attribute.PRJ_NAME = prjnameET.text.toString()
+//            mammal_attribute.PRJ_NAME = prjnameET.text.toString()
+            if (prjnameET.length() > 0){
+                mammal_attribute.PRJ_NAME = prjnameET.text.toString()
+            } else {
+                mammal_attribute.PRJ_NAME = prjname
+            }
+
 
             mammal_attribute.INV_REGION = maminvregionET.text.toString()
             mammal_attribute.INV_DT = Utils.todayStr()
@@ -1812,21 +1826,25 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                     var family_name = data!!.getStringExtra("family_name");
                     var zoological = data!!.getStringExtra("zoological");
 
-                    var code:ArrayList<String> = ArrayList<String>()
-
-                    if(data!!.getSerializableExtra("code") != null){
-                        code = data!!.getSerializableExtra("code") as ArrayList<String>
-                        var codeText:String = ""
-
-                        for (i in 0..code.size-1){
-                            codeText += code.get(i) + " "
-                        }
-
-                        endangeredTV.setText(codeText)
-                        if (codeText != "") {
-                            name += "(멸종위기)"
-                        }
+                    if (data!!.getStringExtra("ENDANGERED") != null){
+                        name += "(멸종위기)"
                     }
+
+//                    var code:ArrayList<String> = ArrayList<String>()
+//
+//                    if(data!!.getSerializableExtra("code") != null){
+//                        code = data!!.getSerializableExtra("code") as ArrayList<String>
+//                        var codeText:String = ""
+//
+//                        for (i in 0..code.size-1){
+//                            codeText += code.get(i) + " "
+//                        }
+//
+//                        endangeredTV.setText(codeText)
+//                        if (codeText != "") {
+//                            name += "(멸종위기)"
+//                        }
+//                    }
 
                     mamspecnmET.text = name
                     if (name == "SP(미동정)"){

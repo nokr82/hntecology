@@ -50,7 +50,7 @@ class DlgProjectAdapter(var context: Context, var itemList : ArrayList<Projects>
 
         var Projects : Projects = getItem(position)
 
-        viewHoldar.class_biotope_item.text = Projects.title;
+        viewHoldar.class_biotope_item.text = Projects.prj_name;
 
 
         // println("hh : " + position + ", " + hashCode())

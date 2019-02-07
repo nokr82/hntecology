@@ -80,6 +80,7 @@ class StockActivity : Activity() {
     var agclsdata : java.util.ArrayList<StockMapSelect> = ArrayList<StockMapSelect>()
     var dnstdata : java.util.ArrayList<StockMapSelect> = ArrayList<StockMapSelect>()
 
+    var prjname = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -160,7 +161,8 @@ class StockActivity : Activity() {
 
         }
 
-        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+//        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+        prjname = PrefUtils.getStringPreference(context, "prjname")
         keyId = intent.getStringExtra("GROP_ID")
 
         if (intent.getStringExtra("id") != null) {
@@ -335,7 +337,7 @@ class StockActivity : Activity() {
                 invtmTV.text =  stockMap.INV_TM
                 prjnameET.setText(stockMap.PRJ_NAME)
                 if (stockMap.PRJ_NAME != "" || stockMap.PRJ_NAME != null){
-                    prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+//                    prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
                 }
                 numTV.text = stockMap.NUM.toString()
                 for (i in 0 until frtpdata.size){
@@ -530,7 +532,13 @@ class StockActivity : Activity() {
                                 null,null)
 
                         stockMap.GROP_ID = keyId
-                        stockMap.PRJ_NAME = prjnameET.text.toString()
+//                        stockMap.PRJ_NAME = prjnameET.text.toString()
+                        if (prjnameET.length() > 0){
+                            stockMap.PRJ_NAME = prjnameET.text.toString()
+                        } else {
+                            stockMap.PRJ_NAME = prjname
+                        }
+
                         stockMap.INV_REGION = invregionTV.text.toString()
                         stockMap.INV_PERSON = invpersonTV.text.toString()
                         stockMap.INV_DT = Utils.todayStr()
@@ -738,7 +746,13 @@ class StockActivity : Activity() {
                     null,null)
 
             stockMap.GROP_ID = keyId
-            stockMap.PRJ_NAME = prjnameET.text.toString()
+//            stockMap.PRJ_NAME = prjnameET.text.toString()
+            if (prjnameET.length() > 0){
+                stockMap.PRJ_NAME = prjnameET.text.toString()
+            } else {
+                stockMap.PRJ_NAME = prjname
+            }
+
             stockMap.INV_REGION = invregionTV.text.toString()
             stockMap.INV_PERSON = invpersonTV.text.toString()
             stockMap.INV_DT = Utils.todayStr()

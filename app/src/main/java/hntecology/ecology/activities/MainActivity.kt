@@ -253,10 +253,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         isFile()
 
-        prjname = PrefUtils.getStringPreference(context, "name");
+        prjname = PrefUtils.getStringPreference(context, "prjname");
 
         val dataList: Array<String> = arrayOf("*")
-        val data = db!!.query("settings", dataList, null, null, null, null, "id desc", "1")
+//        val data = db!!.query("settings", dataList, null, null, null, null, "id desc", "1")
+        val data = db!!.query("Projects", dataList, "prj_name = '$prjname'", null, null, null, "id desc", "1")
 
         progressDialog = ProgressDialog(this, R.style.progressDialogTheme)
         progressDialog!!.setProgressStyle(android.R.style.Widget_DeviceDefault_Light_ProgressBar_Large)
@@ -1140,7 +1141,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
 
                     val dataList: Array<String> = arrayOf("*")
-                    val data = db!!.query("settings", dataList, null, null, null, null, "id desc", "1")
+//                    val data = db!!.query("settings", dataList, null, null, null, null, "id desc", "1")
+                    var prjname = PrefUtils.getStringPreference(context, "prjname")
+                    val data = db!!.query("Projects", dataList, "prj_name = '$prjname'", null, null, null, "id desc", "1")
 
                     while (data.moveToNext()) {
 
@@ -1148,7 +1151,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                         latitude = gpsset.latitude!!
                         longitude = gpsset.longitude!!
-
 
                     }
 
@@ -6052,7 +6054,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         BIRDSATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, birds_attribute.SPEC_NM))
                         BIRDSATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, birds_attribute.FAMI_NM))
                         BIRDSATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, birds_attribute.SCIEN_NM))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("ENDANGERED", ogr.OFTString, birds_attribute.ENDANGERED))
+// 멸종위기기호                       BIRDSATTRIBUTE.add(Exporter.ColumnDef("ENDANGERED", ogr.OFTString, birds_attribute.ENDANGERED))
                         BIRDSATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger, birds_attribute.INDI_CNT))
                         BIRDSATTRIBUTE.add(Exporter.ColumnDef("OBS_STAT", ogr.OFTString, birds_attribute.OBS_STAT))
                         BIRDSATTRIBUTE.add(Exporter.ColumnDef("OBS_ST_ETC", ogr.OFTString, birds_attribute.OBS_ST_ETC))
@@ -6335,7 +6337,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, mammal_attribute.SPEC_NM))
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, mammal_attribute.FAMI_NM))
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, mammal_attribute.SCIEN_NM))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("ENDANGERED", ogr.OFTString, mammal_attribute.ENDANGERED))
+// 멸종위기기호                       MAMMALATTRIBUTE.add(Exporter.ColumnDef("ENDANGERED", ogr.OFTString, mammal_attribute.ENDANGERED))
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("OBS_TY", ogr.OFTString, mammal_attribute.OBS_TY))
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("OBS_TY_ETC", ogr.OFTString, mammal_attribute.OBS_TY_ETC))
                         MAMMALATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger, mammal_attribute.INDI_CNT))

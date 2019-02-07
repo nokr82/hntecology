@@ -84,6 +84,8 @@ class WayPointActivity : Activity() {
     private val FROM_CAMERA = 100
     private val FROM_ALBUM = 101
     var imageUri: Uri? = null
+
+    var prjname = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_way_point)
@@ -108,7 +110,9 @@ class WayPointActivity : Activity() {
 
         invpersonTV.setText(userName)
         invdtTV.setText(Utils.todayStr())
-        prjnameTV.setText(PrefUtils.getStringPreference(context, "prjname"))
+//        prjnameTV.setText(PrefUtils.getStringPreference(context, "prjname"))
+        prjname = PrefUtils.getStringPreference(context, "prjname")
+
 
         var intent: Intent = getIntent();
 
@@ -246,7 +250,13 @@ class WayPointActivity : Activity() {
                         waypoint.INV_TM = invtmTV.text.toString()
                         waypoint.NUM = numTV.text.toString()
                         waypoint.INV_PERSON = invpersonTV.text.toString()
-                        waypoint.PRJ_NAME = prjnameTV.text.toString()
+//                        waypoint.PRJ_NAME = prjnameTV.text.toString()
+                        if (prjnameTV.length() > 0){
+                            waypoint.PRJ_NAME = prjnameTV.text.toString()
+                        } else {
+                            waypoint.PRJ_NAME = prjname
+                        }
+
                         waypoint.GPS_LAT = gpslatTV.text.toString().toFloat()
                         waypoint.GPS_LON = gpslonTV.text.toString().toFloat()
                         waypoint.MEMO = memoTV.text.toString()

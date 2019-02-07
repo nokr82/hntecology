@@ -257,20 +257,28 @@ class DlgMammalActivity : Activity() {
             }
 
             if (chkData){
-                selectTV.visibility = View.VISIBLE
-                    listdata2.add(item)
-                    listdata2.add(item2)
-                    listdata2.add(item3)
-                    listdata2.add(item4)
-                    listdata2.add(item5)
-                    listdata2.add(item6)
-                    listdata2.add(item7)
-                    listdata2.add(item8)
+//                selectTV.visibility = View.VISIBLE
+//                    listdata2.add(item)
+//                    listdata2.add(item2)
+//                    listdata2.add(item3)
+//                    listdata2.add(item4)
+//                    listdata2.add(item5)
+//                    listdata2.add(item6)
+//                    listdata2.add(item7)
+//                    listdata2.add(item8)
+                intent.putExtra("ENDANGERED","ENDANGERED")
             }else {
-                if(listdata2 != null) {
-                    listdata2.clear()
-                }
+//                if(listdata2 != null) {
+//                    listdata2.clear()
+//                }
             }
+
+            intent.putExtra("name", name)
+            intent.putExtra("family_name", family_name)
+            intent.putExtra("zoological", zoological)
+            setResult(RESULT_OK, intent);
+
+            finish()
 
             EndangeredData.close()
 

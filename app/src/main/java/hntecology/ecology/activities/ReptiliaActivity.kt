@@ -110,6 +110,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
     var invtm = ""
 
+    var prjname = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reptilia)
@@ -132,7 +134,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         userName = PrefUtils.getStringPreference(context, "name");
 
-        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+//        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+        prjname = PrefUtils.getStringPreference(context, "prjname")
 
         invpersonET.setText(userName)
 
@@ -907,7 +910,12 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                         reptilia_attribute.GROP_ID = keyId
 
-                        reptilia_attribute.PRJ_NAME = prjnameET.text.toString()
+//                        reptilia_attribute.PRJ_NAME = prjnameET.text.toString()
+                        if (prjnameET.length() > 0){
+                            reptilia_attribute.PRJ_NAME = prjnameET.text.toString()
+                        } else {
+                            reptilia_attribute.PRJ_NAME = prjname
+                        }
 
                         reptilia_attribute.INV_REGION = invregionET.text.toString()
                         reptilia_attribute.INV_DT = Utils.todayStr()
@@ -1123,7 +1131,13 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
             reptilia_attribute.GROP_ID = keyId
 
-            reptilia_attribute.PRJ_NAME = prjnameET.text.toString()
+//            reptilia_attribute.PRJ_NAME = prjnameET.text.toString()
+            if (prjnameET.length() > 0){
+                reptilia_attribute.PRJ_NAME = prjnameET.text.toString()
+            } else {
+                reptilia_attribute.PRJ_NAME = prjname
+            }
+
 
             reptilia_attribute.INV_REGION = invregionET.text.toString()
             reptilia_attribute.INV_DT = Utils.todayStr()

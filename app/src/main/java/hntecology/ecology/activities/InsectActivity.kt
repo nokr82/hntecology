@@ -111,6 +111,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
     var invtm = ""
 
+    var prjname = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_insect)
@@ -122,7 +124,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 //        this.setFinishOnTouchOutside(true);
 
         userName = PrefUtils.getStringPreference(context, "name");
-        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+//        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+        prjname = PrefUtils.getStringPreference(context, "prjname")
 
         addPicturesLL = findViewById(R.id.addPicturesLL)
 
@@ -622,7 +625,12 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                         insect_attribute.GROP_ID = keyId
 
-                        insect_attribute.PRJ_NAME = prjnameET.text.toString()
+//                        insect_attribute.PRJ_NAME = prjnameET.text.toString()
+                        if (prjnameET.length() > 0){
+                            insect_attribute.PRJ_NAME = prjnameET.text.toString()
+                        } else {
+                            insect_attribute.PRJ_NAME = prjname
+                        }
 
                         insect_attribute.INV_REGION = insectinvregionET.text.toString()
 
@@ -1186,7 +1194,13 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
             insect_attribute.GROP_ID = keyId
 
-            insect_attribute.PRJ_NAME = prjnameET.text.toString()
+//            insect_attribute.PRJ_NAME = prjnameET.text.toString()
+            if (prjnameET.length() > 0){
+                insect_attribute.PRJ_NAME = prjnameET.text.toString()
+            } else {
+                insect_attribute.PRJ_NAME = prjname
+            }
+
 
             insect_attribute.INV_REGION = insectinvregionET.text.toString()
 

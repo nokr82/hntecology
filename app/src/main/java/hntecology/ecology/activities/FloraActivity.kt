@@ -108,6 +108,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
     var invtm = ""
 
+    var prjname = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_flora)
@@ -128,7 +130,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
         userName = PrefUtils.getStringPreference(context, "name");
 
-        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+//        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+        prjname = PrefUtils.getStringPreference(context, "prjname")
 
         addPicturesLL = findViewById(R.id.addPicturesLL)
 
@@ -582,7 +585,12 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                         flora_Attribute.GROP_ID = keyId
 
-                        flora_Attribute.PRJ_NAME = prjnameET.text.toString()
+//                        flora_Attribute.PRJ_NAME = prjnameET.text.toString()
+                        if (prjnameET.length() > 0){
+                            flora_Attribute.PRJ_NAME = prjnameET.text.toString()
+                        } else {
+                            flora_Attribute.PRJ_NAME = prjname
+                        }
 
                         flora_Attribute.INV_REGION = florainvregionET.text.toString()
 
@@ -1115,7 +1123,12 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
             flora_Attribute.GROP_ID = keyId
 
-            flora_Attribute.PRJ_NAME = prjnameET.text.toString()
+//            flora_Attribute.PRJ_NAME = prjnameET.text.toString()
+            if (prjnameET.length() > 0){
+                flora_Attribute.PRJ_NAME = prjnameET.text.toString()
+            } else {
+                flora_Attribute.PRJ_NAME = prjname
+            }
 
             flora_Attribute.INV_REGION = florainvregionET.text.toString()
 

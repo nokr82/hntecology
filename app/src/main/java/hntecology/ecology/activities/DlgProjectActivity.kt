@@ -57,7 +57,7 @@ class DlgProjectActivity : Activity() {
         listView1.setOnItemClickListener { parent, view, position, id ->
             var data = listdata1.get(position)
             val intent = Intent();
-            intent.putExtra("name",data.title)
+            intent.putExtra("name",data.prj_name)
             setResult(Activity.RESULT_OK, intent);
             finish()
         }
@@ -74,7 +74,7 @@ class DlgProjectActivity : Activity() {
 
             var model: Projects;
 
-            model = Projects(data.getInt(0), data.getString(1));
+            model = Projects(data.getInt(0), data.getDouble(1),data.getDouble(2) ,data.getString(3), data.getInt(4));
 
             listdata.add(model)
         }

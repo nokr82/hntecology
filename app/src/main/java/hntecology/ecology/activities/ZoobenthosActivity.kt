@@ -108,6 +108,8 @@ class ZoobenthosActivity : Activity() {
 
     var invtm = ""
 
+    var prjname = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_zoobenthos)
@@ -135,7 +137,8 @@ class ZoobenthosActivity : Activity() {
         images_url = ArrayList()
 
         userName = PrefUtils.getStringPreference(context, "name");
-        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+//        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+        prjname = PrefUtils.getStringPreference(context, "prjname")
 
         var todays = today.split("-")
 
@@ -657,7 +660,13 @@ class ZoobenthosActivity : Activity() {
                         keyId = intent.getStringExtra("GROP_ID")
 
                         zoobenthos_Attribute.GROP_ID = keyId
-                        zoobenthos_Attribute.PRJ_NAME = prjnameET.text.toString()
+//                        zoobenthos_Attribute.PRJ_NAME = prjnameET.text.toString()
+                        if (prjnameET.length() > 0){
+                            zoobenthos_Attribute.PRJ_NAME = prjnameET.text.toString()
+                        } else {
+                            zoobenthos_Attribute.PRJ_NAME = prjname
+                        }
+
                         zoobenthos_Attribute.INV_REGION = invregionTV.text.toString()
                         zoobenthos_Attribute.INV_MEAN = invmeanTV.text.toString()
                         zoobenthos_Attribute.INV_PERSON = invpersonTV.text.toString()
@@ -1138,10 +1147,14 @@ class ZoobenthosActivity : Activity() {
 
             keyId = intent.getStringExtra("GROP_ID")
 
-            println("zoooooooooooo$keyId")
-
             zoobenthos_Attribute.GROP_ID = keyId
-            zoobenthos_Attribute.PRJ_NAME = prjnameET.text.toString()
+//            zoobenthos_Attribute.PRJ_NAME = prjnameET.text.toString()
+            if (prjnameET.length() > 0){
+                zoobenthos_Attribute.PRJ_NAME = prjnameET.text.toString()
+            } else {
+                zoobenthos_Attribute.PRJ_NAME = prjname
+            }
+
             zoobenthos_Attribute.INV_REGION = invregionTV.text.toString()
             zoobenthos_Attribute.INV_MEAN = invmeanTV.text.toString()
             zoobenthos_Attribute.INV_PERSON = invpersonTV.text.toString()

@@ -242,10 +242,14 @@
         <activity
             android:name=".activities.DlgStandardActivity"
             android:theme="@style/full_screen_dialog1" />
-        <activity android:name=".activities.WayPointActivity"
+        <activity
+            android:name=".activities.WayPointActivity"
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog2"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+        <activity android:name=".activities.DlgCalendarActivity"
+            android:theme="@style/full_screen_dialog1"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"  ></activity>
     </application>
 
 </manifest>

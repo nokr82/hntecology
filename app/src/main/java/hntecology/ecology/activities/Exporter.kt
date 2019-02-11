@@ -18,10 +18,20 @@ object Exporter {
     lateinit var exportItem:ExportItem
     lateinit var exportPointItem:ExportPointItem
 
-    class ExportItem constructor(layerInt:Int, columnDefs: ArrayList<ColumnDef>, polygon : Polygon) {
+//    class ExportItem constructor(layerInt:Int, columnDefs: ArrayList<ColumnDef>, polygon : Polygon) {
+//        val layerInt:Int = layerInt
+//        var columnDefs: ArrayList<ColumnDef> = columnDefs
+//        var polygon : Polygon = polygon
+//
+//    }
+
+    class ExportItem constructor(layerInt:Int, columnDefs: ArrayList<ColumnDef>,points:ArrayList<LatLng>) {
         val layerInt:Int = layerInt
         var columnDefs: ArrayList<ColumnDef> = columnDefs
-        var polygon : Polygon = polygon
+//        var polygon : Polygon = polygon
+
+        var points: ArrayList<LatLng> = points
+
     }
 
     class ExportPointItem constructor(layerInt:Int, columnDefs: ArrayList<ColumnDef>, point : Marker) {
@@ -297,12 +307,15 @@ object Exporter {
                     } else if (columnDef.columnValue is String) {
                         feature.SetField(columnDef.columnName, columnDef.columnValue)
                     }
+
+                    println("-------export${columnDef.columnName} : ${columnDef.columnValue}")
                 }
 
                 // create the WKT for the feature using Python string formatting
                 val ring = Geometry(ogr.wkbLinearRing)
 
-                val points = exportItem.polygon.points
+//                val points = exportItem.polygon.points
+                var points = exportItem.points
                 for (point in points) {
                     ring.AddPoint(point.longitude, point.latitude)
                 }
@@ -315,6 +328,7 @@ object Exporter {
 
                 // Create the feature in the layer (shapefile)
                 val created = layer.CreateFeature(feature)
+                println("----exportcreated ----- $created")
             }
         } else if(exportPointItems != null) {
             for (exportPointItem in exportPointItems) {

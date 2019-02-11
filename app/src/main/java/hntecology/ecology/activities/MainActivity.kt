@@ -59,6 +59,7 @@ import org.opengis.feature.simple.SimpleFeature
 import java.io.File
 import java.io.InputStream
 import java.io.Serializable
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -198,10 +199,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     var mygps = false
 
-    var markerRemove = false
 
     var polygonRemove = false
 
+    var markerRemove = false
     var trackingChk = false
 
     // var trackingPointChk = false
@@ -229,6 +230,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     var getColor = ""
 
     var polyLines: ArrayList<Polyline> = ArrayList<Polyline>()
+
+    var CALENDAR = 5000
     internal var loadDataHandler: Handler = object : Handler() {
         override fun handleMessage(msg: android.os.Message) {
 //            initGps()
@@ -251,7 +254,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         db = dbManager!!.createDataBase()
 
-        isFile()
+//        isFile()
 
         prjname = PrefUtils.getStringPreference(context, "prjname");
 
@@ -280,6 +283,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         mGestureDetector = GestureDetector(this, GestureListener())
 
         drawer_view.setOnTouchListener(this)
+
+        exportBtn.setOnClickListener {
+            val intent = Intent(this, DlgCalendarActivity::class.java)
+
+            startActivityForResult(intent, CALENDAR);
+        }
 
         btn_layer.setOnClickListener {
             currentLayer = LAYER
@@ -1200,7 +1209,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
                             } else {
-                                exportBiotope()
+//                                exportBiotope()
                             }
                         }
 
@@ -1234,7 +1243,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
                             } else {
-                                exportBirds()
+//                                exportBirds()
                             }
                         }
                     }
@@ -1264,7 +1273,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
                             } else {
-                                exportReptilia()
+//                                exportReptilia()
                             }
                         }
                     }
@@ -1294,7 +1303,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
                             } else {
-                                exportMammal()
+//                                exportMammal()
                             }
                         }
                     }
@@ -1323,7 +1332,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
                             } else {
-                                exportFish()
+//                                exportFish()
                             }
                         }
                     }
@@ -1352,7 +1361,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
                             } else {
-                                exportInsects()
+//                                exportInsects()
                             }
                         }
                     }
@@ -1381,7 +1390,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
                             } else {
-                                exportFlora()
+//                                exportFlora()
                             }
                         }
                     }
@@ -1412,7 +1421,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
                             } else {
-                                exportZoobenthous()
+//                                exportZoobenthous()
                             }
                         }
                     }
@@ -1444,7 +1453,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
                             } else {
-                                exportManyFloras()
+//                                exportManyFloras()
                             }
                         }
                     }
@@ -1483,7 +1492,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
                             } else {
-                                exportStockMap()
+//                                exportStockMap()
                             }
                         }
 
@@ -1508,7 +1517,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
                             } else {
-                                exportWaypoint()
+//                                exportWaypoint()
                             }
                         }
                     }
@@ -1537,7 +1546,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         }
 
                         if (jsonOb.size == 0) {
-                            println("000000")
                             loadLayer("", "", "", "")
                         }
 
@@ -1549,7 +1557,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                         println("jsonOb.size==================== ${jsonOb.size}")
 
-                        progressDialog?.show()
+                        progressDialog!!.show()
 
                         transparentSB.progress = 255
 
@@ -1595,6 +1603,18 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         val mapCenter = LatLng(y.toDouble(), x.toDouble())
                         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mapCenter, 15.6f))
                     }
+                }
+
+                CALENDAR -> {
+                    val leftday = data!!.getStringExtra("leftday")
+                    val lefttime = data!!.getStringExtra("lefttime")
+                    val rightday = data!!.getStringExtra("rightday")
+                    val righttime = data!!.getStringExtra("righttime")
+
+                    export(leftday, lefttime, rightday, righttime)
+
+                    println("---leftday: $leftday lefttime: $lefttime rightday: $rightday righttime $righttime")
+
                 }
 
                 else -> super.onActivityResult(requestCode, resultCode, data)
@@ -1650,6 +1670,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         // GoogleMap 에 마커클릭 이벤트 설정 가능.
         googleMap.setOnMarkerClickListener { marker ->
 
+            var gps_lon: ArrayList<String> = ArrayList<String>()
 
             val zoom = googleMap.cameraPosition.zoom
 
@@ -1698,7 +1719,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21), data.getString(22)
-                                    , data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getString(28), data.getString(29))
+                                    , data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getString(28), data.getString(29), data.getString(30))
                             birdsdataArray.add(birds_attribute)
 
                         }
@@ -1765,7 +1786,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getString(16), data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                                    , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30), data.getString(31), data.getString(32))
+                                    , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30), data.getString(31), data.getString(32), data.getString(33))
 
 
                             reptiliadataArray.add(reptilia_attribute)
@@ -1832,7 +1853,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                                    , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27), data.getString(28), data.getString(29), data.getString(30))
+                                    , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27), data.getString(28), data.getString(29), data.getString(30), data.getString(31))
 
                             mammaldataArray.add(mammal_attribute)
                         }
@@ -1896,7 +1917,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
                                     data.getFloat(19), data.getFloat(20), data.getString(21), data.getString(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getInt(26), data.getString(27), data.getString(28), data.getString(29),
-                                    data.getInt(30), data.getString(31), data.getString(32), data.getString(33), data.getInt(34), data.getString(35), data.getString(36), data.getString(37), data.getString(38), data.getString(39))
+                                    data.getInt(30), data.getString(31), data.getString(32), data.getString(33), data.getInt(34), data.getString(35), data.getString(36), data.getString(37), data.getString(38), data.getString(39), data.getString(40))
                             fishdataArray.add(fish_attribute)
                         }
 
@@ -1961,7 +1982,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                                    , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getString(28), data.getString(29))
+                                    , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getString(28), data.getString(29), data.getString(30))
                             insectdataArray.add(insect_attribute)
                         }
 
@@ -2026,7 +2047,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             var flora_attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                                    , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25))
+                                    , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26))
                             floradataArray.add(flora_attribute)
                         }
 
@@ -2095,7 +2116,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getInt(20), data.getInt(21), data.getInt(22)
                                     , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
                                     , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
-                                    , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55))
+                                    , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55), data.getString(56))
 
                             zoobenthosArray.add(zoo)
                         }
@@ -2160,7 +2181,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                     data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
                                     , data.getInt(15), data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
                                     , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28), data.getFloat(29), data.getString(30), data.getInt(31), data.getString(32)
-                                    , data.getString(33), data.getString(34), data.getFloat(35), data.getFloat(36), data.getInt(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41))
+                                    , data.getString(33), data.getString(34), data.getFloat(35), data.getFloat(36), data.getInt(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42))
                             manyfloradataArray.add(manyFloraAttribute)
 
                         }
@@ -2223,7 +2244,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         var title = ""
 
                         while (data.moveToNext()) {
-                            var waypoint:Waypoint = Waypoint(data.getInt(0),data.getString(1),data.getString(2),data.getString(3),data.getString(4),data.getString(5),data.getString(6),data.getString(7),data.getFloat(8),data.getFloat(9),data.getString(10))
+                            var waypoint: Waypoint = Waypoint(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7), data.getFloat(8), data.getFloat(9), data.getString(10), data.getString(11))
                             waypointdataArray.add(waypoint)
                         }
 
@@ -2285,6 +2306,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val zoom = googleMap.cameraPosition.zoom
 
+            var geom = ""
+
+            for (i in 0 until polygon.points.size) {
+                geom = polygon.points.get(i).latitude.toString() + " " + polygon.points.get(i).longitude.toString() + ","
+            }
+
 //            if (zoom.toInt() >= 17) {
 
 
@@ -2296,1308 +2323,441 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
 //                POLYGONCOLOR.add(polygon.fillColor.toString())
 
-                // 도형 분리 중이면.....
-                if (splitRL.isSelected) {
-                    if (zoom.toInt() >= 17) {
-                        val layerInfo = polygon.tag as LayerInfo
-                        var myLayer = layerInfo.layer
-                        var attrubuteKey = layerInfo.attrubuteKey
-
-                        splittingPolygon = polygon
-                        splittingPolygon!!.strokeWidth = 10.0f
-                        splittingPolygon!!.strokeColor = Color.RED
-
-                        drawer_view.visibility = View.VISIBLE
-
-                        Utils.alert(context, "분리선을 추가해 주세요.");
-
-                        val type = typeST.isChecked
-                        var chkData = false
-
-                        if (!typeST.isChecked) {
-                            when (myLayer) {
-
-                                LAYER_BIOTOPE -> {
-                                    val dataList: Array<String> = arrayOf("*");
-
-                                    val data = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                                    if (biotopedataArray != null) {
-                                        biotopedataArray.clear()
-                                    }
-                                    while (data.moveToNext()) {
-                                        chkData = true
-                                    }
-
-                                    if (chkData == false) {
-                                        val layerinfo = polygon.tag as LayerInfo
-                                        for (i in 0..polygons.size - 1) {
-                                            if (polygons.get(i).tag == polygon.tag) {
-                                                println("layerinfo.metadata ${layerinfo.metadata}")
-                                                var GPS_LON = Utils.getString(layerInfo.metadata, "GPS_LON")
-                                                var BREA_DIA = Utils.getString(layerInfo.metadata, "BREA_DIA")
-                                                var HER_COVE = Utils.getString(layerInfo.metadata, "HER_COVE")
-                                                var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
-                                                var IMP_FORM = Utils.getString(layerInfo.metadata, "IMP_FORM")
-                                                var LU_GR_NUM = Utils.getString(layerInfo.metadata, "LU_GR_NUM")
-                                                var UNUS_NOTE = Utils.getString(layerInfo.metadata, "UNUS_NOTE")
-                                                var TRE_H = Utils.getString(layerInfo.metadata, "TRE_H")
-                                                var LC_TY = Utils.getString(layerInfo.metadata, "LC_TY")
-                                                var TY_MARK = Utils.getString(layerInfo.metadata, "TY_MARK")
-                                                var HER_SCIEN = Utils.getString(layerInfo.metadata, "HER_SCIEN")
-                                                var PIC_FOLDER = Utils.getString(layerInfo.metadata, "PIC_FOLDER")
-                                                var LU_k = Utils.getString(layerInfo.metadata, "LU_k")
-                                                var COMP_INTA = Utils.getString(layerInfo.metadata, "COMP_INTA")
-                                                var DIS_RET = Utils.getString(layerInfo.metadata, "DIS_RET")
-                                                var WILD_ANI = Utils.getString(layerInfo.metadata, "WILD_ANI")
-                                                var CONF_MOD = Utils.getString(layerInfo.metadata, "CONF_MOD")
-                                                var SHR_SPEC = Utils.getString(layerInfo.metadata, "SHR_SPEC")
-                                                var STAND_H = Utils.getString(layerInfo.metadata, "STAND_H")
-                                                var SHR_FAMI = Utils.getString(layerInfo.metadata, "SHR_FAMI")
-                                                var EMD_CD = Utils.getString(layerInfo.metadata, "EMD_CD")
-                                                var BIOTOP_POT = Utils.getString(layerInfo.metadata, "BIOTOP_POT")
-                                                var TRE_FAMI = Utils.getString(layerInfo.metadata, "TRE_FAMI")
-                                                var LU_TY_RATE = Utils.getString(layerInfo.metadata, "LU_TY_RATE")
-                                                var HER_SPEC = Utils.getString(layerInfo.metadata, "HER_SPEC")
-                                                var STRE_BREA = Utils.getString(layerInfo.metadata, "STRE_BREA")
-                                                var STR_COVE = Utils.getString(layerInfo.metadata, "STR_COVE")
-                                                var STRE_H = Utils.getString(layerInfo.metadata, "STRE_H")
-                                                var RESTOR_POT = Utils.getString(layerInfo.metadata, "RESTOR_POT")
-                                                var STRE_SCIEN = Utils.getString(layerInfo.metadata, "STRE_SCIEN")
-                                                var TRE_SPEC = Utils.getString(layerInfo.metadata, "TRE_SPEC")
-                                                var SHR_H = Utils.getString(layerInfo.metadata, "SHR_H")
-                                                var UFID = Utils.getString(layerInfo.metadata, "UFID")
-                                                var GV_RATE = Utils.getString(layerInfo.metadata, "GV_RATE")
-                                                var STRE_COVE = Utils.getString(layerInfo.metadata, "STRE_COVE")
-                                                var NEED_CONF = Utils.getString(layerInfo.metadata, "NEED_CONF")
-                                                var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                                var SHR_SCIEN = Utils.getString(layerInfo.metadata, "SHR_SCIEN")
-                                                var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
-                                                var STRE_SPEC = Utils.getString(layerInfo.metadata, "STRE_SPEC")
-                                                var LC_GR_NUM = Utils.getString(layerInfo.metadata, "LC_GR_NUM")
-                                                var TRE_COVE = Utils.getString(layerInfo.metadata, "TRE_COVE")
-                                                var HER_H = Utils.getString(layerInfo.metadata, "HER_H")
-                                                var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
-                                                var TRE_SCIEN = Utils.getString(layerInfo.metadata, "TRE_SCIEN")
-                                                var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
-                                                var GV_STRUCT = Utils.getString(layerInfo.metadata, "GV_STRUCT")
-                                                var GPS_LAT = Utils.getString(layerInfo.metadata, "GPS_LAT")
-                                                var TRE_BREA = Utils.getString(layerInfo.metadata, "TRE_BREA")
-                                                var FIN_EST = Utils.getString(layerInfo.metadata, "FIN_EST")
-                                                var VP_INTA = Utils.getString(layerInfo.metadata, "VP_INTA")
-                                                var HER_FAMI = Utils.getString(layerInfo.metadata, "HER_FAMI")
-                                                var INV_INDEX = Utils.getString(layerInfo.metadata, "INV_INDEX")
-                                                var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
-                                                var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
-                                                var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                                var landuse = Utils.getString(layerInfo.metadata, "landuse")
-                                                var landcover = Utils.getString(layerInfo.metadata, "landcover")
-
-
-                                                var biotope = Utils.getString(layerInfo.metadata, "biotop")
-                                                if (INV_INDEX == "" || INV_INDEX == null) {
-                                                    INV_INDEX = "0"
-                                                }
-
-                                                if (LU_TY_RATE == "" || LU_TY_RATE == null) {
-                                                    LU_TY_RATE = "0"
-                                                }
-
-                                                if (STAND_H == "" || STAND_H == null) {
-                                                    STAND_H = "0"
-                                                }
-
-                                                if (GV_RATE == "" || GV_RATE == null) {
-                                                    GV_RATE = "0"
-                                                }
-
-                                                if (TRE_H == "" || TRE_H == null) {
-                                                    TRE_H = "0"
-                                                }
-
-                                                if (TRE_BREA == "" || TRE_BREA == null) {
-                                                    TRE_BREA = "0"
-                                                }
-
-                                                if (TRE_COVE == "" || TRE_COVE == null) {
-                                                    TRE_COVE = "0"
-                                                }
-
-                                                if (STRE_H == "" || STRE_H == null) {
-                                                    STRE_H = "0"
-                                                }
-
-                                                if (STRE_BREA == "" || STRE_BREA == null) {
-                                                    STRE_BREA = "0"
-                                                }
-
-                                                if (STRE_COVE == "" || STRE_COVE == null) {
-                                                    STRE_COVE = "0"
-                                                }
-
-                                                if (SHR_H == "" || SHR_H == null) {
-                                                    SHR_H = "0"
-                                                }
-
-                                                if (STR_COVE == "" || STR_COVE == null) {
-                                                    STR_COVE = "0"
-                                                }
-
-                                                if (HER_H == "" || HER_H == null) {
-                                                    HER_H = "0"
-                                                }
-
-                                                if (HER_COVE == "" || HER_COVE == null) {
-                                                    HER_COVE = "0"
-                                                }
-
-                                                if (GPS_LAT == "" || GPS_LAT == null) {
-                                                    GPS_LAT = "0"
-                                                }
-
-                                                if (GPS_LON == "" || GPS_LON == null) {
-                                                    GPS_LON = "0"
-                                                }
-
-                                                val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, LC_TY, TY_MARK, GV_RATE.toFloat()
-                                                        , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
-                                                        STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
-                                                        BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", polygon.fillColor.toString())
-
-                                                if (landuse != null && landuse != "") {
-                                                    LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
-                                                }
-
-                                                POLYGONCOLOR.add(LANDUSE)
-
-                                                if (LANDUSE != null && LANDUSE != "") {
-                                                    data.LANDUSE = LANDUSE
-                                                    data.LU_GR_NUM = LANDUSE
-                                                    data.LC_GR_NUM = landcover
-                                                }
-
-                                                dbManager!!.insertbiotope_attribute(data)
-                                            }
-                                        }
-                                    }
-                                }
-
-                                LAYER_STOCKMAP -> {
-                                    var chkdata = false
-                                    val dataList: Array<String> = arrayOf("*");
-
-                                    val stockdata = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                                    if (stockdataArray != null) {
-                                        stockdataArray.clear()
-                                    }
-
-                                    while (stockdata.moveToNext()) {
-                                        chkdata = true
-                                    }
-
-                                    if (chkdata == false) {
-                                        val layerinfo = polygon.tag as LayerInfo
-
-                                        for (i in 0..polygons.size - 1) {
-                                            if (polygons.get(i).tag == polygon.tag) {
-                                                println("layerinfo.metadata ${layerinfo.metadata}")
-
-                                                var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                                var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
-                                                var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
-                                                var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
-                                                var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
-                                                var NUM = Utils.getString(layerInfo.metadata, "NUM")
-                                                var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
-                                                var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
-                                                var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
-                                                var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
-                                                var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
-                                                var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
-                                                var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
-                                                var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
-                                                var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
-                                                var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
-                                                var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
-                                                var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
-                                                var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                                var landuse = Utils.getString(layerInfo.metadata, "landuse")
-
-                                                if (landuse != null && landuse != "") {
-                                                    LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
-                                                }
-
-                                                POLYGONCOLOR.add(LANDUSE)
-
-                                                if (NUM == "" || NUM == null) {
-                                                    NUM = "0"
-                                                }
-
-                                                val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                        , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString())
-
-                                                dbManager!!.insertstockmap(data)
-
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                        } else {
-                            when (myLayer) {
-
-                                LAYER_BIOTOPE -> {
-                                    val dataList: Array<String> = arrayOf("*");
-
-
-                                    var chkdata = false
-
-                                    val stockdata = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                                    if (stockdataArray != null) {
-                                        stockdataArray.clear()
-                                    }
-
-                                    while (stockdata.moveToNext()) {
-                                        chkdata = true
-                                    }
-
-                                    if (chkdata == false) {
-                                        val layerinfo = polygon.tag as LayerInfo
-
-                                        for (i in 0..polygons.size - 1) {
-                                            if (polygons.get(i).tag == polygon.tag) {
-                                                println("layerinfo.metadata.stockmap----------${layerinfo.metadata}")
-
-                                                var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                                var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
-                                                var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
-                                                var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
-                                                var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
-                                                var NUM = Utils.getString(layerInfo.metadata, "NUM")
-                                                var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
-                                                var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
-                                                var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
-                                                var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
-                                                var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
-                                                var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
-                                                var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
-                                                var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
-                                                var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
-                                                var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
-                                                var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
-                                                var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
-                                                var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                                var landuse = Utils.getString(layerInfo.metadata, "landuse")
-
-                                                if (landuse != null && landuse != "") {
-                                                    LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
-                                                }
-
-                                                POLYGONCOLOR.add(LANDUSE)
-
-                                                if (NUM == "" || NUM == null) {
-                                                    NUM = "0"
-                                                }
-
-                                                val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                        , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString())
-
-                                                dbManager!!.insertstockmap(data)
-
-                                            }
-                                        }
-                                    }
-                                }
-
-                                LAYER_STOCKMAP -> {
-                                    var chkdata = false
-                                    val dataList: Array<String> = arrayOf("*");
-
-                                    val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                                    if (stockdataArray != null) {
-                                        stockdataArray.clear()
-                                    }
-
-                                    while (data.moveToNext()) {
-                                        chkdata = true
-                                    }
-
-                                    if (chkdata == false) {
-                                        val layerinfo = polygon.tag as LayerInfo
-
-                                        for (i in 0..polygons.size - 1) {
-                                            if (polygons.get(i).tag == polygon.tag) {
-                                                println("layerinfo.stock-----metadata ${layerinfo.metadata}")
-
-                                                var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                                var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
-                                                var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
-                                                var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
-                                                var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
-                                                var NUM = Utils.getString(layerInfo.metadata, "NUM")
-                                                var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
-                                                var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
-                                                var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
-                                                var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
-                                                var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
-                                                var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
-                                                var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
-                                                var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
-                                                var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
-                                                var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
-                                                var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
-                                                var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
-                                                var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                                var landuse = Utils.getString(layerInfo.metadata, "landuse")
-
-                                                if (landuse != null && landuse != "") {
-                                                    LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
-                                                }
-
-                                                POLYGONCOLOR.add(LANDUSE)
-
-                                                if (NUM == "" || NUM == null) {
-                                                    NUM = "0"
-                                                }
-
-                                                val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                        , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString())
-
-                                                dbManager!!.insertstockmap(data)
-
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        return@setOnPolygonClickListener
-
-                    } else {
-                        Toast.makeText(context, "17레벨 이상까지 확대해주세요.", Toast.LENGTH_SHORT).show()
-                        return@setOnPolygonClickListener
-                    }
-
-                }
-
-
-                val builder = AlertDialog.Builder(context)
-                if (polygonRemove == true) {
-                    builder.setMessage("삭제하시겠습니까?").setCancelable(false)
-                            .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
-
-                                dialog.cancel()
-                                polygon.remove()
-
-                            })
-                            .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
-                    val alert = builder.create()
-                    alert.show()
-                }
-
-                if (polygonRemove == false) {
-
-                    println("click -------------------------${polygon.id}")
-
+            // 도형 분리 중이면.....
+            if (splitRL.isSelected) {
+                if (zoom.toInt() >= 17) {
                     val layerInfo = polygon.tag as LayerInfo
-
-                    println("polygon.tag ${polygon.tag}")
-
-                    var chk = false
-
-                    for (i in 0 until polygons.size) {
-                        if (polygons.get(i).tag == polygon.tag) {
-                            chk = true
-                        }
-                    }
-
-                    if (chk == false) {
-                        polygons.add(polygon)
-                    }
-
                     var myLayer = layerInfo.layer
-
                     var attrubuteKey = layerInfo.attrubuteKey
 
-                    var intent: Intent? = null
+                    splittingPolygon = polygon
+                    splittingPolygon!!.strokeWidth = 10.0f
+                    splittingPolygon!!.strokeColor = Color.RED
 
-                    when (myLayer) {
+                    drawer_view.visibility = View.VISIBLE
 
-                        LAYER_BIOTOPE -> {
+                    Utils.alert(context, "분리선을 추가해 주세요.");
 
-                            if (unionRL.isSelected) {
-                                if (zoom.toInt() >= 17) {
-                                    if (polygonsToUnion.contains(polygon)) {
-                                        polygonsToUnion.remove(polygon)
-                                        polygon.strokeWidth = 0.0f
-                                        polygon.strokeColor = Color.TRANSPARENT
-                                        return@setOnPolygonClickListener
-                                    }
+                    val type = typeST.isChecked
+                    var chkData = false
 
-                                    if (polygonsToUnion.size == 2) {
-                                        Utils.alert(context, "2 곳만 선택해서 합칠 수 있습니다.")
-                                        return@setOnPolygonClickListener
-                                    }
+                    if (!typeST.isChecked) {
+                        when (myLayer) {
 
-                                    polygonsToUnion.add(polygon)
-                                    polygon.strokeWidth = 10.0f
-                                    polygon.strokeColor = Color.RED
+                            LAYER_BIOTOPE -> {
+                                val dataList: Array<String> = arrayOf("*");
 
-                                    if (polygonsToUnion.size == 1) {
+                                val data = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
 
-                                        var chkData = false
-
-                                        val layerInfo = polygon.tag as LayerInfo
-                                        var myLayer = layerInfo.layer
-                                        var attrubuteKey = layerInfo.attrubuteKey
-
-                                        if (!typeST.isChecked) {
-                                            when (myLayer) {
-
-                                                LAYER_BIOTOPE -> {
-                                                    val dataList: Array<String> = arrayOf("*");
-
-                                                    val data = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                                                    if (biotopedataArray != null) {
-                                                        biotopedataArray.clear()
-                                                    }
-                                                    while (data.moveToNext()) {
-                                                        var biotope_attribute: Biotope_attribute = Biotope_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                                                data.getString(8), data.getFloat(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getFloat(14)
-                                                                , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                                                                , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getFloat(28)
-                                                                , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
-                                                                , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
-                                                                , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
-                                                                , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54))
-                                                        biotopedataArray.add(biotope_attribute)
-                                                        chkData = true
-                                                    }
-
-                                                    if (chkData == false) {
-                                                        val layerinfo = polygon.tag as LayerInfo
-                                                        for (i in 0..polygons.size - 1) {
-                                                            if (polygons.get(i).tag == polygon.tag) {
-                                                                println("layerinfo.metadata ${layerinfo.metadata}")
-                                                                var GPS_LON = Utils.getString(layerInfo.metadata, "GPS_LON")
-                                                                var BREA_DIA = Utils.getString(layerInfo.metadata, "BREA_DIA")
-                                                                var HER_COVE = Utils.getString(layerInfo.metadata, "HER_COVE")
-                                                                var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
-                                                                var IMP_FORM = Utils.getString(layerInfo.metadata, "IMP_FORM")
-                                                                var LU_GR_NUM = Utils.getString(layerInfo.metadata, "LU_GR_NUM")
-                                                                var UNUS_NOTE = Utils.getString(layerInfo.metadata, "UNUS_NOTE")
-                                                                var TRE_H = Utils.getString(layerInfo.metadata, "TRE_H")
-                                                                var LC_TY = Utils.getString(layerInfo.metadata, "LC_TY")
-                                                                var TY_MARK = Utils.getString(layerInfo.metadata, "TY_MARK")
-                                                                var HER_SCIEN = Utils.getString(layerInfo.metadata, "HER_SCIEN")
-                                                                var PIC_FOLDER = Utils.getString(layerInfo.metadata, "PIC_FOLDER")
-                                                                var LU_k = Utils.getString(layerInfo.metadata, "LU_k")
-                                                                var COMP_INTA = Utils.getString(layerInfo.metadata, "COMP_INTA")
-                                                                var DIS_RET = Utils.getString(layerInfo.metadata, "DIS_RET")
-                                                                var WILD_ANI = Utils.getString(layerInfo.metadata, "WILD_ANI")
-                                                                var CONF_MOD = Utils.getString(layerInfo.metadata, "CONF_MOD")
-                                                                var SHR_SPEC = Utils.getString(layerInfo.metadata, "SHR_SPEC")
-                                                                var STAND_H = Utils.getString(layerInfo.metadata, "STAND_H")
-                                                                var SHR_FAMI = Utils.getString(layerInfo.metadata, "SHR_FAMI")
-                                                                var EMD_CD = Utils.getString(layerInfo.metadata, "EMD_CD")
-                                                                var BIOTOP_POT = Utils.getString(layerInfo.metadata, "BIOTOP_POT")
-                                                                var TRE_FAMI = Utils.getString(layerInfo.metadata, "TRE_FAMI")
-                                                                var LU_TY_RATE = Utils.getString(layerInfo.metadata, "LU_TY_RATE")
-                                                                var HER_SPEC = Utils.getString(layerInfo.metadata, "HER_SPEC")
-                                                                var STRE_BREA = Utils.getString(layerInfo.metadata, "STRE_BREA")
-                                                                var STR_COVE = Utils.getString(layerInfo.metadata, "STR_COVE")
-                                                                var STRE_H = Utils.getString(layerInfo.metadata, "STRE_H")
-                                                                var RESTOR_POT = Utils.getString(layerInfo.metadata, "RESTOR_POT")
-                                                                var STRE_SCIEN = Utils.getString(layerInfo.metadata, "STRE_SCIEN")
-                                                                var TRE_SPEC = Utils.getString(layerInfo.metadata, "TRE_SPEC")
-                                                                var SHR_H = Utils.getString(layerInfo.metadata, "SHR_H")
-                                                                var UFID = Utils.getString(layerInfo.metadata, "UFID")
-                                                                var GV_RATE = Utils.getString(layerInfo.metadata, "GV_RATE")
-                                                                var STRE_COVE = Utils.getString(layerInfo.metadata, "STRE_COVE")
-                                                                var NEED_CONF = Utils.getString(layerInfo.metadata, "NEED_CONF")
-                                                                var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                                                var SHR_SCIEN = Utils.getString(layerInfo.metadata, "SHR_SCIEN")
-                                                                var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
-                                                                var STRE_SPEC = Utils.getString(layerInfo.metadata, "STRE_SPEC")
-                                                                var LC_GR_NUM = Utils.getString(layerInfo.metadata, "LC_GR_NUM")
-                                                                var TRE_COVE = Utils.getString(layerInfo.metadata, "TRE_COVE")
-                                                                var HER_H = Utils.getString(layerInfo.metadata, "HER_H")
-                                                                var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
-                                                                var TRE_SCIEN = Utils.getString(layerInfo.metadata, "TRE_SCIEN")
-                                                                var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
-                                                                var GV_STRUCT = Utils.getString(layerInfo.metadata, "GV_STRUCT")
-                                                                var GPS_LAT = Utils.getString(layerInfo.metadata, "GPS_LAT")
-                                                                var TRE_BREA = Utils.getString(layerInfo.metadata, "TRE_BREA")
-                                                                var FIN_EST = Utils.getString(layerInfo.metadata, "FIN_EST")
-                                                                var VP_INTA = Utils.getString(layerInfo.metadata, "VP_INTA")
-                                                                var HER_FAMI = Utils.getString(layerInfo.metadata, "HER_FAMI")
-                                                                var INV_INDEX = Utils.getString(layerInfo.metadata, "INV_INDEX")
-                                                                var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
-                                                                var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
-                                                                var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                                                var landuse = Utils.getString(layerInfo.metadata, "landuse")
-                                                                var landcover = Utils.getString(layerInfo.metadata, "landcover")
-
-                                                                var biotope = Utils.getString(layerInfo.metadata, "biotop")
-                                                                if (INV_INDEX == "" || INV_INDEX == null) {
-                                                                    INV_INDEX = "0"
-                                                                }
-
-                                                                if (LU_TY_RATE == "" || LU_TY_RATE == null) {
-                                                                    LU_TY_RATE = "0"
-                                                                }
-
-                                                                if (STAND_H == "" || STAND_H == null) {
-                                                                    STAND_H = "0"
-                                                                }
-
-                                                                if (GV_RATE == "" || GV_RATE == null) {
-                                                                    GV_RATE = "0"
-                                                                }
-
-                                                                if (TRE_H == "" || TRE_H == null) {
-                                                                    TRE_H = "0"
-                                                                }
-
-                                                                if (TRE_BREA == "" || TRE_BREA == null) {
-                                                                    TRE_BREA = "0"
-                                                                }
-
-                                                                if (TRE_COVE == "" || TRE_COVE == null) {
-                                                                    TRE_COVE = "0"
-                                                                }
-
-                                                                if (STRE_H == "" || STRE_H == null) {
-                                                                    STRE_H = "0"
-                                                                }
-
-                                                                if (STRE_BREA == "" || STRE_BREA == null) {
-                                                                    STRE_BREA = "0"
-                                                                }
-
-                                                                if (STRE_COVE == "" || STRE_COVE == null) {
-                                                                    STRE_COVE = "0"
-                                                                }
-
-                                                                if (SHR_H == "" || SHR_H == null) {
-                                                                    SHR_H = "0"
-                                                                }
-
-                                                                if (STR_COVE == "" || STR_COVE == null) {
-                                                                    STR_COVE = "0"
-                                                                }
-
-                                                                if (HER_H == "" || HER_H == null) {
-                                                                    HER_H = "0"
-                                                                }
-
-                                                                if (HER_COVE == "" || HER_COVE == null) {
-                                                                    HER_COVE = "0"
-                                                                }
-
-                                                                if (GPS_LAT == "" || GPS_LAT == null) {
-                                                                    GPS_LAT = "0"
-                                                                }
-
-                                                                if (GPS_LON == "" || GPS_LON == null) {
-                                                                    GPS_LON = "0"
-                                                                }
-
-                                                                if (landuse != null && landuse != "") {
-                                                                    LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
-                                                                }
-
-                                                                POLYGONCOLOR.add(LANDUSE)
-                                                                getColor = LANDUSE
-
-                                                                val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, LC_TY, TY_MARK, GV_RATE.toFloat()
-                                                                        , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
-                                                                        STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
-                                                                        BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE)
-
-                                                                if (LANDUSE != null && LANDUSE != "") {
-                                                                    data.LANDUSE = LANDUSE
-                                                                    data.LU_GR_NUM = LANDUSE
-                                                                    data.LC_GR_NUM = landcover
-                                                                }
-
-                                                                dbManager!!.insertbiotope_attribute(data)
-                                                            }
-                                                        }
-
-                                                    } else {
-                                                        getColor = biotopedataArray!!.get(0).LANDUSE!!
-                                                    }
-                                                }
-
-                                                LAYER_STOCKMAP -> {
-                                                    var chkdata = false
-                                                    val dataList: Array<String> = arrayOf("*");
-
-                                                    val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                                                    if (stockdataArray != null) {
-                                                        stockdataArray.clear()
-                                                    }
-
-                                                    while (data.moveToNext()) {
-                                                        var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                                                data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
-                                                                , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                                                , data.getString(22), data.getString(23))
-                                                        stockdataArray.add(stockMap)
-                                                        chkdata = true
-                                                    }
-
-                                                    if (chkdata == false) {
-                                                        val layerinfo = polygon.tag as LayerInfo
-
-                                                        for (i in 0..polygons.size - 1) {
-                                                            if (polygons.get(i).tag == polygon.tag) {
-                                                                println("layerinfo.metadata ${layerinfo.metadata}")
-
-                                                                var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                                                var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
-                                                                var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
-                                                                var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
-                                                                var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
-                                                                var NUM = Utils.getString(layerInfo.metadata, "NUM")
-                                                                var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
-                                                                var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
-                                                                var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
-                                                                var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
-                                                                var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
-                                                                var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
-                                                                var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
-                                                                var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
-                                                                var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
-                                                                var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
-                                                                var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
-                                                                var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
-                                                                var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                                                var landuse = Utils.getString(layerInfo.metadata, "landuse")
-
-                                                                if (landuse != null && landuse != "") {
-                                                                    LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
-                                                                }
-
-                                                                POLYGONCOLOR.add(LANDUSE)
-                                                                getColor = LANDUSE
-
-                                                                if (NUM == "" || NUM == null) {
-                                                                    NUM = "0"
-                                                                }
-
-                                                                val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                                        , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE)
-
-                                                                dbManager!!.insertstockmap(data)
-
-                                                            }
-                                                        }
-                                                    } else {
-                                                        getColor = stockdataArray!!.get(0).LANDUSE!!
-                                                    }
-                                                }
-                                            }
-
-                                        } else {
-                                            when (myLayer) {
-
-                                                LAYER_BIOTOPE -> {
-                                                    val dataList: Array<String> = arrayOf("*");
-
-
-                                                    var chkdata = false
-
-                                                    val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                                                    if (stockdataArray != null) {
-                                                        stockdataArray.clear()
-                                                    }
-
-                                                    while (data.moveToNext()) {
-                                                        var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                                                data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
-                                                                , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                                                , data.getString(22), data.getString(23))
-                                                        stockdataArray.add(stockMap)
-                                                        chkdata = true
-                                                    }
-
-                                                    if (chkdata == false) {
-                                                        val layerinfo = polygon.tag as LayerInfo
-
-                                                        for (i in 0..polygons.size - 1) {
-                                                            if (polygons.get(i).tag == polygon.tag) {
-                                                                println("layerinfo.metadata.stockmap----------${layerinfo.metadata}")
-
-                                                                var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                                                var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
-                                                                var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
-                                                                var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
-                                                                var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
-                                                                var NUM = Utils.getString(layerInfo.metadata, "NUM")
-                                                                var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
-                                                                var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
-                                                                var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
-                                                                var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
-                                                                var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
-                                                                var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
-                                                                var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
-                                                                var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
-                                                                var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
-                                                                var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
-                                                                var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
-                                                                var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
-                                                                var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                                                var landuse = Utils.getString(layerInfo.metadata, "landuse")
-
-                                                                if (landuse != null && landuse != "") {
-                                                                    LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
-                                                                    getColor = LANDUSE
-                                                                }
-
-                                                                POLYGONCOLOR.add(LANDUSE)
-
-                                                                if (NUM == "" || NUM == null) {
-                                                                    NUM = "0"
-                                                                }
-
-                                                                val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                                        , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE)
-
-                                                                dbManager!!.insertstockmap(data)
-
-                                                            }
-                                                        }
-                                                    } else {
-                                                        getColor = stockdataArray!!.get(0).LANDUSE!!
-                                                    }
-                                                }
-
-                                                LAYER_STOCKMAP -> {
-                                                    var chkdata = false
-                                                    val dataList: Array<String> = arrayOf("*");
-
-                                                    val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                                                    if (stockdataArray != null) {
-                                                        stockdataArray.clear()
-                                                    }
-
-                                                    while (data.moveToNext()) {
-                                                        var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                                                data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
-                                                                , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                                                , data.getString(22), data.getString(23))
-                                                        stockdataArray.add(stockMap)
-                                                        chkdata = true
-                                                    }
-
-                                                    if (chkdata == false) {
-                                                        val layerinfo = polygon.tag as LayerInfo
-
-                                                        for (i in 0..polygons.size - 1) {
-                                                            if (polygons.get(i).tag == polygon.tag) {
-
-                                                                var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                                                var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
-                                                                var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
-                                                                var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
-                                                                var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
-                                                                var NUM = Utils.getString(layerInfo.metadata, "NUM")
-                                                                var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
-                                                                var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
-                                                                var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
-                                                                var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
-                                                                var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
-                                                                var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
-                                                                var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
-                                                                var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
-                                                                var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
-                                                                var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
-                                                                var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
-                                                                var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
-                                                                var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                                                var landuse = Utils.getString(layerInfo.metadata, "landuse")
-
-                                                                if (landuse != null && landuse != "") {
-                                                                    LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
-                                                                    getColor = LANDUSE
-                                                                }
-
-                                                                POLYGONCOLOR.add(LANDUSE)
-
-                                                                if (NUM == "" || NUM == null) {
-                                                                    NUM = "0"
-                                                                }
-
-                                                                val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                                        , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE)
-
-                                                                dbManager!!.insertstockmap(data)
-
-                                                            }
-                                                        }
-                                                    } else {
-                                                        getColor = stockdataArray!!.get(0).LANDUSE!!
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    return@setOnPolygonClickListener
-
-                                } else {
-                                    Toast.makeText(context, "17레벨 이상까지 확대해주세요.", Toast.LENGTH_SHORT).show()
-                                    return@setOnPolygonClickListener
+                                if (biotopedataArray != null) {
+                                    biotopedataArray.clear()
                                 }
-                            } else {
-                                val type = typeST.isChecked
-
-                                println("type : $type")
-
-                                if (type == false) {
-                                    val dataList: Array<String> = arrayOf("*");
-
-                                    val data = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                                    if (biotopedataArray != null) {
-                                        biotopedataArray.clear()
-                                    }
-
-                                    var title = ""
-
-                                    while (data.moveToNext()) {
-                                        var biotope_attribute: Biotope_attribute = Biotope_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                                data.getString(8), data.getFloat(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getFloat(14)
-                                                , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                                                , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getFloat(28)
-                                                , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
-                                                , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
-                                                , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
-                                                , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54))
-                                        biotopedataArray.add(biotope_attribute)
-                                    }
-
-                                    if (biotopedataArray.size == 0) {
-
-                                        val layerinfo = polygon.tag as LayerInfo
-
-                                        for (i in 0..polygons.size - 1) {
-                                            if (polygons.get(i).tag == polygon.tag) {
-                                                println("layerinfo.metadata ${layerinfo.metadata}")
-
-                                                intent = Intent(this, BiotopeActivity::class.java)
-
-                                                var GPS_LON = Utils.getString(layerInfo.metadata, "GPS_LON")
-                                                println("layerinfo.metadata.GPS_LON ${GPS_LON}")
-                                                var BREA_DIA = Utils.getString(layerInfo.metadata, "BREA_DIA")
-                                                var HER_COVE = Utils.getString(layerInfo.metadata, "HER_COVE")
-                                                var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
-                                                var IMP_FORM = Utils.getString(layerInfo.metadata, "IMP_FORM")
-                                                var LU_GR_NUM = Utils.getString(layerInfo.metadata, "LU_GR_NUM")
-                                                var UNUS_NOTE = Utils.getString(layerInfo.metadata, "UNUS_NOTE")
-                                                var TRE_H = Utils.getString(layerInfo.metadata, "TRE_H")
-                                                var LC_TY = Utils.getString(layerInfo.metadata, "LC_TY")
-                                                var TY_MARK = Utils.getString(layerInfo.metadata, "TY_MARK")
-                                                var HER_SCIEN = Utils.getString(layerInfo.metadata, "HER_SCIEN")
-                                                var PIC_FOLDER = Utils.getString(layerInfo.metadata, "PIC_FOLDER")
-                                                var LU_k = Utils.getString(layerInfo.metadata, "LU_k")
-                                                var COMP_INTA = Utils.getString(layerInfo.metadata, "COMP_INTA")
-                                                var DIS_RET = Utils.getString(layerInfo.metadata, "DIS_RET")
-                                                var WILD_ANI = Utils.getString(layerInfo.metadata, "WILD_ANI")
-                                                var CONF_MOD = Utils.getString(layerInfo.metadata, "CONF_MOD")
-                                                var SHR_SPEC = Utils.getString(layerInfo.metadata, "SHR_SPEC")
-                                                var STAND_H = Utils.getString(layerInfo.metadata, "STAND_H")
-                                                var SHR_FAMI = Utils.getString(layerInfo.metadata, "SHR_FAMI")
-                                                var EMD_CD = Utils.getString(layerInfo.metadata, "EMD_CD")
-                                                var BIOTOP_POT = Utils.getString(layerInfo.metadata, "BIOTOP_POT")
-                                                var TRE_FAMI = Utils.getString(layerInfo.metadata, "TRE_FAMI")
-                                                var LU_TY_RATE = Utils.getString(layerInfo.metadata, "LU_TY_RATE")
-                                                var HER_SPEC = Utils.getString(layerInfo.metadata, "HER_SPEC")
-                                                var STRE_BREA = Utils.getString(layerInfo.metadata, "STRE_BREA")
-                                                var STR_COVE = Utils.getString(layerInfo.metadata, "STR_COVE")
-                                                var STRE_H = Utils.getString(layerInfo.metadata, "STRE_H")
-                                                var RESTOR_POT = Utils.getString(layerInfo.metadata, "RESTOR_POT")
-                                                var STRE_SCIEN = Utils.getString(layerInfo.metadata, "STRE_SCIEN")
-                                                var TRE_SPEC = Utils.getString(layerInfo.metadata, "TRE_SPEC")
-                                                var SHR_H = Utils.getString(layerInfo.metadata, "SHR_H")
-                                                var UFID = Utils.getString(layerInfo.metadata, "UFID")
-                                                var GV_RATE = Utils.getString(layerInfo.metadata, "GV_RATE")
-                                                var STRE_COVE = Utils.getString(layerInfo.metadata, "STRE_COVE")
-                                                var NEED_CONF = Utils.getString(layerInfo.metadata, "NEED_CONF")
-                                                var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                                var SHR_SCIEN = Utils.getString(layerInfo.metadata, "SHR_SCIEN")
-                                                var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
-                                                var STRE_SPEC = Utils.getString(layerInfo.metadata, "STRE_SPEC")
-                                                var LC_GR_NUM = Utils.getString(layerInfo.metadata, "LC_GR_NUM")
-                                                var TRE_COVE = Utils.getString(layerInfo.metadata, "TRE_COVE")
-                                                var HER_H = Utils.getString(layerInfo.metadata, "HER_H")
-                                                var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
-                                                var TRE_SCIEN = Utils.getString(layerInfo.metadata, "TRE_SCIEN")
-                                                var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
-                                                var GV_STRUCT = Utils.getString(layerInfo.metadata, "GV_STRUCT")
-                                                var GPS_LAT = Utils.getString(layerInfo.metadata, "GPS_LAT")
-                                                var TRE_BREA = Utils.getString(layerInfo.metadata, "TRE_BREA")
-                                                var FIN_EST = Utils.getString(layerInfo.metadata, "FIN_EST")
-                                                var VP_INTA = Utils.getString(layerInfo.metadata, "VP_INTA")
-                                                var HER_FAMI = Utils.getString(layerInfo.metadata, "HER_FAMI")
-                                                var INV_INDEX = Utils.getString(layerInfo.metadata, "INV_INDEX")
-                                                var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
-                                                var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
-                                                var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                                var landuse = Utils.getString(layerInfo.metadata, "landuse")
-                                                var landcover = Utils.getString(layerInfo.metadata, "landcover")
-
-                                                var biotope = Utils.getString(layerInfo.metadata, "biotop")
-                                                if (INV_INDEX == "" || INV_INDEX == null) {
-                                                    INV_INDEX = "0"
-                                                }
-
-                                                if (LU_TY_RATE == "" || LU_TY_RATE == null) {
-                                                    LU_TY_RATE = "0"
-                                                }
-
-                                                if (STAND_H == "" || STAND_H == null) {
-                                                    STAND_H = "0"
-                                                }
-
-                                                if (GV_RATE == "" || GV_RATE == null) {
-                                                    GV_RATE = "0"
-                                                }
-
-                                                if (TRE_H == "" || TRE_H == null) {
-                                                    TRE_H = "0"
-                                                }
-
-                                                if (TRE_BREA == "" || TRE_BREA == null) {
-                                                    TRE_BREA = "0"
-                                                }
-
-                                                if (TRE_COVE == "" || TRE_COVE == null) {
-                                                    TRE_COVE = "0"
-                                                }
-
-                                                if (STRE_H == "" || STRE_H == null) {
-                                                    STRE_H = "0"
-                                                }
-
-                                                if (STRE_BREA == "" || STRE_BREA == null) {
-                                                    STRE_BREA = "0"
-                                                }
-
-                                                if (STRE_COVE == "" || STRE_COVE == null) {
-                                                    STRE_COVE = "0"
-                                                }
-
-                                                if (SHR_H == "" || SHR_H == null) {
-                                                    SHR_H = "0"
-                                                }
-
-                                                if (STR_COVE == "" || STR_COVE == null) {
-                                                    STR_COVE = "0"
-                                                }
-
-                                                if (HER_H == "" || HER_H == null) {
-                                                    HER_H = "0"
-                                                }
-
-                                                if (HER_COVE == "" || HER_COVE == null) {
-                                                    HER_COVE = "0"
-                                                }
-
-                                                if (GPS_LAT == "" || GPS_LAT == null) {
-                                                    GPS_LAT = "0"
-                                                }
-
-                                                if (GPS_LON == "" || GPS_LON == null) {
-                                                    GPS_LON = "0"
-                                                }
-
-                                                if (landuse != null && landuse != "") {
-                                                    LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
-                                                }
-
-                                                val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, LC_TY, TY_MARK, GV_RATE.toFloat()
-                                                        , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
-                                                        STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
-                                                        BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE)
-
-                                                if (LANDUSE != null && LANDUSE != "") {
-                                                    data.LANDUSE = LANDUSE
-                                                    data.LU_GR_NUM = LANDUSE
-                                                    data.LC_GR_NUM = landcover
-                                                }
-
-                                                intent!!.putExtra("biotopedata", data)
-                                                intent!!.putExtra("GROP_ID", attrubuteKey.toString())
-                                                intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
-                                                intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
-                                                intent!!.putExtra("EMD_NM", EMD_NM)
-                                                intent!!.putExtra("polygonid", polygon.id)
-                                                intent!!.putExtra("landuse", polygon.fillColor)
-
-                                                println("biotope -------$biotope")
-
-                                                if (biotope != null && biotope != "") {
-                                                    intent!!.putExtra("biotope", biotope)
-                                                }
-
-                                                endDraw()
-
-                                                startActivityForResult(intent, BIOTOPE_DATA)
-
-                                            }
-                                        }
-
-                                    }
-
-                                    if (biotopedataArray.size == 1) {
-                                        val intent = Intent(this, BiotopeActivity::class.java)
-                                        intent.putExtra("title", "비오톱")
-                                        intent.putExtra("table", "biotopeAttribute")
-                                        intent.putExtra("id", biotopedataArray.get(0).id)
-                                        intent.putExtra("DlgHeight", 600f);
-                                        intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
-                                        intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
-                                        intent.putExtra("GROP_ID", attrubuteKey)
-                                        intent.putExtra("polygonid", polygon.id)
-                                        intent!!.putExtra("landuse", polygon.fillColor)
-                                        println("polygonclicklanduse.size1 -------- ${polygon.fillColor}")
-                                        startActivityForResult(intent, BIOTOPE_DATA);
-
-                                        if (latlngs != null) {
-                                            latlngs.clear()
-                                        }
-
-                                        if (latlngsGPS != null) {
-                                            latlngsGPS.clear()
-                                        }
-
-                                    }
-
-                                    if (biotopedataArray.size > 1) {
-                                        val intent = Intent(this, DlgDataListActivity::class.java)
-                                        intent.putExtra("title", "비오톱")
-                                        intent.putExtra("table", "biotopeAttribute")
-                                        intent.putExtra("DlgHeight", 600f);
-                                        intent.putExtra("GROP_ID", attrubuteKey)
-                                        intent.putExtra("polygonid", polygon.id)
-                                        intent!!.putExtra("landuse", polygon.fillColor)
-                                        intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
-                                        intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
-                                        startActivityForResult(intent, BIOTOPE_DATA);
-
-                                        if (latlngs != null) {
-                                            latlngs.clear()
-                                        }
-
-                                        if (latlngsGPS != null) {
-                                            latlngsGPS.clear()
-                                        }
-                                    }
-
-                                    if (polygons.size == 0) {
-                                        polygons.add(polygon)
-                                    }
-
-                                    /*
-                                    if (allPolygons.size == 0) {
-                                        allPolygons.add(polygon)
-                                    }
-                                    */
-                                }
-                                if (type == true) {
-                                    val dataList: Array<String> = arrayOf("*");
-
-                                    val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                                    if (stockdataArray != null) {
-                                        stockdataArray.clear()
-                                    }
-
-                                    var title = ""
-
-                                    while (data.moveToNext()) {
-                                        var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                                data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
-                                                , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                                , data.getString(22), data.getString(23))
-                                        stockdataArray.add(stockMap)
-                                    }
-
-                                    if (stockdataArray.size == 0) {
-
-                                        val layerinfo = polygon.tag as LayerInfo
-
-                                        for (i in 0..polygons.size - 1) {
-                                            if (polygons.get(i).tag == polygon.tag) {
-                                                println("layerinfo.metadata ${layerinfo.metadata}")
-
-                                                intent = Intent(this, StockActivity::class.java)
-
-                                                var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                                var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
-                                                var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
-                                                var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
-                                                var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
-                                                var NUM = Utils.getString(layerInfo.metadata, "NUM")
-                                                var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
-                                                var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
-                                                var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
-                                                var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
-                                                var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
-                                                var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
-                                                var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
-                                                var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
-                                                var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
-                                                var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
-                                                var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
-                                                var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
-                                                var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                                var landuse = Utils.getString(layerInfo.metadata, "landuse")
-
-                                                if (NUM == "" || NUM == null) {
-                                                    NUM = "0"
-                                                }
-
-                                                if (landuse != null && landuse != "") {
-                                                    LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
-                                                }
-
-                                                val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                        , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE)
-
-                                                intent!!.putExtra("stokedata", data)
-                                                intent!!.putExtra("GROP_ID", attrubuteKey.toString())
-                                                intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
-                                                intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
-                                                intent!!.putExtra("landuse", polygon.fillColor)
-                                                intent!!.putExtra("polygonid", polygon.id)
-
-                                                endDraw()
-
-                                                startActivityForResult(intent, STOCKMAP_DATA)
-
-                                            }
-                                        }
-
-                                    }
-
-                                    if (stockdataArray.size == 1) {
-                                        val intent = Intent(this, StockActivity::class.java)
-                                        intent.putExtra("title", "임상도")
-                                        intent.putExtra("table", "StockMap")
-                                        intent.putExtra("id", stockdataArray.get(0).id)
-                                        intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
-                                        intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
-                                        intent.putExtra("DlgHeight", 600f);
-                                        intent!!.putExtra("landuse", polygon.fillColor)
-                                        intent.putExtra("GROP_ID", attrubuteKey)
-                                        intent.putExtra("polygonid", polygon.id)
-                                        startActivityForResult(intent, STOCKMAP_DATA);
-
-                                        if (latlngs != null) {
-                                            latlngs.clear()
-                                        }
-
-                                        if (latlngsGPS != null) {
-                                            latlngsGPS.clear()
-                                        }
-
-                                    }
-
-                                    if (stockdataArray.size > 1) {
-                                        val intent = Intent(this, DlgDataListActivity::class.java)
-                                        intent.putExtra("title", "임상도")
-                                        intent.putExtra("table", "StockMap")
-                                        intent.putExtra("DlgHeight", 600f);
-                                        intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
-                                        intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
-                                        intent.putExtra("GROP_ID", attrubuteKey)
-                                        intent!!.putExtra("landuse", polygon.fillColor)
-                                        intent.putExtra("polygonid", polygon.id)
-                                        startActivityForResult(intent, STOCKMAP_DATA);
-
-                                        if (latlngs != null) {
-                                            latlngs.clear()
-                                        }
-
-                                        if (latlngsGPS != null) {
-                                            latlngsGPS.clear()
-                                        }
-                                    }
-
-                                    if (polygons.size == 0) {
-                                        polygons.add(polygon)
-                                    }
-
-                                    /*
-                                    if (allPolygons.size == 0) {
-                                        allPolygons.add(polygon)
-                                    }
-                                    */
-                                    data.close()
+                                while (data.moveToNext()) {
+                                    chkData = true
                                 }
 
+                                if (chkData == false) {
+                                    val layerinfo = polygon.tag as LayerInfo
+                                    for (i in 0..polygons.size - 1) {
+                                        if (polygons.get(i).tag == polygon.tag) {
+                                            println("layerinfo.metadata ${layerinfo.metadata}")
+                                            var GPS_LON = Utils.getString(layerInfo.metadata, "GPS_LON")
+                                            var BREA_DIA = Utils.getString(layerInfo.metadata, "BREA_DIA")
+                                            var HER_COVE = Utils.getString(layerInfo.metadata, "HER_COVE")
+                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                            var IMP_FORM = Utils.getString(layerInfo.metadata, "IMP_FORM")
+                                            var LU_GR_NUM = Utils.getString(layerInfo.metadata, "LU_GR_NUM")
+                                            var UNUS_NOTE = Utils.getString(layerInfo.metadata, "UNUS_NOTE")
+                                            var TRE_H = Utils.getString(layerInfo.metadata, "TRE_H")
+                                            var LC_TY = Utils.getString(layerInfo.metadata, "LC_TY")
+                                            var TY_MARK = Utils.getString(layerInfo.metadata, "TY_MARK")
+                                            var HER_SCIEN = Utils.getString(layerInfo.metadata, "HER_SCIEN")
+                                            var PIC_FOLDER = Utils.getString(layerInfo.metadata, "PIC_FOLDER")
+                                            var LU_k = Utils.getString(layerInfo.metadata, "LU_k")
+                                            var COMP_INTA = Utils.getString(layerInfo.metadata, "COMP_INTA")
+                                            var DIS_RET = Utils.getString(layerInfo.metadata, "DIS_RET")
+                                            var WILD_ANI = Utils.getString(layerInfo.metadata, "WILD_ANI")
+                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CONF_MOD")
+                                            var SHR_SPEC = Utils.getString(layerInfo.metadata, "SHR_SPEC")
+                                            var STAND_H = Utils.getString(layerInfo.metadata, "STAND_H")
+                                            var SHR_FAMI = Utils.getString(layerInfo.metadata, "SHR_FAMI")
+                                            var EMD_CD = Utils.getString(layerInfo.metadata, "EMD_CD")
+                                            var BIOTOP_POT = Utils.getString(layerInfo.metadata, "BIOTOP_POT")
+                                            var TRE_FAMI = Utils.getString(layerInfo.metadata, "TRE_FAMI")
+                                            var LU_TY_RATE = Utils.getString(layerInfo.metadata, "LU_TY_RATE")
+                                            var HER_SPEC = Utils.getString(layerInfo.metadata, "HER_SPEC")
+                                            var STRE_BREA = Utils.getString(layerInfo.metadata, "STRE_BREA")
+                                            var STR_COVE = Utils.getString(layerInfo.metadata, "STR_COVE")
+                                            var STRE_H = Utils.getString(layerInfo.metadata, "STRE_H")
+                                            var RESTOR_POT = Utils.getString(layerInfo.metadata, "RESTOR_POT")
+                                            var STRE_SCIEN = Utils.getString(layerInfo.metadata, "STRE_SCIEN")
+                                            var TRE_SPEC = Utils.getString(layerInfo.metadata, "TRE_SPEC")
+                                            var SHR_H = Utils.getString(layerInfo.metadata, "SHR_H")
+                                            var UFID = Utils.getString(layerInfo.metadata, "UFID")
+                                            var GV_RATE = Utils.getString(layerInfo.metadata, "GV_RATE")
+                                            var STRE_COVE = Utils.getString(layerInfo.metadata, "STRE_COVE")
+                                            var NEED_CONF = Utils.getString(layerInfo.metadata, "NEED_CONF")
+                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                            var SHR_SCIEN = Utils.getString(layerInfo.metadata, "SHR_SCIEN")
+                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                            var STRE_SPEC = Utils.getString(layerInfo.metadata, "STRE_SPEC")
+                                            var LC_GR_NUM = Utils.getString(layerInfo.metadata, "LC_GR_NUM")
+                                            var TRE_COVE = Utils.getString(layerInfo.metadata, "TRE_COVE")
+                                            var HER_H = Utils.getString(layerInfo.metadata, "HER_H")
+                                            var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
+                                            var TRE_SCIEN = Utils.getString(layerInfo.metadata, "TRE_SCIEN")
+                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                            var GV_STRUCT = Utils.getString(layerInfo.metadata, "GV_STRUCT")
+                                            var GPS_LAT = Utils.getString(layerInfo.metadata, "GPS_LAT")
+                                            var TRE_BREA = Utils.getString(layerInfo.metadata, "TRE_BREA")
+                                            var FIN_EST = Utils.getString(layerInfo.metadata, "FIN_EST")
+                                            var VP_INTA = Utils.getString(layerInfo.metadata, "VP_INTA")
+                                            var HER_FAMI = Utils.getString(layerInfo.metadata, "HER_FAMI")
+                                            var INV_INDEX = Utils.getString(layerInfo.metadata, "INV_INDEX")
+                                            var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
+                                            var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                            var landcover = Utils.getString(layerInfo.metadata, "landcover")
+
+
+                                            var biotope = Utils.getString(layerInfo.metadata, "biotop")
+                                            if (INV_INDEX == "" || INV_INDEX == null) {
+                                                INV_INDEX = "0"
+                                            }
+
+                                            if (LU_TY_RATE == "" || LU_TY_RATE == null) {
+                                                LU_TY_RATE = "0"
+                                            }
+
+                                            if (STAND_H == "" || STAND_H == null) {
+                                                STAND_H = "0"
+                                            }
+
+                                            if (GV_RATE == "" || GV_RATE == null) {
+                                                GV_RATE = "0"
+                                            }
+
+                                            if (TRE_H == "" || TRE_H == null) {
+                                                TRE_H = "0"
+                                            }
+
+                                            if (TRE_BREA == "" || TRE_BREA == null) {
+                                                TRE_BREA = "0"
+                                            }
+
+                                            if (TRE_COVE == "" || TRE_COVE == null) {
+                                                TRE_COVE = "0"
+                                            }
+
+                                            if (STRE_H == "" || STRE_H == null) {
+                                                STRE_H = "0"
+                                            }
+
+                                            if (STRE_BREA == "" || STRE_BREA == null) {
+                                                STRE_BREA = "0"
+                                            }
+
+                                            if (STRE_COVE == "" || STRE_COVE == null) {
+                                                STRE_COVE = "0"
+                                            }
+
+                                            if (SHR_H == "" || SHR_H == null) {
+                                                SHR_H = "0"
+                                            }
+
+                                            if (STR_COVE == "" || STR_COVE == null) {
+                                                STR_COVE = "0"
+                                            }
+
+                                            if (HER_H == "" || HER_H == null) {
+                                                HER_H = "0"
+                                            }
+
+                                            if (HER_COVE == "" || HER_COVE == null) {
+                                                HER_COVE = "0"
+                                            }
+
+                                            if (GPS_LAT == "" || GPS_LAT == null) {
+                                                GPS_LAT = "0"
+                                            }
+
+                                            if (GPS_LON == "" || GPS_LON == null) {
+                                                GPS_LON = "0"
+                                            }
+
+                                            val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, LC_TY, TY_MARK, GV_RATE.toFloat()
+                                                    , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
+                                                    STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
+                                                    BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", polygon.fillColor.toString(), geom)
+
+                                            if (landuse != null && landuse != "") {
+                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                            }
+
+                                            POLYGONCOLOR.add(LANDUSE)
+
+                                            if (LANDUSE != null && LANDUSE != "") {
+                                                data.LANDUSE = LANDUSE
+                                                data.LU_GR_NUM = LANDUSE
+                                                data.LC_GR_NUM = landcover
+                                            }
+
+                                            dbManager!!.insertbiotope_attribute(data)
+                                        }
+                                    }
+                                }
+                            }
+
+                            LAYER_STOCKMAP -> {
+                                var chkdata = false
+                                val dataList: Array<String> = arrayOf("*");
+
+                                val stockdata = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                                if (stockdataArray != null) {
+                                    stockdataArray.clear()
+                                }
+
+                                while (stockdata.moveToNext()) {
+                                    chkdata = true
+                                }
+
+                                if (chkdata == false) {
+                                    val layerinfo = polygon.tag as LayerInfo
+
+                                    for (i in 0..polygons.size - 1) {
+                                        if (polygons.get(i).tag == polygon.tag) {
+                                            println("layerinfo.metadata ${layerinfo.metadata}")
+
+                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                            var NUM = Utils.getString(layerInfo.metadata, "NUM")
+                                            var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
+                                            var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
+                                            var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
+                                            var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
+                                            var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
+                                            var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
+                                            var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
+                                            var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
+                                            var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
+                                            var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
+                                            var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
+                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
+                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+
+                                            if (landuse != null && landuse != "") {
+                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                            }
+
+                                            POLYGONCOLOR.add(LANDUSE)
+
+                                            if (NUM == "" || NUM == null) {
+                                                NUM = "0"
+                                            }
+
+                                            val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
+                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString(), geom)
+
+                                            dbManager!!.insertstockmap(data)
+
+                                        }
+                                    }
+                                }
                             }
                         }
 
-                        LAYER_BIRDS -> {
-                            intent = Intent(this, BirdsActivity::class.java)
+                    } else {
+                        when (myLayer) {
+
+                            LAYER_BIOTOPE -> {
+                                val dataList: Array<String> = arrayOf("*");
+
+
+                                var chkdata = false
+
+                                val stockdata = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                                if (stockdataArray != null) {
+                                    stockdataArray.clear()
+                                }
+
+                                while (stockdata.moveToNext()) {
+                                    chkdata = true
+                                }
+
+                                if (chkdata == false) {
+                                    val layerinfo = polygon.tag as LayerInfo
+
+                                    for (i in 0..polygons.size - 1) {
+                                        if (polygons.get(i).tag == polygon.tag) {
+                                            println("layerinfo.metadata.stockmap----------${layerinfo.metadata}")
+
+                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                            var NUM = Utils.getString(layerInfo.metadata, "NUM")
+                                            var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
+                                            var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
+                                            var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
+                                            var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
+                                            var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
+                                            var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
+                                            var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
+                                            var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
+                                            var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
+                                            var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
+                                            var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
+                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
+                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+
+                                            if (landuse != null && landuse != "") {
+                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                            }
+
+                                            POLYGONCOLOR.add(LANDUSE)
+
+                                            if (NUM == "" || NUM == null) {
+                                                NUM = "0"
+                                            }
+
+                                            val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
+                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString(), geom)
+
+                                            dbManager!!.insertstockmap(data)
+
+                                        }
+                                    }
+                                }
+                            }
+
+                            LAYER_STOCKMAP -> {
+                                var chkdata = false
+                                val dataList: Array<String> = arrayOf("*");
+
+                                val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                                if (stockdataArray != null) {
+                                    stockdataArray.clear()
+                                }
+
+                                while (data.moveToNext()) {
+                                    chkdata = true
+                                }
+
+                                if (chkdata == false) {
+                                    val layerinfo = polygon.tag as LayerInfo
+
+                                    for (i in 0..polygons.size - 1) {
+                                        if (polygons.get(i).tag == polygon.tag) {
+                                            println("layerinfo.stock-----metadata ${layerinfo.metadata}")
+
+                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                            var NUM = Utils.getString(layerInfo.metadata, "NUM")
+                                            var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
+                                            var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
+                                            var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
+                                            var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
+                                            var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
+                                            var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
+                                            var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
+                                            var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
+                                            var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
+                                            var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
+                                            var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
+                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
+                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+
+                                            if (landuse != null && landuse != "") {
+                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                            }
+
+                                            POLYGONCOLOR.add(LANDUSE)
+
+                                            if (NUM == "" || NUM == null) {
+                                                NUM = "0"
+                                            }
+
+                                            val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
+                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString(), geom)
+
+                                            dbManager!!.insertstockmap(data)
+
+                                        }
+                                    }
+                                }
+                            }
                         }
+                    }
+                    return@setOnPolygonClickListener
 
-                        LAYER_REPTILIA -> {
-                            intent = Intent(this, ReptiliaActivity::class.java)
-                        }
+                } else {
+                    Toast.makeText(context, "17레벨 이상까지 확대해주세요.", Toast.LENGTH_SHORT).show()
+                    return@setOnPolygonClickListener
+                }
 
-                        LAYER_MAMMALIA -> {
-                            intent = Intent(this, MammaliaActivity::class.java)
-                        }
+            }
 
-                        LAYER_FISH -> {
-                            intent = Intent(this, FishActivity::class.java)
-                        }
 
-                        LAYER_INSECT -> {
-                            intent = Intent(this, InsectActivity::class.java)
-                        }
+            val builder = AlertDialog.Builder(context)
+            if (polygonRemove == true) {
+                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                        LAYER_FLORA -> {
-                            intent = Intent(this, FloraActivity::class.java)
-                        }
+                            dialog.cancel()
+                            polygon.remove()
 
-                        LAYER_ZOOBENTHOS -> {
-                            intent = Intent(this, ZoobenthosActivity::class.java)
-                        }
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+            }
 
-                        LAYER_MYLOCATION -> {
+            if (polygonRemove == false) {
 
-                        }
+                println("click -------------------------${polygon.id}")
 
-                        LAYER -> {
+                val layerInfo = polygon.tag as LayerInfo
 
-                        }
+                println("polygon.tag ${polygon.tag}")
 
-                        TRACKING -> {
+                var chk = false
 
-                        }
+                for (i in 0 until polygons.size) {
+                    if (polygons.get(i).tag == polygon.tag) {
+                        chk = true
+                    }
+                }
 
-                        NOTHING -> {
+                if (chk == false) {
+                    polygons.add(polygon)
+                }
 
-                        }
+                var myLayer = layerInfo.layer
 
-                        LAYER_STOCKMAP -> {
-                            if (unionRL.isSelected) {
+                var attrubuteKey = layerInfo.attrubuteKey
 
+                var intent: Intent? = null
+
+                when (myLayer) {
+
+                    LAYER_BIOTOPE -> {
+
+                        if (unionRL.isSelected) {
+                            if (zoom.toInt() >= 17) {
                                 if (polygonsToUnion.contains(polygon)) {
                                     polygonsToUnion.remove(polygon)
                                     polygon.strokeWidth = 0.0f
@@ -3611,392 +2771,1259 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                 }
 
                                 polygonsToUnion.add(polygon)
-                                polygon.strokeWidth = 0.0f
-                                polygon.strokeColor = Color.TRANSPARENT
+                                polygon.strokeWidth = 10.0f
+                                polygon.strokeColor = Color.RED
+
+                                if (polygonsToUnion.size == 1) {
+
+                                    var chkData = false
+
+                                    val layerInfo = polygon.tag as LayerInfo
+                                    var myLayer = layerInfo.layer
+                                    var attrubuteKey = layerInfo.attrubuteKey
+
+                                    if (!typeST.isChecked) {
+                                        when (myLayer) {
+
+                                            LAYER_BIOTOPE -> {
+                                                val dataList: Array<String> = arrayOf("*");
+
+                                                val data = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                                                if (biotopedataArray != null) {
+                                                    biotopedataArray.clear()
+                                                }
+                                                while (data.moveToNext()) {
+                                                    var biotope_attribute: Biotope_attribute = Biotope_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                                                            data.getString(8), data.getFloat(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getFloat(14)
+                                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+                                                            , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getFloat(28)
+                                                            , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
+                                                            , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
+                                                            , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
+                                                            , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55))
+                                                    biotopedataArray.add(biotope_attribute)
+                                                    chkData = true
+                                                }
+
+                                                if (chkData == false) {
+                                                    val layerinfo = polygon.tag as LayerInfo
+                                                    for (i in 0..polygons.size - 1) {
+                                                        if (polygons.get(i).tag == polygon.tag) {
+                                                            println("layerinfo.metadata ${layerinfo.metadata}")
+                                                            var GPS_LON = Utils.getString(layerInfo.metadata, "GPS_LON")
+                                                            var BREA_DIA = Utils.getString(layerInfo.metadata, "BREA_DIA")
+                                                            var HER_COVE = Utils.getString(layerInfo.metadata, "HER_COVE")
+                                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                                            var IMP_FORM = Utils.getString(layerInfo.metadata, "IMP_FORM")
+                                                            var LU_GR_NUM = Utils.getString(layerInfo.metadata, "LU_GR_NUM")
+                                                            var UNUS_NOTE = Utils.getString(layerInfo.metadata, "UNUS_NOTE")
+                                                            var TRE_H = Utils.getString(layerInfo.metadata, "TRE_H")
+                                                            var LC_TY = Utils.getString(layerInfo.metadata, "LC_TY")
+                                                            var TY_MARK = Utils.getString(layerInfo.metadata, "TY_MARK")
+                                                            var HER_SCIEN = Utils.getString(layerInfo.metadata, "HER_SCIEN")
+                                                            var PIC_FOLDER = Utils.getString(layerInfo.metadata, "PIC_FOLDER")
+                                                            var LU_k = Utils.getString(layerInfo.metadata, "LU_k")
+                                                            var COMP_INTA = Utils.getString(layerInfo.metadata, "COMP_INTA")
+                                                            var DIS_RET = Utils.getString(layerInfo.metadata, "DIS_RET")
+                                                            var WILD_ANI = Utils.getString(layerInfo.metadata, "WILD_ANI")
+                                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CONF_MOD")
+                                                            var SHR_SPEC = Utils.getString(layerInfo.metadata, "SHR_SPEC")
+                                                            var STAND_H = Utils.getString(layerInfo.metadata, "STAND_H")
+                                                            var SHR_FAMI = Utils.getString(layerInfo.metadata, "SHR_FAMI")
+                                                            var EMD_CD = Utils.getString(layerInfo.metadata, "EMD_CD")
+                                                            var BIOTOP_POT = Utils.getString(layerInfo.metadata, "BIOTOP_POT")
+                                                            var TRE_FAMI = Utils.getString(layerInfo.metadata, "TRE_FAMI")
+                                                            var LU_TY_RATE = Utils.getString(layerInfo.metadata, "LU_TY_RATE")
+                                                            var HER_SPEC = Utils.getString(layerInfo.metadata, "HER_SPEC")
+                                                            var STRE_BREA = Utils.getString(layerInfo.metadata, "STRE_BREA")
+                                                            var STR_COVE = Utils.getString(layerInfo.metadata, "STR_COVE")
+                                                            var STRE_H = Utils.getString(layerInfo.metadata, "STRE_H")
+                                                            var RESTOR_POT = Utils.getString(layerInfo.metadata, "RESTOR_POT")
+                                                            var STRE_SCIEN = Utils.getString(layerInfo.metadata, "STRE_SCIEN")
+                                                            var TRE_SPEC = Utils.getString(layerInfo.metadata, "TRE_SPEC")
+                                                            var SHR_H = Utils.getString(layerInfo.metadata, "SHR_H")
+                                                            var UFID = Utils.getString(layerInfo.metadata, "UFID")
+                                                            var GV_RATE = Utils.getString(layerInfo.metadata, "GV_RATE")
+                                                            var STRE_COVE = Utils.getString(layerInfo.metadata, "STRE_COVE")
+                                                            var NEED_CONF = Utils.getString(layerInfo.metadata, "NEED_CONF")
+                                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                                            var SHR_SCIEN = Utils.getString(layerInfo.metadata, "SHR_SCIEN")
+                                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                                            var STRE_SPEC = Utils.getString(layerInfo.metadata, "STRE_SPEC")
+                                                            var LC_GR_NUM = Utils.getString(layerInfo.metadata, "LC_GR_NUM")
+                                                            var TRE_COVE = Utils.getString(layerInfo.metadata, "TRE_COVE")
+                                                            var HER_H = Utils.getString(layerInfo.metadata, "HER_H")
+                                                            var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
+                                                            var TRE_SCIEN = Utils.getString(layerInfo.metadata, "TRE_SCIEN")
+                                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                                            var GV_STRUCT = Utils.getString(layerInfo.metadata, "GV_STRUCT")
+                                                            var GPS_LAT = Utils.getString(layerInfo.metadata, "GPS_LAT")
+                                                            var TRE_BREA = Utils.getString(layerInfo.metadata, "TRE_BREA")
+                                                            var FIN_EST = Utils.getString(layerInfo.metadata, "FIN_EST")
+                                                            var VP_INTA = Utils.getString(layerInfo.metadata, "VP_INTA")
+                                                            var HER_FAMI = Utils.getString(layerInfo.metadata, "HER_FAMI")
+                                                            var INV_INDEX = Utils.getString(layerInfo.metadata, "INV_INDEX")
+                                                            var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
+                                                            var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                                            var landcover = Utils.getString(layerInfo.metadata, "landcover")
+
+                                                            var biotope = Utils.getString(layerInfo.metadata, "biotop")
+                                                            if (INV_INDEX == "" || INV_INDEX == null) {
+                                                                INV_INDEX = "0"
+                                                            }
+
+                                                            if (LU_TY_RATE == "" || LU_TY_RATE == null) {
+                                                                LU_TY_RATE = "0"
+                                                            }
+
+                                                            if (STAND_H == "" || STAND_H == null) {
+                                                                STAND_H = "0"
+                                                            }
+
+                                                            if (GV_RATE == "" || GV_RATE == null) {
+                                                                GV_RATE = "0"
+                                                            }
+
+                                                            if (TRE_H == "" || TRE_H == null) {
+                                                                TRE_H = "0"
+                                                            }
+
+                                                            if (TRE_BREA == "" || TRE_BREA == null) {
+                                                                TRE_BREA = "0"
+                                                            }
+
+                                                            if (TRE_COVE == "" || TRE_COVE == null) {
+                                                                TRE_COVE = "0"
+                                                            }
+
+                                                            if (STRE_H == "" || STRE_H == null) {
+                                                                STRE_H = "0"
+                                                            }
+
+                                                            if (STRE_BREA == "" || STRE_BREA == null) {
+                                                                STRE_BREA = "0"
+                                                            }
+
+                                                            if (STRE_COVE == "" || STRE_COVE == null) {
+                                                                STRE_COVE = "0"
+                                                            }
+
+                                                            if (SHR_H == "" || SHR_H == null) {
+                                                                SHR_H = "0"
+                                                            }
+
+                                                            if (STR_COVE == "" || STR_COVE == null) {
+                                                                STR_COVE = "0"
+                                                            }
+
+                                                            if (HER_H == "" || HER_H == null) {
+                                                                HER_H = "0"
+                                                            }
+
+                                                            if (HER_COVE == "" || HER_COVE == null) {
+                                                                HER_COVE = "0"
+                                                            }
+
+                                                            if (GPS_LAT == "" || GPS_LAT == null) {
+                                                                GPS_LAT = "0"
+                                                            }
+
+                                                            if (GPS_LON == "" || GPS_LON == null) {
+                                                                GPS_LON = "0"
+                                                            }
+
+                                                            if (landuse != null && landuse != "") {
+                                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                                            }
+
+                                                            POLYGONCOLOR.add(LANDUSE)
+                                                            getColor = LANDUSE
+
+                                                            val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, LC_TY, TY_MARK, GV_RATE.toFloat()
+                                                                    , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
+                                                                    STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
+                                                                    BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom)
+
+                                                            if (LANDUSE != null && LANDUSE != "") {
+                                                                data.LANDUSE = LANDUSE
+                                                                data.LU_GR_NUM = LANDUSE
+                                                                data.LC_GR_NUM = landcover
+                                                            }
+
+                                                            dbManager!!.insertbiotope_attribute(data)
+                                                        }
+                                                    }
+
+                                                } else {
+                                                    getColor = biotopedataArray!!.get(0).LANDUSE!!
+                                                }
+                                            }
+
+                                            LAYER_STOCKMAP -> {
+                                                var chkdata = false
+                                                val dataList: Array<String> = arrayOf("*");
+
+                                                val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                                                if (stockdataArray != null) {
+                                                    stockdataArray.clear()
+                                                }
+
+                                                while (data.moveToNext()) {
+                                                    var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                                                            data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
+                                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
+                                                            , data.getString(22), data.getString(23), data.getString(24))
+                                                    stockdataArray.add(stockMap)
+                                                    chkdata = true
+                                                }
+
+                                                if (chkdata == false) {
+                                                    val layerinfo = polygon.tag as LayerInfo
+
+                                                    for (i in 0..polygons.size - 1) {
+                                                        if (polygons.get(i).tag == polygon.tag) {
+                                                            println("layerinfo.metadata ${layerinfo.metadata}")
+
+                                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                                            var NUM = Utils.getString(layerInfo.metadata, "NUM")
+                                                            var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
+                                                            var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
+                                                            var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
+                                                            var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
+                                                            var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
+                                                            var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
+                                                            var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
+                                                            var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
+                                                            var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
+                                                            var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
+                                                            var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
+                                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
+                                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+
+                                                            if (landuse != null && landuse != "") {
+                                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                                            }
+
+                                                            POLYGONCOLOR.add(LANDUSE)
+                                                            getColor = LANDUSE
+
+                                                            if (NUM == "" || NUM == null) {
+                                                                NUM = "0"
+                                                            }
+
+                                                            val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
+                                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom)
+
+                                                            dbManager!!.insertstockmap(data)
+
+                                                        }
+                                                    }
+                                                } else {
+                                                    getColor = stockdataArray!!.get(0).LANDUSE!!
+                                                }
+                                            }
+                                        }
+
+                                    } else {
+                                        when (myLayer) {
+
+                                            LAYER_BIOTOPE -> {
+                                                val dataList: Array<String> = arrayOf("*");
+
+
+                                                var chkdata = false
+
+                                                val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                                                if (stockdataArray != null) {
+                                                    stockdataArray.clear()
+                                                }
+
+                                                while (data.moveToNext()) {
+                                                    var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                                                            data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
+                                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
+                                                            , data.getString(22), data.getString(23), data.getString(24))
+                                                    stockdataArray.add(stockMap)
+                                                    chkdata = true
+                                                }
+
+                                                if (chkdata == false) {
+                                                    val layerinfo = polygon.tag as LayerInfo
+
+                                                    for (i in 0..polygons.size - 1) {
+                                                        if (polygons.get(i).tag == polygon.tag) {
+                                                            println("layerinfo.metadata.stockmap----------${layerinfo.metadata}")
+
+                                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                                            var NUM = Utils.getString(layerInfo.metadata, "NUM")
+                                                            var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
+                                                            var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
+                                                            var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
+                                                            var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
+                                                            var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
+                                                            var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
+                                                            var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
+                                                            var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
+                                                            var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
+                                                            var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
+                                                            var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
+                                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
+                                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+
+                                                            if (landuse != null && landuse != "") {
+                                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                                                getColor = LANDUSE
+                                                            }
+
+                                                            POLYGONCOLOR.add(LANDUSE)
+
+                                                            if (NUM == "" || NUM == null) {
+                                                                NUM = "0"
+                                                            }
+
+                                                            val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
+                                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom)
+
+                                                            dbManager!!.insertstockmap(data)
+
+                                                        }
+                                                    }
+                                                } else {
+                                                    getColor = stockdataArray!!.get(0).LANDUSE!!
+                                                }
+                                            }
+
+                                            LAYER_STOCKMAP -> {
+                                                var chkdata = false
+                                                val dataList: Array<String> = arrayOf("*");
+
+                                                val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                                                if (stockdataArray != null) {
+                                                    stockdataArray.clear()
+                                                }
+
+                                                while (data.moveToNext()) {
+                                                    var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                                                            data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
+                                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
+                                                            , data.getString(22), data.getString(23), data.getString(24))
+                                                    stockdataArray.add(stockMap)
+                                                    chkdata = true
+                                                }
+
+                                                if (chkdata == false) {
+                                                    val layerinfo = polygon.tag as LayerInfo
+
+                                                    for (i in 0..polygons.size - 1) {
+                                                        if (polygons.get(i).tag == polygon.tag) {
+
+                                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                                            var NUM = Utils.getString(layerInfo.metadata, "NUM")
+                                                            var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
+                                                            var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
+                                                            var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
+                                                            var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
+                                                            var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
+                                                            var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
+                                                            var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
+                                                            var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
+                                                            var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
+                                                            var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
+                                                            var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
+                                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
+                                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+
+                                                            if (landuse != null && landuse != "") {
+                                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                                                getColor = LANDUSE
+                                                            }
+
+                                                            POLYGONCOLOR.add(LANDUSE)
+
+                                                            if (NUM == "" || NUM == null) {
+                                                                NUM = "0"
+                                                            }
+
+                                                            val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
+                                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom)
+
+                                                            dbManager!!.insertstockmap(data)
+
+                                                        }
+                                                    }
+                                                } else {
+                                                    getColor = stockdataArray!!.get(0).LANDUSE!!
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
 
                                 return@setOnPolygonClickListener
 
                             } else {
-                                val type = typeST.isChecked
-
-                                if (type == false) {
-                                    val dataList: Array<String> = arrayOf("*");
-
-                                    val data = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                                    if (biotopedataArray != null) {
-                                        biotopedataArray.clear()
-                                    }
-
-                                    var title = ""
-
-                                    while (data.moveToNext()) {
-                                        var biotope_attribute: Biotope_attribute = Biotope_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                                data.getString(8), data.getFloat(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getFloat(14)
-                                                , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                                                , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getFloat(28)
-                                                , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
-                                                , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
-                                                , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
-                                                , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54))
-                                        biotopedataArray.add(biotope_attribute)
-                                    }
-
-                                    if (biotopedataArray.size == 0) {
-
-                                        val layerinfo = polygon.tag as LayerInfo
-
-                                        for (i in 0..polygons.size - 1) {
-                                            if (polygons.get(i).tag == polygon.tag) {
-                                                println("layerinfo.metadata ${layerinfo.metadata}")
-
-                                                intent = Intent(this, BiotopeActivity::class.java)
-
-                                                var GPS_LON = Utils.getString(layerInfo.metadata, "GPS_LON")
-                                                println("layerinfo.metadata.GPS_LON ${GPS_LON}")
-                                                var BREA_DIA = Utils.getString(layerInfo.metadata, "BREA_DIA")
-                                                var HER_COVE = Utils.getString(layerInfo.metadata, "HER_COVE")
-                                                var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
-                                                var IMP_FORM = Utils.getString(layerInfo.metadata, "IMP_FORM")
-                                                var LU_GR_NUM = Utils.getString(layerInfo.metadata, "LU_GR_NUM")
-                                                var UNUS_NOTE = Utils.getString(layerInfo.metadata, "UNUS_NOTE")
-                                                var TRE_H = Utils.getString(layerInfo.metadata, "TRE_H")
-                                                var LC_TY = Utils.getString(layerInfo.metadata, "LC_TY")
-                                                var TY_MARK = Utils.getString(layerInfo.metadata, "TY_MARK")
-                                                var HER_SCIEN = Utils.getString(layerInfo.metadata, "HER_SCIEN")
-                                                var PIC_FOLDER = Utils.getString(layerInfo.metadata, "PIC_FOLDER")
-                                                var LU_k = Utils.getString(layerInfo.metadata, "LU_k")
-                                                var COMP_INTA = Utils.getString(layerInfo.metadata, "COMP_INTA")
-                                                var DIS_RET = Utils.getString(layerInfo.metadata, "DIS_RET")
-                                                var WILD_ANI = Utils.getString(layerInfo.metadata, "WILD_ANI")
-                                                var CONF_MOD = Utils.getString(layerInfo.metadata, "CONF_MOD")
-                                                var SHR_SPEC = Utils.getString(layerInfo.metadata, "SHR_SPEC")
-                                                var STAND_H = Utils.getString(layerInfo.metadata, "STAND_H")
-                                                var SHR_FAMI = Utils.getString(layerInfo.metadata, "SHR_FAMI")
-                                                var EMD_CD = Utils.getString(layerInfo.metadata, "EMD_CD")
-                                                var BIOTOP_POT = Utils.getString(layerInfo.metadata, "BIOTOP_POT")
-                                                var TRE_FAMI = Utils.getString(layerInfo.metadata, "TRE_FAMI")
-                                                var LU_TY_RATE = Utils.getString(layerInfo.metadata, "LU_TY_RATE")
-                                                var HER_SPEC = Utils.getString(layerInfo.metadata, "HER_SPEC")
-                                                var STRE_BREA = Utils.getString(layerInfo.metadata, "STRE_BREA")
-                                                var STR_COVE = Utils.getString(layerInfo.metadata, "STR_COVE")
-                                                var STRE_H = Utils.getString(layerInfo.metadata, "STRE_H")
-                                                var RESTOR_POT = Utils.getString(layerInfo.metadata, "RESTOR_POT")
-                                                var STRE_SCIEN = Utils.getString(layerInfo.metadata, "STRE_SCIEN")
-                                                var TRE_SPEC = Utils.getString(layerInfo.metadata, "TRE_SPEC")
-                                                var SHR_H = Utils.getString(layerInfo.metadata, "SHR_H")
-                                                var UFID = Utils.getString(layerInfo.metadata, "UFID")
-                                                var GV_RATE = Utils.getString(layerInfo.metadata, "GV_RATE")
-                                                var STRE_COVE = Utils.getString(layerInfo.metadata, "STRE_COVE")
-                                                var NEED_CONF = Utils.getString(layerInfo.metadata, "NEED_CONF")
-                                                var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                                var SHR_SCIEN = Utils.getString(layerInfo.metadata, "SHR_SCIEN")
-                                                var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
-                                                var STRE_SPEC = Utils.getString(layerInfo.metadata, "STRE_SPEC")
-                                                var LC_GR_NUM = Utils.getString(layerInfo.metadata, "LC_GR_NUM")
-                                                var TRE_COVE = Utils.getString(layerInfo.metadata, "TRE_COVE")
-                                                var HER_H = Utils.getString(layerInfo.metadata, "HER_H")
-                                                var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
-                                                var TRE_SCIEN = Utils.getString(layerInfo.metadata, "TRE_SCIEN")
-                                                var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
-                                                var GV_STRUCT = Utils.getString(layerInfo.metadata, "GV_STRUCT")
-                                                var GPS_LAT = Utils.getString(layerInfo.metadata, "GPS_LAT")
-                                                var TRE_BREA = Utils.getString(layerInfo.metadata, "TRE_BREA")
-                                                var FIN_EST = Utils.getString(layerInfo.metadata, "FIN_EST")
-                                                var VP_INTA = Utils.getString(layerInfo.metadata, "VP_INTA")
-                                                var HER_FAMI = Utils.getString(layerInfo.metadata, "HER_FAMI")
-                                                var INV_INDEX = Utils.getString(layerInfo.metadata, "INV_INDEX")
-                                                var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
-                                                var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
-                                                var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                                var landuse = Utils.getString(layerInfo.metadata, "landuse")
-                                                var landcover = Utils.getString(layerInfo.metadata, "landcover")
-
-                                                if (INV_INDEX == "" || INV_INDEX == null) {
-                                                    INV_INDEX = "0"
-                                                }
-
-                                                if (LU_TY_RATE == "" || LU_TY_RATE == null) {
-                                                    LU_TY_RATE = "0"
-                                                }
-
-                                                if (STAND_H == "" || STAND_H == null) {
-                                                    STAND_H = "0"
-                                                }
-
-                                                if (GV_RATE == "" || GV_RATE == null) {
-                                                    GV_RATE = "0"
-                                                }
-
-                                                if (TRE_H == "" || TRE_H == null) {
-                                                    TRE_H = "0"
-                                                }
-
-                                                if (TRE_BREA == "" || TRE_BREA == null) {
-                                                    TRE_BREA = "0"
-                                                }
-
-                                                if (TRE_COVE == "" || TRE_COVE == null) {
-                                                    TRE_COVE = "0"
-                                                }
-
-                                                if (STRE_H == "" || STRE_H == null) {
-                                                    STRE_H = "0"
-                                                }
-
-                                                if (STRE_BREA == "" || STRE_BREA == null) {
-                                                    STRE_BREA = "0"
-                                                }
-
-                                                if (STRE_COVE == "" || STRE_COVE == null) {
-                                                    STRE_COVE = "0"
-                                                }
-
-                                                if (SHR_H == "" || SHR_H == null) {
-                                                    SHR_H = "0"
-                                                }
-
-                                                if (STR_COVE == "" || STR_COVE == null) {
-                                                    STR_COVE = "0"
-                                                }
-
-                                                if (HER_H == "" || HER_H == null) {
-                                                    HER_H = "0"
-                                                }
-
-                                                if (HER_COVE == "" || HER_COVE == null) {
-                                                    HER_COVE = "0"
-                                                }
-
-                                                if (GPS_LAT == "" || GPS_LAT == null) {
-                                                    GPS_LAT = "0"
-                                                }
-
-                                                if (GPS_LON == "" || GPS_LON == null) {
-                                                    GPS_LON = "0"
-                                                }
-
-                                                if (landuse != null && landuse != "") {
-                                                    LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
-                                                }
-
-                                                val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), LC_GR_NUM, LC_TY, TY_MARK, GV_RATE.toFloat()
-                                                        , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
-                                                        STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
-                                                        BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE)
-
-                                                if (LANDUSE != null && LANDUSE != "") {
-                                                    data.LANDUSE = LANDUSE
-                                                    data.LU_GR_NUM = LANDUSE
-                                                    data.LC_GR_NUM = landcover
-                                                }
-
-                                                intent!!.putExtra("biotopedata", data)
-                                                intent!!.putExtra("GROP_ID", attrubuteKey.toString())
-                                                intent!!.putExtra("EMD_NM", EMD_NM)
-                                                intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
-                                                intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
-                                                intent!!.putExtra("polygonid", polygon.id)
-                                                intent!!.putExtra("landuse", polygon.fillColor)
-
-                                                endDraw()
-
-                                                startActivityForResult(intent, BIOTOPE_DATA)
-
-                                            }
-                                        }
-
-                                    }
-
-                                    if (biotopedataArray.size == 1) {
-                                        val intent = Intent(this, BiotopeActivity::class.java)
-                                        intent.putExtra("title", "비오톱")
-                                        intent.putExtra("table", "biotopeAttribute")
-                                        intent.putExtra("id", biotopedataArray.get(0).id)
-                                        intent.putExtra("DlgHeight", 600f);
-                                        intent.putExtra("GROP_ID", attrubuteKey)
-                                        intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
-                                        intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
-                                        intent!!.putExtra("landuse", polygon.fillColor)
-                                        intent.putExtra("polygonid", polygon.id)
-                                        startActivityForResult(intent, BIOTOPE_DATA);
-
-                                        if (latlngs != null) {
-                                            latlngs.clear()
-                                        }
-
-                                        if (latlngsGPS != null) {
-                                            latlngsGPS.clear()
-                                        }
-
-                                    }
-
-                                    if (biotopedataArray.size > 1) {
-                                        val intent = Intent(this, DlgDataListActivity::class.java)
-                                        intent.putExtra("title", "비오톱")
-                                        intent.putExtra("table", "biotopeAttribute")
-                                        intent.putExtra("DlgHeight", 600f);
-                                        intent.putExtra("GROP_ID", attrubuteKey)
-                                        intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
-                                        intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
-                                        intent!!.putExtra("landuse", polygon.fillColor)
-                                        intent.putExtra("polygonid", polygon.id)
-                                        startActivityForResult(intent, BIOTOPE_DATA);
-
-                                        if (latlngs != null) {
-                                            latlngs.clear()
-                                        }
-
-                                        if (latlngsGPS != null) {
-                                            latlngsGPS.clear()
-                                        }
-                                    }
-
-                                    if (polygons.size == 0) {
-                                        polygons.add(polygon)
-                                    }
-
-                                    /*
-                                    if (allPolygons.size == 0) {
-                                        allPolygons.add(polygon)
-                                    }
-                                    */
-                                    data.close()
-                                }
-                                if (type == true) {
-                                    val dataList: Array<String> = arrayOf("*");
-
-                                    val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                                    if (stockdataArray != null) {
-                                        stockdataArray.clear()
-                                    }
-
-                                    var title = ""
-
-                                    while (data.moveToNext()) {
-                                        var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                                data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
-                                                , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                                , data.getString(22), data.getString(23))
-                                        stockdataArray.add(stockMap)
-                                    }
-
-                                    if (stockdataArray.size == 0) {
-
-                                        val layerinfo = polygon.tag as LayerInfo
-
-                                        for (i in 0..polygons.size - 1) {
-                                            if (polygons.get(i).tag == polygon.tag) {
-                                                println("layerinfo.metadata ${layerinfo.metadata}")
-
-                                                intent = Intent(this, StockActivity::class.java)
-
-                                                var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                                var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
-                                                var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
-                                                var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
-                                                var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
-                                                var NUM = Utils.getString(layerInfo.metadata, "NUM")
-                                                var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
-                                                var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
-                                                var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
-                                                var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
-                                                var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
-                                                var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
-                                                var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
-                                                var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
-                                                var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
-                                                var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
-                                                var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
-                                                var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
-                                                var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-
-                                                if (NUM == "" || NUM == null) {
-                                                    NUM = "0"
-                                                }
-
-                                                val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                        , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE)
-
-                                                intent!!.putExtra("stokedata", data)
-                                                intent!!.putExtra("GROP_ID", attrubuteKey.toString())
-                                                intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
-                                                intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
-                                                intent!!.putExtra("polygonid", polygon.id)
-                                                intent!!.putExtra("landuse", polygon.fillColor)
-
-                                                endDraw()
-
-                                                startActivityForResult(intent, STOCKMAP_DATA)
-
-                                            }
-                                        }
-
-                                    }
-
-                                    if (stockdataArray.size == 1) {
-                                        val intent = Intent(this, StockActivity::class.java)
-                                        intent.putExtra("title", "임상도")
-                                        intent.putExtra("table", "StockMap")
-                                        intent.putExtra("id", stockdataArray.get(0).id)
-                                        intent.putExtra("DlgHeight", 600f);
-                                        intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
-                                        intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
-                                        intent.putExtra("GROP_ID", attrubuteKey)
-                                        intent.putExtra("polygonid", polygon.id)
-                                        intent!!.putExtra("landuse", polygon.fillColor)
-                                        startActivityForResult(intent, STOCKMAP_DATA);
-
-                                        if (latlngs != null) {
-                                            latlngs.clear()
-                                        }
-
-                                        if (latlngsGPS != null) {
-                                            latlngsGPS.clear()
-                                        }
-
-                                    }
-
-                                    if (stockdataArray.size > 1) {
-                                        val intent = Intent(this, DlgDataListActivity::class.java)
-                                        intent.putExtra("title", "임상도")
-                                        intent.putExtra("table", "StockMap")
-                                        intent.putExtra("DlgHeight", 600f);
-                                        intent.putExtra("GROP_ID", attrubuteKey)
-                                        intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
-                                        intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
-                                        intent.putExtra("polygonid", polygon.id)
-                                        intent!!.putExtra("landuse", polygon.fillColor)
-                                        startActivityForResult(intent, STOCKMAP_DATA);
-
-                                        if (latlngs != null) {
-                                            latlngs.clear()
-                                        }
-
-                                        if (latlngsGPS != null) {
-                                            latlngsGPS.clear()
-                                        }
-                                    }
-
-                                    if (polygons.size == 0) {
-                                        polygons.add(polygon)
-                                    }
-
-                                    /*
-                                    if (allPolygons.size == 0) {
-                                        allPolygons.add(polygon)
-                                    }
-                                    */
-                                    data.close()
-                                }
-
+                                Toast.makeText(context, "17레벨 이상까지 확대해주세요.", Toast.LENGTH_SHORT).show()
+                                return@setOnPolygonClickListener
                             }
+                        } else {
+                            val type = typeST.isChecked
+
+                            println("type : $type")
+
+                            if (type == false) {
+                                val dataList: Array<String> = arrayOf("*");
+
+                                val data = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                                if (biotopedataArray != null) {
+                                    biotopedataArray.clear()
+                                }
+
+                                var title = ""
+
+                                while (data.moveToNext()) {
+                                    var biotope_attribute: Biotope_attribute = Biotope_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                                            data.getString(8), data.getFloat(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getFloat(14)
+                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+                                            , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getFloat(28)
+                                            , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
+                                            , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
+                                            , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
+                                            , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55))
+                                    biotopedataArray.add(biotope_attribute)
+                                }
+
+                                if (biotopedataArray.size == 0) {
+
+                                    val layerinfo = polygon.tag as LayerInfo
+
+                                    for (i in 0..polygons.size - 1) {
+                                        if (polygons.get(i).tag == polygon.tag) {
+                                            println("layerinfo.metadata ${layerinfo.metadata}")
+
+                                            intent = Intent(this, BiotopeActivity::class.java)
+
+                                            var GPS_LON = Utils.getString(layerInfo.metadata, "GPS_LON")
+                                            println("layerinfo.metadata.GPS_LON ${GPS_LON}")
+                                            var BREA_DIA = Utils.getString(layerInfo.metadata, "BREA_DIA")
+                                            var HER_COVE = Utils.getString(layerInfo.metadata, "HER_COVE")
+                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                            var IMP_FORM = Utils.getString(layerInfo.metadata, "IMP_FORM")
+                                            var LU_GR_NUM = Utils.getString(layerInfo.metadata, "LU_GR_NUM")
+                                            var UNUS_NOTE = Utils.getString(layerInfo.metadata, "UNUS_NOTE")
+                                            var TRE_H = Utils.getString(layerInfo.metadata, "TRE_H")
+                                            var LC_TY = Utils.getString(layerInfo.metadata, "LC_TY")
+                                            var TY_MARK = Utils.getString(layerInfo.metadata, "TY_MARK")
+                                            var HER_SCIEN = Utils.getString(layerInfo.metadata, "HER_SCIEN")
+                                            var PIC_FOLDER = Utils.getString(layerInfo.metadata, "PIC_FOLDER")
+                                            var LU_k = Utils.getString(layerInfo.metadata, "LU_k")
+                                            var COMP_INTA = Utils.getString(layerInfo.metadata, "COMP_INTA")
+                                            var DIS_RET = Utils.getString(layerInfo.metadata, "DIS_RET")
+                                            var WILD_ANI = Utils.getString(layerInfo.metadata, "WILD_ANI")
+                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CONF_MOD")
+                                            var SHR_SPEC = Utils.getString(layerInfo.metadata, "SHR_SPEC")
+                                            var STAND_H = Utils.getString(layerInfo.metadata, "STAND_H")
+                                            var SHR_FAMI = Utils.getString(layerInfo.metadata, "SHR_FAMI")
+                                            var EMD_CD = Utils.getString(layerInfo.metadata, "EMD_CD")
+                                            var BIOTOP_POT = Utils.getString(layerInfo.metadata, "BIOTOP_POT")
+                                            var TRE_FAMI = Utils.getString(layerInfo.metadata, "TRE_FAMI")
+                                            var LU_TY_RATE = Utils.getString(layerInfo.metadata, "LU_TY_RATE")
+                                            var HER_SPEC = Utils.getString(layerInfo.metadata, "HER_SPEC")
+                                            var STRE_BREA = Utils.getString(layerInfo.metadata, "STRE_BREA")
+                                            var STR_COVE = Utils.getString(layerInfo.metadata, "STR_COVE")
+                                            var STRE_H = Utils.getString(layerInfo.metadata, "STRE_H")
+                                            var RESTOR_POT = Utils.getString(layerInfo.metadata, "RESTOR_POT")
+                                            var STRE_SCIEN = Utils.getString(layerInfo.metadata, "STRE_SCIEN")
+                                            var TRE_SPEC = Utils.getString(layerInfo.metadata, "TRE_SPEC")
+                                            var SHR_H = Utils.getString(layerInfo.metadata, "SHR_H")
+                                            var UFID = Utils.getString(layerInfo.metadata, "UFID")
+                                            var GV_RATE = Utils.getString(layerInfo.metadata, "GV_RATE")
+                                            var STRE_COVE = Utils.getString(layerInfo.metadata, "STRE_COVE")
+                                            var NEED_CONF = Utils.getString(layerInfo.metadata, "NEED_CONF")
+                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                            var SHR_SCIEN = Utils.getString(layerInfo.metadata, "SHR_SCIEN")
+                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                            var STRE_SPEC = Utils.getString(layerInfo.metadata, "STRE_SPEC")
+                                            var LC_GR_NUM = Utils.getString(layerInfo.metadata, "LC_GR_NUM")
+                                            var TRE_COVE = Utils.getString(layerInfo.metadata, "TRE_COVE")
+                                            var HER_H = Utils.getString(layerInfo.metadata, "HER_H")
+                                            var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
+                                            var TRE_SCIEN = Utils.getString(layerInfo.metadata, "TRE_SCIEN")
+                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                            var GV_STRUCT = Utils.getString(layerInfo.metadata, "GV_STRUCT")
+                                            var GPS_LAT = Utils.getString(layerInfo.metadata, "GPS_LAT")
+                                            var TRE_BREA = Utils.getString(layerInfo.metadata, "TRE_BREA")
+                                            var FIN_EST = Utils.getString(layerInfo.metadata, "FIN_EST")
+                                            var VP_INTA = Utils.getString(layerInfo.metadata, "VP_INTA")
+                                            var HER_FAMI = Utils.getString(layerInfo.metadata, "HER_FAMI")
+                                            var INV_INDEX = Utils.getString(layerInfo.metadata, "INV_INDEX")
+                                            var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
+                                            var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                            var landcover = Utils.getString(layerInfo.metadata, "landcover")
+
+                                            var biotope = Utils.getString(layerInfo.metadata, "biotop")
+                                            if (INV_INDEX == "" || INV_INDEX == null) {
+                                                INV_INDEX = "0"
+                                            }
+
+                                            if (LU_TY_RATE == "" || LU_TY_RATE == null) {
+                                                LU_TY_RATE = "0"
+                                            }
+
+                                            if (STAND_H == "" || STAND_H == null) {
+                                                STAND_H = "0"
+                                            }
+
+                                            if (GV_RATE == "" || GV_RATE == null) {
+                                                GV_RATE = "0"
+                                            }
+
+                                            if (TRE_H == "" || TRE_H == null) {
+                                                TRE_H = "0"
+                                            }
+
+                                            if (TRE_BREA == "" || TRE_BREA == null) {
+                                                TRE_BREA = "0"
+                                            }
+
+                                            if (TRE_COVE == "" || TRE_COVE == null) {
+                                                TRE_COVE = "0"
+                                            }
+
+                                            if (STRE_H == "" || STRE_H == null) {
+                                                STRE_H = "0"
+                                            }
+
+                                            if (STRE_BREA == "" || STRE_BREA == null) {
+                                                STRE_BREA = "0"
+                                            }
+
+                                            if (STRE_COVE == "" || STRE_COVE == null) {
+                                                STRE_COVE = "0"
+                                            }
+
+                                            if (SHR_H == "" || SHR_H == null) {
+                                                SHR_H = "0"
+                                            }
+
+                                            if (STR_COVE == "" || STR_COVE == null) {
+                                                STR_COVE = "0"
+                                            }
+
+                                            if (HER_H == "" || HER_H == null) {
+                                                HER_H = "0"
+                                            }
+
+                                            if (HER_COVE == "" || HER_COVE == null) {
+                                                HER_COVE = "0"
+                                            }
+
+                                            if (GPS_LAT == "" || GPS_LAT == null) {
+                                                GPS_LAT = "0"
+                                            }
+
+                                            if (GPS_LON == "" || GPS_LON == null) {
+                                                GPS_LON = "0"
+                                            }
+
+                                            if (landuse != null && landuse != "") {
+                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                            }
+
+                                            val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, LC_TY, TY_MARK, GV_RATE.toFloat()
+                                                    , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
+                                                    STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
+                                                    BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom)
+
+                                            if (LANDUSE != null && LANDUSE != "") {
+                                                data.LANDUSE = LANDUSE
+                                                data.LU_GR_NUM = LANDUSE
+                                                data.LC_GR_NUM = landcover
+                                            }
+
+                                            intent!!.putExtra("biotopedata", data)
+                                            intent!!.putExtra("GROP_ID", attrubuteKey.toString())
+                                            intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
+                                            intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
+                                            intent!!.putExtra("EMD_NM", EMD_NM)
+                                            intent!!.putExtra("polygonid", polygon.id)
+                                            intent!!.putExtra("landuse", polygon.fillColor)
+
+                                            println("biotope -------$biotope")
+
+                                            if (biotope != null && biotope != "") {
+                                                intent!!.putExtra("biotope", biotope)
+                                            }
+
+                                            endDraw()
+
+                                            startActivityForResult(intent, BIOTOPE_DATA)
+
+                                        }
+                                    }
+
+                                }
+
+                                if (biotopedataArray.size == 1) {
+                                    val intent = Intent(this, BiotopeActivity::class.java)
+                                    intent.putExtra("title", "비오톱")
+                                    intent.putExtra("table", "biotopeAttribute")
+                                    intent.putExtra("id", biotopedataArray.get(0).id)
+                                    intent.putExtra("DlgHeight", 600f);
+                                    intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
+                                    intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
+                                    intent.putExtra("GROP_ID", attrubuteKey)
+                                    intent.putExtra("polygonid", polygon.id)
+                                    intent!!.putExtra("landuse", polygon.fillColor)
+                                    println("polygonclicklanduse.size1 -------- ${polygon.fillColor}")
+                                    startActivityForResult(intent, BIOTOPE_DATA);
+
+                                    if (latlngs != null) {
+                                        latlngs.clear()
+                                    }
+
+                                    if (latlngsGPS != null) {
+                                        latlngsGPS.clear()
+                                    }
+
+                                }
+
+                                if (biotopedataArray.size > 1) {
+                                    val intent = Intent(this, DlgDataListActivity::class.java)
+                                    intent.putExtra("title", "비오톱")
+                                    intent.putExtra("table", "biotopeAttribute")
+                                    intent.putExtra("DlgHeight", 600f);
+                                    intent.putExtra("GROP_ID", attrubuteKey)
+                                    intent.putExtra("polygonid", polygon.id)
+                                    intent!!.putExtra("landuse", polygon.fillColor)
+                                    intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
+                                    intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
+                                    startActivityForResult(intent, BIOTOPE_DATA);
+
+                                    if (latlngs != null) {
+                                        latlngs.clear()
+                                    }
+
+                                    if (latlngsGPS != null) {
+                                        latlngsGPS.clear()
+                                    }
+                                }
+
+                                if (polygons.size == 0) {
+                                    polygons.add(polygon)
+                                }
+
+                                /*
+                                if (allPolygons.size == 0) {
+                                    allPolygons.add(polygon)
+                                }
+                                */
+                            }
+                            if (type == true) {
+                                val dataList: Array<String> = arrayOf("*");
+
+                                val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                                if (stockdataArray != null) {
+                                    stockdataArray.clear()
+                                }
+
+                                var title = ""
+
+                                while (data.moveToNext()) {
+                                    var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                                            data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
+                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
+                                            , data.getString(22), data.getString(23), data.getString(24))
+                                    stockdataArray.add(stockMap)
+                                }
+
+                                if (stockdataArray.size == 0) {
+
+                                    val layerinfo = polygon.tag as LayerInfo
+
+                                    for (i in 0..polygons.size - 1) {
+                                        if (polygons.get(i).tag == polygon.tag) {
+                                            println("layerinfo.metadata ${layerinfo.metadata}")
+
+                                            intent = Intent(this, StockActivity::class.java)
+
+                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                            var NUM = Utils.getString(layerInfo.metadata, "NUM")
+                                            var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
+                                            var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
+                                            var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
+                                            var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
+                                            var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
+                                            var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
+                                            var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
+                                            var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
+                                            var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
+                                            var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
+                                            var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
+                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
+                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+
+                                            if (NUM == "" || NUM == null) {
+                                                NUM = "0"
+                                            }
+
+                                            if (landuse != null && landuse != "") {
+                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                            }
+
+                                            val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
+                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom)
+
+                                            intent!!.putExtra("stokedata", data)
+                                            intent!!.putExtra("GROP_ID", attrubuteKey.toString())
+                                            intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
+                                            intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
+                                            intent!!.putExtra("landuse", polygon.fillColor)
+                                            intent!!.putExtra("polygonid", polygon.id)
+
+                                            endDraw()
+
+                                            startActivityForResult(intent, STOCKMAP_DATA)
+
+                                        }
+                                    }
+
+                                }
+
+                                if (stockdataArray.size == 1) {
+                                    val intent = Intent(this, StockActivity::class.java)
+                                    intent.putExtra("title", "임상도")
+                                    intent.putExtra("table", "StockMap")
+                                    intent.putExtra("id", stockdataArray.get(0).id)
+                                    intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
+                                    intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
+                                    intent.putExtra("DlgHeight", 600f);
+                                    intent!!.putExtra("landuse", polygon.fillColor)
+                                    intent.putExtra("GROP_ID", attrubuteKey)
+                                    intent.putExtra("polygonid", polygon.id)
+                                    startActivityForResult(intent, STOCKMAP_DATA);
+
+                                    if (latlngs != null) {
+                                        latlngs.clear()
+                                    }
+
+                                    if (latlngsGPS != null) {
+                                        latlngsGPS.clear()
+                                    }
+
+                                }
+
+                                if (stockdataArray.size > 1) {
+                                    val intent = Intent(this, DlgDataListActivity::class.java)
+                                    intent.putExtra("title", "임상도")
+                                    intent.putExtra("table", "StockMap")
+                                    intent.putExtra("DlgHeight", 600f);
+                                    intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
+                                    intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
+                                    intent.putExtra("GROP_ID", attrubuteKey)
+                                    intent!!.putExtra("landuse", polygon.fillColor)
+                                    intent.putExtra("polygonid", polygon.id)
+                                    startActivityForResult(intent, STOCKMAP_DATA);
+
+                                    if (latlngs != null) {
+                                        latlngs.clear()
+                                    }
+
+                                    if (latlngsGPS != null) {
+                                        latlngsGPS.clear()
+                                    }
+                                }
+
+                                if (polygons.size == 0) {
+                                    polygons.add(polygon)
+                                }
+
+                                /*
+                                if (allPolygons.size == 0) {
+                                    allPolygons.add(polygon)
+                                }
+                                */
+                                data.close()
+                            }
+
                         }
+                    }
+
+                    LAYER_BIRDS -> {
+                        intent = Intent(this, BirdsActivity::class.java)
+                    }
+
+                    LAYER_REPTILIA -> {
+                        intent = Intent(this, ReptiliaActivity::class.java)
+                    }
+
+                    LAYER_MAMMALIA -> {
+                        intent = Intent(this, MammaliaActivity::class.java)
+                    }
+
+                    LAYER_FISH -> {
+                        intent = Intent(this, FishActivity::class.java)
+                    }
+
+                    LAYER_INSECT -> {
+                        intent = Intent(this, InsectActivity::class.java)
+                    }
+
+                    LAYER_FLORA -> {
+                        intent = Intent(this, FloraActivity::class.java)
+                    }
+
+                    LAYER_ZOOBENTHOS -> {
+                        intent = Intent(this, ZoobenthosActivity::class.java)
+                    }
+
+                    LAYER_MYLOCATION -> {
 
                     }
 
-                    println("aa : $attrubuteKey")
+                    LAYER -> {
+
+                    }
+
+                    TRACKING -> {
+
+                    }
+
+                    NOTHING -> {
+
+                    }
+
+                    LAYER_STOCKMAP -> {
+                        if (unionRL.isSelected) {
+
+                            if (polygonsToUnion.contains(polygon)) {
+                                polygonsToUnion.remove(polygon)
+                                polygon.strokeWidth = 0.0f
+                                polygon.strokeColor = Color.TRANSPARENT
+                                return@setOnPolygonClickListener
+                            }
+
+                            if (polygonsToUnion.size == 2) {
+                                Utils.alert(context, "2 곳만 선택해서 합칠 수 있습니다.")
+                                return@setOnPolygonClickListener
+                            }
+
+                            polygonsToUnion.add(polygon)
+                            polygon.strokeWidth = 0.0f
+                            polygon.strokeColor = Color.TRANSPARENT
+
+                            return@setOnPolygonClickListener
+
+                        } else {
+                            val type = typeST.isChecked
+
+                            if (type == false) {
+                                val dataList: Array<String> = arrayOf("*");
+
+                                val data = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                                if (biotopedataArray != null) {
+                                    biotopedataArray.clear()
+                                }
+
+                                var title = ""
+
+                                while (data.moveToNext()) {
+                                    var biotope_attribute: Biotope_attribute = Biotope_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                                            data.getString(8), data.getFloat(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getFloat(14)
+                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+                                            , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getFloat(28)
+                                            , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
+                                            , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
+                                            , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
+                                            , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55))
+                                    biotopedataArray.add(biotope_attribute)
+                                }
+
+                                if (biotopedataArray.size == 0) {
+
+                                    val layerinfo = polygon.tag as LayerInfo
+
+                                    for (i in 0..polygons.size - 1) {
+                                        if (polygons.get(i).tag == polygon.tag) {
+                                            println("layerinfo.metadata ${layerinfo.metadata}")
+
+                                            intent = Intent(this, BiotopeActivity::class.java)
+
+                                            var GPS_LON = Utils.getString(layerInfo.metadata, "GPS_LON")
+                                            println("layerinfo.metadata.GPS_LON ${GPS_LON}")
+                                            var BREA_DIA = Utils.getString(layerInfo.metadata, "BREA_DIA")
+                                            var HER_COVE = Utils.getString(layerInfo.metadata, "HER_COVE")
+                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                            var IMP_FORM = Utils.getString(layerInfo.metadata, "IMP_FORM")
+                                            var LU_GR_NUM = Utils.getString(layerInfo.metadata, "LU_GR_NUM")
+                                            var UNUS_NOTE = Utils.getString(layerInfo.metadata, "UNUS_NOTE")
+                                            var TRE_H = Utils.getString(layerInfo.metadata, "TRE_H")
+                                            var LC_TY = Utils.getString(layerInfo.metadata, "LC_TY")
+                                            var TY_MARK = Utils.getString(layerInfo.metadata, "TY_MARK")
+                                            var HER_SCIEN = Utils.getString(layerInfo.metadata, "HER_SCIEN")
+                                            var PIC_FOLDER = Utils.getString(layerInfo.metadata, "PIC_FOLDER")
+                                            var LU_k = Utils.getString(layerInfo.metadata, "LU_k")
+                                            var COMP_INTA = Utils.getString(layerInfo.metadata, "COMP_INTA")
+                                            var DIS_RET = Utils.getString(layerInfo.metadata, "DIS_RET")
+                                            var WILD_ANI = Utils.getString(layerInfo.metadata, "WILD_ANI")
+                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CONF_MOD")
+                                            var SHR_SPEC = Utils.getString(layerInfo.metadata, "SHR_SPEC")
+                                            var STAND_H = Utils.getString(layerInfo.metadata, "STAND_H")
+                                            var SHR_FAMI = Utils.getString(layerInfo.metadata, "SHR_FAMI")
+                                            var EMD_CD = Utils.getString(layerInfo.metadata, "EMD_CD")
+                                            var BIOTOP_POT = Utils.getString(layerInfo.metadata, "BIOTOP_POT")
+                                            var TRE_FAMI = Utils.getString(layerInfo.metadata, "TRE_FAMI")
+                                            var LU_TY_RATE = Utils.getString(layerInfo.metadata, "LU_TY_RATE")
+                                            var HER_SPEC = Utils.getString(layerInfo.metadata, "HER_SPEC")
+                                            var STRE_BREA = Utils.getString(layerInfo.metadata, "STRE_BREA")
+                                            var STR_COVE = Utils.getString(layerInfo.metadata, "STR_COVE")
+                                            var STRE_H = Utils.getString(layerInfo.metadata, "STRE_H")
+                                            var RESTOR_POT = Utils.getString(layerInfo.metadata, "RESTOR_POT")
+                                            var STRE_SCIEN = Utils.getString(layerInfo.metadata, "STRE_SCIEN")
+                                            var TRE_SPEC = Utils.getString(layerInfo.metadata, "TRE_SPEC")
+                                            var SHR_H = Utils.getString(layerInfo.metadata, "SHR_H")
+                                            var UFID = Utils.getString(layerInfo.metadata, "UFID")
+                                            var GV_RATE = Utils.getString(layerInfo.metadata, "GV_RATE")
+                                            var STRE_COVE = Utils.getString(layerInfo.metadata, "STRE_COVE")
+                                            var NEED_CONF = Utils.getString(layerInfo.metadata, "NEED_CONF")
+                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                            var SHR_SCIEN = Utils.getString(layerInfo.metadata, "SHR_SCIEN")
+                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                            var STRE_SPEC = Utils.getString(layerInfo.metadata, "STRE_SPEC")
+                                            var LC_GR_NUM = Utils.getString(layerInfo.metadata, "LC_GR_NUM")
+                                            var TRE_COVE = Utils.getString(layerInfo.metadata, "TRE_COVE")
+                                            var HER_H = Utils.getString(layerInfo.metadata, "HER_H")
+                                            var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
+                                            var TRE_SCIEN = Utils.getString(layerInfo.metadata, "TRE_SCIEN")
+                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                            var GV_STRUCT = Utils.getString(layerInfo.metadata, "GV_STRUCT")
+                                            var GPS_LAT = Utils.getString(layerInfo.metadata, "GPS_LAT")
+                                            var TRE_BREA = Utils.getString(layerInfo.metadata, "TRE_BREA")
+                                            var FIN_EST = Utils.getString(layerInfo.metadata, "FIN_EST")
+                                            var VP_INTA = Utils.getString(layerInfo.metadata, "VP_INTA")
+                                            var HER_FAMI = Utils.getString(layerInfo.metadata, "HER_FAMI")
+                                            var INV_INDEX = Utils.getString(layerInfo.metadata, "INV_INDEX")
+                                            var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
+                                            var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                            var landcover = Utils.getString(layerInfo.metadata, "landcover")
+
+                                            if (INV_INDEX == "" || INV_INDEX == null) {
+                                                INV_INDEX = "0"
+                                            }
+
+                                            if (LU_TY_RATE == "" || LU_TY_RATE == null) {
+                                                LU_TY_RATE = "0"
+                                            }
+
+                                            if (STAND_H == "" || STAND_H == null) {
+                                                STAND_H = "0"
+                                            }
+
+                                            if (GV_RATE == "" || GV_RATE == null) {
+                                                GV_RATE = "0"
+                                            }
+
+                                            if (TRE_H == "" || TRE_H == null) {
+                                                TRE_H = "0"
+                                            }
+
+                                            if (TRE_BREA == "" || TRE_BREA == null) {
+                                                TRE_BREA = "0"
+                                            }
+
+                                            if (TRE_COVE == "" || TRE_COVE == null) {
+                                                TRE_COVE = "0"
+                                            }
+
+                                            if (STRE_H == "" || STRE_H == null) {
+                                                STRE_H = "0"
+                                            }
+
+                                            if (STRE_BREA == "" || STRE_BREA == null) {
+                                                STRE_BREA = "0"
+                                            }
+
+                                            if (STRE_COVE == "" || STRE_COVE == null) {
+                                                STRE_COVE = "0"
+                                            }
+
+                                            if (SHR_H == "" || SHR_H == null) {
+                                                SHR_H = "0"
+                                            }
+
+                                            if (STR_COVE == "" || STR_COVE == null) {
+                                                STR_COVE = "0"
+                                            }
+
+                                            if (HER_H == "" || HER_H == null) {
+                                                HER_H = "0"
+                                            }
+
+                                            if (HER_COVE == "" || HER_COVE == null) {
+                                                HER_COVE = "0"
+                                            }
+
+                                            if (GPS_LAT == "" || GPS_LAT == null) {
+                                                GPS_LAT = "0"
+                                            }
+
+                                            if (GPS_LON == "" || GPS_LON == null) {
+                                                GPS_LON = "0"
+                                            }
+
+                                            if (landuse != null && landuse != "") {
+                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                            }
+
+                                            val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), LC_GR_NUM, LC_TY, TY_MARK, GV_RATE.toFloat()
+                                                    , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
+                                                    STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
+                                                    BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom)
+
+                                            if (LANDUSE != null && LANDUSE != "") {
+                                                data.LANDUSE = LANDUSE
+                                                data.LU_GR_NUM = LANDUSE
+                                                data.LC_GR_NUM = landcover
+                                            }
+
+                                            intent!!.putExtra("biotopedata", data)
+                                            intent!!.putExtra("GROP_ID", attrubuteKey.toString())
+                                            intent!!.putExtra("EMD_NM", EMD_NM)
+                                            intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
+                                            intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
+                                            intent!!.putExtra("polygonid", polygon.id)
+                                            intent!!.putExtra("landuse", polygon.fillColor)
+
+                                            endDraw()
+
+                                            startActivityForResult(intent, BIOTOPE_DATA)
+
+                                        }
+                                    }
+
+                                }
+
+                                if (biotopedataArray.size == 1) {
+                                    val intent = Intent(this, BiotopeActivity::class.java)
+                                    intent.putExtra("title", "비오톱")
+                                    intent.putExtra("table", "biotopeAttribute")
+                                    intent.putExtra("id", biotopedataArray.get(0).id)
+                                    intent.putExtra("DlgHeight", 600f);
+                                    intent.putExtra("GROP_ID", attrubuteKey)
+                                    intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
+                                    intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
+                                    intent!!.putExtra("landuse", polygon.fillColor)
+                                    intent.putExtra("polygonid", polygon.id)
+                                    startActivityForResult(intent, BIOTOPE_DATA);
+
+                                    if (latlngs != null) {
+                                        latlngs.clear()
+                                    }
+
+                                    if (latlngsGPS != null) {
+                                        latlngsGPS.clear()
+                                    }
+
+                                }
+
+                                if (biotopedataArray.size > 1) {
+                                    val intent = Intent(this, DlgDataListActivity::class.java)
+                                    intent.putExtra("title", "비오톱")
+                                    intent.putExtra("table", "biotopeAttribute")
+                                    intent.putExtra("DlgHeight", 600f);
+                                    intent.putExtra("GROP_ID", attrubuteKey)
+                                    intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
+                                    intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
+                                    intent!!.putExtra("landuse", polygon.fillColor)
+                                    intent.putExtra("polygonid", polygon.id)
+                                    startActivityForResult(intent, BIOTOPE_DATA);
+
+                                    if (latlngs != null) {
+                                        latlngs.clear()
+                                    }
+
+                                    if (latlngsGPS != null) {
+                                        latlngsGPS.clear()
+                                    }
+                                }
+
+                                if (polygons.size == 0) {
+                                    polygons.add(polygon)
+                                }
+
+                                /*
+                                if (allPolygons.size == 0) {
+                                    allPolygons.add(polygon)
+                                }
+                                */
+                                data.close()
+                            }
+                            if (type == true) {
+                                val dataList: Array<String> = arrayOf("*");
+
+                                val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                                if (stockdataArray != null) {
+                                    stockdataArray.clear()
+                                }
+
+                                var title = ""
+
+                                while (data.moveToNext()) {
+                                    var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                                            data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
+                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
+                                            , data.getString(22), data.getString(23), data.getString(24))
+                                    stockdataArray.add(stockMap)
+                                }
+
+                                if (stockdataArray.size == 0) {
+
+                                    val layerinfo = polygon.tag as LayerInfo
+
+                                    for (i in 0..polygons.size - 1) {
+                                        if (polygons.get(i).tag == polygon.tag) {
+                                            println("layerinfo.metadata ${layerinfo.metadata}")
+
+                                            intent = Intent(this, StockActivity::class.java)
+
+                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                            var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
+                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                            var NUM = Utils.getString(layerInfo.metadata, "NUM")
+                                            var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
+                                            var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
+                                            var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
+                                            var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
+                                            var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
+                                            var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
+                                            var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
+                                            var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
+                                            var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
+                                            var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
+                                            var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
+                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
+                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+
+                                            if (NUM == "" || NUM == null) {
+                                                NUM = "0"
+                                            }
+
+                                            val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
+                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom)
+
+                                            intent!!.putExtra("stokedata", data)
+                                            intent!!.putExtra("GROP_ID", attrubuteKey.toString())
+                                            intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
+                                            intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
+                                            intent!!.putExtra("polygonid", polygon.id)
+                                            intent!!.putExtra("landuse", polygon.fillColor)
+
+                                            endDraw()
+
+                                            startActivityForResult(intent, STOCKMAP_DATA)
+
+                                        }
+                                    }
+
+                                }
+
+                                if (stockdataArray.size == 1) {
+                                    val intent = Intent(this, StockActivity::class.java)
+                                    intent.putExtra("title", "임상도")
+                                    intent.putExtra("table", "StockMap")
+                                    intent.putExtra("id", stockdataArray.get(0).id)
+                                    intent.putExtra("DlgHeight", 600f);
+                                    intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
+                                    intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
+                                    intent.putExtra("GROP_ID", attrubuteKey)
+                                    intent.putExtra("polygonid", polygon.id)
+                                    intent!!.putExtra("landuse", polygon.fillColor)
+                                    startActivityForResult(intent, STOCKMAP_DATA);
+
+                                    if (latlngs != null) {
+                                        latlngs.clear()
+                                    }
+
+                                    if (latlngsGPS != null) {
+                                        latlngsGPS.clear()
+                                    }
+
+                                }
+
+                                if (stockdataArray.size > 1) {
+                                    val intent = Intent(this, DlgDataListActivity::class.java)
+                                    intent.putExtra("title", "임상도")
+                                    intent.putExtra("table", "StockMap")
+                                    intent.putExtra("DlgHeight", 600f);
+                                    intent.putExtra("GROP_ID", attrubuteKey)
+                                    intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
+                                    intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
+                                    intent.putExtra("polygonid", polygon.id)
+                                    intent!!.putExtra("landuse", polygon.fillColor)
+                                    startActivityForResult(intent, STOCKMAP_DATA);
+
+                                    if (latlngs != null) {
+                                        latlngs.clear()
+                                    }
+
+                                    if (latlngsGPS != null) {
+                                        latlngsGPS.clear()
+                                    }
+                                }
+
+                                if (polygons.size == 0) {
+                                    polygons.add(polygon)
+                                }
+
+                                /*
+                                if (allPolygons.size == 0) {
+                                    allPolygons.add(polygon)
+                                }
+                                */
+                                data.close()
+                            }
+
+                        }
+                    }
+
+                }
+
+                println("aa : $attrubuteKey")
 
 //                if (myLayer != LAYER_BIOTOPE || myLayer == LAYER_BIRDS || myLayer == LAYER_REPTILIA || myLayer == LAYER_MAMMALIA || myLayer == LAYER_FISH || myLayer == LAYER_INSECT
 //                        || myLayer == LAYER_FLORA || myLayer != NOTHING) {
@@ -4016,7 +4043,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 //                    startActivityForResult(intent, PolygonCallBackData)
 //                }
 
-                }
+            }
 //            } else {
 //                Toast.makeText(context, "17레벨 이상까지 확대해주세요.", Toast.LENGTH_SHORT).show()
 //            }
@@ -4380,7 +4407,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     layerInfo.layer = LAYER_STOCKMAP
                 }
 
-                if (type.equals("waypoint")){
+                if (type.equals("waypoint")) {
                     layerInfo.layer = LAYER_WAYPOINT
                 }
 
@@ -4821,7 +4848,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     layerInfo.layer = NOTHING
                 }
 
-                if (type.equals("waypoint")){
+                if (type.equals("waypoint")) {
                     marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
                     layerInfo.layer = LAYER_WAYPOINT
                 }
@@ -5536,6 +5563,16 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             resetBtnColor()
 
+            var geom = ""
+
+            for (i in 0 until polygon.points.size) {
+                if (i == polygon.points.size) {
+                    geom += polygon.points.get(i).longitude.toString() + " " + polygon.points.get(i).latitude.toString()
+                } else {
+                    geom += polygon.points.get(i).longitude.toString() + " " + polygon.points.get(i).latitude.toString() + ","
+                }
+            }
+
             if (type == false) {
                 layerInfo.layer = LAYER_BIOTOPE
                 currentLayer = LAYER_BIOTOPE
@@ -5557,6 +5594,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
                 intent!!.putExtra("landuse", polygon.fillColor)
                 intent!!.putExtra("polygonid", polygon.id)
+                intent!!.putExtra("geom", geom)
 
                 startActivityForResult(intent, BIOTOPE_DATA);
             }
@@ -5583,6 +5621,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
                 intent!!.putExtra("landuse", polygon.fillColor)
                 intent!!.putExtra("polygonid", polygon.id)
+                intent!!.putExtra("geom", geom)
 
                 startActivityForResult(intent, STOCKMAP_DATA);
 
@@ -5810,7 +5849,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 attributeKey += "flora2"
             }
 
-            LAYER_WAYPOINT-> {
+            LAYER_WAYPOINT -> {
                 attributeKey += "waypoint"
             }
 
@@ -5820,10 +5859,33 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     }
 
-    fun exportBiotope() {
+    fun export(leftday: String, lefttime: String, rightday: String, righttime: String) {
+        var leftreplace = lefttime.replace("시", ":00")
+        var rightreplace = righttime.replace("시", ":00")
+
+        exportBiotope(leftday, leftreplace, rightday, rightreplace)
+        exportStockMap(leftday, leftreplace, rightday, rightreplace)
+        exportBirds(leftday, leftreplace, rightday, rightreplace)
+        exportReptilia(leftday, leftreplace, rightday, rightreplace)
+        exportMammal(leftday, leftreplace, rightday, rightreplace)
+        exportFish(leftday, leftreplace, rightday, rightreplace)
+        exportInsects(leftday, leftreplace, rightday, rightreplace)
+        exportFlora(leftday, leftreplace, rightday, rightreplace)
+        exportZoobenthous(leftday, leftreplace, rightday, rightreplace)
+        exportWaypoint(leftday, leftreplace, rightday, rightreplace)
+        exportManyFloras(leftday, leftreplace, rightday, rightreplace)
+
+//        googleMap.clear()
+    }
+
+    fun exportBiotope(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var biotopeArray: ArrayList<Exporter.ExportItem> = ArrayList<Exporter.ExportItem>()
         val dataList: Array<String> = arrayOf("*")
-        var biotopedata = db!!.query("biotopeAttribute", dataList, null, null, null, null, "", null)
+//        var biotopedata = db!!.query("biotopeAttribute", dataList, null, null, null, null, "", null)
+        val lftday = leftday + lefttime
+        val rgtday = rightday + righttime
+
+        var biotopedata = db!!.query("biotopeAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         var chkData = false
         var index = 0
 
@@ -5836,13 +5898,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     , biotopedata.getString(29), biotopedata.getString(30), biotopedata.getString(31), biotopedata.getFloat(32), biotopedata.getFloat(33), biotopedata.getFloat(34), biotopedata.getString(35)
                     , biotopedata.getString(36), biotopedata.getString(37), biotopedata.getFloat(38), biotopedata.getFloat(39), biotopedata.getString(40), biotopedata.getString(41), biotopedata.getString(42)
                     , biotopedata.getFloat(43), biotopedata.getFloat(44), biotopedata.getString(45), biotopedata.getString(46), biotopedata.getString(47), biotopedata.getString(48), biotopedata.getDouble(49)
-                    , biotopedata.getDouble(50), biotopedata.getString(51), biotopedata.getString(52), biotopedata.getString(53), biotopedata.getString(54))
+                    , biotopedata.getDouble(50), biotopedata.getString(51), biotopedata.getString(52), biotopedata.getString(53), biotopedata.getString(54), biotopedata.getString(55))
 
             biotopeDatas.add(biotope_attribute)
 
         }
 
-        if (biotopeDatas.size != null) {
+        println("-------biotopeDatas.size ---- ${biotopeDatas.size}")
+
+        if (biotopeDatas.size > 0) {
 
             for (i in 0..biotopeDatas.size - 1) {
 
@@ -5871,26 +5935,26 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     }
                 }
 
-                if (add) {
-                    var BIOTOPEATTRIBUTE: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+//                if (add) {
+                var BIOTOPEATTRIBUTE: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
-                    if (index == 0) {
+//                    if (index == 0) {
 //                                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString, biotope_attribute.id))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, biotope_attribute.GROP_ID))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, biotope_attribute.PRJ_NAME))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, biotope_attribute.INV_REGION))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, biotope_attribute.INV_PERSON))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, biotope_attribute.INV_DT))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, biotope_attribute.INV_TM))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_INDEX", ogr.OFTInteger, biotope_attribute.INV_INDEX))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LU_GR_NUM", ogr.OFTString, biotope_attribute.LU_GR_NUM))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LU_TY_RATE", ogr.OFTString, biotope_attribute.LU_TY_RATE.toString()))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STAND_H", ogr.OFTString, biotope_attribute.STAND_H.toString()))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LC_GR_NUM", ogr.OFTString, biotope_attribute.LC_GR_NUM))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LC_TY", ogr.OFTString, biotope_attribute.LC_TY))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TY_MARK", ogr.OFTString, biotope_attribute.TY_MARK))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GV_RATE", ogr.OFTString, biotope_attribute.GV_RATE.toString()))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GV_STRUCT", ogr.OFTString, biotope_attribute.GV_STRUCT))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, biotope_attribute.GROP_ID))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, biotope_attribute.PRJ_NAME))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, biotope_attribute.INV_REGION))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, biotope_attribute.INV_PERSON))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, biotope_attribute.INV_DT))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, biotope_attribute.INV_TM))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_INDEX", ogr.OFTInteger, biotope_attribute.INV_INDEX))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LU_GR_NUM", ogr.OFTString, biotope_attribute.LU_GR_NUM))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LU_TY_RATE", ogr.OFTString, biotope_attribute.LU_TY_RATE.toString()))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STAND_H", ogr.OFTString, biotope_attribute.STAND_H.toString()))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LC_GR_NUM", ogr.OFTString, biotope_attribute.LC_GR_NUM))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LC_TY", ogr.OFTString, biotope_attribute.LC_TY))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TY_MARK", ogr.OFTString, biotope_attribute.TY_MARK))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GV_RATE", ogr.OFTString, biotope_attribute.GV_RATE.toString()))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GV_STRUCT", ogr.OFTString, biotope_attribute.GV_STRUCT))
 //                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("DIS_RET", ogr.OFTString, biotope_attribute.DIS_RET))
 //                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("RESTOR_POT", ogr.OFTString, biotope_attribute.RESTOR_POT))
 //                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("COMP_INTA", ogr.OFTString, biotope_attribute.COMP_INTA))
@@ -5898,44 +5962,56 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 //                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("IMP_FORM", ogr.OFTString, biotope_attribute.IMP_FORM))
 //                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("BREA_DIA", ogr.OFTString, biotope_attribute.BREA_DIA))
 //                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("FIN_EST", ogr.OFTString, biotope_attribute.FIN_EST))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SPEC", ogr.OFTString, biotope_attribute.TRE_SPEC))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_FAMI", ogr.OFTString, biotope_attribute.TRE_FAMI))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SCIEN", ogr.OFTString, biotope_attribute.TRE_SCIEN))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_H", ogr.OFTString, biotope_attribute.TRE_H.toString()))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_BREA", ogr.OFTString, biotope_attribute.TRE_BREA.toString()))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_COVE", ogr.OFTString, biotope_attribute.TRE_COVE.toString()))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_SPEC", ogr.OFTString, biotope_attribute.STRE_SPEC))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_FAMI", ogr.OFTString, biotope_attribute.STRE_FAMI))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_SCIEN", ogr.OFTString, biotope_attribute.STRE_SCIEN))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_H", ogr.OFTString, biotope_attribute.STRE_H.toString()))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_BREA", ogr.OFTString, biotope_attribute.STRE_BREA.toString()))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_COVE", ogr.OFTString, biotope_attribute.STRE_COVE.toString()))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_SPEC", ogr.OFTString, biotope_attribute.SHR_SPEC))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_FAMI", ogr.OFTString, biotope_attribute.SHR_FAMI))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_SCIEN", ogr.OFTString, biotope_attribute.SHR_SCIEN))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_H", ogr.OFTString, biotope_attribute.SHR_H.toString()))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STR_COVE", ogr.OFTString, biotope_attribute.STR_COVE.toString()))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_SPEC", ogr.OFTString, biotope_attribute.HER_SPEC))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_FAMI", ogr.OFTString, biotope_attribute.HER_FAMI))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_SCIEN", ogr.OFTString, biotope_attribute.HER_SCIEN))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_H", ogr.OFTString, biotope_attribute.HER_H.toString()))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_COVE", ogr.OFTString, biotope_attribute.HER_COVE.toString()))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("PIC_FOLDER", ogr.OFTString, biotope_attribute.PIC_FOLDER))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("WILD_ANI", ogr.OFTString, biotope_attribute.WILD_ANI))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("BIOTOP_POT", ogr.OFTString, biotope_attribute.BIOTOP_POT))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("UNUS_NOTE", ogr.OFTString, biotope_attribute.UNUS_NOTE))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, biotope_attribute.GPS_LAT.toString()))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, biotope_attribute.GPS_LON.toString()))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("NEED_CONF", ogr.OFTString, biotope_attribute.NEED_CONF))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, biotope_attribute.CONF_MOD))
-                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LANDUSE", ogr.OFTString, biotope_attribute.LANDUSE))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SPEC", ogr.OFTString, biotope_attribute.TRE_SPEC))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_FAMI", ogr.OFTString, biotope_attribute.TRE_FAMI))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SCIEN", ogr.OFTString, biotope_attribute.TRE_SCIEN))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_H", ogr.OFTString, biotope_attribute.TRE_H.toString()))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_BREA", ogr.OFTString, biotope_attribute.TRE_BREA.toString()))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_COVE", ogr.OFTString, biotope_attribute.TRE_COVE.toString()))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_SPEC", ogr.OFTString, biotope_attribute.STRE_SPEC))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_FAMI", ogr.OFTString, biotope_attribute.STRE_FAMI))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_SCIEN", ogr.OFTString, biotope_attribute.STRE_SCIEN))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_H", ogr.OFTString, biotope_attribute.STRE_H.toString()))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_BREA", ogr.OFTString, biotope_attribute.STRE_BREA.toString()))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_COVE", ogr.OFTString, biotope_attribute.STRE_COVE.toString()))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_SPEC", ogr.OFTString, biotope_attribute.SHR_SPEC))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_FAMI", ogr.OFTString, biotope_attribute.SHR_FAMI))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_SCIEN", ogr.OFTString, biotope_attribute.SHR_SCIEN))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_H", ogr.OFTString, biotope_attribute.SHR_H.toString()))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STR_COVE", ogr.OFTString, biotope_attribute.STR_COVE.toString()))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_SPEC", ogr.OFTString, biotope_attribute.HER_SPEC))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_FAMI", ogr.OFTString, biotope_attribute.HER_FAMI))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_SCIEN", ogr.OFTString, biotope_attribute.HER_SCIEN))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_H", ogr.OFTString, biotope_attribute.HER_H.toString()))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_COVE", ogr.OFTString, biotope_attribute.HER_COVE.toString()))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("PIC_FOLDER", ogr.OFTString, biotope_attribute.PIC_FOLDER))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("WILD_ANI", ogr.OFTString, biotope_attribute.WILD_ANI))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("BIOTOP_POT", ogr.OFTString, biotope_attribute.BIOTOP_POT))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("UNUS_NOTE", ogr.OFTString, biotope_attribute.UNUS_NOTE))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, biotope_attribute.GPS_LAT.toString()))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, biotope_attribute.GPS_LON.toString()))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("NEED_CONF", ogr.OFTString, biotope_attribute.NEED_CONF))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, biotope_attribute.CONF_MOD))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LANDUSE", ogr.OFTString, biotope_attribute.LANDUSE))
+                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, biotope_attribute.GEOM))
 
-                        val exporter = Exporter.ExportItem(LAYER_BIOTOPE, BIOTOPEATTRIBUTE, polygons.get(idx))
+                var geomsplit = biotope_attribute.GEOM!!.split(",")
+                var points: ArrayList<LatLng> = ArrayList<LatLng>()
 
-                        biotopeArray.add(exporter)
+                println("-------biotope_attribute.geom ${biotope_attribute.GEOM}")
 
-                    }
+                for (i in 0 until geomsplit.size - 1) {
+                    var split = geomsplit.get(i).split(" ")
+                    val latlng = LatLng(split.get(1).toDouble(), split.get(0).toDouble())
+                    points.add(latlng)
                 }
+
+                val exporter = Exporter.ExportItem(LAYER_BIOTOPE, BIOTOPEATTRIBUTE, points)
+
+                biotopeArray.add(exporter)
+
+//                    }
+//                }
 
                 if (biotopeArray != null) {
                     Exporter.export(biotopeArray)
@@ -5964,10 +6040,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     }
 
-    fun exportBirds() {
+    fun exportBirds(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
+        val lftday = leftday + lefttime
+        val rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
-        val data = db!!.query("birdsAttribute", dataList, null, null, "GROP_ID", null, "", null)
+//        val data = db!!.query("birdsAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var data = db!!.query("birdsAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         var datas: ArrayList<Birds_attribute> = ArrayList<Birds_attribute>()
         var chkData = false
         var index = 0
@@ -5976,31 +6055,31 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21), data.getString(22)
-                    , data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getString(28), data.getString(29))
+                    , data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getString(28), data.getString(29), data.getString(30))
 
-            datas.add(birds_attribute)
+            birdsDatas.add(birds_attribute)
 
         }
 
-        if (datas != null) {
-            for (i in 0..datas.size - 1) {
-                println("-----datassize${datas.size}")
-
-                val item = datas.get(i)
-
-                val data = db!!.query("birdsAttribute", dataList, "GROP_ID = '${item.GROP_ID}'", null, null, null, "", null)
-
-                while (data.moveToNext()) {
-
-                    var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                            , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21), data.getString(22)
-                            , data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getString(28), data.getString(29))
-
-                    birdsDatas.add(birds_attribute)
-                }
-            }
-        }
+//        if (datas != null) {
+//            for (i in 0..datas.size - 1) {
+//                println("-----datassize${datas.size}")
+//
+//                val item = datas.get(i)
+//
+//                val data = db!!.query("birdsAttribute", dataList, "GROP_ID = '${item.GROP_ID}'", null, null, null, "", null)
+//
+//                while (data.moveToNext()) {
+//
+//                    var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+//                            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+//                            , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21), data.getString(22)
+//                            , data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getString(28), data.getString(29), data.getString(30))
+//
+//                    birdsDatas.add(birds_attribute)
+//                }
+//            }
+//        }
 
         if (birdsDatas.size > 0) {
 
@@ -6033,53 +6112,65 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     }
                 }
 
-                if (add) {
+//                if (add) {
 
-                    var BIRDSATTRIBUTE: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+                var BIRDSATTRIBUTE: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
-                    if (index == 0) {
+//                    if (index == 0) {
 //                                BIRDSATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,birds_attribute.id))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger, birds_attribute.NUM))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, birds_attribute.GROP_ID))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, birds_attribute.PRJ_NAME))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, birds_attribute.INV_REGION))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, birds_attribute.INV_DT))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, birds_attribute.INV_PERSON))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, birds_attribute.WEATHER))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, birds_attribute.WIND))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, birds_attribute.WIND_DIRE))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, birds_attribute.TEMPERATUR.toString()))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, birds_attribute.ETC))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, birds_attribute.INV_TM))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, birds_attribute.SPEC_NM))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, birds_attribute.FAMI_NM))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, birds_attribute.SCIEN_NM))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger, birds_attribute.NUM))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, birds_attribute.GROP_ID))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, birds_attribute.PRJ_NAME))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, birds_attribute.INV_REGION))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, birds_attribute.INV_DT))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, birds_attribute.INV_PERSON))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, birds_attribute.WEATHER))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, birds_attribute.WIND))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, birds_attribute.WIND_DIRE))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, birds_attribute.TEMPERATUR.toString()))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, birds_attribute.ETC))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, birds_attribute.INV_TM))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, birds_attribute.SPEC_NM))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, birds_attribute.FAMI_NM))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, birds_attribute.SCIEN_NM))
 // 멸종위기기호                       BIRDSATTRIBUTE.add(Exporter.ColumnDef("ENDANGERED", ogr.OFTString, birds_attribute.ENDANGERED))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger, birds_attribute.INDI_CNT))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("OBS_STAT", ogr.OFTString, birds_attribute.OBS_STAT))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("OBS_ST_ETC", ogr.OFTString, birds_attribute.OBS_ST_ETC))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_TAR", ogr.OFTString, birds_attribute.USE_TAR))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_TAR_SP", ogr.OFTString, birds_attribute.USE_TAR_SP))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_LAYER", ogr.OFTString, birds_attribute.USE_LAYER))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT", ogr.OFTString, birds_attribute.MJ_ACT))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT_PR", ogr.OFTString, birds_attribute.MJ_ACT_PR))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, birds_attribute.GPS_LAT.toString()))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, birds_attribute.GPS_LON.toString()))
-                        BIRDSATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, birds_attribute.CONF_MOD))
-                    }
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger, birds_attribute.INDI_CNT))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("OBS_STAT", ogr.OFTString, birds_attribute.OBS_STAT))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("OBS_ST_ETC", ogr.OFTString, birds_attribute.OBS_ST_ETC))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_TAR", ogr.OFTString, birds_attribute.USE_TAR))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_TAR_SP", ogr.OFTString, birds_attribute.USE_TAR_SP))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_LAYER", ogr.OFTString, birds_attribute.USE_LAYER))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT", ogr.OFTString, birds_attribute.MJ_ACT))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT_PR", ogr.OFTString, birds_attribute.MJ_ACT_PR))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, birds_attribute.GPS_LAT.toString()))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, birds_attribute.GPS_LON.toString()))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, birds_attribute.CONF_MOD))
+                BIRDSATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, birds_attribute.GEOM))
+//                    }
 
-                    val exporter = Exporter.ExportPointItem(LAYER_BIRDS, BIRDSATTRIBUTE, points.get(idx))
+                var geomsplit = birds_attribute.GEOM!!.split(" ")
+                val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
 
-                    pointsArray.add(exporter)
+                val markerOptions = MarkerOptions()
+                markerOptions.position(latlng)
 
-                }
+                // markerOptions.title("Marker in Sydney")
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                markerOptions.alpha(1.0f)
+                markerOptions.draggable(true)
+
+                val marker = googleMap.addMarker(markerOptions)
+
+                val exporter = Exporter.ExportPointItem(LAYER_BIRDS, BIRDSATTRIBUTE, marker)
+
+                pointsArray.add(exporter)
+
+                marker.remove()
+
+//                }
             }
 
             if (pointsArray != null) {
-                for (i in 0..pointsArray.size - 1) {
-                    println("pointsArrayData : ${pointsArray.size}")
-                }
-
                 Exporter.exportPoint(pointsArray)
             }
 
@@ -6104,10 +6195,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
     }
 
-    fun exportReptilia() {
+    fun exportReptilia(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
+        val lftday = leftday + lefttime
+        val rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
-        val reptiliadata = db!!.query("reptiliaAttribute", dataList, null, null, "GROP_ID", null, "", null)
+//        val reptiliadata = db!!.query("reptiliaAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var reptiliadata = db!!.query("reptiliaAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         var datas: ArrayList<Reptilia_attribute> = ArrayList<Reptilia_attribute>()
         var chkData = false
         var index = 0
@@ -6117,33 +6211,35 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(reptiliadata.getString(0), reptiliadata.getString(1), reptiliadata.getString(2), reptiliadata.getString(3), reptiliadata.getString(4), reptiliadata.getString(5), reptiliadata.getString(6), reptiliadata.getString(7),
                     reptiliadata.getString(8), reptiliadata.getFloat(9), reptiliadata.getString(10), reptiliadata.getInt(11), reptiliadata.getString(12), reptiliadata.getString(13), reptiliadata.getString(14)
                     , reptiliadata.getString(15), reptiliadata.getString(16), reptiliadata.getInt(17), reptiliadata.getInt(18), reptiliadata.getInt(19), reptiliadata.getString(20), reptiliadata.getString(21), reptiliadata.getString(22)
-                    , reptiliadata.getString(23), reptiliadata.getString(24), reptiliadata.getString(25), reptiliadata.getInt(26), reptiliadata.getInt(27), reptiliadata.getInt(28), reptiliadata.getFloat(29), reptiliadata.getFloat(30), reptiliadata.getString(31), reptiliadata.getString(32))
+                    , reptiliadata.getString(23), reptiliadata.getString(24), reptiliadata.getString(25), reptiliadata.getInt(26), reptiliadata.getInt(27), reptiliadata.getInt(28), reptiliadata.getFloat(29), reptiliadata.getFloat(30)
+                    , reptiliadata.getString(31), reptiliadata.getString(32), reptiliadata.getString(33))
 
-            datas.add(reptilia_attribute)
+            reptiliaDatas.add(reptilia_attribute)
         }
 
-        if (datas != null) {
-
-            for (i in 0..datas.size - 1) {
-                val data = datas.get(i)
-
-                val reptiliadata = db!!.query("reptiliaAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
-
-                while (reptiliadata.moveToNext()) {
-
-                    var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(reptiliadata.getString(0), reptiliadata.getString(1), reptiliadata.getString(2), reptiliadata.getString(3), reptiliadata.getString(4), reptiliadata.getString(5), reptiliadata.getString(6), reptiliadata.getString(7),
-                            reptiliadata.getString(8), reptiliadata.getFloat(9), reptiliadata.getString(10), reptiliadata.getInt(11), reptiliadata.getString(12), reptiliadata.getString(13), reptiliadata.getString(14)
-                            , reptiliadata.getString(15), reptiliadata.getString(16), reptiliadata.getInt(17), reptiliadata.getInt(18), reptiliadata.getInt(19), reptiliadata.getString(20), reptiliadata.getString(21), reptiliadata.getString(22)
-                            , reptiliadata.getString(23), reptiliadata.getString(24), reptiliadata.getString(25), reptiliadata.getInt(26), reptiliadata.getInt(27), reptiliadata.getInt(28), reptiliadata.getFloat(29), reptiliadata.getFloat(30), reptiliadata.getString(31), reptiliadata.getString(32))
-
-
-                    reptiliaDatas.add(reptilia_attribute)
-
-                }
-
-            }
-
-        }
+//        if (datas != null) {
+//
+//            for (i in 0..datas.size - 1) {
+//                val data = datas.get(i)
+//
+//                val reptiliadata = db!!.query("reptiliaAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
+//
+//                while (reptiliadata.moveToNext()) {
+//
+//                    var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(reptiliadata.getString(0), reptiliadata.getString(1), reptiliadata.getString(2), reptiliadata.getString(3), reptiliadata.getString(4), reptiliadata.getString(5), reptiliadata.getString(6), reptiliadata.getString(7),
+//                            reptiliadata.getString(8), reptiliadata.getFloat(9), reptiliadata.getString(10), reptiliadata.getInt(11), reptiliadata.getString(12), reptiliadata.getString(13), reptiliadata.getString(14)
+//                            , reptiliadata.getString(15), reptiliadata.getString(16), reptiliadata.getInt(17), reptiliadata.getInt(18), reptiliadata.getInt(19), reptiliadata.getString(20), reptiliadata.getString(21), reptiliadata.getString(22)
+//                            , reptiliadata.getString(23), reptiliadata.getString(24), reptiliadata.getString(25), reptiliadata.getInt(26), reptiliadata.getInt(27), reptiliadata.getInt(28), reptiliadata.getFloat(29), reptiliadata.getFloat(30)
+//                            , reptiliadata.getString(31), reptiliadata.getString(32), reptiliadata.getString(33))
+//
+//
+//                    reptiliaDatas.add(reptilia_attribute)
+//
+//                }
+//
+//            }
+//
+//        }
 
         if (reptiliaDatas.size > 0) {
 
@@ -6176,54 +6272,66 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 }
 
-                if (add) {
-                    var REPTILIAATTRIBUTE: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+//                if (add) {
+                var REPTILIAATTRIBUTE: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
-                    if (index == 0) {
+//                    if (index == 0) {
 //                                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,reptilia_attribute.id))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger, reptilia_attribute.NUM))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, reptilia_attribute.GROP_ID))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, reptilia_attribute.PRJ_NAME))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, reptilia_attribute.INV_REGION))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, reptilia_attribute.INV_DT))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, reptilia_attribute.INV_PERSON))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, reptilia_attribute.WEATHER))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, reptilia_attribute.WIND))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, reptilia_attribute.WIND_DIRE))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, reptilia_attribute.TEMPERATUR.toString()))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, reptilia_attribute.ETC))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, reptilia_attribute.INV_TM))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, reptilia_attribute.SPEC_NM))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, reptilia_attribute.FAMI_NM))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, reptilia_attribute.SCIEN_NM))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("IN_CNT_ADU", ogr.OFTInteger, reptilia_attribute.IN_CNT_ADU))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("IN_CNT_LAR", ogr.OFTInteger, reptilia_attribute.IN_CNT_LAR))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("IN_CNT_EGG", ogr.OFTInteger, reptilia_attribute.IN_CNT_EGG))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_RIVEER", ogr.OFTString, reptilia_attribute.HAB_RIVEER))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_EDGE", ogr.OFTString, reptilia_attribute.HAB_EDGE))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WATER_IN", ogr.OFTString, reptilia_attribute.WATER_IN))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WATER_OUT", ogr.OFTString, reptilia_attribute.WATER_OUT))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WATER_CONT", ogr.OFTString, reptilia_attribute.WATER_CONT))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WATER_QUAL", ogr.OFTString, reptilia_attribute.WATER_QUAL))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WATER_DEPT", ogr.OFTInteger, reptilia_attribute.WATER_DEPT))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA_W", ogr.OFTInteger, reptilia_attribute.HAB_AREA_W))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA_H", ogr.OFTInteger, reptilia_attribute.HAB_AREA_H))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, reptilia_attribute.GPS_LAT.toString()))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, reptilia_attribute.GPS_LON.toString()))
-                        REPTILIAATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, reptilia_attribute.CONF_MOD))
-                    }
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger, reptilia_attribute.NUM))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, reptilia_attribute.GROP_ID))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, reptilia_attribute.PRJ_NAME))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, reptilia_attribute.INV_REGION))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, reptilia_attribute.INV_DT))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, reptilia_attribute.INV_PERSON))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, reptilia_attribute.WEATHER))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, reptilia_attribute.WIND))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, reptilia_attribute.WIND_DIRE))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, reptilia_attribute.TEMPERATUR.toString()))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, reptilia_attribute.ETC))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, reptilia_attribute.INV_TM))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, reptilia_attribute.SPEC_NM))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, reptilia_attribute.FAMI_NM))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, reptilia_attribute.SCIEN_NM))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("IN_CNT_ADU", ogr.OFTInteger, reptilia_attribute.IN_CNT_ADU))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("IN_CNT_LAR", ogr.OFTInteger, reptilia_attribute.IN_CNT_LAR))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("IN_CNT_EGG", ogr.OFTInteger, reptilia_attribute.IN_CNT_EGG))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_RIVEER", ogr.OFTString, reptilia_attribute.HAB_RIVEER))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_EDGE", ogr.OFTString, reptilia_attribute.HAB_EDGE))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WATER_IN", ogr.OFTString, reptilia_attribute.WATER_IN))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WATER_OUT", ogr.OFTString, reptilia_attribute.WATER_OUT))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WATER_CONT", ogr.OFTString, reptilia_attribute.WATER_CONT))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WATER_QUAL", ogr.OFTString, reptilia_attribute.WATER_QUAL))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("WATER_DEPT", ogr.OFTInteger, reptilia_attribute.WATER_DEPT))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA_W", ogr.OFTInteger, reptilia_attribute.HAB_AREA_W))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA_H", ogr.OFTInteger, reptilia_attribute.HAB_AREA_H))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, reptilia_attribute.GPS_LAT.toString()))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, reptilia_attribute.GPS_LON.toString()))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, reptilia_attribute.CONF_MOD))
+                REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, reptilia_attribute.GEOM))
+//                    }
 
-                    val exporter = Exporter.ExportPointItem(LAYER_REPTILIA, REPTILIAATTRIBUTE, points.get(idx))
+                var geomsplit = reptilia_attribute.GEOM!!.split(" ")
+                val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
 
-                    pointsArray.add(exporter)
-                }
+                val markerOptions = MarkerOptions()
+                markerOptions.position(latlng)
+
+                // markerOptions.title("Marker in Sydney")
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                markerOptions.alpha(1.0f)
+                markerOptions.draggable(true)
+
+                val marker = googleMap.addMarker(markerOptions)
+
+//                    val exporter = Exporter.ExportPointItem(LAYER_REPTILIA, REPTILIAATTRIBUTE, points.get(idx))
+                val exporter = Exporter.ExportPointItem(LAYER_REPTILIA, REPTILIAATTRIBUTE, marker)
+
+                pointsArray.add(exporter)
+                marker.remove()
+//                }
             }
 
             if (pointsArray != null) {
-                for (i in 0..pointsArray.size - 1) {
-                    println("pointsArrayData : ${pointsArray.size}")
-                }
-
                 Exporter.exportPoint(pointsArray)
             }
 
@@ -6248,10 +6356,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     }
 
-    fun exportMammal() {
+    fun exportMammal(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
+        val lftday = leftday + lefttime
+        val rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
-        val data = db!!.query("mammalAttribute", dataList, null, null, "GROP_ID", null, "", null)
+//        val data = db!!.query("mammalAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var data = db!!.query("mammalAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         var datas: ArrayList<Mammal_attribute> = ArrayList<Mammal_attribute>()
         var chkData = false
         var index = 0
@@ -6261,30 +6372,30 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                    , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27), data.getString(28), data.getString(29), data.getString(30))
+                    , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27), data.getString(28), data.getString(29), data.getString(30), data.getString(31))
 
-            datas.add(mammal_attribute)
+            mammaliaDatas.add(mammal_attribute)
 
         }
 
-        if (datas != null) {
-
-            for (i in 0..datas.size - 1) {
-                val item = datas.get(i)
-
-                val data = db!!.query("mammalAttribute", dataList, "GROP_ID = '${item.GROP_ID}'", null, null, null, "", null)
-
-                while (data.moveToNext()) {
-
-                    var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                            , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27), data.getString(28), data.getString(29), data.getString(30))
-
-                    mammaliaDatas.add(mammal_attribute)
-                }
-            }
-        }
+//        if (datas != null) {
+//
+//            for (i in 0..datas.size - 1) {
+//                val item = datas.get(i)
+//
+//                val data = db!!.query("mammalAttribute", dataList, "GROP_ID = '${item.GROP_ID}'", null, null, null, "", null)
+//
+//                while (data.moveToNext()) {
+//
+//                    var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+//                            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+//                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
+//                            , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27), data.getString(28), data.getString(29), data.getString(30), data.getString(31))
+//
+//                    mammaliaDatas.add(mammal_attribute)
+//                }
+//            }
+//        }
 
         if (mammaliaDatas.size > 0) {
 
@@ -6317,52 +6428,63 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 }
 
-                if (add) {
-                    var MAMMALATTRIBUTE: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+//                if (add) {
+                var MAMMALATTRIBUTE: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
-                    if (index == 0) {
+//                    if (index == 0) {
 //                                MAMMALATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString, mammal_attribute.id))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger, mammal_attribute.NUM))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, mammal_attribute.GROP_ID))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, mammal_attribute.PRJ_NAME))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, mammal_attribute.INV_REGION))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, mammal_attribute.INV_DT))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, mammal_attribute.INV_PERSON))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, mammal_attribute.WEATHER))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, mammal_attribute.WIND))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, mammal_attribute.WIND_DIRE))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, mammal_attribute.TEMPERATUR.toString()))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, mammal_attribute.ETC))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, mammal_attribute.INV_TM))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, mammal_attribute.SPEC_NM))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, mammal_attribute.FAMI_NM))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, mammal_attribute.SCIEN_NM))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger, mammal_attribute.NUM))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, mammal_attribute.GROP_ID))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, mammal_attribute.PRJ_NAME))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, mammal_attribute.INV_REGION))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, mammal_attribute.INV_DT))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, mammal_attribute.INV_PERSON))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, mammal_attribute.WEATHER))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, mammal_attribute.WIND))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, mammal_attribute.WIND_DIRE))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, mammal_attribute.TEMPERATUR.toString()))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, mammal_attribute.ETC))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, mammal_attribute.INV_TM))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, mammal_attribute.SPEC_NM))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, mammal_attribute.FAMI_NM))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, mammal_attribute.SCIEN_NM))
 // 멸종위기기호                       MAMMALATTRIBUTE.add(Exporter.ColumnDef("ENDANGERED", ogr.OFTString, mammal_attribute.ENDANGERED))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("OBS_TY", ogr.OFTString, mammal_attribute.OBS_TY))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("OBS_TY_ETC", ogr.OFTString, mammal_attribute.OBS_TY_ETC))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger, mammal_attribute.INDI_CNT))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("OB_PT_CHAR", ogr.OFTString, mammal_attribute.OB_PT_CHAR))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("UNUS_NOTE", ogr.OFTString, mammal_attribute.UNUS_NOTE))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, mammal_attribute.GPS_LAT.toString()))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, mammal_attribute.GPS_LON.toString()))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("UN_SPEC", ogr.OFTString, mammal_attribute.UN_SPEC))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("UN_SPEC_RE", ogr.OFTString, mammal_attribute.UN_SPEC_RE))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("TR_EASY", ogr.OFTString, mammal_attribute.TR_EASY))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("TR_EASY_RE", ogr.OFTString, mammal_attribute.TR_EASY_RE))
-                        MAMMALATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, mammal_attribute.CONF_MOD))
-                    }
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("OBS_TY", ogr.OFTString, mammal_attribute.OBS_TY))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("OBS_TY_ETC", ogr.OFTString, mammal_attribute.OBS_TY_ETC))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger, mammal_attribute.INDI_CNT))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("OB_PT_CHAR", ogr.OFTString, mammal_attribute.OB_PT_CHAR))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("UNUS_NOTE", ogr.OFTString, mammal_attribute.UNUS_NOTE))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, mammal_attribute.GPS_LAT.toString()))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, mammal_attribute.GPS_LON.toString()))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("UN_SPEC", ogr.OFTString, mammal_attribute.UN_SPEC))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("UN_SPEC_RE", ogr.OFTString, mammal_attribute.UN_SPEC_RE))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("TR_EASY", ogr.OFTString, mammal_attribute.TR_EASY))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("TR_EASY_RE", ogr.OFTString, mammal_attribute.TR_EASY_RE))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, mammal_attribute.CONF_MOD))
+                MAMMALATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, mammal_attribute.GEOM))
+//                    }
 
-                    val exporter = Exporter.ExportPointItem(LAYER_MAMMALIA, MAMMALATTRIBUTE, points.get(idx))
+                var geomsplit = mammal_attribute.GEOM!!.split(" ")
+                val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
 
-                    pointsArray.add(exporter)
-                }
+                val markerOptions = MarkerOptions()
+                markerOptions.position(latlng)
+
+                // markerOptions.title("Marker in Sydney")
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                markerOptions.alpha(1.0f)
+                markerOptions.draggable(true)
+
+                val marker = googleMap.addMarker(markerOptions)
+
+                val exporter = Exporter.ExportPointItem(LAYER_MAMMALIA, MAMMALATTRIBUTE, marker)
+
+                pointsArray.add(exporter)
+                marker.remove()
             }
+//            }
 
             if (pointsArray != null) {
-                for (i in 0..pointsArray.size - 1) {
-                    println("pointsArrayData : ${pointsArray.size}")
-                }
-
                 Exporter.exportPoint(pointsArray)
             }
 
@@ -6386,10 +6508,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
     }
 
-    fun exportFish() {
+    fun exportFish(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
+        val lftday = leftday + lefttime
+        val rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
-        val fishdata = db!!.query("fishAttribute", dataList, null, null, "GROP_ID", null, "", null)
+//        val fishdata = db!!.query("fishAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var fishdata = db!!.query("fishAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         var datas: ArrayList<Fish_attribute> = ArrayList<Fish_attribute>()
         var chkData = false
         var index = 0
@@ -6399,27 +6524,27 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             var fish_attribute: Fish_attribute = Fish_attribute(fishdata.getString(0), fishdata.getString(1), fishdata.getString(2), fishdata.getString(3), fishdata.getString(4), fishdata.getString(5), fishdata.getString(6), fishdata.getString(7),
                     fishdata.getString(8), fishdata.getString(9), fishdata.getFloat(10), fishdata.getString(11), fishdata.getString(12), fishdata.getString(13), fishdata.getInt(14), fishdata.getString(15), fishdata.getInt(16), fishdata.getInt(17), fishdata.getString(18),
                     fishdata.getFloat(19), fishdata.getFloat(20), fishdata.getString(21), fishdata.getString(22), fishdata.getInt(23), fishdata.getInt(24), fishdata.getInt(25), fishdata.getInt(26), fishdata.getString(27), fishdata.getString(28), fishdata.getString(29),
-                    fishdata.getInt(30), fishdata.getString(31), fishdata.getString(32), fishdata.getString(33), fishdata.getInt(34), fishdata.getString(35), fishdata.getString(36), fishdata.getString(37), fishdata.getString(38), fishdata.getString(39))
+                    fishdata.getInt(30), fishdata.getString(31), fishdata.getString(32), fishdata.getString(33), fishdata.getInt(34), fishdata.getString(35), fishdata.getString(36), fishdata.getString(37), fishdata.getString(38), fishdata.getString(39), fishdata.getString(40))
 
-            datas.add(fish_attribute)
+            fishDatas.add(fish_attribute)
         }
 
-        if (datas != null) {
-            for (i in 0..datas.size - 1) {
-                val data = datas.get(i)
-
-                val fishdata = db!!.query("fishAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
-
-                while (fishdata.moveToNext()) {
-                    var fish_attribute: Fish_attribute = Fish_attribute(fishdata.getString(0), fishdata.getString(1), fishdata.getString(2), fishdata.getString(3), fishdata.getString(4), fishdata.getString(5), fishdata.getString(6), fishdata.getString(7),
-                            fishdata.getString(8), fishdata.getString(9), fishdata.getFloat(10), fishdata.getString(11), fishdata.getString(12), fishdata.getString(13), fishdata.getInt(14), fishdata.getString(15), fishdata.getInt(16), fishdata.getInt(17), fishdata.getString(18),
-                            fishdata.getFloat(19), fishdata.getFloat(20), fishdata.getString(21), fishdata.getString(22), fishdata.getInt(23), fishdata.getInt(24), fishdata.getInt(25), fishdata.getInt(26), fishdata.getString(27), fishdata.getString(28), fishdata.getString(29),
-                            fishdata.getInt(30), fishdata.getString(31), fishdata.getString(32), fishdata.getString(33), fishdata.getInt(34), fishdata.getString(35), fishdata.getString(36), fishdata.getString(37), fishdata.getString(38), fishdata.getString(39))
-                    fishDatas.add(fish_attribute)
-
-                }
-            }
-        }
+//        if (datas != null) {
+//            for (i in 0..datas.size - 1) {
+//                val data = datas.get(i)
+//
+//                val fishdata = db!!.query("fishAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
+//
+//                while (fishdata.moveToNext()) {
+//                    var fish_attribute: Fish_attribute = Fish_attribute(fishdata.getString(0), fishdata.getString(1), fishdata.getString(2), fishdata.getString(3), fishdata.getString(4), fishdata.getString(5), fishdata.getString(6), fishdata.getString(7),
+//                            fishdata.getString(8), fishdata.getString(9), fishdata.getFloat(10), fishdata.getString(11), fishdata.getString(12), fishdata.getString(13), fishdata.getInt(14), fishdata.getString(15), fishdata.getInt(16), fishdata.getInt(17), fishdata.getString(18),
+//                            fishdata.getFloat(19), fishdata.getFloat(20), fishdata.getString(21), fishdata.getString(22), fishdata.getInt(23), fishdata.getInt(24), fishdata.getInt(25), fishdata.getInt(26), fishdata.getString(27), fishdata.getString(28), fishdata.getString(29),
+//                            fishdata.getInt(30), fishdata.getString(31), fishdata.getString(32), fishdata.getString(33), fishdata.getInt(34), fishdata.getString(35), fishdata.getString(36), fishdata.getString(37), fishdata.getString(38), fishdata.getString(39), fishdata.getString(40))
+//                    fishDatas.add(fish_attribute)
+//
+//                }
+//            }
+//        }
 
         if (fishDatas.size > 0) {
 
@@ -6452,61 +6577,73 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 }
 
-                if (add) {
-                    var FISHATTRIBUTE: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
-                    if (index == 0) {
+//                if (add) {
+                var FISHATTRIBUTE: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+//                    if (index == 0) {
 //                                FISHATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString, fish_attribute.id))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger, fish_attribute.NUM))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, fish_attribute.GROP_ID))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, fish_attribute.PRJ_NAME))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, fish_attribute.INV_REGION))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, fish_attribute.INV_DT))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, fish_attribute.INV_TM))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, fish_attribute.INV_PERSON))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, fish_attribute.WEATHER))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, fish_attribute.WIND))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, fish_attribute.WIND_DIRE))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, fish_attribute.TEMPERATUR.toString()))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, fish_attribute.ETC))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("MID_RAGE", ogr.OFTString, fish_attribute.MID_RAGE))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("CODE_NUM", ogr.OFTString, fish_attribute.CODE_NUM))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("RIVER_NUM", ogr.OFTInteger, fish_attribute.RIVER_NUM))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("RIVER_NM", ogr.OFTString, fish_attribute.RIVER_NM))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("NET_CNT", ogr.OFTInteger, fish_attribute.NET_CNT))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("NET_MIN", ogr.OFTInteger, fish_attribute.NET_MIN))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("AD_DIST_NM", ogr.OFTString, fish_attribute.AD_DIST_NM))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, fish_attribute.GPS_LAT.toString()))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, fish_attribute.GPS_LON.toString()))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("COLL_TOOL", ogr.OFTString, fish_attribute.COLL_TOOL))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("STREAM_W", ogr.OFTString, fish_attribute.STREAM_W))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("WATER_W", ogr.OFTInteger, fish_attribute.WATER_W))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("WATER_D", ogr.OFTInteger, fish_attribute.WATER_D))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("WATER_CUR", ogr.OFTInteger, fish_attribute.WATER_CUR))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_STR", ogr.OFTString, fish_attribute.RIV_STR))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_STR_IN", ogr.OFTString, fish_attribute.RIV_STR_IN))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_FORM", ogr.OFTString, fish_attribute.RIV_FORM))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, fish_attribute.SPEC_NM))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, fish_attribute.FAMI_NM))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, fish_attribute.SCIEN_NM))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger, fish_attribute.INDI_CNT))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("UNIDENT", ogr.OFTString, fish_attribute.UNIDENT))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_FM_CH", ogr.OFTString, fish_attribute.RIV_FM_CH))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("UN_FISH_CH", ogr.OFTString, fish_attribute.UN_FISH_CH))
-                        FISHATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, fish_attribute.CONF_MOD))
-                    }
+                FISHATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger, fish_attribute.NUM))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, fish_attribute.GROP_ID))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, fish_attribute.PRJ_NAME))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, fish_attribute.INV_REGION))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, fish_attribute.INV_DT))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, fish_attribute.INV_TM))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, fish_attribute.INV_PERSON))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, fish_attribute.WEATHER))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, fish_attribute.WIND))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, fish_attribute.WIND_DIRE))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, fish_attribute.TEMPERATUR.toString()))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, fish_attribute.ETC))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("MID_RAGE", ogr.OFTString, fish_attribute.MID_RAGE))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("CODE_NUM", ogr.OFTString, fish_attribute.CODE_NUM))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("RIVER_NUM", ogr.OFTInteger, fish_attribute.RIVER_NUM))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("RIVER_NM", ogr.OFTString, fish_attribute.RIVER_NM))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("NET_CNT", ogr.OFTInteger, fish_attribute.NET_CNT))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("NET_MIN", ogr.OFTInteger, fish_attribute.NET_MIN))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("AD_DIST_NM", ogr.OFTString, fish_attribute.AD_DIST_NM))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, fish_attribute.GPS_LAT.toString()))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, fish_attribute.GPS_LON.toString()))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("COLL_TOOL", ogr.OFTString, fish_attribute.COLL_TOOL))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("STREAM_W", ogr.OFTString, fish_attribute.STREAM_W))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("WATER_W", ogr.OFTInteger, fish_attribute.WATER_W))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("WATER_D", ogr.OFTInteger, fish_attribute.WATER_D))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("WATER_CUR", ogr.OFTInteger, fish_attribute.WATER_CUR))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_STR", ogr.OFTString, fish_attribute.RIV_STR))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_STR_IN", ogr.OFTString, fish_attribute.RIV_STR_IN))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_FORM", ogr.OFTString, fish_attribute.RIV_FORM))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, fish_attribute.SPEC_NM))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, fish_attribute.FAMI_NM))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, fish_attribute.SCIEN_NM))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger, fish_attribute.INDI_CNT))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("UNIDENT", ogr.OFTString, fish_attribute.UNIDENT))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_FM_CH", ogr.OFTString, fish_attribute.RIV_FM_CH))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("UN_FISH_CH", ogr.OFTString, fish_attribute.UN_FISH_CH))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, fish_attribute.CONF_MOD))
+                FISHATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, fish_attribute.GEOM))
+//                    }
 
-                    val exporter = Exporter.ExportPointItem(LAYER_FISH, FISHATTRIBUTE, points.get(idx))
+                var geomsplit = fish_attribute.GEOM!!.split(" ")
+                val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
 
-                    pointsArray.add(exporter)
-                }
+                val markerOptions = MarkerOptions()
+                markerOptions.position(latlng)
+
+                // markerOptions.title("Marker in Sydney")
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                markerOptions.alpha(1.0f)
+                markerOptions.draggable(true)
+
+                val marker = googleMap.addMarker(markerOptions)
+
+                val exporter = Exporter.ExportPointItem(LAYER_FISH, FISHATTRIBUTE, marker)
+
+                pointsArray.add(exporter)
+
+                marker.remove()
             }
+//            }
 
 
             if (pointsArray != null) {
-                for (i in 0..pointsArray.size - 1) {
-                    println("pointsArrayData : ${pointsArray.size}")
-                }
-
                 Exporter.exportPoint(pointsArray)
             }
 
@@ -6527,13 +6664,17 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             fishdata.close()
             pointsArray.clear()
             fishDatas.clear()
+
         }
     }
 
-    fun exportInsects() {
+    fun exportInsects(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
+        val lftday = leftday + lefttime
+        val rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
-        val insectdata = db!!.query("insectAttribute", dataList, null, null, "GROP_ID", null, "", null)
+//        val insectdata = db!!.query("insectAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var insectdata = db!!.query("insectAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         var datas: ArrayList<Insect_attribute> = ArrayList<Insect_attribute>()
         var chkData = false
         var index = 0
@@ -6544,31 +6685,31 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     , insectdata.getString(5), insectdata.getString(6), insectdata.getString(7), insectdata.getString(8), insectdata.getFloat(9), insectdata.getString(10), insectdata.getInt(11)
                     , insectdata.getString(12), insectdata.getString(13), insectdata.getString(14), insectdata.getString(15), insectdata.getInt(16), insectdata.getString(17), insectdata.getString(18)
                     , insectdata.getString(19), insectdata.getString(20), insectdata.getString(21), insectdata.getString(22), insectdata.getString(23), insectdata.getString(24), insectdata.getString(25)
-                    , insectdata.getFloat(26), insectdata.getFloat(27), insectdata.getString(28), insectdata.getString(29))
+                    , insectdata.getFloat(26), insectdata.getFloat(27), insectdata.getString(28), insectdata.getString(29), insectdata.getString(30))
 
-            datas.add(insect_attribute)
+            insectDatas.add(insect_attribute)
 
         }
 
-        if (datas != null) {
-            for (i in 0..datas.size - 1) {
-                val data = datas.get(i)
-
-                val insectdata = db!!.query("insectAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
-
-                while (insectdata.moveToNext()) {
-
-                    var insect_attribute: Insect_attribute = Insect_attribute(insectdata.getString(0), insectdata.getString(1), insectdata.getString(2), insectdata.getString(3), insectdata.getString(4)
-                            , insectdata.getString(5), insectdata.getString(6), insectdata.getString(7), insectdata.getString(8), insectdata.getFloat(9), insectdata.getString(10), insectdata.getInt(11)
-                            , insectdata.getString(12), insectdata.getString(13), insectdata.getString(14), insectdata.getString(15), insectdata.getInt(16), insectdata.getString(17), insectdata.getString(18)
-                            , insectdata.getString(19), insectdata.getString(20), insectdata.getString(21), insectdata.getString(22), insectdata.getString(23), insectdata.getString(24), insectdata.getString(25)
-                            , insectdata.getFloat(26), insectdata.getFloat(27), insectdata.getString(28), insectdata.getString(29))
-
-                    insectDatas.add(insect_attribute)
-
-                }
-            }
-        }
+//        if (datas != null) {
+//            for (i in 0..datas.size - 1) {
+//                val data = datas.get(i)
+//
+//                val insectdata = db!!.query("insectAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
+//
+//                while (insectdata.moveToNext()) {
+//
+//                    var insect_attribute: Insect_attribute = Insect_attribute(insectdata.getString(0), insectdata.getString(1), insectdata.getString(2), insectdata.getString(3), insectdata.getString(4)
+//                            , insectdata.getString(5), insectdata.getString(6), insectdata.getString(7), insectdata.getString(8), insectdata.getFloat(9), insectdata.getString(10), insectdata.getInt(11)
+//                            , insectdata.getString(12), insectdata.getString(13), insectdata.getString(14), insectdata.getString(15), insectdata.getInt(16), insectdata.getString(17), insectdata.getString(18)
+//                            , insectdata.getString(19), insectdata.getString(20), insectdata.getString(21), insectdata.getString(22), insectdata.getString(23), insectdata.getString(24), insectdata.getString(25)
+//                            , insectdata.getFloat(26), insectdata.getFloat(27), insectdata.getString(28), insectdata.getString(29), insectdata.getString(30))
+//
+//                    insectDatas.add(insect_attribute)
+//
+//                }
+//            }
+//        }
 
         if (insectDatas.size > 0) {
 
@@ -6599,45 +6740,61 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     }
 
                 }
-                if (add) {
-                    var INSECTATTRIBUTE: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+//                if (add) {
+                var INSECTATTRIBUTE: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
-                    if (index == 0) {
+//                    if (index == 0) {
 //                                INSECTATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString,insect_attribute.id))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger, insect_attribute.NUM))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, insect_attribute.GROP_ID))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, insect_attribute.PRJ_NAME))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, insect_attribute.INV_REGION))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, insect_attribute.INV_DT))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, insect_attribute.INV_PERSON))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, insect_attribute.WEATHER))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, insect_attribute.WIND))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, insect_attribute.WIND_DIRE))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, insect_attribute.TEMPERATUR.toString()))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, insect_attribute.ETC))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, insect_attribute.INV_TM))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, insect_attribute.SPEC_NM))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, insect_attribute.FAMI_NM))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, insect_attribute.SCIEN_NM))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger, insect_attribute.INDI_CNT))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("OBS_STAT", ogr.OFTString, insect_attribute.OBS_STAT))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("OBS_ST_ETC", ogr.OFTString, insect_attribute.OBS_ST_ETC))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("USE_TAR", ogr.OFTString, insect_attribute.USE_TAR))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("USER_TA_ETC", ogr.OFTString, insect_attribute.USER_TA_ETC))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT", ogr.OFTString, insect_attribute.MJ_ACT))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT_ETC", ogr.OFTString, insect_attribute.MJ_ACT_ETC))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_MEAN", ogr.OFTString, insect_attribute.INV_MEAN))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_MN_ETC", ogr.OFTString, insect_attribute.INV_MN_ETC))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("UNUS_NOTE", ogr.OFTString, insect_attribute.UNUS_NOTE))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, insect_attribute.GPS_LAT.toString()))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, insect_attribute.GPS_LON.toString()))
-                        INSECTATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, insect_attribute.CONF_MOD))
-                    }
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger, insect_attribute.NUM))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, insect_attribute.GROP_ID))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, insect_attribute.PRJ_NAME))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, insect_attribute.INV_REGION))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, insect_attribute.INV_DT))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, insect_attribute.INV_PERSON))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, insect_attribute.WEATHER))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, insect_attribute.WIND))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, insect_attribute.WIND_DIRE))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, insect_attribute.TEMPERATUR.toString()))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, insect_attribute.ETC))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, insect_attribute.INV_TM))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, insect_attribute.SPEC_NM))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, insect_attribute.FAMI_NM))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, insect_attribute.SCIEN_NM))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("INDI_CNT", ogr.OFTInteger, insect_attribute.INDI_CNT))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("OBS_STAT", ogr.OFTString, insect_attribute.OBS_STAT))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("OBS_ST_ETC", ogr.OFTString, insect_attribute.OBS_ST_ETC))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("USE_TAR", ogr.OFTString, insect_attribute.USE_TAR))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("USER_TA_ETC", ogr.OFTString, insect_attribute.USER_TA_ETC))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT", ogr.OFTString, insect_attribute.MJ_ACT))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT_ETC", ogr.OFTString, insect_attribute.MJ_ACT_ETC))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_MEAN", ogr.OFTString, insect_attribute.INV_MEAN))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("INV_MN_ETC", ogr.OFTString, insect_attribute.INV_MN_ETC))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("UNUS_NOTE", ogr.OFTString, insect_attribute.UNUS_NOTE))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, insect_attribute.GPS_LAT.toString()))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, insect_attribute.GPS_LON.toString()))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, insect_attribute.CONF_MOD))
+                INSECTATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, insect_attribute.GEOM))
+//                    }
 
-                    val exporter = Exporter.ExportPointItem(LAYER_INSECT, INSECTATTRIBUTE, points.get(idx))
-                    pointsArray.add(exporter)
-                }
+
+                var geomsplit = insect_attribute.GEOM!!.split(" ")
+                val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
+
+                val markerOptions = MarkerOptions()
+                markerOptions.position(latlng)
+
+                // markerOptions.title("Marker in Sydney")
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                markerOptions.alpha(1.0f)
+                markerOptions.draggable(true)
+
+                val marker = googleMap.addMarker(markerOptions)
+
+                val exporter = Exporter.ExportPointItem(LAYER_INSECT, INSECTATTRIBUTE, marker)
+                pointsArray.add(exporter)
+                marker.remove()
             }
+//            }
 
             if (pointsArray != null) {
                 Exporter.exportPoint(pointsArray)
@@ -6663,10 +6820,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
     }
 
-    fun exportFlora() {
+    fun exportFlora(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
         val dataList: Array<String> = arrayOf("*")
-        val floradata = db!!.query("floraAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        val lftday = leftday + lefttime
+        val rgtday = rightday + righttime
+//        val floradata = db!!.query("floraAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var floradata = db!!.query("floraAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         var datas: ArrayList<Flora_Attribute> = ArrayList<Flora_Attribute>()
         var chkData = false
         var index = 0
@@ -6676,28 +6836,28 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             var flora_Attribute: Flora_Attribute = Flora_Attribute(floradata.getString(0), floradata.getString(1), floradata.getString(2), floradata.getString(3), floradata.getString(4)
                     , floradata.getString(5), floradata.getString(6), floradata.getString(7), floradata.getString(8), floradata.getFloat(9), floradata.getString(10), floradata.getInt(11)
                     , floradata.getString(12), floradata.getString(13), floradata.getString(14), floradata.getString(15), floradata.getString(16), floradata.getString(17), floradata.getString(18)
-                    , floradata.getString(19), floradata.getInt(20), floradata.getString(21), floradata.getFloat(22), floradata.getFloat(23), floradata.getString(24), floradata.getString(25))
+                    , floradata.getString(19), floradata.getInt(20), floradata.getString(21), floradata.getFloat(22), floradata.getFloat(23), floradata.getString(24), floradata.getString(25), floradata.getString(26))
 
-            datas.add(flora_Attribute)
+            floraDatas.add(flora_Attribute)
         }
 
-        if (datas != null) {
-            for (i in 0..datas.size - 1) {
-                val data = datas.get(i)
-                val floradata = db!!.query("floraAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
-
-                while (floradata.moveToNext()) {
-
-                    var flora_Attribute: Flora_Attribute = Flora_Attribute(floradata.getString(0), floradata.getString(1), floradata.getString(2), floradata.getString(3), floradata.getString(4)
-                            , floradata.getString(5), floradata.getString(6), floradata.getString(7), floradata.getString(8), floradata.getFloat(9), floradata.getString(10), floradata.getInt(11)
-                            , floradata.getString(12), floradata.getString(13), floradata.getString(14), floradata.getString(15), floradata.getString(16), floradata.getString(17), floradata.getString(18)
-                            , floradata.getString(19), floradata.getInt(20), floradata.getString(21), floradata.getFloat(22), floradata.getFloat(23), floradata.getString(24), floradata.getString(25))
-
-                    floraDatas.add(flora_Attribute)
-
-                }
-            }
-        }
+//        if (datas != null) {
+//            for (i in 0..datas.size - 1) {
+//                val data = datas.get(i)
+//                val floradata = db!!.query("floraAttribute", dataList, "GROP_ID = '${data.GROP_ID}'", null, null, null, "", null)
+//
+//                while (floradata.moveToNext()) {
+//
+//                    var flora_Attribute: Flora_Attribute = Flora_Attribute(floradata.getString(0), floradata.getString(1), floradata.getString(2), floradata.getString(3), floradata.getString(4)
+//                            , floradata.getString(5), floradata.getString(6), floradata.getString(7), floradata.getString(8), floradata.getFloat(9), floradata.getString(10), floradata.getInt(11)
+//                            , floradata.getString(12), floradata.getString(13), floradata.getString(14), floradata.getString(15), floradata.getString(16), floradata.getString(17), floradata.getString(18)
+//                            , floradata.getString(19), floradata.getInt(20), floradata.getString(21), floradata.getFloat(22), floradata.getFloat(23), floradata.getString(24), floradata.getString(25), floradata.getString(26))
+//
+//                    floraDatas.add(flora_Attribute)
+//
+//                }
+//            }
+//        }
 
         if (floraDatas.size > 0) {
 
@@ -6729,42 +6889,57 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 }
 
-                if (add) {
-                    var FLORAATTRIBUTE: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+//                if (add) {
+                var FLORAATTRIBUTE: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
-                    if (index == 0) {
+//                    if (index == 0) {
 //                                FLORAATTRIBUTE.add(Exporter.ColumnDef("ID",ogr.OFTString,flora_Attribute.id))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger, flora_Attribute.NUM))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, flora_Attribute.GROP_ID))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, flora_Attribute.PRJ_NAME))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, flora_Attribute.INV_REGION))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, flora_Attribute.INV_DT))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, flora_Attribute.INV_PERSON))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, flora_Attribute.WEATHER))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, flora_Attribute.WIND))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, flora_Attribute.WIND_DIRE))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, flora_Attribute.TEMPERATUR.toString()))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, flora_Attribute.ETC))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, flora_Attribute.INV_TM))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, flora_Attribute.SPEC_NM))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, flora_Attribute.FAMI_NM))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, flora_Attribute.SCIEN_NM))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("FLORE_YN", ogr.OFTString, flora_Attribute.FLORE_YN))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("PLANT_YN", ogr.OFTString, flora_Attribute.PLANT_YN))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("HAB_STAT", ogr.OFTString, flora_Attribute.HAB_STAT))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("HAB_ETC", ogr.OFTString, flora_Attribute.HAB_ETC))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("COL_IN_CNT", ogr.OFTInteger, flora_Attribute.COL_IN_CNT))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("THRE_CAU", ogr.OFTString, flora_Attribute.THRE_CAU))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, flora_Attribute.GPS_LAT.toString()))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, flora_Attribute.GPS_LON.toString()))
-                        FLORAATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, flora_Attribute.CONF_MOD))
-                    }
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger, flora_Attribute.NUM))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, flora_Attribute.GROP_ID))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, flora_Attribute.PRJ_NAME))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, flora_Attribute.INV_REGION))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, flora_Attribute.INV_DT))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, flora_Attribute.INV_PERSON))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, flora_Attribute.WEATHER))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("WIND", ogr.OFTString, flora_Attribute.WIND))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("WIND_DIRE", ogr.OFTString, flora_Attribute.WIND_DIRE))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, flora_Attribute.TEMPERATUR.toString()))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("ETC", ogr.OFTString, flora_Attribute.ETC))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, flora_Attribute.INV_TM))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, flora_Attribute.SPEC_NM))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, flora_Attribute.FAMI_NM))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, flora_Attribute.SCIEN_NM))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("FLORE_YN", ogr.OFTString, flora_Attribute.FLORE_YN))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("PLANT_YN", ogr.OFTString, flora_Attribute.PLANT_YN))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("HAB_STAT", ogr.OFTString, flora_Attribute.HAB_STAT))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("HAB_ETC", ogr.OFTString, flora_Attribute.HAB_ETC))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("COL_IN_CNT", ogr.OFTInteger, flora_Attribute.COL_IN_CNT))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("THRE_CAU", ogr.OFTString, flora_Attribute.THRE_CAU))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, flora_Attribute.GPS_LAT.toString()))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, flora_Attribute.GPS_LON.toString()))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, flora_Attribute.CONF_MOD))
+                FLORAATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, flora_Attribute.GEOM))
+//                    }
 
-                    val exporter = Exporter.ExportPointItem(LAYER_FLORA, FLORAATTRIBUTE, points.get(idx))
+                var geomsplit = flora_Attribute.GEOM!!.split(" ")
+                val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
 
-                    pointsArray.add(exporter)
-                }
+                val markerOptions = MarkerOptions()
+                markerOptions.position(latlng)
+
+                // markerOptions.title("Marker in Sydney")
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                markerOptions.alpha(1.0f)
+                markerOptions.draggable(true)
+
+                val marker = googleMap.addMarker(markerOptions)
+
+                val exporter = Exporter.ExportPointItem(LAYER_FLORA, FLORAATTRIBUTE, marker)
+
+                pointsArray.add(exporter)
+                marker.remove()
             }
+//            }
 
             if (pointsArray != null) {
                 Exporter.exportPoint(pointsArray)
@@ -6791,10 +6966,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
     }
 
-    fun exportZoobenthous() {
+    fun exportZoobenthous(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
+        val lftday = leftday + lefttime
+        val rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
-        val data = db!!.query("ZoobenthosAttribute", dataList, null, null, "GROP_ID", null, "", null)
+//        val data = db!!.query("ZoobenthosAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var data = db!!.query("ZoobenthosAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         var datas: ArrayList<Zoobenthos_Attribute> = ArrayList<Zoobenthos_Attribute>()
         var chkData = false
         var index = 0
@@ -6806,33 +6984,34 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getInt(20), data.getInt(21), data.getInt(22)
                     , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
                     , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
-                    , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55))
+                    , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50), data.getString(51), data.getString(52), data.getString(53)
+                    , data.getString(54), data.getString(55), data.getString(56))
 
-            datas.add(zoo)
+            zoobenthousDatas.add(zoo)
 
         }
 
-        if (datas != null) {
-            for (i in 0..datas.size - 1) {
-                val item = datas.get(i)
-                val data = db!!.query("ZoobenthosAttribute", dataList, "GROP_ID = '${item.GROP_ID}'", null, null, null, "", null)
-
-                while (data.moveToNext()) {
-
-                    var zoo: Zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                            data.getInt(8), data.getInt(9), data.getInt(10), data.getInt(11), data.getInt(12), data.getString(13), data.getString(14)
-                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getInt(20), data.getInt(21), data.getInt(22)
-                            , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
-                            , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
-                            , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55))
-
-                    zoobenthousDatas.add(zoo)
-
-                }
-
-
-            }
-        }
+//        if (datas != null) {
+//            for (i in 0..datas.size - 1) {
+//                val item = datas.get(i)
+//                val data = db!!.query("ZoobenthosAttribute", dataList, "GROP_ID = '${item.GROP_ID}'", null, null, null, "", null)
+//
+//                while (data.moveToNext()) {
+//
+//                    var zoo: Zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+//                            data.getInt(8), data.getInt(9), data.getInt(10), data.getInt(11), data.getInt(12), data.getString(13), data.getString(14)
+//                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getInt(20), data.getInt(21), data.getInt(22)
+//                            , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
+//                            , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
+//                            , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55),data.getString(56))
+//
+//                    zoobenthousDatas.add(zoo)
+//
+//                }
+//
+//
+//            }
+//        }
 
         if (zoobenthousDatas.size > 0) {
 
@@ -6863,73 +7042,89 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     }
 
                 }
-                if (add) {
-                    var ZOOBENTHOUS: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+//                if (add) {
+                var ZOOBENTHOUS: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
-                    if (index == 0) {
+//                    if (index == 0) {
 //                                ZOOBENTHOUS.add(Exporter.ColumnDef("ID",ogr.OFTString,zoo.id))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("NUM", ogr.OFTString, zoo.NUM))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, zoo.GROP_ID))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, zoo.PRJ_NAME))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, zoo.INV_REGION))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("INV_MEAN", ogr.OFTString, zoo.INV_MEAN))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, zoo.INV_PERSON))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("MAP_SYS_NM", ogr.OFTString, zoo.MAP_SYS_NM))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("COORD_N_D", ogr.OFTInteger, zoo.COORD_N_D))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("COORD_N_M", ogr.OFTInteger, zoo.COORD_N_M))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("COORD_N_S", ogr.OFTInteger, zoo.COORD_N_S))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("COORD_E_D", ogr.OFTInteger, zoo.COORD_E_D))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("COORD_E_M", ogr.OFTInteger, zoo.COORD_E_M))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("COORD_E_S", ogr.OFTInteger, zoo.COORD_E_S))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, zoo.INV_DT))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, zoo.INV_TM))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, zoo.WEATHER))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("INV_TOOL", ogr.OFTString, zoo.INV_TOOL))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("AD_DIST_NM", ogr.OFTString, zoo.AD_DIST_NM))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("RIV_W1", ogr.OFTInteger, zoo.RIV_W1))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("RIV_W2", ogr.OFTInteger, zoo.RIV_W2))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("RUN_RIV_W1", ogr.OFTInteger, zoo.RUN_RIV_W1))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("RUN_RIV_W2", ogr.OFTInteger, zoo.RUN_RIV_W2))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("WATER_DEPT", ogr.OFTInteger, zoo.WATER_DEPT))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("HAB_TY", ogr.OFTString, zoo.HAB_TY))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("HAB_TY_ETC", ogr.OFTString, zoo.HAB_TY_ETC))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("FILT_AREA", ogr.OFTString, zoo.FILT_AREA))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, zoo.TEMPERATUR.toString()))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("WATER_TEM", ogr.OFTString, zoo.WATER_TEM.toString()))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("TURBIDITY", ogr.OFTString, zoo.TURBIDITY))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("MUD", ogr.OFTString, zoo.MUD.toString()))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("SAND", ogr.OFTString, zoo.SAND.toString()))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("COR_SAND", ogr.OFTString, zoo.COR_SAND.toString()))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("GRAVEL", ogr.OFTString, zoo.GRAVEL.toString()))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("STONE_S", ogr.OFTString, zoo.STONE_S.toString()))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("STONE_B", ogr.OFTString, zoo.STONE_B.toString()))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("CONCRETE", ogr.OFTString, zoo.CONCRETE.toString()))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("BED_ROCK", ogr.OFTString, zoo.BED_ROCK.toString()))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("BANK_L", ogr.OFTString, zoo.BANK_L.toString()))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("BANK_L_ETC", ogr.OFTString, zoo.BANK_L_ETC.toString()))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("BANK_R", ogr.OFTString, zoo.BANK_R))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("BANK_R_ETC", ogr.OFTString, zoo.BANK_R_ETC))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("BAS_L", ogr.OFTString, zoo.BAS_L))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("BAS_L_ETC", ogr.OFTString, zoo.BAS_L_ETC))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("BAS_R", ogr.OFTString, zoo.BAS_R))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("BAS_R_ETC", ogr.OFTString, zoo.BAS_R_ETC))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("DIST_CAU", ogr.OFTString, zoo.DIST_CAU))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("DIST_ETC", ogr.OFTString, zoo.DIST_ETC))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("UNUS_NOTE", ogr.OFTString, zoo.UNUS_NOTE))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, zoo.GPS_LAT.toString()))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, zoo.GPS_LON.toString()))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, zoo.SPEC_NM))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, zoo.FAMI_NM))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, zoo.SCIEN_NM))
-                        ZOOBENTHOUS.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, zoo.CONF_MOD))
-                    }
+                ZOOBENTHOUS.add(Exporter.ColumnDef("NUM", ogr.OFTString, zoo.NUM))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, zoo.GROP_ID))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, zoo.PRJ_NAME))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, zoo.INV_REGION))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("INV_MEAN", ogr.OFTString, zoo.INV_MEAN))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, zoo.INV_PERSON))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("MAP_SYS_NM", ogr.OFTString, zoo.MAP_SYS_NM))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("COORD_N_D", ogr.OFTInteger, zoo.COORD_N_D))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("COORD_N_M", ogr.OFTInteger, zoo.COORD_N_M))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("COORD_N_S", ogr.OFTInteger, zoo.COORD_N_S))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("COORD_E_D", ogr.OFTInteger, zoo.COORD_E_D))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("COORD_E_M", ogr.OFTInteger, zoo.COORD_E_M))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("COORD_E_S", ogr.OFTInteger, zoo.COORD_E_S))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, zoo.INV_DT))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, zoo.INV_TM))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("WEATHER", ogr.OFTString, zoo.WEATHER))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("INV_TOOL", ogr.OFTString, zoo.INV_TOOL))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("AD_DIST_NM", ogr.OFTString, zoo.AD_DIST_NM))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("RIV_W1", ogr.OFTInteger, zoo.RIV_W1))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("RIV_W2", ogr.OFTInteger, zoo.RIV_W2))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("RUN_RIV_W1", ogr.OFTInteger, zoo.RUN_RIV_W1))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("RUN_RIV_W2", ogr.OFTInteger, zoo.RUN_RIV_W2))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("WATER_DEPT", ogr.OFTInteger, zoo.WATER_DEPT))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("HAB_TY", ogr.OFTString, zoo.HAB_TY))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("HAB_TY_ETC", ogr.OFTString, zoo.HAB_TY_ETC))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("FILT_AREA", ogr.OFTString, zoo.FILT_AREA))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("TEMPERATUR", ogr.OFTString, zoo.TEMPERATUR.toString()))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("WATER_TEM", ogr.OFTString, zoo.WATER_TEM.toString()))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("TURBIDITY", ogr.OFTString, zoo.TURBIDITY))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("MUD", ogr.OFTString, zoo.MUD.toString()))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("SAND", ogr.OFTString, zoo.SAND.toString()))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("COR_SAND", ogr.OFTString, zoo.COR_SAND.toString()))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("GRAVEL", ogr.OFTString, zoo.GRAVEL.toString()))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("STONE_S", ogr.OFTString, zoo.STONE_S.toString()))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("STONE_B", ogr.OFTString, zoo.STONE_B.toString()))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("CONCRETE", ogr.OFTString, zoo.CONCRETE.toString()))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("BED_ROCK", ogr.OFTString, zoo.BED_ROCK.toString()))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("BANK_L", ogr.OFTString, zoo.BANK_L.toString()))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("BANK_L_ETC", ogr.OFTString, zoo.BANK_L_ETC.toString()))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("BANK_R", ogr.OFTString, zoo.BANK_R))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("BANK_R_ETC", ogr.OFTString, zoo.BANK_R_ETC))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("BAS_L", ogr.OFTString, zoo.BAS_L))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("BAS_L_ETC", ogr.OFTString, zoo.BAS_L_ETC))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("BAS_R", ogr.OFTString, zoo.BAS_R))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("BAS_R_ETC", ogr.OFTString, zoo.BAS_R_ETC))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("DIST_CAU", ogr.OFTString, zoo.DIST_CAU))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("DIST_ETC", ogr.OFTString, zoo.DIST_ETC))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("UNUS_NOTE", ogr.OFTString, zoo.UNUS_NOTE))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, zoo.GPS_LAT.toString()))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, zoo.GPS_LON.toString()))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, zoo.SPEC_NM))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, zoo.FAMI_NM))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, zoo.SCIEN_NM))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, zoo.CONF_MOD))
+                ZOOBENTHOUS.add(Exporter.ColumnDef("GEOM", ogr.OFTString, zoo.GEOM))
+//                    }
 
-                    val exporter = Exporter.ExportPointItem(LAYER_ZOOBENTHOS, ZOOBENTHOUS, points.get(idx))
+                var geomsplit = zoo.GEOM!!.split(" ")
+                val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
 
-                    pointsArray.add(exporter)
+                val markerOptions = MarkerOptions()
+                markerOptions.position(latlng)
 
-                }
+                // markerOptions.title("Marker in Sydney")
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                markerOptions.alpha(1.0f)
+                markerOptions.draggable(true)
+
+                val marker = googleMap.addMarker(markerOptions)
+
+                val exporter = Exporter.ExportPointItem(LAYER_ZOOBENTHOS, ZOOBENTHOUS, marker)
+
+                pointsArray.add(exporter)
+
+                marker.remove()
+
             }
+//            }
 
             if (pointsArray != null) {
                 Exporter.exportPoint(pointsArray)
@@ -6958,30 +7153,33 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     }
 
-    fun exportWaypoint() {
+    fun exportWaypoint(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
+        val lftday = leftday + lefttime
+        val rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
-        val data = db!!.query("Waypoint", dataList, null, null, "GROP_ID", null, "", null)
+//        val data = db!!.query("Waypoint", dataList, null, null, "GROP_ID", null, "", null)
+        var data = db!!.query("Waypoint", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         var datas: ArrayList<Waypoint> = ArrayList<Waypoint>()
         var chkData = false
         var index = 0
 
         while (data.moveToNext()) {
-            var waypoint:Waypoint = Waypoint(data.getInt(0),data.getString(1),data.getString(2),data.getString(3),data.getString(4),data.getString(5),data.getString(6),data.getString(7),data.getFloat(8),data.getFloat(9),data.getString(10))
-            datas.add(waypoint)
+            var waypoint: Waypoint = Waypoint(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7), data.getFloat(8), data.getFloat(9), data.getString(10), data.getString(11))
+            waypointDatas.add(waypoint)
         }
 
-        if (datas != null) {
-            for (i in 0..datas.size - 1) {
-                val item = datas.get(i)
-                val data = db!!.query("Waypoint", dataList, "GROP_ID = '${item.GROP_ID}'", null, null, null, "", null)
-
-                while (data.moveToNext()) {
-                    var waypoint:Waypoint = Waypoint(data.getInt(0),data.getString(1),data.getString(2),data.getString(3),data.getString(4),data.getString(5),data.getString(6),data.getString(7),data.getFloat(8),data.getFloat(9),data.getString(10))
-                    waypointDatas.add(waypoint)
-                }
-            }
-        }
+//        if (datas != null) {
+//            for (i in 0..datas.size - 1) {
+//                val item = datas.get(i)
+//                val data = db!!.query("Waypoint", dataList, "GROP_ID = '${item.GROP_ID}'", null, null, null, "", null)
+//
+//                while (data.moveToNext()) {
+//                    var waypoint: Waypoint = Waypoint(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7), data.getFloat(8), data.getFloat(9), data.getString(10), data.getString(11))
+//                    waypointDatas.add(waypoint)
+//                }
+//            }
+//        }
 
         if (waypointDatas.size > 0) {
 
@@ -7013,27 +7211,43 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 }
 
-                if (add) {
-                    var WAYPOINTATTRIBUTE: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+//                if (add) {
+                var WAYPOINTATTRIBUTE: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
-                    if (index == 0) {
-                        WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, waypoint.GROP_ID))
-                        WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, waypoint.INV_REGION))
-                        WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, waypoint.INV_DT))
-                        WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, waypoint.INV_TM))
-                        WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger, waypoint.NUM))
-                        WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, waypoint.INV_PERSON))
-                        WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, waypoint.PRJ_NAME))
-                        WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, waypoint.GPS_LAT.toString()))
-                        WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, waypoint.GPS_LON.toString()))
-                        WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("MEMO", ogr.OFTString, waypoint.MEMO))
-                    }
+//                    if (index == 0) {
+                WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, waypoint.GROP_ID))
+                WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, waypoint.INV_REGION))
+                WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, waypoint.INV_DT))
+                WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, waypoint.INV_TM))
+                WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("NUM", ogr.OFTInteger, waypoint.NUM))
+                WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, waypoint.INV_PERSON))
+                WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, waypoint.PRJ_NAME))
+                WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, waypoint.GPS_LAT.toString()))
+                WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, waypoint.GPS_LON.toString()))
+                WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("MEMO", ogr.OFTString, waypoint.MEMO))
+                WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, waypoint.GEOM))
+//                    }
 
-                    val exporter = Exporter.ExportPointItem(LAYER_WAYPOINT, WAYPOINTATTRIBUTE, points.get(idx))
+                var geomsplit = waypoint.GEOM!!.split(" ")
+                val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
 
-                    pointsArray.add(exporter)
-                }
+                val markerOptions = MarkerOptions()
+                markerOptions.position(latlng)
+
+                // markerOptions.title("Marker in Sydney")
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                markerOptions.alpha(1.0f)
+                markerOptions.draggable(true)
+
+                val marker = googleMap.addMarker(markerOptions)
+
+
+                val exporter = Exporter.ExportPointItem(LAYER_WAYPOINT, WAYPOINTATTRIBUTE, marker)
+
+                pointsArray.add(exporter)
+                marker.remove()
             }
+//            }
 
             if (pointsArray != null) {
                 Exporter.exportPoint(pointsArray)
@@ -7060,10 +7274,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
     }
 
-    fun exportManyFloras() {
+    fun exportManyFloras(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
+        val lftday = leftday + lefttime
+        val rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
-        val data = db!!.query("ManyFloraAttribute", dataList, null, null, null, null, "", null)
+//        val data = db!!.query("ManyFloraAttribute", dataList, null, null, null, null, "", null)
+        var data = db!!.query("ManyFloraAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         var datas: ArrayList<ManyFloraAttribute> = ArrayList<ManyFloraAttribute>()
         var chkData = false
         var index = 0
@@ -7074,7 +7291,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
                     , data.getInt(15), data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
                     , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28), data.getFloat(29), data.getString(30), data.getInt(31), data.getString(32)
-                    , data.getString(33), data.getString(34), data.getFloat(35), data.getFloat(36), data.getInt(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41))
+                    , data.getString(33), data.getString(34), data.getFloat(35), data.getFloat(36), data.getInt(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42))
 
             manyflorasDatas.add(manyFloraAttribute)
 
@@ -7109,60 +7326,76 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     }
 
                 }
-                if (add) {
-                    var MANYFLORA: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
-                    if (index == 0) {
-                        MANYFLORA.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, zoo.GROP_ID))
-                        MANYFLORA.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, zoo.INV_REGION))
-                        MANYFLORA.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, zoo.INV_PERSON))
-                        MANYFLORA.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, zoo.INV_DT))
-                        MANYFLORA.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, zoo.INV_TM))
-                        MANYFLORA.add(Exporter.ColumnDef("TRE_NUM", ogr.OFTInteger, zoo.TRE_NUM))
-                        MANYFLORA.add(Exporter.ColumnDef("TRE_SPEC", ogr.OFTString, zoo.TRE_SPEC))
-                        MANYFLORA.add(Exporter.ColumnDef("TRE_FAMI", ogr.OFTString, zoo.TRE_FAMI))
-                        MANYFLORA.add(Exporter.ColumnDef("TRE_SCIEN", ogr.OFTString, zoo.TRE_SCIEN))
-                        MANYFLORA.add(Exporter.ColumnDef("TRE_DBH", ogr.OFTString, zoo.TRE_DBH.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("TRE_TOIL", ogr.OFTString, zoo.TRE_TOIL.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("TRE_UNDER", ogr.OFTString, zoo.TRE_UNDER.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("TRE_WATER", ogr.OFTString, zoo.TRE_WATER.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("TRE_TYPE", ogr.OFTString, zoo.TRE_TYPE.toString()))
+//                if (add) {
+                var MANYFLORA: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+//                    if (index == 0) {
+                MANYFLORA.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, zoo.GROP_ID))
+                MANYFLORA.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, zoo.INV_REGION))
+                MANYFLORA.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, zoo.INV_PERSON))
+                MANYFLORA.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, zoo.INV_DT))
+                MANYFLORA.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, zoo.INV_TM))
+                MANYFLORA.add(Exporter.ColumnDef("TRE_NUM", ogr.OFTInteger, zoo.TRE_NUM))
+                MANYFLORA.add(Exporter.ColumnDef("TRE_SPEC", ogr.OFTString, zoo.TRE_SPEC))
+                MANYFLORA.add(Exporter.ColumnDef("TRE_FAMI", ogr.OFTString, zoo.TRE_FAMI))
+                MANYFLORA.add(Exporter.ColumnDef("TRE_SCIEN", ogr.OFTString, zoo.TRE_SCIEN))
+                MANYFLORA.add(Exporter.ColumnDef("TRE_DBH", ogr.OFTString, zoo.TRE_DBH.toString()))
+                MANYFLORA.add(Exporter.ColumnDef("TRE_TOIL", ogr.OFTString, zoo.TRE_TOIL.toString()))
+                MANYFLORA.add(Exporter.ColumnDef("TRE_UNDER", ogr.OFTString, zoo.TRE_UNDER.toString()))
+                MANYFLORA.add(Exporter.ColumnDef("TRE_WATER", ogr.OFTString, zoo.TRE_WATER.toString()))
+                MANYFLORA.add(Exporter.ColumnDef("TRE_TYPE", ogr.OFTString, zoo.TRE_TYPE.toString()))
 
-                        MANYFLORA.add(Exporter.ColumnDef("STRE_NUM", ogr.OFTString, zoo.STRE_NUM))
-                        MANYFLORA.add(Exporter.ColumnDef("STRE_SPEC", ogr.OFTString, zoo.STRE_SPEC))
-                        MANYFLORA.add(Exporter.ColumnDef("STRE_FAMI", ogr.OFTString, zoo.STRE_FAMI))
-                        MANYFLORA.add(Exporter.ColumnDef("STRE_SCIEN", ogr.OFTString, zoo.STRE_SCIEN))
-                        MANYFLORA.add(Exporter.ColumnDef("STRE_DBH", ogr.OFTString, zoo.STRE_DBH.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("STRE_TOIL", ogr.OFTString, zoo.STRE_TOIL.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("STRE_UNDER", ogr.OFTString, zoo.STRE_UNDER.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("STRE_WATER", ogr.OFTString, zoo.STRE_WATER.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("STRE_TYPE", ogr.OFTString, zoo.STRE_TYPE.toString()))
+                MANYFLORA.add(Exporter.ColumnDef("STRE_NUM", ogr.OFTString, zoo.STRE_NUM))
+                MANYFLORA.add(Exporter.ColumnDef("STRE_SPEC", ogr.OFTString, zoo.STRE_SPEC))
+                MANYFLORA.add(Exporter.ColumnDef("STRE_FAMI", ogr.OFTString, zoo.STRE_FAMI))
+                MANYFLORA.add(Exporter.ColumnDef("STRE_SCIEN", ogr.OFTString, zoo.STRE_SCIEN))
+                MANYFLORA.add(Exporter.ColumnDef("STRE_DBH", ogr.OFTString, zoo.STRE_DBH.toString()))
+                MANYFLORA.add(Exporter.ColumnDef("STRE_TOIL", ogr.OFTString, zoo.STRE_TOIL.toString()))
+                MANYFLORA.add(Exporter.ColumnDef("STRE_UNDER", ogr.OFTString, zoo.STRE_UNDER.toString()))
+                MANYFLORA.add(Exporter.ColumnDef("STRE_WATER", ogr.OFTString, zoo.STRE_WATER.toString()))
+                MANYFLORA.add(Exporter.ColumnDef("STRE_TYPE", ogr.OFTString, zoo.STRE_TYPE.toString()))
 
-                        MANYFLORA.add(Exporter.ColumnDef("SHR_NUM", ogr.OFTInteger, zoo.SHR_NUM))
-                        MANYFLORA.add(Exporter.ColumnDef("SHR_SPEC", ogr.OFTString, zoo.SHR_SPEC))
-                        MANYFLORA.add(Exporter.ColumnDef("SHR_FAMI", ogr.OFTString, zoo.SHR_FAMI))
-                        MANYFLORA.add(Exporter.ColumnDef("SHR_SCIEN", ogr.OFTString, zoo.SHR_SCIEN))
-                        MANYFLORA.add(Exporter.ColumnDef("SHR_TOIL", ogr.OFTString, zoo.SHR_TOIL.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("SHR_WATER", ogr.OFTString, zoo.SHR_WATER.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("SHR_UNDER", ogr.OFTString, zoo.SHR_UNDER.toString()))
+                MANYFLORA.add(Exporter.ColumnDef("SHR_NUM", ogr.OFTInteger, zoo.SHR_NUM))
+                MANYFLORA.add(Exporter.ColumnDef("SHR_SPEC", ogr.OFTString, zoo.SHR_SPEC))
+                MANYFLORA.add(Exporter.ColumnDef("SHR_FAMI", ogr.OFTString, zoo.SHR_FAMI))
+                MANYFLORA.add(Exporter.ColumnDef("SHR_SCIEN", ogr.OFTString, zoo.SHR_SCIEN))
+                MANYFLORA.add(Exporter.ColumnDef("SHR_TOIL", ogr.OFTString, zoo.SHR_TOIL.toString()))
+                MANYFLORA.add(Exporter.ColumnDef("SHR_WATER", ogr.OFTString, zoo.SHR_WATER.toString()))
+                MANYFLORA.add(Exporter.ColumnDef("SHR_UNDER", ogr.OFTString, zoo.SHR_UNDER.toString()))
 
-                        MANYFLORA.add(Exporter.ColumnDef("HER_NUM", ogr.OFTInteger, zoo.HER_NUM))
-                        MANYFLORA.add(Exporter.ColumnDef("HER_SPEC", ogr.OFTString, zoo.HER_SPEC))
-                        MANYFLORA.add(Exporter.ColumnDef("HER_FAMI", ogr.OFTString, zoo.HER_FAMI))
-                        MANYFLORA.add(Exporter.ColumnDef("HER_SCIEN", ogr.OFTString, zoo.HER_SCIEN))
-                        MANYFLORA.add(Exporter.ColumnDef("HER_DOMIN", ogr.OFTString, zoo.HER_DOMIN.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("HER_GUNDO", ogr.OFTString, zoo.HER_GUNDO.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("HER_HEIGHT", ogr.OFTString, zoo.HER_HEIGHT.toString()))
+                MANYFLORA.add(Exporter.ColumnDef("HER_NUM", ogr.OFTInteger, zoo.HER_NUM))
+                MANYFLORA.add(Exporter.ColumnDef("HER_SPEC", ogr.OFTString, zoo.HER_SPEC))
+                MANYFLORA.add(Exporter.ColumnDef("HER_FAMI", ogr.OFTString, zoo.HER_FAMI))
+                MANYFLORA.add(Exporter.ColumnDef("HER_SCIEN", ogr.OFTString, zoo.HER_SCIEN))
+                MANYFLORA.add(Exporter.ColumnDef("HER_DOMIN", ogr.OFTString, zoo.HER_DOMIN.toString()))
+                MANYFLORA.add(Exporter.ColumnDef("HER_GUNDO", ogr.OFTString, zoo.HER_GUNDO.toString()))
+                MANYFLORA.add(Exporter.ColumnDef("HER_HEIGHT", ogr.OFTString, zoo.HER_HEIGHT.toString()))
 
-                        MANYFLORA.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, zoo.GPS_LAT.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, zoo.GPS_LON.toString()))
-                        MANYFLORA.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, zoo.CONF_MOD))
-                    }
-                    val exporter = Exporter.ExportPointItem(LAYER_FLORA2, MANYFLORA, points.get(idx))
+                MANYFLORA.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, zoo.GPS_LAT.toString()))
+                MANYFLORA.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, zoo.GPS_LON.toString()))
+                MANYFLORA.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, zoo.CONF_MOD))
+                MANYFLORA.add(Exporter.ColumnDef("GEOM", ogr.OFTString, zoo.GEOM))
 
-                    pointsArray.add(exporter)
+//                    }
 
-                }
+                var geomsplit = zoo.GEOM!!.split(" ")
+                val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
+
+                val markerOptions = MarkerOptions()
+                markerOptions.position(latlng)
+
+                // markerOptions.title("Marker in Sydney")
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                markerOptions.alpha(1.0f)
+                markerOptions.draggable(true)
+
+                val marker = googleMap.addMarker(markerOptions)
+
+                val exporter = Exporter.ExportPointItem(LAYER_FLORA2, MANYFLORA, marker)
+
+                pointsArray.add(exporter)
+
             }
+//            }
 
             if (pointsArray != null) {
                 Exporter.exportPoint(pointsArray)
@@ -7273,10 +7506,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         }
     }
 
-    fun exportStockMap() {
+    fun exportStockMap(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var stokeArray: ArrayList<Exporter.ExportItem> = ArrayList<Exporter.ExportItem>()
         val dataList: Array<String> = arrayOf("*")
-        var data = db!!.query("StockMap", dataList, null, null, null, null, "", null)
+        val lftday = leftday + lefttime
+        val rgtday = rightday + righttime
+//        var data = db!!.query("StockMap", dataList, null, null, null, null, "", null)
+        var data = db!!.query("StockMap", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         var chkData = false
 
         while (data.moveToNext()) {
@@ -7284,7 +7520,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                     data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                    , data.getString(22), data.getString(23))
+                    , data.getString(22), data.getString(23), data.getString(24))
 
             stokemapDatas.add(stockMap)
 
@@ -7316,38 +7552,48 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     }
                 }
 
-                if (add) {
-                    var STOKEMAP: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+//                if (add) {
+                var STOKEMAP: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
 //                                STOKEMAP.add(Exporter.ColumnDef("ID", ogr.OFTString, stockMap.id))
-                    STOKEMAP.add(Exporter.ColumnDef("NUM", ogr.OFTString, stockMap.NUM))
-                    STOKEMAP.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, stockMap.GROP_ID))
-                    STOKEMAP.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, stockMap.PRJ_NAME))
-                    STOKEMAP.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, stockMap.INV_REGION))
-                    STOKEMAP.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, stockMap.INV_PERSON))
-                    STOKEMAP.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, stockMap.INV_DT))
-                    STOKEMAP.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, stockMap.INV_TM))
-                    STOKEMAP.add(Exporter.ColumnDef("FRTP_CD", ogr.OFTString, stockMap.FRTP_CD))
-                    STOKEMAP.add(Exporter.ColumnDef("KOFTR_GROUP", ogr.OFTString, stockMap.KOFTR_GROUP_CD.toString()))
-                    STOKEMAP.add(Exporter.ColumnDef("STORUNST", ogr.OFTString, stockMap.STORUNST_CD.toString()))
-                    STOKEMAP.add(Exporter.ColumnDef("FROR_CD", ogr.OFTString, stockMap.FROR_CD))
-                    STOKEMAP.add(Exporter.ColumnDef("DMCLS_CD", ogr.OFTString, stockMap.DMCLS_CD))
-                    STOKEMAP.add(Exporter.ColumnDef("AGCLS_CD", ogr.OFTString, stockMap.AGCLS_CD))
-                    STOKEMAP.add(Exporter.ColumnDef("DNST_CD", ogr.OFTString, stockMap.DNST_CD.toString()))
-                    STOKEMAP.add(Exporter.ColumnDef("HEIGHT", ogr.OFTString, stockMap.HEIGHT))
-                    STOKEMAP.add(Exporter.ColumnDef("LDMARK_STN", ogr.OFTString, stockMap.LDMARK_STNDA_CD.toString()))
-                    STOKEMAP.add(Exporter.ColumnDef("MAP_LABEL", ogr.OFTString, stockMap.MAP_LABEL))
-                    STOKEMAP.add(Exporter.ColumnDef("MAP_LABEL2", ogr.OFTString, stockMap.MAP_LABEL2))
-                    STOKEMAP.add(Exporter.ColumnDef("ETC_PCMTT", ogr.OFTString, stockMap.ETC_PCMTT))
-                    STOKEMAP.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, stockMap.GPS_LAT.toString()))
-                    STOKEMAP.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, stockMap.GPS_LON.toString()))
-                    STOKEMAP.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, stockMap.CONF_MOD))
-                    STOKEMAP.add(Exporter.ColumnDef("LANDUSE", ogr.OFTString, stockMap.LANDUSE))
+                STOKEMAP.add(Exporter.ColumnDef("NUM", ogr.OFTString, stockMap.NUM))
+                STOKEMAP.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, stockMap.GROP_ID))
+                STOKEMAP.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, stockMap.PRJ_NAME))
+                STOKEMAP.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, stockMap.INV_REGION))
+                STOKEMAP.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, stockMap.INV_PERSON))
+                STOKEMAP.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, stockMap.INV_DT))
+                STOKEMAP.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, stockMap.INV_TM))
+                STOKEMAP.add(Exporter.ColumnDef("FRTP_CD", ogr.OFTString, stockMap.FRTP_CD))
+                STOKEMAP.add(Exporter.ColumnDef("KOFTR_GROUP", ogr.OFTString, stockMap.KOFTR_GROUP_CD.toString()))
+                STOKEMAP.add(Exporter.ColumnDef("STORUNST", ogr.OFTString, stockMap.STORUNST_CD.toString()))
+                STOKEMAP.add(Exporter.ColumnDef("FROR_CD", ogr.OFTString, stockMap.FROR_CD))
+                STOKEMAP.add(Exporter.ColumnDef("DMCLS_CD", ogr.OFTString, stockMap.DMCLS_CD))
+                STOKEMAP.add(Exporter.ColumnDef("AGCLS_CD", ogr.OFTString, stockMap.AGCLS_CD))
+                STOKEMAP.add(Exporter.ColumnDef("DNST_CD", ogr.OFTString, stockMap.DNST_CD.toString()))
+                STOKEMAP.add(Exporter.ColumnDef("HEIGHT", ogr.OFTString, stockMap.HEIGHT))
+                STOKEMAP.add(Exporter.ColumnDef("LDMARK_STN", ogr.OFTString, stockMap.LDMARK_STNDA_CD.toString()))
+                STOKEMAP.add(Exporter.ColumnDef("MAP_LABEL", ogr.OFTString, stockMap.MAP_LABEL))
+                STOKEMAP.add(Exporter.ColumnDef("MAP_LABEL2", ogr.OFTString, stockMap.MAP_LABEL2))
+                STOKEMAP.add(Exporter.ColumnDef("ETC_PCMTT", ogr.OFTString, stockMap.ETC_PCMTT))
+                STOKEMAP.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, stockMap.GPS_LAT.toString()))
+                STOKEMAP.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, stockMap.GPS_LON.toString()))
+                STOKEMAP.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, stockMap.CONF_MOD))
+                STOKEMAP.add(Exporter.ColumnDef("LANDUSE", ogr.OFTString, stockMap.LANDUSE))
+                STOKEMAP.add(Exporter.ColumnDef("GEOM", ogr.OFTString, stockMap.GEOM))
 
-                    val exporter = Exporter.ExportItem(LAYER_STOCKMAP, STOKEMAP, polygons.get(idx))
+                var geomsplit = stockMap.GEOM!!.split(",")
+                var points: ArrayList<LatLng> = ArrayList<LatLng>()
 
-                    stokeArray.add(exporter)
+                for (i in 0 until geomsplit.size - 1) {
+                    var split = geomsplit.get(i).split(" ")
+                    val latlng = LatLng(split.get(1).toDouble(), split.get(0).toDouble())
+                    points.add(latlng)
                 }
+
+                val exporter = Exporter.ExportItem(LAYER_STOCKMAP, STOKEMAP, points)
+
+                stokeArray.add(exporter)
+//                }
                 if (stokeArray != null) {
                     Exporter.export(stokeArray)
                 }
@@ -7572,7 +7818,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 //                exportBiotope()
 
                 if (typeST.isChecked) {
-                    exportStockMap()
+//                    exportStockMap()
                     var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap"
                     var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap", "임상도", 1, 99, "stokemap", "Y", "stokemap", false)
                     var division = false
@@ -7603,7 +7849,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap", "임상도", "stokemap", "Y", "stokemap")
                     }
                 } else {
-                    exportBiotope()
+//                    exportBiotope()
                     var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope"
                     var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope", "비오톱", 1, 99, "biotope", "Y", "biotope", false)
                     var chkData = false
@@ -7822,35 +8068,35 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE)
             } else if (android.Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
                 if (layerDivision == 0) {
-                    exportBiotope()
+//                    exportBiotope()
                 }
 
                 if (layerDivision == 1) {
-                    exportBirds()
+//                    exportBirds()
                 }
 
                 if (layerDivision == 2) {
-                    exportReptilia()
+//                    exportReptilia()
                 }
 
                 if (layerDivision == 3) {
-                    exportMammal()
+//                    exportMammal()
                 }
 
                 if (layerDivision == 4) {
-                    exportFish()
+//                    exportFish()
                 }
 
                 if (layerDivision == 5) {
-                    exportInsects()
+//                    exportInsects()
                 }
 
                 if (layerDivision == 6) {
-                    exportFlora()
+//                    exportFlora()
                 }
 
                 if (layerDivision == 7) {
-                    exportZoobenthous()
+//                    exportZoobenthous()
                 }
 
                 if (layerDivision == 8) {
@@ -7860,15 +8106,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 if (layerDivision == 9) {
-                    exportManyFloras()
+//                    exportManyFloras()
                 }
 
                 if (layerDivision == 10) {
-                    exportStockMap()
+//                    exportStockMap()
                 }
 
-                if (layerDivision == 11){
-                    exportWaypoint()
+                if (layerDivision == 11) {
+//                    exportWaypoint()
                 }
 
                 if (layerDivision == 100) {
@@ -8036,35 +8282,35 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             READ_EXTERNAL_STORAGE -> {
                 if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (layerDivision == 0) {
-                        exportBiotope()
+//                        exportBiotope()
                     }
 
                     if (layerDivision == 1) {
-                        exportBirds()
+//                        exportBirds()
                     }
 
                     if (layerDivision == 2) {
-                        exportReptilia()
+//                        exportReptilia()
                     }
 
                     if (layerDivision == 3) {
-                        exportMammal()
+//                        exportMammal()
                     }
 
                     if (layerDivision == 4) {
-                        exportFish()
+//                        exportFish()
                     }
 
                     if (layerDivision == 5) {
-                        exportInsects()
+//                        exportInsects()
                     }
 
                     if (layerDivision == 6) {
-                        exportFlora()
+//                        exportFlora()
                     }
 
                     if (layerDivision == 7) {
-                        exportZoobenthous()
+//                        exportZoobenthous()
                     }
 
                     if (layerDivision == 8) {
@@ -8074,11 +8320,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     }
 
                     if (layerDivision == 9) {
-                        exportManyFloras()
+//                        exportManyFloras()
                     }
 
                     if (layerDivision == 10) {
-                        exportStockMap()
+//                        exportStockMap()
                     }
 
                     if (layerDivision == 100) {
@@ -8232,10 +8478,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         if (typeST.isChecked) {
             deleteRow("StockMap", oldAttributeKey)
-            exportStockMap()
+            export("2000-01-01", "00시", "2099-01-01", "00시")
+//            exportStockMap()
         } else {
             deleteRow("biotopeAttribute", oldAttributeKey)
-            exportBiotope()
+            export("2000-01-01", "00시", "2099-01-01", "00시")
+//            exportBiotope()
         }
 
     }
@@ -8762,6 +9010,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         btn_birds.setBackgroundResource(R.drawable.bg_rnd_30919191);
         btn_biotope.setBackgroundResource(R.drawable.bg_rnd_30919191);
         btn_waypoint.setBackgroundResource(R.drawable.bg_rnd_30919191);
+        exportBtn.setBackgroundResource(R.drawable.bg_rnd_30919191)
 
         btn_stokemap.setTextColor(Color.parseColor("#000000"))
         btn_flora2.setTextColor(Color.parseColor("#000000"))
@@ -8774,6 +9023,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         btn_birds.setTextColor(Color.parseColor("#000000"))
         btn_biotope.setTextColor(Color.parseColor("#000000"))
         btn_waypoint.setTextColor(Color.parseColor("#000000"))
+        exportBtn.setTextColor(Color.parseColor("#000000"))
 
     }
 

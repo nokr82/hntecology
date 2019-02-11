@@ -262,7 +262,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                 var flora_Attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                        , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25))
+                        , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26))
 
                 florainvregionET.setText(flora_Attribute.INV_REGION)
                 florainvdvET.setText(flora_Attribute.INV_DT)
@@ -427,7 +427,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                 var flora_Attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                        , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25))
+                        , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26))
 
                 dataArray.add(flora_Attribute)
             }
@@ -472,14 +472,14 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                 var flora_Attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                        , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25))
+                        , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26))
 
                 dataArray.add(flora_Attribute)
             }
 
             var flora_Attribute: Flora_Attribute = Flora_Attribute(null,null,null,null,null,null,null,null,null,null
             ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                    ,null,null,null)
+                    ,null,null,null,null)
 
             flora_Attribute.id = keyId + page.toString()
             flora_Attribute.GROP_ID = keyId
@@ -554,7 +554,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                 var flora_Attribute: Flora_Attribute = Flora_Attribute(data2.getString(0), data2.getString(1), data2.getString(2), data2.getString(3), data2.getString(4), data2.getString(5), data2.getString(6), data2.getString(7),
                         data2.getString(8), data2.getFloat(9), data2.getString(10), data2.getInt(11), data2.getString(12), data2.getString(13), data2.getString(14)
                         , data2.getString(15), data2.getString(16), data2.getString(17), data2.getString(18), data2.getString(19), data2.getInt(20), data2.getString(21)
-                        , data2.getFloat(22), data2.getFloat(23),data2.getString(24),data.getString(25))
+                        , data2.getFloat(22), data2.getFloat(23),data2.getString(24),data.getString(25),data.getString(26))
 
                 dataArray.add(flora_Attribute)
             }
@@ -579,7 +579,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                         var flora_Attribute: Flora_Attribute = Flora_Attribute(null,null,null,null,null,null,null,null,null,null
                                 ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                                ,null,null,null)
+                                ,null,null,null,null)
 
                         keyId = intent.getStringExtra("GROP_ID")
 
@@ -648,6 +648,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                         flora_Attribute.TEMP_YN = "Y"
 
                         flora_Attribute.CONF_MOD = "N"
+
+                        flora_Attribute.GEOM = log.toString() + " " + lat.toString()
 
                         if (chkdata) {
 
@@ -801,7 +803,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                             var flora_Attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                                    , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25))
+                                    , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26))
 
                             dataArray.add(flora_Attribute)
                         }
@@ -855,7 +857,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                             var flora_Attribute: Flora_Attribute = Flora_Attribute(null, null, null, null, null, null, null, null, null, null
                                     , null, null, null, null, null, null, null, null, null, null, null, null
-                                    , null, null, null,null)
+                                    , null, null, null,null,null)
 
                             if (pk != null) {
 
@@ -866,7 +868,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                                     flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                             data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                             , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                                            , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25))
+                                            , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26))
 
                                 }
 
@@ -923,7 +925,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                                         var flora_Attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                                 data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                                 , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                                                , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25))
+                                                , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26))
 
                                         dataArray.add(flora_Attribute)
 
@@ -996,7 +998,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                                     var flora_Attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                             data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                             , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                                            , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25))
+                                            , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26))
                                 }
 
                                 if (chkdata == true) {
@@ -1117,7 +1119,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
         floraaddBT.setOnClickListener {
             var flora_Attribute: Flora_Attribute = Flora_Attribute(null,null,null,null,null,null,null,null,null,null
                     ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                    ,null,null,null)
+                    ,null,null,null,null)
 
             keyId = intent.getStringExtra("GROP_ID")
 
@@ -1186,6 +1188,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             flora_Attribute.TEMP_YN = "Y"
 
             flora_Attribute.CONF_MOD = "N"
+
+            flora_Attribute.GEOM = log.toString() + " " + lat.toString()
 
             if (chkdata) {
 
@@ -1482,7 +1486,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             var flora_Attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                    , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25))
+                    , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26))
 
             dataArray.add(flora_Attribute)
 
@@ -2160,7 +2164,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             var flora_Attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                    , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25))
+                    , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26))
 
             dataArray.add(flora_Attribute)
         }

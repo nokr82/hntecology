@@ -82,6 +82,8 @@ class StockActivity : Activity() {
 
     var prjname = ""
 
+    var geom = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stock)
@@ -132,6 +134,11 @@ class StockActivity : Activity() {
             log = intent.getStringExtra("longitude")
             println("==============stock$log")
             gpslonTV.setText(log)
+        }
+
+        if (intent.getStringExtra("geom") != null){
+            geom = intent.getStringExtra("geom")
+            println("-----------stockgeom $geom")
         }
 
         if (intent.getIntExtra("landuse",0) != null){
@@ -322,7 +329,7 @@ class StockActivity : Activity() {
 
             var stockMap: StockMap = StockMap(null,null,null,null,null,null,null,null,null,null,
                     null,null,null,null,null,null,null,null,null,null,null,null,
-                    null,null)
+                    null,null,null)
 
             val dataList: Array<String> = arrayOf("*");
 
@@ -333,7 +340,7 @@ class StockActivity : Activity() {
                 var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                         data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                        , data.getString(22),data.getString(23))
+                        , data.getString(22),data.getString(23),data.getString(24))
                 invtmTV.text =  stockMap.INV_TM
                 prjnameET.setText(stockMap.PRJ_NAME)
                 if (stockMap.PRJ_NAME != "" || stockMap.PRJ_NAME != null){
@@ -495,7 +502,7 @@ class StockActivity : Activity() {
                                 var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                         data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                                         , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                        , data.getString(22),data.getString(23))
+                                        , data.getString(22),data.getString(23),data.getString(24))
 
                                 dataArray.add(stockMap)
 
@@ -529,7 +536,7 @@ class StockActivity : Activity() {
 
                         var stockMap: StockMap = StockMap(null,null,null,null,null,null,null,null,null,null,
                                 null,null,null,null,null,null,null,null,null,null,null,null,
-                                null,null)
+                                null,null,null)
 
                         stockMap.GROP_ID = keyId
 //                        stockMap.PRJ_NAME = prjnameET.text.toString()
@@ -565,6 +572,7 @@ class StockActivity : Activity() {
                         stockMap.CONF_MOD = "N"
                         println("stockmap.LANDUSE----${stockMap.LANDUSE}")
                         stockMap.LANDUSE = landuse
+                        stockMap.GEOM = geom
                         if (stockMap.LANDUSE != null || stockMap.LANDUSE != ""){
 
                         } else {
@@ -616,7 +624,7 @@ class StockActivity : Activity() {
 
                             var stockMap: StockMap = StockMap(null,null,null,null,null,null,null,null,null,null,
                                     null,null,null,null,null,null,null,null,null,null,null,null,
-                                    null,null)
+                                    null,null,null)
 
                             if (pk != null) {
 
@@ -638,7 +646,7 @@ class StockActivity : Activity() {
                                         var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                                 data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                                                 , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                                , data.getString(22),data.getString(23))
+                                                , data.getString(22),data.getString(23),data.getString(24))
 
                                         dataArray.add(stockMap)
 
@@ -708,7 +716,7 @@ class StockActivity : Activity() {
                                     var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                             data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                                             , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                            , data.getString(22), data.getString(23))
+                                            , data.getString(22), data.getString(23),data.getString(24))
                                 }
 
                                 if (chkdata == true) {
@@ -743,7 +751,7 @@ class StockActivity : Activity() {
         addBT.setOnClickListener {
             var stockMap: StockMap = StockMap(null,null,null,null,null,null,null,null,null,null,
                     null,null,null,null,null,null,null,null,null,null,null,null,
-                    null,null)
+                    null,null,null)
 
             stockMap.GROP_ID = keyId
 //            stockMap.PRJ_NAME = prjnameET.text.toString()
@@ -777,6 +785,7 @@ class StockActivity : Activity() {
             stockMap.GPS_LAT = gpslatTV.text.toString().toFloat()
             stockMap.GPS_LON = gpslonTV.text.toString().toFloat()
             stockMap.CONF_MOD = "N"
+            stockMap.GEOM = lat.toString() + " " + log.toString()
             if (stockMap.LANDUSE != null || stockMap.LANDUSE != ""){
 
             } else {
@@ -1032,7 +1041,7 @@ class StockActivity : Activity() {
                             var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                     data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                    , data.getString(22),data.getString(23))
+                                    , data.getString(22),data.getString(23), data.getString(24))
 
                             dataArray.add(stockMap)
 

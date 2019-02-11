@@ -265,7 +265,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                 var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                        , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32))
+                        , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32),data.getString(33))
 
                 invregionET.setText(reptilia_attribute.INV_REGION)
                 createdDateTV.setText(reptilia_attribute.INV_DT)
@@ -427,7 +427,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                 var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                        , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32))
+                        , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32),data.getString(33))
 
                 dataArray.add(reptilia_attribute)
 
@@ -470,7 +470,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                 var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                        , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32))
+                        , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32),data.getString(33))
 
                 dataArray.add(reptilia_attribute)
 
@@ -478,7 +478,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
             var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(null,null,null,null,null,null,null,null,null
                     ,null,null,null,null,null,null,null,null,null,null,null,null
-                    ,null,null,null,null,null,null,null,null,null,null,null,null)
+                    ,null,null,null,null,null,null,null,null,null,null,null,null,null)
 
             reptilia_attribute.id = keyId + page.toString()
 
@@ -570,7 +570,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                 var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                        , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32))
+                        , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32),data.getString(33))
 
                 dataArray.add(reptilia_attribute)
 
@@ -665,7 +665,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                             var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(null, null, null, null, null, null, null, null, null
                                     , null, null, null, null, null, null, null, null, null, null, null, null
-                                    , null, null, null, null, null, null, null, null, null, null,null,null)
+                                    , null, null, null, null, null, null, null, null, null, null,null,null,null)
 
                             if (pk != null) {
 
@@ -676,7 +676,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                                   reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                             data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                             , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                                            , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32))
+                                            , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32),data.getString(33))
 
                                 }
 
@@ -732,7 +732,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                                         var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                                 data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                                 , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                                                , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32))
+                                                , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32),data.getString(33))
 
                                         dataArray.add(reptilia_attribute)
 
@@ -799,7 +799,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                                     var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                             data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                             , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                                            , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32))
+                                            , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32),data.getString(33))
                                 }
 
                                 if (chkdata == true) {
@@ -852,7 +852,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                             var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                                    , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32))
+                                    , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32),data.getString(33))
 
                             dataArray.add(reptilia_attribute)
 
@@ -904,7 +904,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                         var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(null,null,null,null,null,null,null,null,null
                                 ,null,null,null,null,null,null,null,null,null,null,null,null
-                        ,null,null,null,null,null,null,null,null,null,null,null,null)
+                        ,null,null,null,null,null,null,null,null,null,null,null,null,null)
 
                         keyId = intent.getStringExtra("GROP_ID")
 
@@ -989,6 +989,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                         reptilia_attribute.CONF_MOD = "N"
 
+                        reptilia_attribute.GEOM = log.toString() + " " + lat.toString()
 
                         if (chkdata) {
 
@@ -1125,7 +1126,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         btn_add.setOnClickListener {
             var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(null,null,null,null,null,null,null,null,null
                     ,null,null,null,null,null,null,null,null,null,null,null,null
-                    ,null,null,null,null,null,null,null,null,null,null,null,null)
+                    ,null,null,null,null,null,null,null,null,null,null,null,null,null)
 
             keyId = intent.getStringExtra("GROP_ID")
 
@@ -1210,6 +1211,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             reptilia_attribute.TEMP_YN = "Y"
 
             reptilia_attribute.CONF_MOD = "N"
+
+            reptilia_attribute.GEOM = log.toString() + " " + lat.toString()
 
 
             if (chkdata) {
@@ -1918,7 +1921,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                    , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32))
+                    , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32),data.getString(33))
 
             dataArray.add(reptilia_attribute)
 
@@ -2223,7 +2226,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                    , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32))
+                    , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32),data.getString(33))
 
             dataArray.add(reptilia_attribute)
 

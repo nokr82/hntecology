@@ -160,7 +160,7 @@ class Flora2Activity : Activity() {
                         data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
                         , data.getInt(15),data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
                         , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28),data.getFloat(29),data.getString(30),data.getInt(31),data.getString(32)
-                        ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41))
+                        ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41),data.getString(42))
 
                 // 교목층
 
@@ -1343,7 +1343,7 @@ class Flora2Activity : Activity() {
 
                             var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null,null,null,null,null,null,null,null,null,null
                                     ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                                    ,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null
+                                    ,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null
                             ,null,null)
 
                             keyId = intent.getStringExtra("GROP_ID")
@@ -1494,6 +1494,8 @@ class Flora2Activity : Activity() {
 
                             manyFloraAttribute.TEMP_YN = "Y"
                             manyFloraAttribute.CONF_MOD = "N"
+
+                            manyFloraAttribute.GEOM = log.toString() + " " + lat.toString()
 
 
                             val CONF_MOD = manyFloraAttribute.CONF_MOD
@@ -1771,7 +1773,7 @@ class Flora2Activity : Activity() {
                                     var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null, null, null, null, null, null, null, null, null, null
                                             , null, null, null, null, null, null, null, null, null, null, null, null, null
                                             , null, null, null, null, null, null, null, null, null, null, null, null, null
-                                    ,null,null,null,null,null,null)
+                                    ,null,null,null,null,null,null,null)
 
                                     keyId = intent.getStringExtra("GROP_ID")
 
@@ -1914,10 +1916,16 @@ class Flora2Activity : Activity() {
                                         }
                                     }
 
+                                    manyFloraAttribute.GEOM = log.toString() + " " + lat.toString()
+
+
+
                                     dbManager!!.insertmanyflora_attribute(manyFloraAttribute);
                                     println("insert-------")
 
                                 }
+
+
 
 
                             var intent = Intent()
@@ -1960,7 +1968,7 @@ class Flora2Activity : Activity() {
                                     data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
                                     , data.getInt(15),data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
                                     , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28),data.getFloat(29),data.getString(30),data.getInt(31),data.getString(32)
-                                    ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41))
+                                    ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41),data.getString(42))
 
                             dataArray.add(manyFloraAttribute)
                         }
@@ -1998,7 +2006,7 @@ class Flora2Activity : Activity() {
                             var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null,null,null,null,null,null,null,null,null,null
                                     ,null,null,null,null,null,null,null,null,null,null,null,null,null
                                     ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                            ,null,null,null,null,null,null)
+                            ,null,null,null,null,null,null,null)
 
 
                             if (pk != null) {
@@ -2022,7 +2030,7 @@ class Flora2Activity : Activity() {
                                                 data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
                                                 , data.getInt(15),data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
                                                 , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28),data.getFloat(29),data.getString(30),data.getInt(31),data.getString(32)
-                                                ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41))
+                                                ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41),data.getString(42))
 
                                         dataArray.add(manyFloraAttribute)
 
@@ -2077,7 +2085,7 @@ class Flora2Activity : Activity() {
                                             data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
                                             , data.getInt(15),data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
                                             , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28),data.getFloat(29),data.getString(30),data.getInt(31),data.getString(32)
-                                            ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41))
+                                            ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41),data.getString(42))
 
 
                                 }
@@ -2235,7 +2243,7 @@ class Flora2Activity : Activity() {
                     data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
                     , data.getInt(15),data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
                     , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28),data.getFloat(29),data.getString(30),data.getInt(31),data.getString(32)
-                    ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41))
+                    ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41),data.getString(42))
 
             dataArray.add(manyFloraAttribute)
         }

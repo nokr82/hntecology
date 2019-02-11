@@ -120,6 +120,14 @@ class DlgCommonSubActivity : Activity() {
                 listdata1.add("100")
             }
 
+            1000 -> {
+                insertTime()
+            }
+
+            1001 -> {
+                insertTime()
+            }
+
         }
 
         //대분류 데이터 셋팅
@@ -146,6 +154,32 @@ class DlgCommonSubActivity : Activity() {
 
     }
 
+    fun insertTime(){
+        listdata1.add("00")
+        listdata1.add("01")
+        listdata1.add("02")
+        listdata1.add("03")
+        listdata1.add("04")
+        listdata1.add("05")
+        listdata1.add("06")
+        listdata1.add("07")
+        listdata1.add("08")
+        listdata1.add("09")
+        listdata1.add("10")
+        listdata1.add("11")
+        listdata1.add("12")
+        listdata1.add("13")
+        listdata1.add("14")
+        listdata1.add("15")
+        listdata1.add("16")
+        listdata1.add("17")
+        listdata1.add("18")
+        listdata1.add("19")
+        listdata1.add("20")
+        listdata1.add("21")
+        listdata1.add("22")
+        listdata1.add("23")
+    }
 }
 
 

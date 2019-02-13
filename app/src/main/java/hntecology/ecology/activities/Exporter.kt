@@ -28,14 +28,12 @@ object Exporter {
 //
 //    }
 
-    class ExportItem constructor(layerInt:Int, columnDefs: ArrayList<ColumnDef>,points:ArrayList<LatLng>) {
+    class ExportItem constructor(layerInt:Int, columnDefs: ArrayList<ColumnDef>,polygon : Polygon? ,points:ArrayList<LatLng>?) {
         val layerInt:Int = layerInt
         var columnDefs: ArrayList<ColumnDef> = columnDefs
-//        var polygon : Polygon = polygon
-
-        var points: ArrayList<LatLng> = points
-
-    }
+        var polygon : Polygon = polygon!!
+        var points: ArrayList<LatLng> = points!!
+}
 
     class ExportPointItem constructor(layerInt:Int, columnDefs: ArrayList<ColumnDef>, point : Marker) {
         val layerInt:Int = layerInt
@@ -231,8 +229,11 @@ object Exporter {
 //        val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
         val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"  + File.separator +"data"+ File.separator + layerName + File.separator
 //        var outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"  + File.separator +"data"+ File.separator + layerName + File.separator + layerName + ".shp"
+        var outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"  + File.separator +"data"+ File.separator + layerName + File.separator + layerName + ".shp"
 
-        var outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"  + File.separator +"data"+ File.separator + layerName + File.separator + layerName + "_"+ leftday +"_"+ rightday + ".shp"
+        if (leftday != ""){
+            outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"  + File.separator +"data"+ File.separator + layerName + File.separator + layerName + "_"+ leftday +"_"+ rightday + ".shp"
+        }
 
 
         println("----exportlftday : $leftday rightday $rightday")
@@ -326,11 +327,19 @@ object Exporter {
                 // create the WKT for the feature using Python string formatting
                 val ring = Geometry(ogr.wkbLinearRing)
 
-//                val points = exportItem.polygon.points
-                var points = exportItem.points
-                for (point in points) {
-                    ring.AddPoint(point.longitude, point.latitude)
+
+                if (exportItem.points.size > 0){
+                    var points = exportItem.points
+                    for (point in points) {
+                        ring.AddPoint(point.longitude, point.latitude)
+                    }
+                } else {
+                    var points = exportItem.polygon.points
+                    for (point in points) {
+                        ring.AddPoint(point.longitude, point.latitude)
+                    }
                 }
+//                var points = exportItem.points
 
                 val poly = Geometry(ogr.wkbPolygon)
                 poly.AddGeometry(ring)

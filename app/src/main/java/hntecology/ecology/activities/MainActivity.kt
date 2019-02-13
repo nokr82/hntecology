@@ -232,6 +232,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     var polyLines: ArrayList<Polyline> = ArrayList<Polyline>()
 
     var CALENDAR = 5000
+
+    var toastmessage = ""
+
     internal var loadDataHandler: Handler = object : Handler() {
         override fun handleMessage(msg: android.os.Message) {
 //            initGps()
@@ -274,6 +277,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             latitude = gpsset.latitude!!
             longitude = gpsset.longitude!!
+            //devstories2006@bitbucket.org/WonChulLee/donggolf.git
 
             println("-------lat $latitude")
             println("-------log $longitude")
@@ -5861,7 +5865,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     fun export(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var leftreplace = lefttime.replace("시", ":00")
-        var rightreplace = righttime.replace("시", ":00")
+        var rightreplace = righttime.replace("시", ":59")
 
         exportBiotope(leftday, leftreplace, rightday, rightreplace)
         exportStockMap(leftday, leftreplace, rightday, rightreplace)
@@ -5882,10 +5886,17 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         var biotopeArray: ArrayList<Exporter.ExportItem> = ArrayList<Exporter.ExportItem>()
         val dataList: Array<String> = arrayOf("*")
 //        var biotopedata = db!!.query("biotopeAttribute", dataList, null, null, null, null, "", null)
-        val lftday = leftday + lefttime
-        val rgtday = rightday + righttime
+        var lftday = leftday + lefttime
+        var rgtday = rightday + righttime
+
+        println("--------lftday : $lftday rgtday : $rgtday")
+
+//        var biotopedata = db!!.query("biotopeAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
+
+//        var biotopedata = db!!.query("biotopeAttribute", dataList, "INV_DT || ' ' || INV_TM between '2019-02-12' and '2019-02-13' ", null, null, null, "", null)
 
         var biotopedata = db!!.query("biotopeAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
+
         var chkData = false
         var index = 0
 
@@ -5919,15 +5930,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 if (polygons.size > 0) {
 
-                    println(polygons.size.toString() + "----------------------------")
-
                     for (j in 0..polygons.size - 1) {
                         if (polygons.get(j).tag != null) {
                             val layerInfo = polygons.get(j).tag as LayerInfo
 
                             var attrubuteKey = layerInfo.attrubuteKey
                             if (attrubuteKey.equals(grop_id)) {
-                                println("-------------------------------------exportbiotopeequlas")
                                 add = true
                                 idx = j
                             }
@@ -5998,8 +6006,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 var geomsplit = biotope_attribute.GEOM!!.split(",")
                 var points: ArrayList<LatLng> = ArrayList<LatLng>()
 
-                println("-------biotope_attribute.geom ${biotope_attribute.GEOM}")
-
                 for (i in 0 until geomsplit.size - 1) {
                     var split = geomsplit.get(i).split(" ")
                     val latlng = LatLng(split.get(1).toDouble(), split.get(0).toDouble())
@@ -6013,11 +6019,17 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 //                    }
 //                }
 
+                var leftreplace = lftday.replace(" ", "_")
+                var rightreplace = rgtday.replace(" ", "_")
+                lftday = leftreplace
+                rgtday = rightreplace
+
                 if (biotopeArray != null) {
-                    Exporter.export(biotopeArray)
+                    Exporter.export(biotopeArray,lftday,rgtday)
                 }
 
 
+//                val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope"
                 val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope"
 
                 val layerData = db!!.query("layers", dataList, "file_name = '$file_path'", null, null, null, "", null)
@@ -6029,21 +6041,23 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if (chkData) {
 
                 } else {
-                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope", "비오톱", "biotope", "Y", "biotope")
+//                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope", "비오톱", "biotope", "Y", "biotope")
                 }
 
                 biotopedata.close()
 
             }
             biotopeDatas.clear()
+        } else {
+
         }
 
     }
 
     fun exportBirds(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
-        val lftday = leftday + lefttime
-        val rgtday = rightday + righttime
+        var lftday = leftday + lefttime
+        var rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
 //        val data = db!!.query("birdsAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var data = db!!.query("birdsAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
@@ -6170,8 +6184,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 //                }
             }
 
+            var leftreplace = lftday.replace(" ", "_")
+            var rightreplace = rgtday.replace(" ", "_")
+            lftday = leftreplace
+            rgtday = rightreplace
+
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray)
+                Exporter.exportPoint(pointsArray,lftday,rgtday)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "birds" + File.separator + "birds"
@@ -6185,20 +6204,22 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if (chkData) {
 
             } else {
-                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "birds" + File.separator + "birds", "조류", "birds", "Y", "birds")
+//                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "birds" + File.separator + "birds", "조류", "birds", "Y", "birds")
             }
 
             birdsDatas.clear()
 
             data.close()
 
+        } else {
+
         }
     }
 
     fun exportReptilia(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
-        val lftday = leftday + lefttime
-        val rgtday = rightday + righttime
+        var lftday = leftday + lefttime
+        var rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
 //        val reptiliadata = db!!.query("reptiliaAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var reptiliadata = db!!.query("reptiliaAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
@@ -6331,8 +6352,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 //                }
             }
 
+            var leftreplace = lftday.replace(" ", "_")
+            var rightreplace = rgtday.replace(" ", "_")
+            lftday = leftreplace
+            rgtday = rightreplace
+
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray)
+                Exporter.exportPoint(pointsArray,lftday,rgtday)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "reptilia" + File.separator + "reptilia"
@@ -6346,20 +6372,22 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if (chkData) {
 
             } else {
-                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "reptilia" + File.separator + "reptilia", "양서,파충류", "reptilia", "Y", "reptilia")
+//                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "reptilia" + File.separator + "reptilia", "양서,파충류", "reptilia", "Y", "reptilia")
             }
 
             reptiliaDatas.clear()
 
             reptiliadata.close()
+        } else {
+
         }
 
     }
 
     fun exportMammal(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
-        val lftday = leftday + lefttime
-        val rgtday = rightday + righttime
+        var lftday = leftday + lefttime
+        var rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
 //        val data = db!!.query("mammalAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var data = db!!.query("mammalAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
@@ -6484,8 +6512,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 //            }
 
+            var leftreplace = lftday.replace(" ", "_")
+            var rightreplace = rgtday.replace(" ", "_")
+            lftday = leftreplace
+            rgtday = rightreplace
+
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray)
+                Exporter.exportPoint(pointsArray,lftday,rgtday)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "mammalia" + File.separator + "mammalia"
@@ -6499,19 +6532,21 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if (chkData) {
 
             } else {
-                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "mammalia" + File.separator + "mammalia", "포유류", "mammalia", "Y", "mammalia")
+//                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "mammalia" + File.separator + "mammalia", "포유류", "mammalia", "Y", "mammalia")
             }
             data.close()
 
             pointsArray.clear()
             mammaliaDatas.clear()
+        } else {
+
         }
     }
 
     fun exportFish(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
-        val lftday = leftday + lefttime
-        val rgtday = rightday + righttime
+        var lftday = leftday + lefttime
+        var rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
 //        val fishdata = db!!.query("fishAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var fishdata = db!!.query("fishAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
@@ -6642,9 +6677,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 //            }
 
+            var leftreplace = lftday.replace(" ", "_")
+            var rightreplace = rgtday.replace(" ", "_")
+            lftday = leftreplace
+            rgtday = rightreplace
 
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray)
+                Exporter.exportPoint(pointsArray,lftday,rgtday)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "fish" + File.separator + "fish"
@@ -6658,7 +6697,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if (chkData) {
 
             } else {
-                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "fish" + File.separator + "fish", "어류", "fish", "Y", "fish")
+//                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "fish" + File.separator + "fish", "어류", "fish", "Y", "fish")
             }
 
             fishdata.close()
@@ -6670,8 +6709,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     fun exportInsects(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
-        val lftday = leftday + lefttime
-        val rgtday = rightday + righttime
+        var lftday = leftday + lefttime
+        var rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
 //        val insectdata = db!!.query("insectAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var insectdata = db!!.query("insectAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
@@ -6796,8 +6835,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 //            }
 
+            var leftreplace = lftday.replace(" ", "_")
+            var rightreplace = rgtday.replace(" ", "_")
+            lftday = leftreplace
+            rgtday = rightreplace
+
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray)
+                Exporter.exportPoint(pointsArray,lftday,rgtday)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "insect" + File.separator + "insect"
@@ -6811,7 +6855,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if (chkData) {
 
             } else {
-                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "insect" + File.separator + "insect", "곤충", "insect", "Y", "insect")
+//                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "insect" + File.separator + "insect", "곤충", "insect", "Y", "insect")
             }
 
             insectdata.close()
@@ -6823,8 +6867,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     fun exportFlora(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
         val dataList: Array<String> = arrayOf("*")
-        val lftday = leftday + lefttime
-        val rgtday = rightday + righttime
+        var lftday = leftday + lefttime
+        var rgtday = rightday + righttime
 //        val floradata = db!!.query("floraAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var floradata = db!!.query("floraAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         var datas: ArrayList<Flora_Attribute> = ArrayList<Flora_Attribute>()
@@ -6941,8 +6985,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 //            }
 
+            var leftreplace = lftday.replace(" ", "_")
+            var rightreplace = rgtday.replace(" ", "_")
+            lftday = leftreplace
+            rgtday = rightreplace
+
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray)
+                Exporter.exportPoint(pointsArray,lftday,rgtday)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora" + File.separator + "flora"
@@ -6956,7 +7005,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if (chkData) {
 
             } else {
-                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora" + File.separator + "flora", "식물", "flora", "Y", "flora")
+//                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora" + File.separator + "flora", "식물", "flora", "Y", "flora")
             }
 
             floradata.close()
@@ -6968,8 +7017,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     fun exportZoobenthous(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
-        val lftday = leftday + lefttime
-        val rgtday = rightday + righttime
+        var lftday = leftday + lefttime
+        var rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
 //        val data = db!!.query("ZoobenthosAttribute", dataList, null, null, "GROP_ID", null, "", null)
         var data = db!!.query("ZoobenthosAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
@@ -7126,8 +7175,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 //            }
 
+            var leftreplace = lftday.replace(" ", "_")
+            var rightreplace = rgtday.replace(" ", "_")
+            lftday = leftreplace
+            rgtday = rightreplace
+
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray)
+                Exporter.exportPoint(pointsArray,lftday,rgtday)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "zoobenthos" + File.separator + "zoobenthos"
@@ -7141,7 +7195,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if (chkData) {
 
             } else {
-                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "zoobenthos" + File.separator + "zoobenthos", "저서무척추동물", "zoobenthos", "Y", "zoobenthos")
+//                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "zoobenthos" + File.separator + "zoobenthos", "저서무척추동물", "zoobenthos", "Y", "zoobenthos")
             }
 
             data.close()
@@ -7155,8 +7209,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     fun exportWaypoint(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
-        val lftday = leftday + lefttime
-        val rgtday = rightday + righttime
+        var lftday = leftday + lefttime
+        var rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
 //        val data = db!!.query("Waypoint", dataList, null, null, "GROP_ID", null, "", null)
         var data = db!!.query("Waypoint", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
@@ -7248,9 +7302,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 marker.remove()
             }
 //            }
+            var leftreplace = lftday.replace(" ", "_")
+            var rightreplace = rgtday.replace(" ", "_")
+            lftday = leftreplace
+            rgtday = rightreplace
 
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray)
+                Exporter.exportPoint(pointsArray,lftday,rgtday)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "waypoint" + File.separator + "waypoint"
@@ -7264,7 +7322,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if (chkData) {
 
             } else {
-                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "waypoint" + File.separator + "waypoint", "웨이포인트", "waypoint", "Y", "waypoint")
+//                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "waypoint" + File.separator + "waypoint", "웨이포인트", "waypoint", "Y", "waypoint")
             }
 
             data.close()
@@ -7276,8 +7334,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
     fun exportManyFloras(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
-        val lftday = leftday + lefttime
-        val rgtday = rightday + righttime
+        var lftday = leftday + lefttime
+        var rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
 //        val data = db!!.query("ManyFloraAttribute", dataList, null, null, null, null, "", null)
         var data = db!!.query("ManyFloraAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
@@ -7397,8 +7455,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 //            }
 
+            var leftreplace = lftday.replace(" ", "_")
+            var rightreplace = rgtday.replace(" ", "_")
+            lftday = leftreplace
+            rgtday = rightreplace
+
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray)
+                Exporter.exportPoint(pointsArray,lftday,rgtday)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora2" + File.separator + "flora2"
@@ -7412,7 +7475,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             if (chkData) {
 
             } else {
-                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora2" + File.separator + "flora2", "식생", "flora2", "Y", "flora2")
+//                dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora2" + File.separator + "flora2", "식생", "flora2", "Y", "flora2")
             }
 
             data.close()
@@ -7509,8 +7572,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     fun exportStockMap(leftday: String, lefttime: String, rightday: String, righttime: String) {
         var stokeArray: ArrayList<Exporter.ExportItem> = ArrayList<Exporter.ExportItem>()
         val dataList: Array<String> = arrayOf("*")
-        val lftday = leftday + lefttime
-        val rgtday = rightday + righttime
+        var lftday = leftday + lefttime
+        var rgtday = rightday + righttime
 //        var data = db!!.query("StockMap", dataList, null, null, null, null, "", null)
         var data = db!!.query("StockMap", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         var chkData = false
@@ -7594,8 +7657,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 stokeArray.add(exporter)
 //                }
+
+                var leftreplace = lftday.replace(" ", "_")
+                var rightreplace = rgtday.replace(" ", "_")
+                lftday = leftreplace
+                rgtday = rightreplace
+
                 if (stokeArray != null) {
-                    Exporter.export(stokeArray)
+                    Exporter.export(stokeArray,lftday,rgtday)
                 }
 
                 val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap"
@@ -7609,7 +7678,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 if (chkData) {
 
                 } else {
-                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap", "임상도", "stokemap", "Y", "stokemap")
+//                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap", "임상도", "stokemap", "Y", "stokemap")
                 }
 
             }

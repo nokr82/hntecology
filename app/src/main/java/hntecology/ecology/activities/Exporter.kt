@@ -18,6 +18,9 @@ object Exporter {
     lateinit var exportItem:ExportItem
     lateinit var exportPointItem:ExportPointItem
 
+    var leftday = ""
+    var rightday = ""
+
 //    class ExportItem constructor(layerInt:Int, columnDefs: ArrayList<ColumnDef>, polygon : Polygon) {
 //        val layerInt:Int = layerInt
 //        var columnDefs: ArrayList<ColumnDef> = columnDefs
@@ -52,19 +55,22 @@ object Exporter {
         val columnValue:Any? = columnValue
     }
 
-    fun export(exportItems:ArrayList<ExportItem>) {
-        export(exportItems, null, null)
+    fun export(exportItems:ArrayList<ExportItem>,lftday:String,rgtday:String) {
+        export(exportItems, null, null,lftday, rgtday)
     }
 
-    fun exportPoint(exportPointItems:ArrayList<ExportPointItem>) {
-        export(null, exportPointItems, null)
+    fun exportPoint(exportPointItems:ArrayList<ExportPointItem>,lftday:String,rgtday:String) {
+        export(null, exportPointItems, null,lftday, rgtday)
     }
 
     fun exportLine(exportLineItems:ArrayList<ExportLatLngItem>) {
-        export(null, null, exportLineItems)
+        export(null, null, exportLineItems,"","")
     }
 
-    private fun export(exportItems:ArrayList<ExportItem>?, exportPointItems:ArrayList<ExportPointItem>?, exportLineItems:ArrayList<ExportLatLngItem>?) {
+    private fun export(exportItems:ArrayList<ExportItem>?, exportPointItems:ArrayList<ExportPointItem>?, exportLineItems:ArrayList<ExportLatLngItem>?,lftday: String,rgtday: String) {
+
+        leftday = lftday
+        rightday = rgtday
 
         if (exportItems != null) {
             if (exportItems.isEmpty()) {
@@ -224,7 +230,13 @@ object Exporter {
         // String outPath = "/data/data/com.wshunli.gdal.android.demo/outputs/";
 //        val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
         val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"  + File.separator +"data"+ File.separator + layerName + File.separator
-        var outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"  + File.separator +"data"+ File.separator + layerName + File.separator + layerName + ".shp"
+//        var outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"  + File.separator +"data"+ File.separator + layerName + File.separator + layerName + ".shp"
+
+        var outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"  + File.separator +"data"+ File.separator + layerName + File.separator + layerName + "_"+ leftday +"_"+ rightday + ".shp"
+
+
+        println("----exportlftday : $leftday rightday $rightday")
+
 
         val outputsDir = File(outPath)
 

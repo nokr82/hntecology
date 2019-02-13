@@ -150,10 +150,27 @@ class DlgCalendarActivity : Activity() {
     }
 
     fun onDateSet(view: DlgCalendarActivity, year: Int, monthOfYear: Int, dayOfMonth: Int, type:String) {
+        val month = monthOfYear
+        var monthString = ""
+        monthString = month.toString()
+
+        val day = dayOfMonth
+        var dayString = ""
+        dayString = day.toString()
+
+        if (month < 10){
+            monthString = ""
+            monthString += "0" + month.toString()
+        }
+
+        if (dayOfMonth < 10){
+            dayString = ""
+            dayString += "0" + day.toString()
+        }
         if (type == "l"){
-            leftdayTV.setText(year.toString() + "-" + monthOfYear.toString() + "-" + dayOfMonth.toString() + " ")
+            leftdayTV.setText(year.toString() + "-" + monthString.toString() + "-" + dayString.toString() + " ")
         } else {
-            rightdayTV.setText(year.toString() + "-" + monthOfYear.toString() + "-" + dayOfMonth.toString() + " ")
+            rightdayTV.setText(year.toString() + "-" + monthString.toString() + "-" + dayString.toString() + " ")
         }
     }
 }

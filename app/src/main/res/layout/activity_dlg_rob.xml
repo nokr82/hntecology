@@ -23,9 +23,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/class_dlgTitle"
+                android:id="@+id/dlgTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="교목층 코드"
                 android:textColor="#333333"
                 android:textSize="25.2sp"
                 android:textStyle="bold"
@@ -65,41 +66,48 @@
                 android:layout_marginTop="15dp"
                 >
 
-                <ListView
-                    android:id="@+id/class_list_view1"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:divider="@null">
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="아교목층 정보"
+                        android:gravity="center"
+                        android:textStyle="bold"/>
+                    <ListView
+                        android:id="@+id/list_view1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"
+                        android:scrollbars="none">
 
-                </ListView>
-
-                <ListView
-                    android:id="@+id/class_list_view2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_weight="1"
-                    android:divider="@null">
-
-                </ListView>
-
+                    </ListView>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
-
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="과목층 정보"
+                        android:gravity="center"
+                        android:textStyle="bold"/>
                     <ListView
-                        android:id="@+id/class_list_view3"
+                        android:id="@+id/list_view2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
                         android:layout_weight="1"
-                        android:divider="@null">
-                    </ListView>
+                        android:divider="@null"
+                        android:scrollbars="none">
 
+                    </ListView>
                 </LinearLayout>
 
                 <LinearLayout
@@ -107,55 +115,24 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
-
-                    <ListView
-                        android:id="@+id/class_list_view4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:divider="@null">
-                    </ListView>
-
-                </LinearLayout>
-
-
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <EditText
-                        android:visibility="gone"
-                        android:id="@+id/searchET"
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:maxLines="1"
-                        android:layout_gravity="center"
-                        android:gravity="center"/>
+                        android:text="과목층 평균"
+                        android:gravity="center"
+                        android:textStyle="bold"/>
 
                     <ListView
-                        android:id="@+id/class_list_view5"
+                        android:id="@+id/list_view3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:divider="@null">
+                        android:layout_weight="1"
+                        android:divider="@null"
+                        android:scrollbars="none">
                     </ListView>
 
                 </LinearLayout>
-
-
-                <ListView
-                    android:visibility="gone"
-                    android:id="@+id/class_list_view6"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:divider="@null"
-                    android:layout_marginLeft="15dp"
-                    ></ListView>
-
 
 
             </LinearLayout>
@@ -164,7 +141,7 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
 
-                android:id="@+id/class_probar"
+                android:id="@+id/probar"
                 android:visibility="gone"
                 />
         </FrameLayout>

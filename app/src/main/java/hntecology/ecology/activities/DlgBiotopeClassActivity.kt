@@ -11,6 +11,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
+import android.widget.Toast
 import hntecology.ecology.R
 import hntecology.ecology.adapter.*
 import hntecology.ecology.base.DataBaseHelper
@@ -51,11 +52,19 @@ class DlgBiotopeClassActivity : Activity() {
     var titleName:String=""
     var DlgHeight:Float=430F
 
+    var list3position = -1
     var list4position:Int = 0
+    var list5position = -1
 
     var dbManager: DataBaseHelper? = null
 
     private var db: SQLiteDatabase? = null
+
+    var GETCODE = 1000
+
+    var code1 = ""
+    var code2 = ""
+    var code3 = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,12 +123,66 @@ class DlgBiotopeClassActivity : Activity() {
 
         dataList(listdata1,data1);
 
+        selectLL.setOnClickListener {
+            println("----list3 : $list3position")
+            println("----list5 : $list5position")
+            if (list3position > -1){
+                if (list5position > -1){
+                    var vegetation = listAdapte5.getItem(list5position)
+                    var category = vegetation.CATEGORY
+                    var intent = Intent()
+                    if (category == "기타"){
+                        intent.putExtra("etc",category)
+
+                        setResult(RESULT_OK, intent);
+                        finish()
+                    } else {
+                        var number = ""
+                        if (code1 != ""){
+                            number += code1
+                        }
+
+                        if (code2 != ""){
+                            number += code2
+                        }
+
+                        if (code3 != ""){
+                            number += code3
+                        }
+
+                        intent.putExtra("Vegetation",vegetation)
+                        intent.putExtra("Number",number)
+
+                        setResult(RESULT_OK, intent);
+                        finish()
+                    }
+                } else {
+                    var biotopeClass:BiotopeClass = listAdapte3.getItem(list3position)
+
+                    intent.putExtra("biotopeClass",biotopeClass)
+
+                    setResult(RESULT_OK, intent);
+                    finish()
+                }
+            } else {
+                Toast.makeText(this, "분류기준을 선택해주세요.", Toast.LENGTH_SHORT).show();
+                return@setOnClickListener
+            }
+        }
+
         listView1.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
             listAdapte2.clearItem()
             listAdapte3.clearItem()
             listAdapte4.clearItem()
             listAdapte5.clearItem()
             listAdapte6.clearItem()
+
+            code1 = ""
+            code2 = ""
+            code3 = ""
+
+            list3position = -1
+            list5position = -1
 
             var veData =  listAdapte1.getItem(position)
 
@@ -158,12 +221,11 @@ class DlgBiotopeClassActivity : Activity() {
 
         })
 
-
-
         listView3.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
             listAdapte4.clearItem()
             listAdapte5.clearItem()
             listAdapte6.clearItem()
+            list3position = position
 
             var biotopeClass:BiotopeClass = listAdapte3.getItem(position)
 
@@ -182,14 +244,13 @@ class DlgBiotopeClassActivity : Activity() {
                 listAdapte4.addItem(item2)
                 listAdapte4.addItem(item)
             }else {
-
-                var intent = Intent();
-
-                intent.putExtra("biotopeClass",biotopeClass)
-
-                setResult(RESULT_OK, intent);
-                finish()
-
+                listAdapte3.setItemSelect(position)
+//                var intent = Intent();
+//
+//                intent.putExtra("biotopeClass",biotopeClass)
+//
+//                setResult(RESULT_OK, intent);
+//                finish()
             }
 
         })
@@ -240,18 +301,25 @@ class DlgBiotopeClassActivity : Activity() {
             listAdapte6.clearItem()
 
             list4position = position
+            list5position = position
 
             val vegetation : Vegetation = listAdapte5.getItem(position)
             val cate = vegetation.CATEGORY
 
+            code1 = ""
+            code2 = ""
+            code3 = ""
+
             if (cate == "기타"){
-                var intent = Intent();
-
-                intent.putExtra("etc",cate)
-
-                setResult(RESULT_OK, intent);
-                finish()
+//                var intent = Intent();
+//
+//                intent.putExtra("etc",cate)
+//
+//                setResult(RESULT_OK, intent);
+//                finish()
+                listAdapte5.setItemSelect(position)
             } else {
+
                 val dataList:Array<String> = arrayOf("COUNT");
 
                 val numdata=  db!!.query("Number",dataList,null,null,null,null,"COUNT",null);
@@ -265,6 +333,11 @@ class DlgBiotopeClassActivity : Activity() {
                 listAdapte5.notifyDataSetChanged()
 
                 numdata.close()
+
+                val intent = Intent(this, DlgRobActivity::class.java)
+
+                startActivityForResult(intent, GETCODE);
+
             }
 
 
@@ -378,5 +451,27 @@ class DlgBiotopeClassActivity : Activity() {
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                GETCODE -> {
+                    if (data!!.getStringExtra("code1") != null){
+                        code1 = data!!.getStringExtra("code1")
+                    }
+
+                    if (data!!.getStringExtra("code2") != null){
+                        code2 = data!!.getStringExtra("code2")
+                    }
+
+                    if (data!!.getStringExtra("code3") != null){
+                        code3 = data!!.getStringExtra("code3")
+                    }
+                }
+            }
+        }
+    }
 
 }

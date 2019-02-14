@@ -221,7 +221,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/floratemperaturTV"
-                    android:inputType="number"
+                    android:inputType="numberSigned"
                     style="@style/BiotopeTextView"
                     android:gravity="center"
                     />

@@ -224,7 +224,7 @@
                     android:layout_weight="1"
                     android:id="@+id/temperaturET"
                     style="@style/BiotopeTextView"
-                    android:inputType="number"
+                    android:inputType="numberSigned"
                     android:gravity="center"
                     />
                 <EditText

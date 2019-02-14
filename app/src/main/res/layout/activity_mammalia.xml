@@ -224,7 +224,7 @@
                     android:id="@+id/mamtemperatureET"
                     style="@style/BiotopeTextView"
                     android:gravity="center"
-                    android:inputType="number"
+                    android:inputType="numberSigned"
                     />
                 <EditText
                     android:layout_width="0dp"

@@ -247,9 +247,12 @@
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog2"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
-        <activity android:name=".activities.DlgCalendarActivity"
+        <activity
+            android:name=".activities.DlgCalendarActivity"
             android:theme="@style/full_screen_dialog1"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"  ></activity>
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+        <activity android:name=".activities.DlgRobActivity"
+            android:theme="@style/full_screen_dialog1"></activity>
     </application>
 
 </manifest>

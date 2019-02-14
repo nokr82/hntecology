@@ -309,6 +309,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 btn3.setText(birds_attribute.WIND_DIRE)     //풍향
 
                 temperatureET.setText(birds_attribute.TEMPERATUR.toString())       //기온
+                println("------birdstemperatur${birds_attribute.TEMPERATUR}")
                 etcET.setText(birds_attribute.ETC)
 
                 numTV.setText(birds_attribute.NUM.toString())
@@ -584,7 +585,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         birds_attribute.WIND_DIRE = btn3.text.toString()
 
                         if(temperatureET.text.isNotEmpty()){
-                            Utils.getString(temperatureET).toFloat();
+                            birds_attribute.TEMPERATUR = Utils.getString(temperatureET).toFloat();
                         }
 
                         birds_attribute.ETC = etcET.text.toString()

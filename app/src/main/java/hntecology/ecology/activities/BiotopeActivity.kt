@@ -2370,7 +2370,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     if (data!!.getSerializableExtra("Vegetation") != null) {
                         vegetation = data!!.getSerializableExtra("Vegetation") as Vegetation
                         if (data!!.getSerializableExtra("Number") != null) {
-                            number = data!!.getSerializableExtra("Number") as Number
+                            var number = data!!.getStringExtra("Number")
                             val category = vegetation.CATEGORY
                             if (category == "기타"){
                                 TVTY_MARKTV.setText("")
@@ -2381,7 +2381,10 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                 ETTY_MARKET.setText("")
                                 ETTY_MARKET.visibility = View.GONE
                                 TVTY_MARKTV.visibility = View.VISIBLE
-                                TVTY_MARKTV.setText(vegetation.SIGN + number.COUNT)
+                                TVTY_MARKTV.setText(vegetation.SIGN)
+                                if (number != ""){
+                                    TVTY_MARKTV.setText(vegetation.SIGN + number)
+                                }
                             }
                         }
 

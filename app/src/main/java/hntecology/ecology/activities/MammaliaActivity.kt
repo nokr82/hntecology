@@ -115,6 +115,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
     var prjname = ""
 
+    var INV_REGION = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mammalia)
@@ -199,7 +201,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 if(list.size > 0){
                     System.out.println("list : " + list);
 
-                    maminvregionET.setText(list.get(0).getAddressLine(0));
+//                    maminvregionET.setText(list.get(0).getAddressLine(0));
+                    INV_REGION = list.get(0).getAddressLine(0)
                 }
             } catch (e:IOException) {
                 e.printStackTrace();
@@ -238,7 +241,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 if(list.size > 0){
                     System.out.println("list : " + list);
 
-                    maminvregionET.setText(list.get(0).getAddressLine(0));
+//                    maminvregionET.setText(list.get(0).getAddressLine(0));
+                    INV_REGION = list.get(0).getAddressLine(0)
                 }
             } catch (e:IOException) {
                 e.printStackTrace();
@@ -272,6 +276,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31))
 
                 maminvregionET.setText(mammal_attribute.INV_REGION)
+                INV_REGION = mammal_attribute.INV_REGION.toString()
                 maminvdtTV.setText(mammal_attribute.INV_DT)
 
                 mamweatherET.setText(mammal_attribute.WEATHER)
@@ -608,7 +613,12 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                             mammal_attribute.PRJ_NAME = prjname
                         }
 
-                        mammal_attribute.INV_REGION = maminvregionET.text.toString()
+//                        mammal_attribute.INV_REGION = maminvregionET.text.toString()
+                        if (maminvregionET.length() > 0){
+                            mammal_attribute.INV_REGION = maminvregionET.text.toString();
+                        } else {
+                            mammal_attribute.INV_REGION = INV_REGION
+                        }
                         mammal_attribute.INV_DT = Utils.todayStr()
 
                         if(maminvpersonTV.text == null){
@@ -1172,7 +1182,12 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             }
 
 
-            mammal_attribute.INV_REGION = maminvregionET.text.toString()
+//            mammal_attribute.INV_REGION = maminvregionET.text.toString()
+            if (maminvregionET.length() > 0){
+                mammal_attribute.INV_REGION = maminvregionET.text.toString();
+            } else {
+                mammal_attribute.INV_REGION = INV_REGION
+            }
             mammal_attribute.INV_DT = Utils.todayStr()
 
             if(maminvpersonTV.text == null){

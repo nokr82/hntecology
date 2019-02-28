@@ -39,7 +39,7 @@
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
                     android:text="조사지역"/>
-                <TextView
+                <EditText
                     android:id="@+id/invregionTV"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

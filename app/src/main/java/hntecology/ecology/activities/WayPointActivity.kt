@@ -86,6 +86,8 @@ class WayPointActivity : Activity() {
     var imageUri: Uri? = null
 
     var prjname = ""
+
+    var INV_REGION = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_way_point)
@@ -160,7 +162,8 @@ class WayPointActivity : Activity() {
                 var list: List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
 
                 if (list.size > 0) {
-                    invregionTV.setText(list.get(0).getAddressLine(0));
+//                    invregionTV.setText(list.get(0).getAddressLine(0));
+                    INV_REGION = list.get(0).getAddressLine(0)
                 }
             } catch (e: IOException) {
                 e.printStackTrace();
@@ -178,6 +181,7 @@ class WayPointActivity : Activity() {
                 var waypoint:Waypoint = Waypoint(data.getInt(0),data.getString(1),data.getString(2),data.getString(3),data.getString(4),data.getString(5),data.getString(6),data.getString(7),data.getFloat(8),data.getFloat(9),data.getString(10),data.getString(11))
 
                 invregionTV.setText(waypoint.INV_REGION)
+                INV_REGION = waypoint.INV_REGION.toString()
                 invdtTV.setText(waypoint.INV_DT)
                 invtmTV.setText(waypoint.INV_TM)
                 var timesplit = waypoint.INV_TM!!.split(":")
@@ -245,7 +249,12 @@ class WayPointActivity : Activity() {
                         var waypoint: Waypoint = Waypoint(null,null,null,null,null,null,null,null,null,null,null,null)
                         keyId = intent.getStringExtra("GROP_ID")
                         waypoint.GROP_ID = keyId
-                        waypoint.INV_REGION = invregionTV.text.toString()
+//                        waypoint.INV_REGION = invregionTV.text.toString()
+                        if (invregionTV.length() > 0){
+                            waypoint.INV_REGION = invregionTV.text.toString();
+                        } else {
+                            waypoint.INV_REGION = INV_REGION
+                        }
                         waypoint.INV_DT = invdtTV.text.toString()
                         waypoint.INV_TM = invtmTV.text.toString()
                         waypoint.NUM = numTV.text.toString()

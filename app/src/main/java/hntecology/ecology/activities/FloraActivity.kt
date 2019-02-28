@@ -110,6 +110,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
     var prjname = ""
 
+    var INV_REGION = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_flora)
@@ -190,7 +192,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                 if(list.size > 0){
                     System.out.println("list : " + list);
 
-                    florainvregionET.setText(list.get(0).getAddressLine(0));
+//                    florainvregionET.setText(list.get(0).getAddressLine(0));
+                    INV_REGION = list.get(0).getAddressLine(0)
                 }
             } catch (e:IOException) {
                 e.printStackTrace();
@@ -231,7 +234,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                 if(list.size > 0){
                     System.out.println("list : " + list);
 
-                    florainvregionET.setText(list.get(0).getAddressLine(0));
+//                    florainvregionET.setText(list.get(0).getAddressLine(0));
+                    INV_REGION = list.get(0).getAddressLine(0)
                 }
             } catch (e:IOException) {
                 e.printStackTrace();
@@ -265,6 +269,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                         , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26))
 
                 florainvregionET.setText(flora_Attribute.INV_REGION)
+                INV_REGION = flora_Attribute.INV_REGION.toString()
                 florainvdvET.setText(flora_Attribute.INV_DT)
                 florainvperson.setText(flora_Attribute.INV_PERSON)
                 prjnameET.setText(flora_Attribute.PRJ_NAME)
@@ -592,7 +597,12 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                             flora_Attribute.PRJ_NAME = prjname
                         }
 
-                        flora_Attribute.INV_REGION = florainvregionET.text.toString()
+//                        flora_Attribute.INV_REGION = florainvregionET.text.toString()
+                        if (florainvregionET.length() > 0){
+                            flora_Attribute.INV_REGION = florainvregionET.text.toString();
+                        } else {
+                            flora_Attribute.INV_REGION = INV_REGION
+                        }
 
                         flora_Attribute.INV_DT = Utils.todayStr()
 
@@ -1132,7 +1142,12 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                 flora_Attribute.PRJ_NAME = prjname
             }
 
-            flora_Attribute.INV_REGION = florainvregionET.text.toString()
+//            flora_Attribute.INV_REGION = florainvregionET.text.toString()
+            if (florainvregionET.length() > 0){
+                flora_Attribute.INV_REGION = florainvregionET.text.toString();
+            } else {
+                flora_Attribute.INV_REGION = INV_REGION
+            }
 
             flora_Attribute.INV_DT = Utils.todayStr()
 

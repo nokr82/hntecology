@@ -113,6 +113,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
     var prjname = ""
 
+    var INV_REGION = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_insect)
@@ -189,7 +191,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                 if(list.size > 0){
                     System.out.println("list : " + list);
 
-                    insectinvregionET.setText(list.get(0).getAddressLine(0));
+//                    insectinvregionET.setText(list.get(0).getAddressLine(0));
+                    INV_REGION = list.get(0).getAddressLine(0)
                 }
             } catch (e:IOException) {
                 e.printStackTrace();
@@ -230,7 +233,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                 if(list.size > 0){
                     System.out.println("list : " + list);
 
-                    insectinvregionET.setText(list.get(0).getAddressLine(0));
+//                    insectinvregionET.setText(list.get(0).getAddressLine(0));
+                    INV_REGION = list.get(0).getAddressLine(0)
                 }
             } catch (e:IOException) {
                 e
@@ -264,6 +268,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                         , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27),data.getString(28),data.getString(29),data.getString(30))
 
                 insectinvregionET.setText(insect_attribute.INV_REGION)
+                INV_REGION = insect_attribute.INV_REGION.toString()
 
                 insectinvdtET.setText(insect_attribute.INV_DT)
 
@@ -632,7 +637,12 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                             insect_attribute.PRJ_NAME = prjname
                         }
 
-                        insect_attribute.INV_REGION = insectinvregionET.text.toString()
+//                        insect_attribute.INV_REGION = insectinvregionET.text.toString()
+                        if (insectinvregionET.length() > 0){
+                            insect_attribute.INV_REGION = insectinvregionET.text.toString();
+                        } else {
+                            insect_attribute.INV_REGION = INV_REGION
+                        }
 
                         insect_attribute.INV_DT = Utils.todayStr()
 
@@ -1204,7 +1214,12 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             }
 
 
-            insect_attribute.INV_REGION = insectinvregionET.text.toString()
+//            insect_attribute.INV_REGION = insectinvregionET.text.toString()
+            if (insectinvregionET.length() > 0){
+                insect_attribute.INV_REGION = insectinvregionET.text.toString();
+            } else {
+                insect_attribute.INV_REGION = INV_REGION
+            }
 
             insect_attribute.INV_DT = Utils.todayStr()
 

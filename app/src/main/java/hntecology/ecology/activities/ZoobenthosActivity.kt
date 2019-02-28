@@ -110,6 +110,8 @@ class ZoobenthosActivity : Activity() {
 
     var prjname = ""
 
+    var INV_REGION = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_zoobenthos)
@@ -196,7 +198,8 @@ class ZoobenthosActivity : Activity() {
             if (list.size > 0) {
                 System.out.println("list : " + list);
 
-                invregionTV.setText(list.get(0).getAddressLine(0));
+//                invregionTV.setText(list.get(0).getAddressLine(0));
+                INV_REGION = list.get(0).getAddressLine(0)
             }
 
             val tmplat = lat.toFloat().toInt()
@@ -494,6 +497,7 @@ class ZoobenthosActivity : Activity() {
 
                 prjnameET.setText(zoo.PRJ_NAME)
                 invregionTV.setText(zoo.INV_REGION)
+                INV_REGION = zoo.INV_REGION.toString()
                 mapsysnmET.setText(zoo.MAP_SYS_NM)
                 numTV.setText(zoo.NUM)
                 timeTV.setText(zoo.INV_TM)
@@ -667,7 +671,12 @@ class ZoobenthosActivity : Activity() {
                             zoobenthos_Attribute.PRJ_NAME = prjname
                         }
 
-                        zoobenthos_Attribute.INV_REGION = invregionTV.text.toString()
+//                        zoobenthos_Attribute.INV_REGION = invregionTV.text.toString()
+                        if (invregionTV.length() > 0){
+                            zoobenthos_Attribute.INV_REGION = invregionTV.text.toString();
+                        } else {
+                            zoobenthos_Attribute.INV_REGION = INV_REGION
+                        }
                         zoobenthos_Attribute.INV_MEAN = invmeanTV.text.toString()
                         zoobenthos_Attribute.INV_PERSON = invpersonTV.text.toString()
                         zoobenthos_Attribute.MAP_SYS_NM = mapsysnmET.text.toString()
@@ -1156,7 +1165,12 @@ class ZoobenthosActivity : Activity() {
                 zoobenthos_Attribute.PRJ_NAME = prjname
             }
 
-            zoobenthos_Attribute.INV_REGION = invregionTV.text.toString()
+//            zoobenthos_Attribute.INV_REGION = invregionTV.text.toString()
+            if (invregionTV.length() > 0){
+                zoobenthos_Attribute.INV_REGION = invregionTV.text.toString();
+            } else {
+                zoobenthos_Attribute.INV_REGION = INV_REGION
+            }
             zoobenthos_Attribute.INV_MEAN = invmeanTV.text.toString()
             zoobenthos_Attribute.INV_PERSON = invpersonTV.text.toString()
             zoobenthos_Attribute.MAP_SYS_NM = mapsysnmET.text.toString()

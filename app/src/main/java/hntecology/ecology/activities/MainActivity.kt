@@ -7,6 +7,7 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
@@ -254,6 +255,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         this.context = this
         dbManager = DataBaseHelper(this)
+        versionCode()
 
         db = dbManager!!.createDataBase()
 
@@ -330,7 +332,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     endDraw()
                 }
 
-                endDraw()
+//                endDraw()
 
             } else {
                 startDraw()
@@ -358,7 +360,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     endDraw()
                 }
 
-                endDraw()
+//                endDraw()
 
             } else {
                 startDraw()
@@ -5554,6 +5556,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         if (latlngs.size < 3) {
             Toast.makeText(this, "세곳 이상 클릭해주세요.", Toast.LENGTH_SHORT).show()
+            return
         }
 
         if (latlngs.size == 0) {
@@ -5710,6 +5713,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             currentLayer = -1
             chkDivision = false
+
+            endDraw()
 
         }
     }
@@ -9625,6 +9630,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         btn_waypoint.setTextColor(Color.parseColor("#000000"))
         exportBtn.setTextColor(Color.parseColor("#000000"))
 
+    }
+
+    fun versionCode(){
+        try {
+            var i = context!!.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            versionTV.setText("버전 : " + i.versionName)
+        } catch (e : PackageManager.NameNotFoundException) {
+            e.printStackTrace();
+        }
     }
 
 

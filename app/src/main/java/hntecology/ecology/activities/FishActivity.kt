@@ -119,6 +119,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
     var prjname = ""
 
+    var INV_REGION = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fish)
@@ -200,7 +202,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
 
                 if(list.size > 0){
-                    fishinvregionET.setText(list.get(0).getAddressLine(0));
+//                    fishinvregionET.setText(list.get(0).getAddressLine(0));
+                    INV_REGION = list.get(0).getAddressLine(0)
                 }
             } catch (e:IOException) {
                 e.printStackTrace();
@@ -237,7 +240,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 if(list.size > 0){
                     System.out.println("list : " + list);
 
-                    fishinvregionET.setText(list.get(0).getAddressLine(0));
+//                    fishinvregionET.setText(list.get(0).getAddressLine(0));
+                    INV_REGION = list.get(0).getAddressLine(0)
                 }
             } catch (e:IOException) {
                 e.printStackTrace();
@@ -271,6 +275,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                        data.getInt(30), data.getString(31), data.getString(32), data.getString(33), data.getInt(34), data.getString(35), data.getString(36), data.getString(37), data.getString(38), data.getString(39), data.getString(40))
 
                 fishinvregionET.setText(fish_attribute.INV_REGION)
+                INV_REGION = fish_attribute.INV_REGION.toString()
                 fishinvdtET.setText(fish_attribute.INV_DT)
                 fishinvpersonET.setText(fish_attribute.INV_PERSON)
                 fishinvtmTV.setText(fish_attribute.INV_TM)
@@ -671,7 +676,12 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                             fish_attribute.PRJ_NAME = prjname
                         }
 
-                        fish_attribute.INV_REGION = fishinvregionET.text.toString()
+//                        fish_attribute.INV_REGION = fishinvregionET.text.toString()
+                        if (fishinvregionET.length() > 0){
+                            fish_attribute.INV_REGION = fishinvregionET.text.toString();
+                        } else {
+                            fish_attribute.INV_REGION = INV_REGION
+                        }
 
                         fish_attribute.INV_DT = Utils.todayStr()
 
@@ -1243,7 +1253,13 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 fish_attribute.PRJ_NAME = prjname
             }
 
-            fish_attribute.INV_REGION = fishinvregionET.text.toString()
+//            fish_attribute.INV_REGION = fishinvregionET.text.toString()
+            if (fishinvregionET.length() > 0){
+                fish_attribute.INV_REGION = fishinvregionET.text.toString();
+            } else {
+                fish_attribute.INV_REGION = INV_REGION
+            }
+
             fish_attribute.INV_DT = Utils.todayStr()
 
             fish_attribute.INV_TM = fishinvtmTV.text.toString()

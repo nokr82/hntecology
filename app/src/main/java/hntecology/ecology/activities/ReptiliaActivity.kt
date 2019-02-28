@@ -112,6 +112,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
     var prjname = ""
 
+    var INV_REGION = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reptilia)
@@ -196,7 +198,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                 if(list.size > 0){
                     System.out.println("list : " + list);
 
-                    invregionET.setText(list.get(0).getAddressLine(0));
+//                    invregionET.setText(list.get(0).getAddressLine(0));
+                    INV_REGION =list.get(0).getAddressLine(0)
                 }
             } catch (e:IOException) {
                 e.printStackTrace();
@@ -235,7 +238,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                 if(list.size > 0){
                     System.out.println("list : " + list);
 
-                    invregionET.setText(list.get(0).getAddressLine(0));
+//                    invregionET.setText(list.get(0).getAddressLine(0));
+                    INV_REGION =list.get(0).getAddressLine(0)
                 }
             } catch (e:IOException) {
                 e.printStackTrace();
@@ -268,6 +272,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                         , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32),data.getString(33))
 
                 invregionET.setText(reptilia_attribute.INV_REGION)
+                INV_REGION = reptilia_attribute.INV_REGION.toString()
                 createdDateTV.setText(reptilia_attribute.INV_DT)
 
                 weatherTV.setText(reptilia_attribute.WEATHER)
@@ -917,7 +922,13 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                             reptilia_attribute.PRJ_NAME = prjname
                         }
 
-                        reptilia_attribute.INV_REGION = invregionET.text.toString()
+//                        reptilia_attribute.INV_REGION = invregionET.text.toString()
+                        if (invregionET.length() > 0){
+                            reptilia_attribute.INV_REGION = invregionET.text.toString();
+                        } else {
+                            reptilia_attribute.INV_REGION = INV_REGION
+                        }
+
                         reptilia_attribute.INV_DT = Utils.todayStr()
                         reptilia_attribute.INV_PERSON = invpersonET.text.toString()
 
@@ -1140,7 +1151,12 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             }
 
 
-            reptilia_attribute.INV_REGION = invregionET.text.toString()
+//            reptilia_attribute.INV_REGION = invregionET.text.toString()
+            if (invregionET.length() > 0){
+                reptilia_attribute.INV_REGION = invregionET.text.toString();
+            } else {
+                reptilia_attribute.INV_REGION = INV_REGION
+            }
             reptilia_attribute.INV_DT = Utils.todayStr()
             reptilia_attribute.INV_PERSON = invpersonET.text.toString()
 

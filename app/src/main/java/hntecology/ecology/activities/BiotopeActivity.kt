@@ -131,7 +131,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
     var prjname = ""
 
-
+    var INV_REGION = ""
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -229,7 +229,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 if(list.size > 0){
                     System.out.println("list : " + list);
 
-                    etINV_REGIONET.setText(list.get(0).getAddressLine(0));
+//                    etINV_REGIONET.setText(list.get(0).getAddressLine(0));
+                    INV_REGION = list.get(0).getAddressLine(0)
                 }
             } catch (e:IOException) {
                 e.printStackTrace();
@@ -357,7 +358,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         if (list.size > 0) {
                             System.out.println("list : " + list);
 
-                            etINV_REGIONET.setText(list.get(0).getAddressLine(0));
+//                            etINV_REGIONET.setText(list.get(0).getAddressLine(0));
+                            INV_REGION = list.get(0).getAddressLine(0)
                         }
                     } catch (e: IOException) {
                         e.printStackTrace();
@@ -366,6 +368,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                 if (biotope_attribute.INV_REGION != "" && biotope_attribute.INV_REGION != null) {
                     etINV_REGIONET.setText(biotope_attribute.INV_REGION);                   // 조사지
+                    INV_REGION = biotope_attribute.INV_REGION.toString()
                 } else {
 
                 }
@@ -856,7 +859,14 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             biotope_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
                         }
 
-                        biotope_attribute.INV_REGION = etINV_REGIONET.text.toString();
+                        if (etINV_REGIONET.length() > 0){
+                            biotope_attribute.INV_REGION = etINV_REGIONET.text.toString();
+                        } else {
+                            biotope_attribute.INV_REGION = INV_REGION
+                        }
+
+
+
                         biotope_attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name");
 //            biotope_attribute.INVES_DATETIME        =   etinvesDatetimeTV.text.toString()
 
@@ -1453,7 +1463,11 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 biotope_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
             }
 
-            biotope_attribute.INV_REGION = etINV_REGIONET.text.toString();
+            if (etINV_REGIONET.length() > 0){
+                biotope_attribute.INV_REGION = etINV_REGIONET.text.toString();
+            } else {
+                biotope_attribute.INV_REGION = INV_REGION
+            }
             biotope_attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name");
 //            biotope_attribute.INVES_DATETIME        =   etinvesDatetimeTV.text.toString()
 
@@ -1798,7 +1812,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     if (list.size > 0) {
                         System.out.println("list : " + list);
 
-                        etINV_REGIONET.setText(list.get(0).getAddressLine(0));
+//                        etINV_REGIONET.setText(list.get(0).getAddressLine(0));
+                        INV_REGION = list.get(0).getAddressLine(0)
                     }
                 } catch (e: IOException) {
                     e.printStackTrace();
@@ -1841,7 +1856,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 if(list.size > 0){
                     System.out.println("list : " + list);
 
-                    etINV_REGIONET.setText(list.get(0).getAddressLine(0));
+//                    etINV_REGIONET.setText(list.get(0).getAddressLine(0));
+                    INV_REGION = list.get(0).getAddressLine(0)
                 }
             } catch (e:IOException) {
                 e.printStackTrace();

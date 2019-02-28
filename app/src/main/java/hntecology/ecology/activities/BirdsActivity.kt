@@ -126,6 +126,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
     var prjname = ""
 
+    var INV_REGION = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_birds)
@@ -207,7 +209,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             if(list.size > 0){
                 System.out.println("list : " + list);
 
-                invRegionET.setText(list.get(0).getAddressLine(0));
+//                invRegionET.setText(list.get(0).getAddressLine(0));
+                INV_REGION = list.get(0).getAddressLine(0)
             }
 
         }
@@ -239,7 +242,9 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             if(list.size > 0){
                 System.out.println("list : " + list);
 
-                invRegionET.setText(list.get(0).getAddressLine(0));
+//                invRegionET.setText(list.get(0).getAddressLine(0));
+
+                INV_REGION = list.get(0).getAddressLine(0)
             }
 
             basedata.close()
@@ -303,6 +308,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 invPersonTV.setText(birds_attribute.INV_PERSON)
 
                 invRegionET.setText(birds_attribute.INV_REGION)
+                INV_REGION = birds_attribute.INV_REGION.toString()
 
                 btn1.setText(birds_attribute.WEATHER)       //날씨
                 btn2.setText(birds_attribute.WIND)          //바람
@@ -566,7 +572,12 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                             birds_attribute.PRJ_NAME = prjname
                         }
 
-                        birds_attribute.INV_REGION = invRegionET.text.toString()
+//                        birds_attribute.INV_REGION = invRegionET.text.toString()
+                        if (invRegionET.length() > 0){
+                            birds_attribute.INV_REGION = invRegionET.text.toString();
+                        } else {
+                            birds_attribute.INV_REGION = INV_REGION
+                        }
 
                         birds_attribute.INV_DT = Utils.todayStr()
 
@@ -1064,7 +1075,12 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 birds_attribute.PRJ_NAME = prjname
             }
 
-            birds_attribute.INV_REGION = invRegionET.text.toString()
+//            birds_attribute.INV_REGION = invRegionET.text.toString()
+            if (invRegionET.length() > 0){
+                birds_attribute.INV_REGION = invRegionET.text.toString();
+            } else {
+                birds_attribute.INV_REGION = INV_REGION
+            }
 
             birds_attribute.INV_DT = Utils.todayStr()
 

@@ -70,6 +70,8 @@ class Flora2Activity : Activity() {
 
     private var db: SQLiteDatabase? = null
 
+    var INV_REGION = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_flora2)
@@ -131,7 +133,8 @@ class Flora2Activity : Activity() {
                 if(list.size > 0){
                     System.out.println("list : " + list);
 
-                    invregionTV.setText(list.get(0).getAddressLine(0));
+//                    invregionTV.setText(list.get(0).getAddressLine(0));
+                    INV_REGION = list.get(0).getAddressLine(0)
                 }
             } catch (e: IOException) {
                 e.printStackTrace();
@@ -165,6 +168,7 @@ class Flora2Activity : Activity() {
                 // 교목층
 
                 invregionTV.setText(manyFloraAttribute.INV_REGION)
+                INV_REGION = manyFloraAttribute.INV_REGION.toString()
                 invdtTV.setText(manyFloraAttribute.INV_DT)
                 invpersonTV.setText(manyFloraAttribute.INV_PERSON)
 
@@ -369,7 +373,8 @@ class Flora2Activity : Activity() {
                 if(list.size > 0){
                     System.out.println("list : " + list);
 
-                    invregionTV.setText(list.get(0).getAddressLine(0));
+//                    invregionTV.setText(list.get(0).getAddressLine(0));
+                    INV_REGION = list.get(0).getAddressLine(0)
                 }
             } catch (e: IOException) {
                 e.printStackTrace();
@@ -1352,7 +1357,12 @@ class Flora2Activity : Activity() {
 
                             manyFloraAttribute.GROP_ID = keyId
 
-                            manyFloraAttribute.INV_REGION = invregionTV.text.toString()
+//                            manyFloraAttribute.INV_REGION = invregionTV.text.toString()
+                            if (invregionTV.length() > 0){
+                                manyFloraAttribute.INV_REGION = invregionTV.text.toString();
+                            } else {
+                                manyFloraAttribute.INV_REGION = INV_REGION
+                            }
 
                             manyFloraAttribute.INV_DT = Utils.todayStr()
 
@@ -1781,7 +1791,12 @@ class Flora2Activity : Activity() {
 
                                     manyFloraAttribute.GROP_ID = keyId
 
-                                    manyFloraAttribute.INV_REGION = invregionTV.text.toString()
+//                                    manyFloraAttribute.INV_REGION = invregionTV.text.toString()
+                                    if (invregionTV.length() > 0){
+                                        manyFloraAttribute.INV_REGION = invregionTV.text.toString();
+                                    } else {
+                                        manyFloraAttribute.INV_REGION = INV_REGION
+                                    }
 
                                     manyFloraAttribute.INV_DT = Utils.todayStr()
 

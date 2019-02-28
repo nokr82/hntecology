@@ -84,6 +84,8 @@ class StockActivity : Activity() {
 
     var geom = ""
 
+    var INV_REGION = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stock)
@@ -160,7 +162,8 @@ class StockActivity : Activity() {
                 if(list.size > 0){
                     System.out.println("list : " + list);
 
-                    invregionTV.setText(list.get(0).getAddressLine(0));
+//                    invregionTV.setText(list.get(0).getAddressLine(0));
+                    INV_REGION = list.get(0).getAddressLine(0)
                 }
             } catch (e: IOException) {
                 e.printStackTrace();
@@ -208,7 +211,8 @@ class StockActivity : Activity() {
                 if(list.size > 0){
                     System.out.println("list : " + list);
 
-                    invregionTV.setText(list.get(0).getAddressLine(0));
+//                    invregionTV.setText(list.get(0).getAddressLine(0));
+                    INV_REGION = list.get(0).getAddressLine(0)
                 }
             } catch (e: IOException) {
                 e.printStackTrace();
@@ -352,6 +356,9 @@ class StockActivity : Activity() {
                         frtpcdTV.text = frtpdata.get(i).Title
                     }
                 }
+
+                invregionTV.setText(stockMap.INV_REGION)
+                INV_REGION = stockMap.INV_REGION.toString()
 
                 FROR_CD_CODE = stockMap.FRTP_CD.toString()
 //                frtpcdTV.text = stockMap.FRTP_CD
@@ -546,7 +553,12 @@ class StockActivity : Activity() {
                             stockMap.PRJ_NAME = prjname
                         }
 
-                        stockMap.INV_REGION = invregionTV.text.toString()
+//                        stockMap.INV_REGION = invregionTV.text.toString()
+                        if (invregionTV.length() > 0){
+                            stockMap.INV_REGION = invregionTV.text.toString();
+                        } else {
+                            stockMap.INV_REGION = INV_REGION
+                        }
                         stockMap.INV_PERSON = invpersonTV.text.toString()
                         stockMap.INV_DT = Utils.todayStr()
                         stockMap.INV_TM = Utils.timeStr()
@@ -761,7 +773,12 @@ class StockActivity : Activity() {
                 stockMap.PRJ_NAME = prjname
             }
 
-            stockMap.INV_REGION = invregionTV.text.toString()
+//            stockMap.INV_REGION = invregionTV.text.toString()
+            if (invregionTV.length() > 0){
+                stockMap.INV_REGION = invregionTV.text.toString();
+            } else {
+                stockMap.INV_REGION = INV_REGION
+            }
             stockMap.INV_PERSON = invpersonTV.text.toString()
             stockMap.INV_DT = Utils.todayStr()
             stockMap.INV_TM = Utils.timeStr()

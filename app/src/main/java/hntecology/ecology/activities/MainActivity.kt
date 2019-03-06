@@ -7,7 +7,6 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
@@ -60,7 +59,6 @@ import org.opengis.feature.simple.SimpleFeature
 import java.io.File
 import java.io.InputStream
 import java.io.Serializable
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -1708,7 +1706,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 alert.show()
             }
 
-            if (markerRemove == false) {
+            if (!markerRemove) {
 
                 val layerInfo = marker.tag as LayerInfo
                 var myLayer = layerInfo.layer
@@ -4066,6 +4064,20 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 //            }
         }
 
+        googleMap.setOnMarkerDragListener(object:GoogleMap.OnMarkerDragListener {
+            override fun onMarkerDragStart(marker: Marker?) {
+
+            }
+
+            override fun onMarkerDragEnd(marker: Marker?) {
+                val latitude = marker?.position?.latitude
+                val longitude = marker?.position?.longitude
+            }
+
+            override fun onMarkerDrag(marker: Marker?) {
+
+            }
+        })
     }
 
     private var parsed: Boolean = false

@@ -1896,18 +1896,18 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         incntlarET.setText("")
         incnteggET.setText("")
 
-        habriveerET.setText("")
-        habedgeET.setText("")
+//        habriveerET.setText("")
+//        habedgeET.setText("")
 
-        waterinET.setText("")
-        wateroutET.setText("")
-        waterdeptET.setText("")
+//        waterinET.setText("")
+//        wateroutET.setText("")
+//        waterdeptET.setText("")
 
-        habareawET.setText("")
-        habareahET.setText("")
+//        habareawET.setText("")
+//        habareahET.setText("")
 
-        watercontET.setText("")
-        waterqualET.setText("")
+//        watercontET.setText("")
+//        waterqualET.setText("")
 
         confmodTV.setText("")
 

@@ -2080,8 +2080,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             var plusnum = textnum.toInt() + 1
             numTV.setText(splitnum.toString() + plusnum.toString())
         }
-
-        standardTV.setText("")
         timeTV.setText(Utils.timeStr())
         birdsTV.setText("")
         familyNameTV.setText("")
@@ -2090,11 +2088,12 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         endangeredTV.setText("")
         standardTV.setText("")
 
-        obsstatTV.setText("")
-        useTarTV.setText("")
+//        obsstatTV.setText("")
+//        useTarTV.setText("")
         useTarSpET.setText("")
-        useLayerTV.setText("")
-        mjActTV.setText("")
+//        useLayerTV.setText("")
+//        mjActTV.setText("")
+//        standardTV.setText("")
         mjActPrET.setText("")
         confmodTV.setText("")
 

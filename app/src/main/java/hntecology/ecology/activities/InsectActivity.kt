@@ -1535,20 +1535,20 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
         insectfaminmET.setText("")
         insectsciennmET.setText("")
 
-        insectindicntET.setText("")
+//        insectindicntET.setText("")
 
         insectspecnmtmp.setText("")
 
         insectobsstatTV.setText("")
 
-        insectusetarTV.setText("")
+//        insectusetarTV.setText("")
 
         insectinvmeanET.setText("")
-        insectinvmeanTV.setText("")
+//        insectinvmeanTV.setText("")
 
-        insectmjactTV.setText("")
+//        insectmjactTV.setText("")
 
-        insectunusnoteET.setText("")
+//        insectunusnoteET.setText("")
 
         confmodTV.setText("")
 

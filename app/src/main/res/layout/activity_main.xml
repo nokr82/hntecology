@@ -406,6 +406,14 @@
                     android:layout_margin="3dp" />
 
                 <Button
+                    android:id="@+id/researchinfoBT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="조사 정보"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp" />
+
+                <Button
                     android:id="@+id/exportBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

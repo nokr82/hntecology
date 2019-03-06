@@ -296,6 +296,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             startActivityForResult(intent, CALENDAR);
         }
 
+        researchinfoBT.setOnClickListener {
+            val intent = Intent(this, DlgResearchActivity::class.java)
+
+            startActivity(intent)
+        }
+
         btn_layer.setOnClickListener {
             currentLayer = LAYER
 
@@ -1568,7 +1574,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                         println("jsonOb.size==================== ${jsonOb.size}")
 
-                        progressDialog!!.show()
+//                        progressDialog!!.show()
 
                         transparentSB.progress = 255
 
@@ -4173,6 +4179,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                     var geometryRef = feature.GetGeometryRef()
 
+                    if (geometryRef == null) {
+                        continue
+                    }
+
                     if (!geometryRef.Intersects(mapBoundary)) {
                         // println("added : $added")
                         if (added == "N") {
@@ -4186,7 +4196,15 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     for (fieldIdx in 0..(fieldCount - 1)) {
                         val fieldType = feature.GetFieldType(fieldIdx)
                         val key = feature.GetDefnRef().GetFieldDefn(fieldIdx).GetName()
-                        val value = feature.GetFieldAsString(fieldIdx)
+                        var value = ""
+
+                        try {
+                            value = feature.GetFieldAsString(fieldIdx)
+                        } catch (e: java.lang.Exception){
+                            e.printStackTrace()
+                            println("-------------------------------------printstack")
+                        }
+//                        val value = feature.GetFieldAsString(fieldIdx)
 
                         metadata.put(key, value)
 

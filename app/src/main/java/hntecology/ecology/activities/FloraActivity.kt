@@ -1462,14 +1462,14 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
         floraspecnmtmp.setText("")
 
-        florafloreyynTV.setText("")
-        floraplantynTV.setText("")
+//        florafloreyynTV.setText("")
+//        floraplantynTV.setText("")
 
-        florahabstatTV.setText("")
-        florahabstatET.setText("")
-        floracolincnt.setText("")
+//        florahabstatTV.setText("")
+//        florahabstatET.setText("")
+//        floracolincnt.setText("")
 
-        florathrecauET.setText("")
+//        florathrecauET.setText("")
 
         confmodTV.setText("")
 

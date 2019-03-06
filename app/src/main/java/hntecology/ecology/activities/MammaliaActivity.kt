@@ -1505,9 +1505,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         mamindicntET.setText("")
 
-        mamobptcharET.setText("")
+//        mamobptcharET.setText("")
 
-        mamunusnoteET.setText("")
+//        mamunusnoteET.setText("")
 
         mamunspecET.setText("")
         mamunspecreET.setText("")

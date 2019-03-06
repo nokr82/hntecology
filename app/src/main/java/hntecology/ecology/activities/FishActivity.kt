@@ -1794,6 +1794,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             fishnumTV.setText(splitnum.toString() + plusnum.toString())
         }
 
+        
+
         fishinvtmTV.setText(Utils.timeStr())
         fishspecnmET.setText("")
         fishfaminmET.setText("")

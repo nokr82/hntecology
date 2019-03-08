@@ -112,7 +112,7 @@ class WayPointActivity : Activity() {
 
         invpersonTV.setText(userName)
         invdtTV.setText(Utils.todayStr())
-//        prjnameTV.setText(PrefUtils.getStringPreference(context, "prjname"))
+        prjnameTV.setText(PrefUtils.getStringPreference(context, "prjname"))
         prjname = PrefUtils.getStringPreference(context, "prjname")
 
 
@@ -259,12 +259,20 @@ class WayPointActivity : Activity() {
                         waypoint.INV_TM = invtmTV.text.toString()
                         waypoint.NUM = numTV.text.toString()
                         waypoint.INV_PERSON = invpersonTV.text.toString()
-//                        waypoint.PRJ_NAME = prjnameTV.text.toString()
-                        if (prjnameTV.length() > 0){
-                            waypoint.PRJ_NAME = prjnameTV.text.toString()
+
+                        val prj = prjnameTV.text.toString()
+                        if (prj == prjname){
+                            waypoint.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
                         } else {
-                            waypoint.PRJ_NAME = prjname
+                            waypoint.PRJ_NAME = prjnameTV.text.toString()
                         }
+
+//                        waypoint.PRJ_NAME = prjnameTV.text.toString()
+//                        if (prjnameTV.length() > 0){
+//                            waypoint.PRJ_NAME = prjnameTV.text.toString()
+//                        } else {
+//                            waypoint.PRJ_NAME = prjname
+//                        }
 
                         waypoint.GPS_LAT = gpslatTV.text.toString().toFloat()
                         waypoint.GPS_LON = gpslonTV.text.toString().toFloat()

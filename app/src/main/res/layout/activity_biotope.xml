@@ -236,6 +236,51 @@
                         />
 
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+
+                    <LinearLayout
+                        android:background="@drawable/biotope_textview"
+                        style="@style/BiotopeTextView"
+                        android:layout_width="250dp"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="도형번호"
+                            android:gravity="center"
+                            />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/ufidTV"
+                        android:gravity="center"
+                        style="@style/BiotopeTextViewDisabled"
+                        />
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:text="확인사항"
+                        style="@style/BiotopeTextView"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/checkTV"
+                        android:gravity="center"
+                        style="@style/BiotopeTextViewDisabled"
+                        />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

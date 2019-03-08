@@ -661,7 +661,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 
             points?.clear()
-
+//            polygons?.clear()
             googleMap.clear()
 
 //            for (loadLayerTask in loadLayerTasks) {
@@ -1931,8 +1931,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         while (data.moveToNext()) {
                             var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
-                                    data.getFloat(19), data.getFloat(20), data.getString(21), data.getString(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getInt(26), data.getString(27), data.getString(28), data.getString(29),
-                                    data.getInt(30), data.getString(31), data.getString(32), data.getString(33), data.getInt(34), data.getString(35), data.getString(36), data.getString(37), data.getString(38), data.getString(39), data.getString(40))
+                                    data.getFloat(19), data.getFloat(20), data.getString(21),data.getString(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getInt(26), data.getString(27), data.getString(28),
+                                    data.getInt(29),data.getInt(30),data.getInt(31),data.getInt(32),data.getInt(33), data.getString(34), data.getInt(35), data.getString(36), data.getString(37), data.getString(38),
+                                    data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45))
+
                             fishdataArray.add(fish_attribute)
                         }
 
@@ -2324,8 +2326,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             var geom = ""
 
             for (i in 0 until polygon.points.size) {
-                geom = polygon.points.get(i).latitude.toString() + " " + polygon.points.get(i).longitude.toString() + ","
+                if (i == polygon.points.size) {
+                    geom += polygon.points.get(i).longitude.toString() + " " + polygon.points.get(i).latitude.toString()
+                } else {
+                    geom += polygon.points.get(i).longitude.toString() + " " + polygon.points.get(i).latitude.toString() + ","
+                }
             }
+
+            println("----click geom : $geom")
 
 //            if (zoom.toInt() >= 17) {
 
@@ -2430,6 +2438,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             var HER_FAMI = Utils.getString(layerInfo.metadata, "HER_FAMI")
                                             var INV_INDEX = Utils.getString(layerInfo.metadata, "INV_INDEX")
                                             var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
+                                            var CHECK = Utils.getString(layerInfo.metadata, "CHECK")
                                             var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                                             var landuse = Utils.getString(layerInfo.metadata, "landuse")
@@ -2504,7 +2513,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, LC_TY, TY_MARK, GV_RATE.toFloat()
                                                     , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
                                                     STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
-                                                    BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", polygon.fillColor.toString(), geom)
+                                                    BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", polygon.fillColor.toString(), geom,UFID,CHECK)
 
                                             if (landuse != null && landuse != "") {
                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
@@ -2816,7 +2825,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                             , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
                                                             , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
                                                             , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
-                                                            , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55))
+                                                            , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55), data.getString(56), data.getString(57))
                                                     biotopedataArray.add(biotope_attribute)
                                                     chkData = true
                                                 }
@@ -2884,6 +2893,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                                                             var landuse = Utils.getString(layerInfo.metadata, "landuse")
                                                             var landcover = Utils.getString(layerInfo.metadata, "landcover")
+                                                            var CHECK = Utils.getString(layerInfo.metadata, "CHECK")
 
                                                             var biotope = Utils.getString(layerInfo.metadata, "biotop")
                                                             if (INV_INDEX == "" || INV_INDEX == null) {
@@ -2960,7 +2970,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                             val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, LC_TY, TY_MARK, GV_RATE.toFloat()
                                                                     , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
                                                                     STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
-                                                                    BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom)
+                                                                    BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom,UFID,CHECK)
 
                                                             if (LANDUSE != null && LANDUSE != "") {
                                                                 data.LANDUSE = LANDUSE
@@ -3100,6 +3110,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                                                             var landuse = Utils.getString(layerInfo.metadata, "landuse")
 
+                                                            var CHECK = Utils.getString(layerInfo.metadata, "CHECK")
                                                             if (landuse != null && landuse != "") {
                                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
                                                                 getColor = LANDUSE
@@ -3225,7 +3236,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
                                             , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
                                             , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
-                                            , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55))
+                                            , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55),data.getString(56),data.getString(57))
                                     biotopedataArray.add(biotope_attribute)
                                 }
 
@@ -3298,6 +3309,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                                             var landuse = Utils.getString(layerInfo.metadata, "landuse")
                                             var landcover = Utils.getString(layerInfo.metadata, "landcover")
+                                            var CHECK = Utils.getString(layerInfo.metadata, "CHECK")
 
                                             var biotope = Utils.getString(layerInfo.metadata, "biotop")
                                             if (INV_INDEX == "" || INV_INDEX == null) {
@@ -3371,7 +3383,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, LC_TY, TY_MARK, GV_RATE.toFloat()
                                                     , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
                                                     STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
-                                                    BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom)
+                                                    BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom,UFID,CHECK)
 
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
@@ -3386,6 +3398,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             intent!!.putExtra("EMD_NM", EMD_NM)
                                             intent!!.putExtra("polygonid", polygon.id)
                                             intent!!.putExtra("landuse", polygon.fillColor)
+                                            intent!!.putExtra("geom",geom)
 
                                             println("biotope -------$biotope")
 
@@ -3524,6 +3537,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
                                             intent!!.putExtra("landuse", polygon.fillColor)
                                             intent!!.putExtra("polygonid", polygon.id)
+                                            intent!!.putExtra("geom",geom)
 
                                             endDraw()
 
@@ -3680,7 +3694,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
                                             , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
                                             , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
-                                            , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55))
+                                            , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55), data.getString(56),data.getString(57))
                                     biotopedataArray.add(biotope_attribute)
                                 }
 
@@ -3753,6 +3767,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                                             var landuse = Utils.getString(layerInfo.metadata, "landuse")
                                             var landcover = Utils.getString(layerInfo.metadata, "landcover")
+                                            var CHECK = Utils.getString(layerInfo.metadata, "CHECK")
 
                                             if (INV_INDEX == "" || INV_INDEX == null) {
                                                 INV_INDEX = "0"
@@ -3825,7 +3840,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), LC_GR_NUM, LC_TY, TY_MARK, GV_RATE.toFloat()
                                                     , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
                                                     STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
-                                                    BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom)
+                                                    BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom,UFID,CHECK)
 
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
@@ -3840,6 +3855,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
                                             intent!!.putExtra("polygonid", polygon.id)
                                             intent!!.putExtra("landuse", polygon.fillColor)
+                                            intent!!.putExtra("geom",geom)
 
                                             endDraw()
 
@@ -3967,6 +3983,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
                                             intent!!.putExtra("polygonid", polygon.id)
                                             intent!!.putExtra("landuse", polygon.fillColor)
+                                            intent!!.putExtra("geom",geom)
 
                                             endDraw()
 
@@ -4070,8 +4087,89 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 
             override fun onMarkerDragEnd(marker: Marker?) {
+
+                val layerInfo = marker!!.tag as LayerInfo
+                var myLayer = layerInfo.layer
+
+                var attrubuteKey = layerInfo.attrubuteKey
+
                 val latitude = marker?.position?.latitude
                 val longitude = marker?.position?.longitude
+                val dataList: Array<String> = arrayOf("*");
+
+                println("attrubuteKey : $attrubuteKey  myLayer : $myLayer  latitude : $latitude  longitude : $longitude")
+
+                when (myLayer) {
+
+                    LAYER_BIRDS -> {
+                        dbManager!!.updatebirdsgps(attrubuteKey,latitude.toString(),longitude.toString())
+                        dbManager!!.updatebasegps(attrubuteKey,latitude.toString(),longitude.toString())
+                        exportBirds("","","","","all")
+                    }
+
+                    LAYER_REPTILIA -> {
+                        dbManager!!.updatereptiliagps(attrubuteKey,latitude.toString(),longitude.toString())
+                        dbManager!!.updatebasegps(attrubuteKey,latitude.toString(),longitude.toString())
+                        exportReptilia("","","","","all")
+                    }
+
+                    LAYER_MAMMALIA -> {
+                        dbManager!!.updatemammalgps(attrubuteKey,latitude.toString(),longitude.toString())
+                        dbManager!!.updatebasegps(attrubuteKey,latitude.toString(),longitude.toString())
+                        exportMammal("","","","","all")
+                    }
+
+                    LAYER_FISH -> {
+                        dbManager!!.updatefishgps(attrubuteKey,latitude.toString(),longitude.toString())
+                        dbManager!!.updatebasegps(attrubuteKey,latitude.toString(),longitude.toString())
+                        exportFish("","","","","all")
+                    }
+
+                    LAYER_INSECT -> {
+                        dbManager!!.updateinsectgps(attrubuteKey,latitude.toString(),longitude.toString())
+                        dbManager!!.updatebasegps(attrubuteKey,latitude.toString(),longitude.toString())
+                        exportInsects("","","","","all")
+                    }
+
+                    LAYER_FLORA -> {
+                        dbManager!!.updatefloragps(attrubuteKey,latitude.toString(),longitude.toString())
+                        dbManager!!.updatebasegps(attrubuteKey,latitude.toString(),longitude.toString())
+                        exportFlora("","","","","all")
+                    }
+
+                    LAYER_ZOOBENTHOS -> {
+                        dbManager!!.updatezoobenthosgps(attrubuteKey,latitude.toString(),longitude.toString())
+                        dbManager!!.updatebasegps(attrubuteKey,latitude.toString(),longitude.toString())
+                        exportZoobenthous("","","","","all")
+                    }
+
+                    LAYER_FLORA2 -> {
+                        dbManager!!.updatemanyfloragps(attrubuteKey,latitude.toString(),longitude.toString())
+                        dbManager!!.updatebasegps(attrubuteKey,latitude.toString(),longitude.toString())
+                        exportManyFloras("","","","","all")
+                    }
+
+                    LAYER_MYLOCATION -> {
+
+                    }
+
+                    LAYER -> {
+
+                    }
+
+                    TRACKING -> {
+
+                    }
+
+                    LAYER_WAYPOINT -> {
+                        dbManager!!.updatewaypointgps(attrubuteKey,latitude.toString(),longitude.toString())
+                        dbManager!!.updatebasegps(attrubuteKey,latitude.toString(),longitude.toString())
+                        exportWaypoint("","","","","all")
+                    }
+
+                }
+
+
             }
 
             override fun onMarkerDrag(marker: Marker?) {
@@ -4244,6 +4342,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             // markerOptions.title("Marker in Sydney")
                             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                             markerOptions.alpha(1.0f)
+                            markerOptions.draggable(true)
 
                             publishProgress(markerOptions, JSONObject(metadata).toString())
 
@@ -4421,7 +4520,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 if (type.equals("fish")) {
-                    layerInfo.layer = LAYER_BIRDS
+                    layerInfo.layer = LAYER_FISH
                 }
 
                 if (type.equals("insect")) {
@@ -4652,6 +4751,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         polygon.fillColor = Color.parseColor("#1739FF")
                     }
 
+                    if (LANDUSE == "?" || LANDUSE == "CD"){
+                        polygon.fillColor = Color.parseColor("#BDBDBD")
+                    }
+
                 }
 
                 if (grop_id != null && grop_id != "") {
@@ -4821,6 +4924,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         polygon.fillColor = Color.parseColor("#1739FF")
                     }
 
+                    if (landuse == "?" || landuse == "CD"){
+                        polygon.fillColor = Color.parseColor("#BDBDBD")
+                    }
+
                 }
                 // println("polygon.tag ${polygon.tag}")
 
@@ -4857,7 +4964,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 if (type.equals("fish")) {
                     marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-                    layerInfo.layer = LAYER_BIRDS
+                    layerInfo.layer = LAYER_FISH
                 }
 
                 if (type.equals("insect")) {
@@ -5949,7 +6056,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     , biotopedata.getString(29), biotopedata.getString(30), biotopedata.getString(31), biotopedata.getFloat(32), biotopedata.getFloat(33), biotopedata.getFloat(34), biotopedata.getString(35)
                     , biotopedata.getString(36), biotopedata.getString(37), biotopedata.getFloat(38), biotopedata.getFloat(39), biotopedata.getString(40), biotopedata.getString(41), biotopedata.getString(42)
                     , biotopedata.getFloat(43), biotopedata.getFloat(44), biotopedata.getString(45), biotopedata.getString(46), biotopedata.getString(47), biotopedata.getString(48), biotopedata.getDouble(49)
-                    , biotopedata.getDouble(50), biotopedata.getString(51), biotopedata.getString(52), biotopedata.getString(53), biotopedata.getString(54), biotopedata.getString(55))
+                    , biotopedata.getDouble(50), biotopedata.getString(51), biotopedata.getString(52), biotopedata.getString(53), biotopedata.getString(54), biotopedata.getString(55),biotopedata.getString(56),biotopedata.getString(57))
 
             biotopeDatas.add(biotope_attribute)
         }
@@ -6037,6 +6144,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, biotope_attribute.CONF_MOD))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LANDUSE", ogr.OFTString, biotope_attribute.LANDUSE))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, biotope_attribute.GEOM))
+                    BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("UFID", ogr.OFTString, biotope_attribute.UFID))
+                    BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("CHECK", ogr.OFTString, biotope_attribute.CHECK))
 
                     var geomsplit = biotope_attribute.GEOM!!.split(",")
                     var points: ArrayList<LatLng> = ArrayList<LatLng>()
@@ -6119,6 +6228,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("NEED_CONF", ogr.OFTString, biotope_attribute.NEED_CONF))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, biotope_attribute.CONF_MOD))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LANDUSE", ogr.OFTString, biotope_attribute.LANDUSE))
+                            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("UFID", ogr.OFTString, biotope_attribute.UFID))
+                            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("CHECK", ogr.OFTString, biotope_attribute.CHECK))
 
                             val exporter = Exporter.ExportItem(LAYER_BIOTOPE, BIOTOPEATTRIBUTE, polygons.get(idx),ArrayList<LatLng>())
 
@@ -6796,8 +6907,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             var fish_attribute: Fish_attribute = Fish_attribute(fishdata.getString(0), fishdata.getString(1), fishdata.getString(2), fishdata.getString(3), fishdata.getString(4), fishdata.getString(5), fishdata.getString(6), fishdata.getString(7),
                     fishdata.getString(8), fishdata.getString(9), fishdata.getFloat(10), fishdata.getString(11), fishdata.getString(12), fishdata.getString(13), fishdata.getInt(14), fishdata.getString(15), fishdata.getInt(16), fishdata.getInt(17), fishdata.getString(18),
-                    fishdata.getFloat(19), fishdata.getFloat(20), fishdata.getString(21), fishdata.getString(22), fishdata.getInt(23), fishdata.getInt(24), fishdata.getInt(25), fishdata.getInt(26), fishdata.getString(27), fishdata.getString(28), fishdata.getString(29),
-                    fishdata.getInt(30), fishdata.getString(31), fishdata.getString(32), fishdata.getString(33), fishdata.getInt(34), fishdata.getString(35), fishdata.getString(36), fishdata.getString(37), fishdata.getString(38), fishdata.getString(39), fishdata.getString(40))
+                    fishdata.getFloat(19), fishdata.getFloat(20), fishdata.getString(21),fishdata.getString(22), fishdata.getInt(23), fishdata.getInt(24), fishdata.getInt(25), fishdata.getInt(26), fishdata.getString(27), fishdata.getString(28),
+                    fishdata.getInt(29),fishdata.getInt(30),fishdata.getInt(31),fishdata.getInt(32),fishdata.getInt(33), fishdata.getString(34), fishdata.getInt(35), fishdata.getString(36), fishdata.getString(37), fishdata.getString(38),
+                    fishdata.getInt(39), fishdata.getString(40), fishdata.getString(41), fishdata.getString(42), fishdata.getString(43), fishdata.getString(44), fishdata.getString(45))
 
             fishDatas.add(fish_attribute)
         }
@@ -6881,8 +6993,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     FISHATTRIBUTE.add(Exporter.ColumnDef("WATER_W", ogr.OFTInteger, fish_attribute.WATER_W))
                     FISHATTRIBUTE.add(Exporter.ColumnDef("WATER_D", ogr.OFTInteger, fish_attribute.WATER_D))
                     FISHATTRIBUTE.add(Exporter.ColumnDef("WATER_CUR", ogr.OFTInteger, fish_attribute.WATER_CUR))
-                    FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_STR", ogr.OFTString, fish_attribute.RIV_STR))
-                    FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_STR_IN", ogr.OFTString, fish_attribute.RIV_STR_IN))
+//                    FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_STR", ogr.OFTString, fish_attribute.RIV_STR))
+//                    FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_STR_IN", ogr.OFTString, fish_attribute.RIV_STR_IN))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("BOULDER", ogr.OFTInteger, fish_attribute.BOULDER))        //2019-03-08 컬럼추가
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("COBBLE", ogr.OFTInteger, fish_attribute.COBBLE))        //2019-03-08 컬럼추가
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("PEBBLE", ogr.OFTInteger, fish_attribute.PEBBLE))        //2019-03-08 컬럼추가
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("GRAVEL", ogr.OFTInteger, fish_attribute.GRAVEL))        //2019-03-08 컬럼추가
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("SEND", ogr.OFTInteger, fish_attribute.SEND))        //2019-03-08 컬럼추가
                     FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_FORM", ogr.OFTString, fish_attribute.RIV_FORM))
                     FISHATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, fish_attribute.SPEC_NM))
                     FISHATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, fish_attribute.FAMI_NM))
@@ -6944,8 +7061,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             FISHATTRIBUTE.add(Exporter.ColumnDef("WATER_W", ogr.OFTInteger, fish_attribute.WATER_W))
                             FISHATTRIBUTE.add(Exporter.ColumnDef("WATER_D", ogr.OFTInteger, fish_attribute.WATER_D))
                             FISHATTRIBUTE.add(Exporter.ColumnDef("WATER_CUR", ogr.OFTInteger, fish_attribute.WATER_CUR))
-                            FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_STR", ogr.OFTString, fish_attribute.RIV_STR))
-                            FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_STR_IN", ogr.OFTString, fish_attribute.RIV_STR_IN))
+//                    FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_STR", ogr.OFTString, fish_attribute.RIV_STR))
+//                    FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_STR_IN", ogr.OFTString, fish_attribute.RIV_STR_IN))
+                            FISHATTRIBUTE.add(Exporter.ColumnDef("BOULDER", ogr.OFTInteger, fish_attribute.BOULDER))        //2019-03-08 컬럼추가
+                            FISHATTRIBUTE.add(Exporter.ColumnDef("COBBLE", ogr.OFTInteger, fish_attribute.COBBLE))        //2019-03-08 컬럼추가
+                            FISHATTRIBUTE.add(Exporter.ColumnDef("PEBBLE", ogr.OFTInteger, fish_attribute.PEBBLE))        //2019-03-08 컬럼추가
+                            FISHATTRIBUTE.add(Exporter.ColumnDef("GRAVEL", ogr.OFTInteger, fish_attribute.GRAVEL))        //2019-03-08 컬럼추가
+                            FISHATTRIBUTE.add(Exporter.ColumnDef("SEND", ogr.OFTInteger, fish_attribute.SEND))        //2019-03-08 컬럼추가
                             FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_FORM", ogr.OFTString, fish_attribute.RIV_FORM))
                             FISHATTRIBUTE.add(Exporter.ColumnDef("SPEC_NM", ogr.OFTString, fish_attribute.SPEC_NM))
                             FISHATTRIBUTE.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, fish_attribute.FAMI_NM))
@@ -8386,7 +8508,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 println("firstLayerInfo : ${firstLayerInfo.attrubuteKey}")
 
-
                 // delete row
                 for (idx in 1..(polygonsToUnion.size - 1)) {
                     val polygon = polygonsToUnion.get(idx)
@@ -8427,6 +8548,17 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 val test = editingPolygon?.tag as LayerInfo
 
+                var geom = ""
+
+                for (i in 0 until editingPolygon?.points!!.size) {
+                    if (i == editingPolygon?.points!!.size) {
+                        geom += editingPolygon?.points!!.get(i).longitude.toString() + " " + editingPolygon?.points!!.get(i).latitude.toString()
+                    } else {
+                        geom += editingPolygon?.points!!.get(i).longitude.toString() + " " + editingPolygon?.points!!.get(i).latitude.toString() + ","
+                    }
+                }
+
+
                 polygons.add(editingPolygon!!)
 
 //                val userName =  PrefUtils.getStringPreference(context, "name");
@@ -8453,6 +8585,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 //                exportBiotope()
 
                 if (typeST.isChecked) {
+                    dbManager!!.updatestockmap_geom(firstLayerInfo.attrubuteKey,geom)
                     exportStockMap("","","","","all")
                     var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap"
                     var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap", "임상도", 1, 99, "stokemap", "Y", "stokemap", false)
@@ -8484,6 +8617,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap", "임상도", "stokemap", "Y", "stokemap")
                     }
                 } else {
+                    dbManager!!.updatebiotope_attribute_geom(firstLayerInfo.attrubuteKey,geom)
                     exportBiotope("","","","","all")
                     var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope"
                     var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope", "비오톱", 1, 99, "biotope", "Y", "biotope", false)
@@ -8635,6 +8769,21 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         println(qry)
 
         db!!.execSQL(qry)
+
+        var geom = ""
+
+        for (i in 0 until po.points.size) {
+            if (i == po.points.size) {
+                geom += po.points.get(i).longitude.toString() + " " + po.points.get(i).latitude.toString()
+            } else {
+                geom += po.points.get(i).longitude.toString() + " " + po.points.get(i).latitude.toString() + ","
+            }
+        }
+        if (tableName == "StockMap") {
+            dbManager!!.updatestockmap_geom(newKeyId, geom)
+        } else {
+            dbManager!!.updatebiotope_attribute_geom(newKeyId, geom)
+        }
 
 //        val userName =  PrefUtils.getStringPreference(context, "name");
 //        val num = dbManager!!.biotopesNextNum()
@@ -9038,6 +9187,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             po.isClickable = true
 
+
+
             polygons.add(po)
             // allPolygons.add(po)
 
@@ -9430,6 +9581,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             if (LANDUSE == "G21") {
                 polygonOptions.fillColor(Color.parseColor("#1739FF"))
+            }
+
+            if (LANDUSE == "?" || LANDUSE == "CD"){
+                polygonOptions.fillColor(Color.parseColor("#BDBDBD"))
             }
 
         }

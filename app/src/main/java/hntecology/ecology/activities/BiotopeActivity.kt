@@ -174,7 +174,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         val userName = PrefUtils.getStringPreference(context, "name");
         tvINV_PERSONTV.setText(userName)
 
-//        prjnameTV.setText( PrefUtils.getStringPreference(context, "prjname"))
+        prjnameTV.setText( PrefUtils.getStringPreference(context, "prjname"))
         prjname = PrefUtils.getStringPreference(context, "prjname")
 
         etINV_DTTV.setText(Utils.todayStr())
@@ -340,7 +340,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
                         , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
                         , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
-                        , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53),data2.getString(54),data2.getString(55))
+                        , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53),data2.getString(54),data2.getString(55),data2.getString(56),data2.getString(57))
 
 //                etinvesRegionET.text        = biotope_attribute.INVES_REGION
 
@@ -409,7 +409,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 if (biotope_attribute.PRJ_NAME != null && biotope_attribute.PRJ_NAME != "") {
                     prjnameTV.setText(biotope_attribute.PRJ_NAME)
                 } else {
-//                    prjnameTV.setText( PrefUtils.getStringPreference(context, "prjname"))
+                    prjnameTV.setText( PrefUtils.getStringPreference(context, "prjname"))
                 }
 
                 if (biotope_attribute.LU_GR_NUM == null){
@@ -546,6 +546,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 etUNUS_NOTEET.setText(biotope_attribute.UNUS_NOTE.toString())
 
                 etIMP_FORMET.setText(biotope_attribute.IMP_FORM.toString())
+                ufidTV.setText(biotope_attribute.UFID)
+                checkTV.setText(biotope_attribute.CHECK)
 
                 geom = biotope_attribute.GEOM.toString()
 
@@ -787,7 +789,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                         , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
                                         , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
                                         , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
-                                        , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53),data2.getString(54),data2.getString(55))
+                                        , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53),data2.getString(54),data2.getString(55),data2.getString(56),data2.getString(57))
 
                                 dataArray.add(biotope_attribute)
 
@@ -846,18 +848,24 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                 , null, null, null, null, null, null, null, null
                                 , null, null, null, null, null, null, null
                                 , null, null, null, null, null, null, null, null
-                                , null, null, null, null, null, null, null, null,null,null)
+                                , null, null, null, null, null, null, null, null,null,null,null,null)
 
                         keyId = intent.getStringExtra("GROP_ID")
 
                         biotope_attribute.GROP_ID = keyId
 
-//                        biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
-                        if (prjnameTV.length() > 0){
-                            biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
-                        } else {
+                        val prj = prjnameTV.text.toString()
+                        if (prj == prjname){
                             biotope_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
+                        } else {
+                            biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
                         }
+//                        biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
+//                        if (prjnameTV.length() > 0){
+//                            biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
+//                        } else {
+//                            biotope_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
+//                        }
 
                         if (etINV_REGIONET.length() > 0){
                             biotope_attribute.INV_REGION = etINV_REGIONET.text.toString();
@@ -1031,6 +1039,9 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             biotope_attribute.LANDUSE = biotope
                         }
 
+                        biotope_attribute.UFID = ufidTV.text.toString()
+                        biotope_attribute.CHECK = checkTV.text.toString()
+
 
                         if (intent.getSerializableExtra("biotopedata") != null){
                             biotope_attribute.LANDUSE = landuse
@@ -1199,7 +1210,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                     , null, null, null, null, null, null, null, null
                                     , null, null, null, null, null, null, null
                                     , null, null, null, null, null, null, null, null
-                                    , null, null, null, null, null, null, null, null,null,null)
+                                    , null, null, null, null, null, null, null, null,null,null,null,null)
 
                             if (pk != null) {
                                 val data2 = db!!.query("biotopeAttribute", dataList, "id = '$pk'", null, null, null, "", null)
@@ -1212,7 +1223,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                             , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
                                             , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
                                             , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
-                                            , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53),data2.getString(54),data2.getString(55))
+                                            , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53),data2.getString(54),data2.getString(55),data2.getString(56),data2.getString(57))
 
 
                                 }
@@ -1278,7 +1289,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                                 , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
                                                 , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
                                                 , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
-                                                , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54),data2.getString(55))
+                                                , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54),data2.getString(55),data2.getString(56),data2.getString(57))
 
                                         dataArray.add(biotope_attribute)
 
@@ -1336,7 +1347,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                     , null, null, null, null, null, null, null, null
                                     , null, null, null, null, null, null, null
                                     , null, null, null, null, null, null, null, null
-                                    , null, null, null, null, null, null, null, null,null,null)
+                                    , null, null, null, null, null, null, null, null,null,null,null,null)
 
                             if (intent.getStringExtra("id") != null) {
                                 val id = intent.getStringExtra("id")
@@ -1361,7 +1372,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                             , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
                                             , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
                                             , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
-                                            , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54),data2.getString(55))
+                                            , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54),data2.getString(55),data2.getString(56),data2.getString(57))
 
                                     dataArray.add(biotope_attribute)
 
@@ -1450,18 +1461,25 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     , null, null, null, null, null, null, null, null
                     , null, null, null, null, null, null, null
                     , null, null, null, null, null, null, null, null
-                    , null, null, null, null, null, null, null, null,null,null)
+                    , null, null, null, null, null, null, null, null,null,null,null,null)
 
             keyId = intent.getStringExtra("GROP_ID")
 
             biotope_attribute.GROP_ID = keyId
 
-//            biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
-            if (prjnameTV.length() > 0){
-                biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
-            } else {
+            val prj = prjnameTV.text.toString()
+            if (prj == prjname){
                 biotope_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
+            } else {
+                biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
             }
+
+//            biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
+//            if (prjnameTV.length() > 0){
+//                biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
+//            } else {
+//                biotope_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
+//            }
 
             if (etINV_REGIONET.length() > 0){
                 biotope_attribute.INV_REGION = etINV_REGIONET.text.toString();
@@ -1633,6 +1651,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 biotope_attribute.LANDUSE = biotope
             }
             biotope_attribute.GEOM = geom
+            biotope_attribute.UFID = ufidTV.text.toString()
+            biotope_attribute.CHECK = checkTV.text.toString()
 
             if (chkdata) {
 
@@ -2009,6 +2029,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             etUNUS_NOTEET.setText(biotope_attribute.UNUS_NOTE.toString())
             tvPIC_FOLDERTV.setText(biotope_attribute.PIC_FOLDER)
             etUNUS_NOTEET.setText(biotope_attribute.UNUS_NOTE.toString())
+            ufidTV.setText(biotope_attribute.UFID)
+            checkTV.setText(biotope_attribute.CHECK)
 
             etIMP_FORMET.setText(biotope_attribute.IMP_FORM.toString())
             landuse = biotope_attribute.LANDUSE
@@ -3089,7 +3111,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
                     , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
                     , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
-                    , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54),data.getString(55))
+                    , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54),data.getString(55), data.getString(56), data.getString(57))
 
 //                etinvesRegionET.text        = biotope_attribute.INVES_REGION
 
@@ -3258,7 +3280,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                     , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
                                     , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
                                     , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
-                                    , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54),data2.getString(55))
+                                    , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54),data2.getString(55), data2.getString(56),data2.getString(57))
 
                             dataArray.add(biotope_attribute)
 

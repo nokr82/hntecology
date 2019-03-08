@@ -471,6 +471,7 @@
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
                     android:inputType="number"
+                    android:singleLine="true"
                     android:id="@+id/fishstreamwET"
                     android:gravity="left|center"
                     />
@@ -479,6 +480,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:inputType="number"
+                    android:singleLine="true"
                     android:id="@+id/fishwaterwET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
@@ -489,6 +491,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:inputType="number"
+                    android:singleLine="true"
                     android:id="@+id/fishwaterdET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
@@ -499,13 +502,118 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:inputType="number"
+                    android:singleLine="true"
                     android:id="@+id/fishwatercurET"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
 
             </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:textColor="#333333"
+                android:textSize="20.2sp"
+                android:textStyle="bold"
+                android:text="하상구조"
+                style="@style/BiotopeTextView"
+                android:gravity="center"
+                />
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="Boulder(〉 256mm)"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="Cobble(64∼256mm)"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="Pebble( 16∼64mm )"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="Gravel( 2∼16mm )"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="Sand(〈 2mm )"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                >
+                <EditText
+                    android:id="@+id/boulderET"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:gravity="left|center"
+                    />
+                <EditText
+                    android:id="@+id/cobbleET"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    style="@style/BiotopeTextView"
+                    />
+
+                <EditText
+                    android:id="@+id/pebbleET"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    style="@style/BiotopeTextView"
+                    android:gravity="left|center"
+                    />
+
+                <EditText
+                    android:id="@+id/gravelET"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    style="@style/BiotopeTextView"
+                    android:gravity="left|center"
+                    />
+                <EditText
+                    android:id="@+id/sendET"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    style="@style/BiotopeTextView"
+                    android:gravity="left|center"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 >

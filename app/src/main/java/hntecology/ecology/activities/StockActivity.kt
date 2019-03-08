@@ -171,7 +171,7 @@ class StockActivity : Activity() {
 
         }
 
-//        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
         prjname = PrefUtils.getStringPreference(context, "prjname")
         keyId = intent.getStringExtra("GROP_ID")
 
@@ -546,12 +546,20 @@ class StockActivity : Activity() {
                                 null,null,null)
 
                         stockMap.GROP_ID = keyId
-//                        stockMap.PRJ_NAME = prjnameET.text.toString()
-                        if (prjnameET.length() > 0){
-                            stockMap.PRJ_NAME = prjnameET.text.toString()
+
+                        val prj = prjnameET.text.toString()
+                        if (prj == prjname){
+                            stockMap.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
                         } else {
-                            stockMap.PRJ_NAME = prjname
+                            stockMap.PRJ_NAME = prjnameET.text.toString()
                         }
+
+//                        stockMap.PRJ_NAME = prjnameET.text.toString()
+//                        if (prjnameET.length() > 0){
+//                            stockMap.PRJ_NAME = prjnameET.text.toString()
+//                        } else {
+//                            stockMap.PRJ_NAME = prjname
+//                        }
 
 //                        stockMap.INV_REGION = invregionTV.text.toString()
                         if (invregionTV.length() > 0){
@@ -766,12 +774,20 @@ class StockActivity : Activity() {
                     null,null,null)
 
             stockMap.GROP_ID = keyId
-//            stockMap.PRJ_NAME = prjnameET.text.toString()
-            if (prjnameET.length() > 0){
-                stockMap.PRJ_NAME = prjnameET.text.toString()
+
+            val prj = prjnameET.text.toString()
+            if (prj == prjname){
+                stockMap.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
             } else {
-                stockMap.PRJ_NAME = prjname
+                stockMap.PRJ_NAME = prjnameET.text.toString()
             }
+
+//            stockMap.PRJ_NAME = prjnameET.text.toString()
+//            if (prjnameET.length() > 0){
+//                stockMap.PRJ_NAME = prjnameET.text.toString()
+//            } else {
+//                stockMap.PRJ_NAME = prjname
+//            }
 
 //            stockMap.INV_REGION = invregionTV.text.toString()
             if (invregionTV.length() > 0){

@@ -457,7 +457,7 @@ class DlgDataListActivity : Activity() {
             , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
             , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
             , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
-            , data.getDouble(50), data.getString(51), data.getString(52),data.getString(53),data.getString(54), data.getString(55))
+            , data.getDouble(50), data.getString(51), data.getString(52),data.getString(53),data.getString(54), data.getString(55), data.getString(56),data.getString(57))
 
             listdata.add(model)
         }
@@ -517,8 +517,9 @@ class DlgDataListActivity : Activity() {
 
             model = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
-                    data.getFloat(19), data.getFloat(20), data.getString(21),data.getString(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getInt(26), data.getString(27), data.getString(28), data.getString(29),
-                    data.getInt(30), data.getString(31), data.getString(32), data.getString(33), data.getInt(34), data.getString(35), data.getString(36), data.getString(37), data.getString(38), data.getString(39), data.getString(40))
+                    data.getFloat(19), data.getFloat(20), data.getString(21),data.getString(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getInt(26), data.getString(27), data.getString(28),
+                    data.getInt(29),data.getInt(30),data.getInt(31),data.getInt(32),data.getInt(33), data.getString(34), data.getInt(35), data.getString(36), data.getString(37), data.getString(38),
+                    data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45))
 
             listdata.add(model)
 

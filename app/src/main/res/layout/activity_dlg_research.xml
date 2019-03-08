@@ -22,6 +22,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <LinearLayout
+                android:id="@+id/closeLL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@mipmap/close"/>
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/dlgTitle"
                 android:layout_width="wrap_content"

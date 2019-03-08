@@ -126,7 +126,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 //        this.setFinishOnTouchOutside(true);
 
         userName = PrefUtils.getStringPreference(context, "name");
-//        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
         prjname = PrefUtils.getStringPreference(context, "prjname")
 
         addPicturesLL = findViewById(R.id.addPicturesLL)
@@ -630,12 +630,19 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                         insect_attribute.GROP_ID = keyId
 
-//                        insect_attribute.PRJ_NAME = prjnameET.text.toString()
-                        if (prjnameET.length() > 0){
-                            insect_attribute.PRJ_NAME = prjnameET.text.toString()
+                        val prj = prjnameET.text.toString()
+                        if (prj == prjname){
+                            insect_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
                         } else {
-                            insect_attribute.PRJ_NAME = prjname
+                            insect_attribute.PRJ_NAME = prjnameET.text.toString()
                         }
+
+//                        insect_attribute.PRJ_NAME = prjnameET.text.toString()
+//                        if (prjnameET.length() > 0){
+//                            insect_attribute.PRJ_NAME = prjnameET.text.toString()
+//                        } else {
+//                            insect_attribute.PRJ_NAME = prjname
+//                        }
 
 //                        insect_attribute.INV_REGION = insectinvregionET.text.toString()
                         if (insectinvregionET.length() > 0){
@@ -1206,12 +1213,20 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
             insect_attribute.GROP_ID = keyId
 
-//            insect_attribute.PRJ_NAME = prjnameET.text.toString()
-            if (prjnameET.length() > 0){
-                insect_attribute.PRJ_NAME = prjnameET.text.toString()
+
+            val prj = prjnameET.text.toString()
+            if (prj == prjname){
+                insect_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
             } else {
-                insect_attribute.PRJ_NAME = prjname
+                insect_attribute.PRJ_NAME = prjnameET.text.toString()
             }
+
+//            insect_attribute.PRJ_NAME = prjnameET.text.toString()
+//            if (prjnameET.length() > 0){
+//                insect_attribute.PRJ_NAME = prjnameET.text.toString()
+//            } else {
+//                insect_attribute.PRJ_NAME = prjname
+//            }
 
 
 //            insect_attribute.INV_REGION = insectinvregionET.text.toString()

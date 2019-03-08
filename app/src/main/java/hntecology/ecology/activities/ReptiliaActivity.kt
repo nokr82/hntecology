@@ -136,7 +136,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         userName = PrefUtils.getStringPreference(context, "name");
 
-//        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
         prjname = PrefUtils.getStringPreference(context, "prjname")
 
         invpersonET.setText(userName)
@@ -915,12 +915,19 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                         reptilia_attribute.GROP_ID = keyId
 
-//                        reptilia_attribute.PRJ_NAME = prjnameET.text.toString()
-                        if (prjnameET.length() > 0){
-                            reptilia_attribute.PRJ_NAME = prjnameET.text.toString()
+                        val prj = prjnameET.text.toString()
+                        if (prj == prjname){
+                            reptilia_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
                         } else {
-                            reptilia_attribute.PRJ_NAME = prjname
+                            reptilia_attribute.PRJ_NAME = prjnameET.text.toString()
                         }
+
+//                        reptilia_attribute.PRJ_NAME = prjnameET.text.toString()
+//                        if (prjnameET.length() > 0){
+//                            reptilia_attribute.PRJ_NAME = prjnameET.text.toString()
+//                        } else {
+//                            reptilia_attribute.PRJ_NAME = prjname
+//                        }
 
 //                        reptilia_attribute.INV_REGION = invregionET.text.toString()
                         if (invregionET.length() > 0){
@@ -1143,12 +1150,19 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
             reptilia_attribute.GROP_ID = keyId
 
-//            reptilia_attribute.PRJ_NAME = prjnameET.text.toString()
-            if (prjnameET.length() > 0){
-                reptilia_attribute.PRJ_NAME = prjnameET.text.toString()
+            val prj = prjnameET.text.toString()
+            if (prj == prjname){
+                reptilia_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
             } else {
-                reptilia_attribute.PRJ_NAME = prjname
+                reptilia_attribute.PRJ_NAME = prjnameET.text.toString()
             }
+
+//            reptilia_attribute.PRJ_NAME = prjnameET.text.toString()
+//            if (prjnameET.length() > 0){
+//                reptilia_attribute.PRJ_NAME = prjnameET.text.toString()
+//            } else {
+//                reptilia_attribute.PRJ_NAME = prjname
+//            }
 
 
 //            reptilia_attribute.INV_REGION = invregionET.text.toString()

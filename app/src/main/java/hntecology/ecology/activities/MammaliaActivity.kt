@@ -135,7 +135,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         invtm = timesplit.get(0) + timesplit.get(1)
 
         userName = PrefUtils.getStringPreference(context, "name");
-//        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
         prjname = PrefUtils.getStringPreference(context, "prjname")
 
         var today = Utils.todayStr();
@@ -606,12 +606,20 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                         mammal_attribute.GROP_ID = keyId
 
-//                        mammal_attribute.PRJ_NAME = prjnameET.text.toString()
-                        if (prjnameET.length() > 0){
-                            mammal_attribute.PRJ_NAME = prjnameET.text.toString()
+
+                        val prj = prjnameET.text.toString()
+                        if (prj == prjname){
+                            mammal_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
                         } else {
-                            mammal_attribute.PRJ_NAME = prjname
+                            mammal_attribute.PRJ_NAME = prjnameET.text.toString()
                         }
+
+//                        mammal_attribute.PRJ_NAME = prjnameET.text.toString()
+//                        if (prjnameET.length() > 0){
+//                            mammal_attribute.PRJ_NAME = prjnameET.text.toString()
+//                        } else {
+//                            mammal_attribute.PRJ_NAME = prjname
+//                        }
 
 //                        mammal_attribute.INV_REGION = maminvregionET.text.toString()
                         if (maminvregionET.length() > 0){
@@ -1174,12 +1182,19 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             mammal_attribute.GROP_ID = keyId
 
-//            mammal_attribute.PRJ_NAME = prjnameET.text.toString()
-            if (prjnameET.length() > 0){
-                mammal_attribute.PRJ_NAME = prjnameET.text.toString()
+            val prj = prjnameET.text.toString()
+            if (prj == prjname){
+                mammal_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
             } else {
-                mammal_attribute.PRJ_NAME = prjname
+                mammal_attribute.PRJ_NAME = prjnameET.text.toString()
             }
+
+//            mammal_attribute.PRJ_NAME = prjnameET.text.toString()
+//            if (prjnameET.length() > 0){
+//                mammal_attribute.PRJ_NAME = prjnameET.text.toString()
+//            } else {
+//                mammal_attribute.PRJ_NAME = prjname
+//            }
 
 
 //            mammal_attribute.INV_REGION = maminvregionET.text.toString()

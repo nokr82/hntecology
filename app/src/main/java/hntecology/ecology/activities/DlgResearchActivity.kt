@@ -56,6 +56,10 @@ class DlgResearchActivity : Activity() {
         val time = Utils.timeStr()
         val timesplit = time.split(":")
 
+        closeLL.setOnClickListener {
+            finish()
+        }
+
 
 
         leftdayTV.setText(today + " ")
@@ -237,7 +241,7 @@ class DlgResearchActivity : Activity() {
                     , biotopedata.getString(29), biotopedata.getString(30), biotopedata.getString(31), biotopedata.getFloat(32), biotopedata.getFloat(33), biotopedata.getFloat(34), biotopedata.getString(35)
                     , biotopedata.getString(36), biotopedata.getString(37), biotopedata.getFloat(38), biotopedata.getFloat(39), biotopedata.getString(40), biotopedata.getString(41), biotopedata.getString(42)
                     , biotopedata.getFloat(43), biotopedata.getFloat(44), biotopedata.getString(45), biotopedata.getString(46), biotopedata.getString(47), biotopedata.getString(48), biotopedata.getDouble(49)
-                    , biotopedata.getDouble(50), biotopedata.getString(51), biotopedata.getString(52), biotopedata.getString(53), biotopedata.getString(54), biotopedata.getString(55))
+                    , biotopedata.getDouble(50), biotopedata.getString(51), biotopedata.getString(52), biotopedata.getString(53), biotopedata.getString(54), biotopedata.getString(55), biotopedata.getString(56), biotopedata.getString(57))
             val tmpfiles =  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images"+ File.separator +biotope_attribute.GROP_ID+ File.separator)
             var tmpfileList = tmpfiles.listFiles()
             var PICTURE_YN = "없음"
@@ -376,8 +380,9 @@ class DlgResearchActivity : Activity() {
 
             var fish_attribute: Fish_attribute = Fish_attribute(fishdata.getString(0), fishdata.getString(1), fishdata.getString(2), fishdata.getString(3), fishdata.getString(4), fishdata.getString(5), fishdata.getString(6), fishdata.getString(7),
                     fishdata.getString(8), fishdata.getString(9), fishdata.getFloat(10), fishdata.getString(11), fishdata.getString(12), fishdata.getString(13), fishdata.getInt(14), fishdata.getString(15), fishdata.getInt(16), fishdata.getInt(17), fishdata.getString(18),
-                    fishdata.getFloat(19), fishdata.getFloat(20), fishdata.getString(21), fishdata.getString(22), fishdata.getInt(23), fishdata.getInt(24), fishdata.getInt(25), fishdata.getInt(26), fishdata.getString(27), fishdata.getString(28), fishdata.getString(29),
-                    fishdata.getInt(30), fishdata.getString(31), fishdata.getString(32), fishdata.getString(33), fishdata.getInt(34), fishdata.getString(35), fishdata.getString(36), fishdata.getString(37), fishdata.getString(38), fishdata.getString(39), fishdata.getString(40))
+                    fishdata.getFloat(19), fishdata.getFloat(20), fishdata.getString(21),fishdata.getString(22), fishdata.getInt(23), fishdata.getInt(24), fishdata.getInt(25), fishdata.getInt(26), fishdata.getString(27), fishdata.getString(28),
+                    fishdata.getInt(29),fishdata.getInt(30),fishdata.getInt(31),fishdata.getInt(32),fishdata.getInt(33), fishdata.getString(34), fishdata.getInt(35), fishdata.getString(36), fishdata.getString(37), fishdata.getString(38),
+                    fishdata.getInt(39), fishdata.getString(40), fishdata.getString(41), fishdata.getString(42), fishdata.getString(43), fishdata.getString(44), fishdata.getString(45))
 
             val tmpfiles =  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images"+ File.separator +fish_attribute.GROP_ID+ File.separator)
             var tmpfileList = tmpfiles.listFiles()

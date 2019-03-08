@@ -132,7 +132,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
         userName = PrefUtils.getStringPreference(context, "name");
 
-//        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
         prjname = PrefUtils.getStringPreference(context, "prjname")
 
         addPicturesLL = findViewById(R.id.addPicturesLL)
@@ -590,12 +590,19 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                         flora_Attribute.GROP_ID = keyId
 
-//                        flora_Attribute.PRJ_NAME = prjnameET.text.toString()
-                        if (prjnameET.length() > 0){
-                            flora_Attribute.PRJ_NAME = prjnameET.text.toString()
+                        val prj = prjnameET.text.toString()
+                        if (prj == prjname){
+                            flora_Attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
                         } else {
-                            flora_Attribute.PRJ_NAME = prjname
+                            flora_Attribute.PRJ_NAME = prjnameET.text.toString()
                         }
+
+//                        flora_Attribute.PRJ_NAME = prjnameET.text.toString()
+//                        if (prjnameET.length() > 0){
+//                            flora_Attribute.PRJ_NAME = prjnameET.text.toString()
+//                        } else {
+//                            flora_Attribute.PRJ_NAME = prjname
+//                        }
 
 //                        flora_Attribute.INV_REGION = florainvregionET.text.toString()
                         if (florainvregionET.length() > 0){
@@ -1135,12 +1142,19 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
             flora_Attribute.GROP_ID = keyId
 
-//            flora_Attribute.PRJ_NAME = prjnameET.text.toString()
-            if (prjnameET.length() > 0){
-                flora_Attribute.PRJ_NAME = prjnameET.text.toString()
+            val prj = prjnameET.text.toString()
+            if (prj == prjname){
+                flora_Attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
             } else {
-                flora_Attribute.PRJ_NAME = prjname
+                flora_Attribute.PRJ_NAME = prjnameET.text.toString()
             }
+
+//            flora_Attribute.PRJ_NAME = prjnameET.text.toString()
+//            if (prjnameET.length() > 0){
+//                flora_Attribute.PRJ_NAME = prjnameET.text.toString()
+//            } else {
+//                flora_Attribute.PRJ_NAME = prjname
+//            }
 
 //            flora_Attribute.INV_REGION = florainvregionET.text.toString()
             if (florainvregionET.length() > 0){

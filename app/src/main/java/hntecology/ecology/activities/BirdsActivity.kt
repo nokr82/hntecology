@@ -168,7 +168,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         userName = PrefUtils.getStringPreference(context, "name");
         invPersonTV.text = userName;
 
-//        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
+        prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
         prjname = PrefUtils.getStringPreference(context, "prjname")
 
         dbManager = DataBaseHelper(this)
@@ -565,12 +565,19 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         birds_attribute.GROP_ID = keyId
 
-//                        birds_attribute.PRJ_NAME = prjnameET.text.toString()
-                        if (prjnameET.length() > 0){
-                            birds_attribute.PRJ_NAME = prjnameET.text.toString()
+                        val prj = prjnameET.text.toString()
+                        if (prj == prjname){
+                            birds_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
                         } else {
-                            birds_attribute.PRJ_NAME = prjname
+                            birds_attribute.PRJ_NAME = prjnameET.text.toString()
                         }
+
+//                        birds_attribute.PRJ_NAME = prjnameET.text.toString()
+//                        if (prjnameET.length() > 0){
+//                            birds_attribute.PRJ_NAME = prjnameET.text.toString()
+//                        } else {
+//                            birds_attribute.PRJ_NAME = prjname
+//                        }
 
 //                        birds_attribute.INV_REGION = invRegionET.text.toString()
                         if (invRegionET.length() > 0){
@@ -1068,12 +1075,19 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
             birds_attribute.GROP_ID = keyId
 
-            birds_attribute.PRJ_NAME = prjnameET.text.toString()
-            if (prjnameET.length() > 0){
-                birds_attribute.PRJ_NAME = prjnameET.text.toString()
+            val prj = prjnameET.text.toString()
+            if (prj == prjname){
+                birds_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
             } else {
-                birds_attribute.PRJ_NAME = prjname
+                birds_attribute.PRJ_NAME = prjnameET.text.toString()
             }
+
+//            birds_attribute.PRJ_NAME = prjnameET.text.toString()
+//            if (prjnameET.length() > 0){
+//                birds_attribute.PRJ_NAME = prjnameET.text.toString()
+//            } else {
+//                birds_attribute.PRJ_NAME = prjname
+//            }
 
 //            birds_attribute.INV_REGION = invRegionET.text.toString()
             if (invRegionET.length() > 0){

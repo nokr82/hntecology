@@ -388,7 +388,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO biotopeAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,INV_INDEX,LU_GR_NUM,LU_TY_RATE,STAND_H,LC_GR_NUM,LC_TY,TY_MARK,GV_RATE,GV_STRUCT,DIS_RET,RESTOR_POT,COMP_INTA";
         query += ",VP_INTA,IMP_FORM,BREA_DIA,FIN_EST,TRE_SPEC,TRE_FAMI,TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_H,STRE_BREA,STRE_COVE,SHR_SPEC,SHR_FAMI";
-        query += ",SHR_SCIEN,SHR_H,STR_COVE,HER_SPEC,HER_FAMI,HER_SCIEN,HER_H,HER_COVE,PIC_FOLDER,WILD_ANI,BIOTOP_POT,UNUS_NOTE,GPS_LAT,GPS_LON,NEED_CONF,CONF_MOD,TEMP_YN,LANDUSE,GEOM)";
+        query += ",SHR_SCIEN,SHR_H,STR_COVE,HER_SPEC,HER_FAMI,HER_SCIEN,HER_H,HER_COVE,PIC_FOLDER,WILD_ANI,BIOTOP_POT,UNUS_NOTE,GPS_LAT,GPS_LON,NEED_CONF,CONF_MOD,TEMP_YN,LANDUSE,GEOM,UFID,CHECKD)";
 
 
         query += " values (";
@@ -447,6 +447,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + biotope_attribute.getTEMP_YN() + "'";
         query += ", '" + biotope_attribute.getLANDUSE() + "'";
         query += ", '" + biotope_attribute.getGEOM() + "'";
+        query += ", '" + biotope_attribute.getUFID() + "'";
+        query += ", '" + biotope_attribute.getCHECK() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -641,7 +643,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO fishAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_TM,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,MID_RAGE,CODE_NUM,RIVER_NUM,RIVER_NM,NET_CNT,NET_MIN,AD_DIST_NM,GPS_LAT";
-        query += ",GPS_LON,COLL_TOOL,COLL_TOOL2,STREAM_W,WATER_W,WATER_D,WATER_CUR,RIV_STR,RIV_STR_IN,RIV_FORM";
+        query += ",GPS_LON,COLL_TOOL,COLL_TOOL2,STREAM_W,WATER_W,WATER_D,WATER_CUR,RIV_STR,RIV_STR_IN,BOULDER,COBBLE,PEBBLE,GRAVEL,SEND,RIV_FORM";
         query += ",NUM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,UNIDENT,RIV_FM_CH,UN_FISH_CH,TEMP_YN,CONF_MOD,GEOM)";
 
         query += " values (";
@@ -673,6 +675,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + fish_attribute.getWATER_CUR() + "'";
         query += ", '" + fish_attribute.getRIV_STR() + "'";
         query += ", '" + fish_attribute.getRIV_STR_IN() + "'";
+        query += ", '" + fish_attribute.getBOULDER() + "'"; //2019-03-08 컬럼추가
+        query += ", '" + fish_attribute.getCOBBLE() + "'"; //2019-03-08 컬럼추가
+        query += ", '" + fish_attribute.getPEBBLE() + "'"; //2019-03-08 컬럼추가
+        query += ", '" + fish_attribute.getGRAVEL() + "'"; //2019-03-08 컬럼추가
+        query += ", '" + fish_attribute.getSEND() + "'"; //2019-03-08 컬럼추가
         query += ", '" + fish_attribute.getRIV_FORM() + "'";
         query += ", '" + fish_attribute.getNUM() + "'";
         query += ", '" + fish_attribute.getSPEC_NM() + "'";
@@ -1386,6 +1393,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",WATER_CUR='" + fish_attribute.getWATER_CUR() + "'"
                 + ",RIV_STR='" + fish_attribute.getRIV_STR() + "'"
                 + ",RIV_STR_IN='" + fish_attribute.getRIV_STR_IN() + "'"
+                + ",BOULDER='" + fish_attribute.getBOULDER() + "'"      //2019-03-08 컬럼추가
+                + ",COBBLE='" + fish_attribute.getCOBBLE() + "'"     //2019-03-08 컬럼추가
+                + ",PEBBLE='" + fish_attribute.getPEBBLE() + "'"     //2019-03-08 컬럼추가
+                + ",GRAVEL='" + fish_attribute.getGRAVEL() + "'"     //2019-03-08 컬럼추가
+                + ",SEND='" + fish_attribute.getSEND() + "'"     //2019-03-08 컬럼추가
                 + ",RIV_FORM='" + fish_attribute.getRIV_FORM() + "'"
                 + ",NUM='" + fish_attribute.getNUM() + "'"
                 + ",SPEC_NM='" + fish_attribute.getSPEC_NM() + "'"
@@ -1680,6 +1692,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",WATER_CUR='" + fish_attribute.getWATER_CUR() + "'"
                 + ",RIV_STR='" + fish_attribute.getRIV_STR() + "'"
                 + ",RIV_STR_IN='" + fish_attribute.getRIV_STR_IN() + "'"
+                + ",BOULDER='" + fish_attribute.getBOULDER() + "'"      //2019-03-08 컬럼추가
+                + ",COBBLE='" + fish_attribute.getCOBBLE() + "'"     //2019-03-08 컬럼추가
+                + ",PEBBLE='" + fish_attribute.getPEBBLE() + "'"     //2019-03-08 컬럼추가
+                + ",GRAVEL='" + fish_attribute.getGRAVEL() + "'"     //2019-03-08 컬럼추가
+                + ",SEND='" + fish_attribute.getSEND() + "'"     //2019-03-08 컬럼추가
                 + ",RIV_FORM='" + fish_attribute.getRIV_FORM() + "'" +
                 "where GROP_ID = '" + GROP_ID + "'";
         SQLiteDatabase db = getWritableDatabase();
@@ -1776,6 +1793,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void updatebasegps(String GROP_ID,String GPS_LAT, String GPS_LON) {
+
+        String query = "UPDATE base_info SET  " +
+                "GPS_LAT='" + GPS_LAT + "'"
+                + ",GPS_LON='" + GPS_LON + "'" +
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
     public void updatecommonstockmap(StockMap StockMap,String GROP_ID) {
 
         String query = "UPDATE StockMap SET  " +
@@ -1787,6 +1815,131 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void updatebirdsgps(String GROP_ID,String GPS_LAT, String GPS_LON) {
+        String GEOM = GPS_LON + " " + GPS_LAT;
+
+        String query = "UPDATE birdsAttribute SET  " +
+                "GPS_LAT='" + GPS_LAT + "'"
+                + ",GPS_LON='" + GPS_LON + "'"
+                + ",GEOM='" + GEOM + "'" +
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+    public void updatereptiliagps(String GROP_ID,String GPS_LAT, String GPS_LON) {
+        String GEOM = GPS_LON + " " + GPS_LAT;
+
+        String query = "UPDATE reptiliaAttribute SET  " +
+                "GPS_LAT='" + GPS_LAT + "'"
+                + ",GPS_LON='" + GPS_LON + "'"
+                + ",GEOM='" + GEOM + "'" +
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+    public void updatemammalgps(String GROP_ID,String GPS_LAT, String GPS_LON) {
+        String GEOM = GPS_LON + " " + GPS_LAT;
+
+        String query = "UPDATE mammalAttribute SET  " +
+                "GPS_LAT='" + GPS_LAT + "'"
+                + ",GPS_LON='" + GPS_LON + "'"
+                + ",GEOM='" + GEOM + "'" +
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+    public void updatefishgps(String GROP_ID,String GPS_LAT, String GPS_LON) {
+        String GEOM = GPS_LON + " " + GPS_LAT;
+
+        String query = "UPDATE fishAttribute SET  " +
+                "GPS_LAT='" + GPS_LAT + "'"
+                + ",GPS_LON='" + GPS_LON + "'"
+                + ",GEOM='" + GEOM + "'" +
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+    public void updateinsectgps(String GROP_ID,String GPS_LAT, String GPS_LON) {
+        String GEOM = GPS_LON + " " + GPS_LAT;
+
+        String query = "UPDATE insectAttribute SET  " +
+                "GPS_LAT='" + GPS_LAT + "'"
+                + ",GPS_LON='" + GPS_LON + "'"
+                + ",GEOM='" + GEOM + "'" +
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+    public void updatefloragps(String GROP_ID,String GPS_LAT, String GPS_LON) {
+        String GEOM = GPS_LON + " " + GPS_LAT;
+
+        String query = "UPDATE floraAttribute SET  " +
+                "GPS_LAT='" + GPS_LAT + "'"
+                + ",GPS_LON='" + GPS_LON + "'"
+                + ",GEOM='" + GEOM + "'" +
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+    public void updatezoobenthosgps(String GROP_ID,String GPS_LAT, String GPS_LON) {
+        String GEOM = GPS_LON + " " + GPS_LAT;
+
+        String query = "UPDATE ZoobenthosAttribute SET  " +
+                "GPS_LAT='" + GPS_LAT + "'"
+                + ",GPS_LON='" + GPS_LON + "'"
+                + ",GEOM='" + GEOM + "'" +
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+    public void updatewaypointgps(String GROP_ID,String GPS_LAT, String GPS_LON) {
+        String GEOM = GPS_LON + " " + GPS_LAT;
+
+        String query = "UPDATE waypoint SET  " +
+                "GPS_LAT='" + GPS_LAT + "'"
+                + ",GPS_LON='" + GPS_LON + "'"
+                + ",GEOM='" + GEOM + "'" +
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+    public void updatemanyfloragps(String GROP_ID,String GPS_LAT, String GPS_LON) {
+        String GEOM = GPS_LON + " " + GPS_LAT;
+
+        String query = "UPDATE ManyFloraAttribute SET  " +
+                "GPS_LAT='" + GPS_LAT + "'"
+                + ",GPS_LON='" + GPS_LON + "'"
+                + ",GEOM='" + GEOM + "'" +
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
 
     public void insertGpsSet(GpsSet gpsset) {
         //37 column
@@ -2038,6 +2191,28 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return num;
+    }
+
+    public void updatebiotope_attribute_geom(String GROP_ID , String geom) {
+
+        String query = "UPDATE biotopeAttribute SET  " +
+                "GEOM='" + geom + "'"+
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+
+    public void updatestockmap_geom(String GROP_ID , String geom) {
+
+        String query = "UPDATE StockMap SET  " +
+                "GEOM='" + geom + "'"+
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
     }
 
 

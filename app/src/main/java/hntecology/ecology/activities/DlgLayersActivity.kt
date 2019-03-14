@@ -62,10 +62,10 @@ class DlgLayersActivity : Activity() {
         listView.setOnItemClickListener { adapterView, view, position, l ->
             var data  = adapterData.get(position)
 
-            if(data.is_checked == false){
+            if(!data.is_checked){
                 data.is_checked = true
                 apdater.notifyDataSetChanged()
-            }else {
+            } else {
                 data.is_checked = false
                 apdater.notifyDataSetChanged()
             }
@@ -76,27 +76,7 @@ class DlgLayersActivity : Activity() {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1){
                 loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, MainActivity.READ_EXTERNAL_STORAGE)
             } else {
-                if(data != null){
-                    data.clear()
-                }
-
-                for(i in 0 ..adapterData.size-1){
-                    var checkData = adapterData.get(i)
-                    var checked = checkData.is_checked
-
-                    // println("checked : " + checked)
-
-                    if(checked) {
-                        data.add(adapterData.get(i))
-                        // println("-------added ${adapterData.get(i).added}")
-                    }
-
-                }
-
-                var intent = Intent();
-                intent.putExtra("data", data);
-                setResult(RESULT_OK, intent);
-                finish()
+                done()
             }
 
         }
@@ -153,29 +133,50 @@ class DlgLayersActivity : Activity() {
             if(android.Manifest.permission.WRITE_EXTERNAL_STORAGE == perm){
                 loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, MainActivity.READ_EXTERNAL_STORAGE)
             } else if(android.Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
-                if(data != null){
-                    data.clear()
-                }
-
-                for(i in 0 ..adapterData.size-1){
-                    var checkData = adapterData.get(i)
-                    var checked = checkData.is_checked
-
-                    // println("checked : " + checked)
-
-                    if(checked) {
-                        data.add(adapterData.get(i))
-                        // println("-------added ${adapterData.get(i).added}")
-                    }
-
-                }
-
-                var intent = Intent();
-                intent.putExtra("data", data);
-                setResult(RESULT_OK, intent);
-                finish()
+                done()
             }
         }
+    }
+
+    private fun done() {
+        if (data != null) {
+            data.clear()
+        }
+
+        for (i in 0..adapterData.size - 1) {
+            var checkData = adapterData.get(i)
+            var checked = checkData.is_checked
+
+            // println("checked : " + checked)
+
+            // println("checkData : ${checkData.type}")
+
+            if (checked) {
+                data.add(adapterData.get(i))
+                // println("-------added ${adapterData.get(i).added}")
+            }
+
+        }
+
+        data.sortWith(object: Comparator<LayerModel>{
+            override fun compare(p1: LayerModel, p2: LayerModel): Int {
+                if(p1.type == "lsmd" && p2.type == "lsmd") {
+                    return 0
+                } else if(p1.type == "lsmd" && p2.type != "lsmd") {
+                    return -1
+                }
+                return 1
+            }
+        })
+
+        for (d in data) {
+            println("checkData : ${d.type}")
+        }
+
+        var intent = Intent();
+        intent.putExtra("data", data);
+        setResult(RESULT_OK, intent);
+        finish()
     }
 
 }

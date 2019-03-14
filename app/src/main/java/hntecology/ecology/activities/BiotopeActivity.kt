@@ -1864,7 +1864,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 val EMD_NM = intent.getStringExtra("EMD_NM")
 
                 if (EMD_NM != "" && EMD_NM != null) {
-                    etINV_REGIONET.setText(EMD_NM);
+                    // etINV_REGIONET.setText(EMD_NM);
                 }
             }
 
@@ -1873,10 +1873,10 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                 var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
 
-                if(list.size > 0){
+                if(list.isNotEmpty()){
                     System.out.println("list : " + list);
 
-//                    etINV_REGIONET.setText(list.get(0).getAddressLine(0));
+                    etINV_REGIONET.setText(list.get(0).getAddressLine(0));
                     INV_REGION = list.get(0).getAddressLine(0)
                 }
             } catch (e:IOException) {

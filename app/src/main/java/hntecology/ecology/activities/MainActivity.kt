@@ -257,7 +257,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         db = dbManager!!.createDataBase()
 
-//        isFile()
+        isFile()
 
         prjname = PrefUtils.getStringPreference(context, "prjname");
 
@@ -1558,10 +1558,6 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                         if (layerGropId != null) {
                             layerGropId.clear()
-                        }
-
-                        if (jsonOb.size == 0) {
-                            loadLayer("", "", "", "")
                         }
 
                         googleMap.clear()
@@ -4208,6 +4204,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             return
         }
 
+        println("ty : $Type")
+
         currentFileName = fileName
         currentLayerName = layerName
 
@@ -4267,7 +4265,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             println("shpFilePath 2 : $shpFilePath")
 
-            val f = File(shpFilePath)
+            // val f = File(shpFilePath)
 
             // println("g : ${f.exists()}")
 
@@ -4277,17 +4275,21 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             val layerCount = dataSource.GetLayerCount()
 
-            // println("layerCount : $layerCount")
+            println("layerCount : $layerCount")
 
             for (idx in 0..(layerCount - 1)) {
                 val layer = dataSource.GetLayer(idx)
                 val featureCount = layer.GetFeatureCount()
+
+                println("featureCount : $featureCount")
 
                 for (fid in 0..(featureCount - 1)) {
 
                     val feature = layer.GetFeature(fid)
 
                     var geometryRef = feature.GetGeometryRef()
+
+                    // println("geometryRef : $geometryRef")
 
                     if (geometryRef == null) {
                         continue
@@ -4493,7 +4495,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 polygon.tag = layerInfo
-                polygon.isClickable = true
+
+                if(type != "lsmd") {
+                    polygon.isClickable = true
+                }
 
                 val landuse = Utils.getString(layerInfo.metadata, "landuse")
                 val LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
@@ -4503,7 +4508,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 // println("attrubuteKey : $attrubuteKey")
 
-                if (type.equals("biotope")) {
+                if (type == "biotope") {
                     layerInfo.layer = LAYER_BIOTOPE
                 }
 
@@ -4554,9 +4559,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 val id = Utils.getString(layerInfo.metadata, "ID")
                 val grop_id = Utils.getString(layerInfo.metadata, "GROP_ID")
 
-                polygon.fillColor = Color.parseColor("#BDBDBD")
-
-                println("loadlayer-----LANDUSE ---- $LANDUSE")
+                // println("loadlayer-----LANDUSE ---- $LANDUSE")
                 if (LANDUSE != null) {
 
                     if (LANDUSE == "-319") {
@@ -4931,6 +4934,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
                 // println("polygon.tag ${polygon.tag}")
 
+                if(type == "lsmd") {
+                    polygon.fillColor = Color.TRANSPARENT
+                }
+
                 polygons.add(polygon)
                 // allPolygons.add(polygon)
 
@@ -5017,7 +5024,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 points.add(marker)
 
             } else if (geoms[0] is PolylineOptions) {
-                googleMap.addPolyline(geoms[0] as PolylineOptions)
+                val polyline = googleMap.addPolyline(geoms[0] as PolylineOptions)
+                polyline.zIndex = 0.0f
             }
 
         }
@@ -5562,6 +5570,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         polygonOptions.addAll(latlngs)
 
         editingPolygon = googleMap.addPolygon(polygonOptions)
+        editingPolygon?.zIndex = 1.0f
         editingPolygon?.isClickable = true
 
         val layerInfo = LayerInfo()
@@ -6163,6 +6172,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     }
 
                     var polygon:Polygon = googleMap.addPolygon(polygonOptions)
+                    polygon.zIndex = 1.0f
 
                     val exporter = Exporter.ExportItem(LAYER_BIOTOPE, BIOTOPEATTRIBUTE,polygon, points)
 
@@ -6394,6 +6404,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     markerOptions.draggable(true)
 
                     val marker = googleMap.addMarker(markerOptions)
+                    marker.zIndex = 1.0f
 
                     val exporter = Exporter.ExportPointItem(LAYER_BIRDS, BIRDSATTRIBUTE, marker)
 
@@ -6603,6 +6614,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     markerOptions.draggable(true)
 
                     val marker = googleMap.addMarker(markerOptions)
+                    marker.zIndex = 1.0f
 
                     val exporter = Exporter.ExportPointItem(LAYER_REPTILIA, REPTILIAATTRIBUTE, marker)
 
@@ -6808,6 +6820,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     markerOptions.draggable(true)
 
                     val marker = googleMap.addMarker(markerOptions)
+                    marker.zIndex = 1.0f
 
                     val exporter = Exporter.ExportPointItem(LAYER_MAMMALIA, MAMMALATTRIBUTE, marker)
 
@@ -7024,6 +7037,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     markerOptions.draggable(true)
 
                     val marker = googleMap.addMarker(markerOptions)
+                    marker.zIndex = 1.0f
 
                     val exporter = Exporter.ExportPointItem(LAYER_FISH, FISHATTRIBUTE, marker)
 
@@ -7240,6 +7254,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     markerOptions.draggable(true)
 
                     val marker = googleMap.addMarker(markerOptions)
+                    marker.zIndex = 1.0f
 
                     val exporter = Exporter.ExportPointItem(LAYER_INSECT, INSECTATTRIBUTE, marker)
                     pointsArray.add(exporter)
@@ -7429,6 +7444,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     markerOptions.draggable(true)
 
                     val marker = googleMap.addMarker(markerOptions)
+                    marker.zIndex = 1.0f
 
                     val exporter = Exporter.ExportPointItem(LAYER_FLORA, FLORAATTRIBUTE, marker)
 
@@ -7655,6 +7671,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     markerOptions.draggable(true)
 
                     val marker = googleMap.addMarker(markerOptions)
+                    marker.zIndex = 1.0f
 
                     val exporter = Exporter.ExportPointItem(LAYER_ZOOBENTHOS, ZOOBENTHOUS, marker)
 
@@ -7853,7 +7870,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     markerOptions.draggable(true)
 
                     val marker = googleMap.addMarker(markerOptions)
-
+                    marker.zIndex = 1.0f
 
                     val exporter = Exporter.ExportPointItem(LAYER_WAYPOINT, WAYPOINTATTRIBUTE, marker)
 
@@ -8032,6 +8049,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     markerOptions.draggable(true)
 
                     val marker = googleMap.addMarker(markerOptions)
+                    marker.zIndex = 1.0f
 
                     val exporter = Exporter.ExportPointItem(LAYER_FLORA2, MANYFLORA, marker)
 
@@ -8303,6 +8321,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     }
 
                     var polygon:Polygon = googleMap.addPolygon(polygonOptions)
+                    polygon.zIndex = 1.0f
 
                     val exporter = Exporter.ExportItem(LAYER_STOCKMAP, STOKEMAP,polygon,points)
 
@@ -8542,7 +8561,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
 
                 editingPolygon = googleMap.addPolygon(polygonOptions)
-                // editingPolygon?.zIndex = 5.0f
+                editingPolygon?.zIndex = 1.0f
                 editingPolygon?.tag = firstLayerInfo
                 editingPolygon?.isClickable = true
 
@@ -8985,7 +9004,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
             var distance = SphericalUtil.computeDistanceBetween(latlng, latlng2)
 
-            println("distance : $distance")
+            // println("distance : $distance")
 
             if (distance.toInt() in MIN_DISTANCE..(MAX_DISTANCE - 1) || (prevLatitude == -1.0 && prevLongitude == -1.0)) {
                 val tracking: Tracking = Tracking(null, location.latitude, location.longitude)
@@ -9174,7 +9193,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 
             val po = googleMap.addPolygon(polygonOptions)
-            // po.zIndex = 5.0f
+            po.zIndex = 1.0f
 
             val newAttributeKey = getAttributeKey(layerInfo.layer)
             val newLayerInfo = LayerInfo()

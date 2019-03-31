@@ -2551,7 +2551,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             println("layerinfo.metadata ${layerinfo.metadata}")
 
                                             var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                            var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
                                             var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
                                             var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
                                             var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
@@ -2619,7 +2619,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             println("layerinfo.metadata.stockmap----------${layerinfo.metadata}")
 
                                             var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                            var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
                                             var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
                                             var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
                                             var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
@@ -2681,7 +2681,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             println("layerinfo.stock-----metadata ${layerinfo.metadata}")
 
                                             var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                            var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
                                             var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
                                             var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
                                             var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
@@ -2762,13 +2762,13 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     }
                 }
 
-                if (chk == false) {
+                if (!chk) {
                     polygons.add(polygon)
                 }
 
-                var myLayer = layerInfo.layer
+                val myLayer = layerInfo.layer
 
-                var attrubuteKey = layerInfo.attrubuteKey
+                val attrubuteKey = layerInfo.attrubuteKey
 
                 var intent: Intent? = null
 
@@ -3010,7 +3010,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                             println("layerinfo.metadata ${layerinfo.metadata}")
 
                                                             var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                                            var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
                                                             var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
                                                             var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
                                                             var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
@@ -3086,7 +3086,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                             println("layerinfo.metadata.stockmap----------${layerinfo.metadata}")
 
                                                             var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                                            var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
                                                             var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
                                                             var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
                                                             var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
@@ -3156,7 +3156,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                         if (polygons.get(i).tag == polygon.tag) {
 
                                                             var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                                            var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
                                                             var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
                                                             var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
                                                             var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
@@ -3496,7 +3496,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             intent = Intent(this, StockActivity::class.java)
 
                                             var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                            var INV_REGION = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                            var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
                                             var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
                                             var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
                                             var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
@@ -4938,7 +4938,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     polygon.fillColor = Color.TRANSPARENT
                 }
 
-                polygons.add(polygon)
+                if(type != "lsmd") {
+                    polygons.add(polygon)
+                }
+
                 // allPolygons.add(polygon)
 
             } else if (geoms[0] is MarkerOptions) {
@@ -6020,8 +6023,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     }
 
     fun export(leftday: String, lefttime: String, rightday: String, righttime: String) {
-        var leftreplace = lefttime.replace("시", ":00")
-        var rightreplace = righttime.replace("시", ":59")
+        val leftreplace = lefttime.replace("시", ":00")
+        val rightreplace = righttime.replace("시", ":59")
 
         exportBiotope(leftday, leftreplace, rightday, rightreplace,"time")
         exportStockMap(leftday, leftreplace, rightday, rightreplace,"time")
@@ -6039,7 +6042,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     }
 
     fun exportBiotope(leftday: String, lefttime: String, rightday: String, righttime: String, exportType:String) {
-        var biotopeArray: ArrayList<Exporter.ExportItem> = ArrayList<Exporter.ExportItem>()
+        val biotopeArray: ArrayList<Exporter.ExportItem> = ArrayList<Exporter.ExportItem>()
         val dataList: Array<String> = arrayOf("*")
 //        var biotopedata = db!!.query("biotopeAttribute", dataList, null, null, null, null, "", null)
         var lftday = leftday + lefttime

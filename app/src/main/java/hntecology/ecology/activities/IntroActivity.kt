@@ -100,6 +100,13 @@ class IntroActivity : Activity() {
 
 
     private fun checkLicense() {
+        /*
+        val intent = Intent(context, SearchAddressActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+
+        return
+        */
 
         val dataPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"
         val sourceDirectory = File(dataPath)

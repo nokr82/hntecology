@@ -163,9 +163,9 @@ class DlgLayersActivity : Activity() {
                 if(p1.type == "lsmd" && p2.type == "lsmd") {
                     return 0
                 } else if(p1.type == "lsmd" && p2.type != "lsmd") {
-                    return -1
+                    return 1
                 }
-                return 1
+                return -1
             }
         })
 

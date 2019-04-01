@@ -1608,10 +1608,10 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 SEARCHADDRESS -> {
 
                     if (data != null) {
-                        val x = data.getStringExtra("x")
-                        val y = data.getStringExtra("y")
+                        val x = data.getDoubleExtra("x", 0.0)
+                        val y = data.getDoubleExtra("y", 0.0)
 
-                        val mapCenter = LatLng(y.toDouble(), x.toDouble())
+                        val mapCenter = LatLng(y, x)
                         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mapCenter, 15.6f))
                     }
                 }

@@ -36,7 +36,8 @@ class AddressAdapter(context:Context, view:Int, data:ArrayList<JSONObject>) : Ar
 
         val item: JSONObject =  data.get(position)
 
-        retView.addreesTV.text = Utils.getString(item.getString("address_name"))
+        val address = item.getJSONObject("address")
+        retView.addreesTV.text = Utils.getString(address.getString("parcel"))
 
         return retView
     }

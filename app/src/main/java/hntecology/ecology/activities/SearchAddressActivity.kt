@@ -42,9 +42,10 @@ class SearchAddressActivity : Activity() {
         listLV.setOnItemClickListener { parent, view, position, id ->
 
             val item: JSONObject =  adapterData.get(position)
+            val point: JSONObject =  item.getJSONObject("point")
 
-            val x = Utils.getDouble(item, "x")
-            val y = Utils.getDouble(item, "y")
+            val x = Utils.getDouble(point, "x")
+            val y = Utils.getDouble(point, "y")
 
             println("x : $x, y : $y")
 
@@ -126,7 +127,7 @@ class SearchAddressActivity : Activity() {
 
         println(params)
 
-        AddressAction.search_map(address, 1, 20, object : JsonHttpResponseHandler() {
+        AddressAction.search_map(address, 1, 30, object : JsonHttpResponseHandler() {
 
             override fun onSuccess(statusCode: Int, headers: Array<Header>?, response: JSONObject?) {
                 if (progressDialog != null) {
@@ -138,12 +139,13 @@ class SearchAddressActivity : Activity() {
                 adapterData.clear()
 
                 try {
-                    if (response!!.getJSONObject("meta") != null) {
-                        val region = response.getJSONObject("meta")
-                        val list = response.getJSONArray("documents")
+                    if (response!!.getJSONObject("response") != null) {
+                        val res = response.getJSONObject("response")
+                        val result = res.getJSONObject("result")
+                        val items = result.getJSONArray("items")
 
-                        for(idx in 0 until list.length()) {
-                            adapterData.add(list.getJSONObject(idx))
+                        for(idx in 0 until items.length()) {
+                            adapterData.add(items.getJSONObject(idx))
                         }
 
                         addressAdapter.notifyDataSetChanged()

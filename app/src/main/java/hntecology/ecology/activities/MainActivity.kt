@@ -4934,8 +4934,12 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 }
                 // println("polygon.tag ${polygon.tag}")
 
+                println("type : $type")
+
                 if(type == "lsmd") {
                     polygon.fillColor = Color.TRANSPARENT
+                    polygon.strokeColor = Color.parseColor("#d06400")
+                    polygon.strokeWidth = 5.0f
                 }
 
                 if(type != "lsmd") {
@@ -9343,46 +9347,55 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
         if (!biotopePath.exists()) {
             dbManager!!.deletelayers("biotope")
+            dbManager!!.deletebiotope_attribute_all()
         }
 
         val bridsPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "birds" + File.separator + "birds.shp")
         if (!bridsPath.exists()) {
             dbManager!!.deletelayers("birds")
+            dbManager!!.deletebirds_attribute_all()
         }
 
         val reptiliaPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "reptilia" + File.separator + "reptilia.shp")
         if (!reptiliaPath.exists()) {
             dbManager!!.deletelayers("reptilia")
+            dbManager!!.deletereptilia_attribute_all()
         }
 
         val mammaliaPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "mammalia" + File.separator + "mammalia.shp")
         if (!mammaliaPath.exists()) {
             dbManager!!.deletelayers("mammalia")
+            dbManager!!.deletemammal_attribute_all()
         }
 
         val fishPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "fish" + File.separator + "fish.shp")
         if (!fishPath.exists()) {
             dbManager!!.deletelayers("fish")
+            dbManager!!.deletefish_attribute_all()
         }
 
         val insectPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "insect" + File.separator + "insect.shp")
         if (!insectPath.exists()) {
             dbManager!!.deletelayers("insect")
+            dbManager!!.deleteinsect_attribute_all()
         }
 
         val floraPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora" + File.separator + "flora.shp")
         if (!floraPath.exists()) {
             dbManager!!.deletelayers("flora")
+            dbManager!!.deleteflora_attribute_all()
         }
 
         val zoobenthosPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "zoobenthos" + File.separator + "zoobenthos.shp")
         if (!zoobenthosPath.exists()) {
             dbManager!!.deletelayers("zoobenthos")
+            dbManager!!.deletezoobenthous_attribute_all()
         }
 
         val flora2Path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora2" + File.separator + "flora2.shp")
         if (!flora2Path.exists()) {
             dbManager!!.deletelayers("flora2")
+
         }
 
         val trackingPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "tracking" + File.separator + "tracking.shp")
@@ -9394,6 +9407,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
         val stockmapPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap.shp")
         if (!stockmapPath.exists()) {
             dbManager!!.deletelayers("stockmap")
+            dbManager!!.deletestockmap_all()
         }
 
     }

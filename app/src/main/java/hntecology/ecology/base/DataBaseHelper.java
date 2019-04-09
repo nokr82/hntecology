@@ -26,7 +26,6 @@ import hntecology.ecology.model.ManyFloraAttribute;
 import hntecology.ecology.model.Reptilia_attribute;
 import hntecology.ecology.model.StockMap;
 import hntecology.ecology.model.Tracking;
-import hntecology.ecology.model.TreeData1;
 import hntecology.ecology.model.Waypoint;
 import hntecology.ecology.model.Zoobenthos_Attribute;
 
@@ -997,6 +996,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
+    public void deletereptilia_attribute_all() {
+        String query = "DELETE FROM reptiliaAttribute";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
     public void deletereptilia_attribute(Reptilia_attribute reptilia_attribute,String page) {
         String query = "DELETE FROM reptiliaAttribute WHERE id = '" + page + "'";
 
@@ -1005,8 +1012,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deletebirds_attribute_all() {
+        String query = "DELETE FROM birdsAttribute";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
     public void deletebirds_attribute(Birds_attribute birds_attribute,String page) {
         String query = "DELETE FROM birdsAttribute WHERE id = '" + page + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void deletebiotope_attribute_all() {
+        String query = "DELETE FROM biotopeAttribute";
 
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1037,8 +1060,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deletemammal_attribute_all() {
+        String query = "DELETE FROM mammalAttribute";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
     public void deletemammal_attribute(Mammal_attribute mammal_attribute,String page) {
         String query = "DELETE FROM mammalAttribute WHERE id = '" + page + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void deleteinsect_attribute_all() {
+        String query = "DELETE FROM insectAttribute";
 
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1053,6 +1092,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deletefish_attribute_all() {
+        String query = "DELETE FROM fishAttribute";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
     public void deletefish_attribute(Fish_attribute fish_attribute,String page) {
         String query = "DELETE FROM fishAttribute WHERE id = '" + page + "'";
 
@@ -1061,10 +1108,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deleteflora_attribute_all() {
+        String query = "DELETE FROM floraAttribute";
 
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
 
     public void deleteflora_attribute(Flora_Attribute flora_attribute,String page) {
         String query = "DELETE FROM floraAttribute WHERE id = '" + page + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void deletezoobenthous_attribute_all() {
+        String query = "DELETE FROM ZoobenthosAttribute";
 
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1079,6 +1140,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deletestockmap_all() {
+        String query = "DELETE FROM StockMap";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
 
     public void deletestockmap(String pk) {
         String query = "DELETE FROM StockMap WHERE id = '" + pk + "'";
@@ -1088,8 +1156,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deletemanyflora_attribute_all() {
+        String query = "DELETE FROM ManyFloraAttribute";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
     public void deletemanyflora_attribute(ManyFloraAttribute ManyFloraAttribute,String GROP_ID) {
         String query = "DELETE FROM ManyFloraAttribute WHERE GROP_ID = '" + GROP_ID + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void deleteAllManyFloraAttributeAll() {
+        String query = "DELETE FROM ManyFloraAttribute";
 
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);

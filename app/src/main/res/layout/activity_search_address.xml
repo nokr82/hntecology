@@ -17,6 +17,8 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
+            android:singleLine="true"
+            android:maxLines="1"
             android:hint="주소를 입력해주세요."/>
         <Button
             android:id="@+id/findBtn"

@@ -214,7 +214,7 @@
             android:name=".activities.SearchAddressActivity"
             android:screenOrientation="landscape"
             android:theme="@style/NoTitleDialog"
-            android:windowSoftInputMode="adjustPan|adjustResize" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.DlgZoobenthosActivity"
             android:theme="@style/full_screen_dialog1" />

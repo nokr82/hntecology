@@ -22,7 +22,7 @@ public class AddressAction {
         params.put("request", "search");
         params.put("category", "PARCEL");
         params.put("type", "address");
-        params.put("key", "AEB2AC1B-6203-3810-8623-35B47991EE58");
+        params.put("key", "366D7FAA-4B63-3ACA-8C05-AAD64D7DD580");
 
 //        HttpClient.get("http://dapi.kakao.com/v2/local/search/keyword.json?query=" + keyword + "&page=" + page + "&size=" + size, headers, params, handler);
         HttpClient.get("http://api.vworld.kr/req/search", headers, params, handler);

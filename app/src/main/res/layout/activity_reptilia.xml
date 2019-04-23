@@ -387,7 +387,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:id="@+id/incntaduET"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             style="@style/BiotopeTextView"
                             android:gravity="center"/>
                     </LinearLayout>
@@ -406,7 +406,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:id="@+id/incntlarET"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             style="@style/BiotopeTextView"
                             android:gravity="center"/>
                     </LinearLayout>
@@ -426,7 +426,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:id="@+id/incnteggET"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             style="@style/BiotopeTextView"
                             android:gravity="center"/>
                     </LinearLayout>

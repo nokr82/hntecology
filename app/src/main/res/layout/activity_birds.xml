@@ -402,7 +402,7 @@
                     android:layout_weight="1"
                     android:id="@+id/indicntET"
                     android:gravity="center"
-                    android:inputType="number" />
+                    android:inputType="numberDecimal" />
             </LinearLayout>
 
             <LinearLayout

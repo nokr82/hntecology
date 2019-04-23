@@ -357,7 +357,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:id="@+id/heightET"
                     style="@style/BiotopeTextView"
                     android:gravity="center"

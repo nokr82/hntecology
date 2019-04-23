@@ -252,7 +252,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/insectnumET"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     style="@style/BiotopeTextView"
                     android:gravity="center"
                     />
@@ -368,7 +368,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:id="@+id/insectindicntET"
                     style="@style/BiotopeTextView"
                     android:gravity="center"

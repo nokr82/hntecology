@@ -514,7 +514,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     style="@style/BiotopeTextView"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:background="@null"
                     android:singleLine="true"/>
 

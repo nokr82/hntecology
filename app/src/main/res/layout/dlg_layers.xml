@@ -58,9 +58,10 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="15dp">
 
-                <ListView
+                <GridView
                     android:id="@+id/listView"
                     android:layout_width="0dp"
+                    android:numColumns="3"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:divider="@null" />

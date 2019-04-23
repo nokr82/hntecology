@@ -116,7 +116,7 @@ class WriteAlbumActivity : Activity() , AdapterView.OnItemClickListener {
 
         imageLoader.setListener(adapter)
 
-        selectBtn.setOnClickListener(View.OnClickListener {
+        addBtnLL.setOnClickListener(View.OnClickListener {
             val result = arrayOfNulls<String>(selected.size)
             var idx = 0
             for (strPo in selected) {

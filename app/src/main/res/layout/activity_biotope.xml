@@ -1860,7 +1860,7 @@
                                             android:layout_weight="1"
                                             android:inputType="numberDecimal"
                                             android:maxLength="10"
-                                            android:id="@+id/min6ET"
+                                            android:id="@+id/max6ET"
                                             android:gravity="center_vertical"
                                             style="@style/BiotopeEditText"
                                             />
@@ -1892,7 +1892,7 @@
                                             android:layout_weight="1"
                                             android:inputType="numberDecimal"
                                             android:maxLength="10"
-                                            android:id="@+id/max6ET"
+                                            android:id="@+id/min6ET"
                                             android:gravity="center_vertical"
                                             style="@style/BiotopeEditText"
                                             />

@@ -1666,6 +1666,40 @@
         </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:layout_width="250dp"
+                        android:layout_height="match_parent"
+                        android:text="비오톱 유형 분류 기호"
+                        style="@style/BiotopeTextView"
+                        />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        style="@style/BiotopeTextViewDisabled"
+                        />
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        />
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="유형 분류기호"
+                        style="@style/dlgcommonButton"
+                        />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:orientation="horizontal"
 

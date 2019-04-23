@@ -24,7 +24,7 @@
                 android:textColor="#333333"
                 android:textSize="20.2sp"
                 android:textStyle="bold"
-                android:text="식생조사 위치 조사표"
+                android:text="식물군집구조 조사표"
                 style="@style/BiotopeTextView"
                 android:gravity="center"
                 />

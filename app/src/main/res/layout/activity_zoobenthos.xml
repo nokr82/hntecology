@@ -543,7 +543,7 @@
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
                     android:hint="00.0℃"
-                    android:inputType="numberSigned"
+                    android:inputType="numberSigned|numberDecimal"
                     />
                 <TextView
                     android:layout_width="140dp"
@@ -558,7 +558,7 @@
                     android:layout_weight="1"
                     style="@style/BiotopeTextView"
                     android:hint="00.0℃"
-                    android:inputType="numberSigned"
+                    android:inputType="numberSigned|numberDecimal"
                     />
 
             </LinearLayout>

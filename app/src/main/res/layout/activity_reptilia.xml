@@ -224,7 +224,7 @@
                     android:layout_weight="1"
                     android:id="@+id/temperaturET"
                     style="@style/BiotopeTextView"
-                    android:inputType="numberSigned"
+                    android:inputType="numberSigned|numberDecimal"
                     android:gravity="center"
                     />
                 <EditText
@@ -614,7 +614,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:id="@+id/waterdeptET"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             style="@style/BiotopeTextView"
                             android:gravity="center"/>
                     </LinearLayout>
@@ -646,7 +646,7 @@
                             android:id="@+id/habareawET"
                             android:background="@null"
                             android:hint="M"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             style="@style/BiotopeTextView"
                             android:gravity="center" />
                         <TextView
@@ -660,7 +660,7 @@
                             android:id="@+id/habareahET"
                             android:background="@null"
                             android:hint="M"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             style="@style/BiotopeTextView"
                             android:gravity="center" />
 

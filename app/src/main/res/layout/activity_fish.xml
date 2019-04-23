@@ -224,7 +224,7 @@
                     android:id="@+id/fishtemperaturET"
                     style="@style/BiotopeTextView"
                     android:gravity="center"
-                    android:inputType="numberSigned"
+                    android:inputType="numberSigned|numberDecimal"
                     />
                 <EditText
                     android:layout_width="0dp"

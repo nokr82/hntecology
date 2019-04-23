@@ -747,7 +747,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 //                    .title("현재 위치")
 
 //            googleMap.addMarker(makerOption)
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 16f))
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng,googleMap.cameraPosition.zoom))
 
 //            val point = Point()
 //            point.x = latitude.toInt()
@@ -941,12 +941,14 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                         builder.include(latlng)
 
                     }
+
                     var line = googleMap.addPolyline(polylineOptions)
                     polyLines.add(line)
 
                     val bounds = builder.build()
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
-
+//                    googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
+                    val latlng = LatLng(this.latitude, this.longitude)
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng,googleMap.cameraPosition.zoom))
                     /*
                     for (i in 0 until trackingDatas.size){
                         val data = trackingDatas.get(i)

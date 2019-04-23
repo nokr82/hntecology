@@ -2390,6 +2390,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             var LU_GR_NUM = Utils.getString(layerInfo.metadata, "LU_GR_NUM")
                                             var UNUS_NOTE = Utils.getString(layerInfo.metadata, "UNUS_NOTE")
                                             var TRE_H = Utils.getString(layerInfo.metadata, "TRE_H")
+                                            var MIN_TRE_H = Utils.getString(layerInfo.metadata, "TRE_H")
+                                            var MAX_TRE_H = Utils.getString(layerInfo.metadata, "TRE_H")
                                             var LC_TY = Utils.getString(layerInfo.metadata, "LC_TY")
                                             var TY_MARK = Utils.getString(layerInfo.metadata, "TY_MARK")
                                             var HER_SCIEN = Utils.getString(layerInfo.metadata, "HER_SCIEN")
@@ -2511,7 +2513,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, LC_TY, TY_MARK, GV_RATE.toFloat()
                                                     , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
                                                     STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
-                                                    BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", polygon.fillColor.toString(), geom,UFID,CHECK)
+                                                    BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", polygon.fillColor.toString(), geom,UFID,CHECK,
+                                                    MAX_TRE_H.toFloat(),MIN_TRE_H.toFloat())
 
                                             if (landuse != null && landuse != "") {
                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
@@ -2823,7 +2826,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                             , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
                                                             , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
                                                             , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
-                                                            , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55), data.getString(56), data.getString(57))
+                                                            , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55), data.getString(56), data.getString(57)
+                                                            , data.getFloat(58), data.getFloat(59))
                                                     biotopedataArray.add(biotope_attribute)
                                                     chkData = true
                                                 }
@@ -2841,6 +2845,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                             var LU_GR_NUM = Utils.getString(layerInfo.metadata, "LU_GR_NUM")
                                                             var UNUS_NOTE = Utils.getString(layerInfo.metadata, "UNUS_NOTE")
                                                             var TRE_H = Utils.getString(layerInfo.metadata, "TRE_H")
+                                                            var MIN_TRE_H = Utils.getString(layerInfo.metadata, "MIN_TRE_H")
+                                                            var MAX_TRE_H = Utils.getString(layerInfo.metadata, "MAX_TRE_H")
                                                             var LC_TY = Utils.getString(layerInfo.metadata, "LC_TY")
                                                             var TY_MARK = Utils.getString(layerInfo.metadata, "TY_MARK")
                                                             var HER_SCIEN = Utils.getString(layerInfo.metadata, "HER_SCIEN")
@@ -2968,7 +2974,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                             val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, LC_TY, TY_MARK, GV_RATE.toFloat()
                                                                     , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
                                                                     STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
-                                                                    BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom,UFID,CHECK)
+                                                                    BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom,UFID,CHECK
+                                                                    , MIN_TRE_H.toFloat(), MAX_TRE_H.toFloat())
 
                                                             if (LANDUSE != null && LANDUSE != "") {
                                                                 data.LANDUSE = LANDUSE
@@ -3234,7 +3241,9 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
                                             , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
                                             , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
-                                            , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55),data.getString(56),data.getString(57))
+                                            , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55),data.getString(56),data.getString(57)
+                                            , data.getFloat(58), data.getFloat(59)
+                                    )
                                     biotopedataArray.add(biotope_attribute)
                                 }
 
@@ -3257,6 +3266,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             var LU_GR_NUM = Utils.getString(layerInfo.metadata, "LU_GR_NUM")
                                             var UNUS_NOTE = Utils.getString(layerInfo.metadata, "UNUS_NOTE")
                                             var TRE_H = Utils.getString(layerInfo.metadata, "TRE_H")
+                                            var MIN_TRE_H = Utils.getString(layerInfo.metadata, "MIN_TRE_H")
+                                            var MAX_TRE_H = Utils.getString(layerInfo.metadata, "MAX_TRE_H")
                                             var LC_TY = Utils.getString(layerInfo.metadata, "LC_TY")
                                             var TY_MARK = Utils.getString(layerInfo.metadata, "TY_MARK")
                                             var HER_SCIEN = Utils.getString(layerInfo.metadata, "HER_SCIEN")
@@ -3381,7 +3392,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, LC_TY, TY_MARK, GV_RATE.toFloat()
                                                     , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
                                                     STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
-                                                    BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom,UFID,CHECK)
+                                                    BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom,UFID,CHECK, MIN_TRE_H.toFloat(), MAX_TRE_H.toFloat())
 
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
@@ -3692,7 +3703,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
                                             , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
                                             , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
-                                            , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55), data.getString(56),data.getString(57))
+                                            , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55), data.getString(56),data.getString(57)
+                                            , data.getFloat(58), data.getFloat(59))
                                     biotopedataArray.add(biotope_attribute)
                                 }
 
@@ -3715,6 +3727,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             var LU_GR_NUM = Utils.getString(layerInfo.metadata, "LU_GR_NUM")
                                             var UNUS_NOTE = Utils.getString(layerInfo.metadata, "UNUS_NOTE")
                                             var TRE_H = Utils.getString(layerInfo.metadata, "TRE_H")
+                                            var MIN_TRE_H = Utils.getString(layerInfo.metadata, "MIN_TRE_H")
+                                            var MAX_TRE_H = Utils.getString(layerInfo.metadata, "MAX_TRE_H")
                                             var LC_TY = Utils.getString(layerInfo.metadata, "LC_TY")
                                             var TY_MARK = Utils.getString(layerInfo.metadata, "TY_MARK")
                                             var HER_SCIEN = Utils.getString(layerInfo.metadata, "HER_SCIEN")
@@ -3838,7 +3852,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), LC_GR_NUM, LC_TY, TY_MARK, GV_RATE.toFloat()
                                                     , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
                                                     STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
-                                                    BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom,UFID,CHECK)
+                                                    BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom,UFID,CHECK, MIN_TRE_H.toFloat(), MAX_TRE_H.toFloat())
 
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
@@ -6074,7 +6088,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     , biotopedata.getString(29), biotopedata.getString(30), biotopedata.getString(31), biotopedata.getFloat(32), biotopedata.getFloat(33), biotopedata.getFloat(34), biotopedata.getString(35)
                     , biotopedata.getString(36), biotopedata.getString(37), biotopedata.getFloat(38), biotopedata.getFloat(39), biotopedata.getString(40), biotopedata.getString(41), biotopedata.getString(42)
                     , biotopedata.getFloat(43), biotopedata.getFloat(44), biotopedata.getString(45), biotopedata.getString(46), biotopedata.getString(47), biotopedata.getString(48), biotopedata.getDouble(49)
-                    , biotopedata.getDouble(50), biotopedata.getString(51), biotopedata.getString(52), biotopedata.getString(53), biotopedata.getString(54), biotopedata.getString(55),biotopedata.getString(56),biotopedata.getString(57))
+                    , biotopedata.getDouble(50), biotopedata.getString(51), biotopedata.getString(52), biotopedata.getString(53), biotopedata.getString(54), biotopedata.getString(55),biotopedata.getString(56),biotopedata.getString(57)
+                    ,biotopedata.getFloat(58),biotopedata.getFloat(59))
 
             biotopeDatas.add(biotope_attribute)
         }
@@ -6134,6 +6149,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_FAMI", ogr.OFTString, biotope_attribute.TRE_FAMI))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SCIEN", ogr.OFTString, biotope_attribute.TRE_SCIEN))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_H", ogr.OFTString, biotope_attribute.TRE_H.toString()))
+                    BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("MIN_TRE_H", ogr.OFTString, biotope_attribute.MIN_TRE_H.toString()))
+                    BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("MAX_TRE_H", ogr.OFTString, biotope_attribute.MAX_TRE_H.toString()))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_BREA", ogr.OFTString, biotope_attribute.TRE_BREA.toString()))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_COVE", ogr.OFTString, biotope_attribute.TRE_COVE.toString()))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_SPEC", ogr.OFTString, biotope_attribute.STRE_SPEC))
@@ -6220,6 +6237,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_FAMI", ogr.OFTString, biotope_attribute.TRE_FAMI))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SCIEN", ogr.OFTString, biotope_attribute.TRE_SCIEN))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_H", ogr.OFTString, biotope_attribute.TRE_H.toString()))
+                            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("MIN_TRE_H", ogr.OFTString, biotope_attribute.MIN_TRE_H.toString()))
+                            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("MAX_TRE_H", ogr.OFTString, biotope_attribute.MAX_TRE_H.toString()))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_BREA", ogr.OFTString, biotope_attribute.TRE_BREA.toString()))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_COVE", ogr.OFTString, biotope_attribute.TRE_COVE.toString()))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_SPEC", ogr.OFTString, biotope_attribute.STRE_SPEC))

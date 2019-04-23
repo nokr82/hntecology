@@ -111,7 +111,7 @@ class DlgLayersActivity : Activity() {
 
 
 
-    fun loadData(type:String) {
+    fun loadData(s_type:String) {
 
         // select
         val dataList:Array<String> = arrayOf("file_name", "layer_name","min_scale","max_scale","type","added","grop_id");
@@ -124,7 +124,7 @@ class DlgLayersActivity : Activity() {
 
             val zoom = intent.getFloatExtra("zoom", 0.0F)
 
-            if(zoom > layerModel.min_scale && zoom < layerModel.max_scale&&layerModel.type==type) {
+            if(zoom > layerModel.min_scale && zoom < layerModel.max_scale&&layerModel.type==s_type) {
                 adapterData.add(layerModel)
 
                 // println("file_name ${layerModel.file_name}")

@@ -5745,7 +5745,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 
             LAYER_FLORA2 -> {
-                btn_flora2.text = "식생조사 위치 추가 중"
+                btn_flora2.text = "식물군집구조 추가 중"
                 btn_flora2.setBackgroundResource(R.drawable.bg_rnd_red)
                 btn_flora2.setTextColor(Color.parseColor("#ffffff"))
             }
@@ -5989,7 +5989,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
             }
 
             LAYER_FLORA2 -> {
-                btn_flora2.text = "식생조사 위치 추가"
+                btn_flora2.text = "식물군집구조 추가"
             }
 
             LAYER_STOCKMAP -> {

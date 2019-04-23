@@ -458,7 +458,8 @@ class DlgDataListActivity : Activity() {
             , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
             , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
             , data.getDouble(50), data.getString(51), data.getString(52),data.getString(53),data.getString(54), data.getString(55), data.getString(56),data.getString(57)
-                    , data.getFloat(58),data.getFloat(59))
+                    , data.getFloat(58),data.getFloat(59),data.getFloat(60),data.getFloat(61),data.getFloat(62),data.getFloat(63)
+                    ,data.getFloat(64),data.getFloat(65),data.getFloat(66),data.getFloat(67),data.getFloat(68),data.getFloat(69))
 
             listdata.add(model)
         }

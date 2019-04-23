@@ -341,7 +341,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
                         , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
                         , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53),data2.getString(54),data2.getString(55),data2.getString(56),data2.getString(57)
-                        ,data2.getFloat(58),data2.getFloat(59))
+                        ,data2.getFloat(58),data2.getFloat(59),data2.getFloat(60),data2.getFloat(61),data2.getFloat(62),data2.getFloat(63)
+                        ,data2.getFloat(64),data2.getFloat(65),data2.getFloat(66),data2.getFloat(67),data2.getFloat(68),data2.getFloat(69))
 
 //                etinvesRegionET.text        = biotope_attribute.INVES_REGION
 
@@ -523,6 +524,16 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 etTRE_HET.setText(biotope_attribute.TRE_H.toString())
                 minET.setText(biotope_attribute.MIN_TRE_H.toString())
                 maxET.setText(biotope_attribute.MAX_TRE_H.toString())
+                min2ET.setText(biotope_attribute.MIN_TRE_BREA.toString())
+                max2ET.setText(biotope_attribute.MAX_TRE_BREA.toString())
+                min3ET.setText(biotope_attribute.MIN_STRE_H.toString())
+                max3ET.setText(biotope_attribute.MAX_STRE_H.toString())
+                min4ET.setText(biotope_attribute.MIN_STRE_BREAET.toString())
+                max4ET.setText(biotope_attribute.MAX_STRE_BREAET.toString())
+                min5ET.setText(biotope_attribute.MIN_SHR_HET.toString())
+                max5ET.setText(biotope_attribute.MAX_SHR_HET.toString())
+                min6ET.setText(biotope_attribute.MIN_HER_HET.toString())
+                max6ET.setText(biotope_attribute.MAX_HER_HET.toString())
                 etTRE_BREAET.setText(biotope_attribute.TRE_BREA.toString())
                 etTRE_COVEET.setText(biotope_attribute.TRE_COVE.toString())
                 etSTRE_SPECET.setText(biotope_attribute.STRE_SPEC.toString())
@@ -708,6 +719,15 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 //
 //        }
 
+        bioBT.setOnClickListener {
+            val intent = Intent(this, DlgCommonActivity::class.java)
+            intent.putExtra("title", "비오톱유형 분류기준")
+            intent.putExtra("table", "biotopeM")
+            intent.putExtra("DlgHeight", 450f);
+//            startActivity(intent)
+            startActivityForResult(intent, SET_DATA1);
+        }
+
         //토지이용현황 분류 버튼  높이 450f
         btn_Dlg1.setOnClickListener {
 
@@ -793,7 +813,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                         , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
                                         , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
                                         , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53),data2.getString(54),data2.getString(55),data2.getString(56),data2.getString(57)
-                                        ,data2.getFloat(58),data2.getFloat(59))
+                                        ,data2.getFloat(58),data2.getFloat(59),data2.getFloat(60),data2.getFloat(61),data2.getFloat(62),data2.getFloat(63)
+                                        ,data2.getFloat(64),data2.getFloat(65),data2.getFloat(66),data2.getFloat(67),data2.getFloat(68),data2.getFloat(69))
 
                                 dataArray.add(biotope_attribute)
 
@@ -853,7 +874,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                 , null, null, null, null, null, null, null
                                 , null, null, null, null, null, null, null, null
                                 , null, null, null, null, null, null, null, null,null,null,null,null
-                                ,null,null)
+                                ,null,null  ,null,null  ,null,null  ,null,null  ,null,null  ,null,null)
 
                         keyId = intent.getStringExtra("GROP_ID")
 
@@ -957,8 +978,48 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                             biotope_attribute.TRE_BREA = Utils.getString(etTRE_BREAET).toFloat();
                         }
-                        if (etTRE_COVEET.text.isNotEmpty()) {
+                        if (min2ET.text.isNotEmpty()) {
+                            biotope_attribute.MIN_TRE_BREA = Utils.getString(min2ET).toFloat();
+                        }
 
+                        if (max2ET.text.isNotEmpty()) {
+                            biotope_attribute.MAX_TRE_BREA = Utils.getString(max2ET).toFloat();
+                        }
+
+                        if (min3ET.text.isNotEmpty()) {
+                            biotope_attribute.MIN_STRE_H = Utils.getString(min3ET).toFloat();
+                        }
+
+                        if (max3ET.text.isNotEmpty()) {
+                            biotope_attribute.MAX_STRE_H = Utils.getString(max3ET).toFloat();
+                        }
+
+                        if (min4ET.text.isNotEmpty()) {
+                            biotope_attribute.MIN_STRE_BREAET = Utils.getString(min4ET).toFloat();
+                        }
+
+                        if (max4ET.text.isNotEmpty()) {
+                            biotope_attribute.MAX_STRE_BREAET = Utils.getString(max4ET).toFloat();
+                        }
+
+                        if (min5ET.text.isNotEmpty()) {
+                            biotope_attribute.MIN_SHR_HET = Utils.getString(min5ET).toFloat();
+                        }
+
+                        if (max5ET.text.isNotEmpty()) {
+                            biotope_attribute.MAX_SHR_HET = Utils.getString(max5ET).toFloat();
+                        }
+
+                        if (min6ET.text.isNotEmpty()) {
+                            biotope_attribute.MIN_HER_HET = Utils.getString(min6ET).toFloat();
+                        }
+
+                        if (max6ET.text.isNotEmpty()) {
+                            biotope_attribute.MAX_HER_HET = Utils.getString(max6ET).toFloat();
+                        }
+
+
+                        if (etTRE_COVEET.text.isNotEmpty()) {
                             biotope_attribute.TRE_COVE = Utils.getString(etTRE_COVEET).toFloat();
                         }
 
@@ -1223,7 +1284,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                     , null, null, null, null, null, null, null
                                     , null, null, null, null, null, null, null, null
                                     , null, null, null, null, null, null, null, null,null,null,null,null
-                                    ,null,null)
+                                    ,null,null  ,null,null  ,null,null  ,null,null  ,null,null  ,null,null)
 
                             if (pk != null) {
                                 val data2 = db!!.query("biotopeAttribute", dataList, "id = '$pk'", null, null, null, "", null)
@@ -1237,9 +1298,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                             , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
                                             , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
                                             , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53),data2.getString(54),data2.getString(55),data2.getString(56),data2.getString(57)
-                                            ,data2.getFloat(58),data2.getFloat(59))
-
-
+                                            ,data2.getFloat(58),data2.getFloat(59),data2.getFloat(60),data2.getFloat(61),data2.getFloat(62),data2.getFloat(63)
+                                            ,data2.getFloat(64),data2.getFloat(65),data2.getFloat(66),data2.getFloat(67),data2.getFloat(68),data2.getFloat(69))
                                 }
 
                                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images"+ File.separator +keyId+ File.separator)
@@ -1304,7 +1364,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                                 , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
                                                 , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
                                                 , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54),data2.getString(55),data2.getString(56),data2.getString(57)
-                                                ,data2.getFloat(58),data2.getFloat(59))
+                                                ,data2.getFloat(58),data2.getFloat(59),data2.getFloat(60),data2.getFloat(61),data2.getFloat(62),data2.getFloat(63)
+                                                ,data2.getFloat(64),data2.getFloat(65),data2.getFloat(66),data2.getFloat(67),data2.getFloat(68),data2.getFloat(69))
 
                                         dataArray.add(biotope_attribute)
 
@@ -1363,7 +1424,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                     , null, null, null, null, null, null, null
                                     , null, null, null, null, null, null, null, null
                                     , null, null, null, null, null, null, null, null,null,null,null,null
-                                    ,null,null)
+                                    ,null,null ,null,null ,null,null ,null,null ,null,null ,null,null)
 
                             if (intent.getStringExtra("id") != null) {
                                 val id = intent.getStringExtra("id")
@@ -1389,7 +1450,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                             , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
                                             , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
                                             , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54),data2.getString(55),data2.getString(56),data2.getString(57)
-                                            , data2.getFloat(58), data2.getFloat(59))
+                                            , data2.getFloat(58), data2.getFloat(59),data2.getFloat(60),data2.getFloat(61),data2.getFloat(62),data2.getFloat(63)
+                                            ,data2.getFloat(64),data2.getFloat(65),data2.getFloat(66),data2.getFloat(67),data2.getFloat(68),data2.getFloat(69))
 
                                     dataArray.add(biotope_attribute)
 
@@ -1479,7 +1541,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     , null, null, null, null, null, null, null
                     , null, null, null, null, null, null, null, null
                     , null, null, null, null, null, null, null, null,null,null,null,null
-                    ,null,null)
+                    ,null,null  ,null,null  ,null,null  ,null,null  ,null,null  ,null,null)
 
             keyId = intent.getStringExtra("GROP_ID")
 
@@ -1679,6 +1741,48 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             if (maxET.text.isNotEmpty()) {
                 biotope_attribute.MAX_TRE_H = Utils.getString(maxET).toFloat();
             }
+            if (min2ET.text.isNotEmpty()) {
+                biotope_attribute.MIN_TRE_BREA = Utils.getString(min2ET).toFloat();
+            }
+
+            if (max2ET.text.isNotEmpty()) {
+                biotope_attribute.MAX_TRE_BREA = Utils.getString(max2ET).toFloat();
+            }
+
+            if (min3ET.text.isNotEmpty()) {
+                biotope_attribute.MIN_STRE_H = Utils.getString(min3ET).toFloat();
+            }
+
+            if (max3ET.text.isNotEmpty()) {
+                biotope_attribute.MAX_STRE_H = Utils.getString(max3ET).toFloat();
+            }
+
+            if (min4ET.text.isNotEmpty()) {
+                biotope_attribute.MIN_STRE_BREAET = Utils.getString(min4ET).toFloat();
+            }
+
+            if (max4ET.text.isNotEmpty()) {
+                biotope_attribute.MAX_STRE_BREAET = Utils.getString(max4ET).toFloat();
+            }
+
+            if (min5ET.text.isNotEmpty()) {
+                biotope_attribute.MIN_SHR_HET = Utils.getString(min5ET).toFloat();
+            }
+
+            if (max5ET.text.isNotEmpty()) {
+                biotope_attribute.MAX_SHR_HET = Utils.getString(max5ET).toFloat();
+            }
+
+            if (min6ET.text.isNotEmpty()) {
+                biotope_attribute.MIN_HER_HET = Utils.getString(min6ET).toFloat();
+            }
+
+            if (max6ET.text.isNotEmpty()) {
+                biotope_attribute.MAX_HER_HET = Utils.getString(max6ET).toFloat();
+            }
+
+
+
             if (chkdata) {
 
                 if (images!!.size > 0 && biotope_attribute.PIC_FOLDER == null) {
@@ -2032,6 +2136,16 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             etTRE_HET.setText(biotope_attribute.TRE_H.toString())
             minET.setText(biotope_attribute.MIN_TRE_H.toString())
             maxET.setText(biotope_attribute.MAX_TRE_H.toString())
+            min2ET.setText(biotope_attribute.MIN_TRE_BREA.toString())
+            max2ET.setText(biotope_attribute.MAX_TRE_BREA.toString())
+            min3ET.setText(biotope_attribute.MIN_STRE_H.toString())
+            max3ET.setText(biotope_attribute.MAX_STRE_H.toString())
+            min4ET.setText(biotope_attribute.MIN_STRE_BREAET.toString())
+            max4ET.setText(biotope_attribute.MAX_STRE_BREAET.toString())
+            min5ET.setText(biotope_attribute.MIN_SHR_HET.toString())
+            max5ET.setText(biotope_attribute.MAX_SHR_HET.toString())
+            min6ET.setText(biotope_attribute.MIN_HER_HET.toString())
+            max6ET.setText(biotope_attribute.MAX_HER_HET.toString())
             etTRE_BREAET.setText(biotope_attribute.TRE_BREA.toString())
             etTRE_COVEET.setText(biotope_attribute.TRE_COVE.toString())
             etSTRE_SPECET.setText(biotope_attribute.STRE_SPEC.toString())
@@ -3139,7 +3253,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
                     , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
                     , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54),data.getString(55), data.getString(56), data.getString(57)
-                    , data.getFloat(58), data.getFloat(59))
+                    , data.getFloat(58), data.getFloat(59),data.getFloat(60),data.getFloat(61),data.getFloat(62),data.getFloat(63)
+                    ,data.getFloat(64),data.getFloat(65),data.getFloat(66),data.getFloat(67),data.getFloat(68),data.getFloat(69))
 
 //                etinvesRegionET.text        = biotope_attribute.INVES_REGION
 
@@ -3215,6 +3330,16 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             etTRE_HET.setText(biotope_attribute.TRE_H.toString())
             minET.setText(biotope_attribute.MIN_TRE_H.toString())
             maxET.setText(biotope_attribute.MAX_TRE_H.toString())
+            min2ET.setText(biotope_attribute.MIN_TRE_BREA.toString())
+            max2ET.setText(biotope_attribute.MAX_TRE_BREA.toString())
+            min3ET.setText(biotope_attribute.MIN_STRE_H.toString())
+            max3ET.setText(biotope_attribute.MAX_STRE_H.toString())
+            min4ET.setText(biotope_attribute.MIN_STRE_BREAET.toString())
+            max4ET.setText(biotope_attribute.MAX_STRE_BREAET.toString())
+            min5ET.setText(biotope_attribute.MIN_SHR_HET.toString())
+            max5ET.setText(biotope_attribute.MAX_SHR_HET.toString())
+            min6ET.setText(biotope_attribute.MIN_HER_HET.toString())
+            max6ET.setText(biotope_attribute.MAX_HER_HET.toString())
             etTRE_BREAET.setText(biotope_attribute.TRE_BREA.toString())
             etTRE_COVEET.setText(biotope_attribute.TRE_COVE.toString())
             etSTRE_SPECET.setText(biotope_attribute.STRE_SPEC.toString())
@@ -3311,7 +3436,9 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                     , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
                                     , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
                                     , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54),data2.getString(55), data2.getString(56),data2.getString(57)
-                                    , data2.getFloat(58), data2.getFloat(59) )
+                                    , data2.getFloat(58), data2.getFloat(59),data2.getFloat(60),data2.getFloat(61),data2.getFloat(62),data2.getFloat(63)
+                                    ,data2.getFloat(64),data2.getFloat(65),data2.getFloat(66),data2.getFloat(67),data2.getFloat(68),data2.getFloat(69))
+
 
                             dataArray.add(biotope_attribute)
 

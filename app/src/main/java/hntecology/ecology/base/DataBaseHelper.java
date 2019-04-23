@@ -385,7 +385,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,INV_INDEX,LU_GR_NUM,LU_TY_RATE,STAND_H,LC_GR_NUM,LC_TY,TY_MARK,GV_RATE,GV_STRUCT,DIS_RET,RESTOR_POT,COMP_INTA";
         query += ",VP_INTA,IMP_FORM,BREA_DIA,FIN_EST,TRE_SPEC,TRE_FAMI,TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_H,STRE_BREA,STRE_COVE,SHR_SPEC,SHR_FAMI";
         query += ",SHR_SCIEN,SHR_H,STR_COVE,HER_SPEC,HER_FAMI,HER_SCIEN,HER_H,HER_COVE,PIC_FOLDER,WILD_ANI,BIOTOP_POT,UNUS_NOTE,GPS_LAT,GPS_LON,NEED_CONF,CONF_MOD,TEMP_YN,LANDUSE,GEOM,UFID,CHECKD";
-        query += ",MIN_TRE_H,MAX_TRE_H)";
+        query += ",MIN_TRE_H,MAX_TRE_H,MIN_TRE_BREA,MAX_TRE_BREA,MIN_STRE_H,MAX_STRE_H,MIN_STRE_BREAET,MAX_STRE_BREAET,MIN_SHR_HET,MAX_SHR_HET,MIN_HER_HET,MAX_HER_HET)";
 
         query += " values (";
         query += " '" + biotope_attribute.getGROP_ID() + "'";
@@ -447,6 +447,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + biotope_attribute.getCHECK() + "'";
         query += ", " + biotope_attribute.getMIN_TRE_H() + "";
         query += ", " + biotope_attribute.getMAX_TRE_H() + "";
+        query += ", " + biotope_attribute.getMIN_TRE_BREA() + "";
+        query += ", " + biotope_attribute.getMAX_TRE_BREA() + "";
+        query += ", " + biotope_attribute.getMIN_STRE_H() + "";
+        query += ", " + biotope_attribute.getMAX_STRE_H() + "";
+        query += ", " + biotope_attribute.getMIN_STRE_BREAET() + "";
+        query += ", " + biotope_attribute.getMAX_STRE_BREAET() + "";
+        query += ", " + biotope_attribute.getMIN_SHR_HET() + "";
+        query += ", " + biotope_attribute.getMAX_SHR_HET() + "";
+        query += ", " + biotope_attribute.getMIN_HER_HET() + "";
+        query += ", " + biotope_attribute.getMAX_HER_HET() + "";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -1341,6 +1351,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",TRE_H=" + biotope_attribute.getTRE_H() + ""
                 + ",MAX_TRE_H=" + biotope_attribute.getMAX_TRE_H() + ""
                 + ",MIN_TRE_H=" + biotope_attribute.getMIN_TRE_H() + ""
+                + ",MIN_TRE_BREA=" + biotope_attribute.getMIN_TRE_BREA() + ""
+                + ",MAX_TRE_BREA=" + biotope_attribute.getMAX_TRE_BREA() + ""
+                + ",MIN_STRE_H=" + biotope_attribute.getMIN_STRE_H() + ""
+                + ",MAX_STRE_H=" + biotope_attribute.getMAX_STRE_H() + ""
+                + ",MIN_STRE_BREAET=" + biotope_attribute.getMIN_STRE_BREAET() + ""
+                + ",MAX_STRE_BREAET=" + biotope_attribute.getMAX_STRE_BREAET() + ""
+                + ",MIN_SHR_HET=" + biotope_attribute.getMIN_SHR_HET() + ""
+                + ",MAX_SHR_HET=" + biotope_attribute.getMAX_SHR_HET() + ""
+                + ",MIN_HER_HET=" + biotope_attribute.getMIN_HER_HET() + ""
+                + ",MAX_HER_HET=" + biotope_attribute.getMAX_HER_HET() + ""
                 + ",TRE_BREA=" + biotope_attribute.getTRE_BREA() + ""
                 + ",TRE_COVE=" + biotope_attribute.getTRE_COVE() + ""
                 + ",STRE_SPEC='" + biotope_attribute.getSTRE_SPEC() + "'"

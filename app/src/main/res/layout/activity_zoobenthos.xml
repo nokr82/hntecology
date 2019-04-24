@@ -1032,6 +1032,25 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                >
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="개체수"/>
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:inputType="numberDecimal"
+                    android:id="@+id/cntET"
+                    style="@style/BiotopeTextView"
+                    android:gravity="center"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:orientation="horizontal"
                 >
 

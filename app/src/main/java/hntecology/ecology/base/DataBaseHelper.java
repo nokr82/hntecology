@@ -884,6 +884,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + Zoobenthos_Attribute.getCOORD_E_D() + "'";
         query += ", '" + Zoobenthos_Attribute.getCOORD_E_M() + "'";
         query += ", '" + Zoobenthos_Attribute.getCOORD_E_S() + "'";
+        query += ", '" + Zoobenthos_Attribute.getZOO_CNT() + "'";
         query += ", '" + Zoobenthos_Attribute.getINV_DT() + "'";
         query += ", '" + Zoobenthos_Attribute.getNUM() + "'";
         query += ", '" + Zoobenthos_Attribute.getINV_TM() + "'";
@@ -1570,6 +1571,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",COORD_E_D='" + Zoobenthos_Attribute.getCOORD_E_D() + "'"
                 + ",COORD_E_M='" + Zoobenthos_Attribute.getCOORD_E_M() + "'"
                 + ",COORD_E_S='" + Zoobenthos_Attribute.getCOORD_E_S() + "'"
+                + ",ZOO_CNT='" + Zoobenthos_Attribute.getZOO_CNT() + "'"
                 + ",INV_DT='" + Zoobenthos_Attribute.getINV_DT() + "'"
                 + ",NUM='" + Zoobenthos_Attribute.getNUM() + "'"
                 + ",INV_TM='" + Zoobenthos_Attribute.getINV_TM() + "'"
@@ -1860,6 +1862,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",COORD_E_D='" + Zoobenthos_Attribute.getCOORD_E_D() + "'"
                 + ",COORD_E_M='" + Zoobenthos_Attribute.getCOORD_E_M() + "'"
                 + ",COORD_E_S='" + Zoobenthos_Attribute.getCOORD_E_S() + "'"
+                + ",ZOO_CNT='" + Zoobenthos_Attribute.getZOO_CNT() + "'"
                 + ",WEATHER='" + Zoobenthos_Attribute.getWEATHER() + "'"
                 + ",WEATHER='" + Zoobenthos_Attribute.getWEATHER() + "'"
                 + ",INV_TOOL='" + Zoobenthos_Attribute.getINV_TOOL() + "'"

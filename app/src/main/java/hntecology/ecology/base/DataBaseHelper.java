@@ -385,7 +385,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,INV_INDEX,LU_GR_NUM,LU_TY_RATE,STAND_H,LC_GR_NUM,LC_TY,TY_MARK,GV_RATE,GV_STRUCT,DIS_RET,RESTOR_POT,COMP_INTA";
         query += ",VP_INTA,IMP_FORM,BREA_DIA,FIN_EST,TRE_SPEC,TRE_FAMI,TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_H,STRE_BREA,STRE_COVE,SHR_SPEC,SHR_FAMI";
         query += ",SHR_SCIEN,SHR_H,STR_COVE,HER_SPEC,HER_FAMI,HER_SCIEN,HER_H,HER_COVE,PIC_FOLDER,WILD_ANI,BIOTOP_POT,UNUS_NOTE,GPS_LAT,GPS_LON,NEED_CONF,CONF_MOD,TEMP_YN,LANDUSE,GEOM,UFID,CHECKD";
-        query += ",MIN_TRE_H,MAX_TRE_H,MIN_TRE_BREA,MAX_TRE_BREA,MIN_STRE_H,MAX_STRE_H,MIN_STRE_BREAET,MAX_STRE_BREAET,MIN_SHR_HET,MAX_SHR_HET,MIN_HER_HET,MAX_HER_HET)";
+        query += ",MIN_TRE_H,MAX_TRE_H,MIN_TRE_BREA,MAX_TRE_BREA,MIN_STRE_H,MAX_STRE_H,MIN_STRE_BREAET,MAX_STRE_BREAET,MIN_SHR_HET,MAX_SHR_HET,MIN_HER_HET,MAX_HER_HET,BIO_TYPE)";
 
         query += " values (";
         query += " '" + biotope_attribute.getGROP_ID() + "'";
@@ -457,6 +457,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", " + biotope_attribute.getMAX_SHR_HET() + "";
         query += ", " + biotope_attribute.getMIN_HER_HET() + "";
         query += ", " + biotope_attribute.getMAX_HER_HET() + "";
+        query += ", '" + biotope_attribute.getBIO_TYPE() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -1388,7 +1389,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",NEED_CONF='" + biotope_attribute.getNEED_CONF() + "'"
                 + ",CONF_MOD='" + biotope_attribute.getCONF_MOD() + "'"
                 + ",TEMP_YN='" + biotope_attribute.getTEMP_YN() + "'"
-                + ",LANDUSE='" + biotope_attribute.getLANDUSE() + "'"+
+                + ",LANDUSE='" + biotope_attribute.getLANDUSE() + "'"
+                + ",BIO_TYPE='" + biotope_attribute.getBIO_TYPE() + "'"+
                 "where id = '" + page + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);

@@ -2402,6 +2402,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             var MAX_SHR_HET = Utils.getString(layerInfo.metadata, "MAX_SHR_HET")
                                             var MIN_HER_HET = Utils.getString(layerInfo.metadata, "MIN_HER_HET")
                                             var MAX_HER_HET = Utils.getString(layerInfo.metadata, "MAX_HER_HET")
+                                            var BIO_TYPE = Utils.getString(layerInfo.metadata, "BIO_TYPE")
                                             var LC_TY = Utils.getString(layerInfo.metadata, "LC_TY")
                                             var TY_MARK = Utils.getString(layerInfo.metadata, "TY_MARK")
                                             var HER_SCIEN = Utils.getString(layerInfo.metadata, "HER_SCIEN")
@@ -2525,7 +2526,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                     STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                     BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", polygon.fillColor.toString(), geom,UFID,CHECK,
                                                     MAX_TRE_H.toFloat(),MIN_TRE_H.toFloat(),MIN_TRE_BREA.toFloat(),MAX_TRE_BREA.toFloat(),MIN_STRE_H.toFloat(),MAX_STRE_H.toFloat(),MIN_STRE_BREAET.toFloat(),MAX_STRE_BREAET.toFloat()
-                                                    ,MIN_SHR_HET.toFloat(),MAX_SHR_HET.toFloat(),MIN_HER_HET.toFloat(),MAX_HER_HET.toFloat())
+                                                    ,MIN_SHR_HET.toFloat(),MAX_SHR_HET.toFloat(),MIN_HER_HET.toFloat(),MAX_HER_HET.toFloat(), BIO_TYPE)
 
                                             if (landuse != null && landuse != "") {
                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
@@ -2839,7 +2840,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                             , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
                                                             , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55), data.getString(56), data.getString(57)
                                                             , data.getFloat(58), data.getFloat(59),data.getFloat(60),data.getFloat(61),data.getFloat(62),data.getFloat(63)
-                                                            ,data.getFloat(64),data.getFloat(65),data.getFloat(66),data.getFloat(67),data.getFloat(68),data.getFloat(69))
+                                                            ,data.getFloat(64),data.getFloat(65),data.getFloat(66),data.getFloat(67),data.getFloat(68),data.getFloat(69), data.getString(70))
                                                     biotopedataArray.add(biotope_attribute)
                                                     chkData = true
                                                 }
@@ -2912,6 +2913,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                             var TRE_BREA = Utils.getString(layerInfo.metadata, "TRE_BREA")
                                                             var FIN_EST = Utils.getString(layerInfo.metadata, "FIN_EST")
                                                             var VP_INTA = Utils.getString(layerInfo.metadata, "VP_INTA")
+                                                            var BIO_TYPE = Utils.getString(layerInfo.metadata, "BIO_TYPE")
                                                             var HER_FAMI = Utils.getString(layerInfo.metadata, "HER_FAMI")
                                                             var INV_INDEX = Utils.getString(layerInfo.metadata, "INV_INDEX")
                                                             var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
@@ -2998,7 +3000,8 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                                     STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                                     BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom,UFID,CHECK
                                                                     , MIN_TRE_H.toFloat(), MAX_TRE_H.toFloat() , MIN_TRE_BREA.toFloat(), MAX_TRE_BREA.toFloat() , MIN_STRE_H.toFloat(), MAX_STRE_H.toFloat()
-                                                                    , MIN_STRE_BREAET.toFloat(), MAX_STRE_BREAET.toFloat() , MIN_SHR_HET.toFloat(), MAX_SHR_HET.toFloat() , MIN_HER_HET.toFloat(), MAX_HER_HET.toFloat())
+                                                                    , MIN_STRE_BREAET.toFloat(), MAX_STRE_BREAET.toFloat() , MIN_SHR_HET.toFloat(), MAX_SHR_HET.toFloat()
+                                                                    , MIN_HER_HET.toFloat(), MAX_HER_HET.toFloat(),BIO_TYPE)
 
                                                             if (LANDUSE != null && LANDUSE != "") {
                                                                 data.LANDUSE = LANDUSE
@@ -3266,7 +3269,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
                                             , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55),data.getString(56),data.getString(57)
                                             , data.getFloat(58), data.getFloat(59),data.getFloat(60),data.getFloat(61),data.getFloat(62),data.getFloat(63)
-                                            ,data.getFloat(64),data.getFloat(65),data.getFloat(66),data.getFloat(67),data.getFloat(68),data.getFloat(69)
+                                            ,data.getFloat(64),data.getFloat(65),data.getFloat(66),data.getFloat(67),data.getFloat(68),data.getFloat(69),data.getString(70)
                                     )
                                     biotopedataArray.add(biotope_attribute)
                                 }
@@ -3296,6 +3299,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             var MAX_TRE_BREA = Utils.getString(layerInfo.metadata, "MAX_TRE_BREA")
                                             var MIN_STRE_H = Utils.getString(layerInfo.metadata, "MIN_STRE_H")
                                             var MAX_STRE_H = Utils.getString(layerInfo.metadata, "MAX_STRE_H")
+                                            var BIO_TYPE = Utils.getString(layerInfo.metadata, "BIO_TYPE")
                                             var MIN_STRE_BREAET = Utils.getString(layerInfo.metadata, "MIN_STRE_BREAET")
                                             var MAX_STRE_BREAET = Utils.getString(layerInfo.metadata, "MAX_STRE_BREAET")
                                             var MIN_SHR_HET = Utils.getString(layerInfo.metadata, "MIN_SHR_HET")
@@ -3428,7 +3432,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                     STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                     BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom,UFID,CHECK, MIN_TRE_H.toFloat(), MAX_TRE_H.toFloat()
                                                     , MIN_TRE_BREA.toFloat(), MAX_TRE_BREA.toFloat(), MIN_STRE_H.toFloat(), MAX_STRE_H.toFloat(), MIN_STRE_BREAET.toFloat(), MAX_STRE_BREAET.toFloat(), MIN_SHR_HET.toFloat(), MAX_SHR_HET.toFloat()
-                                                    , MIN_HER_HET.toFloat(), MAX_HER_HET.toFloat())
+                                                    , MIN_HER_HET.toFloat(), MAX_HER_HET.toFloat(),BIO_TYPE)
 
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
@@ -3741,7 +3745,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
                                             , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55), data.getString(56),data.getString(57)
                                             , data.getFloat(58), data.getFloat(59),data.getFloat(60),data.getFloat(61),data.getFloat(62),data.getFloat(63)
-                                            ,data.getFloat(64),data.getFloat(65),data.getFloat(66),data.getFloat(67),data.getFloat(68),data.getFloat(69))
+                                            ,data.getFloat(64),data.getFloat(65),data.getFloat(66),data.getFloat(67),data.getFloat(68),data.getFloat(69),data.getString(70))
                                     biotopedataArray.add(biotope_attribute)
                                 }
 
@@ -3770,6 +3774,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                             var MAX_TRE_BREA = Utils.getString(layerInfo.metadata, "MAX_TRE_BREA")
                                             var MIN_STRE_H = Utils.getString(layerInfo.metadata, "MIN_STRE_H")
                                             var MAX_STRE_H = Utils.getString(layerInfo.metadata, "MAX_STRE_H")
+                                            var BIO_TYPE = Utils.getString(layerInfo.metadata, "BIO_TYPE")
                                             var MIN_STRE_BREAET = Utils.getString(layerInfo.metadata, "MIN_STRE_BREAET")
                                             var MAX_STRE_BREAET = Utils.getString(layerInfo.metadata, "MAX_STRE_BREAET")
                                             var MIN_SHR_HET = Utils.getString(layerInfo.metadata, "MIN_SHR_HET")
@@ -3901,7 +3906,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                                                     STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                     BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom,UFID,CHECK, MIN_TRE_H.toFloat(), MAX_TRE_H.toFloat()
                                                     , MIN_TRE_BREA.toFloat(), MAX_TRE_BREA.toFloat(), MIN_STRE_H.toFloat(), MAX_STRE_H.toFloat(), MIN_STRE_BREAET.toFloat(), MAX_STRE_BREAET.toFloat(), MIN_SHR_HET.toFloat(), MAX_SHR_HET.toFloat()
-                                                    , MIN_HER_HET.toFloat(), MAX_HER_HET.toFloat())
+                                                    , MIN_HER_HET.toFloat(), MAX_HER_HET.toFloat(),BIO_TYPE)
 
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
@@ -6139,7 +6144,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     , biotopedata.getFloat(43), biotopedata.getFloat(44), biotopedata.getString(45), biotopedata.getString(46), biotopedata.getString(47), biotopedata.getString(48), biotopedata.getDouble(49)
                     , biotopedata.getDouble(50), biotopedata.getString(51), biotopedata.getString(52), biotopedata.getString(53), biotopedata.getString(54), biotopedata.getString(55),biotopedata.getString(56),biotopedata.getString(57)
                     ,biotopedata.getFloat(58),biotopedata.getFloat(59),biotopedata.getFloat(60),biotopedata.getFloat(61),biotopedata.getFloat(62),biotopedata.getFloat(63)
-                    ,biotopedata.getFloat(64),biotopedata.getFloat(65),biotopedata.getFloat(66),biotopedata.getFloat(67),biotopedata.getFloat(68),biotopedata.getFloat(69))
+                    ,biotopedata.getFloat(64),biotopedata.getFloat(65),biotopedata.getFloat(66),biotopedata.getFloat(67),biotopedata.getFloat(68),biotopedata.getFloat(69),biotopedata.getString(70))
 
             biotopeDatas.add(biotope_attribute)
         }
@@ -6196,6 +6201,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 //                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("BREA_DIA", ogr.OFTString, biotope_attribute.BREA_DIA))
 //                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("FIN_EST", ogr.OFTString, biotope_attribute.FIN_EST))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SPEC", ogr.OFTString, biotope_attribute.TRE_SPEC))
+                    BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("BIO_TYPE", ogr.OFTString, biotope_attribute.BIO_TYPE))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_FAMI", ogr.OFTString, biotope_attribute.TRE_FAMI))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SCIEN", ogr.OFTString, biotope_attribute.TRE_SCIEN))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_H", ogr.OFTString, biotope_attribute.TRE_H.toString()))
@@ -6273,6 +6279,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 //                                BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("ID", ogr.OFTString, biotope_attribute.id))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, biotope_attribute.GROP_ID))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, biotope_attribute.PRJ_NAME))
+                            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("BIO_TYPE", ogr.OFTString, biotope_attribute.BIO_TYPE))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, biotope_attribute.INV_REGION))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, biotope_attribute.INV_PERSON))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, biotope_attribute.INV_DT))

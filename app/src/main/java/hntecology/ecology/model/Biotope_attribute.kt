@@ -13,7 +13,7 @@ class Biotope_attribute(var id:String?, var GROP_ID:String? ,var PRJ_NAME:String
                         var CONF_MOD:String? ,var TEMP_YN:String?,var LANDUSE:String?,var GEOM:String?,var UFID:String?,var CHECK:String?
                         , var MIN_TRE_H:Float?, var MAX_TRE_H:Float?, var MIN_TRE_BREA:Float?, var MAX_TRE_BREA:Float?, var MIN_STRE_H:Float?, var MAX_STRE_H:Float?
                         , var MIN_STRE_BREAET:Float?, var MAX_STRE_BREAET:Float?, var MIN_SHR_HET:Float?, var MAX_SHR_HET:Float?
-                        , var MIN_HER_HET:Float?, var MAX_HER_HET:Float?) :Serializable {
+                        , var MIN_HER_HET:Float?, var MAX_HER_HET:Float?,var BIO_TYPE:String?) :Serializable {
 }
 
 

@@ -42,6 +42,8 @@ import hntecology.ecology.base.Utils
 import hntecology.ecology.model.*
 import hntecology.ecology.model.Number
 import kotlinx.android.synthetic.main.activity_biotope.*
+import kotlinx.android.synthetic.main.activity_biotope.btnPIC_FOLDER
+import kotlinx.android.synthetic.main.activity_biotope.etPIC_FOLDERET
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -61,7 +63,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
     private val FASTEST_INTERVAL: Long = 2000 /* 2 sec */
 
     var geom = ""
-
+    private val SET_DATA = 1000
     val SET_DATA1 = 1;
     val SET_DATA2 = 2
     val SET_DATA3 = 3
@@ -83,7 +85,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
     private var imageUri: Uri? = null
     private val FROM_CAMERA = 100
     private val FROM_ALBUM = 101
-
     private var context: Context? = null
 
     var images_path: ArrayList<String>? = null
@@ -720,12 +721,11 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 //        }
 
         bioBT.setOnClickListener {
-            val intent = Intent(this, DlgCommonActivity::class.java)
-            intent.putExtra("title", "비오톱유형 분류기준")
-            intent.putExtra("table", "biotopeM")
-            intent.putExtra("DlgHeight", 450f);
-//            startActivity(intent)
-            startActivityForResult(intent, SET_DATA1);
+            val intent = Intent(this, DlgBiotopeTypeActivity::class.java)
+            intent.putExtra("title", "비오톱유형 분류")
+            intent.putExtra("table", "biotopeType")
+            intent.putExtra("DlgHeight", 600f);
+            startActivityForResult(intent, SET_DATA);
         }
 
         //토지이용현황 분류 버튼  높이 450f
@@ -874,7 +874,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                 , null, null, null, null, null, null, null
                                 , null, null, null, null, null, null, null, null
                                 , null, null, null, null, null, null, null, null,null,null,null,null
-                                ,null,null  ,null,null  ,null,null  ,null,null  ,null,null  ,null,null)
+                                ,null,null  ,null,null  ,null,null  ,null,null
+                                ,null,null  ,null,null)
 
                         keyId = intent.getStringExtra("GROP_ID")
 
@@ -2393,8 +2394,20 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         var number: Number
 
+        var biotopeType : BiotopeType
+
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
+
+                SET_DATA -> {
+
+                    if(data!!.getSerializableExtra("biotopeType") != null){
+                        biotopeType = data!!.getSerializableExtra("biotopeType") as BiotopeType
+                        bioTV.setText(biotopeType.CONTENT)
+                    }
+
+                }
+
                 SET_DATA1 -> {
 
                     biotopeModel = data!!.getSerializableExtra("bioModel") as BiotopeModel
@@ -2405,7 +2418,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
 //                        TVLU_GR_NumTV.setText(biotopeModel.code)
 //                        var substring = biotopeModel.code!!.substring(0, 1)
-
                        TVLU_GR_NumTV.setText(biotopeModel.code+"("+biotopeModel.name+")")
 //                        TVLU_GR_NumTV.setText(substring)
                         if (TVLU_GR_NumTV.text == null) {

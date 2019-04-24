@@ -224,7 +224,7 @@
                     android:id="@+id/mamtemperatureET"
                     style="@style/BiotopeTextView"
                     android:gravity="center"
-                    android:inputType="numberSigned"
+                    android:inputType="numberSigned|numberDecimal"
                     />
                 <EditText
                     android:layout_width="0dp"
@@ -431,7 +431,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:id="@+id/mamindicntET"
                     style="@style/BiotopeTextView"
                     android:gravity="center"
@@ -571,7 +571,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:maxLength="7"/>
+                        android:maxLength="9"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -582,7 +582,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:maxLength="8"/>
+                        android:maxLength="10"/>
 
                 </LinearLayout>
             </LinearLayout>

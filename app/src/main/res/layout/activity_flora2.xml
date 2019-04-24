@@ -24,7 +24,7 @@
                 android:textColor="#333333"
                 android:textSize="20.2sp"
                 android:textStyle="bold"
-                android:text="식생조사 위치 조사표"
+                android:text="식물군집구조 조사표"
                 style="@style/BiotopeTextView"
                 android:gravity="center"
                 />
@@ -428,7 +428,7 @@
                                     android:layout_weight="2"
                                     android:maxLength="10"
                                     android:gravity="center"
-                                    android:inputType="number"
+                                    android:inputType="numberDecimal"
                                     style="@style/BiotopeEditText"
                                     />
 
@@ -760,7 +760,7 @@
                             android:layout_weight="2"
                             android:maxLength="10"
                             android:gravity="center"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             style="@style/BiotopeEditText"
                             />
 
@@ -1116,7 +1116,7 @@
                             android:layout_weight="2"
                             android:maxLength="10"
                             android:gravity="center"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             style="@style/BiotopeEditText"
                             />
 
@@ -1473,7 +1473,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:maxLength="7"/>
+                        android:maxLength="9"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -1484,7 +1484,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:maxLength="8"/>
+                        android:maxLength="10"/>
 
                 </LinearLayout>
 

@@ -319,7 +319,7 @@
                     android:id="@+id/btn_flora2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="식생조사 위치 추가"
+                    android:text="식물군집구조 추가"
                     android:background="@drawable/bg_rnd_30919191"
                     android:layout_margin="3dp" />
 

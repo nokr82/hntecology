@@ -241,7 +241,9 @@ class DlgResearchActivity : Activity() {
                     , biotopedata.getString(29), biotopedata.getString(30), biotopedata.getString(31), biotopedata.getFloat(32), biotopedata.getFloat(33), biotopedata.getFloat(34), biotopedata.getString(35)
                     , biotopedata.getString(36), biotopedata.getString(37), biotopedata.getFloat(38), biotopedata.getFloat(39), biotopedata.getString(40), biotopedata.getString(41), biotopedata.getString(42)
                     , biotopedata.getFloat(43), biotopedata.getFloat(44), biotopedata.getString(45), biotopedata.getString(46), biotopedata.getString(47), biotopedata.getString(48), biotopedata.getDouble(49)
-                    , biotopedata.getDouble(50), biotopedata.getString(51), biotopedata.getString(52), biotopedata.getString(53), biotopedata.getString(54), biotopedata.getString(55), biotopedata.getString(56), biotopedata.getString(57))
+                    , biotopedata.getDouble(50), biotopedata.getString(51), biotopedata.getString(52), biotopedata.getString(53), biotopedata.getString(54), biotopedata.getString(55), biotopedata.getString(56), biotopedata.getString(57)
+                    , biotopedata.getFloat(58), biotopedata.getFloat(59),biotopedata.getFloat(60),biotopedata.getFloat(61),biotopedata.getFloat(62),biotopedata.getFloat(63)
+                    ,biotopedata.getFloat(64),biotopedata.getFloat(65),biotopedata.getFloat(66),biotopedata.getFloat(67),biotopedata.getFloat(68),biotopedata.getFloat(69), biotopedata.getString(70))
             val tmpfiles =  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images"+ File.separator +biotope_attribute.GROP_ID+ File.separator)
             var tmpfileList = tmpfiles.listFiles()
             var PICTURE_YN = "없음"
@@ -459,12 +461,12 @@ class DlgResearchActivity : Activity() {
         while (data.moveToNext()) {
 
             var zoo: Zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                    data.getInt(8), data.getInt(9), data.getInt(10), data.getInt(11), data.getInt(12), data.getString(13), data.getString(14)
+                    data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getInt(20), data.getInt(21), data.getInt(22)
                     , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
                     , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
                     , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50), data.getString(51), data.getString(52), data.getString(53)
-                    , data.getString(54), data.getString(55), data.getString(56))
+                    , data.getString(54), data.getString(55), data.getString(56), data.getInt(57))
 
             val tmpfiles =  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images"+ File.separator +zoo.GROP_ID+ File.separator)
             var tmpfileList = tmpfiles.listFiles()

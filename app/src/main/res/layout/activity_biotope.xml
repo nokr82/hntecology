@@ -47,7 +47,7 @@
                         android:layout_weight="1"
                         android:id="@+id/etGPS_LATTV"
                         android:gravity="center"
-                        android:maxLength="7"
+                        android:maxLength="9"
                         style="@style/BiotopeTextViewDisabled"
                         />
                     <TextView
@@ -63,7 +63,7 @@
                         android:layout_weight="1"
                         android:id="@+id/etGPS_LONTV"
                         android:gravity="center"
-                        android:maxLength="8"
+                        android:maxLength="10"
                         style="@style/BiotopeTextViewDisabled"
                         />
 
@@ -281,7 +281,6 @@
                         />
 
                 </LinearLayout>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -1014,16 +1013,62 @@
                                         style="@style/BiotopeTextView"
                                         />
 
-                                    <EditText
-                                        android:layout_width="0dp"
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:layout_weight="2"
-                                        android:inputType="numberDecimal"
-                                        android:maxLength="10"
-                                        android:id="@+id/etTRE_HET"
-                                        android:gravity="center"
-                                        style="@style/BiotopeEditText"
-                                        />
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            android:gravity="center_vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="최소:"/>
+
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:inputType="numberDecimal"
+                                            android:maxLength="10"
+                                            android:id="@+id/minET"
+                                            android:gravity="center_vertical"
+                                            style="@style/BiotopeEditText"
+                                            />
+                                        <TextView
+                                            android:gravity="center_vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="평균:"/>
+
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:inputType="numberDecimal"
+                                            android:maxLength="10"
+                                            android:id="@+id/etTRE_HET"
+                                            android:gravity="center_vertical"
+                                            style="@style/BiotopeEditText"
+                                            />
+                                        <TextView
+                                            android:gravity="center_vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="최대:"/>
+
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:inputType="numberDecimal"
+                                            android:maxLength="10"
+                                            android:id="@+id/maxET"
+                                            android:gravity="center_vertical"
+                                            style="@style/BiotopeEditText"
+                                            />
+
+
+
+                                    </LinearLayout>
 
                                 </LinearLayout>
                                 <LinearLayout
@@ -1039,17 +1084,62 @@
                                         android:text="흉고직경(m)"
                                         style="@style/BiotopeTextView"
                                         />
-
-                                    <EditText
-                                        android:layout_width="0dp"
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:layout_weight="2"
-                                        android:inputType="numberDecimal"
-                                        android:maxLength="10"
-                                        android:id="@+id/etTRE_BREAET"
-                                        android:gravity="center"
-                                        style="@style/BiotopeEditText"
-                                        />
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            android:gravity="center_vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="최소:"/>
+
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:inputType="numberDecimal"
+                                            android:maxLength="10"
+                                            android:id="@+id/min2ET"
+                                            android:gravity="center_vertical"
+                                            style="@style/BiotopeEditText"
+                                            />
+                                        <TextView
+                                            android:gravity="center_vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="평균:"/>
+
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:inputType="numberDecimal"
+                                            android:maxLength="10"
+                                            android:id="@+id/etTRE_BREAET"
+                                            android:gravity="center_vertical"
+                                            style="@style/BiotopeEditText"
+                                            />
+                                        <TextView
+                                            android:gravity="center_vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="최대:"/>
+
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:inputType="numberDecimal"
+                                            android:maxLength="10"
+                                            android:id="@+id/max2ET"
+                                            android:gravity="center_vertical"
+                                            style="@style/BiotopeEditText"
+                                            />
+
+
+
+                                    </LinearLayout>
 
                                 </LinearLayout>
                                 <LinearLayout
@@ -1220,16 +1310,62 @@
                                         style="@style/BiotopeTextView"
                                         />
 
-                                    <EditText
-                                        android:layout_width="0dp"
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:layout_weight="2"
-                                        android:inputType="numberDecimal"
-                                        android:maxLength="10"
-                                        android:gravity="center"
-                                        android:id="@+id/etSTRE_HET"
-                                        style="@style/BiotopeEditText"
-                                        />
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            android:gravity="center_vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="최소:"/>
+
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:inputType="numberDecimal"
+                                            android:maxLength="10"
+                                            android:id="@+id/min3ET"
+                                            android:gravity="center_vertical"
+                                            style="@style/BiotopeEditText"
+                                            />
+                                        <TextView
+                                            android:gravity="center_vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="평균:"/>
+
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:inputType="numberDecimal"
+                                            android:maxLength="10"
+                                            android:id="@+id/etSTRE_HET"
+                                            android:gravity="center_vertical"
+                                            style="@style/BiotopeEditText"
+                                            />
+                                        <TextView
+                                            android:gravity="center_vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="최대:"/>
+
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:inputType="numberDecimal"
+                                            android:maxLength="10"
+                                            android:id="@+id/max3ET"
+                                            android:gravity="center_vertical"
+                                            style="@style/BiotopeEditText"
+                                            />
+
+
+
+                                    </LinearLayout>
 
                                 </LinearLayout>
                                 <LinearLayout
@@ -1246,16 +1382,63 @@
                                         style="@style/BiotopeTextView"
                                         />
 
-                                    <EditText
-                                        android:layout_width="0dp"
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:layout_weight="2"
-                                        android:inputType="numberDecimal"
-                                        android:maxLength="10"
-                                        android:gravity="center"
-                                        android:id="@+id/etSTRE_BREAET"
-                                        style="@style/BiotopeEditText"
-                                        />
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            android:gravity="center_vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="최소:"/>
+
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:inputType="numberDecimal"
+                                            android:maxLength="10"
+                                            android:id="@+id/min4ET"
+                                            android:gravity="center_vertical"
+                                            style="@style/BiotopeEditText"
+                                            />
+                                        <TextView
+                                            android:gravity="center_vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="평균:"/>
+
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:inputType="numberDecimal"
+                                            android:maxLength="10"
+                                            android:id="@+id/etSTRE_BREAET"
+                                            android:gravity="center_vertical"
+                                            style="@style/BiotopeEditText"
+                                            />
+                                        <TextView
+                                            android:gravity="center_vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="최대:"/>
+
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:inputType="numberDecimal"
+                                            android:maxLength="10"
+                                            android:id="@+id/max4ET"
+                                            android:gravity="center_vertical"
+                                            style="@style/BiotopeEditText"
+                                            />
+
+
+
+                                    </LinearLayout>
 
                                 </LinearLayout>
                                 <LinearLayout
@@ -1422,16 +1605,63 @@
                                         style="@style/BiotopeTextView"
                                         />
 
-                                    <EditText
-                                        android:layout_width="0dp"
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:layout_weight="2"
-                                        android:inputType="numberDecimal"
-                                        android:maxLength="10"
-                                        android:gravity="center"
-                                        android:id="@+id/etSHR_HET"
-                                        style="@style/BiotopeEditText"
-                                        />
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            android:gravity="center_vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="최소:"/>
+
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:inputType="numberDecimal"
+                                            android:maxLength="10"
+                                            android:id="@+id/min5ET"
+                                            android:gravity="center_vertical"
+                                            style="@style/BiotopeEditText"
+                                            />
+                                        <TextView
+                                            android:gravity="center_vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="평균:"/>
+
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:inputType="numberDecimal"
+                                            android:maxLength="10"
+                                            android:id="@+id/etSHR_HET"
+                                            android:gravity="center_vertical"
+                                            style="@style/BiotopeEditText"
+                                            />
+                                        <TextView
+                                            android:gravity="center_vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="최대:"/>
+
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:inputType="numberDecimal"
+                                            android:maxLength="10"
+                                            android:id="@+id/max5ET"
+                                            android:gravity="center_vertical"
+                                            style="@style/BiotopeEditText"
+                                            />
+
+
+
+                                    </LinearLayout>
 
                                 </LinearLayout>
 
@@ -1613,16 +1843,62 @@
                                         style="@style/BiotopeTextView"
                                         />
 
-                                    <EditText
-                                        android:layout_width="0dp"
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:layout_weight="2"
-                                        android:inputType="numberDecimal"
-                                        android:maxLength="10"
-                                        android:id="@+id/etHER_HET"
-                                        android:gravity="center"
-                                        style="@style/BiotopeEditText"
-                                        />
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            android:gravity="center_vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="최소:"/>
+
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:inputType="numberDecimal"
+                                            android:maxLength="10"
+                                            android:id="@+id/max6ET"
+                                            android:gravity="center_vertical"
+                                            style="@style/BiotopeEditText"
+                                            />
+                                        <TextView
+                                            android:gravity="center_vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="평균:"/>
+
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:inputType="numberDecimal"
+                                            android:maxLength="10"
+                                            android:id="@+id/etHER_HET"
+                                            android:gravity="center_vertical"
+                                            style="@style/BiotopeEditText"
+                                            />
+                                        <TextView
+                                            android:gravity="center_vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="최대:"/>
+
+                                        <EditText
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:inputType="numberDecimal"
+                                            android:maxLength="10"
+                                            android:id="@+id/min6ET"
+                                            android:gravity="center_vertical"
+                                            style="@style/BiotopeEditText"
+                                            />
+
+
+
+                                    </LinearLayout>
 
                                 </LinearLayout>
 
@@ -1664,6 +1940,42 @@
 
             </LinearLayout>
         </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:layout_width="250dp"
+                        android:layout_height="match_parent"
+                        android:text="비오톱 유형 분류 기호"
+                        style="@style/BiotopeTextView"
+                        />
+
+                    <TextView
+                        android:id="@+id/bioTV"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        style="@style/BiotopeTextViewDisabled"
+                        />
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        />
+                    <Button
+                        android:id="@+id/bioBT"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="유형 분류기호"
+                        style="@style/dlgcommonButton"
+                        />
+
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="150dp"

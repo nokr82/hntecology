@@ -36,6 +36,7 @@ import com.google.android.gms.maps.model.*
 import com.google.maps.android.SphericalUtil
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
+import hntecology.ecology.base.PolygonUtils
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.*
@@ -229,6 +230,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
     var getColor = ""
 
     var polyLines: ArrayList<Polyline> = ArrayList<Polyline>()
+    var labelMarkers: ArrayList<Marker> = ArrayList<Marker>()
 
     var CALENDAR = 5000
 
@@ -4474,12 +4476,17 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
 
                 // println("geoms[0] : ${geoms[0]}")
 
-                val polygon = googleMap.addPolygon(geoms[0] as PolygonOptions)
+                val polygonOptions = geoms[0] as PolygonOptions
+                val polygon = googleMap.addPolygon(polygonOptions)
                 polygon.zIndex = 0.0f
+
+                // label
+                val labelMarker = PolygonUtils.drawTextOnPolygon(context, "가나다라마", polygonOptions, googleMap)
+                labelMarkers.add(labelMarker)
 
                 // println("layerName .layer ===== $layerName")
 
-                var layerInfo = LayerInfo()
+                val layerInfo = LayerInfo()
 
                 currentLayer = LAYER_BIOTOPE
                 if (typeST.isChecked) {
@@ -4490,7 +4497,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                 layerInfo.layer = currentLayer
                 layerInfo.metadata = metadata
 
-                if (type.equals("nothing")) {
+                if (type == "nothing") {
                     layerInfo.layer = NOTHING
                 }
 
@@ -4512,11 +4519,11 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     layerInfo.layer = LAYER_BIOTOPE
                 }
 
-                if (type.equals("birds")) {
+                if (type == "birds") {
                     layerInfo.layer = LAYER_BIRDS
                 }
 
-                if (type.equals("reptilia")) {
+                if (type == "reptilia") {
                     layerInfo.layer = LAYER_REPTILIA
                 }
 
@@ -4940,9 +4947,7 @@ public class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.On
                     polygon.fillColor = Color.TRANSPARENT
                     polygon.strokeColor = Color.parseColor("#d06400")
                     polygon.strokeWidth = 5.0f
-                }
-
-                if(type != "lsmd") {
+                } else {
                     polygons.add(polygon)
                 }
 

@@ -47,7 +47,7 @@
                         android:layout_weight="1"
                         android:id="@+id/etGPS_LATTV"
                         android:gravity="center"
-                        android:maxLength="7"
+                        android:maxLength="9"
                         style="@style/BiotopeTextViewDisabled"
                         />
                     <TextView
@@ -63,7 +63,7 @@
                         android:layout_weight="1"
                         android:id="@+id/etGPS_LONTV"
                         android:gravity="center"
-                        android:maxLength="8"
+                        android:maxLength="10"
                         style="@style/BiotopeTextViewDisabled"
                         />
 
@@ -281,7 +281,115 @@
                         />
 
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        style="@style/BiotopeTextView"
+                        android:text="좌표"/>
+                    <TextView
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        style="@style/BiotopeTextView"
+                        android:text="N"/>
 
+                    <TextView
+                        android:id="@+id/coordndET"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        style="@style/BiotopeTextView"
+                        android:inputType="numberDecimal"
+                        />
+                    <TextView
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        style="@style/BiotopeTextView"
+                        android:text="°"/>
+                    <TextView
+                        android:id="@+id/coordnmET"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:inputType="numberDecimal"
+                        style="@style/BiotopeTextView"
+                        />
+                    <TextView
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        style="@style/BiotopeTextView"
+                        android:text="′"/>
+                    <TextView
+                        android:id="@+id/coordnsET"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:inputType="numberDecimal"
+                        style="@style/BiotopeTextView"
+                        />
+                    <TextView
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        style="@style/BiotopeTextView"
+                        android:text="″"/>
+
+                    <TextView
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        style="@style/BiotopeTextView"
+                        android:text="E"/>
+
+                    <TextView
+                        android:id="@+id/coordedET"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:inputType="numberDecimal"
+                        style="@style/BiotopeTextView"
+                        />
+                    <TextView
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        style="@style/BiotopeTextView"
+                        android:text="°"/>
+                    <TextView
+                        android:id="@+id/coordemET"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        style="@style/BiotopeTextView"
+                        android:inputType="numberDecimal"
+                        />
+                    <TextView
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        style="@style/BiotopeTextView"
+                        android:text="′"/>
+                    <TextView
+                        android:id="@+id/coordesET"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        style="@style/BiotopeTextView"
+                        android:inputType="numberDecimal"
+                        />
+                    <TextView
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        style="@style/BiotopeTextView"
+                        android:text="″"/>
+
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

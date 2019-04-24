@@ -224,6 +224,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:maxLength="5"
                     android:gravity="center"
                     android:inputType="numberDecimal"
                     style="@style/BiotopeTextView"
@@ -1283,7 +1284,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:maxLength="7"/>
+                        android:maxLength="9"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -1294,7 +1295,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:maxLength="8"/>
+                        android:maxLength="10"/>
 
                 </LinearLayout>
 

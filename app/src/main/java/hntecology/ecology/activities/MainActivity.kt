@@ -134,7 +134,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     // private var getTrackingPoints = ArrayList<Marker>()
 
     private var start = true
-
     var latitude: Double = 37.39627
     var longitude: Double = 126.79235
 
@@ -237,6 +236,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     var toastmessage = ""
 
+    var visible_donum = -1
+
     internal var loadDataHandler: Handler = object : Handler() {
         override fun handleMessage(msg: android.os.Message) {
 //            initGps()
@@ -317,6 +318,74 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             startActivityForResult(intent, REQUEST_LAYER)
 
         }
+        visibleBT.setOnClickListener {
+            if (visible_donum==-1) {
+                visibleBT.text = "도형번호 삭제"
+                visible_donum = 1
+            }else{
+                visibleBT.text = "도형번호 보기"
+                visible_donum=-1
+            }
+
+            for (point in points) {
+                point.remove()
+            }
+
+            points?.clear()
+            googleMap.clear()
+
+            val dataList: Array<String> = arrayOf("file_name", "layer_name", "min_scale", "max_scale", "type", "added", "grop_id");
+
+            var datas: ArrayList<LayerModel> = ArrayList<LayerModel>()
+
+            val zoom = googleMap.cameraPosition.zoom
+
+            println("zoom ${zoom.toInt()}, layersDatas : ${layersDatas.size}")
+
+            var chkData = false
+
+
+            if (layersDatas != null) {
+
+                for (i in 0..layersDatas.size - 1) {
+
+
+                    var layerdata = db!!.query("layers", dataList, "grop_id = '${layersDatas.get(i).grop_id}' and min_scale <= '${zoom.toInt()}' and max_scale >= '${zoom.toInt() + 1}'", null, null, null, null, null)
+
+                    while (layerdata.moveToNext()) {
+                        chkData = true
+
+                        val layerModel = LayerModel(layerdata.getString(0), layerdata.getString(1), layerdata.getInt(2), layerdata.getInt(3), layerdata.getString(4), layerdata.getString(5), layerdata.getString(6), false);
+
+                        datas.add(layerModel)
+                    }
+
+                    layerdata.close()
+                }
+
+                if (chkData) {
+                    layersDatas.clear()
+
+                    transparentSB.progress = 255
+
+                    runOnUiThread(Runnable {
+                        for (i in 0..datas.size - 1) {
+                            layersDatas.add(datas.get(i))
+                            loadLayer(layersDatas.get(i).file_name, layersDatas.get(i).layer_name, layersDatas.get(i).type, layersDatas.get(i).added)
+                        }
+                    })
+                }
+
+                datas.clear()
+
+            }
+
+
+
+
+
+        }
+
 
         //식생조사 추가
         btn_stokemap.setOnClickListener {
@@ -4542,19 +4611,36 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             val metadataP = geoms[1] as String
             val metadata = JSONObject(metadataP)
 
-//             println("$metadata--------------------")
+            Log.d("메타2",metadata.toString())
+
+
+            var do_num = Utils.getString(metadata,"UFID")
+
+            Log.d("메타3",do_num)
 
             if (geoms[0] is PolygonOptions) {
 
-                // println("geoms[0] : ${geoms[0]}")
 
                 val polygonOptions = geoms[0] as PolygonOptions
                 val polygon = googleMap.addPolygon(polygonOptions)
                 polygon.zIndex = 0.0f
 
                 // label
-                val labelMarker = PolygonUtils.drawTextOnPolygon(context, "가나다라마", polygonOptions, googleMap)
-                labelMarkers.add(labelMarker)
+                if (do_num==""){
+                    do_num = Utils.getString(metadata,"EMD_CD")
+                }
+
+
+                var labelMarker = PolygonUtils.drawTextOnPolygon(context, do_num, polygonOptions, googleMap)
+
+                if (visible_donum == -1){
+                    labelMarker.isVisible = false
+                }else{
+                    labelMarker.isVisible = true
+                }
+
+
+                labelMarkers.add(labelMarker!!)
 
                 // println("layerName .layer ===== $layerName")
 

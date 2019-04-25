@@ -884,7 +884,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + Zoobenthos_Attribute.getCOORD_E_D() + "'";
         query += ", '" + Zoobenthos_Attribute.getCOORD_E_M() + "'";
         query += ", '" + Zoobenthos_Attribute.getCOORD_E_S() + "'";
-        query += ", '" + Zoobenthos_Attribute.getZOO_CNT() + "'";
         query += ", '" + Zoobenthos_Attribute.getINV_DT() + "'";
         query += ", '" + Zoobenthos_Attribute.getNUM() + "'";
         query += ", '" + Zoobenthos_Attribute.getINV_TM() + "'";
@@ -929,6 +928,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + Zoobenthos_Attribute.getTEMP_YN() + "'";
         query += ", '" + Zoobenthos_Attribute.getCONF_MOD() + "'";
         query += ", '" + Zoobenthos_Attribute.getGEOM() + "'";
+        query += "," + Zoobenthos_Attribute.getZOO_CNT() + "";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();

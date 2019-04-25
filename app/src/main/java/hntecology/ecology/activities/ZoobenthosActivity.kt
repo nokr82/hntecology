@@ -22,6 +22,7 @@ import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -245,7 +246,20 @@ class ZoobenthosActivity : Activity() {
 
             lat = base.GPS_LAT!!
             log = base.GPS_LON!!
+            try {
+                var geocoder:Geocoder = Geocoder(context);
 
+                var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+
+                if(list.size > 0){
+                    System.out.println("list : " + list);
+
+//                    fishinvregionET.setText(list.get(0).getAddressLine(0));
+                    INV_REGION = list.get(0).getAddressLine(0)
+                }
+            } catch (e:IOException) {
+                e.printStackTrace();
+            }
         }
 
         if (basechkdata) {
@@ -797,6 +811,7 @@ class ZoobenthosActivity : Activity() {
 
                         if (chkdata) {
 
+                            Log.d("책","책")
                             if (pk != null) {
 
                                 val CONF_MOD = confmodTV.text.toString()
@@ -852,51 +867,10 @@ class ZoobenthosActivity : Activity() {
 //
 //                            }
 
-                        } else {
-
+                        }
+                        else {
+                            Log.d("저장","저장")
                             dbManager!!.insertzoobenthos(zoobenthos_Attribute);
-
-//                            var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-//                            sdPath += "/ecology/tmps/" + zoobenthos_Attribute.INV_DT + "." + zoobenthos_Attribute.INV_TM + "/images"
-//                            val birds = File(sdPath)
-//                            birds.mkdir();
-////                          sdPath +="/imgs"
-////                          sdPath +="/"+biotope_attribute.PIC_FOLDER
-//
-//                            val file = File(sdPath)
-//                            file.mkdir();
-//                            //이미 있다면 삭제. 후 생성
-//                            setDirEmpty(sdPath)
-//
-//                            sdPath += "/"
-
-//                            var pathArray: ArrayList<String> = ArrayList<String>()
-//
-//                            for (i in 0..images!!.size - 1) {
-//                                val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator
-//
-//                                val outputsDir = File(outPath)
-//
-//                                if (outputsDir.exists()) {
-//                                    println("Exit : $outPath")
-//
-//                                    val files = outputsDir.listFiles()
-//                                    if (files != null) {
-//                                        for (i in files.indices) {
-//                                            println("f : " + files[i])
-//                                        }
-//                                    }
-//
-//                                } else {
-//                                    val made = outputsDir.mkdirs()
-//
-//                                    println("made : $made")
-//                                }
-//
-//                                saveVitmapToFile(images!!.get(i),outPath+zoobenthos_Attribute.NUM + "_" + zoobenthos_Attribute.INV_TM+"_"+(i+1)+".png")
-//
-//                            }
-
                         }
 
                         var intent = Intent()

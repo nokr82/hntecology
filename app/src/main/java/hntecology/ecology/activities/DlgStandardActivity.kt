@@ -74,7 +74,7 @@ class DlgStandardActivity : Activity() {
             if (listdata1 != null) {
                 for (i in 0..listdata1.size - 1) {
                     if (listdata1.get(i).is_checked == true) {
-                        code.add(listdata1.get(i).SIGN!!)
+                        code.add(listdata1.get(i).SIGN!!+":"+listdata1.get(i).CONTENT!!)
                     }
                 }
             }

@@ -1804,7 +1804,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21), data.getString(22)
-                                    , data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getString(28), data.getString(29), data.getString(30))
+                                    , data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getString(28), data.getString(29), data.getString(30)
+                                    , data.getInt(31), data.getInt(32), data.getFloat(33), data.getInt(34), data.getInt(35), data.getFloat(36)
+                            )
                             birdsdataArray.add(birds_attribute)
 
                         }
@@ -1871,7 +1873,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getString(16), data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                                    , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30), data.getString(31), data.getString(32), data.getString(33))
+                                    , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30), data.getString(31), data.getString(32), data.getString(33)
+                                    , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39), data.getFloat(40)
+                            )
 
 
                             reptiliadataArray.add(reptilia_attribute)
@@ -2476,6 +2480,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var MIN_HER_HET = Utils.getString(layerInfo.metadata, "MIN_HER_HET")
                                             var MAX_HER_HET = Utils.getString(layerInfo.metadata, "MAX_HER_HET")
                                             var BIO_TYPE = Utils.getString(layerInfo.metadata, "BIO_TYPE")
+                                            var IMPERV = Utils.getString(layerInfo.metadata, "IMPERV")
                                             var LC_TY = Utils.getString(layerInfo.metadata, "LC_TY")
                                             var TY_MARK = Utils.getString(layerInfo.metadata, "TY_MARK")
                                             var HER_SCIEN = Utils.getString(layerInfo.metadata, "HER_SCIEN")
@@ -2599,7 +2604,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                     BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", polygon.fillColor.toString(), geom,UFID,CHECK,
                                                     MAX_TRE_H.toFloat(),MIN_TRE_H.toFloat(),MIN_TRE_BREA.toFloat(),MAX_TRE_BREA.toFloat(),MIN_STRE_H.toFloat(),MAX_STRE_H.toFloat(),MIN_STRE_BREAET.toFloat(),MAX_STRE_BREAET.toFloat()
-                                                    ,MIN_SHR_HET.toFloat(),MAX_SHR_HET.toFloat(),MIN_HER_HET.toFloat(),MAX_HER_HET.toFloat(), BIO_TYPE)
+                                                    ,MIN_SHR_HET.toFloat(),MAX_SHR_HET.toFloat(),MIN_HER_HET.toFloat(),MAX_HER_HET.toFloat(), BIO_TYPE,IMPERV.toFloat())
 
                                             if (landuse != null && landuse != "") {
                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
@@ -2913,7 +2918,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                             , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
                                                             , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55), data.getString(56), data.getString(57)
                                                             , data.getFloat(58), data.getFloat(59),data.getFloat(60),data.getFloat(61),data.getFloat(62),data.getFloat(63)
-                                                            ,data.getFloat(64),data.getFloat(65),data.getFloat(66),data.getFloat(67),data.getFloat(68),data.getFloat(69), data.getString(70))
+                                                            ,data.getFloat(64),data.getFloat(65),data.getFloat(66),data.getFloat(67),data.getFloat(68),data.getFloat(69), data.getString(70), data.getFloat(71))
                                                     biotopedataArray.add(biotope_attribute)
                                                     chkData = true
                                                 }
@@ -2987,6 +2992,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                             var FIN_EST = Utils.getString(layerInfo.metadata, "FIN_EST")
                                                             var VP_INTA = Utils.getString(layerInfo.metadata, "VP_INTA")
                                                             var BIO_TYPE = Utils.getString(layerInfo.metadata, "BIO_TYPE")
+                                                            var IMPERV = Utils.getString(layerInfo.metadata, "IMPERV")
                                                             var HER_FAMI = Utils.getString(layerInfo.metadata, "HER_FAMI")
                                                             var INV_INDEX = Utils.getString(layerInfo.metadata, "INV_INDEX")
                                                             var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
@@ -3074,7 +3080,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                                     BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom,UFID,CHECK
                                                                     , MIN_TRE_H.toFloat(), MAX_TRE_H.toFloat() , MIN_TRE_BREA.toFloat(), MAX_TRE_BREA.toFloat() , MIN_STRE_H.toFloat(), MAX_STRE_H.toFloat()
                                                                     , MIN_STRE_BREAET.toFloat(), MAX_STRE_BREAET.toFloat() , MIN_SHR_HET.toFloat(), MAX_SHR_HET.toFloat()
-                                                                    , MIN_HER_HET.toFloat(), MAX_HER_HET.toFloat(),BIO_TYPE)
+                                                                    , MIN_HER_HET.toFloat(), MAX_HER_HET.toFloat(),BIO_TYPE,IMPERV.toFloat())
 
                                                             if (LANDUSE != null && LANDUSE != "") {
                                                                 data.LANDUSE = LANDUSE
@@ -3343,7 +3349,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55),data.getString(56),data.getString(57)
                                             , data.getFloat(58), data.getFloat(59),data.getFloat(60),data.getFloat(61),data.getFloat(62),data.getFloat(63)
                                             ,data.getFloat(64),data.getFloat(65),data.getFloat(66),data.getFloat(67),data.getFloat(68),data.getFloat(69),data.getString(70)
-                                    )
+                                            , data.getFloat(71))
                                     biotopedataArray.add(biotope_attribute)
                                 }
 
@@ -3373,6 +3379,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var MIN_STRE_H = Utils.getString(layerInfo.metadata, "MIN_STRE_H")
                                             var MAX_STRE_H = Utils.getString(layerInfo.metadata, "MAX_STRE_H")
                                             var BIO_TYPE = Utils.getString(layerInfo.metadata, "BIO_TYPE")
+                                            var IMPERV = Utils.getString(layerInfo.metadata, "IMPERV")
                                             var MIN_STRE_BREAET = Utils.getString(layerInfo.metadata, "MIN_STRE_BREAET")
                                             var MAX_STRE_BREAET = Utils.getString(layerInfo.metadata, "MAX_STRE_BREAET")
                                             var MIN_SHR_HET = Utils.getString(layerInfo.metadata, "MIN_SHR_HET")
@@ -3505,7 +3512,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                     BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom,UFID,CHECK, MIN_TRE_H.toFloat(), MAX_TRE_H.toFloat()
                                                     , MIN_TRE_BREA.toFloat(), MAX_TRE_BREA.toFloat(), MIN_STRE_H.toFloat(), MAX_STRE_H.toFloat(), MIN_STRE_BREAET.toFloat(), MAX_STRE_BREAET.toFloat(), MIN_SHR_HET.toFloat(), MAX_SHR_HET.toFloat()
-                                                    , MIN_HER_HET.toFloat(), MAX_HER_HET.toFloat(),BIO_TYPE)
+                                                    , MIN_HER_HET.toFloat(), MAX_HER_HET.toFloat(),BIO_TYPE,IMPERV.toFloat())
 
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
@@ -3818,7 +3825,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
                                             , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55), data.getString(56),data.getString(57)
                                             , data.getFloat(58), data.getFloat(59),data.getFloat(60),data.getFloat(61),data.getFloat(62),data.getFloat(63)
-                                            ,data.getFloat(64),data.getFloat(65),data.getFloat(66),data.getFloat(67),data.getFloat(68),data.getFloat(69),data.getString(70))
+                                            ,data.getFloat(64),data.getFloat(65),data.getFloat(66),data.getFloat(67),data.getFloat(68),data.getFloat(69),data.getString(70), data.getFloat(71))
                                     biotopedataArray.add(biotope_attribute)
                                 }
 
@@ -3848,6 +3855,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var MIN_STRE_H = Utils.getString(layerInfo.metadata, "MIN_STRE_H")
                                             var MAX_STRE_H = Utils.getString(layerInfo.metadata, "MAX_STRE_H")
                                             var BIO_TYPE = Utils.getString(layerInfo.metadata, "BIO_TYPE")
+                                            var IMPERV = Utils.getString(layerInfo.metadata, "IMPERV")
                                             var MIN_STRE_BREAET = Utils.getString(layerInfo.metadata, "MIN_STRE_BREAET")
                                             var MAX_STRE_BREAET = Utils.getString(layerInfo.metadata, "MAX_STRE_BREAET")
                                             var MIN_SHR_HET = Utils.getString(layerInfo.metadata, "MIN_SHR_HET")
@@ -3979,7 +3987,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     STRE_BREA.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                     BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom,UFID,CHECK, MIN_TRE_H.toFloat(), MAX_TRE_H.toFloat()
                                                     , MIN_TRE_BREA.toFloat(), MAX_TRE_BREA.toFloat(), MIN_STRE_H.toFloat(), MAX_STRE_H.toFloat(), MIN_STRE_BREAET.toFloat(), MAX_STRE_BREAET.toFloat(), MIN_SHR_HET.toFloat(), MAX_SHR_HET.toFloat()
-                                                    , MIN_HER_HET.toFloat(), MAX_HER_HET.toFloat(),BIO_TYPE)
+                                                    , MIN_HER_HET.toFloat(), MAX_HER_HET.toFloat(),BIO_TYPE,IMPERV.toFloat())
 
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
@@ -6242,7 +6250,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     , biotopedata.getFloat(43), biotopedata.getFloat(44), biotopedata.getString(45), biotopedata.getString(46), biotopedata.getString(47), biotopedata.getString(48), biotopedata.getDouble(49)
                     , biotopedata.getDouble(50), biotopedata.getString(51), biotopedata.getString(52), biotopedata.getString(53), biotopedata.getString(54), biotopedata.getString(55),biotopedata.getString(56),biotopedata.getString(57)
                     ,biotopedata.getFloat(58),biotopedata.getFloat(59),biotopedata.getFloat(60),biotopedata.getFloat(61),biotopedata.getFloat(62),biotopedata.getFloat(63)
-                    ,biotopedata.getFloat(64),biotopedata.getFloat(65),biotopedata.getFloat(66),biotopedata.getFloat(67),biotopedata.getFloat(68),biotopedata.getFloat(69),biotopedata.getString(70))
+                    ,biotopedata.getFloat(64),biotopedata.getFloat(65),biotopedata.getFloat(66),biotopedata.getFloat(67),biotopedata.getFloat(68),biotopedata.getFloat(69),biotopedata.getString(70), biotopedata.getFloat(71))
 
             biotopeDatas.add(biotope_attribute)
         }
@@ -6300,6 +6308,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 //                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("FIN_EST", ogr.OFTString, biotope_attribute.FIN_EST))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SPEC", ogr.OFTString, biotope_attribute.TRE_SPEC))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("BIO_TYPE", ogr.OFTString, biotope_attribute.BIO_TYPE))
+                    BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("IMPERV", ogr.OFTString, biotope_attribute.IMPERV))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_FAMI", ogr.OFTString, biotope_attribute.TRE_FAMI))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SCIEN", ogr.OFTString, biotope_attribute.TRE_SCIEN))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_H", ogr.OFTString, biotope_attribute.TRE_H.toString()))
@@ -6378,6 +6387,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, biotope_attribute.GROP_ID))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, biotope_attribute.PRJ_NAME))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("BIO_TYPE", ogr.OFTString, biotope_attribute.BIO_TYPE))
+                            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("IMPERV", ogr.OFTString, biotope_attribute.IMPERV))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, biotope_attribute.INV_REGION))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, biotope_attribute.INV_PERSON))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, biotope_attribute.INV_DT))
@@ -6509,7 +6519,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21), data.getString(22)
-                    , data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getString(28), data.getString(29), data.getString(30))
+                    , data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getString(28), data.getString(29), data.getString(30)
+                    , data.getInt(31), data.getInt(32), data.getFloat(33), data.getInt(34), data.getInt(35), data.getFloat(36)
+            )
 
             birdsDatas.add(birds_attribute)
 
@@ -6597,6 +6609,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, birds_attribute.GPS_LON.toString()))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, birds_attribute.CONF_MOD))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, birds_attribute.GEOM))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, birds_attribute.GPSLAT_DEG))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, birds_attribute.GPSLAT_MIN))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, birds_attribute.GPSLAT_SEC))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, birds_attribute.GPSLON_DEG))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, birds_attribute.GPSLON_MIN))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, birds_attribute.GPSLON_SEC))
 
                     var geomsplit = birds_attribute.GEOM!!.split(" ")
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
@@ -6650,6 +6668,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, birds_attribute.GPS_LAT.toString()))
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, birds_attribute.GPS_LON.toString()))
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, birds_attribute.CONF_MOD))
+                            BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, birds_attribute.GPSLAT_DEG))
+                            BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, birds_attribute.GPSLAT_MIN))
+                            BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, birds_attribute.GPSLAT_SEC))
+                            BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, birds_attribute.GPSLON_DEG))
+                            BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, birds_attribute.GPSLON_MIN))
+                            BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, birds_attribute.GPSLON_SEC))
                         }
 
                         val exporter = Exporter.ExportPointItem(LAYER_BIRDS, BIRDSATTRIBUTE, points.get(idx))
@@ -6714,7 +6738,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     reptiliadata.getString(8), reptiliadata.getFloat(9), reptiliadata.getString(10), reptiliadata.getInt(11), reptiliadata.getString(12), reptiliadata.getString(13), reptiliadata.getString(14)
                     , reptiliadata.getString(15), reptiliadata.getString(16), reptiliadata.getInt(17), reptiliadata.getInt(18), reptiliadata.getInt(19), reptiliadata.getString(20), reptiliadata.getString(21), reptiliadata.getString(22)
                     , reptiliadata.getString(23), reptiliadata.getString(24), reptiliadata.getString(25), reptiliadata.getInt(26), reptiliadata.getInt(27), reptiliadata.getInt(28), reptiliadata.getFloat(29), reptiliadata.getFloat(30)
-                    , reptiliadata.getString(31), reptiliadata.getString(32), reptiliadata.getString(33))
+                    , reptiliadata.getString(31), reptiliadata.getString(32), reptiliadata.getString(33) , reptiliadata.getInt(34), reptiliadata.getInt(35), reptiliadata.getFloat(36), reptiliadata.getInt(37), reptiliadata.getInt(38), reptiliadata.getFloat(39)
+                    , reptiliadata.getFloat(40)
+            )
 
             reptiliaDatas.add(reptilia_attribute)
         }
@@ -6807,6 +6833,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, reptilia_attribute.GPS_LON.toString()))
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, reptilia_attribute.CONF_MOD))
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, reptilia_attribute.GEOM))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, reptilia_attribute.GPSLAT_DEG))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, reptilia_attribute.GPSLAT_MIN))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, reptilia_attribute.GPSLAT_SEC))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, reptilia_attribute.GPSLON_DEG))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, reptilia_attribute.GPSLON_MIN))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, reptilia_attribute.GPSLON_SEC))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA", ogr.OFTString, reptilia_attribute.HAB_AREA))
 
                     var geomsplit = reptilia_attribute.GEOM!!.split(" ")
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
@@ -6861,6 +6894,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, reptilia_attribute.GPS_LAT.toString()))
                             REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, reptilia_attribute.GPS_LON.toString()))
                             REPTILIAATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, reptilia_attribute.CONF_MOD))
+                            REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, reptilia_attribute.GPSLAT_DEG))
+                            REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, reptilia_attribute.GPSLAT_MIN))
+                            REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, reptilia_attribute.GPSLAT_SEC))
+                            REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, reptilia_attribute.GPSLON_DEG))
+                            REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, reptilia_attribute.GPSLON_MIN))
+                            REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, reptilia_attribute.GPSLON_SEC))
+                            REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA", ogr.OFTString, reptilia_attribute.HAB_AREA))
                         }
 
                         val exporter = Exporter.ExportPointItem(LAYER_REPTILIA, REPTILIAATTRIBUTE, points.get(idx))

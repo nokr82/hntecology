@@ -385,7 +385,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,INV_INDEX,LU_GR_NUM,LU_TY_RATE,STAND_H,LC_GR_NUM,LC_TY,TY_MARK,GV_RATE,GV_STRUCT,DIS_RET,RESTOR_POT,COMP_INTA";
         query += ",VP_INTA,IMP_FORM,BREA_DIA,FIN_EST,TRE_SPEC,TRE_FAMI,TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_H,STRE_BREA,STRE_COVE,SHR_SPEC,SHR_FAMI";
         query += ",SHR_SCIEN,SHR_H,STR_COVE,HER_SPEC,HER_FAMI,HER_SCIEN,HER_H,HER_COVE,PIC_FOLDER,WILD_ANI,BIOTOP_POT,UNUS_NOTE,GPS_LAT,GPS_LON,NEED_CONF,CONF_MOD,TEMP_YN,LANDUSE,GEOM,UFID,CHECKD";
-        query += ",MIN_TRE_H,MAX_TRE_H,MIN_TRE_BREA,MAX_TRE_BREA,MIN_STRE_H,MAX_STRE_H,MIN_STRE_BREAET,MAX_STRE_BREAET,MIN_SHR_HET,MAX_SHR_HET,MIN_HER_HET,MAX_HER_HET,BIO_TYPE)";
+        query += ",MIN_TRE_H,MAX_TRE_H,MIN_TRE_BREA,MAX_TRE_BREA,MIN_STRE_H,MAX_STRE_H,MIN_STRE_BREAET,MAX_STRE_BREAET,MIN_SHR_HET,MAX_SHR_HET,MIN_HER_HET,MAX_HER_HET,BIO_TYPE,IMPERV)";
 
         query += " values (";
         query += " '" + biotope_attribute.getGROP_ID() + "'";
@@ -458,6 +458,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", " + biotope_attribute.getMIN_HER_HET() + "";
         query += ", " + biotope_attribute.getMAX_HER_HET() + "";
         query += ", '" + biotope_attribute.getBIO_TYPE() + "'";
+        query += ", '" + biotope_attribute.getIMPERV() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -470,8 +471,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO birdsAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,ENDANGERED,INDI_CNT,OBS_STAT,OBS_ST_ETC";
-        query += ",USE_TAR,USE_TAR_SP,USE_LAYER,MJ_ACT,MJ_ACT_PR,STANDARD,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM)";
-
+        query += ",USE_TAR,USE_TAR_SP,USE_LAYER,MJ_ACT,MJ_ACT_PR,STANDARD,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM";
+        query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC";
+        query +=")";
         query += " values (";
         query += " '" + birds_attribute.getGROP_ID() + "'";
         query += ", '" + birds_attribute.getPRJ_NAME() + "'";
@@ -503,6 +505,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + birds_attribute.getTEMP_YN() + "'";
         query += ", '" + birds_attribute.getCONF_MOD() + "'";
         query += ", '" + birds_attribute.getGEOM() + "'";
+        query += ", '" + birds_attribute.getGPSLAT_DEG() + "'";
+        query += ", '" + birds_attribute.getGPSLAT_MIN() + "'";
+        query += ", '" + birds_attribute.getGPSLAT_SEC() + "'";
+        query += ", '" + birds_attribute.getGPSLON_DEG() + "'";
+        query += ", '" + birds_attribute.getGPSLON_MIN() + "'";
+        query += ", '" + birds_attribute.getGPSLON_SEC() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -515,7 +523,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,ENDANGERED,IN_CNT_ADU,IN_CNT_LAR,IN_CNT_EGG";
         query += ",HAB_RIVEER,HAB_EDGE,WATER_IN,WATER_OUT,WATER_CONT,WATER_QUAL,WATER_DEPT";
-        query += ",HAB_AREA_W,HAB_AREA_H,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM)";
+        query += ",HAB_AREA_W,HAB_AREA_H,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM";
+        query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC,HAB_AREA";
+        query += ")";
 
 
         query += " values (";
@@ -552,6 +562,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + reptilia_attribute.getTEMP_YN() + "'";
         query += ", '" + reptilia_attribute.getCONF_MOD() + "'";
         query += ", '" + reptilia_attribute.getGEOM() + "'";
+        query += ", '" + reptilia_attribute.getGPSLAT_DEG() + "'";
+        query += ", '" + reptilia_attribute.getGPSLAT_MIN() + "'";
+        query += ", '" + reptilia_attribute.getGPSLAT_SEC() + "'";
+        query += ", '" + reptilia_attribute.getGPSLON_DEG() + "'";
+        query += ", '" + reptilia_attribute.getGPSLON_MIN() + "'";
+        query += ", '" + reptilia_attribute.getGPSLON_SEC() + "'";
+        query += ", '" + reptilia_attribute.getHAB_AREA() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -1265,7 +1282,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",GPS_LAT='" + reptilia_attribute.getGPS_LAT() + "'"
                 + ",GPS_LON='" + reptilia_attribute.getGPS_LON() + "'"
                 + ",TEMP_YN='" + reptilia_attribute.getTEMP_YN() + "'"
-                + ",TEMP_YN='" + reptilia_attribute.getCONF_MOD() + "'"+
+                + ",TEMP_YN='" + reptilia_attribute.getCONF_MOD() + "'"
+                + ",GPSLAT_DEG='" + reptilia_attribute.getGPSLAT_DEG() + "'"
+                + ",GPSLAT_MIN='" + reptilia_attribute.getGPSLAT_MIN() + "'"
+                + ",GPSLAT_SEC='" + reptilia_attribute.getGPSLAT_SEC() + "'"
+                + ",GPSLON_DEG='" + reptilia_attribute.getGPSLON_DEG() + "'"
+                + ",GPSLON_MIN='" + reptilia_attribute.getGPSLON_MIN() + "'"
+                + ",GPSLON_SEC='" + reptilia_attribute.getGPSLON_SEC() + "'"
+                + ",HAB_AREA='" + reptilia_attribute.getHAB_AREA() + "'"+
                 "where id = '" + pk + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1301,11 +1325,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",GPS_LAT='" + birds_attribute.getGPS_LAT() + "'"
                 + ",GPS_LON='" + birds_attribute.getGPS_LON() + "'"
                 + ",TEMP_YN='" + birds_attribute.getTEMP_YN() + "'"
-                + ",CONF_MOD='" + birds_attribute.getCONF_MOD() + "'"+
-                 "where id = '" + pk + "'";
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL(query);
-        db.close();
+                + ",CONF_MOD='" + birds_attribute.getCONF_MOD() + "'"
+                + ",GPSLAT_DEG='" + birds_attribute.getGPSLAT_DEG() + "'"
+                + ",GPSLAT_MIN='" + birds_attribute.getGPSLAT_MIN() + "'"
+                + ",GPSLAT_SEC='" + birds_attribute.getGPSLAT_SEC() + "'"
+                + ",GPSLON_DEG='" + birds_attribute.getGPSLON_DEG() + "'"
+                + ",GPSLON_MIN='" + birds_attribute.getGPSLON_MIN() + "'"
+                + ",GPSLON_SEC='" + birds_attribute.getGPSLON_SEC() + "'"+
+                "where id = '" + pk + "'";
+                SQLiteDatabase db = getWritableDatabase();
+                db.execSQL(query);
+                db.close();
 
     }
 
@@ -1391,7 +1421,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",CONF_MOD='" + biotope_attribute.getCONF_MOD() + "'"
                 + ",TEMP_YN='" + biotope_attribute.getTEMP_YN() + "'"
                 + ",LANDUSE='" + biotope_attribute.getLANDUSE() + "'"
-                + ",BIO_TYPE='" + biotope_attribute.getBIO_TYPE() + "'"+
+                + ",BIO_TYPE='" + biotope_attribute.getBIO_TYPE() + "'"
+                + ",IMPERV=" + biotope_attribute.getIMPERV() + ""+
                 "where id = '" + page + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);

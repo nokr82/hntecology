@@ -156,6 +156,10 @@
             android:name=".activities.DlgBirdsActivity"
             android:screenOrientation="landscape"
             android:theme="@style/full_screen_dialog1" />
+        <activity
+            android:name=".activities.DlgInputActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/full_screen_dialog1" />
         <activity android:name=".activities.WriteAlbumActivity" />
         <activity
             android:name=".activities.DlgLayersActivity"

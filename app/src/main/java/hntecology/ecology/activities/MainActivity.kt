@@ -4611,12 +4611,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             val metadataP = geoms[1] as String
             val metadata = JSONObject(metadataP)
 
-            Log.d("메타2",metadata.toString())
 
-
-            var do_num = Utils.getString(metadata,"UFID")
-
-            Log.d("메타3",do_num)
 
             if (geoms[0] is PolygonOptions) {
 
@@ -4625,22 +4620,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 val polygon = googleMap.addPolygon(polygonOptions)
                 polygon.zIndex = 0.0f
 
-                // label
-                if (do_num==""){
-                    do_num = Utils.getString(metadata,"EMD_CD")
-                }
 
 
-                var labelMarker = PolygonUtils.drawTextOnPolygon(context, do_num, polygonOptions, googleMap)
 
-                if (visible_donum == -1){
-                    labelMarker.isVisible = false
-                }else{
-                    labelMarker.isVisible = true
-                }
-
-
-                labelMarkers.add(labelMarker!!)
 
                 // println("layerName .layer ===== $layerName")
 
@@ -4720,6 +4702,29 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 if (type.equals("waypoint")) {
                     layerInfo.layer = LAYER_WAYPOINT
                 }
+                Log.d("메타2",metadata.toString())
+
+
+                var do_num = Utils.getString(metadata,"UFID")
+                // label
+                if (do_num==""){
+                    do_num = Utils.getString(metadata,"EMD_CD")
+                }
+
+                Log.d("메타3",do_num)
+                var labelMarker = PolygonUtils.drawTextOnPolygon(context, do_num, polygonOptions, googleMap)
+
+                if (visible_donum == -1){
+                    labelMarker.isVisible = false
+                }else{
+                    labelMarker.isVisible = true
+                }
+
+
+                labelMarkers.add(labelMarker!!)
+
+                Log.d("메타4",layerInfo.metadata.toString())
+
 
                 val id = Utils.getString(layerInfo.metadata, "ID")
                 val grop_id = Utils.getString(layerInfo.metadata, "GROP_ID")

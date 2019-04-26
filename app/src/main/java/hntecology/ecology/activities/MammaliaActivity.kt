@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -42,7 +43,7 @@ import io.nlopez.smartlocation.SmartLocation
 import io.nlopez.smartlocation.location.config.LocationAccuracy
 import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
-import kotlinx.android.synthetic.main.activity_mammalia.*
+import kotlinx.android.synthetic.main.activity_mammalia_ex.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -117,9 +118,12 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
     var INV_REGION = ""
 
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_mammalia)
+        setContentView(R.layout.activity_mammalia_ex)
 
         this.context = this;
         progressDialog = ProgressDialog(context)
@@ -207,7 +211,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             } catch (e:IOException) {
                 e.printStackTrace();
             }
-
+            convert(lat.toDouble())
+            logconvert(log.toDouble())
         }
 
         val dataList: Array<String> = arrayOf("*");
@@ -273,7 +278,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                        , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31))
+                        , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31),data.getInt(32), data.getInt(33),data.getFloat(34),data.getInt(35),data.getInt(36),data.getFloat(37), data.getString(38))
 
                 maminvregionET.setText(mammal_attribute.INV_REGION)
                 INV_REGION = mammal_attribute.INV_REGION.toString()
@@ -317,6 +322,15 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 mamtreasyreET.setText(mammal_attribute.TR_EASY_RE)
 
                 standardTV.setText(mammal_attribute.STANDARD)
+
+                coordndET.setText(mammal_attribute.GPSLAT_DEG.toString())
+                coordnmET.setText(mammal_attribute.GPSLAT_MIN.toString())
+                coordnsET.setText(mammal_attribute.GPSLAT_SEC.toString())
+                coordedET.setText(mammal_attribute.GPSLON_DEG.toString())
+                coordemET.setText(mammal_attribute.GPSLON_MIN.toString())
+                coordesET.setText(mammal_attribute.GPSLON_SEC.toString())
+
+
 
                 val id = mammal_attribute.id
 
@@ -443,7 +457,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                        , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31))
+                        , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31),data.getInt(32), data.getInt(33),data.getFloat(34),data.getInt(35),data.getInt(36),data.getFloat(37), data.getString(38))
 
                 dataArray.add(mammal_attribute)
             }
@@ -486,14 +500,17 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 var mammal_attribute: Mammal_attribute =Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                        , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31))
+                        , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31),data.getInt(32), data.getInt(33),data.getFloat(34),data.getInt(35),data.getInt(36),data.getFloat(37), data.getString(38))
 
                 dataArray.add(mammal_attribute)
             }
 
-            var mammal_attribute:Mammal_attribute = Mammal_attribute(null,null,null,null,null,null,null,null,null
-                    ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                    ,null,null,null,null,null,null,null,null,null,null)
+            var mammal_attribute:Mammal_attribute =Mammal_attribute(null,null,null,null,null
+                    ,null,null,null,null,null,null,null,null,null
+                    ,null,null,null,null,null,null,null,null
+                    ,null,null,null,null,null,null,null,null
+                    ,null,null,null,null,null,null,null,null
+                    ,null)
 
             mammal_attribute.id = keyId + page.toString()
 
@@ -532,8 +549,12 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             mammal_attribute.FAMI_NM = mamfaminmTV.text.toString()
             mammal_attribute.SCIEN_NM = mamsciennmTV.text.toString()
 
-            mammal_attribute.OBS_TY = mammalobstyTV.text.toString()
-            mammal_attribute.OBS_TY_ETC = mammalobstyET.text.toString()
+            if (mammalobstyET.text.toString().count()>0){
+                mammal_attribute.OBS_TY = mammalobstyET.text.toString()
+            }else{
+                mammal_attribute.OBS_TY = mammalobstyTV.text.toString()
+            }
+//            mammal_attribute.OBS_TY_ETC = mammalobstyET.text.toString()
 
             if(mamindicntET.text.isNotEmpty()) {
                 mammal_attribute.INDI_CNT = mamindicntET.text.toString().toInt()
@@ -574,7 +595,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                        , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31))
+                        , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31),data.getInt(32), data.getInt(33),data.getFloat(34),data.getInt(35),data.getInt(36),data.getFloat(37), data.getString(38))
 
                 dataArray.add(mammal_attribute)
 
@@ -598,9 +619,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             builder.setMessage("저장하시겠습니까 ?").setCancelable(false)
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                        var mammal_attribute:Mammal_attribute = Mammal_attribute(null,null,null,null,null,null,null,null,null
+                        var mammal_attribute:Mammal_attribute =Mammal_attribute(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null
                                 ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                                ,null,null,null,null,null,null,null,null,null,null)
+                                ,null)
 
                         keyId = intent.getStringExtra("GROP_ID")
 
@@ -648,6 +669,25 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         if(mammalnumTV.text.isNotEmpty()) {
                             mammal_attribute.NUM = mammalnumTV.text.toString().toInt()
                         }
+                        if (coordndET.text.isNotEmpty()) {
+                            mammal_attribute.GPSLAT_DEG = coordndET.text.toString().toInt()
+                        }
+                        if (coordnmET.text.isNotEmpty()) {
+                            mammal_attribute.GPSLAT_MIN = coordnmET.text.toString().toInt()
+                        }
+                        if (coordnsET.text.isNotEmpty()) {
+                            mammal_attribute.GPSLAT_SEC = coordnsET.text.toString().toFloat()
+                        }
+                        if (coordedET.text.isNotEmpty()) {
+                            mammal_attribute.GPSLON_DEG = coordedET.text.toString().toInt()
+                        }
+                        if (coordemET.text.isNotEmpty()) {
+                            mammal_attribute.GPSLON_MIN = coordemET.text.toString().toInt()
+                        }
+                        if (coordesET.text.isNotEmpty()) {
+                            mammal_attribute.GPSLON_SEC = coordesET.text.toString().toFloat()
+                        }
+                        mammal_attribute.MJ_ACT_PR = standardTV.text.toString()
 
                         mammal_attribute.INV_TM = mammaltimeTV.text.toString()
 
@@ -659,13 +699,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         mammal_attribute.SCIEN_NM = mamsciennmTV.text.toString()
                         mammal_attribute.ENDANGERED = endangeredTV.text.toString()
 
-                        if(mammalobstyTV.text != null && !mammalobstyET.text.equals("")){
-                            mammal_attribute.OBS_TY = mammalobstyTV.text.toString()
-                            mammal_attribute.OBS_TY_ETC = mammalobstyET.text.toString()
-                        }else {
-                            mammal_attribute.OBS_TY = mammalobstyTV.text.toString()
-                            mammal_attribute.OBS_TY_ETC = mammalobstyET.text.toString()
-                        }
+
+                        mammal_attribute.OBS_TY = mammalobstyTV.text.toString()
 
                         if(mamindicntET.text.isNotEmpty()) {
                             mammal_attribute.INDI_CNT = mamindicntET.text.toString().toInt()
@@ -836,9 +871,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                             dialog.cancel()
 
-                            var mammal_attribute: Mammal_attribute = Mammal_attribute(null, null, null, null, null, null, null, null, null
+                            var mammal_attribute: Mammal_attribute =Mammal_attribute(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null, null, null, null, null, null, null, null, null
                                     , null, null, null, null, null, null, null, null, null, null, null, null, null
-                                    , null, null, null, null, null, null,null,null,null,null)
+                                    , null)
 
                             if (pk != null) {
 
@@ -849,7 +884,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                                     mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                             data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                             , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                                            , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31))
+                                            , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31),data.getInt(32), data.getInt(33),data.getFloat(34),data.getInt(35),data.getInt(36),data.getFloat(37), data.getString(38))
                                 }
 
                                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "mammalia/images"+ File.separator +keyId+ File.separator)
@@ -904,7 +939,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                                         var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                                 data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                                 , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                                                , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31))
+                                                , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31),data.getInt(32), data.getInt(33),data.getFloat(34),data.getInt(35),data.getInt(36),data.getFloat(37), data.getString(38))
 
                                         dataArray.add(mammal_attribute)
 
@@ -973,7 +1008,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                                     var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                             data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                             , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                                            , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31))
+                                            , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31),data.getInt(32), data.getInt(33),data.getFloat(34),data.getInt(35),data.getInt(36),data.getFloat(37), data.getString(38))
                                 }
 
                                 if (chkdata == true) {
@@ -1050,7 +1085,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                             var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                                    , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31))
+                                    , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31),data.getInt(32), data.getInt(33),data.getFloat(34),data.getInt(35),data.getInt(36),data.getFloat(37), data.getString(38))
 
                             dataArray.add(mammal_attribute)
 
@@ -1174,9 +1209,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         btn_add.setOnClickListener {
 
-            var mammal_attribute:Mammal_attribute = Mammal_attribute(null,null,null,null,null,null,null,null,null
+            var mammal_attribute:Mammal_attribute =Mammal_attribute(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null
                     ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                    ,null,null,null,null,null,null,null,null,null,null)
+                    ,null)
 
             keyId = intent.getStringExtra("GROP_ID")
 
@@ -1259,7 +1294,28 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             mammal_attribute.UN_SPEC_RE = mamunspecreET.text.toString()
 
             mammal_attribute.STANDARD = standardTV.text.toString()
-
+            if(mammalnumTV.text.isNotEmpty()) {
+                mammal_attribute.NUM = mammalnumTV.text.toString().toInt()
+            }
+            if (coordndET.text.isNotEmpty()) {
+                mammal_attribute.GPSLAT_DEG = coordndET.text.toString().toInt()
+            }
+            if (coordnmET.text.isNotEmpty()) {
+                mammal_attribute.GPSLAT_MIN = coordnmET.text.toString().toInt()
+            }
+            if (coordnsET.text.isNotEmpty()) {
+                mammal_attribute.GPSLAT_SEC = coordnsET.text.toString().toFloat()
+            }
+            if (coordedET.text.isNotEmpty()) {
+                mammal_attribute.GPSLON_DEG = coordedET.text.toString().toInt()
+            }
+            if (coordemET.text.isNotEmpty()) {
+                mammal_attribute.GPSLON_MIN = coordemET.text.toString().toInt()
+            }
+            if (coordesET.text.isNotEmpty()) {
+                mammal_attribute.GPSLON_SEC = coordesET.text.toString().toFloat()
+            }
+            mammal_attribute.MJ_ACT_PR = standardTV.text.toString()
             mammal_attribute.TR_EASY = mamtreasyET.text.toString()
             mammal_attribute.TR_EASY_RE = mamtreasyreET.text.toString()
 
@@ -1561,7 +1617,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                    , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31))
+                    , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31),data.getInt(32), data.getInt(33),data.getFloat(34),data.getInt(35),data.getInt(36),data.getFloat(37), data.getString(38))
 
             dataArray.add(mammal_attribute)
 
@@ -2265,6 +2321,88 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         }
     }
 
+
+
+
+    fun convert(d: Double): String {
+
+        var long_d = Math.abs(d)
+
+//        var i = d.intValue()
+        var i = long_d.toInt()
+        var s = i.toString()
+
+        coordndET.setText(s)
+
+        long_d = long_d - i;
+        long_d = long_d * 60;
+        coordnmET.setText(long_d.toInt().toString())
+//        i = long_d.intValue();
+        i = long_d.toInt();
+
+//        s = s + String.format(i) + '\'';
+        s = s + i.toString()
+
+        long_d = long_d - i;
+        long_d = long_d * 60;
+
+//        i = long_d.round().intValue();
+        i = Math.round(long_d.toDouble()).toInt()
+
+        coordnsET.setText(long_d.toFloat().toString())
+
+        s = s + i.toString() + '"';
+
+        println("")
+
+        println("i $i")
+
+        println("s ::::::::::::::::::::::::::::::::::::::::::::::::::::::: " + s)
+
+        return s
+    }
+
+    fun logconvert(d: Double): String {
+
+        var long_d = Math.abs(d)
+
+//        var i = d.intValue()
+        var i = long_d.toInt()
+        var s = i.toString()
+
+        coordedET.setText(s)
+
+        long_d = long_d - i;
+        long_d = long_d * 60;
+        coordemET.setText(long_d.toInt().toString())
+//        i = long_d.intValue();
+        i = long_d.toInt();
+
+//        s = s + String.format(i) + '\'';
+        s = s + i.toString()
+
+        long_d = long_d - i;
+        long_d = long_d * 60;
+
+//        i = long_d.round().intValue();
+        i = Math.round(long_d.toDouble()).toInt()
+
+        coordesET.setText(long_d.toFloat().toString())
+
+        s = s + i.toString() + '"';
+
+        println("")
+
+        println("i $i")
+
+
+
+        println("s ::::::::::::::::::::::::::::::::::::::::::::::::::::::: " + s)
+
+        return s
+    }
+
+
     fun getAttrubuteKey(): String {
 
         val time = System.currentTimeMillis()
@@ -2294,7 +2432,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                    , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31))
+                    , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31),data.getInt(32), data.getInt(33),data.getFloat(34),data.getInt(35),data.getInt(36),data.getFloat(37), data.getString(38))
 
             dataArray.add(mammal_attribute)
 

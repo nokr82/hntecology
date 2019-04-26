@@ -1940,10 +1940,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                         while (data.moveToNext()) {
                             var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                                    , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27), data.getString(28), data.getString(29), data.getString(30), data.getString(31))
-
+                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
+                    , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31)
+                                    ,data.getInt(32), data.getInt(33),data.getFloat(34),data.getInt(35),data.getInt(36),data.getFloat(37),data.getString(38))
                             mammaldataArray.add(mammal_attribute)
                         }
 
@@ -6962,10 +6962,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         while (data.moveToNext()) {
 
-            var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+            var mammal_attribute: Mammal_attribute =Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                    , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27), data.getString(28), data.getString(29), data.getString(30), data.getString(31))
+                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18),data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
+                    , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27),data.getString(28),data.getString(29),data.getString(30),data.getString(31),data.getInt(32)
+                    , data.getInt(33),data.getFloat(34),data.getInt(35),data.getInt(36),data.getFloat(37), data.getString(38))
 
             mammaliaDatas.add(mammal_attribute)
 
@@ -7053,6 +7054,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("TR_EASY_RE", ogr.OFTString, mammal_attribute.TR_EASY_RE))
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, mammal_attribute.CONF_MOD))
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, mammal_attribute.GEOM))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, mammal_attribute.GPSLAT_DEG))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, mammal_attribute.GPSLAT_MIN))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, mammal_attribute.GPSLAT_SEC))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, mammal_attribute.GPSLON_DEG))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, mammal_attribute.GPSLON_MIN))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, mammal_attribute.GPSLON_SEC))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT_PR", ogr.OFTString, mammal_attribute.MJ_ACT_PR))
 
                     var geomsplit = mammal_attribute.GEOM!!.split(" ")
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())

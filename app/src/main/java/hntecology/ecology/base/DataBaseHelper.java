@@ -569,6 +569,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + reptilia_attribute.getGPSLON_MIN() + "'";
         query += ", '" + reptilia_attribute.getGPSLON_SEC() + "'";
         query += ", '" + reptilia_attribute.getHAB_AREA() + "'";
+
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -580,8 +581,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO mammalAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,ENDANGERED,OBS_TY,OBS_TY_ETC,INDI_CNT";
-        query += ",OB_PT_CHAR,UNUS_NOTE,STANDARD,GPS_LAT,GPS_LON,UN_SPEC,UN_SPEC_RE,TR_EASY,TR_EASY_RE,TEMP_YN,CONF_MOD,GEOM)";
-
+        query += ",OB_PT_CHAR,UNUS_NOTE,STANDARD,GPS_LAT,GPS_LON,UN_SPEC,UN_SPEC_RE,TR_EASY,TR_EASY_RE,TEMP_YN,CONF_MOD,GEOM";
+        query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC,MJ_ACT_PR";
+        query += ");";
         query += " values (";
         query += " '" + mammal_attribute.getGROP_ID() + "'";
         query += ", '" + mammal_attribute.getPRJ_NAME() + "'";
@@ -614,6 +616,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + mammal_attribute.getTEMP_YN() + "'";
         query += ", '" + mammal_attribute.getCONF_MOD() + "'";
         query += ", '" + mammal_attribute.getGEOM() + "'";
+        query += ", '" + mammal_attribute.getGPSLAT_DEG() + "'";
+        query += ", '" + mammal_attribute.getGPSLAT_MIN() + "'";
+        query += ", '" + mammal_attribute.getGPSLAT_SEC() + "'";
+        query += ", '" + mammal_attribute.getGPSLON_DEG() + "'";
+        query += ", '" + mammal_attribute.getGPSLON_MIN() + "'";
+        query += ", '" + mammal_attribute.getGPSLON_SEC() + "'";
+        query += ", '" + mammal_attribute.getMJ_ACT_PR() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -1459,7 +1468,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",TR_EASY='" + mammal_attribute.getTR_EASY() + "'"
                 + ",TR_EASY_RE='" + mammal_attribute.getTR_EASY_RE() + "'"
                 + ",TEMP_YN='" + mammal_attribute.getTEMP_YN() + "'"
-                + ",CONF_MOD='" + mammal_attribute.getCONF_MOD() + "'"+
+                + ",CONF_MOD='" + mammal_attribute.getCONF_MOD() + "'"
+                + ",MJ_ACT_PR='" + mammal_attribute.getMJ_ACT_PR() + "'"+
                 "where id = '" + pk + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);

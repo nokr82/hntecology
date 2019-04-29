@@ -4664,6 +4664,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 // println("attrubuteKey : $attrubuteKey")
 
+                Log.d("타입",type)
                 if (type == "biotope") {
                     layerInfo.layer = LAYER_BIOTOPE
                 }
@@ -4715,9 +4716,15 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
 
                 var do_num = Utils.getString(metadata,"UFID")
+                var flower_name = Utils.getString(metadata,"KOFTR_GROU")
                 // label
                 if (do_num==""){
-                    do_num = Utils.getString(metadata,"EMD_CD")
+                    if (flower_name!=""){
+                        do_num = flower_name
+                    }else{
+                        do_num = "-1"
+                    }
+
                 }
 
                 Log.d("메타3",do_num)
@@ -8519,6 +8526,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             stokemapDatas.add(stockMap)
 
         }
+        Log.d("임상도",stokemapDatas.toString())
 
         if (stokemapDatas.size != null) {
 
@@ -8557,7 +8565,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     STOKEMAP.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, stockMap.INV_DT))
                     STOKEMAP.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, stockMap.INV_TM))
                     STOKEMAP.add(Exporter.ColumnDef("FRTP_CD", ogr.OFTString, stockMap.FRTP_CD))
-                    STOKEMAP.add(Exporter.ColumnDef("KOFTR_GROUP", ogr.OFTString, stockMap.KOFTR_GROUP_CD.toString()))
+                    STOKEMAP.add(Exporter.ColumnDef("KOFTR_GROU", ogr.OFTString, stockMap.KOFTR_GROUP_CD.toString()))
                     STOKEMAP.add(Exporter.ColumnDef("STORUNST", ogr.OFTString, stockMap.STORUNST_CD.toString()))
                     STOKEMAP.add(Exporter.ColumnDef("FROR_CD", ogr.OFTString, stockMap.FROR_CD))
                     STOKEMAP.add(Exporter.ColumnDef("DMCLS_CD", ogr.OFTString, stockMap.DMCLS_CD))
@@ -8573,6 +8581,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     STOKEMAP.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, stockMap.CONF_MOD))
                     STOKEMAP.add(Exporter.ColumnDef("LANDUSE", ogr.OFTString, stockMap.LANDUSE))
                     STOKEMAP.add(Exporter.ColumnDef("GEOM", ogr.OFTString, stockMap.GEOM))
+                    Log.d("임상도",STOKEMAP.toString())
 
                     var geomsplit = stockMap.GEOM!!.split(",")
                     var points: ArrayList<LatLng> = ArrayList<LatLng>()
@@ -8611,7 +8620,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         STOKEMAP.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, stockMap.INV_DT))
                         STOKEMAP.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, stockMap.INV_TM))
                         STOKEMAP.add(Exporter.ColumnDef("FRTP_CD", ogr.OFTString, stockMap.FRTP_CD))
-                        STOKEMAP.add(Exporter.ColumnDef("KOFTR_GROUP", ogr.OFTString, stockMap.KOFTR_GROUP_CD.toString()))
+                        STOKEMAP.add(Exporter.ColumnDef("KOFTR_GROU", ogr.OFTString, stockMap.KOFTR_GROUP_CD.toString()))
                         STOKEMAP.add(Exporter.ColumnDef("STORUNST", ogr.OFTString, stockMap.STORUNST_CD.toString()))
                         STOKEMAP.add(Exporter.ColumnDef("FROR_CD", ogr.OFTString, stockMap.FROR_CD))
                         STOKEMAP.add(Exporter.ColumnDef("DMCLS_CD", ogr.OFTString, stockMap.DMCLS_CD))

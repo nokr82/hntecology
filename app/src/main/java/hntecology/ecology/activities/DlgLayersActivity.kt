@@ -73,12 +73,12 @@ class DlgLayersActivity : Activity() {
         lsmdTV.setOnClickListener {
             lsmdTV.setTextColor(Color.BLUE)
             bioTV.setTextColor(Color.BLACK)
-            loadData("lsmd")
+            loadData()
         }
         bioTV.setOnClickListener {
             lsmdTV.setTextColor(Color.BLACK)
             bioTV.setTextColor(Color.BLUE)
-            loadData("biotope")
+            loadData()
         }
 
         bioTV.callOnClick()
@@ -111,7 +111,7 @@ class DlgLayersActivity : Activity() {
 
 
 
-    fun loadData(s_type:String) {
+    fun loadData() {
 
         // select
         val dataList:Array<String> = arrayOf("file_name", "layer_name","min_scale","max_scale","type","added","grop_id");
@@ -124,7 +124,7 @@ class DlgLayersActivity : Activity() {
 
             val zoom = intent.getFloatExtra("zoom", 0.0F)
 
-            if(zoom > layerModel.min_scale && zoom < layerModel.max_scale&&layerModel.type==s_type) {
+            if(zoom > layerModel.min_scale && zoom < layerModel.max_scale) {
                 adapterData.add(layerModel)
 
                 // println("file_name ${layerModel.file_name}")

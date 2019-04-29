@@ -933,7 +933,11 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
                         }
                         biotope_attribute.BIO_TYPE = bioTV.text.toString()
-                        biotope_attribute.IMPERV = impET.text.toString().toFloat()
+
+                        if (impET.text.isNotEmpty()) {
+                            biotope_attribute.IMPERV = impET.text.toString().toFloat()
+                        }
+
 //                        biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
 //                        if (prjnameTV.length() > 0){
 //                            biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
@@ -1663,7 +1667,9 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
 
             biotope_attribute.BIO_TYPE = bioTV.text.toString()
-            biotope_attribute.IMPERV = impET.text.toString().toFloat()
+            if (impET.text.isNotEmpty()) {
+                biotope_attribute.IMPERV = impET.text.toString().toFloat()
+            }
 
             if (etGV_RATEET.text.isNotEmpty()) {
 
@@ -1787,7 +1793,9 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 biotope_attribute.LANDUSE = biotope
             }
             biotope_attribute.BIO_TYPE = bioTV.text.toString()
-            biotope_attribute.IMPERV = impET.text.toString().toFloat()
+            if (impET.text.isNotEmpty()) {
+                biotope_attribute.IMPERV = impET.text.toString().toFloat()
+            }
             biotope_attribute.GEOM = geom
             biotope_attribute.UFID = ufidTV.text.toString()
             biotope_attribute.CHECK = checkTV.text.toString()

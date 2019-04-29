@@ -2,6 +2,7 @@ package hntecology.ecology.base
 
 import android.content.Context
 import android.graphics.*
+import android.util.Log
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import kotlin.math.roundToInt
@@ -17,8 +18,11 @@ object PolygonUtils {
         // text size in pixels
         paint1.textSize = (14 * scale).roundToInt().toFloat()
         paint1.getTextBounds(label, 0, label.length, bounds1)
-
+        Log.d("너비",label)
+        Log.d("너비",bounds1.toString())
         val conf = Bitmap.Config.ARGB_8888
+        Log.d("너비",bounds1.width().toString())
+        Log.d("너비",bounds1.height().toString())
         val bitmap = Bitmap.createBitmap(bounds1.width(), bounds1.height(), conf)
 
         val x = 0.toFloat()

@@ -1,14 +1,27 @@
 package hntecology.ecology.activities
 
+import android.graphics.Color
 import android.os.Environment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.Polygon
+import android.util.Log
+import com.google.android.gms.maps.model.*
+import hntecology.ecology.activities.MainActivity.Companion.LAYER_BIOTOPE
+import hntecology.ecology.activities.MainActivity.Companion.LAYER_BIRDS
+import hntecology.ecology.activities.MainActivity.Companion.LAYER_FISH
+import hntecology.ecology.activities.MainActivity.Companion.LAYER_FLORA
+import hntecology.ecology.activities.MainActivity.Companion.LAYER_FLORA2
+import hntecology.ecology.activities.MainActivity.Companion.LAYER_INSECT
+import hntecology.ecology.activities.MainActivity.Companion.LAYER_MAMMALIA
+import hntecology.ecology.activities.MainActivity.Companion.LAYER_REPTILIA
+import hntecology.ecology.activities.MainActivity.Companion.LAYER_STOCKMAP
+import hntecology.ecology.activities.MainActivity.Companion.LAYER_WAYPOINT
+import hntecology.ecology.activities.MainActivity.Companion.LAYER_ZOOBENTHOS
+import hntecology.ecology.base.PolygonUtils
 import org.gdal.ogr.Feature
 import org.gdal.ogr.FieldDefn
 import org.gdal.ogr.Geometry
 import org.gdal.ogr.ogr
 import org.gdal.osr.SpatialReference
+import org.json.JSONObject
 import java.io.File
 import java.util.*
 
@@ -346,7 +359,6 @@ object Exporter {
 
                 // Set the feature geometry using the point
                 feature.SetGeometry(poly)
-
                 // Create the feature in the layer (shapefile)
                 val created = layer.CreateFeature(feature)
                 println("----exportcreated ----- $created")
@@ -429,7 +441,5 @@ object Exporter {
         data_source.delete()
 
     }
-
-
 
 }

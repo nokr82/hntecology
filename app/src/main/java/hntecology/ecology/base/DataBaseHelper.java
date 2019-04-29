@@ -583,7 +583,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,ENDANGERED,OBS_TY,OBS_TY_ETC,INDI_CNT";
         query += ",OB_PT_CHAR,UNUS_NOTE,STANDARD,GPS_LAT,GPS_LON,UN_SPEC,UN_SPEC_RE,TR_EASY,TR_EASY_RE,TEMP_YN,CONF_MOD,GEOM";
         query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC,MJ_ACT_PR";
-        query += ");";
+        query += ")";
         query += " values (";
         query += " '" + mammal_attribute.getGROP_ID() + "'";
         query += ", '" + mammal_attribute.getPRJ_NAME() + "'";
@@ -668,7 +668,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + insect_attribute.getGPS_LON() + "'";
         query += ", '" + insect_attribute.getTEMP_YN() + "'";
         query += ", '" + insect_attribute.getCONF_MOD() + "'";
-        query += ", '" + insect_attribute.getGEOM() + "'";
         query += ", '" + insect_attribute.getGEOM() + "'";
         query += ", '" + insect_attribute.getGPSLAT_DEG() + "'";
         query += ", '" + insect_attribute.getGPSLAT_MIN() + "'";
@@ -919,7 +918,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void insertzoobenthos(Zoobenthos_Attribute Zoobenthos_Attribute){
         String query = "INSERT INTO ZoobenthosAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_MEAN,INV_PERSON,MAP_SYS_NM,COORD_N_D,COORD_N_M,COORD_N_S,COORD_E_D,COORD_E_M,COORD_E_S";
-        query += ",INV_DT,NUM,INV_TM,WEATHER,INV_TOOL,AD_DIST_NM,RIV_W1,RIV_W2,RUN_RIV_W1";
+        query += ",INV_DT,NUM,INV_TM,WEATHER,INV_TOOL,AD_DIST_NM,RIV_W,RIV_W2,RUN_RIV_W";
         query += ",RUN_RIV_W2,WATER_DEPT,HAB_TY,HAB_TY_ETC,FILT_AREA,TEMPERATUR,WATER_TEM,TURBIDITY,MUD,SAND,COR_SAND,GRAVEL,STONE_S";
         query += ",STONE_B,CONCRETE,BED_ROCK,BANK_L,BANK_L_ETC,BANK_R,BANK_R_ETC,BAS_L,BAS_L_ETC,BAS_R,BAS_R_ETC,DIST_CAU,DIST_ETC";
         query += ",UNUS_NOTE,GPS_LAT,GPS_LON,SPEC_NM,FAMI_NM,SCIEN_NM,TEMP_YN,CONF_MOD,GEOM,ZOO_CNT)";
@@ -943,9 +942,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + Zoobenthos_Attribute.getWEATHER() + "'";
         query += ", '" + Zoobenthos_Attribute.getINV_TOOL() + "'";
         query += ", '" + Zoobenthos_Attribute.getAD_DIST_NM() + "'";
-        query += ", '" + Zoobenthos_Attribute.getRIV_W1() + "'";
+        query += ", '" + Zoobenthos_Attribute.getRIV_W() + "'";
         query += ", '" + Zoobenthos_Attribute.getRIV_W2() + "'";
-        query += ", '" + Zoobenthos_Attribute.getRUN_RIV_W1() + "'";
+        query += ", '" + Zoobenthos_Attribute.getRUN_RIV_W() + "'";
         query += ", '" + Zoobenthos_Attribute.getRUN_RIV_W2() + "'";
         query += ", '" + Zoobenthos_Attribute.getWATER_DEPT() + "'";
         query += ", '" + Zoobenthos_Attribute.getHAB_TY() + "'";
@@ -1659,9 +1658,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",WEATHER='" + Zoobenthos_Attribute.getWEATHER() + "'"
                 + ",INV_TOOL='" + Zoobenthos_Attribute.getINV_TOOL() + "'"
                 + ",AD_DIST_NM='" + Zoobenthos_Attribute.getAD_DIST_NM() + "'"
-                + ",RIV_W1='" + Zoobenthos_Attribute.getRIV_W1() + "'"
+                + ",RIV_W='" + Zoobenthos_Attribute.getRIV_W() + "'"
                 + ",RIV_W2='" + Zoobenthos_Attribute.getRIV_W2() + "'"
-                + ",RUN_RIV_W1='" + Zoobenthos_Attribute.getRUN_RIV_W1() + "'"
+                + ",RUN_RIV_W='" + Zoobenthos_Attribute.getRUN_RIV_W() + "'"
                 + ",RUN_RIV_W2='" + Zoobenthos_Attribute.getRUN_RIV_W2() + "'"
                 + ",WATER_DEPT='" + Zoobenthos_Attribute.getWATER_DEPT() + "'"
                 + ",HAB_TY='" + Zoobenthos_Attribute.getHAB_TY() + "'"
@@ -1954,9 +1953,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",WEATHER='" + Zoobenthos_Attribute.getWEATHER() + "'"
                 + ",INV_TOOL='" + Zoobenthos_Attribute.getINV_TOOL() + "'"
                 + ",AD_DIST_NM='" + Zoobenthos_Attribute.getAD_DIST_NM() + "'"
-                + ",RIV_W1='" + Zoobenthos_Attribute.getRIV_W1() + "'"
+                + ",RIV_W='" + Zoobenthos_Attribute.getRIV_W() + "'"
                 + ",RIV_W2='" + Zoobenthos_Attribute.getRIV_W2() + "'"
-                + ",RUN_RIV_W1='" + Zoobenthos_Attribute.getRUN_RIV_W1() + "'"
+                + ",RUN_RIV_W='" + Zoobenthos_Attribute.getRUN_RIV_W() + "'"
                 + ",RUN_RIV_W2='" + Zoobenthos_Attribute.getRUN_RIV_W2() + "'"
                 + ",WATER_DEPT='" + Zoobenthos_Attribute.getWATER_DEPT() + "'"
                 + ",HAB_TY='" + Zoobenthos_Attribute.getHAB_TY() + "'"

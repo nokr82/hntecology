@@ -369,11 +369,11 @@
                         style="@style/BiotopeTextView"
                         android:gravity="center"
                         />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="/"
-                        android:textSize="20dp"/>
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="/"-->
+                        <!--android:textSize="20dp"/>-->
                     <TextView
                         android:visibility="gone"
                         android:layout_width="0dp"
@@ -675,6 +675,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:text="0"
                     style="@style/BiotopeTextView"
                     android:inputType="numberDecimal"
                     android:singleLine="true"
@@ -685,6 +686,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:text="0"
                     android:inputType="numberDecimal"
                     android:singleLine="true"
                     style="@style/BiotopeTextView"
@@ -697,6 +699,7 @@
                     android:layout_weight="1"
                     android:inputType="numberDecimal"
                     android:singleLine="true"
+                    android:text="0"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -708,6 +711,7 @@
                     android:layout_weight="1"
                     android:inputType="numberDecimal"
                     android:singleLine="true"
+                    android:text="0"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
@@ -718,6 +722,7 @@
                     android:layout_weight="1"
                     android:inputType="numberDecimal"
                     android:singleLine="true"
+                    android:text="0"
                     style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />

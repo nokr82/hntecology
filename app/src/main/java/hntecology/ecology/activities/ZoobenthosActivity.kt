@@ -486,7 +486,7 @@ class ZoobenthosActivity : Activity() {
 
                 var zoo: Zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                         data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getInt(20), data.getInt(21), data.getInt(22)
+                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21), data.getInt(22)
                         , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
                         , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
                         , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55)
@@ -513,7 +513,7 @@ class ZoobenthosActivity : Activity() {
 
                 var zoo: Zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                         data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getInt(20), data.getInt(21), data.getInt(22)
+                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21), data.getInt(22)
                         , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
                         , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
                         , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55),data.getString(56)
@@ -540,10 +540,18 @@ class ZoobenthosActivity : Activity() {
                 weatherTV.setText(zoo.WEATHER)
                 invtoolET.setText(zoo.INV_TOOL)
                 addistnmET.setText(zoo.AD_DIST_NM)
-                rivw1ET.setText(zoo.RIV_W1.toString())
-                rivw2ET.setText(zoo.RIV_W2.toString())
-                runrivw1ET.setText(zoo.RUN_RIV_W1.toString())
-                runrivw2ET.setText(zoo.RUN_RIV_W2.toString())
+
+               var rivs =  zoo.RIV_W.toString().split("~")
+                if (rivs.size>1){
+                    rivw1ET.setText(rivs[0])
+                    rivw2ET.setText(rivs[1])
+                }
+                var run_rivs =  zoo.RUN_RIV_W.toString().split("~")
+                if (run_rivs.size>1){
+                    runrivw1ET.setText(run_rivs[0])
+                    runrivw2ET.setText(run_rivs[1])
+                }
+             
                 waterdeptET.setText(zoo.WATER_DEPT.toString())
                 habtyetcTV.setText(zoo.HAB_TY)
                 if (zoo.HAB_TY_ETC != null && zoo.HAB_TY_ETC != "") {
@@ -741,14 +749,14 @@ class ZoobenthosActivity : Activity() {
                         zoobenthos_Attribute.WEATHER = weatherTV.text.toString()
                         zoobenthos_Attribute.INV_TOOL = invtoolET.text.toString()
                         zoobenthos_Attribute.AD_DIST_NM = addistnmET.text.toString()
-                        if (rivw1ET.text.isNotEmpty()) {
-                            zoobenthos_Attribute.RIV_W1 = rivw1ET.text.toString().toInt()
+                        if (rivw1ET.text.isNotEmpty()&&rivw2ET.text.isNotEmpty()) {
+                            zoobenthos_Attribute.RIV_W = rivw1ET.text.toString()+"~"+rivw2ET.text.toString()
                         }
                         if (rivw2ET.text.isNotEmpty()) {
                             zoobenthos_Attribute.RIV_W2 = rivw2ET.text.toString().toInt()
                         }
-                        if (runrivw1ET.text.isNotEmpty()) {
-                            zoobenthos_Attribute.RUN_RIV_W1 = runrivw1ET.text.toString().toInt()
+                        if (runrivw1ET.text.isNotEmpty()&&runrivw2ET.text.isNotEmpty()) {
+                            zoobenthos_Attribute.RUN_RIV_W = runrivw1ET.text.toString()+"~"+runrivw2ET.text.toString()
                         }
                         if (runrivw2ET.text.isNotEmpty()) {
                             zoobenthos_Attribute.RUN_RIV_W2 = runrivw2ET.text.toString().toInt()
@@ -819,7 +827,6 @@ class ZoobenthosActivity : Activity() {
 
                         if (chkdata) {
 
-                            Log.d("책" "책")
                             if (pk != null) {
 
                                 val CONF_MOD = confmodTV.text.toString()
@@ -877,7 +884,6 @@ class ZoobenthosActivity : Activity() {
 
                         }
                         else {
-                            Log.d("저장" "저장")
                             dbManager!!.insertzoobenthos(zoobenthos_Attribute);
                         }
 
@@ -919,7 +925,7 @@ class ZoobenthosActivity : Activity() {
 
                                     zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                             data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getInt(20), data.getInt(21), data.getInt(22)
+                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21), data.getInt(22)
                                             , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
                                             , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
                                             , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55)
@@ -976,7 +982,7 @@ class ZoobenthosActivity : Activity() {
 
                                         var zoo: Zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                                 data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                                                , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getInt(20), data.getInt(21), data.getInt(22)
+                                                , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21), data.getInt(22)
                                                 , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
                                                 , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
                                                 , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50)
@@ -1047,7 +1053,7 @@ class ZoobenthosActivity : Activity() {
 
                                     var zoo: Zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                             data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getInt(20), data.getInt(21), data.getInt(22)
+                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21), data.getInt(22)
                                             , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
                                             , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
                                             , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55)
@@ -1106,7 +1112,7 @@ class ZoobenthosActivity : Activity() {
 
                             var zoo: Zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                     data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getInt(20), data.getInt(21), data.getInt(22)
+                                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21), data.getInt(22)
                                     , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
                                     , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
                                     , data.getString(45), data.getString(46), data.getString(47), data.getString(48)
@@ -1212,14 +1218,14 @@ class ZoobenthosActivity : Activity() {
             zoobenthos_Attribute.WEATHER = weatherTV.text.toString()
             zoobenthos_Attribute.INV_TOOL = invtoolET.text.toString()
             zoobenthos_Attribute.AD_DIST_NM = addistnmET.text.toString()
-            if (rivw1ET.text.isNotEmpty()) {
-                zoobenthos_Attribute.RIV_W1 = rivw1ET.text.toString().toInt()
+            if (rivw1ET.text.isNotEmpty()&&rivw2ET.text.isNotEmpty()) {
+                zoobenthos_Attribute.RIV_W = rivw1ET.text.toString()+"~"+rivw2ET.text.toString()
             }
             if (rivw2ET.text.isNotEmpty()) {
                 zoobenthos_Attribute.RIV_W2 = rivw2ET.text.toString().toInt()
             }
-            if (runrivw1ET.text.isNotEmpty()) {
-                zoobenthos_Attribute.RUN_RIV_W1 = runrivw1ET.text.toString().toInt()
+            if (runrivw1ET.text.isNotEmpty()&&runrivw2ET.text.isNotEmpty()) {
+                zoobenthos_Attribute.RUN_RIV_W = runrivw1ET.text.toString()+"~"+runrivw2ET.text.toString()
             }
             if (runrivw2ET.text.isNotEmpty()) {
                 zoobenthos_Attribute.RUN_RIV_W2 = runrivw2ET.text.toString().toInt()
@@ -2131,7 +2137,7 @@ class ZoobenthosActivity : Activity() {
 
             var zoo: Zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                     data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getInt(20), data.getInt(21), data.getInt(22)
+                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21), data.getInt(22)
                     , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
                     , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
                     , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49)

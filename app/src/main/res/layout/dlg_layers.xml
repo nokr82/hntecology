@@ -12,44 +12,46 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="21.5dp"
         android:layout_marginLeft="13dp"
-        android:layout_marginRight="13dp"
         android:layout_marginTop="15dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginBottom="21.5dp"
         android:gravity="center"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
                 android:id="@+id/allclickTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="전체선택"
-                android:textSize="25.2sp"
-                android:textColor="#333333"
                 android:layout_alignParentLeft="true"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="5dp"
+                android:text="전체선택"
+                android:textColor="#333333"
+                android:textSize="25.2sp" />
+
             <TextView
                 android:id="@+id/dlgTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="레이어 목록"
                 android:textColor="#333333"
                 android:textSize="25.2sp"
-                android:textStyle="bold"
-                android:text="레이어 목록"
-                android:layout_centerInParent="true"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/dlgClick"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="확인"
-                android:textSize="25.2sp"
-                android:textColor="#333333"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="5dp"
+                android:text="확인"
+                android:textColor="#333333"
+                android:textSize="25.2sp" />
 
 
         </RelativeLayout>
@@ -58,58 +60,37 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
                 android:id="@+id/bioTV"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textStyle="bold"
+                android:text="동선택"
                 android:textSize="18dp"
-                android:layout_height="wrap_content"
-                android:text="동선택"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/lsmdTV"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textStyle="bold"
+                android:text="지적선택"
                 android:textSize="18dp"
-                android:layout_height="wrap_content"
-                android:text="지적선택"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 
-
-        <FrameLayout
+        <GridView
+            android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginTop="15dp">
-
-                <GridView
-                    android:id="@+id/listView"
-                    android:layout_width="0dp"
-                    android:numColumns="3"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:divider="@null" />
-             </LinearLayout>
-            <ProgressBar
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-
-                android:id="@+id/dlg_probar"
-                android:visibility="gone"
-                />
-        </FrameLayout>
-
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:divider="@null"
+            android:numColumns="3" />
     </LinearLayout>
+
 
 </LinearLayout>

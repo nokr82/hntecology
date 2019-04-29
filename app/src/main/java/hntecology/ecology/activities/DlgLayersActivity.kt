@@ -73,12 +73,12 @@ class DlgLayersActivity : Activity() {
         lsmdTV.setOnClickListener {
             lsmdTV.setTextColor(Color.BLUE)
             bioTV.setTextColor(Color.BLACK)
-            loadData()
+            loadData(2)
         }
         bioTV.setOnClickListener {
             lsmdTV.setTextColor(Color.BLACK)
             bioTV.setTextColor(Color.BLUE)
-            loadData()
+            loadData(1)
         }
 
         bioTV.callOnClick()
@@ -111,7 +111,7 @@ class DlgLayersActivity : Activity() {
 
 
 
-    fun loadData() {
+    fun loadData(type:Int) {
 
         // select
         val dataList:Array<String> = arrayOf("file_name", "layer_name","min_scale","max_scale","type","added","grop_id");
@@ -124,11 +124,17 @@ class DlgLayersActivity : Activity() {
 
             val zoom = intent.getFloatExtra("zoom", 0.0F)
 
-            if(zoom > layerModel.min_scale && zoom < layerModel.max_scale) {
-                adapterData.add(layerModel)
 
-                // println("file_name ${layerModel.file_name}")
+            if (type == 1){
+                if(layerModel.type !="lsmd" ) {
+                    adapterData.add(layerModel)
+                }
+            }else{
+                if(layerModel.type =="lsmd") {
+                    adapterData.add(layerModel)
+                }
             }
+
             Log.d("데이터", adapterData.size.toString())
             if(intent.getSerializableExtra("layerFileName") != null){
                 var filename: ArrayList<String> = intent.getSerializableExtra("layerFileName") as ArrayList<String>

@@ -56,6 +56,14 @@ class ZoobenthosActivity : Activity() {
     val SET_DIST_CAU = 6
     val SET_ZOOBENTHOS = 7
 
+    val SET_INPUT = 2007
+    val SET_INPUT2 = 1080
+    val SET_INPUT3 = 1081
+    val SET_INPUT4 = 1082
+    val SET_INPUT5 = 1083
+    val SET_INPUT6 = 1084
+
+
     lateinit var context: Context;
 
     var userName = "";
@@ -216,10 +224,10 @@ class ZoobenthosActivity : Activity() {
 
             println("lat $lat log $log")
 
-            var result = convert(lat.toDouble())
-            var logresult = logconvert(log.toDouble())
 
-            println("result ----- $result")
+            convert(lat.toDouble())
+            logconvert(log.toDouble())
+
 
         }
 
@@ -811,7 +819,7 @@ class ZoobenthosActivity : Activity() {
 
                         if (chkdata) {
 
-                            Log.d("책","책")
+                            Log.d("책" "책")
                             if (pk != null) {
 
                                 val CONF_MOD = confmodTV.text.toString()
@@ -869,7 +877,7 @@ class ZoobenthosActivity : Activity() {
 
                         }
                         else {
-                            Log.d("저장","저장")
+                            Log.d("저장" "저장")
                             dbManager!!.insertzoobenthos(zoobenthos_Attribute);
                         }
 
@@ -1552,7 +1560,36 @@ class ZoobenthosActivity : Activity() {
         if (resultCode == Activity.RESULT_OK) {
 
             when (requestCode) {
-
+                SET_INPUT -> {
+                    var name = data!!.getStringExtra("name")
+                    var text = Utils.getString(habtyetcTV)
+                    habtyetcTV.text = text+" "+name
+                }
+                SET_INPUT2 -> {
+                    var name = data!!.getStringExtra("name")
+                    var text = Utils.getString(banklTV)
+                    banklTV.text = text+" "+name
+                }
+                SET_INPUT3 -> {
+                    var name = data!!.getStringExtra("name");
+                    var text = Utils.getString(bankrTV)
+                    bankrTV.text = name
+                }
+                SET_INPUT4 -> {
+                    var name = data!!.getStringExtra("name")
+                    var text = Utils.getString(baslTV)
+                    baslTV.text = text+" "+name
+                }
+                SET_INPUT5 -> {
+                    var name = data!!.getStringExtra("name")
+                    var text = Utils.getString(distcauTV)
+                    distcauTV.text = text+" "+name
+                }
+                SET_INPUT6 -> {
+                    var name = data!!.getStringExtra("name")
+                    var text = Utils.getString(basrTV)
+                    basrTV.text = text+" "+name
+                }
                 FROM_CAMERA -> {
 
                     if (resultCode == -1) {
@@ -1713,9 +1750,8 @@ class ZoobenthosActivity : Activity() {
                             for (i in 0..item.size - 1) {
                                 title += item.get(i).title + " "
                                 if (item.get(i).title == "기타") {
-                                    habtyetcRL.visibility = View.VISIBLE
-                                    habtyetcTV.visibility = View.GONE
-                                    title += ""
+                                    val intent = Intent(context, DlgInputActivity::class.java)
+                                    startActivityForResult(intent, SET_INPUT)
                                 }
                             }
                         }
@@ -1738,9 +1774,9 @@ class ZoobenthosActivity : Activity() {
                             for (i in 0..item.size - 1) {
                                 title += item.get(i).title + " "
                                 if (item.get(i).title == "기타") {
-                                    banklRL.visibility = View.VISIBLE
-                                    banklTV.visibility = View.GONE
-                                    title += ""
+                                    val intent = Intent(context, DlgInputActivity::class.java)
+
+                                    startActivityForResult(intent, SET_INPUT2)
                                 }
                             }
                         }
@@ -1764,9 +1800,9 @@ class ZoobenthosActivity : Activity() {
                             for (i in 0..item.size - 1) {
                                 title += item.get(i).title + " "
                                 if (item.get(i).title == "기타") {
-                                    bankrRL.visibility = View.VISIBLE
-                                    bankrTV.visibility = View.GONE
-                                    title += ""
+                                    val intent = Intent(context, DlgInputActivity::class.java)
+
+                                    startActivityForResult(intent, SET_INPUT3)
                                 }
                             }
                         }
@@ -1790,9 +1826,8 @@ class ZoobenthosActivity : Activity() {
                             for (i in 0..item.size - 1) {
                                 title += item.get(i).title + " "
                                 if (item.get(i).title == "기타") {
-                                    baslRL.visibility = View.VISIBLE
-                                    baslTV.visibility = View.GONE
-                                    title += ""
+                                    val intent = Intent(context, DlgInputActivity::class.java)
+                                    startActivityForResult(intent, SET_INPUT4)
                                 }
                             }
                         }
@@ -1816,9 +1851,8 @@ class ZoobenthosActivity : Activity() {
                             for (i in 0..item.size - 1) {
                                 title += item.get(i).title + " "
                                 if (item.get(i).title == "기타") {
-                                    basrRL.visibility = View.VISIBLE
-                                    basrTV.visibility = View.GONE
-                                    title += ""
+                                    val intent = Intent(context, DlgInputActivity::class.java)
+                                    startActivityForResult(intent, SET_INPUT6)
                                 }
                             }
                         }
@@ -1842,9 +1876,9 @@ class ZoobenthosActivity : Activity() {
                             for (i in 0..item.size - 1) {
                                 title += item.get(i).title + " "
                                 if (item.get(i).title == "기타") {
-                                    distcauRL.visibility = View.VISIBLE
-                                    distcauTV.visibility = View.GONE
-                                    title += ""
+                                    val intent = Intent(context, DlgInputActivity::class.java)
+
+                                    startActivityForResult(intent, SET_INPUT5)
                                 }
 
                                 if (item.get(i).title == "없음") {
@@ -2244,5 +2278,9 @@ class ZoobenthosActivity : Activity() {
 
         return s
     }
+
+
+
+
 
 }

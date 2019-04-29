@@ -634,7 +634,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO insectAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,OBS_STAT,OBS_ST_ETC";
-        query += ",USE_TAR,USER_TA_ETC,MJ_ACT,MJ_ACT_ETC,INV_MEAN,INV_MN_ETC,UNUS_NOTE,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM)";
+        query += ",USE_TAR,USER_TA_ETC,MJ_ACT,MJ_ACT_ETC,INV_MEAN,INV_MN_ETC,UNUS_NOTE,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM" ;
+        query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC";
+        query +=  ")";
 
         query += " values (";
         query += " '" + insect_attribute.getGROP_ID() + "'";
@@ -667,6 +669,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + insect_attribute.getTEMP_YN() + "'";
         query += ", '" + insect_attribute.getCONF_MOD() + "'";
         query += ", '" + insect_attribute.getGEOM() + "'";
+        query += ", '" + insect_attribute.getGEOM() + "'";
+        query += ", '" + insect_attribute.getGPSLAT_DEG() + "'";
+        query += ", '" + insect_attribute.getGPSLAT_MIN() + "'";
+        query += ", '" + insect_attribute.getGPSLAT_SEC() + "'";
+        query += ", '" + insect_attribute.getGPSLON_DEG() + "'";
+        query += ", '" + insect_attribute.getGPSLON_MIN() + "'";
+        query += ", '" + insect_attribute.getGPSLON_SEC() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -679,8 +688,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_TM,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,MID_RAGE,CODE_NUM,RIVER_NUM,RIVER_NM,NET_CNT,NET_MIN,AD_DIST_NM,GPS_LAT";
         query += ",GPS_LON,COLL_TOOL,COLL_TOOL2,STREAM_W,WATER_W,WATER_D,WATER_CUR,RIV_STR,RIV_STR_IN,BOULDER,COBBLE,PEBBLE,GRAVEL,SEND,RIV_FORM";
-        query += ",NUM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,UNIDENT,RIV_FM_CH,UN_FISH_CH,TEMP_YN,CONF_MOD,GEOM)";
-
+        query += ",NUM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,UNIDENT,RIV_FM_CH,UN_FISH_CH,TEMP_YN,CONF_MOD,GEOM";
+        query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC";
+        query += ",RIVER_BED,COLL_TIME";
+        query += ")";
         query += " values (";
         query += " '" + fish_attribute.getGROP_ID() + "'";
         query += ", '" + fish_attribute.getPRJ_NAME() + "'";
@@ -727,6 +738,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + fish_attribute.getTEMP_YN() + "'";
         query += ", '" + fish_attribute.getCONF_MOD() + "'";
         query += ", '" + fish_attribute.getGEOM() + "'";
+        query += ", '" + fish_attribute.getGPSLAT_DEG() + "'";
+        query += ", '" + fish_attribute.getGPSLAT_MIN() + "'";
+        query += ", '" + fish_attribute.getGPSLAT_SEC() + "'";
+        query += ", '" + fish_attribute.getGPSLON_DEG() + "'";
+        query += ", '" + fish_attribute.getGPSLON_MIN() + "'";
+        query += ", '" + fish_attribute.getGPSLON_SEC() + "'";
+        query += ", '" + fish_attribute.getRIVER_BED() + "'";
+        query += ", '" + fish_attribute.getCOLL_TIME() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -738,7 +757,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO floraAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,FLORE_YN,PLANT_YN,HAB_STAT";
-        query += ",HAB_ETC,COL_IN_CNT,THRE_CAU,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM)";
+        query += ",HAB_ETC,COL_IN_CNT,THRE_CAU,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM";
+        query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC";
+        query +=")";
 
         query += " values (";
         query += " '" + flora_Attribute.getGROP_ID() + "'";
@@ -767,6 +788,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + flora_Attribute.getTEMP_YN() + "'";
         query += ", '" + flora_Attribute.getCONF_MOD() + "'";
         query += ", '" + flora_Attribute.getGEOM() + "'";
+        query += ", '" + flora_Attribute.getGPSLAT_DEG() + "'";
+        query += ", '" + flora_Attribute.getGPSLAT_MIN() + "'";
+        query += ", '" + flora_Attribute.getGPSLAT_SEC() + "'";
+        query += ", '" + flora_Attribute.getGPSLON_DEG() + "'";
+        query += ", '" + flora_Attribute.getGPSLON_MIN() + "'";
+        query += ", '" + flora_Attribute.getGPSLON_SEC() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -1001,7 +1028,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public void insertWayPoint(Waypoint waypoint) {
         String query = "INSERT INTO Waypoint";
-        query += "(GROP_ID,INV_REGION,INV_DT,INV_TM,NUM,INV_PERSON,PRJ_NAME,GPS_LAT,GPS_LON,MEMO,GEOM)";
+        query += "(GROP_ID,INV_REGION,INV_DT,INV_TM,NUM,INV_PERSON,PRJ_NAME,GPS_LAT,GPS_LON,MEMO,GEOM,)";
 
 
         query += " values (";
@@ -1505,7 +1532,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",GPS_LAT='" + insect_attribute.getGPS_LAT() + "'"
                 + ",GPS_LON='" + insect_attribute.getGPS_LON() + "'"
                 + ",TEMP_YN='" + insect_attribute.getTEMP_YN() + "'"
-                + ",CONF_MOD='" + insect_attribute.getCONF_MOD() + "'"+
+                + ",CONF_MOD='" + insect_attribute.getCONF_MOD() + "'"
+                + ",GPSLAT_DEG='" + insect_attribute.getGPSLAT_DEG() + "'"
+                + ",GPSLAT_MIN='" + insect_attribute.getGPSLAT_MIN() + "'"
+                + ",GPSLAT_SEC='" + insect_attribute.getGPSLAT_SEC() + "'"
+                + ",GPSLON_DEG='" + insect_attribute.getGPSLON_DEG() + "'"
+                + ",GPSLON_MIN='" + insect_attribute.getGPSLON_MIN() + "'"
+                + ",GPSLON_SEC='" + insect_attribute.getGPSLON_SEC() + "'"+
+
                 "where id = '" + pk + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1557,8 +1591,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",RIV_FM_CH='" + fish_attribute.getRIV_FM_CH() + "'"
                 + ",UN_FISH_CH='" + fish_attribute.getUN_FISH_CH() + "'"
                 + ",TEMP_YN='" + fish_attribute.getTEMP_YN() + "'"
-                + ",TEMP_YN='" + fish_attribute.getCONF_MOD() + "'"+
-
+                + ",CONF_MOD='" + fish_attribute.getCONF_MOD() + "'"
+                + ",RIVER_BAD='" + fish_attribute.getRIVER_BED() + "'"
+                + ",COLL_TIME='" + fish_attribute.getCOLL_TIME() + "'"+
                 "where id = '" + pk + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1591,8 +1626,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",GPS_LAT='" + flora_attribute.getGPS_LAT() + "'"
                 + ",GPS_LON='" + flora_attribute.getGPS_LON() + "'"
                 + ",TEMP_YN='" + flora_attribute.getTEMP_YN() + "'"
-                + ",CONF_MOD='" + flora_attribute.getCONF_MOD() + "'"+
-
+                + ",CONF_MOD='" + flora_attribute.getCONF_MOD() + "'"
+                + ",GPSLAT_DEG='" + flora_attribute.getGPSLAT_DEG() + "'"
+                + ",GPSLAT_MIN='" + flora_attribute.getGPSLAT_MIN() + "'"
+                + ",GPSLAT_SEC='" + flora_attribute.getGPSLAT_SEC() + "'"
+                + ",GPSLON_DEG='" + flora_attribute.getGPSLON_DEG() + "'"
+                + ",GPSLON_MIN='" + flora_attribute.getGPSLON_MIN() + "'"
+                + ",GPSLON_SEC='" + flora_attribute.getGPSLON_SEC() + "'"+
                 "where id = '" + pk + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1883,7 +1923,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",WIND='" + flora_attribute.getWIND() + "'"
                 + ",WIND_DIRE='" + flora_attribute.getWIND_DIRE() + "'"
                 + ",TEMPERATUR='" + flora_attribute.getTEMPERATUR() + "'"
-                + ",ETC='" + flora_attribute.getETC() + "'"+
+                + ",ETC='" + flora_attribute.getETC() + "'"
+                + ",GPSLAT_DEG='" + flora_attribute.getGPSLAT_DEG() + "'"
+                + ",GPSLAT_MIN='" + flora_attribute.getGPSLAT_MIN() + "'"
+                + ",GPSLAT_SEC='" + flora_attribute.getGPSLAT_SEC() + "'"
+                + ",GPSLON_DEG='" + flora_attribute.getGPSLON_DEG() + "'"
+                + ",GPSLON_MIN='" + flora_attribute.getGPSLON_MIN() + "'"
+                + ",GPSLON_SEC='" + flora_attribute.getGPSLON_SEC() + "'"+
 
                 "where GROP_ID = '" + GROP_ID + "'";
         SQLiteDatabase db = getWritableDatabase();

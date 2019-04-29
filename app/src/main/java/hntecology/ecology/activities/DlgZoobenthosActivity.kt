@@ -3,8 +3,8 @@ package hntecology.ecology.activities
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ListView
 import hntecology.ecology.R
 import hntecology.ecology.adapter.DlgZoobenthosAdapter
@@ -134,11 +134,10 @@ class DlgZoobenthosActivity : Activity() {
             listdata1.add(alladd)
         }
 
-        listView1 = findViewById(R.id.list_view1)
 
         listAdapter = DlgZoobenthosAdapter(context, R.layout.item_layer ,listdata1);
 
-        listView1.adapter = listAdapter
+        list_view1.adapter = listAdapter
 
         selectLL.setOnClickListener {
 
@@ -157,27 +156,6 @@ class DlgZoobenthosActivity : Activity() {
             finish()
         }
 
-
-        listView1.setOnItemClickListener { adapterView, view, position, l ->
-
-            val data = listAdapter.getItem(position)
-
-            if(data.title == "기타") {
-                var intent = Intent();
-                intent.putExtra("title", listAdapter.getItem(position).title)
-                setResult(RESULT_OK, intent);
-                finish()
-            }
-
-            if(data.chkSelect == false){
-                data.chkSelect = true
-                listAdapter.notifyDataSetChanged()
-            }else {
-                data.chkSelect = false
-                listAdapter.notifyDataSetChanged()
-            }
-
-        }
 
     }
 }

@@ -139,7 +139,117 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="좌표"/>
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="N"/>
 
+                <TextView
+                    android:id="@+id/coordndET"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    style="@style/BiotopeTextView"
+                    android:inputType="numberDecimal"
+                    />
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="°"/>
+                <TextView
+                    android:id="@+id/coordnmET"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:inputType="numberDecimal"
+                    style="@style/BiotopeTextView"
+                    />
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="′"/>
+                <TextView
+                    android:id="@+id/coordnsET"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:maxLength="5"
+                    android:gravity="center"
+                    android:inputType="numberDecimal"
+                    style="@style/BiotopeTextView"
+                    />
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="″"/>
+
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="E"/>
+
+                <TextView
+                    android:id="@+id/coordedET"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:inputType="numberDecimal"
+                    style="@style/BiotopeTextView"
+                    />
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="°"/>
+                <TextView
+                    android:id="@+id/coordemET"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    style="@style/BiotopeTextView"
+                    android:inputType="numberDecimal"
+                    />
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="′"/>
+                <TextView
+                    android:id="@+id/coordesET"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:maxLength="5"
+                    android:gravity="center"
+                    style="@style/BiotopeTextView"
+                    android:inputType="numberDecimal"
+                    />
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="″"/>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -255,7 +365,7 @@
                         android:id="@+id/fishmidrageET"
                         android:background="@null"
                         android:layout_weight="1"
-                        android:hint="증군권역"
+                        android:hint="click"
                         style="@style/BiotopeTextView"
                         android:gravity="center"
                         />
@@ -265,6 +375,7 @@
                         android:text="/"
                         android:textSize="20dp"/>
                     <TextView
+                        android:visibility="gone"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:id="@+id/fishcodenumET"
@@ -354,7 +465,36 @@
                     android:hint="분(족대)"
                     />
             </LinearLayout>
-
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="채집도구"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/BiotopeTextView"
+                    android:inputType="numberDecimal"
+                    android:id="@+id/colltoolTV"
+                    android:gravity="center"
+                    android:hint="투망 (망목 9 x 9 mm),족대 (망목 4 x 4 mm)"
+                    />
+                <!--<TextView-->
+                <!--android:visibility="gone"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--style="@style/BiotopeTextView"-->
+                <!--android:inputType="numberDecimal"-->
+                <!--android:id="@+id/colltool2TV"-->
+                <!--android:gravity="center"-->
+                <!--android:hint="족대 (망목 4 x 4 mm)"-->
+                <!--/>-->
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -391,36 +531,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-                <TextView
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    style="@style/BiotopeTextView"
-                    android:text="채집도구"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:inputType="numberDecimal"
-                    android:id="@+id/colltoolTV"
-                    android:gravity="center"
-                    android:hint="투망 (망목 9 x 9 mm),족대 (망목 4 x 4 mm)"
-                    />
-                <TextView
-                    android:visibility="gone"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    style="@style/BiotopeTextView"
-                    android:inputType="numberDecimal"
-                    android:id="@+id/colltool2TV"
-                    android:gravity="center"
-                    android:hint="족대 (망목 4 x 4 mm)"
-                    />
-            </LinearLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
@@ -440,26 +551,26 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
-                    android:text="Stream width(m)"/>
+                    android:text="하천폭(m)"/>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
-                    android:text="Water width(m)"/>
+                    android:text="수폭(m)"/>
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
-                    android:text="Water depth(cm)"/>
+                    android:text="수심(cm)"/>
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     style="@style/BiotopeTextView"
-                    android:text="Water current(m/sec)"/>
+                    android:text="유속(m/sec)"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"

@@ -21,6 +21,8 @@ import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -42,12 +44,24 @@ import io.nlopez.smartlocation.location.config.LocationAccuracy
 import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
 import kotlinx.android.synthetic.main.activity_fish.*
+import kotlinx.android.synthetic.main.activity_fish.btnPIC_FOLDER
+import kotlinx.android.synthetic.main.activity_fish.btn_add
+import kotlinx.android.synthetic.main.activity_fish.confmodTV
+import kotlinx.android.synthetic.main.activity_fish.coordedET
+import kotlinx.android.synthetic.main.activity_fish.coordemET
+import kotlinx.android.synthetic.main.activity_fish.coordesET
+import kotlinx.android.synthetic.main.activity_fish.coordndET
+import kotlinx.android.synthetic.main.activity_fish.coordnmET
+import kotlinx.android.synthetic.main.activity_fish.coordnsET
+import kotlinx.android.synthetic.main.activity_fish.prjnameET
+import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class FishActivity : Activity() , OnLocationUpdatedListener {
 
@@ -104,6 +118,9 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
     var images_url_remove: ArrayList<String>? = null
     var images_id: ArrayList<Int>? = null
 
+    var values:ArrayList<Int>? = null
+    var values_name = ""
+
     var markerid : String? = null
 
     var dbmanager: DataBaseHelper? = null
@@ -140,6 +157,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         var timesplit = time.split(":")
         invtm = timesplit.get(0) + timesplit.get(1)
 
+
         fishinvtmTV.setText(time)
 
         var todays = today.split("-")
@@ -149,7 +167,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         for (i in 1 until todays.size){
             texttoday += todays.get(i)
         }
-
         fishnumTV.setText(texttoday + "1")
 
         addPicturesLL = findViewById(R.id.addPicturesLL)
@@ -208,7 +225,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             } catch (e:IOException) {
                 e.printStackTrace();
             }
-
+            convert(lat.toDouble())
+            logconvert(log.toDouble())
         }
 
         val dataList: Array<String> = arrayOf("*");
@@ -270,10 +288,11 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             while (data.moveToNext()) {
                 chkdata = true
                 var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                        data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
+                        data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getString(16), data.getString(17), data.getString(18),
                         data.getFloat(19), data.getFloat(20), data.getString(21),data.getString(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getInt(26), data.getString(27), data.getString(28),
                         data.getInt(29),data.getInt(30),data.getInt(31),data.getInt(32),data.getInt(33), data.getString(34), data.getInt(35), data.getString(36), data.getString(37), data.getString(38),
-                        data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45))
+                        data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45),data.getInt(46),data.getInt(47),data.getFloat(48)
+                        ,data.getInt(49), data.getInt(50), data.getFloat(51),data.getString(52), data.getString(53))
 
                 fishinvregionET.setText(fish_attribute.INV_REGION)
                 INV_REGION = fish_attribute.INV_REGION.toString()
@@ -299,8 +318,11 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 fishrivernumET.setText(fish_attribute.RIVER_NUM.toString())
                 fishrivernmET.setText(fish_attribute.RIVER_NM)
 
-                fishnetcntET.setText(fish_attribute.NET_CNT.toString())
-                fishnetminet.setText(fish_attribute.NET_MIN.toString())
+                if (fish_attribute.NET_CNT!!.toInt() > fish_attribute.NET_MIN!!.toInt()){
+                    fishnetcntET.setText(fish_attribute.NET_CNT.toString())
+                }else{
+                    fishnetminet.setText(fish_attribute.NET_MIN.toString())
+                }
 
                 fishstreamwET.setText(fish_attribute.STREAM_W.toString())
                 fishwaterwET.setText(fish_attribute.WATER_W.toString())
@@ -348,8 +370,14 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 fishgpslatTV.setText(fish_attribute.GPS_LAT.toString())
 
                 colltoolTV.setText(fish_attribute.COLL_TOOL.toString())
-                colltool2TV.setText(fish_attribute.COLL_TOOL2.toString())
+//                colltool2TV.setText(fish_attribute.COLL_TOOL2.toString())
 
+                coordndET.setText(fish_attribute.GPSLAT_DEG.toString())
+                coordnmET.setText(fish_attribute.GPSLAT_MIN.toString())
+                coordnsET.setText(fish_attribute.GPSLAT_SEC.toString())
+                coordedET.setText(fish_attribute.GPSLON_DEG.toString())
+                coordemET.setText(fish_attribute.GPSLON_MIN.toString())
+                coordesET.setText(fish_attribute.GPSLON_SEC.toString())
 
                 val id = fish_attribute.id
 
@@ -473,10 +501,10 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 chkdata = true
 
                 var fish_attribute: Fish_attribute =Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                        data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
+                        data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15),data.getString(16), data.getString(17), data.getString(18),
                         data.getFloat(19), data.getFloat(20), data.getString(21),data.getString(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getInt(26), data.getString(27), data.getString(28),
                         data.getInt(29),data.getInt(30),data.getInt(31),data.getInt(32),data.getInt(33), data.getString(34), data.getInt(35), data.getString(36), data.getString(37), data.getString(38),
-                        data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45))
+                        data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45),data.getInt(46),data.getInt(47),data.getFloat(48),data.getInt(49), data.getInt(50), data.getFloat(51),data.getString(52), data.getString(53))
                 dataArray.add(fish_attribute)
 
             }
@@ -518,15 +546,15 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 chkdata = true
 
                 var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                        data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
+                        data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15),data.getString(16), data.getString(17), data.getString(18),
                         data.getFloat(19), data.getFloat(20), data.getString(21),data.getString(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getInt(26), data.getString(27), data.getString(28),
                         data.getInt(29),data.getInt(30),data.getInt(31),data.getInt(32),data.getInt(33), data.getString(34), data.getInt(35), data.getString(36), data.getString(37), data.getString(38),
-                        data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45))
+                        data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45),data.getInt(46),data.getInt(47),data.getFloat(48),data.getInt(49), data.getInt(50), data.getFloat(51),data.getString(52), data.getString(53))
                 dataArray.add(fish_attribute)
 
             }
 
-            var fish_attribute: Fish_attribute = Fish_attribute(null, null, null, null, null, null, null, null, null, null, null
+            var fish_attribute: Fish_attribute = Fish_attribute(null,null,null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
                     , null, null, null, null, null, null, null, null, null, null, null, null, null
                     , null, null, null,null, null, null, null, null, null, null, null, null, null,null
                     ,null,null,null,null,null,null,null,null)
@@ -551,23 +579,29 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             fish_attribute.ETC = fishetcET.text.toString()
 
-            fish_attribute.MID_RAGE = fishmidrageET.text.toString()
+            fish_attribute.MID_RAGE = fishmidrageET.text.toString()+"/"+fishcodenumET.text.toString()
 
             fish_attribute.CODE_NUM = fishcodenumET.text.toString()
 
             if (fishrivernumET.text.isNotEmpty()) {
-                fish_attribute.RIVER_NUM = fishrivernumET.text.toString().toInt()
+                fish_attribute.RIVER_NUM = fishrivernumET.text.toString()
             }
 
             fish_attribute.RIVER_NM = fishrivernmET.text.toString()
 
-            if (fishnetcntET.text.isNotEmpty()) {
-                fish_attribute.NET_CNT = fishnetcntET.text.toString().toInt()
+            if ( fishnetcntET.text.toString().toInt() > fishnetminet.text.toString().toInt()){
+                fish_attribute.NET_CNT =  fishnetcntET.text.toString()
+            }else{
+                fish_attribute.NET_MIN =  fishnetminet.text.toString()
             }
 
-            if (fishnetminet.text.isNotEmpty()) {
-                fish_attribute.NET_MIN = fishnetminet.text.toString().toInt()
-            }
+//            if (fishnetcntET.text.isNotEmpty()) {
+//                fish_attribute.NET_CNT = fishnetcntET.text.toString().toInt()
+//            }
+//
+//            if (fishnetminet.text.isNotEmpty()) {
+//                fish_attribute.NET_MIN = fishnetminet.text.toString().toInt()
+//            }
 
 
             if (fishstreamwET.text.isNotEmpty()) {
@@ -631,10 +665,10 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 chkdata = true
 
                 var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                        data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
+                        data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15),data.getString(16), data.getString(17), data.getString(18),
                         data.getFloat(19), data.getFloat(20), data.getString(21),data.getString(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getInt(26), data.getString(27), data.getString(28),
                         data.getInt(29),data.getInt(30),data.getInt(31),data.getInt(32),data.getInt(33), data.getString(34), data.getInt(35), data.getString(36), data.getString(37), data.getString(38),
-                        data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45))
+                        data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45),data.getInt(46),data.getInt(47),data.getFloat(48),data.getInt(49), data.getInt(50), data.getFloat(51),data.getString(52), data.getString(53))
                 dataArray.add(fish_attribute)
 
             }
@@ -668,8 +702,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             val builder = AlertDialog.Builder(context)
             builder.setMessage("저장하시겠습니까 ?").setCancelable(false)
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
-
-                        var fish_attribute: Fish_attribute = Fish_attribute(null, null, null, null, null, null, null, null, null, null, null
+                        river_bed()
+                        var fish_attribute: Fish_attribute = Fish_attribute(null,null,null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
                                 , null, null, null, null, null, null, null, null, null, null, null, null, null
                                 , null,null, null, null, null, null, null, null, null, null, null,null,null, null
                                 , null,null,null,null,null,null,null,null)
@@ -684,7 +718,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         } else {
                             fish_attribute.PRJ_NAME = prjnameET.text.toString()
                         }
-
+                        fish_attribute.RIVER_BED = values_name
 //                        fish_attribute.PRJ_NAME = prjnameET.text.toString()
 //                        if (prjnameET.length() > 0){
 //                            fish_attribute.PRJ_NAME = prjnameET.text.toString()
@@ -708,34 +742,61 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         fish_attribute.WEATHER = fishweatherET.text.toString()
                         fish_attribute.WIND = fishwindET.text.toString()
                         fish_attribute.WIND_DIRE = fishwinddireET.text.toString()
-
+                        if (coordndET.text.isNotEmpty()) {
+                            fish_attribute.GPSLAT_DEG = coordndET.text.toString().toInt()
+                        }
+                        if (coordnmET.text.isNotEmpty()) {
+                            fish_attribute.GPSLAT_MIN = coordnmET.text.toString().toInt()
+                        }
+                        if (coordnsET.text.isNotEmpty()) {
+                            fish_attribute.GPSLAT_SEC = coordnsET.text.toString().toFloat()
+                        }
+                        if (coordedET.text.isNotEmpty()) {
+                            fish_attribute.GPSLAT_DEG  = coordedET.text.toString().toInt()
+                        }
+                        if (coordedET.text.isNotEmpty()) {
+                            fish_attribute.GPSLON_MIN = coordedET.text.toString().toInt()
+                        }
+                        if (coordemET.text.isNotEmpty()) {
+                            fish_attribute.GPSLON_MIN = coordemET.text.toString().toInt()
+                        }
+                        if (coordesET.text.isNotEmpty()) {
+                            fish_attribute.GPSLON_SEC = coordesET.text.toString().toFloat()
+                        }
                         if (fishtemperaturET.text.isNotEmpty()) {
                             fish_attribute.TEMPERATUR = fishtemperaturET.text.toString().toFloat()
                         }
 
                         fish_attribute.ETC = fishetcET.text.toString()
 
-                        fish_attribute.MID_RAGE = fishmidrageET.text.toString()
+                        fish_attribute.MID_RAGE = fishmidrageET.text.toString()+"/"+fishcodenumET.text.toString()
 
                         fish_attribute.CODE_NUM = fishcodenumET.text.toString()
 
                         fish_attribute.COLL_TOOL = colltoolTV.text.toString()
-                        fish_attribute.COLL_TOOL2 = colltool2TV.text.toString()
+//                        fish_attribute.COLL_TOOL2 = colltool2TV.text.toString()
 
 
                         if (fishrivernumET.text.isNotEmpty()) {
-                            fish_attribute.RIVER_NUM = fishrivernumET.text.toString().toInt()
+                            fish_attribute.RIVER_NUM = fishrivernumET.text.toString()
                         }
 
                         fish_attribute.RIVER_NM = fishrivernmET.text.toString()
 
-                        if (fishnetcntET.text.isNotEmpty()) {
-                            fish_attribute.NET_CNT = fishnetcntET.text.toString().toInt()
+                        if ( fishnetcntET.text.toString().toInt() > fishnetminet.text.toString().toInt()){
+                            fish_attribute.NET_CNT =  fishnetcntET.text.toString()
+                        }else{
+                            fish_attribute.NET_MIN =  fishnetminet.text.toString()
                         }
 
-                        if (fishnetminet.text.isNotEmpty()) {
-                            fish_attribute.NET_MIN = fishnetminet.text.toString().toInt()
-                        }
+
+//                        if (fishnetcntET.text.isNotEmpty()) {
+//                            fish_attribute.NET_CNT = fishnetcntET.text.toString().toInt()
+//                        }
+//
+//                        if (fishnetminet.text.isNotEmpty()) {
+//                            fish_attribute.NET_MIN = fishnetminet.text.toString().toInt()
+//                        }
 
                         if (fishgpslatTV.text.isNotEmpty()) {
                             fish_attribute.GPS_LAT = fishgpslatTV.text.toString().toFloat()
@@ -966,10 +1027,10 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         while (data.moveToNext()) {
 
                             var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                    data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
+                                    data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15),data.getString(16), data.getString(17), data.getString(18),
                                     data.getFloat(19), data.getFloat(20), data.getString(21),data.getString(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getInt(26), data.getString(27), data.getString(28),
                                     data.getInt(29),data.getInt(30),data.getInt(31),data.getInt(32),data.getInt(33), data.getString(34), data.getInt(35), data.getString(36), data.getString(37), data.getString(38),
-                                    data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45))
+                                    data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45),data.getInt(46),data.getInt(47),data.getFloat(48),data.getInt(49), data.getInt(50), data.getFloat(51),data.getString(52), data.getString(53))
                             dataArray.add(fish_attribute)
 
                         }
@@ -1019,7 +1080,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                             dialog.cancel()
 
-                            var fish_attribute: Fish_attribute = Fish_attribute(null, null, null, null, null, null, null, null, null, null, null
+                            var fish_attribute: Fish_attribute = Fish_attribute(null,null,null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
                                     , null, null, null, null, null, null, null, null, null, null, null, null, null
                                     , null,null, null, null, null, null, null, null, null, null
                                     , null, null, null, null, null,null,null,null,null,null,null,null)
@@ -1031,10 +1092,10 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                                 while (data.moveToNext()) { chkdata = true
                                   fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                          data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
+                                          data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15),data.getString(16), data.getString(17), data.getString(18),
                                           data.getFloat(19), data.getFloat(20), data.getString(21),data.getString(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getInt(26), data.getString(27), data.getString(28),
                                           data.getInt(29),data.getInt(30),data.getInt(31),data.getInt(32),data.getInt(33), data.getString(34), data.getInt(35), data.getString(36), data.getString(37), data.getString(38),
-                                          data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45))
+                                          data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45),data.getInt(46),data.getInt(47),data.getFloat(48),data.getInt(49), data.getInt(50), data.getFloat(51),data.getString(52), data.getString(53))
                                 }
 
                                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator)
@@ -1086,10 +1147,10 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                                         chkdata = true
 
                                         var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                                data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
+                                                data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15),data.getString(16), data.getString(17), data.getString(18),
                                                 data.getFloat(19), data.getFloat(20), data.getString(21),data.getString(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getInt(26), data.getString(27), data.getString(28),
                                                 data.getInt(29),data.getInt(30),data.getInt(31),data.getInt(32),data.getInt(33), data.getString(34), data.getInt(35), data.getString(36), data.getString(37), data.getString(38),
-                                                data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45))
+                                                data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45),data.getInt(46),data.getInt(47),data.getFloat(48),data.getInt(49), data.getInt(50), data.getFloat(51),data.getString(52), data.getString(53))
 
                                         dataArray.add(fish_attribute)
 
@@ -1137,7 +1198,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                 val builder = AlertDialog.Builder(context)
                 builder.setMessage("삭제하시겠습니까?").setCancelable(false)
-                        .setPositiveButton("확인", { dialog, id ->
+                        .setPositiveButton("확인") { dialog, id ->
 
                             dialog.cancel()
 
@@ -1157,10 +1218,10 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                                     chkdata = true
 
                                     var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                            data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
+                                            data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15),data.getString(16), data.getString(17), data.getString(18),
                                             data.getFloat(19), data.getFloat(20), data.getString(21),data.getString(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getInt(26), data.getString(27), data.getString(28),
                                             data.getInt(29),data.getInt(30),data.getInt(31),data.getInt(32),data.getInt(33), data.getString(34), data.getInt(35), data.getString(36), data.getString(37), data.getString(38),
-                                            data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45))
+                                            data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45),data.getInt(46),data.getInt(47),data.getFloat(48),data.getInt(49), data.getInt(50), data.getFloat(51),data.getString(52), data.getString(53))
                                 }
 
                                 if (chkdata == true) {
@@ -1184,7 +1245,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                             }
 
 
-                        })
+                        }
                         .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
                 val alert = builder.create()
                 alert.show()
@@ -1278,7 +1339,9 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         }
 
         btn_add.setOnClickListener {
-            var fish_attribute: Fish_attribute = Fish_attribute(null, null, null, null, null, null, null, null, null, null, null
+            river_bed()
+
+            var fish_attribute: Fish_attribute = Fish_attribute(null,null,null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
                     , null, null, null, null, null, null, null, null, null, null, null, null, null
                     , null, null,null, null, null, null, null, null, null,null, null,null, null, null
                     , null,null,null,null,null,null,null,null)
@@ -1293,7 +1356,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             } else {
                 fish_attribute.PRJ_NAME = prjnameET.text.toString()
             }
-
+            fish_attribute.RIVER_BED = values_name
 //            fish_attribute.PRJ_NAME = prjnameET.text.toString()
 //            if (prjnameET.length() > 0){
 //                fish_attribute.PRJ_NAME = prjnameET.text.toString()
@@ -1324,23 +1387,27 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             fish_attribute.ETC = fishetcET.text.toString()
 
-            fish_attribute.MID_RAGE = fishmidrageET.text.toString()
+            fish_attribute.MID_RAGE = fishmidrageET.text.toString()+"/"+fishcodenumET.text.toString()
 
             fish_attribute.CODE_NUM = fishcodenumET.text.toString()
 
             if (fishrivernumET.text.isNotEmpty()) {
-                fish_attribute.RIVER_NUM = fishrivernumET.text.toString().toInt()
+                fish_attribute.RIVER_NUM = fishrivernumET.text.toString()
             }
 
             fish_attribute.RIVER_NM = fishrivernmET.text.toString()
-
-            if (fishnetcntET.text.isNotEmpty()) {
-                fish_attribute.NET_CNT = fishnetcntET.text.toString().toInt()
+            if ( fishnetcntET.text.toString().toInt() > fishnetminet.text.toString().toInt()){
+                fish_attribute.NET_CNT =  fishnetcntET.text.toString()
+            }else{
+                fish_attribute.NET_MIN =  fishnetminet.text.toString()
             }
-
-            if (fishnetminet.text.isNotEmpty()) {
-                fish_attribute.NET_MIN = fishnetminet.text.toString().toInt()
-            }
+//            if (fishnetcntET.text.isNotEmpty()) {
+//                fish_attribute.NET_CNT = fishnetcntET.text.toString().toInt()
+//            }
+//
+//            if (fishnetminet.text.isNotEmpty()) {
+//                fish_attribute.NET_MIN = fishnetminet.text.toString().toInt()
+//            }
 
             if (fishgpslatTV.text.isNotEmpty()) {
                 fish_attribute.GPS_LAT = fishgpslatTV.text.toString().toFloat()
@@ -1391,6 +1458,30 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 fish_attribute.NUM = fishnumTV.text.toString().toInt()
             }
 
+
+
+            if (coordndET.text.isNotEmpty()) {
+                fish_attribute.GPSLAT_DEG = coordndET.text.toString().toInt()
+            }
+            if (coordnmET.text.isNotEmpty()) {
+                fish_attribute.GPSLAT_MIN = coordnmET.text.toString().toInt()
+            }
+            if (coordnsET.text.isNotEmpty()) {
+                fish_attribute.GPSLAT_SEC = coordnsET.text.toString().toFloat()
+            }
+            if (coordedET.text.isNotEmpty()) {
+                fish_attribute.GPSLON_DEG = coordedET.text.toString().toInt()
+            }
+            if (coordemET.text.isNotEmpty()) {
+                fish_attribute.GPSLON_MIN = coordemET.text.toString().toInt()
+            }
+            if (coordesET.text.isNotEmpty()) {
+                fish_attribute.GPSLON_SEC = coordesET.text.toString().toFloat()
+            }
+            if (fishtemperaturET.text.isNotEmpty()) {
+                fish_attribute.TEMPERATUR = fishtemperaturET.text.toString().toFloat()
+            }
+
             fish_attribute.SPEC_NM = fishspecnmET.text.toString()
             if (fishspecnmtmp.length() > 0){
                 fish_attribute.SPEC_NM = fishspecnmtmp.text.toString()
@@ -1416,7 +1507,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             fish_attribute.CONF_MOD = "N"
 
             fish_attribute.COLL_TOOL = colltoolTV.text.toString()
-            fish_attribute.COLL_TOOL2 = colltool2TV.text.toString()
+//            fish_attribute.COLL_TOOL2 = colltool2TV.text.toString()
 
             fish_attribute.GEOM = log.toString() + " " + lat.toString()
 
@@ -1607,23 +1698,70 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         }
 
-        colltoolTV.setOnClickListener {
-            var listItems: ArrayList<String> = ArrayList();
-            listItems.add("투망 (망목 9 x 9 mm)");
-            listItems.add("족대 (망목 4 x 4 mm)");
+        fishrivernumET.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {
+            }
 
-            alert(listItems, "투망,족대", colltoolTV, "colltool");
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
-        }
+            }
 
-        colltool2TV.setOnClickListener {
-            val intent = Intent(this, DlgCollActivity::class.java)
-            intent.putExtra("title", "족대")
-            intent.putExtra("DlgHeight", 450f);
-//            startActivity(intent)
-            startActivityForResult(intent, SET_COLL2);
-        }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                fishrivernumET.setText(s.toString()+ "차")
+            }
+        })
 
+        fishnetcntET.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+
+            override fun   onTextChanged(s: CharSequence, start: Int, before: Int, count: Int){
+                var cnt = fishnetcntET.text.toString().replace("회","").toInt()
+                var min = fishnetminet.text.toString().replace("분","")
+                if (min==""){
+                    min = "0"
+                }
+
+                if (cnt<min.toInt()){
+                    colltoolTV.text = "족대"
+                }else{
+                    colltoolTV.text = "투망"
+                }
+            }
+            });
+        fishnetminet.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+
+            override fun  onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                var cnt = fishnetcntET.text.toString().replace("회","")
+                var min = fishnetminet.text.toString().replace("분","").toInt()
+                if (cnt==""){
+                    cnt = "0"
+                }
+                if (cnt.toInt()<min){
+                    colltoolTV.text = "족대"
+                }else{
+                    colltoolTV.text = "투망"
+                }
+            }
+
+            override fun afterTextChanged(s: Editable){
+
+            }
+        })
+
+
+
+        /* colltoolTV.setOnClickListener {
+             var listItems: ArrayList<String> = ArrayList();
+             listItems.add("투망 (망목 9 x 9 mm)");
+             listItems.add("족대 (망목 4 x 4 mm)");
+
+             alert(listItems, "투망,족대", colltoolTV, "colltool");
+
+         }*/
     }
 
     private fun takePhoto() {
@@ -1683,10 +1821,10 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             chkdata = true
 
             var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                    data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
+                    data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15),data.getString(16), data.getString(17), data.getString(18),
                     data.getFloat(19), data.getFloat(20), data.getString(21),data.getString(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getInt(26), data.getString(27), data.getString(28),
                     data.getInt(29),data.getInt(30),data.getInt(31),data.getInt(32),data.getInt(33), data.getString(34), data.getInt(35), data.getString(36), data.getString(37), data.getString(38),
-                    data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45))
+                    data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45),data.getInt(46),data.getInt(47),data.getFloat(48),data.getInt(49), data.getInt(50), data.getFloat(51),data.getString(52), data.getString(53))
 
             dataArray.add(fish_attribute)
 
@@ -1756,16 +1894,20 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             if(fishrivernmET.text == null){
                 fishrivernmET.setText("")
             }
-
-            fishnetcntET.setText(fish_attribute.NET_CNT.toString())
-            if(fishnetcntET.text == null){
-                fishnetcntET.setText("")
+            if (fish_attribute.NET_CNT!!.toInt() > fish_attribute.NET_MIN!!.toInt()){
+                fishnetcntET.setText(fish_attribute.NET_CNT.toString())
+            }else{
+                fishnetminet.setText(fish_attribute.NET_MIN.toString())
             }
-
-            fishnetminet.setText(fish_attribute.NET_MIN.toString())
-            if(fishnetminet.text == null){
-                fishnetminet.setText("")
-            }
+//            fishnetcntET.setText(fish_attribute.NET_CNT.toString())
+//            if(fishnetcntET.text == null){
+//                fishnetcntET.setText("")
+//            }
+//
+//            fishnetminet.setText(fish_attribute.NET_MIN.toString())
+//            if(fishnetminet.text == null){
+//                fishnetminet.setText("")
+//            }
 
             fishwaterwET.setText(fish_attribute.WATER_W.toString())
             if(fishwaterwET.text == null){
@@ -1781,7 +1923,12 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             if(fishwatercurET.text == null){
                 fishwatercurET.setText("")
             }
-
+            coordndET.setText(fish_attribute.GPSLAT_DEG.toString())
+            coordnmET.setText(fish_attribute.GPSLAT_MIN.toString())
+            coordnsET.setText(fish_attribute.GPSLAT_SEC.toString())
+            coordedET.setText(fish_attribute.GPSLON_DEG.toString())
+            coordemET.setText(fish_attribute.GPSLON_MIN.toString())
+            coordesET.setText(fish_attribute.GPSLON_SEC.toString())
 //            rivstrTV.setText(fish_attribute.RIV_STR)
 //            if(rivstrTV.text == null){
 //                rivstrTV.setText("")
@@ -1863,7 +2010,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             fishnumTV.setText(splitnum.toString() + plusnum.toString())
         }
 
-        
+
 
         fishinvtmTV.setText(Utils.timeStr())
         fishspecnmET.setText("")
@@ -2079,7 +2226,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                     fishmidrageET.setText(common.title)
 
-                    fishcodenumET.setText(commonDivision.title + " / " + commonDivision.code)
+                    fishcodenumET.setText(commonDivision.title + " ( " + commonDivision.code+")")
 
                 }
 
@@ -2240,11 +2387,11 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                     colltoolTV.setText(title + "x" + title2)
                 }
 
-                SET_COLL2 -> {
+                /*SET_COLL2 -> {
                     var title = data!!.getStringExtra("num");
                     var title2 = data!!.getStringExtra("num2");
-                    colltool2TV.setText(title + "x" + title2)
-                }
+                    colltoolTV.setText(title + "x" + title2)
+                }*/
 
             }
         }
@@ -2425,7 +2572,83 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         alert.show()
 
     }
+    fun convert(d: Double): String {
 
+        var long_d = Math.abs(d)
+
+//        var i = d.intValue()
+        var i = long_d.toInt()
+        var s = i.toString()
+
+        coordndET.setText(s)
+
+        long_d = long_d - i;
+        long_d = long_d * 60;
+        coordnmET.setText(long_d.toInt().toString())
+//        i = long_d.intValue();
+        i = long_d.toInt();
+
+//        s = s + String.format(i) + '\'';
+        s = s + i.toString()
+
+        long_d = long_d - i;
+        long_d = long_d * 60;
+
+//        i = long_d.round().intValue();
+        i = Math.round(long_d.toDouble()).toInt()
+
+        coordnsET.setText(long_d.toFloat().toString())
+
+        s = s + i.toString() + '"';
+
+        println("")
+
+        println("i $i")
+
+        println("s ::::::::::::::::::::::::::::::::::::::::::::::::::::::: " + s)
+
+        return s
+    }
+
+    fun logconvert(d: Double): String {
+
+        var long_d = Math.abs(d)
+
+//        var i = d.intValue()
+        var i = long_d.toInt()
+        var s = i.toString()
+
+        coordedET.setText(s)
+
+        long_d = long_d - i;
+        long_d = long_d * 60;
+        coordemET.setText(long_d.toInt().toString())
+//        i = long_d.intValue();
+        i = long_d.toInt();
+
+//        s = s + String.format(i) + '\'';
+        s = s + i.toString()
+
+        long_d = long_d - i;
+        long_d = long_d * 60;
+
+//        i = long_d.round().intValue();
+        i = Math.round(long_d.toDouble()).toInt()
+
+        coordesET.setText(long_d.toFloat().toString())
+
+        s = s + i.toString() + '"';
+
+        println("")
+
+        println("i $i")
+
+
+
+        println("s ::::::::::::::::::::::::::::::::::::::::::::::::::::::: " + s)
+
+        return s
+    }
     fun saveVitmapToFile(bitmap:Bitmap, filePath:String){
 
         var file = File(filePath)
@@ -2469,6 +2692,35 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         }
     }
 
+    fun river_bed(){
+        values!!.add(Utils.getString(boulderET).toInt())
+        values!!.add(Utils.getString(cobbleET).toInt())
+        values!!.add(Utils.getString(pebbleET).toInt())
+        values!!.add(Utils.getString(gravelET).toInt())
+        values!!.add(Utils.getString(sendET).toInt())
+        var max = Collections.max<Int>(values) // 100
+
+        if (max == Utils.getString(boulderET).toInt()){
+            values_name = "Boulder"
+        }
+        else if (max == Utils.getString(cobbleET).toInt()){
+            values_name = "Cobble"
+        }
+        else if (max == Utils.getString(pebbleET).toInt()){
+            values_name = "Pebble"
+        }
+        else if (max == Utils.getString(gravelET).toInt()){
+            values_name = "Gravel"
+        }
+        else if (max == Utils.getString(sendET).toInt()){
+            values_name = "Sand"
+        }else{
+            values_name = ""
+        }
+
+    }
+
+
     fun getAttrubuteKey(): String {
 
         val time = System.currentTimeMillis()
@@ -2492,10 +2744,10 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         while (data.moveToNext()) {
 
             var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                    data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
+                    data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15),data.getString(16), data.getString(17), data.getString(18),
                     data.getFloat(19), data.getFloat(20), data.getString(21),data.getString(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getInt(26), data.getString(27), data.getString(28),
                     data.getInt(29),data.getInt(30),data.getInt(31),data.getInt(32),data.getInt(33), data.getString(34), data.getInt(35), data.getString(36), data.getString(37), data.getString(38),
-                    data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45))
+                    data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45),data.getInt(46),data.getInt(47),data.getFloat(48),data.getInt(49), data.getInt(50), data.getFloat(51),data.getString(52), data.getString(53))
 
             dataArray.add(fish_attribute)
 

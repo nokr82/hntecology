@@ -27,12 +27,10 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import com.google.android.gms.maps.GoogleMap
 import com.joooonho.SelectableRoundedImageView
 import com.nostra13.universalimageloader.core.ImageLoader
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
-import hntecology.ecology.base.OpenAlertDialog
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.*
@@ -42,10 +40,6 @@ import io.nlopez.smartlocation.location.config.LocationAccuracy
 import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
 import kotlinx.android.synthetic.main.activity_birds_ex.*
-import kotlinx.android.synthetic.main.activity_birds_ex.confmodTV
-import kotlinx.android.synthetic.main.activity_birds_ex.prjnameET
-import kotlinx.android.synthetic.main.activity_birds_ex.resetBT
-import kotlinx.android.synthetic.main.activity_flora.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException

@@ -56,8 +56,6 @@ open class DlgZoobenthosAdapter(context:Context, view:Int, data:ArrayList<Zooben
 
         item.layerCheckCB.setOnClickListener {
             var checkBox:CheckBox = it as CheckBox
-            var test = checkBox.isChecked.toString() + "-------------------------"
-            println(test)
 
             ZoobenthosSelect.chkSelect = checkBox.isChecked
 

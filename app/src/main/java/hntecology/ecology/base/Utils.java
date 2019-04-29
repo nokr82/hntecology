@@ -48,6 +48,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -1514,7 +1515,9 @@ public class Utils {
     public static String getString(String str) {
         return getString(str, "");
     }
-
+    public static String getString(TextView textView) {
+        return textView.getText().toString().trim();
+    }
     public static String getString(EditText editText) {
         return editText.getText().toString().trim();
     }

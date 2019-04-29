@@ -2004,10 +2004,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                         while (data.moveToNext()) {
                             var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                    data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getInt(14), data.getString(15), data.getInt(16), data.getInt(17), data.getString(18),
+                                    data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getString(16), data.getString(17), data.getString(18),
                                     data.getFloat(19), data.getFloat(20), data.getString(21),data.getString(22), data.getInt(23), data.getInt(24), data.getInt(25), data.getInt(26), data.getString(27), data.getString(28),
                                     data.getInt(29),data.getInt(30),data.getInt(31),data.getInt(32),data.getInt(33), data.getString(34), data.getInt(35), data.getString(36), data.getString(37), data.getString(38),
-                                    data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45))
+                                    data.getInt(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44), data.getString(45),data.getInt(46),data.getInt(47),data.getFloat(48),data.getInt(49), data.getInt(50), data.getFloat(51), data.getString(52), data.getString(53))
 
                             fishdataArray.add(fish_attribute)
                         }
@@ -2073,7 +2073,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getInt(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                                    , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getString(28), data.getString(29), data.getString(30))
+                                    , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getString(28), data.getString(29), data.getString(30)
+                                    , data.getInt(31), data.getInt(32), data.getFloat(33), data.getInt(34), data.getInt(35), data.getFloat(36))
                             insectdataArray.add(insect_attribute)
                         }
 
@@ -2138,7 +2139,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             var flora_attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                                    , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26))
+                                    , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
                             floradataArray.add(flora_attribute)
                         }
 
@@ -7172,10 +7173,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         while (fishdata.moveToNext()) {
 
             var fish_attribute: Fish_attribute = Fish_attribute(fishdata.getString(0), fishdata.getString(1), fishdata.getString(2), fishdata.getString(3), fishdata.getString(4), fishdata.getString(5), fishdata.getString(6), fishdata.getString(7),
-                    fishdata.getString(8), fishdata.getString(9), fishdata.getFloat(10), fishdata.getString(11), fishdata.getString(12), fishdata.getString(13), fishdata.getInt(14), fishdata.getString(15), fishdata.getInt(16), fishdata.getInt(17), fishdata.getString(18),
+                    fishdata.getString(8), fishdata.getString(9), fishdata.getFloat(10), fishdata.getString(11), fishdata.getString(12), fishdata.getString(13), fishdata.getString(14), fishdata.getString(15), fishdata.getString(16), fishdata.getString(17), fishdata.getString(18),
                     fishdata.getFloat(19), fishdata.getFloat(20), fishdata.getString(21),fishdata.getString(22), fishdata.getInt(23), fishdata.getInt(24), fishdata.getInt(25), fishdata.getInt(26), fishdata.getString(27), fishdata.getString(28),
                     fishdata.getInt(29),fishdata.getInt(30),fishdata.getInt(31),fishdata.getInt(32),fishdata.getInt(33), fishdata.getString(34), fishdata.getInt(35), fishdata.getString(36), fishdata.getString(37), fishdata.getString(38),
-                    fishdata.getInt(39), fishdata.getString(40), fishdata.getString(41), fishdata.getString(42), fishdata.getString(43), fishdata.getString(44), fishdata.getString(45))
+                    fishdata.getInt(39), fishdata.getString(40), fishdata.getString(41), fishdata.getString(42), fishdata.getString(43), fishdata.getString(44), fishdata.getString(45)
+                    ,fishdata.getInt(46),fishdata.getInt(47),fishdata.getFloat(48),fishdata.getInt(49), fishdata.getInt(50), fishdata.getFloat(51), fishdata.getString(52), fishdata.getString(53))
 
             fishDatas.add(fish_attribute)
         }
@@ -7276,6 +7278,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     FISHATTRIBUTE.add(Exporter.ColumnDef("UN_FISH_CH", ogr.OFTString, fish_attribute.UN_FISH_CH))
                     FISHATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, fish_attribute.CONF_MOD))
                     FISHATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, fish_attribute.GEOM))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, fish_attribute.GPSLAT_DEG))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, fish_attribute.GPSLAT_MIN))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, fish_attribute.GPSLAT_SEC))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, fish_attribute.GPSLON_DEG))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, fish_attribute.GPSLON_MIN))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, fish_attribute.GPSLON_SEC))
 //                    }
 
                     var geomsplit = fish_attribute.GEOM!!.split(" ")
@@ -7407,7 +7415,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     , insectdata.getString(5), insectdata.getString(6), insectdata.getString(7), insectdata.getString(8), insectdata.getFloat(9), insectdata.getString(10), insectdata.getInt(11)
                     , insectdata.getString(12), insectdata.getString(13), insectdata.getString(14), insectdata.getString(15), insectdata.getInt(16), insectdata.getString(17), insectdata.getString(18)
                     , insectdata.getString(19), insectdata.getString(20), insectdata.getString(21), insectdata.getString(22), insectdata.getString(23), insectdata.getString(24), insectdata.getString(25)
-                    , insectdata.getFloat(26), insectdata.getFloat(27), insectdata.getString(28), insectdata.getString(29), insectdata.getString(30))
+                    , insectdata.getFloat(26), insectdata.getFloat(27), insectdata.getString(28), insectdata.getString(29), insectdata.getString(30)
+                    , insectdata.getInt(31), insectdata.getInt(32), insectdata.getFloat(33), insectdata.getInt(34), insectdata.getInt(35), insectdata.getFloat(36))
 
             insectDatas.add(insect_attribute)
 
@@ -7495,6 +7504,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     INSECTATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, insect_attribute.GPS_LON.toString()))
                     INSECTATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, insect_attribute.CONF_MOD))
                     INSECTATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, insect_attribute.GEOM))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, insect_attribute.GPSLAT_DEG))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, insect_attribute.GPSLAT_MIN))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, insect_attribute.GPSLAT_SEC))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, insect_attribute.GPSLON_DEG))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, insect_attribute.GPSLON_MIN))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, insect_attribute.GPSLON_SEC))
 
                     var geomsplit = insect_attribute.GEOM!!.split(" ")
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
@@ -7546,6 +7561,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             INSECTATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, insect_attribute.GPS_LAT.toString()))
                             INSECTATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, insect_attribute.GPS_LON.toString()))
                             INSECTATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, insect_attribute.CONF_MOD))
+                            INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, insect_attribute.GPSLAT_DEG))
+                            INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, insect_attribute.GPSLAT_MIN))
+                            INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, insect_attribute.GPSLAT_SEC))
+                            INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, insect_attribute.GPSLON_DEG))
+                            INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, insect_attribute.GPSLON_MIN))
+                            INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, insect_attribute.GPSLON_SEC))
                         }
 
                         val exporter = Exporter.ExportPointItem(LAYER_INSECT, INSECTATTRIBUTE, points.get(idx))
@@ -7604,7 +7625,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var flora_Attribute: Flora_Attribute = Flora_Attribute(floradata.getString(0), floradata.getString(1), floradata.getString(2), floradata.getString(3), floradata.getString(4)
                     , floradata.getString(5), floradata.getString(6), floradata.getString(7), floradata.getString(8), floradata.getFloat(9), floradata.getString(10), floradata.getInt(11)
                     , floradata.getString(12), floradata.getString(13), floradata.getString(14), floradata.getString(15), floradata.getString(16), floradata.getString(17), floradata.getString(18)
-                    , floradata.getString(19), floradata.getInt(20), floradata.getString(21), floradata.getFloat(22), floradata.getFloat(23), floradata.getString(24), floradata.getString(25), floradata.getString(26))
+                    , floradata.getString(19), floradata.getInt(20), floradata.getString(21), floradata.getFloat(22), floradata.getFloat(23), floradata.getString(24), floradata.getString(25)
+                    , floradata.getString(26), floradata.getInt(27), floradata.getInt(28), floradata.getFloat(29), floradata.getInt(30), floradata.getInt(31), floradata.getFloat(32))
 
             floraDatas.add(flora_Attribute)
         }
@@ -7619,7 +7641,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 //                    var flora_Attribute: Flora_Attribute = Flora_Attribute(floradata.getString(0), floradata.getString(1), floradata.getString(2), floradata.getString(3), floradata.getString(4)
 //                            , floradata.getString(5), floradata.getString(6), floradata.getString(7), floradata.getString(8), floradata.getFloat(9), floradata.getString(10), floradata.getInt(11)
 //                            , floradata.getString(12), floradata.getString(13), floradata.getString(14), floradata.getString(15), floradata.getString(16), floradata.getString(17), floradata.getString(18)
-//                            , floradata.getString(19), floradata.getInt(20), floradata.getString(21), floradata.getFloat(22), floradata.getFloat(23), floradata.getString(24), floradata.getString(25), floradata.getString(26))
+//                            , floradata.getString(19), floradata.getInt(20), floradata.getString(21), floradata.getFloat(22), floradata.getFloat(23), floradata.getString(24), floradata.getString(25), data.getString(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
 //
 //                    floraDatas.add(flora_Attribute)
 //
@@ -7685,6 +7707,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, flora_Attribute.GPS_LON.toString()))
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, flora_Attribute.CONF_MOD))
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, flora_Attribute.GEOM))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, flora_Attribute.GPSLAT_DEG))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, flora_Attribute.GPSLAT_MIN))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, flora_Attribute.GPSLAT_SEC))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, flora_Attribute.GPSLON_DEG))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, flora_Attribute.GPSLON_MIN))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, flora_Attribute.GPSLON_SEC))
+
                     Log.d("점",flora_Attribute.GEOM)
                     var geomsplit = flora_Attribute.GEOM!!.split(" ")
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
@@ -7733,6 +7762,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             FLORAATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, flora_Attribute.GPS_LAT.toString()))
                             FLORAATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, flora_Attribute.GPS_LON.toString()))
                             FLORAATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, flora_Attribute.CONF_MOD))
+                            FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, flora_Attribute.GPSLAT_DEG))
+                            FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, flora_Attribute.GPSLAT_MIN))
+                            FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, flora_Attribute.GPSLAT_SEC))
+                            FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, flora_Attribute.GPSLON_DEG))
+                            FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, flora_Attribute.GPSLON_MIN))
+                            FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, flora_Attribute.GPSLON_SEC))
+
                         }
 
                         val exporter = Exporter.ExportPointItem(LAYER_FLORA, FLORAATTRIBUTE, points.get(idx))

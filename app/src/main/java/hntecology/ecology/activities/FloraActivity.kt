@@ -108,6 +108,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
     var invtm = ""
 
+    val SET_INPUT = 2007
+
     var prjname = ""
 
     var INV_REGION = ""
@@ -198,7 +200,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             } catch (e:IOException) {
                 e.printStackTrace();
             }
-
+            convert(lat.toDouble())
+            logconvert(log.toDouble())
         }
 
         keyId = intent.getStringExtra("GROP_ID")
@@ -266,7 +269,9 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                 var flora_Attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                        , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26))
+                        , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26)
+                        , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
+
 
                 florainvregionET.setText(flora_Attribute.INV_REGION)
                 INV_REGION = flora_Attribute.INV_REGION.toString()
@@ -278,6 +283,13 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                 florawindTV.setText(flora_Attribute.WIND)
                 florawinddireTV.setText(flora_Attribute.WIND_DIRE)
                 floratemperaturTV.setText(flora_Attribute.TEMPERATUR.toString())
+
+                coordndET.setText(flora_Attribute.GPSLAT_DEG.toString())
+                coordnmET.setText(flora_Attribute.GPSLAT_MIN.toString())
+                coordnsET.setText(flora_Attribute.GPSLAT_SEC.toString())
+                coordedET.setText(flora_Attribute.GPSLON_DEG.toString())
+                coordemET.setText(flora_Attribute.GPSLON_MIN.toString())
+                coordesET.setText(flora_Attribute.GPSLON_SEC.toString())
 
                 floraetcET.setText(flora_Attribute.ETC)
 
@@ -432,7 +444,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                 var flora_Attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                        , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26))
+                        , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26)
+                        , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
 
                 dataArray.add(flora_Attribute)
             }
@@ -477,12 +490,13 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                 var flora_Attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                         data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                         , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                        , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26))
+                        , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26)
+                        , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
 
                 dataArray.add(flora_Attribute)
             }
 
-            var flora_Attribute: Flora_Attribute = Flora_Attribute(null,null,null,null,null,null,null,null,null,null
+            var flora_Attribute: Flora_Attribute = Flora_Attribute(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null
             ,null,null,null,null,null,null,null,null,null,null,null,null,null
                     ,null,null,null,null)
 
@@ -506,7 +520,27 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             if(floratemperaturTV.text.isNotEmpty()){
                 flora_Attribute.TEMPERATUR = floratemperaturTV.text.toString().toFloat()
             }
-
+            if (coordndET.text.isNotEmpty()) {
+                flora_Attribute.GPSLAT_DEG = coordndET.text.toString().toInt()
+            }
+            if (coordnmET.text.isNotEmpty()) {
+                flora_Attribute.GPSLAT_MIN = coordnmET.text.toString().toInt()
+            }
+            if (coordnsET.text.isNotEmpty()) {
+                flora_Attribute.GPSLAT_SEC = coordnsET.text.toString().toFloat()
+            }
+            if (coordedET.text.isNotEmpty()) {
+                flora_Attribute.GPSLAT_DEG  = coordedET.text.toString().toInt()
+            }
+            if (coordedET.text.isNotEmpty()) {
+                flora_Attribute.GPSLON_MIN = coordedET.text.toString().toInt()
+            }
+            if (coordemET.text.isNotEmpty()) {
+                flora_Attribute.GPSLON_MIN = coordemET.text.toString().toInt()
+            }
+            if (coordesET.text.isNotEmpty()) {
+                flora_Attribute.GPSLON_SEC = coordesET.text.toString().toFloat()
+            }
             flora_Attribute.ETC = floraetcET.text.toString()
 
             flora_Attribute.INV_TM = florainvtmET.text.toString()
@@ -559,7 +593,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                 var flora_Attribute: Flora_Attribute = Flora_Attribute(data2.getString(0), data2.getString(1), data2.getString(2), data2.getString(3), data2.getString(4), data2.getString(5), data2.getString(6), data2.getString(7),
                         data2.getString(8), data2.getFloat(9), data2.getString(10), data2.getInt(11), data2.getString(12), data2.getString(13), data2.getString(14)
                         , data2.getString(15), data2.getString(16), data2.getString(17), data2.getString(18), data2.getString(19), data2.getInt(20), data2.getString(21)
-                        , data2.getFloat(22), data2.getFloat(23),data2.getString(24),data.getString(25),data.getString(26))
+                        , data2.getFloat(22), data2.getFloat(23),data2.getString(24),data.getString(25),data.getString(26)
+                        , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
 
                 dataArray.add(flora_Attribute)
             }
@@ -582,7 +617,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                         dialog.cancel()
 
-                        var flora_Attribute: Flora_Attribute = Flora_Attribute(null,null,null,null,null,null,null,null,null,null
+                        var flora_Attribute: Flora_Attribute = Flora_Attribute(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null
                                 ,null,null,null,null,null,null,null,null,null,null,null,null,null
                                 ,null,null,null,null)
 
@@ -622,7 +657,27 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                         flora_Attribute.WEATHER = floraweatherTV.text.toString()
                         flora_Attribute.WIND = florawindTV.text.toString()
                         flora_Attribute.WIND_DIRE = florawinddireTV.text.toString()
-
+                        if (coordndET.text.isNotEmpty()) {
+                            flora_Attribute.GPSLAT_DEG = coordndET.text.toString().toInt()
+                        }
+                        if (coordnmET.text.isNotEmpty()) {
+                            flora_Attribute.GPSLAT_MIN = coordnmET.text.toString().toInt()
+                        }
+                        if (coordnsET.text.isNotEmpty()) {
+                            flora_Attribute.GPSLAT_SEC = coordnsET.text.toString().toFloat()
+                        }
+                        if (coordedET.text.isNotEmpty()) {
+                            flora_Attribute.GPSLAT_DEG  = coordedET.text.toString().toInt()
+                        }
+                        if (coordedET.text.isNotEmpty()) {
+                            flora_Attribute.GPSLON_MIN = coordedET.text.toString().toInt()
+                        }
+                        if (coordemET.text.isNotEmpty()) {
+                            flora_Attribute.GPSLON_MIN = coordemET.text.toString().toInt()
+                        }
+                        if (coordesET.text.isNotEmpty()) {
+                            flora_Attribute.GPSLON_SEC = coordesET.text.toString().toFloat()
+                        }
                         if(floratemperaturTV.text.isNotEmpty()) {
                             flora_Attribute.TEMPERATUR = floratemperaturTV.text.toString().toFloat()
                         }
@@ -820,7 +875,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                             var flora_Attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                                    , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26))
+                                    , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26)
+                        , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
 
                             dataArray.add(flora_Attribute)
                         }
@@ -872,7 +928,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
                             dialog.cancel()
 
-                            var flora_Attribute: Flora_Attribute = Flora_Attribute(null, null, null, null, null, null, null, null, null, null
+                            var flora_Attribute: Flora_Attribute = Flora_Attribute(null,null,null,null,null,null,null, null, null, null, null, null, null, null, null, null
                                     , null, null, null, null, null, null, null, null, null, null, null, null
                                     , null, null, null,null,null)
 
@@ -885,7 +941,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                                     flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                             data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                             , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                                            , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26))
+                                            , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26)
+                        , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
 
                                 }
 
@@ -942,7 +999,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                                         var flora_Attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                                 data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                                 , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                                                , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26))
+                                                , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26)
+                        , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
 
                                         dataArray.add(flora_Attribute)
 
@@ -1015,7 +1073,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
                                     var flora_Attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                             data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                             , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                                            , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26))
+                                            , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26)
+                        , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
                                 }
 
                                 if (chkdata == true) {
@@ -1051,8 +1110,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
         florafloreyynTV.setOnClickListener {
 
             var listItems: ArrayList<String> = ArrayList();
-            listItems.add("Y");
-            listItems.add("N");
+            listItems.add("1");
+            listItems.add("0");
 
             alert(listItems, "개화 여부 선택", florafloreyynTV, "floreyyn");
 
@@ -1061,8 +1120,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
         floraplantynTV.setOnClickListener {
 
             var listItems: ArrayList<String> = ArrayList();
-            listItems.add("Y");
-            listItems.add("N");
+            listItems.add("1");
+            listItems.add("0");
 
             alert(listItems, "식재 여부 선택", floraplantynTV, "plantyn");
 
@@ -1134,7 +1193,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
         }
 
         floraaddBT.setOnClickListener {
-            var flora_Attribute: Flora_Attribute = Flora_Attribute(null,null,null,null,null,null,null,null,null,null
+            var flora_Attribute: Flora_Attribute = Flora_Attribute(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null
                     ,null,null,null,null,null,null,null,null,null,null,null,null,null
                     ,null,null,null,null)
 
@@ -1174,7 +1233,27 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             flora_Attribute.WEATHER = floraweatherTV.text.toString()
             flora_Attribute.WIND = florawindTV.text.toString()
             flora_Attribute.WIND_DIRE = florawinddireTV.text.toString()
-
+            if (coordndET.text.isNotEmpty()) {
+                flora_Attribute.GPSLAT_DEG = coordndET.text.toString().toInt()
+            }
+            if (coordnmET.text.isNotEmpty()) {
+                flora_Attribute.GPSLAT_MIN = coordnmET.text.toString().toInt()
+            }
+            if (coordnsET.text.isNotEmpty()) {
+                flora_Attribute.GPSLAT_SEC = coordnsET.text.toString().toFloat()
+            }
+            if (coordedET.text.isNotEmpty()) {
+                flora_Attribute.GPSLAT_DEG  = coordedET.text.toString().toInt()
+            }
+            if (coordedET.text.isNotEmpty()) {
+                flora_Attribute.GPSLON_MIN = coordedET.text.toString().toInt()
+            }
+            if (coordemET.text.isNotEmpty()) {
+                flora_Attribute.GPSLON_MIN = coordemET.text.toString().toInt()
+            }
+            if (coordesET.text.isNotEmpty()) {
+                flora_Attribute.GPSLON_SEC = coordesET.text.toString().toFloat()
+            }
             if(floratemperaturTV.text.isNotEmpty()) {
                 flora_Attribute.TEMPERATUR = floratemperaturTV.text.toString().toFloat()
             }
@@ -1515,7 +1594,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             var flora_Attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                    , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26))
+                    , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26)
+                        , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
 
             dataArray.add(flora_Attribute)
 
@@ -1538,6 +1618,12 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             if (floraweatherTV.text == null){
                 floraweatherTV.setText("")
             }
+            coordndET.setText(flora_Attribute.GPSLAT_DEG.toString())
+            coordnmET.setText(flora_Attribute.GPSLAT_MIN.toString())
+            coordnsET.setText(flora_Attribute.GPSLAT_SEC.toString())
+            coordedET.setText(flora_Attribute.GPSLON_DEG.toString())
+            coordemET.setText(flora_Attribute.GPSLON_MIN.toString())
+            coordesET.setText(flora_Attribute.GPSLON_SEC.toString())
 
             florawindTV.setText(flora_Attribute.WIND)
             if (florawindTV.text == null){
@@ -1654,8 +1740,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
 
             if ("habstat" == type){
                 if (selectItem == "기타") {
-                    florahabstatRL.visibility = View.VISIBLE
-                    florahabstatTV.visibility = View.GONE
+                    val intent = Intent(context, DlgInputActivity::class.java)
+                    startActivityForResult(intent, SET_INPUT)
                 }
             }
 
@@ -1781,7 +1867,10 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
         if (resultCode == Activity.RESULT_OK) {
 
             when (requestCode) {
-
+                SET_INPUT -> {
+                    var name = data!!.getStringExtra("name");
+                    florahabstatTV.text = name
+                }
                 SET_FLORA -> {
 
                     var name = data!!.getStringExtra("name");
@@ -2193,7 +2282,8 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             var flora_Attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                    , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26))
+                    , data.getFloat(22), data.getFloat(23),data.getString(24),data.getString(25),data.getString(26)
+                        , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
 
             dataArray.add(flora_Attribute)
         }
@@ -2231,6 +2321,84 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
         data.close()
 
         finish()
+    }
+
+    fun convert(d: Double): String {
+
+        var long_d = Math.abs(d)
+
+//        var i = d.intValue()
+        var i = long_d.toInt()
+        var s = i.toString()
+
+        coordndET.setText(s)
+
+        long_d = long_d - i;
+        long_d = long_d * 60;
+        coordnmET.setText(long_d.toInt().toString())
+//        i = long_d.intValue();
+        i = long_d.toInt();
+
+//        s = s + String.format(i) + '\'';
+        s = s + i.toString()
+
+        long_d = long_d - i;
+        long_d = long_d * 60;
+
+//        i = long_d.round().intValue();
+        i = Math.round(long_d.toDouble()).toInt()
+
+        coordnsET.setText(long_d.toFloat().toString())
+
+        s = s + i.toString() + '"';
+
+        println("")
+
+        println("i $i")
+
+        println("s ::::::::::::::::::::::::::::::::::::::::::::::::::::::: " + s)
+
+        return s
+    }
+
+    fun logconvert(d: Double): String {
+
+        var long_d = Math.abs(d)
+
+//        var i = d.intValue()
+        var i = long_d.toInt()
+        var s = i.toString()
+
+        coordedET.setText(s)
+
+        long_d = long_d - i;
+        long_d = long_d * 60;
+        coordemET.setText(long_d.toInt().toString())
+//        i = long_d.intValue();
+        i = long_d.toInt();
+
+//        s = s + String.format(i) + '\'';
+        s = s + i.toString()
+
+        long_d = long_d - i;
+        long_d = long_d * 60;
+
+//        i = long_d.round().intValue();
+        i = Math.round(long_d.toDouble()).toInt()
+
+        coordesET.setText(long_d.toFloat().toString())
+
+        s = s + i.toString() + '"';
+
+        println("")
+
+        println("i $i")
+
+
+
+        println("s ::::::::::::::::::::::::::::::::::::::::::::::::::::::: " + s)
+
+        return s
     }
 
 }

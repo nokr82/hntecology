@@ -338,6 +338,13 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                 prjnameET.setText(birds_attribute.PRJ_NAME)
 
+                coordndET.setText(birds_attribute.GPSLAT_DEG.toString())
+                coordnmET.setText(birds_attribute.GPSLAT_MIN.toString())
+                coordnsET.setText(birds_attribute.GPSLAT_SEC.toString())
+                coordedET.setText(birds_attribute.GPSLON_DEG.toString())
+                coordemET.setText(birds_attribute.GPSLON_MIN.toString())
+                coordesET.setText(birds_attribute.GPSLON_SEC.toString())
+
                 birdsTV.setText(birds_attribute.SPEC_NM)
                 familyNameTV.setText(birds_attribute.FAMI_NM)
                 zoologicalTV.setText(birds_attribute.SCIEN_NM)
@@ -351,14 +358,14 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 obsstatTV.setText(birds_attribute.OBS_STAT)
                 useTarTV.setText(birds_attribute.USE_TAR)
                 useTarSpET.setText(birds_attribute.USE_TAR_SP)
-                if(birds_attribute.USE_TAR_SP == null || birds_attribute.USE_TAR_SP.equals("")){
+                if(birds_attribute.USE_TAR_SP == null || birds_attribute.USE_TAR_SP.equals("null")){
                     useTarSpET.setText("")
                     useTarSpLL.visibility = View.GONE
-                }
-
-                if(birds_attribute.USE_TAR_SP != null && !birds_attribute.USE_TAR_SP.equals("")){
+                }else{
                     useTarSpLL.visibility = View.VISIBLE
                 }
+
+
 
                 useLayerTV.setText(birds_attribute.USE_LAYER)
                 mjActTV.setText(birds_attribute.MJ_ACT)

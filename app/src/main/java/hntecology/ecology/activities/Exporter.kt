@@ -258,6 +258,7 @@ object Exporter {
             println("Exit : $outPath")
 
             val files = outputsDir.listFiles()
+            println("files!! : $files")
             if (files != null) {
                 for (i in files.indices) {
                     println("f : " + files[i])
@@ -307,8 +308,10 @@ object Exporter {
 
         if(exportPointItems != null) {
             val columnDef = exportPointItems.first().columnDefs
+            Log.d("쉡", columnDef.toString())
             for (columnDef in columnDef) {
                 layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
+                Log.d("쉡", columnDef.columnName)
             }
         }
 
@@ -377,6 +380,8 @@ object Exporter {
                     } else if(columnDef.columnValue is String) {
                         feature.SetField(columnDef.columnName, columnDef.columnValue)
                     }
+                    println("-------export${columnDef.columnName} : ${columnDef.columnValue}")
+
                 }
 
                 // create the WKT for the feature using Python string formatting

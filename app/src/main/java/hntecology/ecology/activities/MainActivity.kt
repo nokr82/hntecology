@@ -6516,6 +6516,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         var rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
         var data = db!!.query("birdsAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        Log.d("버드",pointsArray.toString())
+        Log.d("버드",data.toString())
         if (leftday != ""){
              data = db!!.query("birdsAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         }
@@ -6555,6 +6557,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 //            }
 //        }
 
+        Log.d("버드",birdsDatas.toString())
         if (birdsDatas.size > 0) {
 
             for (i in 0..birdsDatas.size - 1) {
@@ -6619,11 +6622,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, birds_attribute.GEOM))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, birds_attribute.GPSLAT_DEG))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, birds_attribute.GPSLAT_MIN))
-                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, birds_attribute.GPSLAT_SEC))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, birds_attribute.GPSLAT_SEC.toString()))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, birds_attribute.GPSLON_DEG))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, birds_attribute.GPSLON_MIN))
-                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, birds_attribute.GPSLON_SEC))
-
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, birds_attribute.GPSLON_SEC.toString()))
+                    println("-------export23${ birds_attribute.GPSLON_SEC.toString()}")
+                    println("-------export23${ birds_attribute.INV_PERSON}")
                     var geomsplit = birds_attribute.GEOM!!.split(" ")
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
 
@@ -6638,7 +6642,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     marker.zIndex = 1.0f
 
                     val exporter = Exporter.ExportPointItem(LAYER_BIRDS, BIRDSATTRIBUTE, marker)
-
+                    Log.d("버드",BIRDSATTRIBUTE.toString())
                     pointsArray.add(exporter)
 
                     marker.remove()
@@ -6678,13 +6682,16 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, birds_attribute.CONF_MOD))
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, birds_attribute.GPSLAT_DEG))
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, birds_attribute.GPSLAT_MIN))
-                            BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, birds_attribute.GPSLAT_SEC))
+                            BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, birds_attribute.GPSLAT_SEC.toString()))
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, birds_attribute.GPSLON_DEG))
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, birds_attribute.GPSLON_MIN))
-                            BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, birds_attribute.GPSLON_SEC))
+                            BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, birds_attribute.GPSLON_SEC.toString()))
+                            println("-------export23${ birds_attribute.INV_PERSON}")
+                            println("-------export23${ birds_attribute.GPSLON_SEC.toString()}")
                         }
 
                         val exporter = Exporter.ExportPointItem(LAYER_BIRDS, BIRDSATTRIBUTE, points.get(idx))
+                        Log.d("버드",BIRDSATTRIBUTE.toString())
 
                         pointsArray.add(exporter)
 
@@ -6711,10 +6718,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             }
 
             if (chkData) {
-
+                Log.d("버드","테스트")
             } else {
                 if (leftday == "") {
                     dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "birds" + File.separator + "birds", "조류", "birds", "Y", "birds")
+                    Log.d("버드","테스트2")
                 }
             }
 
@@ -6843,10 +6851,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, reptilia_attribute.GEOM))
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, reptilia_attribute.GPSLAT_DEG))
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, reptilia_attribute.GPSLAT_MIN))
-                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, reptilia_attribute.GPSLAT_SEC))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, reptilia_attribute.GPSLAT_SEC.toString()))
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, reptilia_attribute.GPSLON_DEG))
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, reptilia_attribute.GPSLON_MIN))
-                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, reptilia_attribute.GPSLON_SEC))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, reptilia_attribute.GPSLON_SEC.toString()))
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA", ogr.OFTString, reptilia_attribute.HAB_AREA))
 
                     var geomsplit = reptilia_attribute.GEOM!!.split(" ")
@@ -6904,10 +6912,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             REPTILIAATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, reptilia_attribute.CONF_MOD))
                             REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, reptilia_attribute.GPSLAT_DEG))
                             REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, reptilia_attribute.GPSLAT_MIN))
-                            REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, reptilia_attribute.GPSLAT_SEC))
+                            REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, reptilia_attribute.GPSLAT_SEC.toString()))
                             REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, reptilia_attribute.GPSLON_DEG))
                             REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, reptilia_attribute.GPSLON_MIN))
-                            REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, reptilia_attribute.GPSLON_SEC))
+                            REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, reptilia_attribute.GPSLON_SEC.toString()))
                             REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA", ogr.OFTString, reptilia_attribute.HAB_AREA))
                         }
 
@@ -7064,10 +7072,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, mammal_attribute.GEOM))
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, mammal_attribute.GPSLAT_DEG))
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, mammal_attribute.GPSLAT_MIN))
-                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, mammal_attribute.GPSLAT_SEC))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, mammal_attribute.GPSLAT_SEC.toString()))
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, mammal_attribute.GPSLON_DEG))
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, mammal_attribute.GPSLON_MIN))
-                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, mammal_attribute.GPSLON_SEC))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, mammal_attribute.GPSLON_SEC.toString()))
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT_PR", ogr.OFTString, mammal_attribute.MJ_ACT_PR))
 
                     var geomsplit = mammal_attribute.GEOM!!.split(" ")
@@ -7287,10 +7295,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     FISHATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, fish_attribute.GEOM))
                     FISHATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, fish_attribute.GPSLAT_DEG))
                     FISHATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, fish_attribute.GPSLAT_MIN))
-                    FISHATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, fish_attribute.GPSLAT_SEC))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, fish_attribute.GPSLAT_SEC.toString()))
                     FISHATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, fish_attribute.GPSLON_DEG))
                     FISHATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, fish_attribute.GPSLON_MIN))
-                    FISHATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, fish_attribute.GPSLON_SEC))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, fish_attribute.GPSLON_SEC.toString()))
 //                    }
 
                     var geomsplit = fish_attribute.GEOM!!.split(" ")
@@ -7359,6 +7367,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_FM_CH", ogr.OFTString, fish_attribute.RIV_FM_CH))
                             FISHATTRIBUTE.add(Exporter.ColumnDef("UN_FISH_CH", ogr.OFTString, fish_attribute.UN_FISH_CH))
                             FISHATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, fish_attribute.CONF_MOD))
+
                         }
 
                         val exporter = Exporter.ExportPointItem(LAYER_FISH, FISHATTRIBUTE, points.get(idx))
@@ -7513,10 +7522,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     INSECTATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, insect_attribute.GEOM))
                     INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, insect_attribute.GPSLAT_DEG))
                     INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, insect_attribute.GPSLAT_MIN))
-                    INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, insect_attribute.GPSLAT_SEC))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, insect_attribute.GPSLAT_SEC.toString()))
                     INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, insect_attribute.GPSLON_DEG))
                     INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, insect_attribute.GPSLON_MIN))
-                    INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, insect_attribute.GPSLON_SEC))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, insect_attribute.GPSLON_SEC.toString()))
 
                     var geomsplit = insect_attribute.GEOM!!.split(" ")
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
@@ -7570,10 +7579,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             INSECTATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, insect_attribute.CONF_MOD))
                             INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, insect_attribute.GPSLAT_DEG))
                             INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, insect_attribute.GPSLAT_MIN))
-                            INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, insect_attribute.GPSLAT_SEC))
+                            INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, insect_attribute.GPSLAT_SEC.toString()))
                             INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, insect_attribute.GPSLON_DEG))
                             INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, insect_attribute.GPSLON_MIN))
-                            INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, insect_attribute.GPSLON_SEC))
+                            INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, insect_attribute.GPSLON_SEC.toString()))
                         }
 
                         val exporter = Exporter.ExportPointItem(LAYER_INSECT, INSECTATTRIBUTE, points.get(idx))
@@ -7716,10 +7725,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, flora_Attribute.GEOM))
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, flora_Attribute.GPSLAT_DEG))
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, flora_Attribute.GPSLAT_MIN))
-                    FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, flora_Attribute.GPSLAT_SEC))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, flora_Attribute.GPSLAT_SEC.toString()))
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, flora_Attribute.GPSLON_DEG))
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, flora_Attribute.GPSLON_MIN))
-                    FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, flora_Attribute.GPSLON_SEC))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, flora_Attribute.GPSLON_SEC.toString()))
 
                     Log.d("점",flora_Attribute.GEOM)
                     var geomsplit = flora_Attribute.GEOM!!.split(" ")
@@ -7771,10 +7780,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             FLORAATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, flora_Attribute.CONF_MOD))
                             FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_DEG", ogr.OFTString, flora_Attribute.GPSLAT_DEG))
                             FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_MIN", ogr.OFTString, flora_Attribute.GPSLAT_MIN))
-                            FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, flora_Attribute.GPSLAT_SEC))
+                            FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLAT_SEC", ogr.OFTString, flora_Attribute.GPSLAT_SEC.toString()))
                             FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, flora_Attribute.GPSLON_DEG))
                             FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, flora_Attribute.GPSLON_MIN))
-                            FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, flora_Attribute.GPSLON_SEC))
+                            FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, flora_Attribute.GPSLON_SEC.toString()))
 
                         }
 

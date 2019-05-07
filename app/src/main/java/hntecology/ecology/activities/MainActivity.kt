@@ -6316,7 +6316,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 //                        BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("FIN_EST", ogr.OFTString, biotope_attribute.FIN_EST))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SPEC", ogr.OFTString, biotope_attribute.TRE_SPEC))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("BIO_TYPE", ogr.OFTString, biotope_attribute.BIO_TYPE))
-                    BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("IMPERV", ogr.OFTString, biotope_attribute.IMPERV))
+                    BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("IMPERV", ogr.OFTString, biotope_attribute.IMPERV.toString()))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_FAMI", ogr.OFTString, biotope_attribute.TRE_FAMI))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_SCIEN", ogr.OFTString, biotope_attribute.TRE_SCIEN))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_H", ogr.OFTString, biotope_attribute.TRE_H.toString()))
@@ -6395,7 +6395,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, biotope_attribute.GROP_ID))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, biotope_attribute.PRJ_NAME))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("BIO_TYPE", ogr.OFTString, biotope_attribute.BIO_TYPE))
-                            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("IMPERV", ogr.OFTString, biotope_attribute.IMPERV))
+                            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("IMPERV", ogr.OFTString, biotope_attribute.IMPERV.toString()))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, biotope_attribute.INV_REGION))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, biotope_attribute.INV_PERSON))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, biotope_attribute.INV_DT))
@@ -6855,7 +6855,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, reptilia_attribute.GPSLON_DEG))
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, reptilia_attribute.GPSLON_MIN))
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, reptilia_attribute.GPSLON_SEC.toString()))
-                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA", ogr.OFTString, reptilia_attribute.HAB_AREA))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA", ogr.OFTString, reptilia_attribute.HAB_AREA.toString()))
 
                     var geomsplit = reptilia_attribute.GEOM!!.split(" ")
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
@@ -6916,7 +6916,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, reptilia_attribute.GPSLON_DEG))
                             REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, reptilia_attribute.GPSLON_MIN))
                             REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, reptilia_attribute.GPSLON_SEC.toString()))
-                            REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA", ogr.OFTString, reptilia_attribute.HAB_AREA))
+                            REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA", ogr.OFTString, reptilia_attribute.HAB_AREA.toString()))
                         }
 
                         val exporter = Exporter.ExportPointItem(LAYER_REPTILIA, REPTILIAATTRIBUTE, points.get(idx))

@@ -1457,7 +1457,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",TEMP_YN='" + biotope_attribute.getTEMP_YN() + "'"
                 + ",LANDUSE='" + biotope_attribute.getLANDUSE() + "'"
                 + ",BIO_TYPE='" + biotope_attribute.getBIO_TYPE() + "'"
-                + ",IMPERV=" + biotope_attribute.getIMPERV() + ""+
+                + ",IMPERV='" + biotope_attribute.getIMPERV() + "'"+
                 "where id = '" + page + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1496,6 +1496,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",TEMP_YN='" + mammal_attribute.getTEMP_YN() + "'"
                 + ",CONF_MOD='" + mammal_attribute.getCONF_MOD() + "'"
                 + ",MJ_ACT_PR='" + mammal_attribute.getMJ_ACT_PR() + "'"+
+
                 "where id = '" + pk + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1591,7 +1592,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",UN_FISH_CH='" + fish_attribute.getUN_FISH_CH() + "'"
                 + ",TEMP_YN='" + fish_attribute.getTEMP_YN() + "'"
                 + ",CONF_MOD='" + fish_attribute.getCONF_MOD() + "'"
-                + ",RIVER_BAD='" + fish_attribute.getRIVER_BED() + "'"
+                + ",RIVER_BED='" + fish_attribute.getRIVER_BED() + "'"
                 + ",COLL_TIME='" + fish_attribute.getCOLL_TIME() + "'"+
                 "where id = '" + pk + "'";
         SQLiteDatabase db = getWritableDatabase();

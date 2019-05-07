@@ -315,8 +315,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                 fishcodenumET.setText(fish_attribute.CODE_NUM)
 
-                fishrivernumET.setText(fish_attribute.RIVER_NUM.toString())
-                fishrivernmET.setText(fish_attribute.RIVER_NM)
+                fishrivernumET.setText(fish_attribute.RIVER_NUM.toString()+"차")
                 var net_cnt = 0
                 var net_min = 0
                 net_cnt =   fish_attribute.NET_CNT!!.toInt()
@@ -1704,18 +1703,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         }
 
-        fishrivernumET.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {
-            }
 
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                fishrivernumET.setText(s.toString()+ "차")
-            }
-        })
 
         fishnetcntET.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
@@ -1884,10 +1872,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 fishcodenumET.setText("")
             }
 
-            fishrivernumET.setText(fish_attribute.RIVER_NUM.toString())
-            if(fishrivernumET.text == null){
-                fishrivernumET.setText("")
-            }
+            fishrivernumET.setText(fish_attribute.RIVER_NUM.toString()+"차")
+
 
             fishgpslatTV.setText(fish_attribute.GPS_LAT.toString())
             if(fishgpslatTV.text == null){

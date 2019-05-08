@@ -383,9 +383,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         //37 column
         String query = "INSERT INTO biotopeAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,INV_INDEX,LU_GR_NUM,LU_TY_RATE,STAND_H,LC_GR_NUM,LC_TY,TY_MARK,GV_RATE,GV_STRUCT,DIS_RET,RESTOR_POT,COMP_INTA";
-        query += ",VP_INTA,IMP_FORM,BREA_DIA,FIN_EST,TRE_SPEC,TRE_FAMI,TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_H,STRE_BREA,STRE_COVE,SHR_SPEC,SHR_FAMI";
+        query += ",VP_INTA,IMP_FORM,BREA_DIA,FIN_EST,TRE_SPEC,TRE_FAMI,TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_H,STRE_BRT,STRE_COVE,SHR_SPEC,SHR_FAMI";
         query += ",SHR_SCIEN,SHR_H,STR_COVE,HER_SPEC,HER_FAMI,HER_SCIEN,HER_H,HER_COVE,PIC_FOLDER,WILD_ANI,BIOTOP_POT,UNUS_NOTE,GPS_LAT,GPS_LON,NEED_CONF,CONF_MOD,TEMP_YN,LANDUSE,GEOM,UFID,CHECKD";
-        query += ",MIN_TRE_H,MAX_TRE_H,MIN_TRE_BREA,MAX_TRE_BREA,MIN_STRE_H,MAX_STRE_H,MIN_STRE_BREAET,MAX_STRE_BREAET,MIN_SHR_HET,MAX_SHR_HET,MIN_HER_HET,MAX_HER_HET,BIO_TYPE,IMPERV)";
+        query += ",TRE_H_N,TRE_H_X,TRE_BREA_N,TRE_BREA_X,STRE_H_N,STRE_H_X,STRE_BRT_N,STRE_BRT_X,SHR_HET_N,SHR_HET_X,HER_HET_X,HER_HET_N,BIO_TYPE,IMPERV)";
 
         query += " values (";
         query += " '" + biotope_attribute.getGROP_ID() + "'";
@@ -420,7 +420,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + biotope_attribute.getSTRE_FAMI() + "'";
         query += ", '" + biotope_attribute.getSTRE_SCIEN() + "'";
         query += ", " + biotope_attribute.getSTRE_H() + "";
-        query += ", " + biotope_attribute.getSTRE_BREA() + "";
+        query += ", " + biotope_attribute.getSTRE_BRT() + "";
         query += ", " + biotope_attribute.getSTRE_COVE() + "";
         query += ", '" + biotope_attribute.getSHR_SPEC() + "'";
         query += ", '" + biotope_attribute.getSHR_FAMI() + "'";
@@ -445,18 +445,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + biotope_attribute.getGEOM() + "'";
         query += ", '" + biotope_attribute.getUFID() + "'";
         query += ", '" + biotope_attribute.getCHECK() + "'";
-        query += ", " + biotope_attribute.getMIN_TRE_H() + "";
-        query += ", " + biotope_attribute.getMAX_TRE_H() + "";
-        query += ", " + biotope_attribute.getMIN_TRE_BREA() + "";
-        query += ", " + biotope_attribute.getMAX_TRE_BREA() + "";
-        query += ", " + biotope_attribute.getMIN_STRE_H() + "";
-        query += ", " + biotope_attribute.getMAX_STRE_H() + "";
-        query += ", " + biotope_attribute.getMIN_STRE_BREAET() + "";
-        query += ", " + biotope_attribute.getMAX_STRE_BREAET() + "";
-        query += ", " + biotope_attribute.getMIN_SHR_HET() + "";
-        query += ", " + biotope_attribute.getMAX_SHR_HET() + "";
-        query += ", " + biotope_attribute.getMIN_HER_HET() + "";
-        query += ", " + biotope_attribute.getMAX_HER_HET() + "";
+        query += ", " + biotope_attribute.getTRE_H_N() + "";
+        query += ", " + biotope_attribute.getTRE_H_X() + "";
+        query += ", " + biotope_attribute.getTRE_BREA_N() + "";
+        query += ", " + biotope_attribute.getTRE_BREA_X() + "";
+        query += ", " + biotope_attribute.getSTRE_H_N() + "";
+        query += ", " + biotope_attribute.getSTRE_H_X() + "";
+        query += ", " + biotope_attribute.getSTRE_BRT_N() + "";
+        query += ", " + biotope_attribute.getSTRE_BRT_X() + "";
+        query += ", " + biotope_attribute.getSHR_HET_N() + "";
+        query += ", " + biotope_attribute.getSHR_HET_X() + "";
+        query += ", " + biotope_attribute.getHER_HET_X() + "";
+        query += ", " + biotope_attribute.getHER_HET_N() + "";
         query += ", '" + biotope_attribute.getBIO_TYPE() + "'";
         query += ", '" + biotope_attribute.getIMPERV() + "'";
         query += " ); ";
@@ -1027,7 +1027,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public void insertWayPoint(Waypoint waypoint) {
         String query = "INSERT INTO Waypoint";
-        query += "(GROP_ID,INV_REGION,INV_DT,INV_TM,NUM,INV_PERSON,PRJ_NAME,GPS_LAT,GPS_LON,MEMO,GEOM,)";
+        query += "(GROP_ID,INV_REGION,INV_DT,INV_TM,NUM,INV_PERSON,PRJ_NAME,GPS_LAT,GPS_LON,MEMO,GEOM)";
 
 
         query += " values (";
@@ -1416,25 +1416,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",TRE_FAMI='" + biotope_attribute.getTRE_FAMI() + "'"
                 + ",TRE_SCIEN='" + biotope_attribute.getTRE_SCIEN() + "'"
                 + ",TRE_H=" + biotope_attribute.getTRE_H() + ""
-                + ",MAX_TRE_H=" + biotope_attribute.getMAX_TRE_H() + ""
-                + ",MIN_TRE_H=" + biotope_attribute.getMIN_TRE_H() + ""
-                + ",MIN_TRE_BREA=" + biotope_attribute.getMIN_TRE_BREA() + ""
-                + ",MAX_TRE_BREA=" + biotope_attribute.getMAX_TRE_BREA() + ""
-                + ",MIN_STRE_H=" + biotope_attribute.getMIN_STRE_H() + ""
-                + ",MAX_STRE_H=" + biotope_attribute.getMAX_STRE_H() + ""
-                + ",MIN_STRE_BREAET=" + biotope_attribute.getMIN_STRE_BREAET() + ""
-                + ",MAX_STRE_BREAET=" + biotope_attribute.getMAX_STRE_BREAET() + ""
-                + ",MIN_SHR_HET=" + biotope_attribute.getMIN_SHR_HET() + ""
-                + ",MAX_SHR_HET=" + biotope_attribute.getMAX_SHR_HET() + ""
-                + ",MIN_HER_HET=" + biotope_attribute.getMIN_HER_HET() + ""
-                + ",MAX_HER_HET=" + biotope_attribute.getMAX_HER_HET() + ""
+                + ",TRE_H_X=" + biotope_attribute.getTRE_H_X() + ""
+                + ",TRE_H_N=" + biotope_attribute.getTRE_H_N() + ""
+                + ",TRE_BREA_N=" + biotope_attribute.getTRE_BREA_N() + ""
+                + ",TRE_BREA_X=" + biotope_attribute.getTRE_BREA_X() + ""
+                + ",STRE_H_N=" + biotope_attribute.getSTRE_H_N() + ""
+                + ",STRE_H_X=" + biotope_attribute.getSTRE_H_X() + ""
+                + ",STRE_BRT_N=" + biotope_attribute.getSTRE_BRT_N() + ""
+                + ",STRE_BRT_X=" + biotope_attribute.getSTRE_BRT_X() + ""
+                + ",SHR_HET_N=" + biotope_attribute.getSHR_HET_N() + ""
+                + ",SHR_HET_X=" + biotope_attribute.getSHR_HET_X() + ""
+                + ",HER_HET_X=" + biotope_attribute.getHER_HET_X() + ""
+                + ",HER_HET_N=" + biotope_attribute.getHER_HET_N() + ""
                 + ",TRE_BREA=" + biotope_attribute.getTRE_BREA() + ""
                 + ",TRE_COVE=" + biotope_attribute.getTRE_COVE() + ""
                 + ",STRE_SPEC='" + biotope_attribute.getSTRE_SPEC() + "'"
                 + ",STRE_FAMI='" + biotope_attribute.getSTRE_FAMI() + "'"
                 + ",STRE_SCIEN='" + biotope_attribute.getSTRE_SCIEN() + "'"
                 + ",STRE_H=" + biotope_attribute.getSTRE_H() + ""
-                + ",STRE_BREA=" + biotope_attribute.getSTRE_BREA() + ""
+                + ",STRE_BRT=" + biotope_attribute.getSTRE_BRT() + ""
                 + ",STRE_COVE=" + biotope_attribute.getSTRE_COVE() + ""
                 + ",SHR_SPEC='" + biotope_attribute.getSHR_SPEC() + "'"
                 + ",SHR_FAMI='" + biotope_attribute.getSHR_FAMI() + "'"
@@ -2173,12 +2173,31 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return num;
     }
 
+    public int pkNum(String type){
+
+        SQLiteDatabase db = getReadableDatabase();
+
+//        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(NUM\n ,9,15)),0)+1 ,-15, 15) FROM birdsAttribute";
+        String query = "SELECT max(NUM) FROM "+type;
+        int num = 0;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                num = cursor.getInt(0);
+            }
+        }
+        cursor.close();
+        return num+1;
+    }
+
+
     public int birdsNextNum(){
 
         SQLiteDatabase db = getReadableDatabase();
 
         String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(NUM\n ,9,15)),0)+1 ,-15, 15) FROM birdsAttribute";
-
+//        String query = "SELECT max(NUM) FROM birdsAttribute";
         int num = 0;
 
         Cursor cursor = db.rawQuery(query, null);

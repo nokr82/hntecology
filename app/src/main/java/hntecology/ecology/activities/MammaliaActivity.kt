@@ -142,7 +142,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
         prjname = PrefUtils.getStringPreference(context, "prjname")
 
-        var today = Utils.todayStr();
+  /*      var today = Utils.todayStr();
 
         var todays = today.split("-")
 
@@ -152,7 +152,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             texttoday += todays.get(i)
         }
 
-        mammalnumTV.setText(texttoday + "1")
+        mammalnumTV.setText(texttoday + "1")*/
+
+
 
         addPicturesLL = findViewById(R.id.addPicturesLL)
 
@@ -165,6 +167,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         dbManager = DataBaseHelper(this)
 
         db = dbManager!!.createDataBase();
+
+        var c = dbManager!!.pkNum("mammalAttribute")
+        mammalnumTV.text = c.toString()
 
         window.setLayout(Utils.dpToPx(700f).toInt(), WindowManager.LayoutParams.WRAP_CONTENT);
 
@@ -1551,7 +1556,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
     }
 
     fun clear(){
-        var num = mammalnumTV.text.toString()
+      /*  var num = mammalnumTV.text.toString()
         if (num.length > 7){
             var textnum = num.substring(num.length - 2, num.length)
             var splitnum = num.substring(0, num.length - 2)
@@ -1562,7 +1567,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             var splitnum = num.substring(0, num.length - 1)
             var plusnum = textnum.toInt() + 1
             mammalnumTV.setText(splitnum.toString() + plusnum.toString())
-        }
+        }*/
+        var c = dbManager!!.pkNum("mammalAttribute")
+        mammalnumTV.text = c.toString()
 
         mammaltimeTV.setText(Utils.timeStr())
         mamspecnmET.setText("")

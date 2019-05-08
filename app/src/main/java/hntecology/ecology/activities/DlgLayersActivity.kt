@@ -22,17 +22,17 @@ import kotlinx.android.synthetic.main.dlg_layers.view.*
 
 class DlgLayersActivity : Activity() {
 
-    private lateinit var context:Context;
+    private lateinit var context: Context;
 
-    private var adapterData :ArrayList<LayerModel> = ArrayList<LayerModel>()
+    private var adapterData: ArrayList<LayerModel> = ArrayList<LayerModel>()
 
     private lateinit var apdater: DlgLayerAdapter;
 
     private lateinit var db: SQLiteDatabase
 
-    private var data :ArrayList<LayerModel> = ArrayList<LayerModel>()
+    private var data: ArrayList<LayerModel> = ArrayList<LayerModel>()
 
-    private var grop_id:ArrayList<String> = ArrayList<String>()
+    private var grop_id: ArrayList<String> = ArrayList<String>()
 
     val READ_EXTERNAL_STORAGE = 4
 
@@ -63,8 +63,8 @@ class DlgLayersActivity : Activity() {
 //        }
         allclickTV.setOnClickListener {
 
-            for(j in 0..adapterData.size-1){
-                var data  = adapterData.get(j)
+            for (j in 0..adapterData.size - 1) {
+                var data = adapterData.get(j)
                 data.is_checked = !data.is_checked
             }
             apdater.notifyDataSetChanged()
@@ -84,9 +84,9 @@ class DlgLayersActivity : Activity() {
         bioTV.callOnClick()
 
         listView.setOnItemClickListener { adapterView, view, position, l ->
-            var data  = adapterData.get(position)
+            var data = adapterData.get(position)
 
-            if(!data.is_checked){
+            if (!data.is_checked) {
                 data.is_checked = true
                 apdater.notifyDataSetChanged()
             } else {
@@ -97,7 +97,7 @@ class DlgLayersActivity : Activity() {
 
         dlgClick.setOnClickListener {
 
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                 loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, MainActivity.READ_EXTERNAL_STORAGE)
             } else {
                 done()
@@ -106,43 +106,40 @@ class DlgLayersActivity : Activity() {
         }
 
 
-
     }
 
 
-
-    fun loadData(type:Int) {
+    fun loadData(type: Int) {
 
         // select
-        val dataList:Array<String> = arrayOf("file_name", "layer_name","min_scale","max_scale","type","added","grop_id");
+        val dataList: Array<String> = arrayOf("file_name", "layer_name", "min_scale", "max_scale", "type", "added", "grop_id");
 
         //대분류
-        val data =  db.query("layers", dataList,null,null,null,null,"id",null);
+        val data = db.query("layers", dataList, null, null, null, null, "id", null);
         adapterData.clear()
         while (data.moveToNext()) {
-            val layerModel = LayerModel(data.getString(0), data.getString(1), data.getInt(2),data.getInt(3),data.getString(4),data.getString(5),data.getString(6),false);
+            val layerModel = LayerModel(data.getString(0), data.getString(1), data.getInt(2), data.getInt(3), data.getString(4), data.getString(5), data.getString(6), false);
 
             val zoom = intent.getFloatExtra("zoom", 0.0F)
-
-
-            if (type == 1){
-                if(layerModel.type !="lsmd" ) {
-                    adapterData.add(layerModel)
-                }
-            }else{
-                if(layerModel.type =="lsmd") {
-                    adapterData.add(layerModel)
+            if (zoom > layerModel.min_scale && zoom < layerModel.max_scale) {
+                if (type == 1) {
+                    if (layerModel.type != "lsmd") {
+                        adapterData.add(layerModel)
+                    }
+                } else {
+                    if (layerModel.type == "lsmd") {
+                        adapterData.add(layerModel)
+                    }
                 }
             }
 
-            Log.d("데이터", adapterData.size.toString())
-            if(intent.getSerializableExtra("layerFileName") != null){
+            if (intent.getSerializableExtra("layerFileName") != null) {
                 var filename: ArrayList<String> = intent.getSerializableExtra("layerFileName") as ArrayList<String>
-                val gropid:ArrayList<String> = intent.getSerializableExtra("layerGropId") as ArrayList<String>
+                val gropid: ArrayList<String> = intent.getSerializableExtra("layerGropId") as ArrayList<String>
 
-                for(i in 0..gropid.size-1){
-                    for(j in 0..adapterData.size-1){
-                        if(gropid.get(i) == adapterData.get(j).grop_id){
+                for (i in 0..gropid.size - 1) {
+                    for (j in 0..adapterData.size - 1) {
+                        if (gropid.get(i) == adapterData.get(j).grop_id) {
                             adapterData.get(j).is_checked = true
                         }
                     }
@@ -150,7 +147,7 @@ class DlgLayersActivity : Activity() {
             }
 
         }
-
+        Log.d("데이터", adapterData.size.toString())
         data.close()
 
         apdater.notifyDataSetChanged()
@@ -161,9 +158,9 @@ class DlgLayersActivity : Activity() {
         if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(perm), requestCode)
         } else {
-            if(android.Manifest.permission.WRITE_EXTERNAL_STORAGE == perm){
+            if (android.Manifest.permission.WRITE_EXTERNAL_STORAGE == perm) {
                 loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, MainActivity.READ_EXTERNAL_STORAGE)
-            } else if(android.Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
+            } else if (android.Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
                 done()
             }
         }
@@ -189,11 +186,11 @@ class DlgLayersActivity : Activity() {
 
         }
 
-        data.sortWith(object: Comparator<LayerModel>{
+        data.sortWith(object : Comparator<LayerModel> {
             override fun compare(p1: LayerModel, p2: LayerModel): Int {
-                if(p1.type == "lsmd" && p2.type == "lsmd") {
+                if (p1.type == "lsmd" && p2.type == "lsmd") {
                     return 0
-                } else if(p1.type == "lsmd" && p2.type != "lsmd") {
+                } else if (p1.type == "lsmd" && p2.type != "lsmd") {
                     return 1
                 }
                 return -1

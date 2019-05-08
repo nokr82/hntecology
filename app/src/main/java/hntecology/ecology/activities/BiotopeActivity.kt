@@ -400,8 +400,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                 }
 
-                if (biotope_attribute.INV_PERSON != "" && biotope_attribute.INV_PERSON != null) {
-                    tvINV_PERSONTV.setText(biotope_attribute.INV_PERSON)                    // 조사자
+                if (biotope_attribute.INV_PERSON != "" || biotope_attribute.INV_PERSON != null) {
+                    tvINV_PERSONTV.text = biotope_attribute.INV_PERSON                    // 조사자
                 } else {
                     tvINV_PERSONTV.setText(PrefUtils.getStringPreference(this, "name"))
                 }
@@ -547,18 +547,18 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 etTRE_FAMIET.setText(biotope_attribute.TRE_FAMI)
                 etTRE_SCIENET.setText(biotope_attribute.TRE_SCIEN.toString())
                 etTRE_HET.setText(biotope_attribute.TRE_H.toString())
-                minET.setText(biotope_attribute.MIN_TRE_H.toString())
-                maxET.setText(biotope_attribute.MAX_TRE_H.toString())
-                min2ET.setText(biotope_attribute.MIN_TRE_BREA.toString())
-                max2ET.setText(biotope_attribute.MAX_TRE_BREA.toString())
-                min3ET.setText(biotope_attribute.MIN_STRE_H.toString())
-                max3ET.setText(biotope_attribute.MAX_STRE_H.toString())
-                min4ET.setText(biotope_attribute.MIN_STRE_BREAET.toString())
-                max4ET.setText(biotope_attribute.MAX_STRE_BREAET.toString())
-                min5ET.setText(biotope_attribute.MIN_SHR_HET.toString())
-                max5ET.setText(biotope_attribute.MAX_SHR_HET.toString())
-                min6ET.setText(biotope_attribute.MIN_HER_HET.toString())
-                max6ET.setText(biotope_attribute.MAX_HER_HET.toString())
+                minET.setText(biotope_attribute.TRE_H_N.toString())
+                maxET.setText(biotope_attribute.TRE_H_X.toString())
+                min2ET.setText(biotope_attribute.TRE_BREA_N.toString())
+                max2ET.setText(biotope_attribute.TRE_BREA_X.toString())
+                min3ET.setText(biotope_attribute.STRE_H_N.toString())
+                max3ET.setText(biotope_attribute.STRE_H_X.toString())
+                min4ET.setText(biotope_attribute.STRE_BRT_N.toString())
+                max4ET.setText(biotope_attribute.STRE_BRT_X.toString())
+                min5ET.setText(biotope_attribute.SHR_HET_N.toString())
+                max5ET.setText(biotope_attribute.SHR_HET_X.toString())
+                min6ET.setText(biotope_attribute.HER_HET_N.toString())
+                max6ET.setText(biotope_attribute.HER_HET_X.toString())
                 bioTV.setText(biotope_attribute.BIO_TYPE.toString())
                 impET.setText(biotope_attribute.IMPERV.toString())
                 etTRE_BREAET.setText(biotope_attribute.TRE_BREA.toString())
@@ -567,7 +567,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 etSTRE_FAMIET.setText(biotope_attribute.STRE_FAMI.toString())
                 etSTRE_SCIENET.setText(biotope_attribute.STRE_SCIEN.toString())
                 etSTRE_HET.setText(biotope_attribute.STRE_H.toString())
-                etSTRE_BREAET.setText(biotope_attribute.STRE_BREA.toString())
+                etSTRE_BREAET.setText(biotope_attribute.STRE_BRT.toString())
                 etSTRE_COVEET.setText(biotope_attribute.STRE_COVE.toString())
                 etSHR_SPECET.setText(biotope_attribute.SHR_SPEC)
                 etSHR_FAMIET.setText(biotope_attribute.SHR_FAMI.toString())
@@ -1019,11 +1019,11 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         }
 
                         if (minET.text.isNotEmpty()) {
-                            biotope_attribute.MIN_TRE_H = Utils.getString(minET).toFloat();
+                            biotope_attribute.TRE_H_N = Utils.getString(minET).toFloat();
                         }
 
                         if (maxET.text.isNotEmpty()) {
-                            biotope_attribute.MAX_TRE_H = Utils.getString(maxET).toFloat();
+                            biotope_attribute.TRE_H_X = Utils.getString(maxET).toFloat();
                         }
 
                         if (etTRE_BREAET.text.isNotEmpty()) {
@@ -1031,43 +1031,43 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             biotope_attribute.TRE_BREA = Utils.getString(etTRE_BREAET).toFloat();
                         }
                         if (min2ET.text.isNotEmpty()) {
-                            biotope_attribute.MIN_TRE_BREA = Utils.getString(min2ET).toFloat();
+                            biotope_attribute.TRE_BREA_N = Utils.getString(min2ET).toFloat();
                         }
 
                         if (max2ET.text.isNotEmpty()) {
-                            biotope_attribute.MAX_TRE_BREA = Utils.getString(max2ET).toFloat();
+                            biotope_attribute.TRE_BREA_X = Utils.getString(max2ET).toFloat();
                         }
 
                         if (min3ET.text.isNotEmpty()) {
-                            biotope_attribute.MIN_STRE_H = Utils.getString(min3ET).toFloat();
+                            biotope_attribute.STRE_H_N = Utils.getString(min3ET).toFloat();
                         }
 
                         if (max3ET.text.isNotEmpty()) {
-                            biotope_attribute.MAX_STRE_H = Utils.getString(max3ET).toFloat();
+                            biotope_attribute.STRE_H_X = Utils.getString(max3ET).toFloat();
                         }
 
                         if (min4ET.text.isNotEmpty()) {
-                            biotope_attribute.MIN_STRE_BREAET = Utils.getString(min4ET).toFloat();
+                            biotope_attribute.STRE_BRT_N = Utils.getString(min4ET).toFloat();
                         }
 
                         if (max4ET.text.isNotEmpty()) {
-                            biotope_attribute.MAX_STRE_BREAET = Utils.getString(max4ET).toFloat();
+                            biotope_attribute.STRE_BRT_X = Utils.getString(max4ET).toFloat();
                         }
 
                         if (min5ET.text.isNotEmpty()) {
-                            biotope_attribute.MIN_SHR_HET = Utils.getString(min5ET).toFloat();
+                            biotope_attribute.SHR_HET_N = Utils.getString(min5ET).toFloat();
                         }
 
                         if (max5ET.text.isNotEmpty()) {
-                            biotope_attribute.MAX_SHR_HET = Utils.getString(max5ET).toFloat();
+                            biotope_attribute.SHR_HET_X = Utils.getString(max5ET).toFloat();
                         }
 
                         if (min6ET.text.isNotEmpty()) {
-                            biotope_attribute.MIN_HER_HET = Utils.getString(min6ET).toFloat();
+                            biotope_attribute.HER_HET_N = Utils.getString(min6ET).toFloat();
                         }
 
                         if (max6ET.text.isNotEmpty()) {
-                            biotope_attribute.MAX_HER_HET = Utils.getString(max6ET).toFloat();
+                            biotope_attribute.HER_HET_X = Utils.getString(max6ET).toFloat();
                         }
 
 
@@ -1086,7 +1086,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                         if (etSTRE_BREAET.text.isNotEmpty()) {
 
-                            biotope_attribute.STRE_BREA = Utils.getString(etSTRE_BREAET).toFloat();
+                            biotope_attribute.STRE_BRT = Utils.getString(etSTRE_BREAET).toFloat();
                         }
 
                         if (etSTRE_COVEET.text.isNotEmpty()) {
@@ -1717,7 +1717,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
             if (etSTRE_BREAET.text.isNotEmpty()) {
 
-                biotope_attribute.STRE_BREA = Utils.getString(etSTRE_BREAET).toFloat();
+                biotope_attribute.STRE_BRT = Utils.getString(etSTRE_BREAET).toFloat();
             }
 
             if (etSTRE_COVEET.text.isNotEmpty()) {
@@ -1800,50 +1800,50 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             biotope_attribute.UFID = ufidTV.text.toString()
             biotope_attribute.CHECK = checkTV.text.toString()
             if (minET.text.isNotEmpty()) {
-                biotope_attribute.MIN_TRE_H = Utils.getString(minET).toFloat();
+                biotope_attribute.TRE_H_N = Utils.getString(minET).toFloat();
             }
 
             if (maxET.text.isNotEmpty()) {
-                biotope_attribute.MAX_TRE_H = Utils.getString(maxET).toFloat();
+                biotope_attribute.TRE_H_X = Utils.getString(maxET).toFloat();
             }
             if (min2ET.text.isNotEmpty()) {
-                biotope_attribute.MIN_TRE_BREA = Utils.getString(min2ET).toFloat();
+                biotope_attribute.TRE_BREA_N = Utils.getString(min2ET).toFloat();
             }
 
             if (max2ET.text.isNotEmpty()) {
-                biotope_attribute.MAX_TRE_BREA = Utils.getString(max2ET).toFloat();
+                biotope_attribute.TRE_BREA_X = Utils.getString(max2ET).toFloat();
             }
 
             if (min3ET.text.isNotEmpty()) {
-                biotope_attribute.MIN_STRE_H = Utils.getString(min3ET).toFloat();
+                biotope_attribute.STRE_H_N = Utils.getString(min3ET).toFloat();
             }
 
             if (max3ET.text.isNotEmpty()) {
-                biotope_attribute.MAX_STRE_H = Utils.getString(max3ET).toFloat();
+                biotope_attribute.STRE_H_X = Utils.getString(max3ET).toFloat();
             }
 
             if (min4ET.text.isNotEmpty()) {
-                biotope_attribute.MIN_STRE_BREAET = Utils.getString(min4ET).toFloat();
+                biotope_attribute.STRE_BRT_N = Utils.getString(min4ET).toFloat();
             }
 
             if (max4ET.text.isNotEmpty()) {
-                biotope_attribute.MAX_STRE_BREAET = Utils.getString(max4ET).toFloat();
+                biotope_attribute.STRE_BRT_X = Utils.getString(max4ET).toFloat();
             }
 
             if (min5ET.text.isNotEmpty()) {
-                biotope_attribute.MIN_SHR_HET = Utils.getString(min5ET).toFloat();
+                biotope_attribute.SHR_HET_N = Utils.getString(min5ET).toFloat();
             }
 
             if (max5ET.text.isNotEmpty()) {
-                biotope_attribute.MAX_SHR_HET = Utils.getString(max5ET).toFloat();
+                biotope_attribute.SHR_HET_X = Utils.getString(max5ET).toFloat();
             }
 
             if (min6ET.text.isNotEmpty()) {
-                biotope_attribute.MIN_HER_HET = Utils.getString(min6ET).toFloat();
+                biotope_attribute.HER_HET_N = Utils.getString(min6ET).toFloat();
             }
 
             if (max6ET.text.isNotEmpty()) {
-                biotope_attribute.MAX_HER_HET = Utils.getString(max6ET).toFloat();
+                biotope_attribute.HER_HET_X = Utils.getString(max6ET).toFloat();
             }
 
 
@@ -2201,25 +2201,25 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             etTRE_FAMIET.setText(biotope_attribute.TRE_FAMI)
             etTRE_SCIENET.setText(biotope_attribute.TRE_SCIEN.toString())
             etTRE_HET.setText(biotope_attribute.TRE_H.toString())
-            minET.setText(biotope_attribute.MIN_TRE_H.toString())
-            maxET.setText(biotope_attribute.MAX_TRE_H.toString())
-            min2ET.setText(biotope_attribute.MIN_TRE_BREA.toString())
-            max2ET.setText(biotope_attribute.MAX_TRE_BREA.toString())
-            min3ET.setText(biotope_attribute.MIN_STRE_H.toString())
-            max3ET.setText(biotope_attribute.MAX_STRE_H.toString())
-            min4ET.setText(biotope_attribute.MIN_STRE_BREAET.toString())
-            max4ET.setText(biotope_attribute.MAX_STRE_BREAET.toString())
-            min5ET.setText(biotope_attribute.MIN_SHR_HET.toString())
-            max5ET.setText(biotope_attribute.MAX_SHR_HET.toString())
-            min6ET.setText(biotope_attribute.MIN_HER_HET.toString())
-            max6ET.setText(biotope_attribute.MAX_HER_HET.toString())
+            minET.setText(biotope_attribute.TRE_H_N.toString())
+            maxET.setText(biotope_attribute.TRE_H_X.toString())
+            min2ET.setText(biotope_attribute.TRE_BREA_N.toString())
+            max2ET.setText(biotope_attribute.TRE_BREA_X.toString())
+            min3ET.setText(biotope_attribute.STRE_H_N.toString())
+            max3ET.setText(biotope_attribute.STRE_H_X.toString())
+            min4ET.setText(biotope_attribute.STRE_BRT_N.toString())
+            max4ET.setText(biotope_attribute.STRE_BRT_X.toString())
+            min5ET.setText(biotope_attribute.SHR_HET_N.toString())
+            max5ET.setText(biotope_attribute.SHR_HET_X.toString())
+            min6ET.setText(biotope_attribute.HER_HET_N.toString())
+            max6ET.setText(biotope_attribute.HER_HET_X.toString())
             etTRE_BREAET.setText(biotope_attribute.TRE_BREA.toString())
             etTRE_COVEET.setText(biotope_attribute.TRE_COVE.toString())
             etSTRE_SPECET.setText(biotope_attribute.STRE_SPEC.toString())
             etSTRE_FAMIET.setText(biotope_attribute.STRE_FAMI.toString())
             etSTRE_SCIENET.setText(biotope_attribute.STRE_SCIEN.toString())
             etSTRE_HET.setText(biotope_attribute.STRE_H.toString())
-            etSTRE_BREAET.setText(biotope_attribute.STRE_BREA.toString())
+            etSTRE_BREAET.setText(biotope_attribute.STRE_BRT.toString())
             etSTRE_COVEET.setText(biotope_attribute.STRE_COVE.toString())
             etSHR_SPECET.setText(biotope_attribute.SHR_SPEC)
             etSHR_FAMIET.setText(biotope_attribute.SHR_FAMI.toString())
@@ -3438,18 +3438,18 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             etTRE_FAMIET.setText(biotope_attribute.TRE_FAMI)
             etTRE_SCIENET.setText(biotope_attribute.TRE_SCIEN.toString())
             etTRE_HET.setText(biotope_attribute.TRE_H.toString())
-            minET.setText(biotope_attribute.MIN_TRE_H.toString())
-            maxET.setText(biotope_attribute.MAX_TRE_H.toString())
-            min2ET.setText(biotope_attribute.MIN_TRE_BREA.toString())
-            max2ET.setText(biotope_attribute.MAX_TRE_BREA.toString())
-            min3ET.setText(biotope_attribute.MIN_STRE_H.toString())
-            max3ET.setText(biotope_attribute.MAX_STRE_H.toString())
-            min4ET.setText(biotope_attribute.MIN_STRE_BREAET.toString())
-            max4ET.setText(biotope_attribute.MAX_STRE_BREAET.toString())
-            min5ET.setText(biotope_attribute.MIN_SHR_HET.toString())
-            max5ET.setText(biotope_attribute.MAX_SHR_HET.toString())
-            min6ET.setText(biotope_attribute.MIN_HER_HET.toString())
-            max6ET.setText(biotope_attribute.MAX_HER_HET.toString())
+            minET.setText(biotope_attribute.TRE_H_N.toString())
+            maxET.setText(biotope_attribute.TRE_H_X.toString())
+            min2ET.setText(biotope_attribute.TRE_BREA_N.toString())
+            max2ET.setText(biotope_attribute.TRE_BREA_X.toString())
+            min3ET.setText(biotope_attribute.STRE_H_N.toString())
+            max3ET.setText(biotope_attribute.STRE_H_X.toString())
+            min4ET.setText(biotope_attribute.STRE_BRT_N.toString())
+            max4ET.setText(biotope_attribute.STRE_BRT_X.toString())
+            min5ET.setText(biotope_attribute.SHR_HET_N.toString())
+            max5ET.setText(biotope_attribute.SHR_HET_X.toString())
+            min6ET.setText(biotope_attribute.HER_HET_N.toString())
+            max6ET.setText(biotope_attribute.HER_HET_X.toString())
             bioTV.setText(biotope_attribute.BIO_TYPE)
             impET.setText(biotope_attribute.IMPERV.toString())
             etTRE_BREAET.setText(biotope_attribute.TRE_BREA.toString())
@@ -3458,7 +3458,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             etSTRE_FAMIET.setText(biotope_attribute.STRE_FAMI.toString())
             etSTRE_SCIENET.setText(biotope_attribute.STRE_SCIEN.toString())
             etSTRE_HET.setText(biotope_attribute.STRE_H.toString())
-            etSTRE_BREAET.setText(biotope_attribute.STRE_BREA.toString())
+            etSTRE_BREAET.setText(biotope_attribute.STRE_BRT.toString())
             etSTRE_COVEET.setText(biotope_attribute.STRE_COVE.toString())
             etSHR_SPECET.setText(biotope_attribute.SHR_SPEC)
             etSHR_FAMIET.setText(biotope_attribute.SHR_FAMI.toString())

@@ -153,7 +153,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
         db = dbManager!!.createDataBase();
 
-        var today = Utils.todayStr();
+   /*     var today = Utils.todayStr();
 
         var todays = today.split("-")
 
@@ -163,7 +163,9 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             texttoday += todays.get(i)
         }
 
-        insectnumET.setText(texttoday + "1")
+        insectnumET.setText(texttoday + "1")*/
+        var c = dbManager!!.pkNum("insectAttribute")
+        insectnumET.text = c.toString()
 
         var intent: Intent = getIntent();
 
@@ -1628,8 +1630,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
     fun clear(){
 
-        var num = insectnumET.text.toString()
-        if (num.length > 7){
+//        var num = insectnumET.text.toString()
+     /*   if (num.length > 7){
             var textnum = num.substring(num.length - 2, num.length)
             var splitnum = num.substring(0, num.length - 2)
             var plusnum = textnum.toInt() + 1
@@ -1639,7 +1641,9 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             var splitnum = num.substring(0, num.length - 1)
             var plusnum = textnum.toInt() + 1
             insectnumET.setText(splitnum.toString() + plusnum.toString())
-        }
+        }*/
+        var c = dbManager!!.pkNum("insectAttribute")
+        insectnumET.text = c.toString()
 
         insecttimeET.setText(Utils.timeStr())
         insectspecnmET.setText("")

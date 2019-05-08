@@ -37,7 +37,18 @@ import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.*
+import kotlinx.android.synthetic.main.activity_fish.*
 import kotlinx.android.synthetic.main.activity_zoobenthos.*
+import kotlinx.android.synthetic.main.activity_zoobenthos.btnPIC_FOLDER
+import kotlinx.android.synthetic.main.activity_zoobenthos.confmodTV
+import kotlinx.android.synthetic.main.activity_zoobenthos.coordedET
+import kotlinx.android.synthetic.main.activity_zoobenthos.coordemET
+import kotlinx.android.synthetic.main.activity_zoobenthos.coordesET
+import kotlinx.android.synthetic.main.activity_zoobenthos.coordndET
+import kotlinx.android.synthetic.main.activity_zoobenthos.coordnmET
+import kotlinx.android.synthetic.main.activity_zoobenthos.coordnsET
+import kotlinx.android.synthetic.main.activity_zoobenthos.gravelET
+import kotlinx.android.synthetic.main.activity_zoobenthos.prjnameET
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -151,7 +162,7 @@ class ZoobenthosActivity : Activity() {
         prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
         prjname = PrefUtils.getStringPreference(context, "prjname")
 
-        var todays = today.split("-")
+   /*     var todays = today.split("-")
 
         var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
 
@@ -159,13 +170,17 @@ class ZoobenthosActivity : Activity() {
             texttoday += todays.get(i)
         }
 
-        numTV.setText(texttoday + "1")
+        numTV.setText(texttoday + "1")*/
 
         invpersonTV.setText(userName)
 
         dbManager = DataBaseHelper(this)
 
         db = dbManager!!.createDataBase();
+        var c = dbManager!!.pkNum("ZoobenthosAttribute")
+        numTV.text = c.toString()
+
+
 
         var intent: Intent = getIntent();
 
@@ -2099,8 +2114,8 @@ class ZoobenthosActivity : Activity() {
 
     fun clear() {
 
-        var num = numTV.text.toString()
-        if (num.length > 7){
+//        var num = numTV.text.toString()
+      /*  if (num.length > 7){
             var textnum = num.substring(num.length - 2, num.length)
             var splitnum = num.substring(0, num.length - 2)
             var plusnum = textnum.toInt() + 1
@@ -2110,7 +2125,9 @@ class ZoobenthosActivity : Activity() {
             var splitnum = num.substring(0, num.length - 1)
             var plusnum = textnum.toInt() + 1
             numTV.setText(splitnum.toString() + plusnum.toString())
-        }
+        }*/
+        var c = dbManager!!.pkNum("ZoobenthosAttribute")
+        numTV.text = c.toString()
 
         addPicturesLL!!.removeAllViews()
 

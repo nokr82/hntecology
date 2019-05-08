@@ -150,7 +150,15 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         db = dbManager!!.createDataBase();
 
-        var today = Utils.todayStr();
+
+        var c = dbManager!!.pkNum("reptiliaAttribute")
+        numET.text = c.toString()
+
+
+
+
+
+     /*   var today = Utils.todayStr();
 
         var todays = today.split("-")
 
@@ -158,9 +166,9 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         for (i in 1 until todays.size){
             texttoday += todays.get(i)
-        }
+        }*/
 
-        numET.setText(texttoday + "1")
+//        numET.setText(texttoday + "1")
         var time = Utils.timeStr();
         invtmTV.text = time;
         var timesplit = time.split(":")
@@ -2006,8 +2014,9 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
     }
 
     fun clear(){
-
-        var num = numET.text.toString()
+        var c = dbManager!!.pkNum("reptiliaAttribute")
+        numET.text = c.toString()
+       /* var num = numET.text.toString()
         if (num.length > 7){
             var textnum = num.substring(num.length - 2, num.length)
             var splitnum = num.substring(0, num.length - 2)
@@ -2018,7 +2027,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             var splitnum = num.substring(0, num.length - 1)
             var plusnum = textnum.toInt() + 1
             numET.setText(splitnum.toString() + plusnum.toString())
-        }
+        }*/
 
         invtmTV.setText(Utils.timeStr())
         specnmET.setText("")

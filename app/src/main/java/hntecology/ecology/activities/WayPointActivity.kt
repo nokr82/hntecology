@@ -34,7 +34,9 @@ import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.Waypoint
+import kotlinx.android.synthetic.main.activity_fish.*
 import kotlinx.android.synthetic.main.activity_way_point.*
+import kotlinx.android.synthetic.main.activity_way_point.btnPIC_FOLDER
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -127,12 +129,15 @@ class WayPointActivity : Activity() {
         var timesplit = time.split(":")
         invtm = timesplit.get(0) + timesplit.get(1)
 
-        var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
+       /* var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
 
         for (i in 1 until todays.size){
             texttoday += todays.get(i)
-        }
-        numTV.setText(texttoday + "1")
+        }*/
+//        numTV.setText(texttoday + "1")
+
+        var c = dbManager!!.pkNum("Waypoint")
+        numTV.text = c.toString()
 
         if(intent.getStringExtra("markerid") != null){
             markerid = intent.getStringExtra("markerid")

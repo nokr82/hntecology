@@ -41,7 +41,18 @@ import io.nlopez.smartlocation.SmartLocation
 import io.nlopez.smartlocation.location.config.LocationAccuracy
 import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
+import kotlinx.android.synthetic.main.activity_fish.*
 import kotlinx.android.synthetic.main.activity_flora.*
+import kotlinx.android.synthetic.main.activity_flora.btnPIC_FOLDER
+import kotlinx.android.synthetic.main.activity_flora.confmodTV
+import kotlinx.android.synthetic.main.activity_flora.coordedET
+import kotlinx.android.synthetic.main.activity_flora.coordemET
+import kotlinx.android.synthetic.main.activity_flora.coordesET
+import kotlinx.android.synthetic.main.activity_flora.coordndET
+import kotlinx.android.synthetic.main.activity_flora.coordnmET
+import kotlinx.android.synthetic.main.activity_flora.coordnsET
+import kotlinx.android.synthetic.main.activity_flora.fishpageTV
+import kotlinx.android.synthetic.main.activity_flora.prjnameET
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -143,7 +154,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
         images = ArrayList()
         images_url = ArrayList()
 
-        var today = Utils.todayStr();
+  /*      var today = Utils.todayStr();
 
         var todays = today.split("-")
 
@@ -153,7 +164,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             texttoday += todays.get(i)
         }
 
-        floranumET.setText(texttoday + "1")
+        floranumET.setText(texttoday + "1")*/
 
         florainvperson.setText(userName)
 
@@ -162,6 +173,11 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
         dbManager = DataBaseHelper(this)
 
         db = dbManager!!.createDataBase();
+
+        var c = dbManager!!.pkNum("floraAttribute")
+        floranumET.text = c.toString()
+
+
 
         var intent: Intent = getIntent();
 
@@ -1535,7 +1551,7 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
     fun clear(){
 
         var num = floranumET.text.toString()
-
+/*
         if (num.length > 7){
             var textnum = num.substring(num.length - 2, num.length)
             var splitnum = num.substring(0, num.length - 2)
@@ -1546,7 +1562,9 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
             var splitnum = num.substring(0, num.length - 1)
             var plusnum = textnum.toInt() + 1
             floranumET.setText(splitnum.toString() + plusnum.toString())
-        }
+        }*/
+        var c = dbManager!!.pkNum("floraAttribute")
+        floranumET.text = c.toString()
 
         florainvtmET.setText(Utils.timeStr())
         floraspecnmET.setText("")

@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -20,6 +21,7 @@ import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -161,7 +163,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
         invtm = timesplit.get(0) + timesplit.get(1)
 
-        numTV.setText(texttoday + "1")
+
+
 
         userName = PrefUtils.getStringPreference(context, "name");
         invPersonTV.text = userName;
@@ -171,7 +174,20 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
         dbManager = DataBaseHelper(this)
 
+        val datalist_s: Array<String> = arrayOf("*");
+//        var c = db!!.rawQuery("SELECT max(NUM) FROM birdsAttribute", null);
+//        var data_s= db!!.query("birdsAttribute", datalist_s, null, null, null, null, "", null)
+
+/*
+   */
+
+
         db = dbManager!!.createDataBase();
+
+        var c = dbManager!!.pkNum("birdsAttribute")
+        Log.d("데이터",c.toString())
+        numTV.text = c.toString()
+
 
         var intent: Intent = getIntent();
 
@@ -2191,7 +2207,11 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
     }
 
     fun clear(){
-        var num = numTV.text.toString()
+
+        var c = dbManager!!.pkNum("birdsAttribute")
+        Log.d("데이터",c.toString())
+        numTV.text = c.toString()
+     /*   var num = numTV.text.toString()
         if (num.length > 7){
             var textnum = num.substring(num.length - 2, num.length)
             var splitnum = num.substring(0, num.length - 2)
@@ -2202,7 +2222,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             var splitnum = num.substring(0, num.length - 1)
             var plusnum = textnum.toInt() + 1
             numTV.setText(splitnum.toString() + plusnum.toString())
-        }
+        }*/
         timeTV.setText(Utils.timeStr())
         birdsTV.setText("")
         familyNameTV.setText("")

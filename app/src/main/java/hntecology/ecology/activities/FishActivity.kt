@@ -160,14 +160,14 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         fishinvtmTV.setText(time)
 
-        var todays = today.split("-")
+    /*    var todays = today.split("-")
 
         var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
 
         for (i in 1 until todays.size){
             texttoday += todays.get(i)
         }
-        fishnumTV.setText(texttoday + "1")
+        fishnumTV.setText(texttoday + "1")*/
 
         addPicturesLL = findViewById(R.id.addPicturesLL)
 
@@ -184,6 +184,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         dbmanager = DataBaseHelper(context);
         db = dbmanager!!.createDataBase();
+        var c = dbmanager!!.pkNum("fishAttribute")
+        fishnumTV.text = c.toString()
 
         var intent: Intent = getIntent();
 
@@ -1990,8 +1992,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
     fun clear(){
 
-        var num = fishnumTV.text.toString()
-        if (num.length > 7){
+//        var num = fishnumTV.text.toString()
+   /*     if (num.length > 7){
             var textnum = num.substring(num.length - 2, num.length)
             var splitnum = num.substring(0, num.length - 2)
             var plusnum = textnum.toInt() + 1
@@ -2001,7 +2003,9 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             var splitnum = num.substring(0, num.length - 1)
             var plusnum = textnum.toInt() + 1
             fishnumTV.setText(splitnum.toString() + plusnum.toString())
-        }
+        }*/
+        var c = dbmanager!!.pkNum("fishAttribute")
+        fishnumTV.text = c.toString()
 
 
 

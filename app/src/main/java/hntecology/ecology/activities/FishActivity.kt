@@ -599,6 +599,12 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             }else{
                 fish_attribute.NET_MIN =  fishnetminet.text.toString().toInt()
             }
+            if (fishnetcntET.text.toString().toInt()>fishnetminet.text.toString().toInt()){
+                fish_attribute.COLL_TIME = fishnetcntET.text.toString()
+            }else{
+                fish_attribute.COLL_TIME = fishnetminet.text.toString()
+            }
+
 
 //            if (fishnetcntET.text.isNotEmpty()) {
 //                fish_attribute.NET_CNT = fishnetcntET.text.toString().toInt()
@@ -1407,7 +1413,13 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 }else{
                     fish_attribute.NET_MIN =  fishnetminet.text.toString().toInt()
                 }
+                if (fishnetcntET.text.toString().toInt()>fishnetminet.text.toString().toInt()){
+                    fish_attribute.COLL_TIME = fishnetcntET.text.toString()
+                }else{
+                    fish_attribute.COLL_TIME = fishnetminet.text.toString()
+                }
             }
+
 //            if (fishnetcntET.text.isNotEmpty()) {
 //                fish_attribute.NET_CNT = fishnetcntET.text.toString().toInt()
 //            }

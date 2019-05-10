@@ -2192,6 +2192,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
+    public int pkNum2(String id,String type){
+
+        SQLiteDatabase db = getReadableDatabase();
+
+//        String query = "SELECT strftime('%Y%m%d','now','localtime') ||  substr('000' || IFNULL(MAX(substr(NUM\n ,9,15)),0)+1 ,-15, 15) FROM birdsAttribute";
+        String query = "SELECT "+ "max("+id+") "+"FROM "+type;
+        int num = 0;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                num = cursor.getInt(0);
+            }
+        }
+        cursor.close();
+        return num+1;
+    }
+
+
     public int birdsNextNum(){
 
         SQLiteDatabase db = getReadableDatabase();

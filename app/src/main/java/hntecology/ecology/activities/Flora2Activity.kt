@@ -6,18 +6,13 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
-import android.graphics.BitmapFactory
 import android.location.Address
 import android.location.Geocoder
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
-import android.widget.ImageView
 import android.widget.Toast
-import com.joooonho.SelectableRoundedImageView
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
@@ -92,15 +87,30 @@ class Flora2Activity : Activity() {
         invpersonTV.setText(userName)
         invdtTV.setText(Utils.todayStr())
 
-//        val TRENUM = dbManager.manyfloratrenumNext()
-//        val STRENUM = dbManager.manyflorastrenumNext()
-//        val SHRNUM = dbManager.manyflorashrnumNext()
-//        val HERNUM = dbManager.manyflorahernumNext()
+     /*   val TRENUM = dbManager.manyfloratrenumNext()
+        val STRENUM = dbManager.manyflorastrenumNext()
+        val SHRNUM = dbManager.manyflorashrnumNext()
+        val HERNUM = dbManager.manyflorahernumNext()
 
-//        trenumTV.setText(TRENUM.toString())
-//        strenumTV.setText(STRENUM.toString())
-//        shrnumTV.setText(SHRNUM.toString())
-//        hernumTV.setText(HERNUM.toString())
+        trenumTV.setText(TRENUM.toString())
+        strenumTV.setText(STRENUM.toString())
+        shrnumTV.setText(SHRNUM.toString())
+        hernumTV.setText(HERNUM.toString())*/
+
+        /*var c = dbManager!!.pkNum2("HER_NUM","ManyFloraAttribute")
+        hernumTV.text = c.toString()
+
+        var s = dbManager!!.pkNum2("TRE_NUM","ManyFloraAttribute")
+        trenumTV.text = s.toString()
+
+        var d = dbManager!!.pkNum2("STRE_NUM","ManyFloraAttribute")
+        strenumTV.text = d.toString()
+
+        var f = dbManager!!.pkNum2("SHR_NUM","ManyFloraAttribute")
+        shrnumTV.text = f.toString()*/
+
+
+
 
         var intent: Intent = getIntent();
 
@@ -3222,6 +3232,17 @@ class Flora2Activity : Activity() {
         strenumTV.setText(STRENUM.toString())
         shrnumTV.setText(SHRNUM.toString())
         hernumTV.setText(HERNUM.toString())
+        /*var c = dbManager!!.pkNum2("HER_NUM","ManyFloraAttribute")
+        hernumTV.text = c.toString()
+
+        var s = dbManager!!.pkNum2("TRE_NUM","ManyFloraAttribute")
+        trenumTV.text = s.toString()
+
+        var d = dbManager!!.pkNum2("STRE_NUM","ManyFloraAttribute")
+        strenumTV.text = d.toString()
+
+        var f = dbManager!!.pkNum2("SHR_NUM","ManyFloraAttribute")
+        shrnumTV.text = f.toString()*/
 
         etTRE_SPECET.setText("")
         etTRE_FAMIET.setText("")

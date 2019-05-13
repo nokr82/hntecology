@@ -221,7 +221,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
 
             if(list.size > 0){
-                System.out.println("list : " + list);
 
 //                invRegionET.setText(list.get(0).getAddressLine(0));
                 INV_REGION = list.get(0).getAddressLine(0)
@@ -267,8 +266,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
 
             if(list.size > 0){
-                System.out.println("list : " + list);
-
 //                invRegionET.setText(list.get(0).getAddressLine(0));
 
                 INV_REGION = list.get(0).getAddressLine(0)
@@ -347,7 +344,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
 
                 temperatureET.setText(birds_attribute.TEMPERATUR.toString())       //기온
-                println("------birdstemperatur${birds_attribute.TEMPERATUR}")
+
                 etcET.setText(birds_attribute.ETC)
 
                 numTV.setText(birds_attribute.NUM.toString())
@@ -451,8 +448,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                 if(tmpfileList != null){
                     for (i in 0..tmpfileList.size - 1) {
-
-                        println("tmpfileList  ${tmpfileList.get(i).path}")
 
                         val options = BitmapFactory.Options()
                         options.inJustDecodeBounds = true
@@ -565,7 +560,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                             if (pathdir != null) {
 
                                 val deletedir = path.listFiles()
-                                println("deletedir.size ${deletedir.size}")
+
                                 if (path.isDirectory){
                                     val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "birds/images"+ File.separator +keyId+ File.separator)
 //                                     val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
@@ -699,7 +694,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         birds_attribute.CONF_MOD = "N"
 
                         birds_attribute.GEOM = log + " " + lat
-                        Log.d("방위3", log + " " + lat)
+
                         if (coordndET.text.isNotEmpty()) {
                             birds_attribute.GPSLAT_DEG = coordndET.text.toString().toInt()
                         }
@@ -718,6 +713,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         if (coordesET.text.isNotEmpty()) {
                             birds_attribute.GPSLON_SEC = coordesET.text.toString().toFloat()
                         }
+
                         if (chkdata) {
 
                             if(pk != null){
@@ -889,15 +885,12 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                                                 pathdir.get(i).canonicalFile.delete()
 
-                                                println("delete ===============")
-
                                             }
                                         }
 
                                     }
 
                                     val deletedir = path.listFiles()
-                                    println("deletedir.size ${deletedir.size}")
                                     if (path.isDirectory){
                                         val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "birds/images"+ File.separator +keyId+ File.separator)
 //                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
@@ -936,8 +929,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                                         dataArray.add(birds_attribute)
 
                                     }
-
-                                    println("dataArrayList.size ${dataArray.size}")
 
                                     var intent = Intent()
 
@@ -1238,6 +1229,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             birds_attribute.CONF_MOD = "N"
 
             birds_attribute.GEOM = log.toString() + " " + lat.toString()
+
             if (coordndET.text.isNotEmpty()) {
                 birds_attribute.GPSLAT_DEG = coordndET.text.toString().toInt()
             }
@@ -1283,8 +1275,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                                 pathdir.get(i).canonicalFile.delete()
 
-                                println("delete ===============")
-
                             }
                         }
                     }
@@ -1297,7 +1287,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                     val outputsDir = File(outPath)
 
                     if (outputsDir.exists()) {
-                        println("Exit : $outPath")
 
                         val files = outputsDir.listFiles()
                         if (files != null) {
@@ -1343,7 +1332,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                     val outputsDir = File(outPath)
 
                     if (outputsDir.exists()) {
-                        println("Exit : $outPath")
 
                         val files = outputsDir.listFiles()
                         if (files != null) {
@@ -1807,7 +1795,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         addPicturesLL!!.removeAllViews()
                         val realPathFromURI = cameraPath!!
                         images_path!!.add(cameraPath!!)
-                        println("cameraPath ---- $cameraPath")
+
                         context.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://$realPathFromURI")))
                         try {
                             val add_file = Utils.getImages(context.contentResolver, cameraPath)
@@ -1854,7 +1842,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                                 val made = outputsDir.mkdirs()
 
                             }
-                            println("images_size ${images!!.size}")
                             saveVitmapToFile(images!!.get(i),outPath+num + "_" + invtm+"_"+(i+1)+".png")
 
                         }
@@ -1951,7 +1938,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                             val made = outputsDir.mkdirs()
 
                         }
-                        println("images_size ${images!!.size}")
                         saveVitmapToFile(images!!.get(i),outPath+num + "_" + invtm+"_"+(i+1)+".png")
                     }
                     images!!.clear()
@@ -2075,12 +2061,11 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         val paths = images_path!!.get(j).split("/")
                         val file_name = paths.get(paths.size - 1)
-                        println("file_name --------------$file_name")
+
                         val getPk = file_name.split("_")
 
                         if (getPk.size > 2) {
                             val pathPk = getPk.get(0)
-                            println("getPk {$getPk}")
                             val pathPk2 = getPk.get(1)
                             val num = numTV.text.toString()
                             if (pathPk == num && pathPk2 == invtm){
@@ -2147,12 +2132,10 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         val paths = images_path!!.get(j).split("/")
                         val file_name = paths.get(paths.size - 1)
-                        println("file_name --------------$file_name")
                         val getPk = file_name.split("_")
 
                         if (getPk.size > 1) {
                             val pathPk = getPk.get(0)
-                            println("getPk {$getPk}")
                             val pathPk2 = getPk.get(1)
                             val num = numTV.text.toString()
                             val invtm = timeTV.text.toString()
@@ -2436,7 +2419,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
             if (pathdir != null) {
                 val deletedir = path.listFiles()
-                println("deletedir.size ${deletedir.size}")
                 if (path.isDirectory){
                     val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "birds/images"+ File.separator +keyId+ File.separator)
 //                                     val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
@@ -2485,12 +2467,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
         s = s + i.toString() + '"';
 
-        println("")
-
-        println("i $i")
-
-        println("s ::::::::::::::::::::::::::::::::::::::::::::::::::::::: " + s)
-
         return s
     }
 
@@ -2522,14 +2498,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         coordesET.setText(long_d.toFloat().toString())
 
         s = s + i.toString() + '"';
-
-        println("")
-
-        println("i $i")
-
-
-
-        println("s ::::::::::::::::::::::::::::::::::::::::::::::::::::::: " + s)
 
         return s
     }

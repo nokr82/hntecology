@@ -916,6 +916,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     public void insertzoobenthos(Zoobenthos_Attribute Zoobenthos_Attribute){
+
         String query = "INSERT INTO ZoobenthosAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_MEAN,INV_PERSON,MAP_SYS_NM,GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC";
         query += ",INV_DT,NUM,INV_TM,WEATHER,INV_TOOL,AD_DIST_NM,RIV_W,RIV_W2,RUN_RIV_W";

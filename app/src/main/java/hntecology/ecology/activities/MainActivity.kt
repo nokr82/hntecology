@@ -6532,13 +6532,14 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         var index = 0
         while (data.moveToNext()) {
 
+            println("27 : ${data.getString(27)}")
+
             var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20)
                     , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
                     , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33)
             )
-
 
             birdsDatas.add(birds_attribute)
 
@@ -6634,21 +6635,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, birds_attribute.GPSLON_DEG))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, birds_attribute.GPSLON_MIN))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, birds_attribute.GPSLON_SEC.toString()))
-                    println("-------export23${ birds_attribute.TEMP_YN.toString()}")
-                    println("-------export23${ birds_attribute.GPS_LAT.toString()}")
-                    println("-------export23${ birds_attribute.GPS_LON.toString()}")
-                    println("-------export23${ birds_attribute.MJ_ACT.toString()}")
-                    println("-------export23${ birds_attribute.CONF_MOD.toString()}")
-                    println("-------export23${ birds_attribute.GPSLAT_DEG.toString()}")
-                    println("-------export23${ birds_attribute.GPSLAT_MIN.toString()}")
-                    println("-------export23${ birds_attribute.GPSLAT_SEC.toString()}")
-                    println("-------export23${ birds_attribute.GPSLON_DEG.toString()}")
-                    println("-------export23${ birds_attribute.GPSLON_MIN.toString()}")
-                    println("-------export23${ birds_attribute.GPSLON_SEC.toString()}")
-                    println("-------export23${ birds_attribute.INV_PERSON}")
-                    println("-------export23${ birds_attribute.GEOM.toString()}")
-                    var geomsplit = birds_attribute.GEOM!!.split(" ")
+
+                    val geomsplit = birds_attribute.GEOM!!.split(" ")
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
+
+                    println(geomsplit)
 
                     val markerOptions = MarkerOptions()
                     markerOptions.position(latlng)
@@ -6705,8 +6696,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, birds_attribute.GPSLON_DEG))
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, birds_attribute.GPSLON_MIN))
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, birds_attribute.GPSLON_SEC.toString()))
-                            println("-------export23${ birds_attribute.INV_PERSON}")
-                            println("-------export23${ birds_attribute.GPSLON_SEC.toString()}")
                         }
 
                         val exporter = Exporter.ExportPointItem(LAYER_BIRDS, BIRDSATTRIBUTE, points.get(idx))
@@ -6737,11 +6726,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             }
 
             if (chkData) {
-                Log.d("버드","테스트")
             } else {
                 if (leftday == "") {
                     dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "birds" + File.separator + "birds", "조류", "birds", "Y", "birds")
-                    Log.d("버드","테스트2")
                 }
             }
 
@@ -7871,7 +7858,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     , data.getString(38), data.getString(39), data.getString(40)
                     , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
                     , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
-                    , data.getString(20), data.getInt(51))
+                    , data.getString(50), data.getInt(51))
 
             zoobenthousDatas.add(zoo)
 
@@ -7968,7 +7955,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     ZOOBENTHOUS.add(Exporter.ColumnDef("GEOM", ogr.OFTString, zoo.GEOM))
                     ZOOBENTHOUS.add(Exporter.ColumnDef("ZOO_CNT", ogr.OFTInteger, zoo.ZOO_CNT))
 
-                    Log.d("주스",zoo.GEOM.toString())
                     var geomsplit = zoo.GEOM!!.split(" ")
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
 

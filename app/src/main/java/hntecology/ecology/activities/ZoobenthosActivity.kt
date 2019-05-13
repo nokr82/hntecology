@@ -847,7 +847,10 @@ class ZoobenthosActivity : Activity() {
                         }
                         zoobenthos_Attribute.FAMI_NM = faminmTV.text.toString()
                         zoobenthos_Attribute.SCIEN_NM = sciennmTV.text.toString()
-                        zoobenthos_Attribute.GEOM = gpslatTV.text.toString() + " " +gpslonTV.text.toString()
+                        zoobenthos_Attribute.GEOM = gpslatTV.text.toString() + " " + gpslonTV.text.toString()
+
+                        println("zoobenthos_Attribute.GEOM:::::::::::::::::::${zoobenthos_Attribute.GEOM}")
+                        println("chkdata :::::::::::::::::::${chkdata}")
 
                         if (chkdata) {
 

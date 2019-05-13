@@ -448,6 +448,7 @@
                     android:id="@+id/fishnetcntET"
                     android:gravity="center"
                     android:hint="회(투망)"
+                    android:text="0회"
                     />
                 <TextView
                     android:layout_width="20dp"
@@ -463,6 +464,7 @@
                     android:id="@+id/fishnetminet"
                     android:gravity="center"
                     android:hint="분(족대)"
+                    android:text="0분"
                     />
             </LinearLayout>
             <LinearLayout

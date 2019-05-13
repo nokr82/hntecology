@@ -499,13 +499,17 @@ class ZoobenthosActivity : Activity() {
 
                 chkdata = true
 
-                var zoo: Zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                var zoo: Zoobenthos_Attribute =Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                         data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21), data.getInt(22)
-                        , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
-                        , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
-                        , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55)
-                        ,data.getString(56), data.getInt(57))
+                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
+                        , data.getInt(22)
+                        , data.getInt(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27)
+                        , data.getString(28), data.getFloat(29), data.getFloat(30), data.getFloat(31), data.getFloat(32)
+                        , data.getFloat(33), data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getString(37)
+                        , data.getString(38), data.getString(39), data.getString(40)
+                        , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
+                        , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
+                        , data.getString(20), data.getInt(51))
 
                 dataArray.add(zoo)
 
@@ -526,13 +530,17 @@ class ZoobenthosActivity : Activity() {
             while (data.moveToNext()) {
                 chkdata = true
 
-                var zoo: Zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                var zoo: Zoobenthos_Attribute =Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                         data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21), data.getInt(22)
-                        , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
-                        , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
-                        , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55),data.getString(56)
-                        , data.getInt(57))
+                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
+                        , data.getInt(22)
+                        , data.getInt(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27)
+                        , data.getString(28), data.getFloat(29), data.getFloat(30), data.getFloat(31), data.getFloat(32)
+                        , data.getFloat(33), data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getString(37)
+                        , data.getString(38), data.getString(39), data.getString(40)
+                        , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
+                        , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
+                        , data.getString(20), data.getInt(51))
 
                 prjnameET.setText(zoo.PRJ_NAME)
                 invregionTV.setText(zoo.INV_REGION)
@@ -544,12 +552,14 @@ class ZoobenthosActivity : Activity() {
                 invtm = timesplit.get(0) + timesplit.get(1)
 
                 invmeanTV.setText(zoo.INV_MEAN)
-                coordndET.setText(zoo.COORD_N_D.toString())
-                coordnmET.setText(zoo.COORD_N_M.toString())
-                coordnsET.setText(zoo.COORD_N_S.toString())
-                coordedET.setText(zoo.COORD_E_D.toString())
-                coordemET.setText(zoo.COORD_E_M.toString())
-                coordesET.setText(zoo.COORD_E_S.toString())
+                coordndET.setText(zoo.GPSLAT_DEG.toString())
+                coordnmET.setText(zoo.GPSLAT_MIN.toString())
+                coordnsET.setText(zoo.GPSLAT_SEC.toString())
+                coordedET.setText(zoo.GPSLON_DEG.toString())
+                coordemET.setText(zoo.GPSLON_MIN.toString())
+                coordesET.setText(zoo.GPSLON_SEC.toString())
+                
+
                 cntET.setText(zoo.ZOO_CNT.toString())
                 invdtTV.setText(zoo.INV_DT)
                 weatherTV.setText(zoo.WEATHER)
@@ -569,9 +579,9 @@ class ZoobenthosActivity : Activity() {
              
                 waterdeptET.setText(zoo.WATER_DEPT.toString())
                 habtyetcTV.setText(zoo.HAB_TY)
-                if (zoo.HAB_TY_ETC != null && zoo.HAB_TY_ETC != "") {
+          /*      if (zoo.HAB_TY_ETC != null && zoo.HAB_TY_ETC != "") {
                     habtyetcTV.setText(zoo.HAB_TY_ETC)
-                }
+                }*/
                 filtareaET.setText(zoo.FILT_AREA)
                 temperaturET.setText(zoo.TEMPERATUR.toString())
                 watertemET.setText(zoo.WATER_TEM.toString())
@@ -585,25 +595,25 @@ class ZoobenthosActivity : Activity() {
                 concreteET.setText(zoo.CONCRETE.toString())
                 bedroceET.setText(zoo.BED_ROCK.toString())
                 banklTV.setText(zoo.BANK_L)
-                if (zoo.BANK_L_ETC != null && zoo.BANK_L_ETC != "") {
+          /*      if (zoo.BANK_L_ETC != null && zoo.BANK_L_ETC != "") {
                     banklTV.setText(zoo.BANK_L_ETC)
-                }
+                }*/
                 bankrTV.setText(zoo.BANK_R)
-                if (zoo.BANK_R_ETC != null && zoo.BANK_R_ETC != "") {
+              /*  if (zoo.BANK_R_ETC != null && zoo.BANK_R_ETC != "") {
                     bankrTV.setText(zoo.BANK_R_ETC)
-                }
+                }*/
                 baslTV.setText(zoo.BAS_L)
-                if (zoo.BAS_L_ETC != null && zoo.BAS_L_ETC != "") {
+             /*   if (zoo.BAS_L_ETC != null && zoo.BAS_L_ETC != "") {
                     baslTV.setText(zoo.BAS_L_ETC)
-                }
+                }*/
                 basrTV.setText(zoo.BAS_R)
-                if (zoo.BAS_R_ETC != null && zoo.BAS_R_ETC != "") {
+         /*       if (zoo.BAS_R_ETC != null && zoo.BAS_R_ETC != "") {
                     basrTV.setText(zoo.BAS_R_ETC)
-                }
+                }*/
                 distcauTV.setText(zoo.DIST_CAU)
-                if (zoo.DIST_ETC != null && zoo.DIST_ETC != "") {
+             /*   if (zoo.DIST_ETC != null && zoo.DIST_ETC != "") {
                     distcauTV.setText(zoo.DIST_ETC)
-                }
+                }*/
                 unusnoteET.setText(zoo.UNUS_NOTE)
                 specnmTV.setText(zoo.SPEC_NM)
                 faminmTV.setText(zoo.FAMI_NM)
@@ -706,8 +716,7 @@ class ZoobenthosActivity : Activity() {
                         var zoobenthos_Attribute: Zoobenthos_Attribute = Zoobenthos_Attribute(null, null, null, null, null, null, null, null, null, null, null, null, null
                                 , null, null, null, null, null, null, null, null, null, null, null,
                                 null, null, null, null, null, null, null, null, null, null, null, null, null, null,
-                                null, null, null, null, null, null, null, null, null, null, null, null, null, null
-                                , null, null, null, null,null,null)
+                                null, null, null, null, null, null, null, null, null, null, null, null, null, null)
 
                         keyId = intent.getStringExtra("GROP_ID")
 
@@ -738,22 +747,22 @@ class ZoobenthosActivity : Activity() {
                         zoobenthos_Attribute.MAP_SYS_NM = mapsysnmET.text.toString()
 
                         if (coordndET.text.isNotEmpty()) {
-                            zoobenthos_Attribute.COORD_N_D = coordndET.text.toString().toInt()
+                            zoobenthos_Attribute.GPSLAT_DEG = coordndET.text.toString().toInt()
                         }
                         if (coordnmET.text.isNotEmpty()) {
-                            zoobenthos_Attribute.COORD_N_M = coordnmET.text.toString().toInt()
+                            zoobenthos_Attribute.GPSLAT_MIN = coordnmET.text.toString().toInt()
                         }
                         if (coordnsET.text.isNotEmpty()) {
-                            zoobenthos_Attribute.COORD_N_S = coordnsET.text.toString().toFloat()
+                            zoobenthos_Attribute.GPSLAT_SEC = coordnsET.text.toString().toFloat()
                         }
                         if (coordedET.text.isNotEmpty()) {
-                            zoobenthos_Attribute.COORD_E_D = coordedET.text.toString().toInt()
+                            zoobenthos_Attribute.GPSLON_DEG = coordedET.text.toString().toInt()
                         }
                         if (coordemET.text.isNotEmpty()) {
-                            zoobenthos_Attribute.COORD_E_M = coordemET.text.toString().toInt()
+                            zoobenthos_Attribute.GPSLON_MIN = coordemET.text.toString().toInt()
                         }
                         if (coordesET.text.isNotEmpty()) {
-                            zoobenthos_Attribute.COORD_E_S = coordesET.text.toString().toFloat()
+                            zoobenthos_Attribute.GPSLON_SEC = coordesET.text.toString().toFloat()
                         }
                         if (cntET.text.isNotEmpty()) {
                             zoobenthos_Attribute.ZOO_CNT = cntET.text.toString().toInt()
@@ -780,7 +789,7 @@ class ZoobenthosActivity : Activity() {
                             zoobenthos_Attribute.WATER_DEPT = waterdeptET.text.toString().toInt()
                         }
                         zoobenthos_Attribute.HAB_TY = habtyetcTV.text.toString()
-                        zoobenthos_Attribute.HAB_TY_ETC = habtyetcET.text.toString()
+//                        zoobenthos_Attribute.HAB_TY_ETC = habtyetcET.text.toString()
                         zoobenthos_Attribute.FILT_AREA = filtareaET.text.toString()
                         if (temperaturET.text.isNotEmpty()) {
                             zoobenthos_Attribute.TEMPERATUR = temperaturET.text.toString().toFloat()
@@ -814,15 +823,15 @@ class ZoobenthosActivity : Activity() {
                             zoobenthos_Attribute.BED_ROCK = bedroceET.text.toString().toFloat()
                         }
                         zoobenthos_Attribute.BANK_L = banklTV.text.toString()
-                        zoobenthos_Attribute.BANK_L_ETC = banklET.text.toString()
+//                        zoobenthos_Attribute.BANK_L_ETC = banklET.text.toString()
                         zoobenthos_Attribute.BANK_R = bankrTV.text.toString()
-                        zoobenthos_Attribute.BANK_R_ETC = bankrET.text.toString()
+//                        zoobenthos_Attribute.BANK_R_ETC = bankrET.text.toString()
                         zoobenthos_Attribute.BAS_L = baslTV.text.toString()
-                        zoobenthos_Attribute.BAS_L_ETC = baslET.text.toString()
+//                        zoobenthos_Attribute.BAS_L_ETC = baslET.text.toString()
                         zoobenthos_Attribute.BAS_R = basrTV.text.toString()
-                        zoobenthos_Attribute.BAS_R_ETC = basrET.text.toString()
+//                        zoobenthos_Attribute.BAS_R_ETC = basrET.text.toString()
                         zoobenthos_Attribute.DIST_CAU = distcauTV.text.toString()
-                        zoobenthos_Attribute.DIST_ETC = distcauET.text.toString()
+//                        zoobenthos_Attribute.DIST_ETC = distcauET.text.toString()
                         zoobenthos_Attribute.UNUS_NOTE = unusnoteET.text.toString()
 
                         zoobenthos_Attribute.TEMP_YN = "Y"
@@ -838,7 +847,7 @@ class ZoobenthosActivity : Activity() {
                         }
                         zoobenthos_Attribute.FAMI_NM = faminmTV.text.toString()
                         zoobenthos_Attribute.SCIEN_NM = sciennmTV.text.toString()
-                        zoobenthos_Attribute.GEOM = log.toString() + " " + lat.toString()
+                        zoobenthos_Attribute.GEOM = gpslatTV.text.toString() + " " +gpslonTV.text.toString()
 
                         if (chkdata) {
 
@@ -929,8 +938,7 @@ class ZoobenthosActivity : Activity() {
                                     null, null, null, null, null, null, null, null, null, null, null, null,
                                     null, null, null, null, null, null, null, null, null, null, null, null
                                     , null, null, null, null, null, null, null, null, null, null, null, null, null
-                                    , null, null, null, null, null, null, null, null,
-                                    null,null,null)
+                                    , null, null, null, null, null)
 
                             if (pk != null) {
 
@@ -938,13 +946,17 @@ class ZoobenthosActivity : Activity() {
                                 while (data.moveToNext()) {
                                     chkdata = true
 
-                                    zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                                    zoobenthos_Attribute =Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                             data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21), data.getInt(22)
-                                            , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
-                                            , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
-                                            , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55)
-                                            ,data.getString(56), data.getInt(57))
+                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
+                                            , data.getInt(22)
+                                            , data.getInt(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27)
+                                            , data.getString(28), data.getFloat(29), data.getFloat(30), data.getFloat(31), data.getFloat(32)
+                                            , data.getFloat(33), data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getString(37)
+                                            , data.getString(38), data.getString(39), data.getString(40)
+                                            , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
+                                            , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
+                                            , data.getString(20), data.getInt(51))
                                 }
 
                                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator)
@@ -995,14 +1007,17 @@ class ZoobenthosActivity : Activity() {
 
                                         chkdata = true
 
-                                        var zoo: Zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                                        var zoo: Zoobenthos_Attribute =Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                                 data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                                                , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21), data.getInt(22)
-                                                , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
-                                                , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
-                                                , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50)
-                                                , data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55)
-                                                ,data.getString(56), data.getInt(57))
+                                                , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
+                                                , data.getInt(22)
+                                                , data.getInt(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27)
+                                                , data.getString(28), data.getFloat(29), data.getFloat(30), data.getFloat(31), data.getFloat(32)
+                                                , data.getFloat(33), data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getString(37)
+                                                , data.getString(38), data.getString(39), data.getString(40)
+                                                , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
+                                                , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
+                                                , data.getString(20), data.getInt(51))
 
                                         dataArray.add(zoo)
 
@@ -1066,13 +1081,17 @@ class ZoobenthosActivity : Activity() {
 
                                     chkdata = true
 
-                                    var zoo: Zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                                    var zoo: Zoobenthos_Attribute =Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                             data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21), data.getInt(22)
-                                            , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
-                                            , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
-                                            , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49), data.getFloat(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55)
-                                            ,data.getString(56)  ,data.getInt(57))
+                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
+                                            , data.getInt(22)
+                                            , data.getInt(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27)
+                                            , data.getString(28), data.getFloat(29), data.getFloat(30), data.getFloat(31), data.getFloat(32)
+                                            , data.getFloat(33), data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getString(37)
+                                            , data.getString(38), data.getString(39), data.getString(40)
+                                            , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
+                                            , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
+                                            , data.getString(20), data.getInt(51))
 
                                 }
 
@@ -1125,14 +1144,17 @@ class ZoobenthosActivity : Activity() {
 
                         while (data.moveToNext()) {
 
-                            var zoo: Zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                            var zoo: Zoobenthos_Attribute =Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                     data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21), data.getInt(22)
-                                    , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
-                                    , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
-                                    , data.getString(45), data.getString(46), data.getString(47), data.getString(48)
-                                    , data.getFloat(49), data.getFloat(50), data.getString(51), data.getString(52)
-                                    , data.getString(53), data.getString(54), data.getString(55),data.getString(56), data.getInt(57))
+                                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
+                                    , data.getInt(22)
+                                    , data.getInt(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27)
+                                    , data.getString(28), data.getFloat(29), data.getFloat(30), data.getFloat(31), data.getFloat(32)
+                                    , data.getFloat(33), data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getString(37)
+                                    , data.getString(38), data.getString(39), data.getString(40)
+                                    , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
+                                    , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
+                                    , data.getString(20), data.getInt(51))
 
 
                             dataArray.add(zoo)
@@ -1176,8 +1198,7 @@ class ZoobenthosActivity : Activity() {
             var zoobenthos_Attribute: Zoobenthos_Attribute = Zoobenthos_Attribute(null, null, null, null, null, null, null, null, null, null, null, null, null
                     , null, null, null, null, null, null, null, null, null, null, null,
                     null, null, null, null, null, null, null, null, null, null, null, null, null, null,
-                    null, null, null, null, null, null, null, null, null, null, null, null, null, null
-                    , null, null, null, null,null,null)
+                    null, null, null, null, null, null, null, null, null, null, null, null, null, null)
 
             keyId = intent.getStringExtra("GROP_ID")
 
@@ -1207,22 +1228,22 @@ class ZoobenthosActivity : Activity() {
             zoobenthos_Attribute.INV_PERSON = invpersonTV.text.toString()
             zoobenthos_Attribute.MAP_SYS_NM = mapsysnmET.text.toString()
             if (coordndET.text.isNotEmpty()) {
-                zoobenthos_Attribute.COORD_N_D = coordndET.text.toString().toInt()
+                zoobenthos_Attribute.GPSLAT_DEG = coordndET.text.toString().toInt()
             }
             if (coordnmET.text.isNotEmpty()) {
-                zoobenthos_Attribute.COORD_N_M = coordnmET.text.toString().toInt()
+                zoobenthos_Attribute.GPSLAT_MIN = coordnmET.text.toString().toInt()
             }
             if (coordnsET.text.isNotEmpty()) {
-                zoobenthos_Attribute.COORD_N_S = coordnsET.text.toString().toFloat()
+                zoobenthos_Attribute.GPSLAT_SEC = coordnsET.text.toString().toFloat()
             }
             if (coordedET.text.isNotEmpty()) {
-                zoobenthos_Attribute.COORD_E_D = coordedET.text.toString().toInt()
+                zoobenthos_Attribute.GPSLON_DEG = coordedET.text.toString().toInt()
             }
             if (coordemET.text.isNotEmpty()) {
-                zoobenthos_Attribute.COORD_E_M = coordemET.text.toString().toInt()
+                zoobenthos_Attribute.GPSLON_MIN = coordemET.text.toString().toInt()
             }
             if (coordesET.text.isNotEmpty()) {
-                zoobenthos_Attribute.COORD_E_S = coordesET.text.toString().toFloat()
+                zoobenthos_Attribute.GPSLON_SEC = coordesET.text.toString().toFloat()
             }
             if (cntET.text.isNotEmpty()) {
                 zoobenthos_Attribute.ZOO_CNT = cntET.text.toString().toInt()
@@ -1249,7 +1270,7 @@ class ZoobenthosActivity : Activity() {
                 zoobenthos_Attribute.WATER_DEPT = waterdeptET.text.toString().toInt()
             }
             zoobenthos_Attribute.HAB_TY = habtyetcTV.text.toString()
-            zoobenthos_Attribute.HAB_TY_ETC = habtyetcET.text.toString()
+//            zoobenthos_Attribute.HAB_TY_ETC = habtyetcET.text.toString()
             zoobenthos_Attribute.FILT_AREA = filtareaET.text.toString()
             if (temperaturET.text.isNotEmpty()) {
                 zoobenthos_Attribute.TEMPERATUR = temperaturET.text.toString().toFloat()
@@ -1283,15 +1304,15 @@ class ZoobenthosActivity : Activity() {
                 zoobenthos_Attribute.BED_ROCK = bedroceET.text.toString().toFloat()
             }
             zoobenthos_Attribute.BANK_L = banklTV.text.toString()
-            zoobenthos_Attribute.BANK_L_ETC = banklET.text.toString()
+//            zoobenthos_Attribute.BANK_L_ETC = banklET.text.toString()
             zoobenthos_Attribute.BANK_R = bankrTV.text.toString()
-            zoobenthos_Attribute.BANK_R_ETC = bankrET.text.toString()
+//            zoobenthos_Attribute.BANK_R_ETC = bankrET.text.toString()
             zoobenthos_Attribute.BAS_L = baslTV.text.toString()
-            zoobenthos_Attribute.BAS_L_ETC = baslET.text.toString()
+//            zoobenthos_Attribute.BAS_L_ETC = baslET.text.toString()
             zoobenthos_Attribute.BAS_R = basrTV.text.toString()
-            zoobenthos_Attribute.BAS_R_ETC = basrET.text.toString()
+//            zoobenthos_Attribute.BAS_R_ETC = basrET.text.toString()
             zoobenthos_Attribute.DIST_CAU = distcauTV.text.toString()
-            zoobenthos_Attribute.DIST_ETC = distcauET.text.toString()
+//            zoobenthos_Attribute.DIST_ETC = distcauET.text.toString()
             zoobenthos_Attribute.UNUS_NOTE = unusnoteET.text.toString()
 
             zoobenthos_Attribute.TEMP_YN = "Y"
@@ -1307,7 +1328,7 @@ class ZoobenthosActivity : Activity() {
             }
             zoobenthos_Attribute.FAMI_NM = faminmTV.text.toString()
             zoobenthos_Attribute.SCIEN_NM = sciennmTV.text.toString()
-            zoobenthos_Attribute.GEOM = log.toString() + " " + lat.toString()
+            zoobenthos_Attribute.GEOM = gpslatTV.text.toString() + " " +gpslonTV.text.toString()
 
             if (chkdata) {
 
@@ -2152,14 +2173,17 @@ class ZoobenthosActivity : Activity() {
 
         while (data.moveToNext()) {
 
-            var zoo: Zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+            var zoo: Zoobenthos_Attribute =Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                     data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21), data.getInt(22)
-                    , data.getInt(23), data.getString(24), data.getString(25), data.getString(26), data.getFloat(27), data.getFloat(28), data.getString(29), data.getFloat(30), data.getFloat(31), data.getFloat(32), data.getFloat(33)
-                    , data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43), data.getString(44)
-                    , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getFloat(49)
-                    , data.getFloat(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55)
-                    ,data.getString(56), data.getInt(57))
+                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
+                    , data.getInt(22)
+                    , data.getInt(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27)
+                    , data.getString(28), data.getFloat(29), data.getFloat(30), data.getFloat(31), data.getFloat(32)
+                    , data.getFloat(33), data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getString(37)
+                    , data.getString(38), data.getString(39), data.getString(40)
+                    , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
+                    , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
+                    , data.getString(20), data.getInt(51))
 
 
             dataArray.add(zoo)

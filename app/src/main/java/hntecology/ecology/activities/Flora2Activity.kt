@@ -173,7 +173,7 @@ class Flora2Activity : Activity() {
                         data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
                         , data.getInt(15),data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
                         , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28),data.getFloat(29),data.getString(30),data.getInt(31),data.getString(32)
-                        ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41),data.getString(42))
+                        ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getFloat(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41),data.getString(42))
 
                 // 교목층
 
@@ -1496,7 +1496,7 @@ class Flora2Activity : Activity() {
                             }
 
                             if (etHER_HEIGHT.text.isNotEmpty()) {
-                                manyFloraAttribute.HER_HEIGHT = etHER_HEIGHT.text.toString().toInt()
+                                manyFloraAttribute.HER_HEIGHT = etHER_HEIGHT.text.toString().toFloat()
                             }
 
                             val HER_SPEC = etHER_COVEET.text.toString()
@@ -1913,7 +1913,7 @@ class Flora2Activity : Activity() {
                                             manyFloraAttribute.HER_SCIEN = ""
                                             manyFloraAttribute.HER_DOMIN = 0.0f
                                             manyFloraAttribute.HER_GUNDO = 0.0f
-                                            manyFloraAttribute.HER_HEIGHT = 0
+                                            manyFloraAttribute.HER_HEIGHT = 0.0f
                                         }
                                         if (i <= HerDataSize - 1){
                                             manyFloraAttribute.HER_NUM = HerDatas.get(i).PAGE
@@ -1933,9 +1933,9 @@ class Flora2Activity : Activity() {
                                             }
 
                                             if (HerDatas.get(i).ETC != null){
-                                                manyFloraAttribute.HER_HEIGHT = HerDatas.get(i).ETC!!.toInt()
+                                                manyFloraAttribute.HER_HEIGHT = HerDatas.get(i).ETC!!.toFloat()
                                             } else {
-                                                manyFloraAttribute.HER_HEIGHT = 0
+                                                manyFloraAttribute.HER_HEIGHT = 0.0f
                                             }
 
                                         }
@@ -1993,7 +1993,7 @@ class Flora2Activity : Activity() {
                                     data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
                                     , data.getInt(15),data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
                                     , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28),data.getFloat(29),data.getString(30),data.getInt(31),data.getString(32)
-                                    ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41),data.getString(42))
+                                    ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getFloat(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41),data.getString(42))
 
                             dataArray.add(manyFloraAttribute)
                         }
@@ -2055,7 +2055,7 @@ class Flora2Activity : Activity() {
                                                 data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
                                                 , data.getInt(15),data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
                                                 , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28),data.getFloat(29),data.getString(30),data.getInt(31),data.getString(32)
-                                                ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41),data.getString(42))
+                                                ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getFloat(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41),data.getString(42))
 
                                         dataArray.add(manyFloraAttribute)
 
@@ -2110,7 +2110,7 @@ class Flora2Activity : Activity() {
                                             data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
                                             , data.getInt(15),data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
                                             , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28),data.getFloat(29),data.getString(30),data.getInt(31),data.getString(32)
-                                            ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41),data.getString(42))
+                                            ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getFloat(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41),data.getString(42))
 
 
                                 }
@@ -2268,7 +2268,7 @@ class Flora2Activity : Activity() {
                     data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
                     , data.getInt(15),data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
                     , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28),data.getFloat(29),data.getString(30),data.getInt(31),data.getString(32)
-                    ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getInt(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41),data.getString(42))
+                    ,data.getString(33),data.getString(34),data.getFloat(35),data.getFloat(36),data.getFloat(37),data.getFloat(38),data.getFloat(39),data.getString(40),data.getString(41),data.getString(42))
 
             dataArray.add(manyFloraAttribute)
         }

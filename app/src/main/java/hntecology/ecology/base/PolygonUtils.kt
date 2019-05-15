@@ -21,9 +21,9 @@ object PolygonUtils {
         Log.d("너비",label)
         Log.d("너비",bounds1.toString())
         val conf = Bitmap.Config.ARGB_8888
-        Log.d("너비",bounds1.width().toString())
+        Log.d("너비2",bounds1.width().toString())
         Log.d("너비",bounds1.height().toString())
-        val bitmap = Bitmap.createBitmap(bounds1.width(), bounds1.height(), conf)
+        val bitmap = Bitmap.createBitmap(bounds1.width()+10, bounds1.height(), conf)
 
         val x = 0.toFloat()
         val y = bounds1.height().toFloat()

@@ -320,7 +320,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
         visibleBT.setOnClickListener {
             if (visible_donum==-1) {
-                visibleBT.text = "도형번호 삭제"
+                visibleBT.text = "도형번호 숨기기"
                 visible_donum = 1
             }else{
                 visibleBT.text = "도형번호 보기"
@@ -2280,7 +2280,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                     data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
                                     , data.getInt(15), data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
                                     , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28), data.getFloat(29), data.getString(30), data.getInt(31), data.getString(32)
-                                    , data.getString(33), data.getString(34), data.getFloat(35), data.getFloat(36), data.getInt(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42))
+                                    , data.getString(33), data.getString(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42))
                             manyfloradataArray.add(manyFloraAttribute)
 
                         }
@@ -8249,7 +8249,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
                     , data.getInt(15), data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
                     , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28), data.getFloat(29), data.getString(30), data.getInt(31), data.getString(32)
-                    , data.getString(33), data.getString(34), data.getFloat(35), data.getFloat(36), data.getInt(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42))
+                    , data.getString(33), data.getString(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42))
 
             manyflorasDatas.add(manyFloraAttribute)
 

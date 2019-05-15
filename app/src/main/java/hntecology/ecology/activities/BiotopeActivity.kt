@@ -3252,6 +3252,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         etINV_TMTV.setText(Utils.timeStr())
 
+        bioTV.setText("")
         TVLU_GR_NumTV.setText("")
         etLU_TY_RATEET.setText("")
         etSTAND_HET.setText("")

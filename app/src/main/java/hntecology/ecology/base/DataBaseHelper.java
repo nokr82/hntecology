@@ -1227,6 +1227,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
         db.close();
     }
+    public void delete_biotope_attribute(Biotope_attribute biotope_attribute,String GROP_ID) {
+        String query = "DELETE FROM biotopeAttribute WHERE GROP_ID = '" + GROP_ID + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
 
     public void deletemanyflora_attribute(ManyFloraAttribute ManyFloraAttribute,String GROP_ID) {
         String query = "DELETE FROM ManyFloraAttribute WHERE GROP_ID = '" + GROP_ID + "'";

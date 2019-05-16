@@ -2694,7 +2694,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             }
                         }
 
-                    } else {
+                    }
+                    else {
                         when (myLayer) {
 
                             LAYER_BIOTOPE -> {

@@ -920,7 +920,7 @@
                                         android:layout_height="match_parent"
                                         android:layout_centerInParent="true">
                                         <TextView
-                                            android:id="@+id/herleftTV"
+                                            android:id="@+id/treleftTV"
                                             android:layout_width="wrap_content"
                                             android:layout_height="match_parent"
                                             android:gravity="center"
@@ -929,7 +929,7 @@
                                             android:layout_marginRight="40dp"/>
 
                                         <TextView
-                                            android:id="@+id/herpageTV"
+                                            android:id="@+id/trepageTV"
                                             android:layout_width="wrap_content"
                                             android:layout_height="match_parent"
                                             android:layout_centerInParent="true"
@@ -944,7 +944,7 @@
                                             android:text=" / " />
 
                                         <TextView
-                                            android:id="@+id/herrightpageTV"
+                                            android:id="@+id/trerightpageTV"
                                             android:layout_width="wrap_content"
                                             android:layout_height="match_parent"
                                             android:layout_centerInParent="true"
@@ -952,7 +952,7 @@
                                             android:text="1" />
 
                                         <TextView
-                                            android:id="@+id/herrightTV"
+                                            android:id="@+id/trerightTV"
                                             android:layout_width="wrap_content"
                                             android:layout_height="match_parent"
                                             android:text="〉 "
@@ -963,7 +963,7 @@
                                     </LinearLayout>
 
                                     <LinearLayout
-                                        android:id="@+id/hercloseLL"
+                                        android:id="@+id/trecloseLL"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentRight="true"
@@ -1286,7 +1286,7 @@
                                            android:layout_marginRight="40dp"/>
 
                                        <TextView
-                                           android:id="@+id/herpageTV"
+                                           android:id="@+id/trepageTV"
                                            android:layout_width="wrap_content"
                                            android:layout_height="match_parent"
                                            android:layout_centerInParent="true"
@@ -1646,7 +1646,7 @@
                                             android:layout_marginRight="40dp"/>
 
                                         <TextView
-                                            android:id="@+id/herpageTV"
+                                            android:id="@+id/trepageTV"
                                             android:layout_width="wrap_content"
                                             android:layout_height="match_parent"
                                             android:layout_centerInParent="true"

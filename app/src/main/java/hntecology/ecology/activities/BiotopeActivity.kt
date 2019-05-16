@@ -4,6 +4,8 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -21,7 +23,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
@@ -32,7 +33,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.joooonho.SelectableRoundedImageView
 import com.nostra13.universalimageloader.core.ImageLoader
@@ -41,7 +41,6 @@ import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.*
-import hntecology.ecology.model.Number
 import kotlinx.android.synthetic.main.activity_biotope_ex.*
 import java.io.File
 import java.io.FileOutputStream
@@ -194,6 +193,10 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         tvINV_IndexTV.setText(texttoday + "1")
 
+
+
+
+
         val userName = PrefUtils.getStringPreference(context, "name");
         tvINV_PERSONTV.setText(userName)
 
@@ -202,11 +205,23 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         etINV_DTTV.setText(Utils.todayStr())
 
+
+
+
         var time = Utils.timeStr()
         var timesplit = time.split(":")
         invtm = timesplit.get(0) + timesplit.get(1)
 
         etINV_TMTV.setText(time)
+
+
+        etINV_TMTV.setOnClickListener {
+            timedlg()
+        }
+        etINV_DTTV.setOnClickListener {
+            datedlg()
+        }
+
 
         if (intent.getStringExtra("polygonid") != null) {
             polygonid = intent.getStringExtra("polygonid")
@@ -2240,6 +2255,33 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         lc4CB.setImageResource(R.mipmap.box_check_off)
     }
 
+    fun timedlg() {
+        val cal = Calendar.getInstance()
+        val dialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hour, min ->
+            var hour_s = hour.toString()
+            var min_s = min.toString()
+            if (min_s.length!=2){
+                min_s = "0"+min_s
+            }
+            if (hour_s.length!=2){
+                hour_s = "0"+hour_s
+            }
+            val msg = String.format("%s : %s", hour_s, min_s)
+            etINV_TMTV.text = msg
+        }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
+        dialog.show()
+    }
+
+
+    fun datedlg() {
+        var day = Utils.todayStr()
+        var days = day.split("-")
+        DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt()-1, days[2].toInt()).show()
+    }
+    private val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+        val msg = String.format("%d-%d-%d", year, monthOfYear+1, dayOfMonth)
+        etINV_DTTV.text = msg
+    }
 
     override fun onBackPressed() {
 

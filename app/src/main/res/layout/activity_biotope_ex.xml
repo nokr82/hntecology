@@ -120,7 +120,7 @@
                     android:layout_weight="1"
                     android:id="@+id/etINV_DTTV"
                     android:gravity="center"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     />
 
                 <TextView
@@ -136,7 +136,7 @@
                     android:layout_weight="1"
                     android:id="@+id/etINV_TMTV"
                     android:gravity="center"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     />
 
             </LinearLayout>

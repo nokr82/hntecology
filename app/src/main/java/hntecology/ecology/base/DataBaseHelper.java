@@ -805,7 +805,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += "(GROP_ID,INV_REGION,INV_PERSON,INV_DT,INV_TM,TRE_NUM,TRE_SPEC,TRE_FAMI";
         query += ",TRE_SCIEN,TRE_DBH,TRE_TOIL,TRE_UNDER,TRE_WATER,TRE_TYPE,STRE_NUM,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_DBH,STRE_TOIL,STRE_UNDER,STRE_WATER,STRE_TYPE";
         query += ",SHR_NUM,SHR_SPEC,SHR_FAMI,SHR_SCIEN,SHR_TOIL,SHR_WATER,SHR_UNDER,HER_NUM,HER_SPEC,HER_FAMI";
-        query += ",HER_SCIEN,HER_DOMIN,HER_GUNDO,HER_HEIGHT,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM)";
+        query += ",HER_SCIEN,HER_DOMIN,HER_GUNDO,HER_HEIGHT,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM,DOMIN)";
 
         query += " values (";
         query += " '" + ManyFloraAttribute.getGROP_ID() + "'";
@@ -855,6 +855,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + ManyFloraAttribute.getCONF_MOD() + "'";
 
         query += ", '" + ManyFloraAttribute.getGEOM() + "'";
+        query += ", '" + ManyFloraAttribute.getDOMIN() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -1757,7 +1758,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",GPS_LAT='" + ManyFloraAttribute.getGPS_LAT() + "'"
                 + ",GPS_LON='" + ManyFloraAttribute.getGPS_LON() + "'"
                 + ",TEMP_YN='" + ManyFloraAttribute.getTEMP_YN() + "'"
-                + ",CONF_MOD='" + ManyFloraAttribute.getCONF_MOD() + "'"+
+                + ",CONF_MOD='" + ManyFloraAttribute.getCONF_MOD() + "'"
+                + ",DOMIN='" + ManyFloraAttribute.getDOMIN() + "'"+
 
                 "where id = '" + pk + "'";
         SQLiteDatabase db = getWritableDatabase();

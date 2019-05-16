@@ -7,6 +7,7 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.location.Address
 import android.location.Geocoder
@@ -87,7 +88,7 @@ class Flora2Activity : Activity() {
     var StreDatas: ArrayList<TreeData1> = ArrayList<TreeData1>()
     var ShrDatas: ArrayList<TreeData2> = ArrayList<TreeData2>()
     var HerDatas: ArrayList<TreeData2> = ArrayList<TreeData2>()
-
+    var t_name = ""
     var dataPk = -1
 
     var dbManager: DataBaseHelper? = null
@@ -119,27 +120,7 @@ class Flora2Activity : Activity() {
         invdtTV.setOnClickListener {
             datedlg()
         }
-        /*   val TRENUM = dbManager.manyfloratrenumNext()
-           val STRENUM = dbManager.manyflorastrenumNext()
-           val SHRNUM = dbManager.manyflorashrnumNext()
-           val HERNUM = dbManager.manyflorahernumNext()
 
-           trenumTV.setText(TRENUM.toString())
-           strenumTV.setText(STRENUM.toString())
-           shrnumTV.setText(SHRNUM.toString())
-           hernumTV.setText(HERNUM.toString())*/
-
-        /*var c = dbManager!!.pkNum2("HER_NUM","ManyFloraAttribute")
-        hernumTV.text = c.toString()
-
-        var s = dbManager!!.pkNum2("TRE_NUM","ManyFloraAttribute")
-        trenumTV.text = s.toString()
-
-        var d = dbManager!!.pkNum2("STRE_NUM","ManyFloraAttribute")
-        strenumTV.text = d.toString()
-
-        var f = dbManager!!.pkNum2("SHR_NUM","ManyFloraAttribute")
-        shrnumTV.text = f.toString()*/
 
 
         var intent: Intent = getIntent();
@@ -199,16 +180,18 @@ class Flora2Activity : Activity() {
 
             while (data.moveToNext()) {
 
-                var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
-                        data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
-                        , data.getInt(15), data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
-                        , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28), data.getFloat(29), data.getString(30), data.getInt(31), data.getString(32)
-                        , data.getString(33), data.getString(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42))
-
+                var manyFloraAttribute = ps_many_attribute(data)
                 // 교목층
-
+                var domins = manyFloraAttribute.DOMIN!!.split("-")
+                if (domins.size>1){
+                    dominTV.text = domins[0]
+                    ausTV.text = domins[1]
+                }else{
+                    dominTV.text = manyFloraAttribute.DOMIN
+                }
                 invregionTV.setText(manyFloraAttribute.INV_REGION)
                 INV_REGION = manyFloraAttribute.INV_REGION.toString()
+
                 invdtTV.setText(manyFloraAttribute.INV_DT)
                 invpersonTV.setText(manyFloraAttribute.INV_PERSON)
 
@@ -1400,10 +1383,7 @@ class Flora2Activity : Activity() {
 
                             dialog.cancel()
 
-                            var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null, null, null, null, null, null, null, null, null, null
-                                    , null, null, null, null, null, null, null, null, null, null, null, null, null
-                                    , null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
-                                    , null, null)
+                            var manyFloraAttribute =  null_many_attribute()
 
                             keyId = intent.getStringExtra("GROP_ID")
 
@@ -1412,6 +1392,10 @@ class Flora2Activity : Activity() {
                             manyFloraAttribute.GROP_ID = keyId
 
 //                            manyFloraAttribute.INV_REGION = invregionTV.text.toString()
+
+
+                            manyFloraAttribute.DOMIN = t_name
+
                             if (invregionTV.length() > 0) {
                                 manyFloraAttribute.INV_REGION = invregionTV.text.toString();
                             } else {
@@ -1834,10 +1818,7 @@ class Flora2Activity : Activity() {
                             }
 
                             for (i in 0..MaxLength - 1) {
-                                var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null, null, null, null, null, null, null, null, null, null
-                                        , null, null, null, null, null, null, null, null, null, null, null, null, null
-                                        , null, null, null, null, null, null, null, null, null, null, null, null, null
-                                        , null, null, null, null, null, null, null)
+                                var manyFloraAttribute =  null_many_attribute()
 
                                 keyId = intent.getStringExtra("GROP_ID")
 
@@ -1845,6 +1826,7 @@ class Flora2Activity : Activity() {
 
                                 manyFloraAttribute.GROP_ID = keyId
 
+                                manyFloraAttribute.DOMIN = t_name
 //                                    manyFloraAttribute.INV_REGION = invregionTV.text.toString()
                                 if (invregionTV.length() > 0) {
                                     manyFloraAttribute.INV_REGION = invregionTV.text.toString();
@@ -2031,12 +2013,7 @@ class Flora2Activity : Activity() {
 
                         while (data.moveToNext()) {
 
-                            var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
-                                    data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
-                                    , data.getInt(15), data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
-                                    , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28), data.getFloat(29), data.getString(30), data.getInt(31), data.getString(32)
-                                    , data.getString(33), data.getString(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42))
-
+                            var manyFloraAttribute = ps_many_attribute(data)
                             dataArray.add(manyFloraAttribute)
                         }
 
@@ -2070,10 +2047,7 @@ class Flora2Activity : Activity() {
                         .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
                             dialog.cancel()
-                            var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null, null, null, null, null, null, null, null, null, null
-                                    , null, null, null, null, null, null, null, null, null, null, null, null, null
-                                    , null, null, null, null, null, null, null, null, null, null, null, null, null
-                                    , null, null, null, null, null, null, null)
+                            var manyFloraAttribute =  null_many_attribute()
 
 
                             if (pk != null) {
@@ -2093,11 +2067,7 @@ class Flora2Activity : Activity() {
 
                                         chkdata = true
 
-                                        var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
-                                                data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
-                                                , data.getInt(15), data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
-                                                , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28), data.getFloat(29), data.getString(30), data.getInt(31), data.getString(32)
-                                                , data.getString(33), data.getString(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42))
+                                        var manyFloraAttribute = ps_many_attribute(data)
 
                                         dataArray.add(manyFloraAttribute)
 
@@ -2148,12 +2118,7 @@ class Flora2Activity : Activity() {
 
                                     chkdata = true
 
-                                    var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
-                                            data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
-                                            , data.getInt(15), data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
-                                            , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28), data.getFloat(29), data.getString(30), data.getInt(31), data.getString(32)
-                                            , data.getString(33), data.getString(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42))
-
+                                    var manyFloraAttribute = ps_many_attribute(data)
 
                                 }
 
@@ -2225,14 +2190,14 @@ class Flora2Activity : Activity() {
             when (requestCode) {
                 SET_DATA1 -> {
 
-                    var name = data!!.getStringExtra("name");
+                    t_name = data!!.getStringExtra("name");
 
-                    var names = name.split("-")
+                    var names = t_name.split("-")
                     if (names.size >1){
                         dominTV.setText(names[0])
                         ausTV.setText(names[1])
                     }else{
-                        dominTV.setText(name)
+                        dominTV.setText(t_name)
                         ausTV.setText("")
                     }
 
@@ -2337,12 +2302,7 @@ class Flora2Activity : Activity() {
 
         while (data.moveToNext()) {
 
-            var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
-                    data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
-                    , data.getInt(15), data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
-                    , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28), data.getFloat(29), data.getString(30), data.getInt(31), data.getString(32)
-                    , data.getString(33), data.getString(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42))
-
+            var manyFloraAttribute = ps_many_attribute(data)
             dataArray.add(manyFloraAttribute)
         }
 
@@ -3305,17 +3265,6 @@ class Flora2Activity : Activity() {
         strenumTV.setText(STRENUM.toString())
         shrnumTV.setText(SHRNUM.toString())
         hernumTV.setText(HERNUM.toString())
-        /*var c = dbManager!!.pkNum2("HER_NUM","ManyFloraAttribute")
-        hernumTV.text = c.toString()
-
-        var s = dbManager!!.pkNum2("TRE_NUM","ManyFloraAttribute")
-        trenumTV.text = s.toString()
-
-        var d = dbManager!!.pkNum2("STRE_NUM","ManyFloraAttribute")
-        strenumTV.text = d.toString()
-
-        var f = dbManager!!.pkNum2("SHR_NUM","ManyFloraAttribute")
-        shrnumTV.text = f.toString()*/
 
         etTRE_SPECET.setText("")
         etTRE_FAMIET.setText("")
@@ -3409,165 +3358,24 @@ class Flora2Activity : Activity() {
         etHER_COVEET.setText("")
     }
 
-    fun insert() {
 
-//        var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null,null,null,null,null,null,null,null,null,null
-//                ,null,null,null,null,null,null,null,null,null,null,null,null,null
-//                ,null,null,null,null,null,null,null,null,null,null,null,null,null
-//        ,null,null,null,null,null,null)
-//
-//        keyId = intent.getStringExtra("GROP_ID")
-//
-//        println("insertkeyid $keyId")
-//
-//        manyFloraAttribute.GROP_ID = keyId
-//
-//        manyFloraAttribute.INV_REGION = invregionTV.text.toString()
-//
-//        manyFloraAttribute.INV_DT = Utils.todayStr()
-//
-//        if(invpersonTV.text == null || invpersonTV.text.equals("")){
-//            manyFloraAttribute.INV_PERSON = userName
-//        }else {
-//            manyFloraAttribute.INV_PERSON = invpersonTV.text.toString()
-//        }
-//
-//        manyFloraAttribute.INV_TM = Utils.timeStr()
-//
-//        var treChk = false
-//
-//        for (i in 0 until  TreDatas.size){
-//            if (TreDatas.get(i).PAGE == trenumTV.text.toString().toInt()){
-//              treChk = true
-//            }
-//        }
-//
-//        if (treChk == false){
-//            if (trenumTV.text.isNotEmpty()) {
-//                manyFloraAttribute.TRE_NUM = trenumTV.text.toString().toInt()
-//            }
-//
-//            manyFloraAttribute.TRE_SPEC = etTRE_SPECET.text.toString()
-//            manyFloraAttribute.TRE_FAMI = etTRE_FAMIET.text.toString()
-//            manyFloraAttribute.TRE_SCIEN = etTRE_SCIENET.text.toString()
-//
-//            if (etTRE_HET.text.isNotEmpty()) {
-//                manyFloraAttribute.TRE_H = etTRE_HET.text.toString().toFloat()
-//            }
-//
-//            if (etTRE_BREAET.text.isNotEmpty()) {
-//                manyFloraAttribute.TRE_BREA = etTRE_BREAET.text.toString().toFloat()
-//            }
-//
-//            if (etTRE_COVEET.text.isNotEmpty()) {
-//                manyFloraAttribute.TRE_COVE = etTRE_COVEET.text.toString().toFloat()
-//            }
-//        }
-//
-//        var streChk = false
-//
-//        for (i in 0 until  StreDatas.size){
-//            if (StreDatas.get(i).PAGE == strenumTV.text.toString().toInt()){
-//                streChk = true
-//            }
-//        }
-//
-//        if (streChk == false){
-//            if (strenumTV.text.isNotEmpty()) {
-//                manyFloraAttribute.STRE_NUM = strenumTV.text.toString().toInt()
-//            }
-//
-//            manyFloraAttribute.STRE_SPEC = etSTRE_SPECET.text.toString()
-//            manyFloraAttribute.STRE_FAMI = etSTRE_FAMIET.text.toString()
-//            manyFloraAttribute.STRE_SCIEN = etSTRE_SCIENET.text.toString()
-//
-//            if (etSTRE_HET.text.isNotEmpty()) {
-//                manyFloraAttribute.STRE_H = etSTRE_HET.text.toString().toFloat()
-//            }
-//
-//            if (etSTRE_BREAET.text.isNotEmpty()) {
-//                manyFloraAttribute.STRE_BREA = etSTRE_BREAET.text.toString().toFloat()
-//            }
-//
-//            if (etSTRE_COVEET.text.isNotEmpty()) {
-//                manyFloraAttribute.STRE_COVE = etSTRE_COVEET.text.toString().toFloat()
-//            }
-//        }
-//
-//        var shrChk = false
-//
-//        for (i in 0 until  ShrDatas.size){
-//            if (ShrDatas.get(i).PAGE == shrnumTV.text.toString().toInt()){
-//                shrChk = true
-//            }
-//        }
-//
-//        if (shrChk == false){
-//            if (shrnumTV.text.isNotEmpty()) {
-//                manyFloraAttribute.SHR_NUM = shrnumTV.text.toString().toInt()
-//            }
-//
-//            manyFloraAttribute.SHR_SPEC = etSHR_SPECET.text.toString()
-//            manyFloraAttribute.SHR_FAMI = etSHR_FAMIET.text.toString()
-//            manyFloraAttribute.SHR_SCIEN = etSHR_SCIENET.text.toString()
-//
-//            if (etSTR_COVEET.text.isNotEmpty()) {
-//                manyFloraAttribute.SHR_H = etSTRE_HET.text.toString().toFloat()
-//            }
-//
-//            if (etSTR_COVEET.text.isNotEmpty()) {
-//                manyFloraAttribute.SHR_COVE = etSTR_COVEET.text.toString().toFloat()
-//            }
-//        }
-//
-//        var herChk = false
-//
-//        for (i in 0 until  HerDatas.size){
-//            if (HerDatas.get(i).PAGE == hernumTV.text.toString().toInt()){
-//                herChk = true
-//            }
-//        }
-//
-//        if (herChk == false){
-//            if (hernumTV.text.isNotEmpty()) {
-//                manyFloraAttribute.HER_NUM = hernumTV.text.toString().toInt()
-//            }
-//
-//            manyFloraAttribute.HER_SPEC = etHER_SPECET.text.toString()
-//            manyFloraAttribute.HER_FAMI = etHER_FAMIET.text.toString()
-//            manyFloraAttribute.HER_SCIEN = etHER_SCIENET.text.toString()
-//
-//            if (etHER_HET.text.isNotEmpty()) {
-//                manyFloraAttribute.HER_H = etHER_HET.text.toString().toFloat()
-//            }
-//
-//            if (etHER_COVEET.text.isNotEmpty()) {
-//                manyFloraAttribute.HER_COVE = etHER_COVEET.text.toString().toFloat()
-//            }
-//        }
-//
-//        if (gpslatTV.text.isNotEmpty()) {
-//            manyFloraAttribute.GPS_LAT = gpslatTV.text.toString().toFloat()
-//        }
-//
-//        if (gpslonTV.text.isNotEmpty()) {
-//            manyFloraAttribute.GPS_LON = gpslonTV.text.toString().toFloat()
-//        }
-//
-//        manyFloraAttribute.TEMP_YN = "Y"
-//        manyFloraAttribute.CONF_MOD = "N"
-//
-//        dbManager!!.insertmanyflora_attribute(manyFloraAttribute);
-//
-//        var intent = Intent()
-//
-//        intent.putExtra("export", 70);
-//
-//        setResult(RESULT_OK, intent);
-//
-//        finish()
+    fun null_many_attribute(): ManyFloraAttribute {
+        val manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(null, null, null, null, null, null, null, null, null, null
+        , null, null, null, null, null, null, null, null, null, null, null, null, null
+        , null, null, null, null, null, null, null, null, null, null, null, null, null
+        , null, null, null, null, null, null, null,null)
+        return manyFloraAttribute
     }
 
+    fun ps_many_attribute(data: Cursor): ManyFloraAttribute {
+        val manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
+                data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
+                , data.getInt(15), data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
+                , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28), data.getFloat(29), data.getString(30), data.getInt(31), data.getString(32)
+                , data.getString(33), data.getString(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43))
+
+        return manyFloraAttribute
+    }
 }
 
 

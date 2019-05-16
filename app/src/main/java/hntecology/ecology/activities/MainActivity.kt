@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.Point
@@ -238,15 +239,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     var visible_donum = -1
 
-    internal var loadDataHandler: Handler = object : Handler() {
-        override fun handleMessage(msg: android.os.Message) {
-//            initGps()
-//            var location = Location("tracking")
-//            location.latitude = latitude
-//            location.longitude = longitude
-//            onLocationUpdated(location)
-        }
-    }
 
     private lateinit var locationCallback: LocationCallback
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -266,15 +258,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         prjname = PrefUtils.getStringPreference(context, "prjname");
 
         val dataList: Array<String> = arrayOf("*")
-//        val data = db!!.query("settings", dataList, null, null, null, null, "id desc", "1")
         val data = db!!.query("Projects", dataList, "prj_name = '$prjname'", null, null, null, "id desc", "1")
 
         progressDialog = ProgressDialog(this, R.style.progressDialogTheme)
         progressDialog!!.setProgressStyle(android.R.style.Widget_DeviceDefault_Light_ProgressBar_Large)
         progressDialog!!.setCancelable(false)
 
-/*        PrefUtils.setPreference(this, "latitude", latitude);
-        PrefUtils.setPreference(this, "longitude", longitude);*/
+
         while (data.moveToNext()) {
 
             var gpsset: GpsSet = GpsSet(data.getInt(0), data.getDouble(1), data.getDouble(2), data.getString(3), data.getInt(4))
@@ -2276,11 +2266,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         var title = ""
 
                         while (data.moveToNext()) {
-                            var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
-                                    data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
-                                    , data.getInt(15), data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
-                                    , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28), data.getFloat(29), data.getString(30), data.getInt(31), data.getString(32)
-                                    , data.getString(33), data.getString(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42))
+                            var manyFloraAttribute = ps_many_attribute(data)
                             manyfloradataArray.add(manyFloraAttribute)
 
                         }
@@ -2917,16 +2903,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     biotopedataArray.clear()
                                                 }
                                                 while (data.moveToNext()) {
-                                                    var biotope_attribute: Biotope_attribute = Biotope_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                                            data.getString(8), data.getFloat(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getFloat(14)
-                                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                                                            , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getFloat(28)
-                                                            , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
-                                                            , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
-                                                            , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
-                                                            , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55), data.getString(56), data.getString(57)
-                                                            , data.getFloat(58), data.getFloat(59),data.getFloat(60),data.getFloat(61),data.getFloat(62),data.getFloat(63)
-                                                            ,data.getFloat(64),data.getFloat(65),data.getFloat(66),data.getFloat(67),data.getFloat(68),data.getFloat(69), data.getString(70), data.getFloat(71))
+                                                    val biotope_attribute = ps_biotope_attribute(data)
                                                     biotopedataArray.add(biotope_attribute)
                                                     chkData = true
                                                 }
@@ -3348,17 +3325,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 var title = ""
 
                                 while (data.moveToNext()) {
-                                    var biotope_attribute: Biotope_attribute = Biotope_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                            data.getString(8), data.getFloat(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getFloat(14)
-                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                                            , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getFloat(28)
-                                            , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
-                                            , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
-                                            , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
-                                            , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55),data.getString(56),data.getString(57)
-                                            , data.getFloat(58), data.getFloat(59),data.getFloat(60),data.getFloat(61),data.getFloat(62),data.getFloat(63)
-                                            ,data.getFloat(64),data.getFloat(65),data.getFloat(66),data.getFloat(67),data.getFloat(68),data.getFloat(69),data.getString(70)
-                                            , data.getFloat(71))
+                                    val biotope_attribute = ps_biotope_attribute(data)
                                     biotopedataArray.add(biotope_attribute)
                                 }
 
@@ -3827,16 +3794,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 var title = ""
 
                                 while (data.moveToNext()) {
-                                    var biotope_attribute: Biotope_attribute = Biotope_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                            data.getString(8), data.getFloat(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getFloat(14)
-                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                                            , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getFloat(28)
-                                            , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
-                                            , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
-                                            , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
-                                            , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55), data.getString(56),data.getString(57)
-                                            , data.getFloat(58), data.getFloat(59),data.getFloat(60),data.getFloat(61),data.getFloat(62),data.getFloat(63)
-                                            ,data.getFloat(64),data.getFloat(65),data.getFloat(66),data.getFloat(67),data.getFloat(68),data.getFloat(69),data.getString(70), data.getFloat(71))
+                                    val biotope_attribute = ps_biotope_attribute(data)
+
                                     biotopedataArray.add(biotope_attribute)
                                 }
 
@@ -6244,13 +6203,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     fun exportBiotope(leftday: String, lefttime: String, rightday: String, righttime: String, exportType:String) {
         val biotopeArray: ArrayList<Exporter.ExportItem> = ArrayList<Exporter.ExportItem>()
         val dataList: Array<String> = arrayOf("*")
-//        var biotopedata = db!!.query("biotopeAttribute", dataList, null, null, null, null, "", null)
         var lftday = leftday + lefttime
         var rgtday = rightday + righttime
-
-//        var biotopedata = db!!.query("biotopeAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
-
-//        var biotopedata = db!!.query("biotopeAttribute", dataList, "INV_DT || ' ' || INV_TM between '2019-02-12' and '2019-02-13' ", null, null, null, "", null)
 
         var biotopedata = db!!.query("biotopeAttribute", dataList, null, null, null, null, "", null)
         if (leftday != ""){
@@ -8251,12 +8205,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         while (data.moveToNext()) {
 
-            var manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
-                    data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
-                    , data.getInt(15), data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
-                    , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28), data.getFloat(29), data.getString(30), data.getInt(31), data.getString(32)
-                    , data.getString(33), data.getString(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42))
-
+            var manyFloraAttribute = ps_many_attribute(data)
             manyflorasDatas.add(manyFloraAttribute)
 
         }
@@ -8339,7 +8288,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     MANYFLORA.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, zoo.CONF_MOD))
                     MANYFLORA.add(Exporter.ColumnDef("GEOM", ogr.OFTString, zoo.GEOM))
 
-
+                    MANYFLORA.add(Exporter.ColumnDef("DOMIN", ogr.OFTString, zoo.DOMIN))
                     var geomsplit = zoo.GEOM!!.split(" ")
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
 
@@ -8406,6 +8355,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             MANYFLORA.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, zoo.GPS_LAT.toString()))
                             MANYFLORA.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, zoo.GPS_LON.toString()))
                             MANYFLORA.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, zoo.CONF_MOD))
+                            MANYFLORA.add(Exporter.ColumnDef("DOMIN", ogr.OFTString, zoo.DOMIN))
                         }
                         val exporter = Exporter.ExportPointItem(LAYER_FLORA2, MANYFLORA, points.get(idx))
 
@@ -8725,33 +8675,18 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         newDataStore.forceSchemaCRS(DefaultGeographicCRS.WGS84)
 
 
-        /*
-         * Write the features to the shapefile
-         */
+
         val transaction = DefaultTransaction("create")
 
         val typeName = newDataStore.typeNames[0]
         val featureSource = newDataStore.getFeatureSource(typeName)
         val SHAPE_TYPE = featureSource.schema
-        /*
-         * The Shapefile format has a couple limitations:
-         * - "the_geom" is always first, and used for the geometry attribute name
-         * - "the_geom" must be of type Point, MultiPoint, MuiltiLineString, MultiPolygon
-         * - Attribute names are limited in length
-         * - Not all data types are supported (example Timestamp represented as Date)
-         *
-         * Each data store has different limitations so check the resulting SimpleFeatureType.
-         */
         System.out.println("SHAPE:" + SHAPE_TYPE)
 
         if (featureSource is SimpleFeatureStore) {
             val featureStore = featureSource as SimpleFeatureStore
 
-            /*
-             * SimpleFeatureStore has a method to add features from a
-             * SimpleFeatureCollection object, so we use the ListFeatureCollection
-             * class to wrap our list of features.
-             */
+
 
             val features = ArrayList<SimpleFeature>()
 
@@ -9447,17 +9382,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     }
 
-    fun timerStart() {
-        val task = object : TimerTask() {
-            override fun run() {
-                loadDataHandler.sendEmptyMessage(0)
-            }
-        }
-
-        timer = Timer()
-        timer!!.schedule(task, 0, 5000)
-
-    }
 
     private fun splitPolygon() {
 
@@ -10150,6 +10074,37 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         exportBtn.setTextColor(Color.parseColor("#000000"))
 
     }
+
+
+
+
+    fun ps_biotope_attribute(data2:Cursor): Biotope_attribute {
+        val biotope_attribute =  Biotope_attribute(data2.getString(0), data2.getString(1), data2.getString(2), data2.getString(3), data2.getString(4), data2.getString(5), data2.getString(6), data2.getInt(7),
+                data2.getString(8), data2.getFloat(9), data2.getFloat(10), data2.getString(11), data2.getString(12), data2.getString(13), data2.getFloat(14)
+                , data2.getString(15), data2.getString(16), data2.getString(17), data2.getString(18), data2.getString(19), data2.getString(20), data2.getString(21)
+                , data2.getString(22), data2.getString(23), data2.getString(24), data2.getString(25), data2.getFloat(26), data2.getFloat(27), data2.getFloat(28)
+                , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
+                , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
+                , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
+                , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53),data2.getString(54),data2.getString(55),data2.getString(56),data2.getString(57)
+                ,data2.getFloat(58),data2.getFloat(59),data2.getFloat(60),data2.getFloat(61),data2.getFloat(62),data2.getFloat(63)
+                ,data2.getFloat(64),data2.getFloat(65),data2.getFloat(66),data2.getFloat(67),data2.getFloat(68),data2.getFloat(69), data2.getString(70), data2.getFloat(71))
+        return biotope_attribute
+    }
+
+
+
+    fun ps_many_attribute(data: Cursor): ManyFloraAttribute {
+        val manyFloraAttribute: ManyFloraAttribute = ManyFloraAttribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getInt(6), data.getString(7),
+                data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
+                , data.getInt(15), data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
+                , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28), data.getFloat(29), data.getString(30), data.getInt(31), data.getString(32)
+                , data.getString(33), data.getString(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43))
+
+        return manyFloraAttribute
+    }
+
+
 
     fun versionCode(){
         try {

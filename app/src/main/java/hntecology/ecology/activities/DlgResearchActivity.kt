@@ -521,7 +521,8 @@ class DlgResearchActivity : Activity() {
                     data.getString(8), data.getString(9), data.getFloat(10), data.getFloat(11), data.getString(12), data.getInt(13), data.getString(14)
                     , data.getInt(15), data.getString(16), data.getString(17), data.getString(18), data.getFloat(19), data.getFloat(20), data.getString(21), data.getInt(22)
                     , data.getString(23), data.getInt(24), data.getString(25), data.getString(26), data.getString(27), data.getFloat(28), data.getFloat(29), data.getString(30), data.getInt(31), data.getString(32)
-                    , data.getString(33), data.getString(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42), data.getString(43))
+                    , data.getString(33), data.getString(34), data.getFloat(35), data.getFloat(36), data.getFloat(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41)
+                    , data.getString(42), data.getString(43),data.getString(44),data.getString(45))
 
             var PICTURE_YN = "-"
             var HER_SPECET = "초본층 : "+manyFloraAttribute.HER_SPEC

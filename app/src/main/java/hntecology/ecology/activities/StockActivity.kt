@@ -2,6 +2,8 @@ package hntecology.ecology.activities
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -27,7 +29,7 @@ import hntecology.ecology.model.Vegetation
 import kotlinx.android.synthetic.main.activity_stock.*
 import java.io.File
 import java.io.IOException
-import java.util.ArrayList
+import java.util.*
 
 class StockActivity : Activity() {
 
@@ -119,6 +121,13 @@ class StockActivity : Activity() {
 
         numTV.setText(texttoday + "1")
         var intent: Intent = getIntent();
+
+        invdtTV.setOnClickListener {
+            datedlg()
+        }
+        invtmTV.setOnClickListener {
+          timedlg()
+        }
 
         if (intent.getStringExtra("polygonid") != null) {
             polygonid = intent.getStringExtra("polygonid")
@@ -568,7 +577,7 @@ class StockActivity : Activity() {
                             stockMap.INV_REGION = INV_REGION
                         }
                         stockMap.INV_PERSON = invpersonTV.text.toString()
-                        stockMap.INV_DT = Utils.todayStr()
+                        stockMap.INV_DT = invdtTV.text.toString()
                         stockMap.INV_TM = Utils.timeStr()
                         stockMap.NUM = numTV.text.toString().toInt()
                         stockMap.FRTP_CD = FRTP_CD_CODE
@@ -796,7 +805,7 @@ class StockActivity : Activity() {
                 stockMap.INV_REGION = INV_REGION
             }
             stockMap.INV_PERSON = invpersonTV.text.toString()
-            stockMap.INV_DT = Utils.todayStr()
+            stockMap.INV_DT =  invdtTV.text.toString()
             stockMap.INV_TM = Utils.timeStr()
             stockMap.NUM = numTV.text.toString().toInt()
             stockMap.FRTP_CD = FRTP_CD_CODE
@@ -1236,6 +1245,33 @@ class StockActivity : Activity() {
         dnstdata.add(selectitem25)
         dnstdata.add(selectitem26)
         dnstdata.add(selectitem27)
+    }
+
+    fun timedlg() {
+        val cal = Calendar.getInstance()
+        val dialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hour, min ->
+            var hour_s = hour.toString()
+            var min_s = min.toString()
+            if (min_s.length!=2){
+                min_s = "0"+min_s
+            }
+            if (hour_s.length!=2){
+                hour_s = "0"+hour_s
+            }
+            val msg = String.format("%s : %s", hour_s, min_s)
+            invtmTV.text = msg
+        }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
+        dialog.show()
+    }
+
+    fun datedlg() {
+        var day = Utils.todayStr()
+        var days = day.split("-")
+        DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt()-1, days[2].toInt()).show()
+    }
+    private val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+        val msg = String.format("%d-%d-%d", year, monthOfYear+1, dayOfMonth)
+        invdtTV.text = msg
     }
 
 

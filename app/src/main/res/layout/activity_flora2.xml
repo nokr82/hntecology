@@ -59,7 +59,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:id="@+id/invdtTV"
-                    style="@style/BiotopeTextViewDisabled"
+                    style="@style/BiotopeTextView"
                     android:gravity="left|center"
                     />
                 <TextView
@@ -77,7 +77,50 @@
                     android:gravity="left|center"
                     />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <TextView
+                    android:layout_width="90dp"
+                    android:layout_height="match_parent"
+                    style="@style/BiotopeTextView"
+                    android:text="상관식생"/>
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:text="우점"
+                    style="@style/BiotopeTextView"
+                    />
 
+                <TextView
+                    android:id="@+id/dominTV"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:maxLength="30"
+                    android:hint="click"
+                    android:gravity="center"
+                    style="@style/BiotopeTextView"
+                    />
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:text="아우점"
+                    style="@style/BiotopeTextView"
+                    />
+
+                <TextView
+                    android:id="@+id/ausTV"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:maxLength="30"
+                    android:hint="click"
+                    android:gravity="center"
+                    style="@style/BiotopeTextView"
+                    />
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

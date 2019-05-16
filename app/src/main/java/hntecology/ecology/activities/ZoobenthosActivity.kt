@@ -1,9 +1,7 @@
 package hntecology.ecology.activities
 
 import android.Manifest
-import android.app.Activity
-import android.app.AlertDialog
-import android.app.ProgressDialog
+import android.app.*
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -54,6 +52,8 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
 import java.text.DecimalFormat
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.abs
 import kotlin.math.round
 
@@ -179,6 +179,13 @@ class ZoobenthosActivity : Activity() {
         db = dbManager!!.createDataBase();
         var c = dbManager!!.pkNum("ZoobenthosAttribute")
         numTV.text = c.toString()
+
+        invdtTV.setOnClickListener {
+            datedlg()
+        }
+        timeTV.setOnClickListener {
+            timedlg()
+        }
 
 
 
@@ -769,7 +776,7 @@ class ZoobenthosActivity : Activity() {
                         }
                         zoobenthos_Attribute.INV_DT = Utils.todayStr()
                         zoobenthos_Attribute.NUM = numTV.text.toString()
-                        zoobenthos_Attribute.INV_TM = Utils.timeStr()
+                        zoobenthos_Attribute.INV_TM = timeTV.text.toString()
                         zoobenthos_Attribute.WEATHER = weatherTV.text.toString()
                         zoobenthos_Attribute.INV_TOOL = invtoolET.text.toString()
                         zoobenthos_Attribute.AD_DIST_NM = addistnmET.text.toString()
@@ -1253,7 +1260,7 @@ class ZoobenthosActivity : Activity() {
             }
             zoobenthos_Attribute.INV_DT = Utils.todayStr()
             zoobenthos_Attribute.NUM = numTV.text.toString()
-            zoobenthos_Attribute.INV_TM = Utils.timeStr()
+            zoobenthos_Attribute.INV_TM = timeTV.text.toString()
             zoobenthos_Attribute.WEATHER = weatherTV.text.toString()
             zoobenthos_Attribute.INV_TOOL = invtoolET.text.toString()
             zoobenthos_Attribute.AD_DIST_NM = addistnmET.text.toString()
@@ -2330,7 +2337,32 @@ class ZoobenthosActivity : Activity() {
     }
 
 
+    fun timedlg() {
+        val cal = Calendar.getInstance()
+        val dialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hour, min ->
+            var hour_s = hour.toString()
+            var min_s = min.toString()
+            if (min_s.length!=2){
+                min_s = "0"+min_s
+            }
+            if (hour_s.length!=2){
+                hour_s = "0"+hour_s
+            }
+            val msg = String.format("%s : %s", hour_s, min_s)
+            timeTV.text = msg
+        }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
+        dialog.show()
+    }
 
+    fun datedlg() {
+        var day = Utils.todayStr()
+        var days = day.split("-")
+        DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt()-1, days[2].toInt()).show()
+    }
+    private val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+        val msg = String.format("%d-%d-%d", year, monthOfYear+1, dayOfMonth)
+        invdtTV.text = msg
+    }
 
 
 }

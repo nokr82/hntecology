@@ -59,6 +59,7 @@ class DlgDataListActivity : Activity() {
     var titleName:String=""
     var DlgHeight:Float=430F
     var GROP_ID:String = ""
+    var INV_TM:String = ""
     var markerid:String? = null
     var polygonid:String? = null
     var landuse:String? = null
@@ -139,8 +140,9 @@ class DlgDataListActivity : Activity() {
         val dataList: Array<String> = arrayOf("*");
         if(tableName.equals("biotopeAttribute")) {
 
+            INV_TM = intent.getStringExtra("INV_TM")
 
-            val biotopsdata=  db!!.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,null,null,null,null);
+            val biotopsdata=  db!!.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'  GROUP BY '"+INV_TM+"'",null,null,null,null,null);
 
             biotopesdataList(biotopeData,biotopsdata)
 

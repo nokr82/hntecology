@@ -32,12 +32,12 @@ class DlgBiotopeClassActivity : Activity() {
     private lateinit var listView5: ListView
     private lateinit var listView6: ListView
 
-    private lateinit var listdata1 : ArrayList<BiotopeClass>
-    private lateinit var listdata2 : ArrayList<BiotopeClass>
-    private lateinit var listdata3 : ArrayList<BiotopeClass>
-    private lateinit var listdata4 : ArrayList<Number>
-    private lateinit var listdata5 : ArrayList<Vegetation>
-    private lateinit var listdata6 : ArrayList<Number>
+    private lateinit var listdata1: ArrayList<BiotopeClass>
+    private lateinit var listdata2: ArrayList<BiotopeClass>
+    private lateinit var listdata3: ArrayList<BiotopeClass>
+    private lateinit var listdata4: ArrayList<Number>
+    private lateinit var listdata5: ArrayList<Vegetation>
+    private lateinit var listdata6: ArrayList<Number>
 
     private lateinit var listAdapte1: BiotopeClassAdapter;
     private lateinit var listAdapte2: BiotopeClassAdapter2;
@@ -46,14 +46,14 @@ class DlgBiotopeClassActivity : Activity() {
     private lateinit var listAdapte5: BiotopeClassAdapter4;
     private lateinit var listAdapte6: BiotopeClassAdapter5;
 
-    private lateinit var copylistdata3 : ArrayList<Vegetation>
+    private lateinit var copylistdata3: ArrayList<Vegetation>
 
-    var tableName:String = ""
-    var titleName:String=""
-    var DlgHeight:Float=430F
+    var tableName: String = ""
+    var titleName: String = ""
+    var DlgHeight: Float = 430F
 
     var list3position = -1
-    var list4position:Int = 0
+    var list4position: Int = 0
     var list5position = -1
 
     var dbManager: DataBaseHelper? = null
@@ -80,16 +80,16 @@ class DlgBiotopeClassActivity : Activity() {
 
         tableName = intent.getStringExtra("table");
         titleName = intent.getStringExtra("title")
-        DlgHeight = intent.getFloatExtra("DlgHeight",430F);
+        DlgHeight = intent.getFloatExtra("DlgHeight", 430F);
 
         window.setLayout(Utils.dpToPx(1000F).toInt(), Utils.dpToPx(DlgHeight).toInt());
         this.setFinishOnTouchOutside(true);
 
         class_dlgTitle.setText(titleName)
 
-        val dataList:Array<String> = arrayOf("CATEGORY","MIDDLECATEGORY","SMALLCATEGORY","SIGN");
+        val dataList: Array<String> = arrayOf("CATEGORY", "MIDDLECATEGORY", "SMALLCATEGORY", "SIGN");
 
-        val data1=  db!!.query(tableName,dataList,null,null,"CATEGORY",null,null,null);
+        val data1 = db!!.query(tableName, dataList, null, null, "CATEGORY", null, null, null);
 
         listView1 = findViewById(R.id.class_list_view1)
         listView2 = findViewById(R.id.class_list_view2)
@@ -110,9 +110,9 @@ class DlgBiotopeClassActivity : Activity() {
         listAdapte1 = BiotopeClassAdapter(context, listdata1);
         listAdapte2 = BiotopeClassAdapter2(context, listdata2);
         listAdapte3 = BiotopeClassAdapter3(context, listdata3);
-        listAdapte4 = BiotopeClassAdapter5(context,listdata4)
+        listAdapte4 = BiotopeClassAdapter5(context, listdata4)
         listAdapte5 = BiotopeClassAdapter4(context, listdata5);
-        listAdapte6 = BiotopeClassAdapter5(context,listdata6)
+        listAdapte6 = BiotopeClassAdapter5(context, listdata6)
 
         listView1.adapter = listAdapte1
         listView2.adapter = listAdapte2
@@ -121,45 +121,45 @@ class DlgBiotopeClassActivity : Activity() {
         listView5.adapter = listAdapte5
         listView6.adapter = listAdapte6
 
-        dataList(listdata1,data1);
+        dataList(listdata1, data1);
 
         selectLL.setOnClickListener {
             println("----list3 : $list3position")
             println("----list5 : $list5position")
-            if (list3position > -1){
-                if (list5position > -1){
+            if (list3position > -1) {
+                if (list5position > -1) {
                     var vegetation = listAdapte5.getItem(list5position)
                     var category = vegetation.CATEGORY
                     var intent = Intent()
-                    if (category == "기타"){
-                        intent.putExtra("etc",category)
+                    if (category == "기타") {
+                        intent.putExtra("etc", category)
 
                         setResult(RESULT_OK, intent);
                         finish()
                     } else {
                         var number = ""
-                        if (code1 != ""){
+                        if (code1 != "") {
                             number += code1
                         }
 
-                        if (code2 != ""){
+                        if (code2 != "") {
                             number += code2
                         }
 
-                        if (code3 != ""){
+                        if (code3 != "") {
                             number += code3
                         }
 
-                        intent.putExtra("Vegetation",vegetation)
-                        intent.putExtra("Number",number)
+                        intent.putExtra("Vegetation", vegetation)
+                        intent.putExtra("Number", number)
 
                         setResult(RESULT_OK, intent);
                         finish()
                     }
                 } else {
-                    var biotopeClass:BiotopeClass = listAdapte3.getItem(list3position)
+                    var biotopeClass: BiotopeClass = listAdapte3.getItem(list3position)
 
-                    intent.putExtra("biotopeClass",biotopeClass)
+                    intent.putExtra("biotopeClass", biotopeClass)
 
                     setResult(RESULT_OK, intent);
                     finish()
@@ -170,7 +170,7 @@ class DlgBiotopeClassActivity : Activity() {
             }
         }
 
-        listView1.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
+        listView1.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             listAdapte2.clearItem()
             listAdapte3.clearItem()
             listAdapte4.clearItem()
@@ -184,21 +184,21 @@ class DlgBiotopeClassActivity : Activity() {
             list3position = -1
             list5position = -1
 
-            var veData =  listAdapte1.getItem(position)
+            var veData = listAdapte1.getItem(position)
 
             listAdapte1.setItemSelect(position)
 
-            val data2 =  db!!.query(tableName,dataList,"CATEGORY='"+veData.CATEGORY +"'" ,null,"MIDDLECATEGORY",null,null,null);
+            val data2 = db!!.query(tableName, dataList, "CATEGORY='" + veData.CATEGORY + "'", null, "MIDDLECATEGORY", null, null, null);
 
-            class_probar.visibility= View.VISIBLE
-            dataList(listdata2,data2);
-            class_probar.visibility= View.GONE
+            class_probar.visibility = View.VISIBLE
+            dataList(listdata2, data2);
+            class_probar.visibility = View.GONE
 
             data2.close()
 
-        })
+        }
 
-        listView2.setOnItemClickListener (AdapterView.OnItemClickListener{ adapterView, view, position, l ->
+        listView2.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, position, l ->
 
             listAdapte3.clearItem()
             listAdapte4.clearItem()
@@ -207,43 +207,43 @@ class DlgBiotopeClassActivity : Activity() {
 
             println("position ------- $position")
 
-            var veData:BiotopeClass = listAdapte2.getItem(position)
+            var veData: BiotopeClass = listAdapte2.getItem(position)
 
             listAdapte2.setItemSelect(position)
 
-            val data =  db!!.query(tableName,dataList,"MIDDLECATEGORY='"+veData.middlecategory +"'" ,null,null,null,null,null);
+            val data = db!!.query(tableName, dataList, "MIDDLECATEGORY='" + veData.middlecategory + "'", null, null, null, null, null);
 
-            class_probar.visibility= View.VISIBLE
-            dataList(listdata3,data)
-            class_probar.visibility= View.GONE
+            class_probar.visibility = View.VISIBLE
+            dataList(listdata3, data)
+            class_probar.visibility = View.GONE
 
             data.close()
 
-        })
+        }
 
-        listView3.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
+        listView3.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             listAdapte4.clearItem()
             listAdapte5.clearItem()
             listAdapte6.clearItem()
             list3position = position
 
-            var biotopeClass:BiotopeClass = listAdapte3.getItem(position)
+            var biotopeClass: BiotopeClass = listAdapte3.getItem(position)
 
-            if(biotopeClass.smallcategory.equals("조림지") || biotopeClass.smallcategory.equals("이차림") || biotopeClass.smallcategory.equals("자연림")
-                    || biotopeClass.smallcategory.equals("하천림")){
+            if (biotopeClass.smallcategory.equals("조림지") || biotopeClass.smallcategory.equals("이차림") || biotopeClass.smallcategory.equals("자연림")
+                    || biotopeClass.smallcategory.equals("하천림")) {
 
-                val dataList:Array<String> = arrayOf("categorycode","category","classcode","sign","correspondingname");
+                val dataList: Array<String> = arrayOf("categorycode", "category", "classcode", "sign", "correspondingname");
 
 
                 listAdapte3.setItemSelect(position)
 
                 listAdapte3.notifyDataSetChanged()
 
-                val item2 = Number("식재림",false)
-                val item = Number("자연림",false)
+                val item2 = Number("식재림", false)
+                val item = Number("자연림", false)
                 listAdapte4.addItem(item2)
                 listAdapte4.addItem(item)
-            }else {
+            } else {
                 listAdapte3.setItemSelect(position)
 //                var intent = Intent();
 //
@@ -253,64 +253,64 @@ class DlgBiotopeClassActivity : Activity() {
 //                finish()
             }
 
-        })
+        }
 
-        listView4.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
+        listView4.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             listAdapte5.clearItem()
             listAdapte6.clearItem()
 
             list4position = position
 
-            if (listdata5 != null){
+            if (listdata5 != null) {
                 listdata5.clear()
             }
 
             val data = listAdapte4.getItem(position)
             val name = data.COUNT
 
-            val dataList:Array<String> = arrayOf("*");
-            var numdata=  db!!.query("Vegetation",dataList,null,null,null,null,"CORRESPONDINGNAME",null);
+            val dataList: Array<String> = arrayOf("*");
+            var numdata = db!!.query("Vegetation", dataList, null, null, null, null, "CORRESPONDINGNAME", null);
 
-            class_probar.visibility= View.VISIBLE
-            class_probar.visibility= View.GONE
+            class_probar.visibility = View.VISIBLE
+            class_probar.visibility = View.GONE
 
             val search = "식재림"
 
             copylistdata3.addAll(listdata5)
-            if (name == "식재림"){
+            if (name == "식재림") {
                 println("nick------biotope -- $name")
-                numdata=  db!!.query("Vegetation",dataList,"CATEGORY == '$search'",null,null,null,"CORRESPONDINGNAME",null);
+                numdata = db!!.query("Vegetation", dataList, "CATEGORY == '$search'", null, null, null, "CORRESPONDINGNAME", null);
             } else {
                 println("nick------biotope -- $name")
-                numdata=  db!!.query("Vegetation",dataList,"CATEGORY != '$search'",null,null,null,"CORRESPONDINGNAME",null);
+                numdata = db!!.query("Vegetation", dataList, "CATEGORY != '$search'", null, null, null, "CORRESPONDINGNAME", null);
             }
 
             listAdapte4.setItemSelect(position)
 
-            class_probar.visibility= View.VISIBLE
-            data3List(listdata5,numdata)
-            class_probar.visibility= View.GONE
+            class_probar.visibility = View.VISIBLE
+            data3List(listdata5, numdata)
+            class_probar.visibility = View.GONE
 
             listAdapte4.notifyDataSetChanged()
 
             numdata.close()
 
-        })
+        }
 
-        listView5.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
+        listView5.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             listAdapte6.clearItem()
 
             list4position = position
             list5position = position
 
-            val vegetation : Vegetation = listAdapte5.getItem(position)
+            val vegetation: Vegetation = listAdapte5.getItem(position)
             val cate = vegetation.CATEGORY
 
             code1 = ""
             code2 = ""
             code3 = ""
 
-            if (cate == "기타"){
+            if (cate == "기타") {
 //                var intent = Intent();
 //
 //                intent.putExtra("etc",cate)
@@ -320,15 +320,15 @@ class DlgBiotopeClassActivity : Activity() {
                 listAdapte5.setItemSelect(position)
             } else {
 
-                val dataList:Array<String> = arrayOf("COUNT");
+                val dataList: Array<String> = arrayOf("COUNT");
 
-                val numdata=  db!!.query("Number",dataList,null,null,null,null,"COUNT",null);
+                val numdata = db!!.query("Number", dataList, null, null, null, null, "COUNT", null);
 
                 listAdapte5.setItemSelect(position)
 
-                class_probar.visibility= View.VISIBLE
-                data4List(listdata6,numdata)
-                class_probar.visibility= View.GONE
+                class_probar.visibility = View.VISIBLE
+                data4List(listdata6, numdata)
+                class_probar.visibility = View.GONE
 
                 listAdapte5.notifyDataSetChanged()
 
@@ -341,22 +341,22 @@ class DlgBiotopeClassActivity : Activity() {
             }
 
 
-        })
+        }
 
-        listView6.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
+        listView6.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
 
-            val vegetation : Vegetation = listAdapte5.getItem(list4position)
-            val number:Number = listAdapte6.getItem(position)
+            val vegetation: Vegetation = listAdapte5.getItem(list4position)
+            val number: Number = listAdapte6.getItem(position)
 
             var intent = Intent();
 
-            intent.putExtra("Vegetation",vegetation)
-            intent.putExtra("Number",number)
+            intent.putExtra("Vegetation", vegetation)
+            intent.putExtra("Number", number)
 
             setResult(RESULT_OK, intent);
             finish()
 
-        })
+        }
 
         searchET.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
@@ -372,74 +372,73 @@ class DlgBiotopeClassActivity : Activity() {
         });
 
 
-
     }
 
     fun dataList(listdata: java.util.ArrayList<BiotopeClass>, data: Cursor) {
 
-        while (data.moveToNext()){
+        while (data.moveToNext()) {
 
-            var model : BiotopeClass;
+            var model: BiotopeClass;
 
-            model = BiotopeClass(data.getString(0),data.getString(1),data.getString(2),data.getString(3),false);
+            model = BiotopeClass(data.getString(0), data.getString(1), data.getString(2), data.getString(3), false);
 
             listdata.add(model)
         }
     }
 
-    fun data3List(listdata:ArrayList<Vegetation>, data: Cursor) {
+    fun data3List(listdata: ArrayList<Vegetation>, data: Cursor) {
 
-        while (data.moveToNext()){
+        while (data.moveToNext()) {
 
-            var model : Vegetation;
+            var model: Vegetation;
 
-            model = Vegetation(data.getInt(0),data.getString(1),data.getInt(2),data.getString(3),data.getString(4),false);
+            model = Vegetation(data.getInt(0), data.getString(1), data.getInt(2), data.getString(3), data.getString(4), false);
 
             listdata.add(model)
         }
 
-        var additem = Vegetation(1,"기타",1,"기타","기타",false)
+        var additem = Vegetation(1, "기타", 1, "기타", "기타", false)
         listdata.add(additem)
     }
 
-    fun data4List(listdata:ArrayList<Number>, data: Cursor) {
+    fun data4List(listdata: ArrayList<Number>, data: Cursor) {
 
-        while (data.moveToNext()){
+        while (data.moveToNext()) {
 
-            var model : Number;
+            var model: Number;
 
-            model = Number(data.getString(0),false);
+            model = Number(data.getString(0), false);
 
             listdata.add(model)
         }
     }
 
-    fun search(charText: String){
-        for(i in 0.. listdata5.size-1){
+    fun search(charText: String) {
+        for (i in 0..listdata5.size - 1) {
             listdata5.get(i).chkSelect = false
         }
 
         listdata5.clear()
 
-        if(charText.length == 0){
+        if (charText.length == 0) {
 
             listdata5.addAll(copylistdata3)
 
-        }else {
+        } else {
 
-            var names:ArrayList<String> = ArrayList<String>()
+            var names: ArrayList<String> = ArrayList<String>()
 
-            for (i in 0..copylistdata3.size-1){
+            for (i in 0..copylistdata3.size - 1) {
 
-                val name =  Utils.getString(copylistdata3.get(i).CORRESPONDINGNAME);
+                val name = Utils.getString(copylistdata3.get(i).CORRESPONDINGNAME);
 
                 names.add(name)
 
             }
 
-            for(i in 0..names.size-1){
+            for (i in 0..names.size - 1) {
 
-                if(names.get(i).toLowerCase().contains(charText)){
+                if (names.get(i).toLowerCase().contains(charText)) {
                     listdata5.add(copylistdata3.get(i))
                 }
 
@@ -458,15 +457,15 @@ class DlgBiotopeClassActivity : Activity() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 GETCODE -> {
-                    if (data!!.getStringExtra("code1") != null){
+                    if (data!!.getStringExtra("code1") != null) {
                         code1 = data!!.getStringExtra("code1")
                     }
 
-                    if (data!!.getStringExtra("code2") != null){
+                    if (data!!.getStringExtra("code2") != null) {
                         code2 = data!!.getStringExtra("code2")
                     }
 
-                    if (data!!.getStringExtra("code3") != null){
+                    if (data!!.getStringExtra("code3") != null) {
                         code3 = data!!.getStringExtra("code3")
                     }
                 }

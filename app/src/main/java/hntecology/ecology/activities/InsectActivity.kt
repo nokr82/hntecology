@@ -1,9 +1,7 @@
 package hntecology.ecology.activities
 
 import android.Manifest
-import android.app.Activity
-import android.app.AlertDialog
-import android.app.ProgressDialog
+import android.app.*
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -152,6 +150,15 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
         dbManager = DataBaseHelper(this)
 
         db = dbManager!!.createDataBase();
+
+        insectinvdtET.setOnClickListener {
+            datedlg()
+        }
+
+        insecttimeET.setOnClickListener {
+            timedlg()
+        }
+
 
    /*     var today = Utils.todayStr();
 
@@ -548,7 +555,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             insect_attribute.PRJ_NAME = prjnameET.text.toString()
 
             insect_attribute.INV_REGION = insectinvregionET.text.toString()
-            insect_attribute.INV_DT = Utils.todayStr()
+            insect_attribute.INV_DT = insectinvdtET.text.toString()
             insect_attribute.INV_PERSON = userName
 
             insect_attribute.WEATHER = insectweatherET.text.toString()
@@ -699,7 +706,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                             insect_attribute.INV_REGION = INV_REGION
                         }
 
-                        insect_attribute.INV_DT = Utils.todayStr()
+                        insect_attribute.INV_DT = insectinvdtET.text.toString()
 
                         if(insectusernameET.text == null){
                             insect_attribute.INV_PERSON = userName
@@ -1322,7 +1329,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                 insect_attribute.INV_REGION = INV_REGION
             }
 
-            insect_attribute.INV_DT = Utils.todayStr()
+            insect_attribute.INV_DT = insectinvdtET.text.toString()
 
             if(insectusernameET.text == null){
                 insect_attribute.INV_PERSON = userName
@@ -2572,6 +2579,34 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
         finish()
 
+    }
+
+
+    fun timedlg() {
+        val cal = Calendar.getInstance()
+        val dialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hour, min ->
+            var hour_s = hour.toString()
+            var min_s = min.toString()
+            if (min_s.length!=2){
+                min_s = "0"+min_s
+            }
+            if (hour_s.length!=2){
+                hour_s = "0"+hour_s
+            }
+            val msg = String.format("%s : %s", hour_s, min_s)
+            insecttimeET.text = msg
+        }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
+        dialog.show()
+    }
+
+    fun datedlg() {
+        var day = Utils.todayStr()
+        var days = day.split("-")
+        DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt()-1, days[2].toInt()).show()
+    }
+    private val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+        val msg = String.format("%d-%d-%d", year, monthOfYear+1, dayOfMonth)
+        insectinvdtET.text = msg
     }
 
 }

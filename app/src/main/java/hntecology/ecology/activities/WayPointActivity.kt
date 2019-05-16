@@ -3,6 +3,8 @@ package hntecology.ecology.activities
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -41,7 +43,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
-import java.util.ArrayList
+import java.util.*
 
 class WayPointActivity : Activity() {
 
@@ -117,6 +119,12 @@ class WayPointActivity : Activity() {
         prjnameTV.setText(PrefUtils.getStringPreference(context, "prjname"))
         prjname = PrefUtils.getStringPreference(context, "prjname")
 
+        invdtTV.setOnClickListener {
+            datedlg()
+        }
+        invtmTV.setOnClickListener {
+            timedlg()
+        }
 
         var intent: Intent = getIntent();
 
@@ -950,6 +958,34 @@ class WayPointActivity : Activity() {
                 }
             }
         }
+    }
+
+    fun timedlg() {
+        val cal = Calendar.getInstance()
+        val dialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hour, min ->
+            var hour_s = hour.toString()
+            var min_s = min.toString()
+            if (min_s.length!=2){
+                min_s = "0"+min_s
+            }
+            if (hour_s.length!=2){
+                hour_s = "0"+hour_s
+            }
+            val msg = String.format("%s : %s", hour_s, min_s)
+            invtmTV.text = msg
+        }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
+        dialog.show()
+    }
+
+
+    fun datedlg() {
+        var day = Utils.todayStr()
+        var days = day.split("-")
+        DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt()-1, days[2].toInt()).show()
+    }
+    private val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+        val msg = String.format("%d-%d-%d", year, monthOfYear+1, dayOfMonth)
+        invdtTV.text = msg
     }
 
 }

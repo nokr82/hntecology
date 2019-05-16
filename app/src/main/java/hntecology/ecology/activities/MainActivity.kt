@@ -2872,7 +2872,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 val myLayer = layerInfo.layer
 
                 val attrubuteKey = layerInfo.attrubuteKey
-
+//                val inv_tm = layerInfo.metadata
                 var intent: Intent? = null
 
                 when (myLayer) {
@@ -3330,7 +3330,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 Toast.makeText(context, "17레벨 이상까지 확대해주세요.", Toast.LENGTH_SHORT).show()
                                 return@setOnPolygonClickListener
                             }
-                        } else {
+                        }
+                        else {
                             val type = typeST.isChecked
 
                             println("type : $type")
@@ -3577,11 +3578,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 }
 
                                 if (biotopedataArray.size > 1) {
+                                    var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
                                     val intent = Intent(this, DlgDataListActivity::class.java)
                                     intent.putExtra("title", "비오톱")
                                     intent.putExtra("table", "biotopeAttribute")
                                     intent.putExtra("DlgHeight", 600f);
                                     intent.putExtra("GROP_ID", attrubuteKey)
+                                    intent.putExtra("INV_TM", INV_TM)
                                     intent.putExtra("polygonid", polygon.id)
                                     intent!!.putExtra("landuse", polygon.fillColor)
                                     intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
@@ -4045,11 +4048,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 }
 
                                 if (biotopedataArray.size > 1) {
+                                    var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
                                     val intent = Intent(this, DlgDataListActivity::class.java)
                                     intent.putExtra("title", "비오톱")
                                     intent.putExtra("table", "biotopeAttribute")
                                     intent.putExtra("DlgHeight", 600f);
                                     intent.putExtra("GROP_ID", attrubuteKey)
+                                    intent.putExtra("INV_TM", INV_TM)
                                     intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
                                     intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
                                     intent!!.putExtra("landuse", polygon.fillColor)

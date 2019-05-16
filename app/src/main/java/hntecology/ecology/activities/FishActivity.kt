@@ -3,6 +3,7 @@ package hntecology.ecology.activities
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -177,6 +178,10 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         fishinvdtET.setText(Utils.todayStr())
         fishinvpersonET.setText(userName)
+
+        fishinvdtET.setOnClickListener {
+            datedlg()
+        }
 
         window.setLayout(Utils.dpToPx(700f).toInt(), WindowManager.LayoutParams.WRAP_CONTENT);
 
@@ -2845,5 +2850,13 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         data.close()
 
     }
-
+    fun datedlg() {
+        var day = Utils.todayStr()
+        var days = day.split("-")
+        DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt()-1, days[2].toInt()).show()
+    }
+    private val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+        val msg = String.format("%d-%d-%d", year, monthOfYear+1, dayOfMonth)
+        fishinvdtET.text = msg
+    }
 }

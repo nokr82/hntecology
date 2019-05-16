@@ -3,6 +3,7 @@ package hntecology.ecology.activities
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -44,6 +45,10 @@ import io.nlopez.smartlocation.location.config.LocationAccuracy
 import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
 import kotlinx.android.synthetic.main.activity_mammalia_ex.*
+import kotlinx.android.synthetic.main.activity_mammalia_ex.confmodTV
+import kotlinx.android.synthetic.main.activity_mammalia_ex.prjnameET
+import kotlinx.android.synthetic.main.activity_mammalia_ex.resetBT
+import kotlinx.android.synthetic.main.activity_stock.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -142,6 +147,11 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
         prjname = PrefUtils.getStringPreference(context, "prjname")
 
+
+
+        maminvdtTV.setOnClickListener {
+            datedlg()
+        }
   /*      var today = Utils.todayStr();
 
         var todays = today.split("-")
@@ -528,8 +538,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             mammal_attribute.INV_REGION = maminvregionET.text.toString()
 
-            mammal_attribute.INV_DT = Utils.todayStr()
-
+            mammal_attribute.INV_DT =  maminvdtTV.text.toString()
 
             if(maminvpersonTV.text == null){
                 mammal_attribute.INV_PERSON = userName
@@ -657,7 +666,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         } else {
                             mammal_attribute.INV_REGION = INV_REGION
                         }
-                        mammal_attribute.INV_DT = Utils.todayStr()
+                        mammal_attribute.INV_DT =  maminvdtTV.text.toString()
 
                         if(maminvpersonTV.text == null){
                             mammal_attribute.INV_PERSON = userName
@@ -1251,7 +1260,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             } else {
                 mammal_attribute.INV_REGION = INV_REGION
             }
-            mammal_attribute.INV_DT = Utils.todayStr()
+            mammal_attribute.INV_DT = maminvdtTV.text.toString()
 
             if(maminvpersonTV.text == null){
                 mammal_attribute.INV_PERSON = userName
@@ -1273,7 +1282,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 mammal_attribute.NUM = mammalnumTV.text.toString().toInt()
             }
 
-            mammal_attribute.INV_TM = Utils.timeStr()
+            mammal_attribute.INV_TM = mammaltimeTV.text.toString()
 
             mammal_attribute.SPEC_NM = mamspecnmET.text.toString()
             if (mamspecnmtmp.length() >  0){
@@ -2488,6 +2497,16 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         finish()
 
+    }
+
+    fun datedlg() {
+        var day = Utils.todayStr()
+        var days = day.split("-")
+        DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt()-1, days[2].toInt()).show()
+    }
+    private val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+        val msg = String.format("%d-%d-%d", year, monthOfYear+1, dayOfMonth)
+        maminvdtTV.text = msg
     }
 
 }

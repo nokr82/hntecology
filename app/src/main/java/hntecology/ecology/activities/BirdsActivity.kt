@@ -1,9 +1,7 @@
 package hntecology.ecology.activities
 
 import android.Manifest
-import android.app.Activity
-import android.app.AlertDialog
-import android.app.ProgressDialog
+import android.app.*
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -42,6 +40,9 @@ import io.nlopez.smartlocation.location.config.LocationAccuracy
 import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
 import kotlinx.android.synthetic.main.activity_birds_ex.*
+import kotlinx.android.synthetic.main.activity_birds_ex.gpslatTV
+import kotlinx.android.synthetic.main.activity_birds_ex.gpslonTV
+import kotlinx.android.synthetic.main.activity_flora2.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -163,8 +164,13 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
         invtm = timesplit.get(0) + timesplit.get(1)
 
+        invDtTV.setOnClickListener {
+            datedlg()
+        }
 
-
+        timeTV.setOnClickListener {
+            timedlg()
+        }
 
         userName = PrefUtils.getStringPreference(context, "name");
         invPersonTV.text = userName;
@@ -622,7 +628,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                             birds_attribute.INV_REGION = INV_REGION
                         }
 
-                        birds_attribute.INV_DT = Utils.todayStr()
+                        birds_attribute.INV_DT = invDtTV.text.toString()
 
                         birds_attribute.NUM = numTV.text.toString().toInt()
 
@@ -1157,8 +1163,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             } else {
                 birds_attribute.INV_REGION = INV_REGION
             }
-
-            birds_attribute.INV_DT = Utils.todayStr()
+            birds_attribute.INV_DT = invDtTV.text.toString()
 
             birds_attribute.NUM = numTV.text.toString().toInt()
 
@@ -2235,6 +2240,18 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         addPicturesLL!!.removeAllViews()
 
     }
+    fun datedlg() {
+        var day = Utils.todayStr()
+        var days = day.split("-")
+        DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt()-1, days[2].toInt()).show()
+    }
+    private val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+        val msg = String.format("%d-%d-%d", year, monthOfYear+1, dayOfMonth)
+        invDtTV.text = msg
+    }
+
+
+
 
     fun resetPage(page : Int){
 
@@ -2500,5 +2517,23 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         s = s + i.toString() + '"';
 
         return s
+    }
+
+
+    fun timedlg() {
+        val cal = Calendar.getInstance()
+        val dialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hour, min ->
+            var hour_s = hour.toString()
+            var min_s = min.toString()
+            if (min_s.length!=2){
+                min_s = "0"+min_s
+            }
+            if (hour_s.length!=2){
+                hour_s = "0"+hour_s
+            }
+            val msg = String.format("%s : %s", hour_s, min_s)
+            timeTV.text = msg
+        }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
+        dialog.show()
     }
 }

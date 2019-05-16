@@ -3,6 +3,7 @@ package hntecology.ecology.activities
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -153,6 +154,10 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
         images_path = ArrayList();
         images = ArrayList()
         images_url = ArrayList()
+
+        florainvdvET.setOnClickListener {
+            datedlg()
+        }
 
   /*      var today = Utils.todayStr();
 
@@ -2419,4 +2424,13 @@ class FloraActivity : Activity() , OnLocationUpdatedListener{
         return s
     }
 
+    fun datedlg() {
+        var day = Utils.todayStr()
+        var days = day.split("-")
+        DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt()-1, days[2].toInt()).show()
+    }
+    private val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+        val msg = String.format("%d-%d-%d", year, monthOfYear+1, dayOfMonth)
+        florainvdvET.text = msg
+    }
 }

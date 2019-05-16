@@ -21,7 +21,6 @@ import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.*
-import kotlinx.android.synthetic.main.activity_biotope_ex.*
 import kotlinx.android.synthetic.main.activity_flora2.*
 import kotlinx.android.synthetic.main.activity_flora2.etHER_COVEET
 import kotlinx.android.synthetic.main.activity_flora2.etHER_FAMIET

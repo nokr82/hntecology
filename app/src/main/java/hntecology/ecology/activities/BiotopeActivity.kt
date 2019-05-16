@@ -78,7 +78,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 @Suppress("DEPRECATION")
-class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListener {
+class BiotopeActivity : Activity(), com.google.android.gms.location.LocationListener {
 
     private var REQUEST_LOCATION_CODE = 101
     private var mGoogleApiClient: GoogleApiClient? = null
@@ -143,9 +143,9 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
     private var db: SQLiteDatabase? = null
 
-    var landuse:String? = null
+    var landuse: String? = null
 
-    var biotope:String? = null
+    var biotope: String? = null
 
     var invtm = ""
 
@@ -156,12 +156,14 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
     var lc_type = ""
 
     var trepage = 1
+    var strepage = 1
+    var shrpage = 1
+    var herpage = 1
 
     var TreDatas: ArrayList<BioTreeData> = ArrayList<BioTreeData>()
-    var StreDatas: ArrayList<TreeData1> = ArrayList<TreeData1>()
+    var StreDatas: ArrayList<BioTreeData> = ArrayList<BioTreeData>()
     var ShrDatas: ArrayList<TreeData2> = ArrayList<TreeData2>()
     var HerDatas: ArrayList<TreeData2> = ArrayList<TreeData2>()
-
 
 
     @SuppressLint("MissingPermission")
@@ -193,7 +195,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
 
-        for (i in 1 until todays.size){
+        for (i in 1 until todays.size) {
             texttoday += todays.get(i)
         }
 
@@ -225,18 +227,13 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         tvINV_IndexTV.setText(texttoday + "1")
 
 
-
-
-
         val userName = PrefUtils.getStringPreference(context, "name");
         tvINV_PERSONTV.setText(userName)
 
-        prjnameTV.setText( PrefUtils.getStringPreference(context, "prjname"))
+        prjnameTV.setText(PrefUtils.getStringPreference(context, "prjname"))
         prjname = PrefUtils.getStringPreference(context, "prjname")
 
         etINV_DTTV.setText(Utils.todayStr())
-
-
 
 
         var time = Utils.timeStr()
@@ -273,13 +270,13 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             etGPS_LONTV.setText(log)
         }
 
-        if (intent.getStringExtra("geom") != null){
+        if (intent.getStringExtra("geom") != null) {
             geom = intent.getStringExtra("geom")
             println("---------biotopegeom $geom")
         }
 
-        if (intent.getIntExtra("landuse" ,0)!= null){
-            val color = intent.getIntExtra("landuse",0)
+        if (intent.getIntExtra("landuse", 0) != null) {
+            val color = intent.getIntExtra("landuse", 0)
 
             landuse = color.toString()
             println("landuse : $landuse")
@@ -287,21 +284,21 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         val dataList: Array<String> = arrayOf("*");
 
-        if(intent.getStringExtra("longitude") != null && intent.getStringExtra("latitude") != null){
+        if (intent.getStringExtra("longitude") != null && intent.getStringExtra("latitude") != null) {
             lat = intent.getStringExtra("latitude")
             log = intent.getStringExtra("longitude")
             try {
-                var geocoder:Geocoder = Geocoder(context);
+                var geocoder: Geocoder = Geocoder(context);
 
-                var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+                var list: List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
 
-                if(list.size > 0){
+                if (list.size > 0) {
                     System.out.println("list : " + list);
 
 //                    etINV_REGIONET.setText(list.get(0).getAddressLine(0));
                     INV_REGION = list.get(0).getAddressLine(0)
                 }
-            } catch (e:IOException) {
+            } catch (e: IOException) {
                 e.printStackTrace();
             }
 
@@ -450,11 +447,11 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     etINV_TMTV.setText(Utils.timeStr())
                 }
 
-                if (etINV_DTTV.text == null || etINV_DTTV.text == ""){
+                if (etINV_DTTV.text == null || etINV_DTTV.text == "") {
                     etINV_DTTV.setText(Utils.todayStr())
                 }
 
-                if (etINV_TMTV.text == null || etINV_TMTV.text == ""){
+                if (etINV_TMTV.text == null || etINV_TMTV.text == "") {
                     etINV_TMTV.setText(Utils.timeStr())
                 }
 
@@ -468,10 +465,10 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 if (biotope_attribute.PRJ_NAME != null && biotope_attribute.PRJ_NAME != "") {
                     prjnameTV.setText(biotope_attribute.PRJ_NAME)
                 } else {
-                    prjnameTV.setText( PrefUtils.getStringPreference(context, "prjname"))
+                    prjnameTV.setText(PrefUtils.getStringPreference(context, "prjname"))
                 }
 
-                if (biotope_attribute.LU_GR_NUM == null){
+                if (biotope_attribute.LU_GR_NUM == null) {
                     TVLU_GR_NumTV.setText("")
                 } else {
                     TVLU_GR_NumTV.setText(biotope_attribute.LU_GR_NUM)
@@ -489,11 +486,11 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     val data = db!!.query("biotopeM", dataList, "code = '" + text.get(0) + "'", null, null, null, "", null);
 
                     while (data.moveToNext()) {
-                        TVLU_GR_NumTV.setText(data.getString(1) + "("+data.getString(0)+")")
+                        TVLU_GR_NumTV.setText(data.getString(1) + "(" + data.getString(0) + ")")
                         if (TVLU_GR_NumTV.text == null) {
                             TVLU_GR_NumTV.setText("")
                         }
-                        ETLU_GR_NumET.setText(data.getString(1) + "("+data.getString(0)+")")
+                        ETLU_GR_NumET.setText(data.getString(1) + "(" + data.getString(0) + ")")
                         if (ETLU_GR_NumET.text == null) {
                             ETLU_GR_NumET.setText("")
                         }
@@ -501,7 +498,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     }
                 }
 
-                if (biotope_attribute.LC_GR_NUM != null&& biotope_attribute.LC_GR_NUM != "") {
+                if (biotope_attribute.LC_GR_NUM != null && biotope_attribute.LC_GR_NUM != "") {
 
                     var text = biotope_attribute.LC_GR_NUM!!.split("(")
 
@@ -509,11 +506,11 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                     while (data.moveToNext()) {
 
-                        TVLC_GR_NUMTV.setText(data.getString(1) + "("+data.getString(0)+")")
+                        TVLC_GR_NUMTV.setText(data.getString(1) + "(" + data.getString(0) + ")")
                         if (TVLC_GR_NUMTV.text == null) {
                             TVLC_GR_NUMTV.setText("")
                         }
-                        ETlcmGR_NumET.setText(data.getString(1)  + "("+data.getString(0)+")")
+                        ETlcmGR_NumET.setText(data.getString(1) + "(" + data.getString(0) + ")")
                         if (ETlcmGR_NumET.text == null) {
                             ETlcmGR_NumET.setText("")
                         }
@@ -532,53 +529,50 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 load_biotope(biotope_attribute)
 
 
+                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
+                var tmpfileList = tmpfiles.listFiles()
 
-                    val tmpfiles =  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images"+ File.separator +keyId+ File.separator)
-                    var tmpfileList = tmpfiles.listFiles()
 
+                if (tmpfileList != null) {
+                    for (i in 0..tmpfileList.size - 1) {
 
-                    if (tmpfileList != null) {
-                        for (i in 0..tmpfileList.size - 1) {
-
-                            val options = BitmapFactory.Options()
-                            options.inJustDecodeBounds = true
-                            options.inJustDecodeBounds = false
-                            options.inSampleSize = 1
-                            if (options.outWidth > 96) {
-                                val ws = options.outWidth / 96 + 1
-                                if (ws > options.inSampleSize) {
-                                    options.inSampleSize = ws
-                                }
+                        val options = BitmapFactory.Options()
+                        options.inJustDecodeBounds = true
+                        options.inJustDecodeBounds = false
+                        options.inSampleSize = 1
+                        if (options.outWidth > 96) {
+                            val ws = options.outWidth / 96 + 1
+                            if (ws > options.inSampleSize) {
+                                options.inSampleSize = ws
                             }
-                            if (options.outHeight > 96) {
-                                val hs = options.outHeight / 96 + 1
-                                if (hs > options.inSampleSize) {
-                                    options.inSampleSize = hs
-                                }
+                        }
+                        if (options.outHeight > 96) {
+                            val hs = options.outHeight / 96 + 1
+                            if (hs > options.inSampleSize) {
+                                options.inSampleSize = hs
                             }
+                        }
 
-                            images_path!!.add(tmpfileList.get(i).path)
-                            println("images_path --- ${images_path!!.size}")
+                        images_path!!.add(tmpfileList.get(i).path)
+                        println("images_path --- ${images_path!!.size}")
 
-                            for (j in 0..tmpfileList.size - 1) {
-                                println("invtm--------$invtm")
-                                if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "biotope/images"+ File.separator +keyId+ File.separator + biotope_attribute.INV_INDEX.toString() + "_" + invtm +"_" + (j+1) + ".png")) {
-                                    val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
-                                    val v = View.inflate(context, R.layout.item_add_image, null)
-                                    val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
-                                    val delIV = v.findViewById<View>(R.id.delIV) as ImageView
-                                    imageIV.setImageBitmap(bitmap)
-                                    delIV.setTag(i)
-                                    images!!.add(bitmap)
-                                    if (imgSeq == 0) {
-                                        addPicturesLL!!.addView(v)
-                                    }
+                        for (j in 0..tmpfileList.size - 1) {
+                            println("invtm--------$invtm")
+                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator + biotope_attribute.INV_INDEX.toString() + "_" + invtm + "_" + (j + 1) + ".png")) {
+                                val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
+                                val v = View.inflate(context, R.layout.item_add_image, null)
+                                val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                                val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+                                imageIV.setImageBitmap(bitmap)
+                                delIV.setTag(i)
+                                images!!.add(bitmap)
+                                if (imgSeq == 0) {
+                                    addPicturesLL!!.addView(v)
                                 }
                             }
                         }
                     }
-
-
+                }
 
 
             }
@@ -592,9 +586,9 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             }
 
         }
-        if(intent.getStringExtra("GROP_ID") != null){
+        if (intent.getStringExtra("GROP_ID") != null) {
 
-            var AllDatas:ArrayList<Biotope_attribute> = ArrayList<Biotope_attribute>()
+            var AllDatas: ArrayList<Biotope_attribute> = ArrayList<Biotope_attribute>()
 
             val grop_id = intent.getStringExtra("GROP_ID")
 
@@ -603,9 +597,9 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
             val data2 = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$grop_id'", null, null, null, "", null)
 
-            while(data2.moveToNext()){
+            while (data2.moveToNext()) {
 
-                val biotope_attribute= ps_biotope_attribute(data2)
+                val biotope_attribute = ps_biotope_attribute(data2)
                 // 교목층
 
                 etINV_REGIONET.setText(biotope_attribute.INV_REGION)
@@ -615,20 +609,20 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                 var dataPk = biotope_attribute.id!!.toInt()
                 var PAGE = 1
-                var SPEC =  biotope_attribute.TRE_SPEC
-                var SPEC2 =  biotope_attribute.TRE_FAMI
-                var SPEC3 =  biotope_attribute.TRE_SCIEN
-                var NS=  biotope_attribute.TRE_H_N
-                var S=  biotope_attribute.TRE_H
-                var MS=  biotope_attribute.TRE_H_X
-                var NS2=  biotope_attribute.TRE_BREA_N
-                var S2=  biotope_attribute.TRE_BREA
-                var MS2=  biotope_attribute.TRE_BREA_X
-                var PER=  biotope_attribute.TRE_COVE
+                var SPEC = biotope_attribute.TRE_SPEC
+                var SPEC2 = biotope_attribute.TRE_FAMI
+                var SPEC3 = biotope_attribute.TRE_SCIEN
+                var NS = biotope_attribute.TRE_H_N
+                var S = biotope_attribute.TRE_H
+                var MS = biotope_attribute.TRE_H_X
+                var NS2 = biotope_attribute.TRE_BREA_N
+                var S2 = biotope_attribute.TRE_BREA
+                var MS2 = biotope_attribute.TRE_BREA_X
+                var PER = biotope_attribute.TRE_COVE
 
 
-                if (SPEC!!.length > 0){
-                    val data = BioTreeData(dataPk,PAGE,SPEC,SPEC2,SPEC3,NS,S,MS,NS2,S2,MS2,PER)
+                if (SPEC!!.length > 0) {
+                    val data = BioTreeData(dataPk, PAGE, SPEC, SPEC2, SPEC3, NS, S, MS, NS2, S2, MS2, PER)
                     TreDatas.add(data)
                     etTRE_SPECET.setText(biotope_attribute.TRE_SPEC)
                     etTRE_FAMIET.setText(biotope_attribute.TRE_FAMI)
@@ -641,7 +635,81 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     max2ET.setText(biotope_attribute.TRE_BREA_X.toString())
                     etTRE_COVEET.setText(biotope_attribute.TRE_COVE.toString())
                 }
+                // 아교목층
+                val STRE_SPEC = biotope_attribute.STRE_SPEC
+                val STRE_FAMI = biotope_attribute.STRE_FAMI
+                val STRE_SCIEN = biotope_attribute.STRE_SCIEN
+                val STRE_H_N = biotope_attribute.STRE_H_N
+                val STRE_H_X = biotope_attribute.STRE_H_X
+                val STRE_H = biotope_attribute.STRE_H
+                val STRE_BRT_N = biotope_attribute.STRE_BRT_N
+                val STRE_BRT_X = biotope_attribute.STRE_BRT_X
+                val STRE_BRT = biotope_attribute.STRE_BRT
+                var PER2 = biotope_attribute.STRE_COVE
 
+                if (STRE_SPEC!!.length > 0) {
+                    val data = BioTreeData(dataPk, PAGE, SPEC, STRE_FAMI, STRE_SCIEN, STRE_H_N, STRE_H, STRE_H_X, STRE_BRT_N, STRE_BRT, STRE_BRT_X, PER2)
+                    StreDatas.add(data)
+                    etSTRE_SPECET.setText(biotope_attribute.STRE_SPEC.toString())
+                    etSTRE_FAMIET.setText(biotope_attribute.STRE_FAMI.toString())
+                    etSTRE_SCIENET.setText(biotope_attribute.STRE_SCIEN.toString())
+                    min3ET.setText(biotope_attribute.STRE_H_N.toString())
+                    etSTRE_HET.setText(biotope_attribute.STRE_H.toString())
+                    max3ET.setText(biotope_attribute.STRE_H_X.toString())
+                    min4ET.setText(biotope_attribute.STRE_BRT_N.toString())
+                    etSTRE_BREAET.setText(biotope_attribute.STRE_BRT.toString())
+                    max4ET.setText(biotope_attribute.STRE_BRT_X.toString())
+                    etSTRE_COVEET.setText(biotope_attribute.STRE_COVE.toString())
+
+                }
+
+                /*              //관목층
+
+                              val SHR_NUM = manyFloraAttribute.SHR_NUM
+                              val SHR_SPEC = manyFloraAttribute.SHR_SPEC
+                              val SHR_FAMI = manyFloraAttribute.SHR_FAMI
+                              val SHR_SCIEN = manyFloraAttribute.SHR_SCIEN
+                              val SHR_TOIL = manyFloraAttribute.SHR_TOIL
+                              val SHR_WATERWIDTH = manyFloraAttribute.SHR_WATER
+                              val SHR_UNDER = manyFloraAttribute.SHR_UNDER
+
+                              println("SHR_NUM $SHR_NUM SHR_SPEC $SHR_SPEC SHR_FAMI $SHR_FAMI SHR_SCIEN $SHR_SCIEN SHR_TOIL $SHR_TOIL")
+
+                              if (SHR_SPEC!!.length > 0 || SHR_TOIL!! != 0.0f || SHR_WATERWIDTH != 0.0f) {
+                                  shrpage = manyFloraAttribute.SHR_NUM!!
+                                  val data = TreeData2(PK, SHR_NUM, SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_TOIL.toString(), SHR_WATERWIDTH.toString(), SHR_UNDER)
+                                  ShrDatas.add(data)
+                                  shrnumTV.setText(manyFloraAttribute.SHR_NUM.toString())
+                                  etSHR_SPECET.setText(manyFloraAttribute.SHR_SPEC)
+                                  etSHR_FAMIET.setText(manyFloraAttribute.SHR_FAMI)
+                                  etSHR_SCIENET.setText(manyFloraAttribute.SHR_SCIEN)
+                                  etSHR_HET.setText(manyFloraAttribute.SHR_TOIL.toString())
+                                  etSTR_COVEET.setText(manyFloraAttribute.SHR_WATER.toString())
+                                  etSHR_UNDER.setText(manyFloraAttribute.SHR_UNDER.toString())
+                              }
+
+                              val HER_NUM = manyFloraAttribute.HER_NUM
+                              val HER_SPEC = manyFloraAttribute.HER_SPEC
+                              val HER_FAMI = manyFloraAttribute.HER_FAMI
+                              val HER_SCIEN = manyFloraAttribute.HER_SCIEN
+                              val HER_DOMIN = manyFloraAttribute.HER_DOMIN
+                              val HER_GUNDO = manyFloraAttribute.HER_GUNDO
+                              val HER_HEIGHT = manyFloraAttribute.HER_HEIGHT
+
+                              println("HER_NUM $HER_NUM HER_SPEC $HER_SPEC HER_FAMI $HER_FAMI HER_SCIEN $HER_SCIEN HER_DOMIN $HER_DOMIN")
+
+                              if (HER_SPEC!!.length > 0 || HER_DOMIN!! != 0.0f || HER_GUNDO != 0.0f) {
+                                  herpage = manyFloraAttribute.HER_NUM!!
+                                  val data = TreeData2(PK, HER_NUM, HER_SPEC, HER_FAMI, HER_SCIEN, HER_DOMIN.toString(), HER_GUNDO.toString(), HER_HEIGHT.toString())
+                                  HerDatas.add(data)
+                                  hernumTV.setText(manyFloraAttribute.HER_NUM.toString())
+                                  etHER_SPECET.setText(manyFloraAttribute.HER_SPEC)
+                                  etHER_FAMIET.setText(manyFloraAttribute.HER_FAMI)
+                                  etHER_SCIENET.setText(manyFloraAttribute.HER_SCIEN)
+                                  etHER_HET.setText(manyFloraAttribute.HER_DOMIN.toString())
+                                  etHER_COVEET.setText(manyFloraAttribute.HER_GUNDO.toString())
+                                  etHER_HEIGHT.setText(manyFloraAttribute.HER_HEIGHT.toString())
+                              }*/
 
                 AllDatas.add(biotope_attribute)
 
@@ -652,14 +720,19 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             var shrDataSize = ShrDatas.size + 1
             var herDataSize = HerDatas.size + 1
 
-            if (TreDatas.size > 0){
-                treDataSize = TreDatas.size
+            if (TreDatas.size > 0) {
                 trepage = TreDatas.size
             }
-            Log.d("데이트",TreDatas.size.toString())
+            if (StreDatas.size > 0) {
+                strepage = StreDatas.size
+            }
+
 
             trepageTV.setText(trepage.toString())
             trerightpageTV.setText(treDataSize.toString())
+
+            strepageTV.setText(strepage.toString())
+            strerightpageTV.setText(streDataSize.toString())
 
             data2.close()
         }
@@ -733,7 +806,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         btn_biotopCancle1.setOnClickListener {
 
-            if (intent.getSerializableExtra("biotopedata") == null){
+            if (intent.getSerializableExtra("biotopedata") == null) {
                 val builder = AlertDialog.Builder(context)
                 builder.setMessage("작성을 취소하시겠습니까?").setCancelable(false)
                         .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
@@ -746,7 +819,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                             val data2 = db.query("biotopeAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
-                            var dataArray:ArrayList<Biotope_attribute> = ArrayList<Biotope_attribute>()
+                            var dataArray: ArrayList<Biotope_attribute> = ArrayList<Biotope_attribute>()
 
                             while (data2.moveToNext()) {
 
@@ -756,25 +829,25 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                             }
 
-                            if (dataArray.size == 0 ){
+                            if (dataArray.size == 0) {
                                 var intent = Intent()
                                 intent.putExtra("polygonid", polygonid)
                                 setResult(RESULT_OK, intent);
 
-                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images"+ File.separator +keyId+ File.separator)
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
                                 val pathdir = path.listFiles()
 
                                 if (pathdir != null) {
 
                                     val deletedir = path.listFiles()
                                     println("deletedir.size ${deletedir.size}")
-                                    if (path.isDirectory){
-                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images"+ File.separator +keyId+ File.separator)
+                                    if (path.isDirectory) {
+                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
                                         path.deleteRecursively()
                                     }
                                 } else {
-                                    if (path.isDirectory){
-                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images"+ File.separator +keyId+ File.separator)
+                                    if (path.isDirectory) {
+                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
                                         path.deleteRecursively()
                                     }
                                 }
@@ -786,7 +859,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
                 val alert = builder.create()
                 alert.show()
-            }else {
+            } else {
                 finish()
             }
         }
@@ -794,14 +867,14 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         //sqlite 저장.
         btn_biotopSave1.setOnClickListener {
 
-            if(TreDatas.size > 0 || StreDatas.size > 0 || ShrDatas.size > 0 || HerDatas.size > 0){
+            if (TreDatas.size > 0 || StreDatas.size > 0 || ShrDatas.size > 0 || HerDatas.size > 0) {
                 val builder = AlertDialog.Builder(context)
                 builder.setMessage("저장하시겠습니까 ?").setCancelable(false)
                         .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
                             dialog.cancel()
 
-                            var biotope_attribute=null_biotope_attribute()
+                            var biotope_attribute = null_biotope_attribute()
 
                             addbiotope(biotope_attribute)
 
@@ -849,25 +922,25 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             }
 
                             println("delete-------------------- $keyId")
-                            dbManager!!.delete_biotope_attribute(biotope_attribute,keyId)
+                            dbManager!!.delete_biotope_attribute(biotope_attribute, keyId)
 
                             var treChk = false
 
-                            for (i in 0 until  TreDatas.size){
-                                if (TreDatas.get(i).PAGE == trepage){
+                            for (i in 0 until TreDatas.size) {
+                                if (TreDatas.get(i).PAGE == trepage) {
                                     treChk = true
                                 }
                             }
 
-                            if (treChk == false){
+                            if (treChk == false) {
 
-                                var tredata = BioTreeData(-1 , trepage, spec, fami, scien, NS, S, MS, NS2, S2, MS2,PER)
+                                var tredata = BioTreeData(-1, trepage, spec, fami, scien, NS, S, MS, NS2, S2, MS2, PER)
 
                                 TreDatas.add(tredata)
                             } else {
-                                for (i in 0 until TreDatas.size){
+                                for (i in 0 until TreDatas.size) {
 
-                                    if (TreDatas.get(i).PAGE == trepage){
+                                    if (TreDatas.get(i).PAGE == trepage) {
 
                                         TreDatas.get(i).SPEC = spec
                                         TreDatas.get(i).SPEC2 = fami
@@ -888,7 +961,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             biotope_attribute.GEOM = geom
 
                             var MaxLength = 0
-                            var TreDataSize  = TreDatas.size
+                            var TreDataSize = TreDatas.size
                             var StreDataSize = StreDatas.size
                             var ShrDataSize = ShrDatas.size
                             var HerDataSize = HerDatas.size
@@ -896,9 +969,17 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             println("TreDataSize : $TreDataSize StreDataSize $StreDataSize ShrDataSize : $ShrDataSize HerDataSize : $HerDataSize ")
 
                             MaxLength = TreDatas.size
+                            if (MaxLength < StreDatas.size) {
+                                MaxLength = StreDatas.size
+                            }
+                            if (MaxLength < ShrDatas.size) {
+                                MaxLength = ShrDatas.size
+                            }
 
-
-                            for(i in 0..MaxLength-1) {
+                            if (MaxLength < HerDatas.size) {
+                                MaxLength = HerDatas.size
+                            }
+                            for (i in 0..MaxLength - 1) {
                                 var biotope_attribute = null_biotope_attribute()
 
                                 keyId = intent.getStringExtra("GROP_ID")
@@ -906,7 +987,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                 println("insertkeyid $keyId")
 
                                 biotope_attribute.GROP_ID = keyId
-                                if (tvINV_PERSONTV.length() > 0){
+                                if (tvINV_PERSONTV.length() > 0) {
                                     biotope_attribute.INV_REGION = tvINV_PERSONTV.text.toString();
                                 } else {
                                     biotope_attribute.INV_REGION = INV_REGION
@@ -929,36 +1010,63 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                     if (i > TreDataSize - 1) {
                                         biotope_attribute.TRE_SPEC = ""
                                         biotope_attribute.TRE_FAMI = ""
-                                        biotope_attribute.TRE_SCIEN =""
+                                        biotope_attribute.TRE_SCIEN = ""
                                         biotope_attribute.TRE_H_N = 0.0f
-                                        biotope_attribute.TRE_H =    0.0f
-                                        biotope_attribute.TRE_H_X =0.0f
+                                        biotope_attribute.TRE_H = 0.0f
+                                        biotope_attribute.TRE_H_X = 0.0f
                                         biotope_attribute.TRE_BREA_N = 0.0f
-                                        biotope_attribute.TRE_BREA =0.0f
-                                        biotope_attribute.TRE_BREA_X =  0.0f
-                                        biotope_attribute.TRE_COVE =    0.0f
+                                        biotope_attribute.TRE_BREA = 0.0f
+                                        biotope_attribute.TRE_BREA_X = 0.0f
+                                        biotope_attribute.TRE_COVE = 0.0f
                                     }
 
-                                    if (i <= TreDataSize - 1){
+                                    if (i <= TreDataSize - 1) {
                                         biotope_attribute.TRE_SPEC = TreDatas.get(i).SPEC
                                         biotope_attribute.TRE_FAMI = TreDatas.get(i).SPEC2
-                                        biotope_attribute.TRE_SCIEN =TreDatas.get(i).SPEC3
+                                        biotope_attribute.TRE_SCIEN = TreDatas.get(i).SPEC3
                                         biotope_attribute.TRE_H_N = TreDatas.get(i).NS
-                                        biotope_attribute.TRE_H =    TreDatas.get(i).S
+                                        biotope_attribute.TRE_H = TreDatas.get(i).S
                                         biotope_attribute.TRE_H_X = TreDatas.get(i).MS
-                                        biotope_attribute.TRE_BREA_N =  TreDatas.get(i).NS2
+                                        biotope_attribute.TRE_BREA_N = TreDatas.get(i).NS2
                                         biotope_attribute.TRE_BREA = TreDatas.get(i).S2
-                                        biotope_attribute.TRE_BREA_X =  TreDatas.get(i).MS2
-                                        biotope_attribute.TRE_COVE =     TreDatas.get(i).PER
+                                        biotope_attribute.TRE_BREA_X = TreDatas.get(i).MS2
+                                        biotope_attribute.TRE_COVE = TreDatas.get(i).PER
 
 
                                     }
                                 }
 
-                                biotope_attribute.GEOM =geom
+                                if (StreDatas != null && StreDataSize > 0) {
+                                    if (i > StreDataSize - 1) {
+                                        biotope_attribute.STRE_SPEC = ""
+                                        biotope_attribute.STRE_FAMI = ""
+                                        biotope_attribute.STRE_SCIEN = ""
+                                        biotope_attribute.STRE_H_N = 0.0f
+                                        biotope_attribute.STRE_H = 0.0f
+                                        biotope_attribute.STRE_H_X = 0.0f
+                                        biotope_attribute.STRE_BRT_N = 0.0f
+                                        biotope_attribute.STRE_BRT = 0.0f
+                                        biotope_attribute.STRE_BRT_X = 0.0f
+                                        biotope_attribute.STRE_COVE = 0.0f
+                                    }
+
+                                    if (i <= StreDataSize - 1) {
+                                        biotope_attribute.STRE_SPEC = StreDatas.get(i).SPEC
+                                        biotope_attribute.STRE_FAMI = StreDatas.get(i).SPEC2
+                                        biotope_attribute.STRE_SCIEN = StreDatas.get(i).SPEC3
+                                        biotope_attribute.STRE_H_N = StreDatas.get(i).NS
+                                        biotope_attribute.STRE_H = StreDatas.get(i).S
+                                        biotope_attribute.STRE_H_X = StreDatas.get(i).MS
+                                        biotope_attribute.STRE_BRT_N = StreDatas.get(i).NS2
+                                        biotope_attribute.STRE_BRT = StreDatas.get(i).S2
+                                        biotope_attribute.STRE_BRT_X = StreDatas.get(i).MS2
+                                        biotope_attribute.STRE_COVE = StreDatas.get(i).PER
+                                    }
+                                }
+
+                                biotope_attribute.GEOM = geom
 
                                 dbManager!!.insertbiotope_attribute(biotope_attribute);
-                                Log.d("찌즈", TreDatas.size.toString())
                                 println("insert-------22222")
                             }
                             var intent = Intent()
@@ -973,14 +1081,14 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
                 val alert = builder.create()
                 alert.show()
-            }else{
+            } else {
                 val builder = AlertDialog.Builder(context)
                 builder.setMessage("저장하시겠습니까 ?").setCancelable(false)
                         .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
                             dialog.cancel()
 
-                            var biotope_attribute=null_biotope_attribute()
+                            var biotope_attribute = null_biotope_attribute()
 
                             addbiotope(biotope_attribute)
 
@@ -1001,29 +1109,155 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             }
 
 
-
-
         }
         btn_biotopAdd.setOnClickListener {
-            var biotope_attribute=null_biotope_attribute()
+            var biotope_attribute = null_biotope_attribute()
 
             addbiotope(biotope_attribute)
 
 
         }
+        strerightTV.setOnClickListener {
+            AddStreFlora()
+        }
+        streleftTV.setOnClickListener {
+            var division = false
+            for (i in 0 until StreDatas.size) {
+                if (strepage == StreDatas.get(i).PAGE) {
+                    division = true
+                }
+            }
+
+            if (division == false) {
+                var spec = etSTRE_SPECET.text.toString()
+
+                val fami = etSTRE_FAMIET.text.toString()
+                val scien = etSTRE_SCIENET.text.toString()
+
+                var NS: Float = 0.0F
+
+                if (min3ET.text.isNotEmpty()) {
+                    NS = min3ET.text.toString().toFloat()
+                }
+                var S: Float = 0.0F
+
+                if (etSTRE_HET.text.isNotEmpty()) {
+                    S = etSTRE_HET.text.toString().toFloat()
+                }
+                var MS: Float = 0.0F
+
+                if (max3ET.text.isNotEmpty()) {
+                    MS = max3ET.text.toString().toFloat()
+                }
+
+                var NS2: Float = 0.0F
+
+                if (min4ET.text.isNotEmpty()) {
+                    NS2 = min4ET.text.toString().toFloat()
+                }
+
+                var S2: Float = 0.0F
+
+                if (etSTRE_BREAET.text.isNotEmpty()) {
+                    S2 = etSTRE_BREAET.text.toString().toFloat()
+                }
+                var MS2: Float = 0.0F
+                if (max4ET.text.isNotEmpty()) {
+                    MS2 = max4ET.text.toString().toFloat()
+                }
+
+                var PER: Float = 0.0F
+                if (etSTRE_COVEET.text.isNotEmpty()) {
+                    PER = etSTRE_COVEET.text.toString().toFloat()
+                }
+
+                var stredata = BioTreeData(-1, trepage, spec, fami, scien, NS, S, MS, NS2, S2, MS2, PER)
+
+                StreDatas.add(stredata)
+            }
+
+            if (strepage > 1) {
+
+                etSTRE_SPECET.visibility = View.VISIBLE
+
+                for (i in 0 until StreDatas.size) {
+                    if (strepage == StreDatas.get(i).PAGE) {
+                        StreDatas.get(i).SPEC = etSTRE_SPECET.text.toString()
+
+                        StreDatas.get(i).SPEC2 = etSTRE_FAMIET.text.toString()
+                        StreDatas.get(i).SPEC3 = etSTRE_SCIENET.text.toString()
+
+                        if (min3ET.text.isNotEmpty()) {
+                            StreDatas.get(i).NS = min3ET.text.toString().toFloat()
+                        }
+
+                        if (etSTRE_HET.text.isNotEmpty()) {
+                            StreDatas.get(i).S = etSTRE_HET.text.toString().toFloat()
+                        }
+
+                        if (max3ET.text.isNotEmpty()) {
+                            StreDatas.get(i).MS = max3ET.text.toString().toFloat()
+                        }
+
+
+                        if (min4ET.text.isNotEmpty()) {
+                            StreDatas.get(i).NS2 = min4ET.text.toString().toFloat()
+                        }
+
+
+                        if (etSTRE_BREAET.text.isNotEmpty()) {
+                            StreDatas.get(i).S2 = etSTRE_BREAET.text.toString().toFloat()
+                        }
+
+                        if (max4ET.text.isNotEmpty()) {
+                            StreDatas.get(i).MS2 = max4ET.text.toString().toFloat()
+                        }
+
+                        if (etSTRE_COVEET.text.isNotEmpty()) {
+                            StreDatas.get(i).PER = etSTRE_COVEET.text.toString().toFloat()
+                        }
+
+                    }
+                }
+
+                strepage = strepage - 1
+                for (i in 0..StreDatas.size - 1) {
+                    if (strepage == i) {
+                        val data = StreDatas.get(i)
+
+                        etSTRE_SPECET.setText(data.SPEC)
+                        etSTRE_FAMIET.setText(data.SPEC2)
+                        etSTRE_SCIENET.setText(data.SPEC3)
+                        min3ET.setText(data.NS.toString())
+                        etSTRE_HET.setText(data.S.toString())
+                        max3ET.setText(data.MS.toString())
+                        min4ET.setText(data.NS2.toString())
+                        etSTRE_BREAET.setText(data.S2.toString())
+                        max4ET.setText(data.MS2.toString())
+                        etSTRE_COVEET.setText(data.PER.toString())
+                        val size = strerightpageTV.text.toString().toInt()
+
+                        strepageTV.setText(strepage.toString())
+                        strerightpageTV.setText(size.toString())
+                    }
+                }
+            }
+        }
+
+
 
         trerightTV.setOnClickListener {
             AddTreFlora()
         }
         treleftTV.setOnClickListener {
             var division = false
-            for (i in 0 until TreDatas.size){
-                if (trepage == TreDatas.get(i).PAGE){
+            for (i in 0 until TreDatas.size) {
+                if (trepage == TreDatas.get(i).PAGE) {
                     division = true
                 }
             }
 
-            if (division == false){
+            if (division == false) {
                 var spec = etTRE_SPECET.text.toString()
 
                 val fami = etTRE_FAMIET.text.toString()
@@ -1066,17 +1300,17 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     PER = etTRE_COVEET.text.toString().toFloat()
                 }
 
-                var tredata = BioTreeData(-1 , trepage, spec, fami, scien, NS, S, MS, NS2, S2, MS2,PER)
+                var tredata = BioTreeData(-1, trepage, spec, fami, scien, NS, S, MS, NS2, S2, MS2, PER)
 
                 TreDatas.add(tredata)
             }
 
-            if(trepage > 1){
+            if (trepage > 1) {
 
                 etTRE_SPECET.visibility = View.VISIBLE
 
-                for (i in 0 until TreDatas.size){
-                    if (trepage == TreDatas.get(i).PAGE){
+                for (i in 0 until TreDatas.size) {
+                    if (trepage == TreDatas.get(i).PAGE) {
                         TreDatas.get(i).SPEC = etTRE_SPECET.text.toString()
 
                         TreDatas.get(i).SPEC2 = etTRE_FAMIET.text.toString()
@@ -1116,8 +1350,8 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 }
 
                 trepage = trepage - 1
-                for (i in 0..TreDatas.size-1){
-                    if(trepage == i){
+                for (i in 0..TreDatas.size - 1) {
+                    if (trepage == i) {
                         val data = TreDatas.get(i)
 
                         etTRE_SPECET.setText(data.SPEC)
@@ -1148,7 +1382,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
                             dialog.cancel()
-                            var biotope_attribute=null_biotope_attribute()
+                            var biotope_attribute = null_biotope_attribute()
 
                             if (pk != null) {
                                 val data2 = db!!.query("biotopeAttribute", dataList, "id = '$pk'", null, null, null, "", null)
@@ -1157,7 +1391,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                     val biotope_attribute = ps_biotope_attribute(data2)
                                 }
 
-                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images"+ File.separator +keyId+ File.separator)
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
 //                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/biotope/images/")
                                 val pathdir = path.listFiles()
 
@@ -1166,7 +1400,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                                         for (j in 0..pathdir.size - 1) {
 
-                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "biotope/images"+ File.separator +keyId+ File.separator + biotope_attribute.INV_INDEX.toString() + "_" + invtm +"_" + (j+1) + ".png")) {
+                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator + biotope_attribute.INV_INDEX.toString() + "_" + invtm + "_" + (j + 1) + ".png")) {
 //                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/biotope/images/" +  biotope_attribute.INV_INDEX + "_" + biotope_attribute.INV_TM +"_" + (j+1) + ".png")) {
 
                                                 pathdir.get(i).canonicalFile.delete()
@@ -1180,13 +1414,13 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                                     val deletedir = path.listFiles()
                                     println("deletedir.size ${deletedir.size}")
-                                    if (path.isDirectory){
-                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images"+ File.separator +keyId+ File.separator)
+                                    if (path.isDirectory) {
+                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
                                         path.deleteRecursively()
                                     }
                                 } else {
-                                    if (path.isDirectory){
-                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images"+ File.separator +keyId+ File.separator)
+                                    if (path.isDirectory) {
+                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
                                         path.deleteRecursively()
                                     }
                                 }
@@ -1214,20 +1448,20 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                                         var dataPk = biotope_attribute.id!!.toInt()
                                         var PAGE = 1
-                                        var SPEC =  biotope_attribute.TRE_SPEC
-                                        var SPEC2 =  biotope_attribute.TRE_FAMI
-                                        var SPEC3 =  biotope_attribute.TRE_SCIEN
-                                        var NS=  biotope_attribute.TRE_H_N
-                                        var S=  biotope_attribute.TRE_H
-                                        var MS=  biotope_attribute.TRE_H_X
-                                        var NS2=  biotope_attribute.TRE_BREA_N
-                                        var S2=  biotope_attribute.TRE_BREA
-                                        var MS2=  biotope_attribute.TRE_BREA_X
-                                        var PER=  biotope_attribute.TRE_COVE
+                                        var SPEC = biotope_attribute.TRE_SPEC
+                                        var SPEC2 = biotope_attribute.TRE_FAMI
+                                        var SPEC3 = biotope_attribute.TRE_SCIEN
+                                        var NS = biotope_attribute.TRE_H_N
+                                        var S = biotope_attribute.TRE_H
+                                        var MS = biotope_attribute.TRE_H_X
+                                        var NS2 = biotope_attribute.TRE_BREA_N
+                                        var S2 = biotope_attribute.TRE_BREA
+                                        var MS2 = biotope_attribute.TRE_BREA_X
+                                        var PER = biotope_attribute.TRE_COVE
 
 
-                                        if (SPEC!!.length > 0 ){
-                                            val data = BioTreeData(dataPk,PAGE,SPEC,SPEC2,SPEC3,NS,S,MS,NS2,S2,MS2,PER)
+                                        if (SPEC!!.length > 0) {
+                                            val data = BioTreeData(dataPk, PAGE, SPEC, SPEC2, SPEC3, NS, S, MS, NS2, S2, MS2, PER)
                                             TreDatas.add(data)
                                             println("TRE_NUM ADD ${data.PAGE}")
                                             trepage = 1
@@ -1248,7 +1482,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                                     var treDataSize = TreDatas.size + 1
 
-                                    if (TreDatas.size > 0){
+                                    if (TreDatas.size > 0) {
                                         treDataSize = TreDatas.size
                                         trepage = TreDatas.size
                                     }
@@ -1302,7 +1536,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                             dialog.cancel()
 
-                            val biotope_attribute=null_biotope_attribute()
+                            val biotope_attribute = null_biotope_attribute()
 
                             if (intent.getStringExtra("id") != null) {
                                 val id = intent.getStringExtra("id")
@@ -1327,9 +1561,9 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                                 var intent = Intent()
 
-                                if(dataArray.size > 1) {
+                                if (dataArray.size > 1) {
 
-                                    dbManager!!.deletebiotope_attribute(biotope_attribute,pk)
+                                    dbManager!!.deletebiotope_attribute(biotope_attribute, pk)
 
                                     intent.putExtra("reset", 100)
 
@@ -1338,7 +1572,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                                 }
 
-                                if(dataArray.size == 1){
+                                if (dataArray.size == 1) {
 
                                     var intent = Intent()
 
@@ -1403,7 +1637,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
 
 
-        if (intent.getSerializableExtra("biotopedata") != null){
+        if (intent.getSerializableExtra("biotopedata") != null) {
 
             var biotope_attribute = intent.getSerializableExtra("biotopedata") as Biotope_attribute
 
@@ -1458,28 +1692,28 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
             }
 
             try {
-                var geocoder:Geocoder = Geocoder(context);
+                var geocoder: Geocoder = Geocoder(context);
 
-                var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+                var list: List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
 
-                if(list.isNotEmpty()){
+                if (list.isNotEmpty()) {
                     System.out.println("list : " + list);
 
                     etINV_REGIONET.setText(list.get(0).getAddressLine(0));
                     INV_REGION = list.get(0).getAddressLine(0)
                 }
-            } catch (e:IOException) {
+            } catch (e: IOException) {
                 e.printStackTrace();
             }
 
             etINV_DTTV.setText(biotope_attribute.INV_DT)
             etINV_TMTV.setText(biotope_attribute.INV_TM)
 
-            if (etINV_DTTV.text == null || etINV_DTTV.text == ""){
+            if (etINV_DTTV.text == null || etINV_DTTV.text == "") {
                 etINV_DTTV.setText(Utils.todayStr())
             }
 
-            if (etINV_TMTV.text == null || etINV_TMTV.text == ""){
+            if (etINV_TMTV.text == null || etINV_TMTV.text == "") {
                 etINV_TMTV.setText(Utils.timeStr())
             }
             tvINV_IndexTV.setText(biotope_attribute.INV_INDEX.toString())
@@ -1506,11 +1740,11 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 val data = db!!.query("biotopeM", dataList, "code = '" + text.get(0) + "'", null, null, null, "", null);
 
                 while (data.moveToNext()) {
-                    TVLU_GR_NumTV.setText(data.getString(1) + "("+data.getString(0)+")")
+                    TVLU_GR_NumTV.setText(data.getString(1) + "(" + data.getString(0) + ")")
                     if (TVLU_GR_NumTV.text == null) {
                         TVLU_GR_NumTV.setText("")
                     }
-                    ETLU_GR_NumET.setText(data.getString(1) + "("+data.getString(0)+")")
+                    ETLU_GR_NumET.setText(data.getString(1) + "(" + data.getString(0) + ")")
                     if (ETLU_GR_NumET.text == null) {
                         ETLU_GR_NumET.setText("")
                     }
@@ -1518,7 +1752,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 }
             }
 
-            if (biotope_attribute.LC_GR_NUM != null&& biotope_attribute.LC_GR_NUM != "") {
+            if (biotope_attribute.LC_GR_NUM != null && biotope_attribute.LC_GR_NUM != "") {
 
 
                 var text = biotope_attribute.LC_GR_NUM!!.split("(")
@@ -1527,11 +1761,11 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                 while (data.moveToNext()) {
 
-                    TVLC_GR_NUMTV.setText(data.getString(1) + "("+data.getString(0)+")")
+                    TVLC_GR_NUMTV.setText(data.getString(1) + "(" + data.getString(0) + ")")
                     if (TVLC_GR_NUMTV.text == null) {
                         TVLC_GR_NUMTV.setText("")
                     }
-                    ETlcmGR_NumET.setText(data.getString(1)  + "("+data.getString(0)+")")
+                    ETlcmGR_NumET.setText(data.getString(1) + "(" + data.getString(0) + ")")
                     if (ETlcmGR_NumET.text == null) {
                         ETlcmGR_NumET.setText("")
                     }
@@ -1552,7 +1786,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         }
     }
 
-    fun AddTreFlora(){
+    fun AddTreFlora() {
 
         var spec = etTRE_SPECET.text.toString()
 
@@ -1608,13 +1842,13 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         var division = false
 
-        for (i in 0 until TreDatas.size){
-            if (TreDatas.get(i).PAGE == trepage){
+        for (i in 0 until TreDatas.size) {
+            if (TreDatas.get(i).PAGE == trepage) {
                 division = true
             }
         }
 
-        if (spec == "" ){
+        if (spec == "") {
             Toast.makeText(context, "빈칸은 입력하실수 없습니다..", Toast.LENGTH_SHORT).show()
         } else {
 
@@ -1624,7 +1858,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                     if (trepage > 1) {
 
-                        var tredata = BioTreeData(-1 , trepage, spec, fami, scien, NS, S, MS, NS2, S2, MS2,PER)
+                        var tredata = BioTreeData(-1, trepage, spec, fami, scien, NS, S, MS, NS2, S2, MS2, PER)
 
                         TreDatas.add(tredata)
 
@@ -1635,12 +1869,12 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                         trepageTV.setText(page.toString())
                         trerightpageTV.setText(size.toString())
-                    clear_tre()
+                        clear_tre()
                     }
 
                     if (trepage == 1) {
 
-                        var tredata = BioTreeData(-1 , trepage, spec, fami, scien, NS, S, MS, NS2, S2, MS2,PER)
+                        var tredata = BioTreeData(-1, trepage, spec, fami, scien, NS, S, MS, NS2, S2, MS2, PER)
 
                         TreDatas.add(tredata)
 
@@ -1651,7 +1885,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                         trepageTV.setText(page.toString())
                         trerightpageTV.setText(size.toString())
-                      clear_tre()
+                        clear_tre()
 
                     }
                 } else {
@@ -1707,7 +1941,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                         trepageTV.setText(page.toString())
                         trerightpageTV.setText(size.toString())
-                      clear_tre()
+                        clear_tre()
 
                     }
                 }
@@ -1768,7 +2002,224 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         }
 
     }
-    fun clear_tre(){
+
+    fun AddStreFlora() {
+
+        var spec = etSTRE_SPECET.text.toString()
+
+        val fami = etSTRE_FAMIET.text.toString()
+        val scien = etSTRE_SCIENET.text.toString()
+
+        var NS: Float = 0.0F
+
+        if (min3ET.text.isNotEmpty()) {
+            NS = min3ET.text.toString().toFloat()
+        }
+        var S: Float = 0.0F
+
+        if (etSTRE_HET.text.isNotEmpty()) {
+            S = etSTRE_HET.text.toString().toFloat()
+        }
+        var MS: Float = 0.0F
+
+        if (max3ET.text.isNotEmpty()) {
+            MS = max3ET.text.toString().toFloat()
+        }
+
+        var NS2: Float = 0.0F
+
+        if (min4ET.text.isNotEmpty()) {
+            NS2 = min4ET.text.toString().toFloat()
+        }
+
+        var S2: Float = 0.0F
+
+        if (etSTRE_BREAET.text.isNotEmpty()) {
+            S2 = etSTRE_BREAET.text.toString().toFloat()
+        }
+        var MS2: Float = 0.0F
+        if (max4ET.text.isNotEmpty()) {
+            MS2 = max4ET.text.toString().toFloat()
+        }
+
+        var PER: Float = 0.0F
+        if (etSTRE_COVEET.text.isNotEmpty()) {
+            PER = etSTRE_COVEET.text.toString().toFloat()
+        }
+
+
+        var chkData = false
+
+        var equlas = false
+
+        println("trepage $trepage")
+
+        val maxsize = strerightpageTV.text.toString().toInt()
+
+        var division = false
+
+        for (i in 0 until StreDatas.size) {
+            if (StreDatas.get(i).PAGE == strepage) {
+                division = true
+            }
+        }
+
+        if (spec == "") {
+            Toast.makeText(context, "빈칸은 입력하실수 없습니다..", Toast.LENGTH_SHORT).show()
+        } else {
+
+            if (strepage == maxsize) {
+
+                if (division == false) {
+
+                    if (strepage > 1) {
+
+                        var stredata = BioTreeData(-1, strepage, spec, fami, scien, NS, S, MS, NS2, S2, MS2, PER)
+
+                        StreDatas.add(stredata)
+
+                        strepage = strepage + 1
+
+                        val page = strepage
+                        val size = strerightpageTV.text.toString().toInt() + 1
+
+                        strepageTV.setText(page.toString())
+                        strerightpageTV.setText(size.toString())
+                        clear_stre()
+                    }
+
+                    if (strepage == 1) {
+
+                        var stredata = BioTreeData(-1, trepage, spec, fami, scien, NS, S, MS, NS2, S2, MS2, PER)
+
+                        StreDatas.add(stredata)
+
+                        strepage = strepage + 1
+
+                        val page = strepage
+                        val size = strerightpageTV.text.toString().toInt() + 1
+
+                        strepageTV.setText(page.toString())
+                        strerightpageTV.setText(size.toString())
+                        clear_stre()
+
+                    }
+                } else {
+
+                    if (strepage > 1) {
+
+                        for (i in 0 until StreDatas.size) {
+                            if (StreDatas.get(i).PAGE == strepage) {
+                                StreDatas.get(i).SPEC = spec
+                                StreDatas.get(i).SPEC2 = fami
+                                StreDatas.get(i).SPEC3 = scien
+                                StreDatas.get(i).NS = NS
+                                StreDatas.get(i).S = S
+                                StreDatas.get(i).MS = MS
+                                StreDatas.get(i).NS2 = NS2
+                                StreDatas.get(i).S2 = S2
+                                StreDatas.get(i).MS2 = MS2
+                                StreDatas.get(i).PER = PER
+                            }
+                        }
+
+                        strepage = strepage + 1
+
+                        val page = strepage
+                        val size = strerightpageTV.text.toString().toInt() + 1
+
+                        strepageTV.setText(page.toString())
+                        strerightpageTV.setText(size.toString())
+                        clear_stre()
+                    }
+
+                    if (strepage == 1) {
+
+                        for (i in 0 until StreDatas.size) {
+                            if (StreDatas.get(i).PAGE == strepage) {
+                                StreDatas.get(i).SPEC = spec
+                                StreDatas.get(i).SPEC2 = fami
+                                StreDatas.get(i).SPEC3 = scien
+                                StreDatas.get(i).NS = NS
+                                StreDatas.get(i).S = S
+                                StreDatas.get(i).MS = MS
+                                StreDatas.get(i).NS2 = NS2
+                                StreDatas.get(i).S2 = S2
+                                StreDatas.get(i).MS2 = MS2
+                                StreDatas.get(i).PER = PER
+                            }
+                        }
+
+                        strepage = strepage + 1
+
+                        val page = strepage
+                        val size = strerightpageTV.text.toString().toInt() + 1
+
+                        strepageTV.setText(page.toString())
+                        strerightpageTV.setText(size.toString())
+                        clear_stre()
+
+                    }
+                }
+            }
+            if (strepage < maxsize) {
+
+                for (i in 0 until StreDatas.size) {
+                    if (StreDatas.get(i).PAGE == strepage) {
+                        StreDatas.get(i).SPEC = spec
+                        StreDatas.get(i).SPEC2 = fami
+                        StreDatas.get(i).SPEC3 = scien
+                        StreDatas.get(i).NS = NS
+                        StreDatas.get(i).S = S
+                        StreDatas.get(i).MS = MS
+                        StreDatas.get(i).NS2 = NS2
+                        StreDatas.get(i).S2 = S2
+                        StreDatas.get(i).MS2 = MS2
+                        StreDatas.get(i).PER = PER
+                    }
+                }
+
+                strepage = strepage + 1
+                var chk = false
+                for (i in 0..StreDatas.size - 1) {
+                    if (strepage == StreDatas.get(i).PAGE) {
+                        chk = true
+                        val data = StreDatas.get(i)
+                        etSTRE_SPECET.setText(data.SPEC)
+                        etSTRE_FAMIET.setText(data.SPEC2)
+                        etSTRE_SCIENET.setText(data.SPEC3)
+                        min3ET.setText(data.NS.toString())
+                        etSTRE_HET.setText(data.S.toString())
+                        max3ET.setText(data.MS.toString())
+                        min4ET.setText(data.NS2.toString())
+                        etSTRE_BREAET.setText(data.S2.toString())
+                        max4ET.setText(data.MS2.toString())
+                        etSTRE_COVEET.setText(data.PER.toString())
+
+                        val page = strepage
+                        val size = strerightpageTV.text.toString().toInt()
+
+                        strepageTV.setText(page.toString())
+                        strerightpageTV.setText(size.toString())
+                    }
+                }
+
+                if (chk == false) {
+                    val page = strepage
+                    val size = strerightpageTV.text.toString().toInt() + 1
+
+                    strepageTV.setText(page.toString())
+                    strerightpageTV.setText(size.toString())
+                    clear_stre()
+                }
+            }
+
+            etSTRE_SPECET.visibility = View.VISIBLE
+        }
+
+    }
+
+    fun clear_tre() {
         etTRE_SPECET.setText("")
         etTRE_FAMIET.setText("")
         etTRE_SCIENET.setText("")
@@ -1781,6 +2232,19 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         etTRE_COVEET.setText("")
     }
 
+    fun clear_stre() {
+        etSTRE_SPECET.setText("")
+        etSTRE_FAMIET.setText("")
+        etSTRE_SCIENET.setText("")
+        min3ET.setText("")
+        etSTRE_HET.setText("")
+        max3ET.setText("")
+        min4ET.setText("")
+        etSTRE_BREAET.setText("")
+        max4ET.setText("")
+        etSTRE_COVEET.setText("")
+    }
+
 
     fun null_biotope_attribute(): Biotope_attribute {
         val biotope_attribute: Biotope_attribute = Biotope_attribute(null, null, null, null, null, null, null
@@ -1789,40 +2253,40 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 , null, null, null, null, null, null, null, null
                 , null, null, null, null, null, null, null
                 , null, null, null, null, null, null, null, null
-                , null, null, null, null, null, null, null, null,null,null,null,null
-                ,null,null ,null,null ,null,null
-                ,null,null ,null,null ,null,null,null,null)
+                , null, null, null, null, null, null, null, null, null, null, null, null
+                , null, null, null, null, null, null
+                , null, null, null, null, null, null, null, null)
         return biotope_attribute
     }
 
-    fun ps_biotope_attribute(data2:Cursor): Biotope_attribute {
-        val biotope_attribute =  Biotope_attribute(data2.getString(0), data2.getString(1), data2.getString(2), data2.getString(3), data2.getString(4), data2.getString(5), data2.getString(6), data2.getInt(7),
+    fun ps_biotope_attribute(data2: Cursor): Biotope_attribute {
+        val biotope_attribute = Biotope_attribute(data2.getString(0), data2.getString(1), data2.getString(2), data2.getString(3), data2.getString(4), data2.getString(5), data2.getString(6), data2.getInt(7),
                 data2.getString(8), data2.getFloat(9), data2.getFloat(10), data2.getString(11), data2.getString(12), data2.getString(13), data2.getFloat(14)
                 , data2.getString(15), data2.getString(16), data2.getString(17), data2.getString(18), data2.getString(19), data2.getString(20), data2.getString(21)
                 , data2.getString(22), data2.getString(23), data2.getString(24), data2.getString(25), data2.getFloat(26), data2.getFloat(27), data2.getFloat(28)
                 , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
                 , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
                 , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
-                , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53),data2.getString(54),data2.getString(55),data2.getString(56),data2.getString(57)
-                ,data2.getFloat(58),data2.getFloat(59),data2.getFloat(60),data2.getFloat(61),data2.getFloat(62),data2.getFloat(63)
-                ,data2.getFloat(64),data2.getFloat(65),data2.getFloat(66),data2.getFloat(67),data2.getFloat(68),data2.getFloat(69), data2.getString(70), data2.getFloat(71))
+                , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54), data2.getString(55), data2.getString(56), data2.getString(57)
+                , data2.getFloat(58), data2.getFloat(59), data2.getFloat(60), data2.getFloat(61), data2.getFloat(62), data2.getFloat(63)
+                , data2.getFloat(64), data2.getFloat(65), data2.getFloat(66), data2.getFloat(67), data2.getFloat(68), data2.getFloat(69), data2.getString(70), data2.getFloat(71))
         return biotope_attribute
     }
 
-    fun addbiotope(biotope_attribute: Biotope_attribute){
+    fun addbiotope(biotope_attribute: Biotope_attribute) {
         keyId = intent.getStringExtra("GROP_ID")
 
         biotope_attribute.GROP_ID = keyId
 
         val prj = prjnameTV.text.toString()
-        if (prj == prjname){
+        if (prj == prjname) {
             biotope_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
         } else {
             biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
         }
 
 
-        if (etINV_REGIONET.length() > 0){
+        if (etINV_REGIONET.length() > 0) {
             biotope_attribute.INV_REGION = etINV_REGIONET.text.toString();
         } else {
             biotope_attribute.INV_REGION = INV_REGION
@@ -1855,7 +2319,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         }
 
         biotope_attribute.LU_GR_NUM = TVLU_GR_NumTV.text.toString()
-        if (ETLU_GR_NumET.text.toString() != null && ETLU_GR_NumET.text.toString() != ""){
+        if (ETLU_GR_NumET.text.toString() != null && ETLU_GR_NumET.text.toString() != "") {
             biotope_attribute.LU_GR_NUM = ETLU_GR_NumET.text.toString()
         }
 
@@ -1974,7 +2438,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         biotope_attribute.CONF_MOD = "N"
         biotope_attribute.LANDUSE = landuse
 
-        if (biotope != null){
+        if (biotope != null) {
             biotope_attribute.LANDUSE = biotope
         }
         biotope_attribute.BIO_TYPE = bioTV.text.toString()
@@ -2049,7 +2513,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                 }
 
                 dbManager!!.updatebiotope_attribute(biotope_attribute, pk)
-                dbManager!!.updatecommonbiotope(biotope_attribute,keyId)
+                dbManager!!.updatecommonbiotope(biotope_attribute, keyId)
             }
 
 
@@ -2074,28 +2538,28 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         }
 
         var intent = Intent()
-        intent.putExtra("export",70)
+        intent.putExtra("export", 70)
         setResult(RESULT_OK, intent)
 
         btn_biotopDelete.visibility = View.GONE
 
-        if (images_path != null){
+        if (images_path != null) {
             images_path!!.clear()
         }
 
-        if (images != null){
+        if (images != null) {
             images!!.clear()
         }
 
-        if (images_url != null){
+        if (images_url != null) {
             images_url!!.clear()
         }
 
-        if (images_url_remove != null){
+        if (images_url_remove != null) {
             images_url_remove!!.clear()
         }
 
-        if (images_id != null){
+        if (images_id != null) {
             images_id!!.clear()
         }
 
@@ -2104,7 +2568,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         pk = null
     }
 
-    fun load_biotope(biotope_attribute: Biotope_attribute){
+    fun load_biotope(biotope_attribute: Biotope_attribute) {
         TVTY_MARKTV.setText(biotope_attribute.TY_MARK)
         bioTV.setText(biotope_attribute.BIO_TYPE)
         impET.setText(biotope_attribute.IMPERV.toString())
@@ -2164,7 +2628,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         geom = biotope_attribute.GEOM.toString()
 
 
-        lc_type  = biotope_attribute.LC_TY.toString()
+        lc_type = biotope_attribute.LC_TY.toString()
         if (lc_type == "P") {
             set_menu()
             lcCB.setImageResource(R.mipmap.box_check_on)
@@ -2220,14 +2684,14 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         var vegetation: Vegetation
 
-        var biotopeType : BiotopeType
+        var biotopeType: BiotopeType
 
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
 
                 SET_DATA -> {
 
-                    if(data!!.getSerializableExtra("biotopeType") != null){
+                    if (data!!.getSerializableExtra("biotopeType") != null) {
                         biotopeType = data!!.getSerializableExtra("biotopeType") as BiotopeType
                         bioTV.setText(biotopeType.CONTENT)
                     }
@@ -2242,11 +2706,11 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     //토지이용현황
                     if (biotopeModel.codeType == "biotopeM") {
 
-                       TVLU_GR_NumTV.setText(biotopeModel.code+"("+biotopeModel.name+")")
+                        TVLU_GR_NumTV.setText(biotopeModel.code + "(" + biotopeModel.name + ")")
                         if (TVLU_GR_NumTV.text == null) {
                             TVLU_GR_NumTV.setText("")
                         }
-                        ETLU_GR_NumET.setText(biotopeModel.code+"("+biotopeModel.name+")")
+                        ETLU_GR_NumET.setText(biotopeModel.code + "(" + biotopeModel.name + ")")
                         if (ETLU_GR_NumET.text == null) {
                             ETLU_GR_NumET.setText("")
                         }
@@ -2264,16 +2728,16 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         //불투수
                         if (bioModelParent.code == "A") {
 
-                            TVLC_GR_NUMTV.setText(biotopeModel.code+"("+biotopeModel.name+")")
+                            TVLC_GR_NUMTV.setText(biotopeModel.code + "(" + biotopeModel.name + ")")
                         } else if (bioModelParent.code == "B") {
 
-                            TVLC_GR_NUMTV.setText(biotopeModel.code+"("+biotopeModel.name+")")
+                            TVLC_GR_NUMTV.setText(biotopeModel.code + "(" + biotopeModel.name + ")")
                             //녹지
                         } else if (bioModelParent.code == "C") {
-                            TVLC_GR_NUMTV.setText(biotopeModel.code+"("+biotopeModel.name+")")
+                            TVLC_GR_NUMTV.setText(biotopeModel.code + "(" + biotopeModel.name + ")")
                             //수공간
                         } else if (bioModelParent.code == "D") {
-                            TVLC_GR_NUMTV.setText(biotopeModel.code+"("+biotopeModel.name+")")
+                            TVLC_GR_NUMTV.setText(biotopeModel.code + "(" + biotopeModel.name + ")")
                         }
 
                         //현존식생현황  아직 테이블 명 코드 미정
@@ -2292,7 +2756,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     var zoological = data!!.getStringExtra("zoological");
 
                     etTRE_SPECET.setText(name)
-                    if (name == "SP(미동정)"){
+                    if (name == "SP(미동정)") {
                         etTRE_SPECETLL.visibility = View.VISIBLE
                         etTRE_SPECET.visibility = View.GONE
                     }
@@ -2308,7 +2772,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     var zoological = data!!.getStringExtra("zoological");
 
                     etSTRE_SPECET.setText(name)
-                    if (name == "SP(미동정)"){
+                    if (name == "SP(미동정)") {
                         etSTRE_SPECETLL.visibility = View.VISIBLE
                         etSTRE_SPECET.visibility = View.GONE
                     }
@@ -2324,7 +2788,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     var zoological = data!!.getStringExtra("zoological");
 
                     etSHR_SPECET.setText(name)
-                    if (name == "SP(미동정)"){
+                    if (name == "SP(미동정)") {
                         etSHR_SPECETLL.visibility = View.VISIBLE
                         etSHR_SPECET.visibility = View.GONE
                     }
@@ -2340,7 +2804,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     var zoological = data!!.getStringExtra("zoological");
 
                     etHER_SPECET.setText(name)
-                    if (name == "SP(미동정)"){
+                    if (name == "SP(미동정)") {
                         etHER_SPECETLL.visibility = View.VISIBLE
                         etHER_SPECET.visibility = View.GONE
                     }
@@ -2365,7 +2829,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         if (data!!.getSerializableExtra("Number") != null) {
                             var number = data!!.getStringExtra("Number")
                             val category = vegetation.CATEGORY
-                            if (category == "기타"){
+                            if (category == "기타") {
                                 TVTY_MARKTV.setText("")
                                 ETTY_MARKET.setText("")
                                 TVTY_MARKTV.visibility = View.GONE
@@ -2375,7 +2839,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                 ETTY_MARKET.visibility = View.GONE
                                 TVTY_MARKTV.visibility = View.VISIBLE
                                 TVTY_MARKTV.setText(vegetation.SIGN)
-                                if (number != ""){
+                                if (number != "") {
                                     TVTY_MARKTV.setText(vegetation.SIGN + number)
                                 }
                             }
@@ -2383,7 +2847,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                     }
 
-                    if (data!!.getStringExtra("etc")!= null){
+                    if (data!!.getStringExtra("etc") != null) {
                         TVTY_MARKTV.setText("")
                         ETTY_MARKET.setText("")
                         TVTY_MARKTV.visibility = View.GONE
@@ -2437,7 +2901,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             time = etINV_TMTV.text.toString()
                             var timesplit = time.split(":")
                             invtm = timesplit.get(0) + timesplit.get(1)
-                            val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images"+ File.separator +keyId+ File.separator
+                            val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator
                             val outputsDir = File(outPath)
 
                             if (outputsDir.exists()) {
@@ -2452,7 +2916,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                                 val made = outputsDir.mkdirs()
 
                             }
-                            saveVitmapToFile(images!!.get(i),outPath+num + "_" + invtm+"_"+(i+1)+".png")
+                            saveVitmapToFile(images!!.get(i), outPath + num + "_" + invtm + "_" + (i + 1) + ".png")
 
                         }
                         images!!.clear()
@@ -2468,7 +2932,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         val str = result[i]
                         images_path!!.add(str);
                     }
-                    for (i in 0 until images_path!!.size){
+                    for (i in 0 until images_path!!.size) {
                         val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(i))
                         if (images!!.size == 0) {
                             images!!.add(add_file)
@@ -2492,7 +2956,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                         time = etINV_TMTV.text.toString()
                         var timesplit = time.split(":")
                         invtm = timesplit.get(0) + timesplit.get(1)
-                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images"+ File.separator +keyId+ File.separator
+                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator
                         val outputsDir = File(outPath)
 
                         if (outputsDir.exists()) {
@@ -2507,7 +2971,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                             val made = outputsDir.mkdirs()
 
                         }
-                        saveVitmapToFile(images!!.get(i),outPath+num + "_" + invtm+"_"+(i+1)+".png")
+                        saveVitmapToFile(images!!.get(i), outPath + num + "_" + invtm + "_" + (i + 1) + ".png")
 
                     }
                     images!!.clear()
@@ -2615,8 +3079,6 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
     }
 
 
-
-
     private fun imageFromGallery() {
 
         val intent1 = Intent(context, WriteAlbumActivity::class.java)
@@ -2658,14 +3120,14 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         val builder = AlertDialog.Builder(context)
         builder.setMessage("삭제하시겠습니까 ? ").setCancelable(false)
                 .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images"+ File.separator +keyId+ File.separator
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator
                     val num = tvINV_IndexTV.text.toString()
 
                     addPicturesLL!!.removeAllViews()
                     images!!.clear()
                     val tag = v.tag as Int
                     images_path!!.removeAt(tag)
-                    var file = File(outPath+num + "_" + invtm+"_"+(tag+1)+".png")
+                    var file = File(outPath + num + "_" + invtm + "_" + (tag + 1) + ".png")
                     file.delete()
 
                     for (k in images_url!!.indices) {
@@ -2855,7 +3317,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
         var num = tvINV_IndexTV.text.toString()
 
-        if (num.length > 7){
+        if (num.length > 7) {
             var textnum = num.substring(num.length - 2, num.length)
             var splitnum = num.substring(0, num.length - 2)
             var plusnum = textnum.toInt() + 1
@@ -2928,7 +3390,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
     }
 
-    fun set_menu(){
+    fun set_menu() {
         lcCB.setImageResource(R.mipmap.box_check_off)
         lc2CB.setImageResource(R.mipmap.box_check_off)
         lc3CB.setImageResource(R.mipmap.box_check_off)
@@ -2940,11 +3402,11 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
         val dialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hour, min ->
             var hour_s = hour.toString()
             var min_s = min.toString()
-            if (min_s.length!=2){
-                min_s = "0"+min_s
+            if (min_s.length != 2) {
+                min_s = "0" + min_s
             }
-            if (hour_s.length!=2){
-                hour_s = "0"+hour_s
+            if (hour_s.length != 2) {
+                hour_s = "0" + hour_s
             }
             val msg = String.format("%s : %s", hour_s, min_s)
             etINV_TMTV.text = msg
@@ -2956,16 +3418,17 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
     fun datedlg() {
         var day = Utils.todayStr()
         var days = day.split("-")
-        DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt()-1, days[2].toInt()).show()
+        DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt() - 1, days[2].toInt()).show()
     }
+
     private val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-        val msg = String.format("%d-%d-%d", year, monthOfYear+1, dayOfMonth)
+        val msg = String.format("%d-%d-%d", year, monthOfYear + 1, dayOfMonth)
         etINV_DTTV.text = msg
     }
 
     override fun onBackPressed() {
 
-        if (intent.getSerializableExtra("biotopedata") == null){
+        if (intent.getSerializableExtra("biotopedata") == null) {
             val builder = AlertDialog.Builder(context)
             builder.setMessage("작성을 취소하시겠습니까?").setCancelable(false)
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
@@ -2974,7 +3437,7 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                         val data2 = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
-                        var dataArray:ArrayList<Biotope_attribute> = ArrayList<Biotope_attribute>()
+                        var dataArray: ArrayList<Biotope_attribute> = ArrayList<Biotope_attribute>()
 
                         while (data2.moveToNext()) {
 
@@ -2985,26 +3448,26 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
 
                         }
 
-                        if (dataArray.size == 0 ){
+                        if (dataArray.size == 0) {
                             var intent = Intent()
                             intent.putExtra("polygonid", polygonid)
                             setResult(RESULT_OK, intent);
 
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images"+ File.separator +keyId+ File.separator)
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
 //                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/birds/images/")
                             val pathdir = path.listFiles()
 
                             if (pathdir != null) {
                                 val deletedir = path.listFiles()
                                 println("deletedir.size ${deletedir.size}")
-                                if (path.isDirectory){
-                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images"+ File.separator +keyId+ File.separator)
+                                if (path.isDirectory) {
+                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
 //                                     val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
                                     deletepath.deleteRecursively()
                                 }
                             } else {
-                                if (path.isDirectory){
-                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images"+ File.separator +keyId+ File.separator)
+                                if (path.isDirectory) {
+                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
 //                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
                                     deletepath.deleteRecursively()
                                 }
@@ -3018,12 +3481,11 @@ class BiotopeActivity : Activity(),com.google.android.gms.location.LocationListe
                     .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
             val alert = builder.create()
             alert.show()
-        }else {
+        } else {
             finish()
         }
 
     }
-
 
 
 }

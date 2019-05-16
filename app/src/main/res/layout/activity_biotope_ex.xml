@@ -912,6 +912,71 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
                                 >
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp">
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:layout_centerInParent="true">
+                                        <TextView
+                                            android:id="@+id/herleftTV"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:gravity="center"
+                                            android:text="〈 "
+                                            android:textSize="30dp"
+                                            android:layout_marginRight="40dp"/>
+
+                                        <TextView
+                                            android:id="@+id/herpageTV"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:layout_centerInParent="true"
+                                            android:gravity="center"
+                                            android:text="1" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:layout_centerInParent="true"
+                                            android:gravity="center"
+                                            android:text=" / " />
+
+                                        <TextView
+                                            android:id="@+id/herrightpageTV"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:layout_centerInParent="true"
+                                            android:gravity="center"
+                                            android:text="1" />
+
+                                        <TextView
+                                            android:id="@+id/herrightTV"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="〉 "
+                                            android:layout_alignParentRight="true"
+                                            android:gravity="center"
+                                            android:textSize="30dp"
+                                            android:layout_marginLeft="40dp"/>
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:id="@+id/hercloseLL"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:padding="10dp">
+
+                                        <ImageView
+                                            android:layout_width="20dp"
+                                            android:layout_height="30dp"
+                                            android:src="@mipmap/close"/>
+
+                                    </LinearLayout>
+
+                                </RelativeLayout>
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="50dp"
@@ -927,15 +992,14 @@
                                         />
 
                                     <TextView
+                                        android:id="@+id/etTRE_SPECET"
+                                        style="@style/BiotopeTextView"
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_weight="2"
-                                        android:maxLength="30"
-                                        android:id="@+id/etTRE_SPECET"
                                         android:gravity="center"
                                         android:hint="click"
-                                        style="@style/BiotopeTextView"
-                                        />
+                                        android:maxLength="30" />
 
                                     <LinearLayout
                                         android:visibility="gone"
@@ -1143,15 +1207,14 @@
                                             android:text="최대:"/>
 
                                         <EditText
+                                            android:id="@+id/max2ET"
+                                            style="@style/BiotopeEditText"
                                             android:layout_width="0dp"
                                             android:layout_height="match_parent"
                                             android:layout_weight="1"
-                                            android:inputType="numberDecimal"
-                                            android:maxLength="10"
-                                            android:id="@+id/max2ET"
                                             android:gravity="center_vertical"
-                                            style="@style/BiotopeEditText"
-                                            />
+                                            android:inputType="numberDecimal"
+                                            android:maxLength="10" />
 
 
 
@@ -1207,6 +1270,67 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
                                 >
+                               <RelativeLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="50dp">
+                                   <LinearLayout
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="match_parent"
+                                       android:layout_centerInParent="true">
+                                       <TextView
+                                           android:layout_width="wrap_content"
+                                           android:layout_height="match_parent"
+                                           android:gravity="center"
+                                           android:text="〈 "
+                                           android:textSize="30dp"
+                                           android:layout_marginRight="40dp"/>
+
+                                       <TextView
+                                           android:id="@+id/herpageTV"
+                                           android:layout_width="wrap_content"
+                                           android:layout_height="match_parent"
+                                           android:layout_centerInParent="true"
+                                           android:gravity="center"
+                                           android:text="1" />
+
+                                       <TextView
+                                           android:layout_width="wrap_content"
+                                           android:layout_height="match_parent"
+                                           android:layout_centerInParent="true"
+                                           android:gravity="center"
+                                           android:text=" / " />
+
+                                       <TextView
+                                           android:layout_width="wrap_content"
+                                           android:layout_height="match_parent"
+                                           android:layout_centerInParent="true"
+                                           android:gravity="center"
+                                           android:text="1" />
+
+                                       <TextView
+                                           android:layout_width="wrap_content"
+                                           android:layout_height="match_parent"
+                                           android:text="〉 "
+                                           android:layout_alignParentRight="true"
+                                           android:gravity="center"
+                                           android:textSize="30dp"
+                                           android:layout_marginLeft="40dp"/>
+                                   </LinearLayout>
+
+                                   <LinearLayout
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:layout_alignParentRight="true"
+                                       android:padding="10dp">
+
+                                       <ImageView
+                                           android:layout_width="20dp"
+                                           android:layout_height="30dp"
+                                           android:src="@mipmap/close"/>
+
+                                   </LinearLayout>
+
+                               </RelativeLayout>
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="50dp"
@@ -1506,6 +1630,67 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
                                 >
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp">
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:layout_centerInParent="true">
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:gravity="center"
+                                            android:text="〈 "
+                                            android:textSize="30dp"
+                                            android:layout_marginRight="40dp"/>
+
+                                        <TextView
+                                            android:id="@+id/herpageTV"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:layout_centerInParent="true"
+                                            android:gravity="center"
+                                            android:text="1" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:layout_centerInParent="true"
+                                            android:gravity="center"
+                                            android:text=" / " />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:layout_centerInParent="true"
+                                            android:gravity="center"
+                                            android:text="1" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="〉 "
+                                            android:layout_alignParentRight="true"
+                                            android:gravity="center"
+                                            android:textSize="30dp"
+                                            android:layout_marginLeft="40dp"/>
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:padding="10dp">
+
+                                        <ImageView
+                                            android:layout_width="20dp"
+                                            android:layout_height="30dp"
+                                            android:src="@mipmap/close"/>
+
+                                    </LinearLayout>
+
+                                </RelativeLayout>
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="50dp"
@@ -1731,6 +1916,67 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
                                 >
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp">
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:layout_centerInParent="true">
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:gravity="center"
+                                            android:text="〈 "
+                                            android:textSize="30dp"
+                                            android:layout_marginRight="40dp"/>
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:layout_centerInParent="true"
+                                            android:gravity="center"
+                                            android:text="1" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:layout_centerInParent="true"
+                                            android:gravity="center"
+                                            android:text=" / " />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:layout_centerInParent="true"
+                                            android:gravity="center"
+                                            android:text="1" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:text="〉 "
+                                            android:layout_alignParentRight="true"
+                                            android:gravity="center"
+                                            android:textSize="30dp"
+                                            android:layout_marginLeft="40dp"/>
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:padding="10dp">
+
+                                        <ImageView
+                                            android:layout_width="20dp"
+                                            android:layout_height="30dp"
+                                            android:src="@mipmap/close"/>
+
+                                    </LinearLayout>
+
+                                </RelativeLayout>
+
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="50dp"

@@ -1540,7 +1540,8 @@ class Flora2Activity : Activity() {
                         .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
                 val alert = builder.create()
                 alert.show()
-            } else if(TreDatas.size > 0 || StreDatas.size > 0 || ShrDatas.size > 0 || HerDatas.size > 0){
+            }
+            else if(TreDatas.size > 0 || StreDatas.size > 0 || ShrDatas.size > 0 || HerDatas.size > 0){
 
                 val builder = AlertDialog.Builder(context)
                 builder.setMessage("저장하시겠습니까 ?").setCancelable(false)

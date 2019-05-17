@@ -308,6 +308,14 @@
                     android:layout_margin="3dp" />
 
                 <Button
+                    android:id="@+id/vegBT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="군락명 보기"
+                    android:background="@drawable/bg_rnd_30919191"
+                    android:layout_margin="3dp" />
+
+                <Button
                     android:id="@+id/visibleBT"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

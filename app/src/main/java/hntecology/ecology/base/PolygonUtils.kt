@@ -23,14 +23,14 @@ object PolygonUtils {
         val conf = Bitmap.Config.ARGB_8888
         Log.d("너비2",bounds1.width().toString())
         Log.d("너비",bounds1.height().toString())
-        val bitmap = Bitmap.createBitmap(bounds1.width()+10, bounds1.height(), conf)
+        val bitmap = Bitmap.createBitmap(bounds1.width()+10, bounds1.height()+5, conf)
 
         val x = 0.toFloat()
         val y = bounds1.height().toFloat()
 
         val canvas = Canvas(bitmap)
 
-        canvas.drawText(label, x, y, paint1)
+        canvas.drawText(label.replace("-1",""), x, y, paint1)
 
         val markerOptions = MarkerOptions()
                 .position(PolygonUtils.getPolygonCenterPoint(polygonOptions.points))

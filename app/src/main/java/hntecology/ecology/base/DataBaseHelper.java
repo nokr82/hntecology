@@ -385,9 +385,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,INV_INDEX,LU_GR_NUM,LU_TY_RATE,STAND_H,LC_GR_NUM,LC_TY,TY_MARK,GV_RATE,GV_STRUCT,DIS_RET,RESTOR_POT,COMP_INTA";
         query += ",VP_INTA,IMP_FORM,BREA_DIA,FIN_EST,TRE_SPEC,TRE_FAMI,TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_H,STRE_BRT,STRE_COVE,SHR_SPEC,SHR_FAMI";
         query += ",SHR_SCIEN,SHR_H,STR_COVE,HER_SPEC,HER_FAMI,HER_SCIEN,HER_H,HER_COVE,PIC_FOLDER,WILD_ANI,BIOTOP_POT,UNUS_NOTE,GPS_LAT,GPS_LON,NEED_CONF,CONF_MOD,TEMP_YN,LANDUSE,GEOM,UFID,CHECKD";
-        query += ",TRE_H_N,TRE_H_X,TRE_BREA_N,TRE_BREA_X,STRE_H_N,STRE_H_X,STRE_BRT_N,STRE_BRT_X,SHR_HET_N,SHR_HET_X,HER_HET_X,HER_HET_N,BIO_TYPE,IMPERV)";
-
-        query += " values (";
+        query += ",TRE_H_N,TRE_H_X,TRE_BREA_N,TRE_BREA_X,STRE_H_N,STRE_H_X,STRE_BRT_N,STRE_BRT_X,SHR_HET_N,SHR_HET_X,HER_HET_X,HER_HET_N,BIO_TYPE,IMPERV";
+        query += ",DOMIN,MAC_ADDR,CURRENT_TM";
+        query +=")";
+                query += " values (";
         query += " '" + biotope_attribute.getGROP_ID() + "'";
         query += ", '" + biotope_attribute.getPRJ_NAME() + "'";
         query += ", '" + biotope_attribute.getINV_REGION() + "'";
@@ -459,6 +460,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", " + biotope_attribute.getHER_HET_N() + "";
         query += ", '" + biotope_attribute.getBIO_TYPE() + "'";
         query += ", '" + biotope_attribute.getIMPERV() + "'";
+        query += ", '" + biotope_attribute.getDOMIN() + "'";
+        query += ", '" + biotope_attribute.getMAC_ADDR() + "'";
+        query += ", '" + biotope_attribute.getCURRENT_TM() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -805,7 +809,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += "(GROP_ID,INV_REGION,INV_PERSON,INV_DT,INV_TM,TRE_NUM,TRE_SPEC,TRE_FAMI";
         query += ",TRE_SCIEN,TRE_DBH,TRE_TOIL,TRE_UNDER,TRE_WATER,TRE_TYPE,STRE_NUM,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_DBH,STRE_TOIL,STRE_UNDER,STRE_WATER,STRE_TYPE";
         query += ",SHR_NUM,SHR_SPEC,SHR_FAMI,SHR_SCIEN,SHR_TOIL,SHR_WATER,SHR_UNDER,HER_NUM,HER_SPEC,HER_FAMI";
-        query += ",HER_SCIEN,HER_DOMIN,HER_GUNDO,HER_HEIGHT,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM,DOMIN)";
+        query += ",HER_SCIEN,HER_DOMIN,HER_GUNDO,HER_HEIGHT,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM,DOMIN,MAC_ADDR,CURRENT_TM)";
 
         query += " values (";
         query += " '" + ManyFloraAttribute.getGROP_ID() + "'";
@@ -856,6 +860,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         query += ", '" + ManyFloraAttribute.getGEOM() + "'";
         query += ", '" + ManyFloraAttribute.getDOMIN() + "'";
+        query += ", '" + ManyFloraAttribute.getMAC_ADDR() + "'";
+        query += ", '" + ManyFloraAttribute.getCURRENT_TM() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -1466,7 +1472,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",TEMP_YN='" + biotope_attribute.getTEMP_YN() + "'"
                 + ",LANDUSE='" + biotope_attribute.getLANDUSE() + "'"
                 + ",BIO_TYPE='" + biotope_attribute.getBIO_TYPE() + "'"
-                + ",IMPERV='" + biotope_attribute.getIMPERV() + "'"+
+                + ",IMPERV='" + biotope_attribute.getIMPERV() + "'"
+                + ",DOMIN='" + biotope_attribute.getDOMIN() + "'"+
                 "where id = '" + page + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1759,7 +1766,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",GPS_LON='" + ManyFloraAttribute.getGPS_LON() + "'"
                 + ",TEMP_YN='" + ManyFloraAttribute.getTEMP_YN() + "'"
                 + ",CONF_MOD='" + ManyFloraAttribute.getCONF_MOD() + "'"
-                + ",DOMIN='" + ManyFloraAttribute.getDOMIN() + "'"+
+                + ",DOMIN='" + ManyFloraAttribute.getDOMIN() + "'"
+                + ",MAC_ADDR='" + ManyFloraAttribute.getMAC_ADDR() + "'"
+                + ",CURRENT_TM='" + ManyFloraAttribute.getCURRENT_TM() + "'"+
 
                 "where id = '" + pk + "'";
         SQLiteDatabase db = getWritableDatabase();

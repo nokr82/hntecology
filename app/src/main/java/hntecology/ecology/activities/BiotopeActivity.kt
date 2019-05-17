@@ -93,6 +93,10 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
     val SET_DATA6 = 6
     val SET_RATE = 7
 
+    var t_name = ""
+
+    val SET_DOMIN = 133;
+
     val BIOTOPE_BASE = 3000
     var keyId: String? = null;
     var pk: String? = null
@@ -198,6 +202,21 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         for (i in 1 until todays.size) {
             texttoday += todays.get(i)
         }
+
+        dominTV.setOnClickListener {
+            val intent = Intent(this,DlgVegetationActivity::class.java)
+            intent.putExtra("title", "우점/아우점")
+            intent.putExtra("table", "Vegetation")
+            startActivityForResult(intent, SET_DOMIN);
+        }
+
+        ausTV.setOnClickListener {
+            val intent = Intent(this,DlgVegetationActivity::class.java)
+            intent.putExtra("title", "우점/아우점")
+            intent.putExtra("table", "Vegetation")
+            startActivityForResult(intent, SET_DOMIN)
+        }
+
 
 
         pRL.setOnClickListener {
@@ -2047,11 +2066,6 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
             PER = etSTRE_COVEET.text.toString().toFloat()
         }
 
-
-        var chkData = false
-
-        var equlas = false
-
         println("trepage $trepage")
 
         val maxsize = strerightpageTV.text.toString().toInt()
@@ -2255,7 +2269,9 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 , null, null, null, null, null, null, null, null
                 , null, null, null, null, null, null, null, null, null, null, null, null
                 , null, null, null, null, null, null
-                , null, null, null, null, null, null, null, null)
+                , null, null, null, null, null, null, null, null
+                ,null,null,null
+        )
         return biotope_attribute
     }
 
@@ -2269,7 +2285,9 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
                 , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54), data2.getString(55), data2.getString(56), data2.getString(57)
                 , data2.getFloat(58), data2.getFloat(59), data2.getFloat(60), data2.getFloat(61), data2.getFloat(62), data2.getFloat(63)
-                , data2.getFloat(64), data2.getFloat(65), data2.getFloat(66), data2.getFloat(67), data2.getFloat(68), data2.getFloat(69), data2.getString(70), data2.getFloat(71))
+                , data2.getFloat(64), data2.getFloat(65), data2.getFloat(66), data2.getFloat(67), data2.getFloat(68), data2.getFloat(69), data2.getString(70), data2.getFloat(71)
+                , data2.getString(72), data2.getString(73), data2.getString(74)
+        )
         return biotope_attribute
     }
 
@@ -2495,6 +2513,14 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
             biotope_attribute.HER_HET_X = Utils.getString(max6ET).toFloat();
         }
 
+        Log.d("구실",t_name)
+
+        var names = t_name.split("-")
+        if (names.size>1){
+            biotope_attribute.DOMIN = t_name
+        }else{
+            biotope_attribute.DOMIN = t_name+"군락"
+        }
 
 
         if (chkdata) {
@@ -2622,6 +2648,13 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         etUNUS_NOTEET.setText(biotope_attribute.UNUS_NOTE.toString())
         ufidTV.setText(biotope_attribute.UFID)
         checkTV.setText(biotope_attribute.CHECK)
+        var domins = biotope_attribute.DOMIN!!.split("-")
+        if (domins.size>1){
+            dominTV.text = domins[0]
+            ausTV.text = domins[1]
+        }else{
+            dominTV.text = biotope_attribute.DOMIN
+        }
 
         etIMP_FORMET.setText(biotope_attribute.IMP_FORM.toString())
         landuse = biotope_attribute.LANDUSE
@@ -2697,6 +2730,21 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                     }
 
                 }
+                SET_DOMIN -> {
+
+                    t_name = data!!.getStringExtra("name");
+
+                    var names = t_name.split("-")
+                    if (names.size >1){
+                        dominTV.setText(names[0])
+                        ausTV.setText(names[1])
+                    }else{
+                        dominTV.setText(t_name+"군락")
+                        ausTV.setText("")
+                    }
+
+                }
+
 
                 SET_DATA1 -> {
 
@@ -3330,6 +3378,9 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         }
 
         etINV_TMTV.setText(Utils.timeStr())
+
+        dominTV.setText("")
+        ausTV.setText("")
 
         bioTV.setText("")
         TVLU_GR_NumTV.setText("")

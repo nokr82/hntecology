@@ -243,7 +243,8 @@ class DlgResearchActivity : Activity() {
                     , biotopedata.getFloat(43), biotopedata.getFloat(44), biotopedata.getString(45), biotopedata.getString(46), biotopedata.getString(47), biotopedata.getString(48), biotopedata.getDouble(49)
                     , biotopedata.getDouble(50), biotopedata.getString(51), biotopedata.getString(52), biotopedata.getString(53), biotopedata.getString(54), biotopedata.getString(55), biotopedata.getString(56), biotopedata.getString(57)
                     , biotopedata.getFloat(58), biotopedata.getFloat(59),biotopedata.getFloat(60),biotopedata.getFloat(61),biotopedata.getFloat(62),biotopedata.getFloat(63)
-                    ,biotopedata.getFloat(64),biotopedata.getFloat(65),biotopedata.getFloat(66),biotopedata.getFloat(67),biotopedata.getFloat(68),biotopedata.getFloat(69), biotopedata.getString(70),biotopedata.getFloat(71))
+                    ,biotopedata.getFloat(64),biotopedata.getFloat(65),biotopedata.getFloat(66),biotopedata.getFloat(67),biotopedata.getFloat(68),biotopedata.getFloat(69), biotopedata.getString(70)
+                    ,biotopedata.getFloat(71),biotopedata.getString(73),biotopedata.getString(74),biotopedata.getString(75))
             val tmpfiles =  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images"+ File.separator +biotope_attribute.GROP_ID+ File.separator)
             var tmpfileList = tmpfiles.listFiles()
             var PICTURE_YN = "없음"

@@ -38,6 +38,7 @@ import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.Base
 import hntecology.ecology.model.BiotopeType
+import hntecology.ecology.model.Insect_attribute
 import hntecology.ecology.model.Mammal_attribute
 import io.nlopez.smartlocation.OnLocationUpdatedListener
 import io.nlopez.smartlocation.SmartLocation
@@ -290,11 +291,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             while (data.moveToNext()) {
                 chkdata = true
-                var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                        data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16), data.getString(17),data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
-                        , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26),data.getString(27),data.getString(28),data.getString(29),data.getString(30)
-                        ,data.getInt(31), data.getInt(32),data.getFloat(33),data.getInt(34),data.getInt(35),data.getFloat(36),data.getString(37))
+                var mammal_attribute: Mammal_attribute = export_attribute(data)
 
                 maminvregionET.setText(mammal_attribute.INV_REGION)
                 INV_REGION = mammal_attribute.INV_REGION.toString()
@@ -470,11 +467,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                 chkdata = true
 
-                var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                        data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16), data.getString(17),data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
-                        , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26),data.getString(27),data.getString(28),data.getString(29),data.getString(30)
-                        ,data.getInt(31), data.getInt(32),data.getFloat(33),data.getInt(34),data.getInt(35),data.getFloat(36),data.getString(37))
+                var mammal_attribute: Mammal_attribute = export_attribute(data)
 
                 dataArray.add(mammal_attribute)
             }
@@ -514,21 +507,12 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                 chkdata = true
 
-                var mammal_attribute: Mammal_attribute =Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                        data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16), data.getString(17),data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
-                        , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26),data.getString(27),data.getString(28),data.getString(29),data.getString(30)
-                        ,data.getInt(31), data.getInt(32),data.getFloat(33),data.getInt(34),data.getInt(35),data.getFloat(36),data.getString(37))
+                var mammal_attribute: Mammal_attribute =export_attribute(data)
 
                 dataArray.add(mammal_attribute)
             }
 
-            var mammal_attribute:Mammal_attribute =Mammal_attribute(null,null,null,null,null
-                    ,null,null,null,null,null,null,null,null,null
-                    ,null,null,null,null,null,null,null,null
-                    ,null,null,null,null,null,null,null,null
-                    ,null,null,null,null,null,null,null,null
-                   )
+            var mammal_attribute:Mammal_attribute =null_attribute()
 
             mammal_attribute.id = keyId + page.toString()
 
@@ -609,11 +593,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                 chkdata = true
 
-                var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                        data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16), data.getString(17),data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
-                        , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26),data.getString(27),data.getString(28),data.getString(29),data.getString(30)
-                        ,data.getInt(31), data.getInt(32),data.getFloat(33),data.getInt(34),data.getInt(35),data.getFloat(36),data.getString(37))
+                var mammal_attribute: Mammal_attribute = export_attribute(data)
 
                 dataArray.add(mammal_attribute)
 
@@ -637,9 +617,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             builder.setMessage("저장하시겠습니까 ?").setCancelable(false)
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                        var mammal_attribute:Mammal_attribute =Mammal_attribute(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null
-                                ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                                )
+                        var mammal_attribute:Mammal_attribute =null_attribute()
 
                         keyId = intent.getStringExtra("GROP_ID")
 
@@ -889,9 +867,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                             dialog.cancel()
 
-                            var mammal_attribute: Mammal_attribute =Mammal_attribute(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null, null, null, null, null, null, null, null, null
-                                    , null, null, null, null, null, null, null, null, null, null, null, null, null
-                                   )
+                            var mammal_attribute: Mammal_attribute =null_attribute()
 
                             if (pk != null) {
 
@@ -903,7 +879,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                                             data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                             , data.getString(15), data.getString(16), data.getString(17),data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
                                             , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26),data.getString(27),data.getString(28),data.getString(29),data.getString(30)
-                                            ,data.getInt(31), data.getInt(32),data.getFloat(33),data.getInt(34),data.getInt(35),data.getFloat(36),data.getString(37))
+                                            ,data.getInt(31), data.getInt(32),data.getFloat(33),data.getInt(34),data.getInt(35),data.getFloat(36),data.getString(37),data.getString(38),data.getString(39))
                                 }
 
                                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "mammalia/images"+ File.separator +keyId+ File.separator)
@@ -955,12 +931,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                                         chkdata = true
 
-                                        var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                                , data.getString(15), data.getString(16), data.getString(17),data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
-                                                , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26),data.getString(27),data.getString(28),data.getString(29),data.getString(30)
-                                                ,data.getInt(31), data.getInt(32),data.getFloat(33),data.getInt(34),data.getInt(35),data.getFloat(36),data.getString(37))
-
+                                        var mammal_attribute: Mammal_attribute = export_attribute(data)
                                         dataArray.add(mammal_attribute)
 
                                     }
@@ -1025,11 +996,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                                     chkdata = true
 
-                                    var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                            , data.getString(15), data.getString(16), data.getString(17),data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
-                                            , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26),data.getString(27),data.getString(28),data.getString(29),data.getString(30)
-                                            ,data.getInt(31), data.getInt(32),data.getFloat(33),data.getInt(34),data.getInt(35),data.getFloat(36),data.getString(37))
+
                                 }
 
                                 if (chkdata == true) {
@@ -1103,11 +1070,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                         while (data.moveToNext()) {
 
-                            var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                    , data.getString(15), data.getString(16), data.getString(17),data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
-                                    , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26),data.getString(27),data.getString(28),data.getString(29),data.getString(30)
-                                    ,data.getInt(31), data.getInt(32),data.getFloat(33),data.getInt(34),data.getInt(35),data.getFloat(36),data.getString(37))
+                            var mammal_attribute: Mammal_attribute = export_attribute(data)
 
                             dataArray.add(mammal_attribute)
 
@@ -1231,9 +1194,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         btn_add.setOnClickListener {
 
-            var mammal_attribute:Mammal_attribute =Mammal_attribute(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null
-                    ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                   )
+            var mammal_attribute:Mammal_attribute =null_attribute()
 
             keyId = intent.getStringExtra("GROP_ID")
 
@@ -1638,11 +1599,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             chkdata = true
 
-            var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                    , data.getString(15), data.getString(16), data.getString(17),data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
-                    , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26),data.getString(27),data.getString(28),data.getString(29),data.getString(30)
-                    ,data.getInt(31), data.getInt(32),data.getFloat(33),data.getInt(34),data.getInt(35),data.getFloat(36),data.getString(37))
+            var mammal_attribute: Mammal_attribute = export_attribute(data)
 
             dataArray.add(mammal_attribute)
 
@@ -2454,11 +2411,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         while (data.moveToNext()) {
 
-            var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                    , data.getString(15), data.getString(16), data.getString(17),data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
-                    , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26),data.getString(27),data.getString(28),data.getString(29),data.getString(30)
-                    ,data.getInt(31), data.getInt(32),data.getFloat(33),data.getInt(34),data.getInt(35),data.getFloat(36),data.getString(37))
+            var mammal_attribute: Mammal_attribute = export_attribute(data)
 
             dataArray.add(mammal_attribute)
 
@@ -2508,5 +2461,21 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         val msg = String.format("%d-%d-%d", year, monthOfYear+1, dayOfMonth)
         maminvdtTV.text = msg
     }
+    fun null_attribute(): Mammal_attribute {
+        var mammal_attribute:Mammal_attribute =null_attribute()
+        return mammal_attribute
+    }
+
+    fun export_attribute(data: Cursor): Mammal_attribute {
+        var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                , data.getString(15), data.getString(16), data.getString(17),data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
+                , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26),data.getString(27),data.getString(28),data.getString(29),data.getString(30)
+                ,data.getInt(31), data.getInt(32),data.getFloat(33),data.getInt(34),data.getInt(35),data.getFloat(36),data.getString(37), data.getString(38), data.getString(39))
+
+
+        return mammal_attribute
+    }
+
 
 }

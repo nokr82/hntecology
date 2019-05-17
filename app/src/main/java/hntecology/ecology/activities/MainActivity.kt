@@ -60,6 +60,7 @@ import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
 import org.opengis.feature.simple.SimpleFeature
 import java.io.File
+import java.io.FilenameFilter
 import java.io.InputStream
 import java.io.Serializable
 import java.util.*
@@ -1852,12 +1853,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                         while (data.moveToNext()) {
 
-                            var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                    , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20)
-                                    , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
-                                    , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33)
-                            )
+                            var birds_attribute= ps_birds_attribute(data)
                             birdsdataArray.add(birds_attribute)
 
                         }
@@ -1925,7 +1921,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getString(16), data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
                                     , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30), data.getString(31), data.getString(32), data.getString(33)
-                                    , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39), data.getFloat(40)
+                                    , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39), data.getFloat(40), data.getString(41), data.getString(42)
                             )
 
 
@@ -1994,7 +1990,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getString(16), data.getString(17), data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
                                     , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27), data.getString(28), data.getString(29), data.getString(30)
-                                    , data.getInt(31), data.getInt(32), data.getFloat(33), data.getInt(34), data.getInt(35), data.getFloat(36), data.getString(37))
+                                    , data.getInt(31), data.getInt(32), data.getFloat(33), data.getInt(34), data.getInt(35), data.getFloat(36), data.getString(37), data.getString(38), data.getString(39))
                             mammaldataArray.add(mammal_attribute)
                         }
 
@@ -2054,12 +2050,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         var title = ""
 
                         while (data.moveToNext()) {
-                            var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                    data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15),
-                                    data.getFloat(16), data.getFloat(17), data.getString(18), data.getString(19), data.getInt(20), data.getInt(21), data.getInt(22), data.getInt(23), data.getString(24), data.getString(25),
-                                    data.getInt(26), data.getInt(27), data.getInt(28), data.getInt(29), data.getInt(30), data.getString(31), data.getInt(32), data.getString(33), data.getString(34), data.getString(35),
-                                    data.getInt(36), data.getString(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getInt(43), data.getInt(44), data.getFloat(45)
-                                    , data.getInt(46), data.getInt(47), data.getFloat(48), data.getString(49), data.getString(50))
+                            var fish_attribute = ps_fish_attribute(data)
 
                             fishdataArray.add(fish_attribute)
                         }
@@ -2127,7 +2118,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                     , data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getInt(16), data.getString(17)
                                     , data.getString(18), data.getString(19), data.getString(20), data.getString(21)
                                     , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
-                                    , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
+                                    , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32),data.getString(33),data.getString(34))
                             insectdataArray.add(insect_attribute)
                         }
 
@@ -2192,7 +2183,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             var flora_attribute: Flora_Attribute = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                                    , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
+                                    , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getInt(27), data.getInt(28)
+                                    , data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32), data.getString(33), data.getString(34))
                             floradataArray.add(flora_attribute)
                         }
 
@@ -6561,12 +6553,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
             println("27 : ${data.getString(27)}")
 
-            var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                    , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20)
-                    , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
-                    , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33)
-            )
+            var birds_attribute = ps_birds_attribute(data)
 
             birdsDatas.add(birds_attribute)
 
@@ -6662,6 +6649,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, birds_attribute.GPSLON_DEG))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, birds_attribute.GPSLON_MIN))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, birds_attribute.GPSLON_SEC.toString()))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, birds_attribute.MAC_ADDR.toString()))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, birds_attribute.CURRENT_TM.toString()))
 
                     val geomsplit = birds_attribute.GEOM!!.split(" ")
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
@@ -6723,6 +6712,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, birds_attribute.GPSLON_DEG))
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, birds_attribute.GPSLON_MIN))
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, birds_attribute.GPSLON_SEC.toString()))
+                            BIRDSATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, birds_attribute.MAC_ADDR.toString()))
+                            BIRDSATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, birds_attribute.CURRENT_TM.toString()))
                         }
 
                         val exporter = Exporter.ExportPointItem(LAYER_BIRDS, BIRDSATTRIBUTE, points.get(idx))
@@ -6788,7 +6779,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     , reptiliadata.getString(15), reptiliadata.getString(16), reptiliadata.getInt(17), reptiliadata.getInt(18), reptiliadata.getInt(19), reptiliadata.getString(20), reptiliadata.getString(21), reptiliadata.getString(22)
                     , reptiliadata.getString(23), reptiliadata.getString(24), reptiliadata.getString(25), reptiliadata.getInt(26), reptiliadata.getInt(27), reptiliadata.getInt(28), reptiliadata.getFloat(29), reptiliadata.getFloat(30)
                     , reptiliadata.getString(31), reptiliadata.getString(32), reptiliadata.getString(33), reptiliadata.getInt(34), reptiliadata.getInt(35), reptiliadata.getFloat(36), reptiliadata.getInt(37), reptiliadata.getInt(38), reptiliadata.getFloat(39)
-                    , reptiliadata.getFloat(40)
+                    , reptiliadata.getFloat(40), reptiliadata.getString(41), reptiliadata.getString(42)
             )
 
             reptiliaDatas.add(reptilia_attribute)
@@ -6889,6 +6880,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, reptilia_attribute.GPSLON_MIN))
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, reptilia_attribute.GPSLON_SEC.toString()))
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA", ogr.OFTString, reptilia_attribute.HAB_AREA.toString()))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, reptilia_attribute.MAC_ADDR))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, reptilia_attribute.CURRENT_TM))
 
                     var geomsplit = reptilia_attribute.GEOM!!.split(" ")
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
@@ -6950,6 +6943,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, reptilia_attribute.GPSLON_MIN))
                             REPTILIAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, reptilia_attribute.GPSLON_SEC.toString()))
                             REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA", ogr.OFTString, reptilia_attribute.HAB_AREA.toString()))
+                            REPTILIAATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, reptilia_attribute.MAC_ADDR))
+                            REPTILIAATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, reptilia_attribute.CURRENT_TM))
                         }
 
                         val exporter = Exporter.ExportPointItem(LAYER_REPTILIA, REPTILIAATTRIBUTE, points.get(idx))
@@ -7015,7 +7010,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16), data.getString(17), data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
                     , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27), data.getString(28), data.getString(29), data.getString(30)
-                    , data.getInt(31), data.getInt(32), data.getFloat(33), data.getInt(34), data.getInt(35), data.getFloat(36), data.getString(37))
+                    , data.getInt(31), data.getInt(32), data.getFloat(33), data.getInt(34), data.getInt(35), data.getFloat(36), data.getString(37), data.getString(38), data.getString(39))
 
             mammaliaDatas.add(mammal_attribute)
 
@@ -7110,6 +7105,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, mammal_attribute.GPSLON_MIN))
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, mammal_attribute.GPSLON_SEC.toString()))
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT_PR", ogr.OFTString, mammal_attribute.MJ_ACT_PR))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, mammal_attribute.MAC_ADDR))
+                    MAMMALATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, mammal_attribute.CURRENT_TM))
 
                     var geomsplit = mammal_attribute.GEOM!!.split(" ")
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
@@ -7162,6 +7159,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             MAMMALATTRIBUTE.add(Exporter.ColumnDef("TR_EASY", ogr.OFTString, mammal_attribute.TR_EASY))
                             MAMMALATTRIBUTE.add(Exporter.ColumnDef("TR_EASY_RE", ogr.OFTString, mammal_attribute.TR_EASY_RE))
                             MAMMALATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, mammal_attribute.CONF_MOD))
+                            MAMMALATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, mammal_attribute.MAC_ADDR))
+                            MAMMALATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, mammal_attribute.CURRENT_TM))
                         }
 
                         val exporter = Exporter.ExportPointItem(LAYER_MAMMALIA, MAMMALATTRIBUTE, points.get(idx))
@@ -7220,12 +7219,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         while (data.moveToNext()) {
 
-            var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                    data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15),
-                    data.getFloat(16), data.getFloat(17), data.getString(18), data.getString(19), data.getInt(20), data.getInt(21), data.getInt(22), data.getInt(23), data.getString(24), data.getString(25),
-                    data.getInt(26), data.getInt(27), data.getInt(28), data.getInt(29), data.getInt(30), data.getString(31), data.getInt(32), data.getString(33), data.getString(34), data.getString(35),
-                    data.getInt(36), data.getString(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getInt(43), data.getInt(44), data.getFloat(45)
-                    , data.getInt(46), data.getInt(47), data.getFloat(48), data.getString(49), data.getString(50))
+            var fish_attribute = ps_fish_attribute(data)
 
             fishDatas.add(fish_attribute)
         }
@@ -7332,6 +7326,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     FISHATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, fish_attribute.GPSLON_DEG))
                     FISHATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, fish_attribute.GPSLON_MIN))
                     FISHATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, fish_attribute.GPSLON_SEC.toString()))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, fish_attribute.MAC_ADDR))
+                    FISHATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, fish_attribute.CURRENT_TM))
+
 //                    }
 
                     var geomsplit = fish_attribute.GEOM!!.split(" ")
@@ -7400,6 +7397,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             FISHATTRIBUTE.add(Exporter.ColumnDef("RIV_FM_CH", ogr.OFTString, fish_attribute.RIV_FM_CH))
                             FISHATTRIBUTE.add(Exporter.ColumnDef("UN_FISH_CH", ogr.OFTString, fish_attribute.UN_FISH_CH))
                             FISHATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, fish_attribute.CONF_MOD))
+                            FISHATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, fish_attribute.MAC_ADDR))
+                            FISHATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, fish_attribute.CURRENT_TM))
 
                         }
 
@@ -7465,7 +7464,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     , data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getInt(16), data.getString(17)
                     , data.getString(18), data.getString(19), data.getString(20), data.getString(21)
                     , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
-                    , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
+                    , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32),data.getString(33),data.getString(34))
 
             insectDatas.add(insect_attribute)
 
@@ -7559,6 +7558,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, insect_attribute.GPSLON_DEG))
                     INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, insect_attribute.GPSLON_MIN))
                     INSECTATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, insect_attribute.GPSLON_SEC.toString()))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, insect_attribute.MAC_ADDR))
+                    INSECTATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, insect_attribute.CURRENT_TM.toString()))
 
                     var geomsplit = insect_attribute.GEOM!!.split(" ")
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
@@ -7675,7 +7676,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     , floradata.getString(5), floradata.getString(6), floradata.getString(7), floradata.getString(8), floradata.getFloat(9), floradata.getString(10), floradata.getInt(11)
                     , floradata.getString(12), floradata.getString(13), floradata.getString(14), floradata.getString(15), floradata.getString(16), floradata.getString(17), floradata.getString(18)
                     , floradata.getString(19), floradata.getInt(20), floradata.getString(21), floradata.getFloat(22), floradata.getFloat(23), floradata.getString(24), floradata.getString(25)
-                    , floradata.getString(26), floradata.getInt(27), floradata.getInt(28), floradata.getFloat(29), floradata.getInt(30), floradata.getInt(31), floradata.getFloat(32))
+                    , floradata.getString(26), floradata.getInt(27), floradata.getInt(28), floradata.getFloat(29), floradata.getInt(30), floradata.getInt(31), floradata.getFloat(32), floradata.getString(33), floradata.getString(34))
 
             floraDatas.add(flora_Attribute)
         }
@@ -9630,10 +9631,17 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     }
 
 
-    fun isFile() {
-        val biotopePath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope.shp")
-
-        if (!biotopePath.exists()) {
+    fun isFile(): Boolean {
+        val biotopePathDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope")
+        var biotopePath = null
+        val files = biotopePathDir.listFiles(FilenameFilter { file, s ->
+            return@FilenameFilter file.name.endsWith(".shp")
+        })
+        Log.d("파일",files.toString())
+        if(files != null && files.size > 0) {
+            biotopePath = files[0] as Nothing?
+        }
+        if (biotopePath != null) {
             dbManager!!.deletelayers("biotope")
             dbManager!!.deletebiotope_attribute_all()
         }
@@ -9697,8 +9705,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             dbManager!!.deletelayers("stockmap")
             dbManager!!.deletestockmap_all()
         }
-
-    }
+            return true
+        }
 
     override fun onDestroy() {
 
@@ -10180,5 +10188,22 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
     }
 
-
+    fun ps_birds_attribute(data: Cursor): Birds_attribute {
+        var birds_attribute: Birds_attribute =Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20)
+                , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
+                , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33), data.getString(34), data.getString(35)
+        )
+        return birds_attribute
+    }
+    fun ps_fish_attribute(data: Cursor): Fish_attribute {
+        var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15),
+                data.getFloat(16), data.getFloat(17), data.getString(18), data.getString(19), data.getInt(20), data.getInt(21), data.getInt(22), data.getInt(23), data.getString(24), data.getString(25),
+                data.getInt(26), data.getInt(27), data.getInt(28), data.getInt(29), data.getInt(30), data.getString(31), data.getInt(32), data.getString(33), data.getString(34), data.getString(35),
+                data.getInt(36), data.getString(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getInt(43), data.getInt(44), data.getFloat(45)
+                , data.getInt(46), data.getInt(47), data.getFloat(48), data.getString(49), data.getString(50),data.getString(51),data.getString(52))
+        return fish_attribute
+    }
 }

@@ -477,6 +477,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,ENDANGERED,INDI_CNT,OBS_STAT";
         query += ",USE_TAR,USE_LAYER,MJ_ACT,STANDARD,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM";
         query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC";
+        query += ",MAC_ADDR,CURRENT_TM";
         query +=")";
         query += " values (";
         query += " '" + birds_attribute.getGROP_ID() + "'";
@@ -515,6 +516,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + birds_attribute.getGPSLON_DEG() + "'";
         query += ", '" + birds_attribute.getGPSLON_MIN() + "'";
         query += ", '" + birds_attribute.getGPSLON_SEC() + "'";
+        query += ", '" + birds_attribute.getMAC_ADDR() + "'";
+        query += ", '" + birds_attribute.getCURRENT_TM() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -528,7 +531,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,ENDANGERED,IN_CNT_ADU,IN_CNT_LAR,IN_CNT_EGG";
         query += ",HAB_RIVEER,HAB_EDGE,WATER_IN,WATER_OUT,WATER_CONT,WATER_QUAL,WATER_DEPT";
         query += ",HAB_AREA_W,HAB_AREA_H,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM";
-        query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC,HAB_AREA";
+        query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC,HAB_AREA,MAC_ADDR,CURRENT_TM";
         query += ")";
 
 
@@ -573,6 +576,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + reptilia_attribute.getGPSLON_MIN() + "'";
         query += ", '" + reptilia_attribute.getGPSLON_SEC() + "'";
         query += ", '" + reptilia_attribute.getHAB_AREA() + "'";
+        query += ", '" + reptilia_attribute.getMAC_ADDR() + "'";
+        query += ", '" + reptilia_attribute.getCURRENT_TM() + "'";
 
         query += " ); ";
 
@@ -587,6 +592,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,ENDANGERED,OBS_TY,INDI_CNT";
         query += ",OB_PT_CHAR,UNUS_NOTE,STANDARD,GPS_LAT,GPS_LON,UN_SPEC,UN_SPEC_RE,TR_EASY,TR_EASY_RE,TEMP_YN,CONF_MOD,GEOM";
         query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC,MJ_ACT_PR";
+        query += ",MAC_ADDR,CURRENT_TM";
         query += ")";
         query += " values (";
         query += " '" + mammal_attribute.getGROP_ID() + "'";
@@ -627,6 +633,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + mammal_attribute.getGPSLON_MIN() + "'";
         query += ", '" + mammal_attribute.getGPSLON_SEC() + "'";
         query += ", '" + mammal_attribute.getMJ_ACT_PR() + "'";
+        query += ", '" + mammal_attribute.getMAC_ADDR() + "'";
+        query += ", '" + mammal_attribute.getCURRENT_TM() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -639,7 +647,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,OBS_STAT";
         query += ",USE_TAR,MJ_ACT,INV_MEAN,UNUS_NOTE,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM" ;
-        query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC";
+        query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC,MAC_ADDR,CURRENT_TM";
         query +=  ")";
 
         query += " values (";
@@ -679,6 +687,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + insect_attribute.getGPSLON_DEG() + "'";
         query += ", '" + insect_attribute.getGPSLON_MIN() + "'";
         query += ", '" + insect_attribute.getGPSLON_SEC() + "'";
+        query += ", '" + insect_attribute.getMAC_ADDR() + "'";
+        query += ", '" + insect_attribute.getCURRENT_TM() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -693,7 +703,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ",GPS_LON,COLL_TOOL,COLL_TOOL2,STREAM_W,WATER_W,WATER_D,WATER_CUR,RIV_STR,RIV_STR_IN,BOULDER,COBBLE,PEBBLE,GRAVEL,SEND,RIV_FORM";
         query += ",NUM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,UNIDENT,RIV_FM_CH,UN_FISH_CH,TEMP_YN,CONF_MOD,GEOM";
         query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC";
-        query += ",RIVER_BED,COLL_TIME";
+        query += ",RIVER_BED,COLL_TIME,MAC_ADDR_CURRENT_TM";
         query += ")";
         query += " values (";
         query += " '" + fish_attribute.getGROP_ID() + "'";
@@ -749,6 +759,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + fish_attribute.getGPSLON_SEC() + "'";
         query += ", '" + fish_attribute.getRIVER_BED() + "'";
         query += ", '" + fish_attribute.getCOLL_TIME() + "'";
+        query += ", '" + fish_attribute.getMAC_ADDR() + "'";
+        query += ", '" + fish_attribute.getCURRENT_TM() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -762,6 +774,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,FLORE_YN,PLANT_YN,HAB_STAT";
         query += ",HAB_ETC,COL_IN_CNT,THRE_CAU,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM";
         query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC";
+        query += ",MAC_ADDR,CURRENT_TM";
         query +=")";
 
         query += " values (";
@@ -797,6 +810,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + flora_Attribute.getGPSLON_DEG() + "'";
         query += ", '" + flora_Attribute.getGPSLON_MIN() + "'";
         query += ", '" + flora_Attribute.getGPSLON_SEC() + "'";
+        query += ", '" + flora_Attribute.getMAC_ADDR() + "'";
+        query += ", '" + flora_Attribute.getCURRENT_TM() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();

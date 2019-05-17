@@ -306,12 +306,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         chkdata = true
 
-                        var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20)
-                                , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
-                                , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33)
-                        )
+                        var birds_attribute= ps_birds_attribute(data)
 
                         dataArray.add(birds_attribute)
 
@@ -332,12 +327,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                 chkdata = true
 
-                var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                        data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20)
-                        , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
-                        , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33)
-                )
+                var birds_attribute = ps_birds_attribute(data)
                 invPersonTV.setText(birds_attribute.INV_PERSON)
 
                 invRegionET.setText(birds_attribute.INV_REGION)
@@ -543,12 +533,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                             while (data.moveToNext()) {
 
-                                var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                        data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                        , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20)
-                                        , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
-                                        , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33)
-                                )
+                                var birds_attribute= ps_birds_attribute(data)
 
                             dataArray.add(birds_attribute)
 
@@ -599,10 +584,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         dialog.cancel()
 
-                        var birds_attribute: Birds_attribute = Birds_attribute(null,null,null,null,null,null,null,null,null,null,
-                                null,null,null,null,null,null,null,null,null,null,null,null,
-                                null,null,null,null,null,null,null,null,null,null,null,null)
-
+                        var birds_attribute = null_birds_attribute()
                         keyId = intent.getStringExtra("GROP_ID")
 
                         birds_attribute.GROP_ID = keyId
@@ -859,21 +841,13 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                             dialog.cancel()
 
-                            var birds_attribute: Birds_attribute = Birds_attribute(null, null, null, null, null, null, null, null, null, null,
-                                    null, null, null, null, null, null, null, null, null, null, null, null,
-                                    null, null, null, null, null,null,null,null,null,null, null,null)
-
+                            var birds_attribute = null_birds_attribute()
                             if (pk != null) {
 
                                 val data = db!!.query("birdsAttribute", dataList, "id = '$pk'", null, null, null, "", null)
 
                                 while (data.moveToNext()) {
-                                    birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                            , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20)
-                                            , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
-                                            , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33)
-                                    )
+                                    birds_attribute  = ps_birds_attribute(data)
 
                                 }
 
@@ -926,12 +900,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                                         chkdata = true
 
-                                        var birds_attribute: Birds_attribute =Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                                , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20)
-                                                , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
-                                                , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33)
-                                        )
+                                        var birds_attribute = ps_birds_attribute(data)
                                         dataArray.add(birds_attribute)
 
                                     }
@@ -993,12 +962,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                                     chkdata = true
 
-                                    var birds_attribute: Birds_attribute =Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                            , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20)
-                                            , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
-                                            , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33)
-                                    )
+
                                 }
 
                                 if (chkdata == true) {
@@ -1135,10 +1099,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
         nextTV.setOnClickListener {
 
-            var birds_attribute: Birds_attribute = Birds_attribute(null,null,null,null,null,null,null,null,null,null,
-                    null,null,null,null,null,null,null,null,null,null,null,null,
-                    null,null,null,null,null,null,null,null,null,null, null,null)
-
+            var birds_attribute=null_birds_attribute()
             keyId = intent.getStringExtra("GROP_ID")
 
             birds_attribute.GROP_ID = keyId
@@ -2267,12 +2228,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
         while (data.moveToNext()) {
 
-            var birds_attribute: Birds_attribute =Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                    , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20)
-                    , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
-                    , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33)
-            )
+            var birds_attribute =  ps_birds_attribute(data)
             birds_attribute.GROP_ID = keyId
 
             invRegionET.setText(birds_attribute.INV_REGION)
@@ -2414,12 +2370,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
         while (data.moveToNext()) {
 
-            var birds_attribute: Birds_attribute =Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                    , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20)
-                    , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
-                    , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33)
-            )
+            var birds_attribute = ps_birds_attribute(data)
 
             dataArray.add(birds_attribute)
 
@@ -2536,4 +2487,21 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
         dialog.show()
     }
+}
+fun null_birds_attribute(): Birds_attribute {
+    var birds_attribute: Birds_attribute = Birds_attribute(null,null,null,null,null,null,null,null,null,null,
+            null,null,null,null,null,null,null,null,null,null,null,null,
+            null,null,null,null,null,null,null,null,null,null, null,null,null,null)
+
+    return birds_attribute
+}
+
+fun ps_birds_attribute(data: Cursor): Birds_attribute {
+    var birds_attribute: Birds_attribute =Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+            , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20)
+            , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
+            , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33), data.getString(34), data.getString(35)
+    )
+    return birds_attribute
 }

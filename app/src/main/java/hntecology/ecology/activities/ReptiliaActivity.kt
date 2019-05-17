@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -35,6 +36,7 @@ import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.Base
+import hntecology.ecology.model.Insect_attribute
 import hntecology.ecology.model.Reptilia_attribute
 import io.nlopez.smartlocation.OnLocationUpdatedListener
 import io.nlopez.smartlocation.SmartLocation
@@ -53,7 +55,7 @@ import java.lang.Math.round
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
+class ReptiliaActivity : Activity(), OnLocationUpdatedListener {
 
     val SET_WEATHER = 1;
     val SET_WIND = 2;
@@ -68,22 +70,22 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
     var keyId: String? = null;
 
-    var pk : String? = null
+    var pk: String? = null
 
-    var page:Int? = null
+    var page: Int? = null
 
     val REQUEST_FINE_LOCATION = 50
     val REQUEST_ACCESS_COARSE_LOCATION = 51
 
-    var dataArray:ArrayList<Reptilia_attribute> = ArrayList<Reptilia_attribute>()
+    var dataArray: ArrayList<Reptilia_attribute> = ArrayList<Reptilia_attribute>()
 
     private var progressDialog: ProgressDialog? = null
 
     var latitude = 0.0f;
     var longitude = 0.0f;
 
-    var lat:String = ""
-    var log:String = ""
+    var lat: String = ""
+    var log: String = ""
 
     var basechkdata = false
 
@@ -94,7 +96,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
     private val FROM_CAMERA = 100
     private val FROM_ALBUM = 101
 
-    var cameraPath:String? = null
+    var cameraPath: String? = null
 
     private var addPicturesLL: LinearLayout? = null
     private val imgSeq = 0
@@ -105,13 +107,13 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
     var images_url_remove: ArrayList<String>? = null
     var images_id: ArrayList<Int>? = null
 
-    var markerid : String? = null
+    var markerid: String? = null
 
     var dbManager: DataBaseHelper? = null
 
     private var db: SQLiteDatabase? = null
 
-    var imageUri:Uri? = null
+    var imageUri: Uri? = null
 
     var invtm = ""
 
@@ -162,15 +164,15 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         }
 
 
-     /*   var today = Utils.todayStr();
+        /*   var today = Utils.todayStr();
 
-        var todays = today.split("-")
+           var todays = today.split("-")
 
-        var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
+           var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
 
-        for (i in 1 until todays.size){
-            texttoday += todays.get(i)
-        }*/
+           for (i in 1 until todays.size){
+               texttoday += todays.get(i)
+           }*/
 
 //        numET.setText(texttoday + "1")
         var time = Utils.timeStr();
@@ -183,18 +185,18 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
 
 
-        if(intent.getStringExtra("markerid") != null){
+        if (intent.getStringExtra("markerid") != null) {
             markerid = intent.getStringExtra("markerid")
         }
 
-        if(intent.getStringExtra("latitude")!= null){
+        if (intent.getStringExtra("latitude") != null) {
             lat = intent.getStringExtra("latitude")
 
             println("==============$lat")
             gpslatTV.setText(lat)
         }
 
-        if(intent.getStringExtra("longitude")!= null){
+        if (intent.getStringExtra("longitude") != null) {
             log = intent.getStringExtra("longitude")
             println("==============$log")
             gpslonTV.setText(log)
@@ -202,26 +204,26 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         keyId = intent.getStringExtra("GROP_ID")
 
-        if(intent.getStringExtra("id") != null){
+        if (intent.getStringExtra("id") != null) {
             pk = intent.getStringExtra("id")
         }
 
-        if(intent.getStringExtra("longitude") != null && intent.getStringExtra("latitude") != null){
+        if (intent.getStringExtra("longitude") != null && intent.getStringExtra("latitude") != null) {
             lat = intent.getStringExtra("latitude")
             log = intent.getStringExtra("longitude")
 
             try {
-                var geocoder:Geocoder = Geocoder(context);
+                var geocoder: Geocoder = Geocoder(context);
 
-                var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+                var list: List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
 
-                if(list.size > 0){
+                if (list.size > 0) {
                     System.out.println("list : " + list);
 
 //                    invregionET.setText(list.get(0).getAddressLine(0));
-                    INV_REGION =list.get(0).getAddressLine(0)
+                    INV_REGION = list.get(0).getAddressLine(0)
                 }
-            } catch (e:IOException) {
+            } catch (e: IOException) {
                 e.printStackTrace();
             }
             convert(lat.toDouble())
@@ -230,17 +232,17 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         val dataList: Array<String> = arrayOf("*");
 
-        var basedata= db!!.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        var basedata = db!!.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         memory()
 
 
 
-        while(basedata.moveToNext()){
+        while (basedata.moveToNext()) {
 
             basechkdata = true
 
-            var base : Base = Base(basedata.getInt(0) , basedata.getString(1), basedata.getString(2), basedata.getString(3), basedata.getString(4), basedata.getString(5) , basedata.getString(6),basedata.getString(7))
+            var base: Base = Base(basedata.getInt(0), basedata.getString(1), basedata.getString(2), basedata.getString(3), basedata.getString(4), basedata.getString(5), basedata.getString(6), basedata.getString(7))
 
             println("keyid ==== $keyId")
             println("base ==== ${base.GROP_ID}")
@@ -256,26 +258,26 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             log = base.GPS_LON!!
 
             try {
-                var geocoder:Geocoder = Geocoder(context);
+                var geocoder: Geocoder = Geocoder(context);
 
-                var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+                var list: List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
 
-                if(list.size > 0){
+                if (list.size > 0) {
                     System.out.println("list : " + list);
 
 //                    invregionET.setText(list.get(0).getAddressLine(0));
-                    INV_REGION =list.get(0).getAddressLine(0)
+                    INV_REGION = list.get(0).getAddressLine(0)
                 }
-            } catch (e:IOException) {
+            } catch (e: IOException) {
                 e.printStackTrace();
             }
         }
 
-        if(basechkdata){
+        if (basechkdata) {
 
-        }else {
+        } else {
 
-            val base : Base = Base(null,keyId,"",lat,log,invpersonET.text.toString(),createdDateTV.text.toString(),invtmTV.text.toString())
+            val base: Base = Base(null, keyId, "", lat, log, invpersonET.text.toString(), createdDateTV.text.toString(), invtmTV.text.toString())
 
             dbManager!!.insertbase(base)
 
@@ -287,17 +289,11 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data= db!!.query("reptiliaAttribute", dataList, "id = '$pk'", null, null, null, "", null)
+            val data = db!!.query("reptiliaAttribute", dataList, "id = '$pk'", null, null, null, "", null)
 
             while (data.moveToNext()) {
                 chkdata = true
-                var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                        data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                        , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29)
-                        , data.getFloat(30),data.getString(31),data.getString(32),data.getString(33)
-                        , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39), data.getFloat(40)
-                )
+                var reptilia_attribute: Reptilia_attribute = export_attribute(data)
 
                 invregionET.setText(reptilia_attribute.INV_REGION)
                 INV_REGION = reptilia_attribute.INV_REGION.toString()
@@ -352,11 +348,11 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                 val id = reptilia_attribute.id
 
-                if(reptilia_attribute.TEMP_YN.equals("N")){
-                    dbManager!!.deletereptilia_attribute(reptilia_attribute,id)
+                if (reptilia_attribute.TEMP_YN.equals("N")) {
+                    dbManager!!.deletereptilia_attribute(reptilia_attribute, id)
                 }
 
-                if(reptilia_attribute.TEMP_YN.equals("Y")){
+                if (reptilia_attribute.TEMP_YN.equals("Y")) {
                     dataArray.add(reptilia_attribute)
                 }
 
@@ -364,7 +360,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
 //                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + reptilia_attribute.INV_DT + "." + reptilia_attribute.INV_TM + "." + reptilia_attribute.NUM + "/images")
 //                val fileList = file.listFiles()
-                val tmpfiles =  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator)
+                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images" + File.separator + keyId + File.separator)
 //                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/reptilia/images/")
                 var tmpfileList = tmpfiles.listFiles()
 
@@ -403,7 +399,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 //                    }
 //                }
 
-                if(tmpfileList != null){
+                if (tmpfileList != null) {
                     for (i in 0..tmpfileList.size - 1) {
 
                         val options = BitmapFactory.Options()
@@ -425,8 +421,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                         images_path!!.add(tmpfileList.get(i).path)
 
-                        for(j in 0..tmpfileList.size - 1) {
-                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator + reptilia_attribute.NUM.toString() + "_" + invtm +"_" + (j+1) + ".png")) {
+                        for (j in 0..tmpfileList.size - 1) {
+                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "reptilia/images" + File.separator + keyId + File.separator + reptilia_attribute.NUM.toString() + "_" + invtm + "_" + (j + 1) + ".png")) {
 //                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/reptilia/images/" +reptilia_attribute.NUM + "_" + reptilia_attribute.INV_TM +"_" + (j+1) + ".png")) {
                                 val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
                                 val v = View.inflate(context, R.layout.item_add_image, null)
@@ -449,16 +445,15 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             }
 
 
-
         }
 
         reptilialeftLL.setOnClickListener {
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data= db!!.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data = db!!.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
-            if (dataArray != null){
+            if (dataArray != null) {
                 dataArray.clear()
             }
 
@@ -466,24 +461,20 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                 chkdata = true
 
-                var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                        data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                        , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32),data.getString(33)
-                        , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39), data.getFloat(40))
+                var reptilia_attribute: Reptilia_attribute = export_attribute(data)
 
                 dataArray.add(reptilia_attribute)
 
             }
 
-            if(page == dataArray.size && page!! > 1 ){
+            if (page == dataArray.size && page!! > 1) {
                 page = page!! - 1
                 reptiliapageTV.setText(page.toString() + " / " + dataArray.size)
 
                 clear()
 
                 resetPage(page!!)
-            }else if (page!! < dataArray.size && page!! > 1){
+            } else if (page!! < dataArray.size && page!! > 1) {
                 page = page!! - 1
                 reptiliapageTV.setText(page.toString() + " / " + dataArray.size)
 
@@ -500,9 +491,9 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data= db!!.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data = db!!.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
-            if (dataArray != null){
+            if (dataArray != null) {
                 dataArray.clear()
             }
 
@@ -510,24 +501,13 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                 chkdata = true
 
-                var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                        data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                        , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29)
-                        , data.getFloat(30),data.getString(31),data.getString(32),data.getString(33)
-                        , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39), data.getFloat(40)
-                )
+                var reptilia_attribute: Reptilia_attribute = export_attribute(data)
 
                 dataArray.add(reptilia_attribute)
 
             }
 
-            var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(null,null,null,null,null,null,null,null,null
-                    ,null,null,null,null,null,null,null,null,null,null,null,null
-                    ,null,null,null,null,null,null,null,null,null,null
-                    ,null,null,null,null, null,null,null,null,null
-            ,null
-            )
+            var reptilia_attribute: Reptilia_attribute = null_attribute()
 
             reptilia_attribute.id = keyId + page.toString()
 
@@ -543,13 +523,13 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             reptilia_attribute.WIND = windTV.text.toString()
             reptilia_attribute.WIND_DIRE = windDireTV.text.toString()
 
-            if(temperaturET.text.isNotEmpty()){
+            if (temperaturET.text.isNotEmpty()) {
                 reptilia_attribute.TEMPERATUR = temperaturET.text.toString().toFloat()
             }
 
             reptilia_attribute.ETC = etcET.text.toString()
 
-            if(numET.text.isNotEmpty()){
+            if (numET.text.isNotEmpty()) {
                 reptilia_attribute.NUM = numET.text.toString().toInt()
             }
 
@@ -559,13 +539,13 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             reptilia_attribute.FAMI_NM = famiET.text.toString()
             reptilia_attribute.SCIEN_NM = scienET.text.toString()
 
-            if(incntaduET.text.isNotEmpty()){
+            if (incntaduET.text.isNotEmpty()) {
                 reptilia_attribute.IN_CNT_ADU = incntaduET.text.toString().toInt()
             }
-            if(incntlarET.text.isNotEmpty()){
+            if (incntlarET.text.isNotEmpty()) {
                 reptilia_attribute.IN_CNT_LAR = incntlarET.text.toString().toInt()
             }
-            if(incnteggET.text.isNotEmpty()){
+            if (incnteggET.text.isNotEmpty()) {
                 reptilia_attribute.IN_CNT_EGG = incnteggET.text.toString().toInt()
             }
 
@@ -578,24 +558,24 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             reptilia_attribute.WATER_CONT = watercontET.text.toString()
             reptilia_attribute.WATER_QUAL = waterqualET.text.toString()
 
-            if(waterdeptET.text.isNotEmpty()){
+            if (waterdeptET.text.isNotEmpty()) {
                 reptilia_attribute.WATER_DEPT = waterdeptET.text.toString().toInt()
             }
 
-            if(habareawET.text.isNotEmpty()){
+            if (habareawET.text.isNotEmpty()) {
                 reptilia_attribute.HAB_AREA_W = habareawET.text.toString().toInt()
             }
 
-            if(habareahET.text.isNotEmpty()){
+            if (habareahET.text.isNotEmpty()) {
                 reptilia_attribute.HAB_AREA_H = habareahET.text.toString().toInt()
             }
 
 
-            if(gpslatTV.text.isNotEmpty()){
+            if (gpslatTV.text.isNotEmpty()) {
                 reptilia_attribute.GPS_LAT = lat.toFloat()
             }
 
-            if(gpslonTV.text.isNotEmpty()){
+            if (gpslonTV.text.isNotEmpty()) {
                 reptilia_attribute.GPS_LON = log.toFloat()
             }
             if (coordndET.text.isNotEmpty()) {
@@ -621,14 +601,14 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             }
             reptilia_attribute.TEMP_YN = "N"
 
-            if(page == dataArray.size){
+            if (page == dataArray.size) {
                 dbManager!!.insertreptilia_attribute(reptilia_attribute)
                 page = page!! + 1
             }
 
-            val data2= db!!.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+            val data2 = db!!.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
-            if (dataArray != null){
+            if (dataArray != null) {
                 dataArray.clear()
             }
 
@@ -636,20 +616,13 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                 chkdata = true
 
-                var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                        data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                        , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30)
-                        ,data.getString(31),data.getString(32),data.getString(33)
-                        , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39)
-                        , data.getFloat(40)
-                )
+                var reptilia_attribute: Reptilia_attribute = export_attribute(data)
 
                 dataArray.add(reptilia_attribute)
 
             }
 
-            if (page!! < dataArray.size){
+            if (page!! < dataArray.size) {
                 page = page!! + 1
             }
 
@@ -729,37 +702,26 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         btn_reptiliaDelete.setOnClickListener {
 
-            if(pk != null) {
+            if (pk != null) {
                 val builder = AlertDialog.Builder(context)
                 builder.setMessage("삭제하시겠습니까?").setCancelable(false)
                         .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
                             dialog.cancel()
 
-                            var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(null, null, null, null, null, null, null, null, null
-                                    , null, null, null, null, null, null, null, null, null, null, null, null
-                                    , null, null, null, null, null, null, null, null
-                                    ,null, null,null,null,null,null
-                                    , null, null,null,null,null,null)
+                            var reptilia_attribute: Reptilia_attribute = null_attribute()
 
                             if (pk != null) {
 
-                                val data= db!!.query("reptiliaAttribute", dataList, "id = '$pk'", null, null, null, "", null)
+                                val data = db!!.query("reptiliaAttribute", dataList, "id = '$pk'", null, null, null, "", null)
 
                                 while (data.moveToNext()) {
 
-                                  reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                            , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                                            , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29)
-                                          , data.getFloat(30),data.getString(31),data.getString(32),data.getString(33)
-                                          , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39)
-                                          , data.getFloat(40)
-                                  )
+                                    reptilia_attribute = export_attribute(data)
 
                                 }
 
-                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator)
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images" + File.separator + keyId + File.separator)
 //                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/reptilia/images/")
                                 val pathdir = path.listFiles()
 
@@ -767,7 +729,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                                     for (i in 0..pathdir.size - 1) {
 
                                         for (j in 0..pathdir.size - 1) {
-                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator + reptilia_attribute.NUM.toString() + "_" + invtm +"_" + (j+1) + ".png")) {
+                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "reptilia/images" + File.separator + keyId + File.separator + reptilia_attribute.NUM.toString() + "_" + invtm + "_" + (j + 1) + ".png")) {
 //                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/reptilia/images/" + reptilia_attribute.NUM + "_" + reptilia_attribute.INV_TM +"_" + (j+1) + ".png")) {
 
                                                 pathdir.get(i).canonicalFile.delete()
@@ -779,14 +741,14 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                                     }
                                     val deletedir = path.listFiles()
-                                    if (path.isDirectory){
-                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator)
+                                    if (path.isDirectory) {
+                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images" + File.separator + keyId + File.separator)
 //                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + reptilia_attribute.INV_DT + "." + reptilia_attribute.INV_TM + "."+reptilia_attribute.INV_INDEX)
                                         deletepath.deleteRecursively()
                                     }
                                 } else {
-                                    if (path.isDirectory){
-                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator)
+                                    if (path.isDirectory) {
+                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images" + File.separator + keyId + File.separator)
 //                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + reptilia_attribute.INV_DT + "." + reptilia_attribute.INV_TM + "."+reptilia_attribute.INV_INDEX)
                                         deletepath.deleteRecursively()
                                     }
@@ -798,7 +760,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                                     val dataList: Array<String> = arrayOf("*");
 
-                                    val data= db!!.query("reptiliaAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+                                    val data = db!!.query("reptiliaAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
 
                                     if (dataArray != null) {
                                         dataArray.clear()
@@ -808,14 +770,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                                         chkdata = true
 
-                                        var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                                , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                                                , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29)
-                                                , data.getFloat(30),data.getString(31),data.getString(32),data.getString(33)
-                                                , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39)
-                                                , data.getFloat(40)
-                                        )
+                                        var reptilia_attribute: Reptilia_attribute = export_attribute(data)
 
                                         dataArray.add(reptilia_attribute)
 
@@ -823,7 +778,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                                     var intent = Intent()
 
-                                    if(dataArray.size > 1) {
+                                    if (dataArray.size > 1) {
                                         dbManager!!.deletereptilia_attribute(reptilia_attribute, pk)
 
                                         intent.putExtra("reset", 100)
@@ -833,7 +788,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                                     }
 
-                                    if(dataArray.size == 1) {
+                                    if (dataArray.size == 1) {
                                         dbManager!!.deletereptilia_attribute(reptilia_attribute, pk)
 
                                         var intent = Intent()
@@ -856,7 +811,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                 alert.show()
             }
 
-            if(pk == null){
+            if (pk == null) {
 
                 val builder = AlertDialog.Builder(context)
                 builder.setMessage("삭제하시겠습니까?").setCancelable(false)
@@ -869,7 +824,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                                 val dataList: Array<String> = arrayOf("*");
 
-                                val data= db!!.query("reptiliaAttribute", dataList, "id = '$id'", null, null, null, "", null)
+                                val data = db!!.query("reptiliaAttribute", dataList, "id = '$id'", null, null, null, "", null)
 
                                 if (dataArray != null) {
                                     dataArray.clear()
@@ -879,14 +834,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                                     chkdata = true
 
-                                    var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                            , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                                            , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29)
-                                            , data.getFloat(30),data.getString(31),data.getString(32),data.getString(33)
-                                            , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39)
-                                            , data.getFloat(40)
-                                    )
+
                                 }
 
                                 if (chkdata == true) {
@@ -928,47 +876,40 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                         val dataList: Array<String> = arrayOf("*");
 
-                        val data= db.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+                        val data = db.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
-                        if (dataArray != null){
+                        if (dataArray != null) {
                             dataArray.clear()
                         }
 
                         while (data.moveToNext()) {
 
-                            var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                                    , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                                    , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28)
-                                    , data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32),data.getString(33)
-                                    , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39)
-                                    , data.getFloat(40)
-                            )
+                            var reptilia_attribute: Reptilia_attribute = export_attribute(data)
 
                             dataArray.add(reptilia_attribute)
 
                         }
 
-                        if (dataArray.size == 0 || intent.getStringExtra("id") == null){
+                        if (dataArray.size == 0 || intent.getStringExtra("id") == null) {
 
                             var intent = Intent()
                             intent.putExtra("markerid", markerid)
                             setResult(RESULT_OK, intent);
 
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator)
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images" + File.separator + keyId + File.separator)
 //                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/reptilia/images/")
                             val pathdir = path.listFiles()
 
                             if (pathdir != null) {
                                 val deletedir = path.listFiles()
-                                if (path.isDirectory){
-                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator)
+                                if (path.isDirectory) {
+                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images" + File.separator + keyId + File.separator)
 //                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + reptilia_attribute.INV_DT + "." + reptilia_attribute.INV_TM + "."+reptilia_attribute.INV_INDEX)
                                     deletepath.deleteRecursively()
                                 }
                             } else {
-                                if (path.isDirectory){
-                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator)
+                                if (path.isDirectory) {
+                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images" + File.separator + keyId + File.separator)
 //                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + reptilia_attribute.INV_DT + "." + reptilia_attribute.INV_TM + "."+reptilia_attribute.INV_INDEX)
                                     deletepath.deleteRecursively()
                                 }
@@ -993,19 +934,14 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                         dialog.cancel()
 
-                        var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(null,null,null,null,null,null,null,null,null
-                                ,null,null,null,null,null,null,null,null,null,null,null,null
-                        ,null,null,null,null,null,null,null,null,null,null
-                                ,null,null,null,null, null,null
-                                ,null,null,null,null
-                        )
+                        var reptilia_attribute: Reptilia_attribute = null_attribute()
 
                         keyId = intent.getStringExtra("GROP_ID")
 
                         reptilia_attribute.GROP_ID = keyId
 
                         val prj = prjnameET.text.toString()
-                        if (prj == prjname){
+                        if (prj == prjname) {
                             reptilia_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
                         } else {
                             reptilia_attribute.PRJ_NAME = prjnameET.text.toString()
@@ -1019,7 +955,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 //                        }
 
 //                        reptilia_attribute.INV_REGION = invregionET.text.toString()
-                        if (invregionET.length() > 0){
+                        if (invregionET.length() > 0) {
                             reptilia_attribute.INV_REGION = invregionET.text.toString();
                         } else {
                             reptilia_attribute.INV_REGION = INV_REGION
@@ -1032,13 +968,13 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                         reptilia_attribute.WIND = windTV.text.toString()
                         reptilia_attribute.WIND_DIRE = windDireTV.text.toString()
 
-                        if(temperaturET.text.isNotEmpty()){
+                        if (temperaturET.text.isNotEmpty()) {
                             reptilia_attribute.TEMPERATUR = temperaturET.text.toString().toFloat()
                         }
 
                         reptilia_attribute.ETC = etcET.text.toString()
 
-                        if(numET.text.isNotEmpty()){
+                        if (numET.text.isNotEmpty()) {
                             reptilia_attribute.NUM = numET.text.toString().toInt()
                         }
 
@@ -1046,19 +982,19 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                         reptilia_attribute.SPEC_NM = specnmET.text.toString()
                         var specet = specET.text.toString()
-                        if (specet != null && specet != ""){
+                        if (specet != null && specet != "") {
                             reptilia_attribute.SPEC_NM = specet
                         }
                         reptilia_attribute.FAMI_NM = famiET.text.toString()
                         reptilia_attribute.SCIEN_NM = scienET.text.toString()
 
-                        if(incntaduET.text.isNotEmpty()){
+                        if (incntaduET.text.isNotEmpty()) {
                             reptilia_attribute.IN_CNT_ADU = incntaduET.text.toString().toInt()
                         }
-                        if(incntlarET.text.isNotEmpty()){
+                        if (incntlarET.text.isNotEmpty()) {
                             reptilia_attribute.IN_CNT_LAR = incntlarET.text.toString().toInt()
                         }
-                        if(incnteggET.text.isNotEmpty()){
+                        if (incnteggET.text.isNotEmpty()) {
                             reptilia_attribute.IN_CNT_EGG = incnteggET.text.toString().toInt()
                         }
 
@@ -1071,24 +1007,24 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                         reptilia_attribute.WATER_CONT = watercontET.text.toString()
                         reptilia_attribute.WATER_QUAL = waterqualET.text.toString()
 
-                        if(waterdeptET.text.isNotEmpty()){
+                        if (waterdeptET.text.isNotEmpty()) {
                             reptilia_attribute.WATER_DEPT = waterdeptET.text.toString().toInt()
                         }
 
-                        if(habareawET.text.isNotEmpty()){
+                        if (habareawET.text.isNotEmpty()) {
                             reptilia_attribute.HAB_AREA_W = habareawET.text.toString().toInt()
                         }
 
-                        if(habareahET.text.isNotEmpty()){
+                        if (habareahET.text.isNotEmpty()) {
                             reptilia_attribute.HAB_AREA_H = habareahET.text.toString().toInt()
                         }
 
 
-                        if(gpslatTV.text.isNotEmpty()){
+                        if (gpslatTV.text.isNotEmpty()) {
                             reptilia_attribute.GPS_LAT = lat.toFloat()
                         }
 
-                        if(gpslonTV.text.isNotEmpty()){
+                        if (gpslonTV.text.isNotEmpty()) {
                             reptilia_attribute.GPS_LON = log.toFloat()
                         }
                         if (coordndET.text.isNotEmpty()) {
@@ -1120,16 +1056,16 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                         if (chkdata) {
 
-                            if(pk != null){
+                            if (pk != null) {
 
                                 val CONF_MOD = confmodTV.text.toString()
 
-                                if(CONF_MOD == "C" || CONF_MOD == "N"){
+                                if (CONF_MOD == "C" || CONF_MOD == "N") {
                                     reptilia_attribute.CONF_MOD = "M"
                                 }
 
-                                dbManager!!.updatereptilia_attribute(reptilia_attribute,pk)
-                                dbManager!!.updatecommonreptilia(reptilia_attribute,keyId)
+                                dbManager!!.updatereptilia_attribute(reptilia_attribute, pk)
+                                dbManager!!.updatecommonreptilia(reptilia_attribute, keyId)
                             }
 
 //                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator)
@@ -1236,7 +1172,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                         var intent = Intent()
 
-                        intent.putExtra("export",70)
+                        intent.putExtra("export", 70)
 
                         setResult(RESULT_OK, intent);
 
@@ -1251,18 +1187,14 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         }
 
         btn_add.setOnClickListener {
-            var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(null,null,null,null,null,null,null,null,null
-                    ,null,null,null,null,null,null,null,null,null,null,null,null
-                    ,null,null,null,null,null,null,null
-                    ,null,null,null,null,null,null
-                    ,null, null,null,null,null,null,null)
+            var reptilia_attribute: Reptilia_attribute = null_attribute()
 
             keyId = intent.getStringExtra("GROP_ID")
 
             reptilia_attribute.GROP_ID = keyId
 
             val prj = prjnameET.text.toString()
-            if (prj == prjname){
+            if (prj == prjname) {
                 reptilia_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
             } else {
                 reptilia_attribute.PRJ_NAME = prjnameET.text.toString()
@@ -1277,7 +1209,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
 
 //            reptilia_attribute.INV_REGION = invregionET.text.toString()
-            if (invregionET.length() > 0){
+            if (invregionET.length() > 0) {
                 reptilia_attribute.INV_REGION = invregionET.text.toString();
             } else {
                 reptilia_attribute.INV_REGION = INV_REGION
@@ -1289,13 +1221,13 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             reptilia_attribute.WIND = windTV.text.toString()
             reptilia_attribute.WIND_DIRE = windDireTV.text.toString()
 
-            if(temperaturET.text.isNotEmpty()){
+            if (temperaturET.text.isNotEmpty()) {
                 reptilia_attribute.TEMPERATUR = temperaturET.text.toString().toFloat()
             }
 
             reptilia_attribute.ETC = etcET.text.toString()
 
-            if(numET.text.isNotEmpty()){
+            if (numET.text.isNotEmpty()) {
                 reptilia_attribute.NUM = numET.text.toString().toInt()
             }
 
@@ -1303,19 +1235,19 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
             reptilia_attribute.SPEC_NM = specnmET.text.toString()
             var specet = specET.text.toString()
-            if (specet != null && specet != ""){
+            if (specet != null && specet != "") {
                 reptilia_attribute.SPEC_NM = specet
             }
             reptilia_attribute.FAMI_NM = famiET.text.toString()
             reptilia_attribute.SCIEN_NM = scienET.text.toString()
 
-            if(incntaduET.text.isNotEmpty()){
+            if (incntaduET.text.isNotEmpty()) {
                 reptilia_attribute.IN_CNT_ADU = incntaduET.text.toString().toInt()
             }
-            if(incntlarET.text.isNotEmpty()){
+            if (incntlarET.text.isNotEmpty()) {
                 reptilia_attribute.IN_CNT_LAR = incntlarET.text.toString().toInt()
             }
-            if(incnteggET.text.isNotEmpty()){
+            if (incnteggET.text.isNotEmpty()) {
                 reptilia_attribute.IN_CNT_EGG = incnteggET.text.toString().toInt()
             }
 
@@ -1328,24 +1260,24 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             reptilia_attribute.WATER_CONT = watercontET.text.toString()
             reptilia_attribute.WATER_QUAL = waterqualET.text.toString()
 
-            if(waterdeptET.text.isNotEmpty()){
+            if (waterdeptET.text.isNotEmpty()) {
                 reptilia_attribute.WATER_DEPT = waterdeptET.text.toString().toInt()
             }
 
-            if(habareawET.text.isNotEmpty()){
+            if (habareawET.text.isNotEmpty()) {
                 reptilia_attribute.HAB_AREA_W = habareawET.text.toString().toInt()
             }
 
-            if(habareahET.text.isNotEmpty()){
+            if (habareahET.text.isNotEmpty()) {
                 reptilia_attribute.HAB_AREA_H = habareahET.text.toString().toInt()
             }
 
 
-            if(gpslatTV.text.isNotEmpty()){
+            if (gpslatTV.text.isNotEmpty()) {
                 reptilia_attribute.GPS_LAT = lat.toFloat()
             }
 
-            if(gpslonTV.text.isNotEmpty()){
+            if (gpslonTV.text.isNotEmpty()) {
                 reptilia_attribute.GPS_LON = log.toFloat()
             }
             if (coordndET.text.isNotEmpty()) {
@@ -1378,16 +1310,16 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
             if (chkdata) {
 
-                if(pk != null){
+                if (pk != null) {
 
                     val CONF_MOD = confmodTV.text.toString()
 
-                    if(CONF_MOD == "C" || CONF_MOD == "N"){
+                    if (CONF_MOD == "C" || CONF_MOD == "N") {
                         reptilia_attribute.CONF_MOD = "M"
                     }
 
-                    dbManager!!.updatereptilia_attribute(reptilia_attribute,pk)
-                    dbManager!!.updatecommonreptilia(reptilia_attribute,keyId)
+                    dbManager!!.updatereptilia_attribute(reptilia_attribute, pk)
+                    dbManager!!.updatecommonreptilia(reptilia_attribute, keyId)
                 }
 
 //                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator)
@@ -1487,7 +1419,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
             }
 
-            if(intent.getStringExtra("set") != null){
+            if (intent.getStringExtra("set") != null) {
                 intent.putExtra("reset", 100)
 
                 setResult(RESULT_OK, intent);
@@ -1496,26 +1428,26 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             btn_reptiliaDelete.visibility = View.GONE
 
             var intent = Intent()
-            intent.putExtra("export",70)
+            intent.putExtra("export", 70)
             setResult(RESULT_OK, intent)
 
-            if (images_path != null){
+            if (images_path != null) {
                 images_path!!.clear()
             }
 
-            if (images != null){
+            if (images != null) {
                 images!!.clear()
             }
 
-            if (images_url != null){
+            if (images_url != null) {
                 images_url!!.clear()
             }
 
-            if (images_url_remove != null){
+            if (images_url_remove != null) {
                 images_url_remove!!.clear()
             }
 
-            if (images_id != null){
+            if (images_id != null) {
                 images_id!!.clear()
             }
 
@@ -1602,15 +1534,15 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         }
     }
 
-    fun startDlgReptilia(){
+    fun startDlgReptilia() {
         val intent = Intent(context, DlgReptiliaActivity::class.java)
         intent.putExtra("title", "양서ㆍ파충류 선택")
         intent.putExtra("table", "Amphibian")
         intent.putExtra("DlgHeight", 600f);
 
-        if (specnmET.text != null && specnmET.text != ""){
+        if (specnmET.text != null && specnmET.text != "") {
             val SPEC = specnmET.text.toString()
-            intent.putExtra("SPEC",SPEC)
+            intent.putExtra("SPEC", SPEC)
         }
         startActivityForResult(intent, SET_REPTILIA);
     }
@@ -1644,7 +1576,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                     var family_name = data!!.getStringExtra("family_name");
                     var zoological = data!!.getStringExtra("zoological");
 
-                    if (name == "SP(미동정)"){
+                    if (name == "SP(미동정)") {
                         specnmET.visibility = View.GONE
                         specLL.visibility = View.VISIBLE
                     }
@@ -1711,7 +1643,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                             time = invtmTV.text.toString()
                             var timesplit = time.split(":")
                             invtm = timesplit.get(0) + timesplit.get(1)
-                            val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator
+                            val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images" + File.separator + keyId + File.separator
                             val outputsDir = File(outPath)
 
                             if (outputsDir.exists()) {
@@ -1727,7 +1659,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
                             }
                             println("images_size ${images!!.size}")
-                            saveVitmapToFile(images!!.get(i),outPath+num + "_" + invtm+"_"+(i+1)+".png")
+                            saveVitmapToFile(images!!.get(i), outPath + num + "_" + invtm + "_" + (i + 1) + ".png")
 
                         }
 
@@ -1758,7 +1690,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                         val str = result[i]
                         images_path!!.add(str);
                     }
-                    for (i in 0 until images_path!!.size){
+                    for (i in 0 until images_path!!.size) {
                         val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(i))
                         if (images!!.size == 0) {
                             images!!.add(add_file)
@@ -1784,7 +1716,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                         time = invtmTV.text.toString()
                         var timesplit = time.split(":")
                         invtm = timesplit.get(0) + timesplit.get(1)
-                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator
+                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images" + File.separator + keyId + File.separator
                         val outputsDir = File(outPath)
 
                         if (outputsDir.exists()) {
@@ -1799,7 +1731,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                             val made = outputsDir.mkdirs()
 
                         }
-                        saveVitmapToFile(images!!.get(i),outPath+num + "_" + invtm+"_"+(i+1)+".png")
+                        saveVitmapToFile(images!!.get(i), outPath + num + "_" + invtm + "_" + (i + 1) + ".png")
 
                     }
                     images!!.clear()
@@ -1858,10 +1790,9 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                 textView.text = selectItem
             }
 
-            if ("waterqual" == type){
+            if ("waterqual" == type) {
 
             }
-
 
 
         })
@@ -1873,13 +1804,13 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         val builder = AlertDialog.Builder(context)
         builder.setMessage("삭제하시겠습니까 ? ").setCancelable(false)
                 .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images" + File.separator + keyId + File.separator
                     addPicturesLL!!.removeAllViews()
                     images!!.clear()
                     val tag = v.tag as Int
                     images_path!!.removeAt(tag)
                     val num = numET.text.toString()
-                    var file = File(outPath+num + "_" + invtm+"_"+(tag+1)+".png")
+                    var file = File(outPath + num + "_" + invtm + "_" + (tag + 1) + ".png")
                     file.delete()
 
                     for (k in images_url!!.indices) {
@@ -2017,21 +1948,21 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         alert.show()
     }
 
-    fun clear(){
+    fun clear() {
         var c = dbManager!!.pkNum("reptiliaAttribute")
         numET.text = c.toString()
-       /* var num = numET.text.toString()
-        if (num.length > 7){
-            var textnum = num.substring(num.length - 2, num.length)
-            var splitnum = num.substring(0, num.length - 2)
-            var plusnum = textnum.toInt() + 1
-            numET.setText(splitnum.toString() + plusnum.toString())
-        } else {
-            var textnum = num.substring(num.length - 1, num.length)
-            var splitnum = num.substring(0, num.length - 1)
-            var plusnum = textnum.toInt() + 1
-            numET.setText(splitnum.toString() + plusnum.toString())
-        }*/
+        /* var num = numET.text.toString()
+         if (num.length > 7){
+             var textnum = num.substring(num.length - 2, num.length)
+             var splitnum = num.substring(0, num.length - 2)
+             var plusnum = textnum.toInt() + 1
+             numET.setText(splitnum.toString() + plusnum.toString())
+         } else {
+             var textnum = num.substring(num.length - 1, num.length)
+             var splitnum = num.substring(0, num.length - 1)
+             var plusnum = textnum.toInt() + 1
+             numET.setText(splitnum.toString() + plusnum.toString())
+         }*/
 
         invtmTV.setText(Utils.timeStr())
         specnmET.setText("")
@@ -2061,7 +1992,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
     }
 
-    fun resetPage(page : Int){
+    fun resetPage(page: Int) {
         val dataList: Array<String> = arrayOf("*");
 
         val dbManager: DataBaseHelper = DataBaseHelper(this)
@@ -2070,9 +2001,9 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         val id = intent.getStringExtra("id")
 
-        val data= db.query("reptiliaAttribute", dataList, "id = '$id'", null, null, null, "", null)
+        val data = db.query("reptiliaAttribute", dataList, "id = '$id'", null, null, null, "", null)
 
-        if (dataArray != null){
+        if (dataArray != null) {
             dataArray.clear()
         }
 
@@ -2080,128 +2011,123 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
             chkdata = true
 
-            var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                    , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                    , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32),data.getString(33)
-                    , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39), data.getFloat(40)
-            )
+            var reptilia_attribute: Reptilia_attribute = export_attribute(data)
 
             dataArray.add(reptilia_attribute)
 
             invregionET.setText(reptilia_attribute.INV_REGION)
-            if(invregionET.text == null){
+            if (invregionET.text == null) {
                 invregionET.setText("")
             }
 
             createdDateTV.setText(reptilia_attribute.INV_DT)
-            if(createdDateTV.text == null){
+            if (createdDateTV.text == null) {
                 createdDateTV.setText("")
             }
 
             weatherTV.setText(reptilia_attribute.WEATHER)
-            if(weatherTV.text == null){
+            if (weatherTV.text == null) {
                 weatherTV.setText("")
             }
 
             windTV.setText(reptilia_attribute.WIND)
-            if(windTV.text == null){
+            if (windTV.text == null) {
                 windTV.setText("")
             }
 
             windDireTV.setText(reptilia_attribute.WIND_DIRE)
-            if(windDireTV.text == null){
+            if (windDireTV.text == null) {
                 windDireTV.setText("")
             }
 
             temperaturET.setText(reptilia_attribute.TEMPERATUR.toString())
-            if(temperaturET.text == null){
+            if (temperaturET.text == null) {
                 temperaturET.setText("")
             }
 
             etcET.setText(reptilia_attribute.ETC)
-            if(etcET.text == null){
+            if (etcET.text == null) {
                 etcET.setText("")
             }
 
             numET.setText(reptilia_attribute.NUM.toString())
-            if(numET.text == null){
+            if (numET.text == null) {
                 numET.setText("")
             }
 
             invtmTV.setText(reptilia_attribute.INV_TM)
-            if(invtmTV.text == null){
+            if (invtmTV.text == null) {
                 invtmTV.setText("")
             }
 
             specnmET.setText(reptilia_attribute.SPEC_NM)
-            if(specnmET.text == null){
+            if (specnmET.text == null) {
                 specnmET.setText("")
             }
 
             famiET.setText(reptilia_attribute.FAMI_NM)
-            if(famiET.text == null){
+            if (famiET.text == null) {
                 famiET.setText("")
             }
 
             scienET.setText(reptilia_attribute.SCIEN_NM)
-            if(scienET.text == null){
+            if (scienET.text == null) {
                 scienET.setText("")
             }
 
             incntaduET.setText(reptilia_attribute.IN_CNT_ADU.toString())
-            if(incntaduET.text == null){
+            if (incntaduET.text == null) {
                 incntaduET.setText("")
             }
             incntlarET.setText(reptilia_attribute.IN_CNT_LAR.toString())
-            if(incntlarET.text == null){
+            if (incntlarET.text == null) {
                 incntlarET.setText("")
             }
             incnteggET.setText(reptilia_attribute.IN_CNT_EGG.toString())
-            if(incnteggET.text == null){
+            if (incnteggET.text == null) {
                 incnteggET.setText("")
             }
 
             habriveerET.setText(reptilia_attribute.HAB_RIVEER)
-            if(habriveerET.text == null){
+            if (habriveerET.text == null) {
                 habriveerET.setText("")
             }
             habedgeET.setText(reptilia_attribute.HAB_EDGE)
-            if(habedgeET.text == null){
+            if (habedgeET.text == null) {
                 habedgeET.setText("")
             }
 
             waterinET.setText(reptilia_attribute.WATER_IN)
-            if(waterinET.text == null){
+            if (waterinET.text == null) {
                 waterinET.setText("")
             }
 
             wateroutET.setText(reptilia_attribute.WATER_OUT)
-            if(wateroutET.text == null){
+            if (wateroutET.text == null) {
                 wateroutET.setText("")
             }
 
             watercontET.setText(reptilia_attribute.WATER_CONT)
-            if(watercontET.text == null){
+            if (watercontET.text == null) {
                 watercontET.setText("")
             }
 
             waterqualET.setText(reptilia_attribute.WATER_QUAL)
-            if(waterqualET.text == null){
+            if (waterqualET.text == null) {
                 waterqualET.setText("")
             }
 
             waterdeptET.setText(reptilia_attribute.WATER_DEPT.toString())
-            if(waterdeptET.text == null){
+            if (waterdeptET.text == null) {
                 waterdeptET.setText("")
             }
 
             habareawET.setText(reptilia_attribute.HAB_AREA_W.toString())
-            if(habareawET.text == null){
+            if (habareawET.text == null) {
                 habareawET.setText("0")
             }
             habareahET.setText(reptilia_attribute.HAB_AREA_H.toString())
-            if(habareahET.text == null){
+            if (habareahET.text == null) {
                 habareahET.setText("0")
             }
 
@@ -2238,7 +2164,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
                 loadPermissions(Manifest.permission.ACCESS_COARSE_LOCATION, REQUEST_ACCESS_COARSE_LOCATION)
             } else if (Manifest.permission.ACCESS_COARSE_LOCATION == perm) {
                 checkGPs()
-            }else if (Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
+            } else if (Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
                 imageFromGallery()
             } else if (Manifest.permission.WRITE_EXTERNAL_STORAGE == perm) {
                 loadPermissions(Manifest.permission.CAMERA, REQUEST_PERMISSION_CAMERA)
@@ -2329,40 +2255,40 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         SmartLocation.with(context).location().stop()
     }
 
-    fun saveVitmapToFile(bitmap:Bitmap, filePath:String){
+    fun saveVitmapToFile(bitmap: Bitmap, filePath: String) {
 
         var file = File(filePath)
-        var out: OutputStream? =null
+        var out: OutputStream? = null
         try {
             file.createNewFile()
             out = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
 
-        }catch (e:Exception){
+        } catch (e: Exception) {
 
             e.printStackTrace()
-        }finally {
+        } finally {
 
             out!!.close()
         }
 
     }
 
-    fun setDirEmpty( dirName:String){
+    fun setDirEmpty(dirName: String) {
 
         var path = Environment.getExternalStorageDirectory().toString() + dirName;
 
-        val dir:File    =  File(path);
+        val dir: File = File(path);
         var childFileList = dir.listFiles()
 
-        if(dir.exists()){
-            for(childFile:File in childFileList){
+        if (dir.exists()) {
+            for (childFile: File in childFileList) {
 
-                if(childFile.isDirectory()){
+                if (childFile.isDirectory()) {
 
                     setDirEmpty(childFile.absolutePath); //하위디렉토리
 
-                } else{
+                } else {
 
                     childFile.delete(); // 하위파일
                 }
@@ -2386,47 +2312,41 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
 
         val dataList: Array<String> = arrayOf("*");
 
-        val data= db!!.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        val data = db!!.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
-        if (dataArray != null){
+        if (dataArray != null) {
             dataArray.clear()
         }
 
         while (data.moveToNext()) {
 
-            var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                    , data.getString(15), data.getString(16),data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                    , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30),data.getString(31),data.getString(32),data.getString(33)
-                    , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39)
-                    , data.getFloat(40)
-            )
+            var reptilia_attribute: Reptilia_attribute = export_attribute(data)
 
             dataArray.add(reptilia_attribute)
 
         }
 
-        if (dataArray.size == 0 || intent.getStringExtra("id") == null){
+        if (dataArray.size == 0 || intent.getStringExtra("id") == null) {
 
             var intent = Intent()
             intent.putExtra("markerid", markerid)
             setResult(RESULT_OK, intent);
 
-            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator)
+            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images" + File.separator + keyId + File.separator)
 //                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/birds/images/")
             val pathdir = path.listFiles()
 
             if (pathdir != null) {
                 val deletedir = path.listFiles()
                 println("deletedir.size ${deletedir.size}")
-                if (path.isDirectory){
-                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator)
+                if (path.isDirectory) {
+                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images" + File.separator + keyId + File.separator)
 //                                     val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
                     deletepath.deleteRecursively()
                 }
             } else {
-                if (path.isDirectory){
-                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +keyId+ File.separator)
+                if (path.isDirectory) {
+                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images" + File.separator + keyId + File.separator)
 //                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
                     deletepath.deleteRecursively()
                 }
@@ -2440,8 +2360,8 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         finish()
 
     }
-    fun memory(){
 
+    fun memory() {
 
 
         habareawET.addTextChangedListener(object : TextWatcher {
@@ -2456,7 +2376,7 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 var width = Utils.getString(habareawET)
                 var height = Utils.getString(habareahET)
-                if (width!=""&&height!=""){
+                if (width != "" && height != "") {
                     memoryTV.text = ((width.toFloat() * height.toFloat()).toString())
                 }
 
@@ -2474,13 +2394,12 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 var width = Utils.getString(habareawET)
                 var height = Utils.getString(habareahET)
-                if (width!=""&&height!=""){
+                if (width != "" && height != "") {
                     memoryTV.text = ((width.toFloat() * height.toFloat()).toString())
                 }
             }
         })
     }
-
 
 
     fun convert(d: Double): String {
@@ -2565,10 +2484,11 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
     fun datedlg() {
         var day = Utils.todayStr()
         var days = day.split("-")
-        DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt()-1, days[2].toInt()).show()
+        DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt() - 1, days[2].toInt()).show()
     }
+
     private val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-        val msg = String.format("%d-%d-%d", year, monthOfYear+1, dayOfMonth)
+        val msg = String.format("%d-%d-%d", year, monthOfYear + 1, dayOfMonth)
         createdDateTV.text = msg
     }
 
@@ -2578,15 +2498,38 @@ class ReptiliaActivity : Activity() , OnLocationUpdatedListener{
         val dialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hour, min ->
             var hour_s = hour.toString()
             var min_s = min.toString()
-            if (min_s.length!=2){
-                min_s = "0"+min_s
+            if (min_s.length != 2) {
+                min_s = "0" + min_s
             }
-            if (hour_s.length!=2){
-                hour_s = "0"+hour_s
+            if (hour_s.length != 2) {
+                hour_s = "0" + hour_s
             }
             val msg = String.format("%s : %s", hour_s, min_s)
             invtmTV.text = msg
         }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
         dialog.show()
     }
+
+
+    fun null_attribute(): Reptilia_attribute {
+        var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(null, null, null, null, null, null, null, null, null
+                , null, null, null, null, null, null, null, null, null, null, null, null
+                , null, null, null, null, null, null, null
+                , null, null, null, null, null, null
+                , null, null, null, null, null, null, null,null,null)
+        return reptilia_attribute
+    }
+
+    fun export_attribute(data: Cursor): Reptilia_attribute {
+        var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                , data.getString(15), data.getString(16), data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
+                , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30), data.getString(31), data.getString(32), data.getString(33)
+                , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39)
+                , data.getFloat(40), data.getString(41), data.getString(42)
+        )
+        return reptilia_attribute
+    }
+
+
 }

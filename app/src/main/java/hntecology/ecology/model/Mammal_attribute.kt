@@ -11,5 +11,6 @@ class Mammal_attribute (
         , var UN_SPEC: String? , var UN_SPEC_RE: String? , var TR_EASY: String? , var TR_EASY_RE: String?,var TEMP_YN:String?
         , var CONF_MOD:String?,var GEOM:String?,var GPSLAT_DEG:Int?,var GPSLAT_MIN:Int?,var GPSLAT_SEC:Float?
         ,var GPSLON_DEG:Int?,var GPSLON_MIN:Int?,var GPSLON_SEC:Float?,var MJ_ACT_PR:String?
+        , var MAC_ADDR: String?,var CURRENT_TM:String?
 ): Serializable {
 }

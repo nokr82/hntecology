@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -33,6 +34,7 @@ import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.Base
+import hntecology.ecology.model.Fish_attribute
 import hntecology.ecology.model.Insect_attribute
 import hntecology.ecology.model.Region
 import io.nlopez.smartlocation.OnLocationUpdatedListener
@@ -277,12 +279,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
             while (data.moveToNext()) {
                 chkdata = true
-                var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4)
-                        , data.getString(5), data.getString(6), data.getString(7), data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11)
-                        , data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getInt(16), data.getString(17)
-                        , data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                        , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
-                        , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
+                var insect_attribute  = export_attribute(data)
 
                 insectinvregionET.setText(insect_attribute.INV_REGION)
                 INV_REGION = insect_attribute.INV_REGION.toString()
@@ -485,12 +482,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                 chkdata = true
 
-                var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4)
-                        , data.getString(5), data.getString(6), data.getString(7), data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11)
-                        , data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getInt(16), data.getString(17)
-                        , data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                        , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
-                        , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
+                var insect_attribute=  export_attribute(data)
 
                 dataArray.add(insect_attribute)
             }
@@ -532,22 +524,14 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                 chkdata = true
 
-                var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4)
-                        , data.getString(5), data.getString(6), data.getString(7), data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11)
-                        , data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getInt(16), data.getString(17)
-                        , data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                        , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
-                        , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
+                var insect_attribute = export_attribute(data)
 
 
 
                 dataArray.add(insect_attribute)
             }
 
-            var insect_attribute: Insect_attribute = Insect_attribute(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null
-            ,null,null,null,null,null,null,null,null,null,null,null,null,null
-            ,null,null,null,null)
-
+            var insect_attribute: Insect_attribute = null_attribute()
             insect_attribute.id = keyId + page.toString()
 
             insect_attribute.GROP_ID = keyId
@@ -647,12 +631,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                 chkdata = true
 
-                var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4)
-                        , data.getString(5), data.getString(6), data.getString(7), data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11)
-                        , data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getInt(16), data.getString(17)
-                        , data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                        , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
-                        , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
+                var insect_attribute = export_attribute(data)
 
                 dataArray.add(insect_attribute)
 
@@ -677,9 +656,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
 
-                        var insect_attribute: Insect_attribute = Insect_attribute(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null
-                                ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                                ,null,null,null,null)
+                        var insect_attribute: Insect_attribute = null_attribute()
 
                         keyId = intent.getStringExtra("GROP_ID")
 
@@ -936,13 +913,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                         while (data.moveToNext()) {
 
-                            var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4)
-                                    , data.getString(5), data.getString(6), data.getString(7), data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11)
-                                    , data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getInt(16), data.getString(17)
-                                    , data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                                    , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
-                                    , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
-
+                            var insect_attribute =export_attribute(data)
                             dataArray.add(insect_attribute)
                         }
 
@@ -995,9 +966,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                             dialog.cancel()
 
-                            var insect_attribute: Insect_attribute = Insect_attribute(null,null,null,null,null,null,null, null, null, null, null, null, null, null, null, null
-                                    , null, null, null, null, null, null, null, null, null, null, null, null, null
-                                    , null, null, null, null)
+                            var insect_attribute: Insect_attribute = null_attribute()
 
 
                             if (pk != null) {
@@ -1006,13 +975,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                                 while (data.moveToNext()) {
 
-                                    insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4)
-                                            , data.getString(5), data.getString(6), data.getString(7), data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11)
-                                            , data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getInt(16), data.getString(17)
-                                            , data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                                            , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
-                                            , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
-
+                                    insect_attribute = export_attribute(data)
                                 }
                                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "insect/images"+ File.separator +keyId+ File.separator)
 //                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/insect/images/")
@@ -1065,13 +1028,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
 
 
-                                        var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4)
-                                                , data.getString(5), data.getString(6), data.getString(7), data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11)
-                                                , data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getInt(16), data.getString(17)
-                                                , data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                                                , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
-                                                , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
-
+                                        var insect_attribute = export_attribute(data)
                                         dataArray.add(insect_attribute)
 
                                     }
@@ -1131,12 +1088,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
                                     chkdata = true
 
-                                    var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4)
-                                            , data.getString(5), data.getString(6), data.getString(7), data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11)
-                                            , data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getInt(16), data.getString(17)
-                                            , data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                                            , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
-                                            , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
+
                                 }
 
                                 if (chkdata == true) {
@@ -1298,9 +1250,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
         }
 
         insectaddBT.setOnClickListener {
-            var insect_attribute: Insect_attribute = Insect_attribute(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null
-                    ,null,null,null,null,null,null,null,null,null,null,null,null,null
-                    ,null,null,null,null)
+            var insect_attribute: Insect_attribute =null_attribute()
 
             keyId = intent.getStringExtra("GROP_ID")
 
@@ -1708,12 +1658,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
             chkdata = true
 
-            var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4)
-                    , data.getString(5), data.getString(6), data.getString(7), data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11)
-                    , data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getInt(16), data.getString(17)
-                    , data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                    , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
-                    , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
+            var insect_attribute = export_attribute(data)
 
             dataArray.add(insect_attribute)
 
@@ -2536,12 +2481,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
         while (data.moveToNext()) {
 
-            var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4)
-                    , data.getString(5), data.getString(6), data.getString(7), data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11)
-                    , data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getInt(16), data.getString(17)
-                    , data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                    , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
-                    , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32))
+            var insect_attribute = export_attribute(data)
 
             dataArray.add(insect_attribute)
         }
@@ -2608,5 +2548,20 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
         val msg = String.format("%d-%d-%d", year, monthOfYear+1, dayOfMonth)
         insectinvdtET.text = msg
     }
+    fun null_attribute(): Insect_attribute {
+        var insect_attribute: Insect_attribute = Insect_attribute(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null
+                ,null,null,null,null,null,null,null,null,null,null,null,null,null
+                ,null,null,null,null,null,null)
+        return insect_attribute
+    }
 
+    fun export_attribute(data: Cursor): Insect_attribute {
+        var insect_attribute: Insect_attribute = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4)
+                , data.getString(5), data.getString(6), data.getString(7), data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11)
+                , data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getInt(16), data.getString(17)
+                , data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+                , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
+                , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32),data.getString(33),data.getString(34))
+        return insect_attribute
+    }
 }

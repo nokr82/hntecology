@@ -11,5 +11,6 @@ class Insect_attribute (
         , var UNUS_NOTE: String? , var GPS_LAT: Float?, var GPS_LON: Float?,var TEMP_YN:String? ,var CONF_MOD:String?
         ,var GEOM:String?,var GPSLAT_DEG:Int?,var GPSLAT_MIN:Int?,var GPSLAT_SEC:Float?
         ,var GPSLON_DEG:Int?,var GPSLON_MIN:Int?,var GPSLON_SEC:Float?
+        , var MAC_ADDR: String? ,var CURRENT_TM: String?
 ): Serializable {
 }

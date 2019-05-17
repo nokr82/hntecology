@@ -36,6 +36,9 @@ class Birds_attribute(
         var GPSLAT_SEC: Float?,
         var GPSLON_DEG: Int?,
         var GPSLON_MIN: Int?,
-        var GPSLON_SEC: Float?
+        var GPSLON_SEC: Float?,
+        var MAC_ADDR: String?,
+        var CURRENT_TM: String?
+
 ) : Serializable {
 }

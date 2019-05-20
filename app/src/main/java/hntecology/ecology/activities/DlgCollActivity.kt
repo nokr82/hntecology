@@ -176,6 +176,4 @@ class DlgCollActivity : Activity() {
 
     }
 
-
-
 }

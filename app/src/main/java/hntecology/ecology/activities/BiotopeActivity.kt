@@ -629,7 +629,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 tvINV_PERSONTV.setText(biotope_attribute.INV_PERSON)
 
                 var dataPk = biotope_attribute.id!!.toInt()
-                var PAGE = 1
+                var PAGE = trepage
                 var SPEC = biotope_attribute.TRE_SPEC
                 var SPEC2 = biotope_attribute.TRE_FAMI
                 var SPEC3 = biotope_attribute.TRE_SCIEN
@@ -657,6 +657,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                     etTRE_COVEET.setText(biotope_attribute.TRE_COVE.toString())
                 }
                 // 아교목층
+                val SPAGE= strepage
                 val STRE_SPEC = biotope_attribute.STRE_SPEC
                 val STRE_FAMI = biotope_attribute.STRE_FAMI
                 val STRE_SCIEN = biotope_attribute.STRE_SCIEN
@@ -669,7 +670,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 var PER2 = biotope_attribute.STRE_COVE
 
                 if (STRE_SPEC!!.length > 0) {
-                    val data = BioTreeData(dataPk, PAGE, SPEC, STRE_FAMI, STRE_SCIEN, STRE_H_N, STRE_H, STRE_H_X, STRE_BRT_N, STRE_BRT, STRE_BRT_X, PER2)
+                    val data = BioTreeData(dataPk, SPAGE, SPEC, STRE_FAMI, STRE_SCIEN, STRE_H_N, STRE_H, STRE_H_X, STRE_BRT_N, STRE_BRT, STRE_BRT_X, PER2)
                     StreDatas.add(data)
                     etSTRE_SPECET.setText(biotope_attribute.STRE_SPEC.toString())
                     etSTRE_FAMIET.setText(biotope_attribute.STRE_FAMI.toString())
@@ -1468,7 +1469,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                                         dataArray.add(biotope_attribute)
 
                                         var dataPk = biotope_attribute.id!!.toInt()
-                                        var PAGE = 1
+                                        var PAGE = trepage
                                         var SPEC = biotope_attribute.TRE_SPEC
                                         var SPEC2 = biotope_attribute.TRE_FAMI
                                         var SPEC3 = biotope_attribute.TRE_SCIEN

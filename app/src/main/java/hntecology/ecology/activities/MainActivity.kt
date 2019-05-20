@@ -2259,7 +2259,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                     , data.getString(38), data.getString(39), data.getString(40)
                                     , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
                                     , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
-                                    , data.getString(20), data.getInt(51))
+                                    , data.getString(20), data.getInt(51),data.getString(52),data.getString(53))
 
                             zoobenthosArray.add(zoo)
                         }
@@ -2383,7 +2383,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         var title = ""
 
                         while (data.moveToNext()) {
-                            var waypoint: Waypoint = Waypoint(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7), data.getFloat(8), data.getFloat(9), data.getString(10), data.getString(11))
+                            var waypoint: Waypoint = Waypoint(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7), data.getFloat(8), data.getFloat(9), data.getString(10), data.getString(11),data.getString(12),data.getString(13))
                             waypointdataArray.add(waypoint)
                         }
 
@@ -7875,7 +7875,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     , data.getString(38), data.getString(39), data.getString(40)
                     , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
                     , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
-                    , data.getString(50), data.getInt(51))
+                    , data.getString(50), data.getInt(51),data.getString(52),data.getString(53))
 
             zoobenthousDatas.add(zoo)
 
@@ -7971,6 +7971,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     ZOOBENTHOUS.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString, zoo.TEMP_YN))
                     ZOOBENTHOUS.add(Exporter.ColumnDef("GEOM", ogr.OFTString, zoo.GEOM))
                     ZOOBENTHOUS.add(Exporter.ColumnDef("ZOO_CNT", ogr.OFTInteger, zoo.ZOO_CNT))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTInteger, zoo.MAC_ADDR))
+                    ZOOBENTHOUS.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTInteger, zoo.CURRENT_TM))
 
                     var geomsplit = zoo.GEOM!!.split(" ")
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
@@ -8051,6 +8053,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             ZOOBENTHOUS.add(Exporter.ColumnDef("FAMI_NM", ogr.OFTString, zoo.FAMI_NM))
                             ZOOBENTHOUS.add(Exporter.ColumnDef("SCIEN_NM", ogr.OFTString, zoo.SCIEN_NM))
                             ZOOBENTHOUS.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, zoo.CONF_MOD))
+                            ZOOBENTHOUS.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, zoo.MAC_ADDR))
+                            ZOOBENTHOUS.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, zoo.CURRENT_TM))
+
+
                         }
 
                         val exporter = Exporter.ExportPointItem(LAYER_ZOOBENTHOS, ZOOBENTHOUS, points.get(idx))
@@ -8111,7 +8117,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         var index = 0
 
         while (data.moveToNext()) {
-            var waypoint: Waypoint = Waypoint(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7), data.getFloat(8), data.getFloat(9), data.getString(10), data.getString(11))
+            var waypoint: Waypoint = Waypoint(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7), data.getFloat(8), data.getFloat(9), data.getString(10), data.getString(11),data.getString(12),data.getString(13))
             waypointDatas.add(waypoint)
         }
 
@@ -8171,6 +8177,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, waypoint.GPS_LON.toString()))
                     WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("MEMO", ogr.OFTString, waypoint.MEMO))
                     WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("GEOM", ogr.OFTString, waypoint.GEOM))
+                    WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, waypoint.MAC_ADDR))
+                    WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, waypoint.CURRENT_TM))
 
                     var geomsplit = waypoint.GEOM!!.split(" ")
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
@@ -8204,6 +8212,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, waypoint.GPS_LAT.toString()))
                             WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, waypoint.GPS_LON.toString()))
                             WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("MEMO", ogr.OFTString, waypoint.MEMO))
+                            WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, waypoint.MAC_ADDR))
+                            WAYPOINTATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, waypoint.CURRENT_TM))
                         }
 
                         val exporter = Exporter.ExportPointItem(LAYER_WAYPOINT, WAYPOINTATTRIBUTE, points.get(idx))

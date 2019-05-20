@@ -482,7 +482,7 @@ class DlgResearchActivity : Activity() {
                     , data.getString(38), data.getString(39), data.getString(40)
                     , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
                     , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
-                    , data.getString(20), data.getInt(51))
+                    , data.getString(20), data.getInt(51),data.getString(52),data.getString(53))
 
             val tmpfiles =  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images"+ File.separator +zoo.GROP_ID+ File.separator)
             var tmpfileList = tmpfiles.listFiles()
@@ -505,7 +505,7 @@ class DlgResearchActivity : Activity() {
 
     fun waypointSelect(data:Cursor){
         while (data.moveToNext()) {
-            var waypoint: Waypoint = Waypoint(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7), data.getFloat(8), data.getFloat(9), data.getString(10), data.getString(11))
+            var waypoint: Waypoint = Waypoint(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7), data.getFloat(8), data.getFloat(9), data.getString(10), data.getString(11),data.getString(12),data.getString(13))
 
             var PICTURE_YN = "-"
             var SPEC_NM = "-"

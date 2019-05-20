@@ -54,7 +54,11 @@ class Zoobenthos_Attribute (
      var TEMP_YN:String?,
      var CONF_MOD:String?,
      var GEOM:String?,
-     var ZOO_CNT:Int?
+     var ZOO_CNT:Int?,
+     var MAC_ADDR:String?,
+     var CURRENT_TM:String?
+
+
 
 ): Serializable {
 }

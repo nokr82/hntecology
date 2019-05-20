@@ -944,7 +944,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ",INV_DT,NUM,INV_TM,WEATHER,INV_TOOL,AD_DIST_NM,RIV_W,RIV_W2,RUN_RIV_W";
         query += ",RUN_RIV_W2,WATER_DEPT,HAB_TY,FILT_AREA,TEMPERATUR,WATER_TEM,TURBIDITY,MUD,SAND,COR_SAND,GRAVEL,STONE_S";
         query += ",STONE_B,CONCRETE,BED_ROCK,BANK_L,BANK_R,BAS_L,BAS_R,DIST_CAU";
-        query += ",UNUS_NOTE,GPS_LAT,GPS_LON,SPEC_NM,FAMI_NM,SCIEN_NM,TEMP_YN,CONF_MOD,GEOM,ZOO_CNT)";
+        query += ",UNUS_NOTE,GPS_LAT,GPS_LON,SPEC_NM,FAMI_NM,SCIEN_NM,TEMP_YN,CONF_MOD,GEOM,ZOO_CNT,MAC_ADDR,CURRENT_TM)";
 
         query += " values (";
         query += " '" + Zoobenthos_Attribute.getGROP_ID() + "'";
@@ -1004,6 +1004,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + Zoobenthos_Attribute.getCONF_MOD() + "'";
         query += ", '" + Zoobenthos_Attribute.getGEOM() + "'";
         query += "," + Zoobenthos_Attribute.getZOO_CNT() + "";
+        query += ",'" + Zoobenthos_Attribute.getMAC_ADDR() + "'";
+        query += ",'" + Zoobenthos_Attribute.getCURRENT_TM() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -1050,7 +1052,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public void insertWayPoint(Waypoint waypoint) {
         String query = "INSERT INTO Waypoint";
-        query += "(GROP_ID,INV_REGION,INV_DT,INV_TM,NUM,INV_PERSON,PRJ_NAME,GPS_LAT,GPS_LON,MEMO,GEOM)";
+        query += "(GROP_ID,INV_REGION,INV_DT,INV_TM,NUM,INV_PERSON,PRJ_NAME,GPS_LAT,GPS_LON,MEMO,GEOM,MAC_ADDR,CURRENT_TM)";
 
 
         query += " values (";
@@ -1065,6 +1067,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + waypoint.getGPS_LON() + "'";
         query += ", '" + waypoint.getMEMO() + "'";
         query += ", '" + waypoint.getGEOM() + "'";
+        query += ", '" + waypoint.getMAC_ADDR() + "'";
+        query += ", '" + waypoint.getCURRENT_TM() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();

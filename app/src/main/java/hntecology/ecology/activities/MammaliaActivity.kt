@@ -2475,7 +2475,13 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         maminvdtTV.text = msg
     }
     fun null_attribute(): Mammal_attribute {
-        var mammal_attribute:Mammal_attribute =null_attribute()
+        var mammal_attribute:Mammal_attribute =Mammal_attribute(null,null,null,null,null
+                ,null,null,null,null,null,null,null,null,null
+                ,null,null,null,null,null,null,null,null
+                ,null,null,null,null,null,null,null,null
+                ,null,null,null,null,null,null,null,null
+                ,null,null
+        )
         return mammal_attribute
     }
 

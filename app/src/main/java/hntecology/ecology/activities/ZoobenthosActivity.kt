@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -126,7 +127,7 @@ class ZoobenthosActivity : Activity() {
 
     private var db: SQLiteDatabase? = null
 
-    var imageUri:Uri? = null
+    var imageUri: Uri? = null
 
     var invtm = ""
 
@@ -164,15 +165,15 @@ class ZoobenthosActivity : Activity() {
         prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
         prjname = PrefUtils.getStringPreference(context, "prjname")
 
-   /*     var todays = today.split("-")
+        /*     var todays = today.split("-")
 
-        var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
+             var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
 
-        for (i in 1 until todays.size){
-            texttoday += todays.get(i)
-        }
+             for (i in 1 until todays.size){
+                 texttoday += todays.get(i)
+             }
 
-        numTV.setText(texttoday + "1")*/
+             numTV.setText(texttoday + "1")*/
 
         invpersonTV.setText(userName)
 
@@ -188,7 +189,6 @@ class ZoobenthosActivity : Activity() {
         timeTV.setOnClickListener {
             timedlg()
         }
-
 
 
         var intent: Intent = getIntent();
@@ -279,17 +279,17 @@ class ZoobenthosActivity : Activity() {
             lat = base.GPS_LAT!!
             log = base.GPS_LON!!
             try {
-                var geocoder:Geocoder = Geocoder(context);
+                var geocoder: Geocoder = Geocoder(context);
 
-                var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+                var list: List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
 
-                if(list.size > 0){
+                if (list.size > 0) {
                     System.out.println("list : " + list);
 
 //                    fishinvregionET.setText(list.get(0).getAddressLine(0));
                     INV_REGION = list.get(0).getAddressLine(0)
                 }
-            } catch (e:IOException) {
+            } catch (e: IOException) {
                 e.printStackTrace();
             }
         }
@@ -508,17 +508,7 @@ class ZoobenthosActivity : Activity() {
 
                 chkdata = true
 
-                var zoo: Zoobenthos_Attribute =Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                        data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                        , data.getInt(22)
-                        , data.getInt(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27)
-                        , data.getString(28), data.getFloat(29), data.getFloat(30), data.getFloat(31), data.getFloat(32)
-                        , data.getFloat(33), data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getString(37)
-                        , data.getString(38), data.getString(39), data.getString(40)
-                        , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
-                        , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
-                        , data.getString(20), data.getInt(51))
+                var zoo: Zoobenthos_Attribute = export_attribute(data)
 
                 dataArray.add(zoo)
 
@@ -539,17 +529,7 @@ class ZoobenthosActivity : Activity() {
             while (data.moveToNext()) {
                 chkdata = true
 
-                var zoo: Zoobenthos_Attribute =Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                        data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                        , data.getInt(22)
-                        , data.getInt(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27)
-                        , data.getString(28), data.getFloat(29), data.getFloat(30), data.getFloat(31), data.getFloat(32)
-                        , data.getFloat(33), data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getString(37)
-                        , data.getString(38), data.getString(39), data.getString(40)
-                        , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
-                        , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
-                        , data.getString(20), data.getInt(51))
+                var zoo: Zoobenthos_Attribute = export_attribute(data)
 
                 prjnameET.setText(zoo.PRJ_NAME)
                 invregionTV.setText(zoo.INV_REGION)
@@ -567,7 +547,7 @@ class ZoobenthosActivity : Activity() {
                 coordedET.setText(zoo.GPSLON_DEG.toString())
                 coordemET.setText(zoo.GPSLON_MIN.toString())
                 coordesET.setText(zoo.GPSLON_SEC.toString())
-                
+
 
                 cntET.setText(zoo.ZOO_CNT.toString())
                 invdtTV.setText(zoo.INV_DT)
@@ -575,22 +555,22 @@ class ZoobenthosActivity : Activity() {
                 invtoolET.setText(zoo.INV_TOOL)
                 addistnmET.setText(zoo.AD_DIST_NM)
 
-               var rivs =  zoo.RIV_W.toString().split("~")
-                if (rivs.size>1){
+                var rivs = zoo.RIV_W.toString().split("~")
+                if (rivs.size > 1) {
                     rivw1ET.setText(rivs[0])
                     rivw2ET.setText(rivs[1])
                 }
-                var run_rivs =  zoo.RUN_RIV_W.toString().split("~")
-                if (run_rivs.size>1){
+                var run_rivs = zoo.RUN_RIV_W.toString().split("~")
+                if (run_rivs.size > 1) {
                     runrivw1ET.setText(run_rivs[0])
                     runrivw2ET.setText(run_rivs[1])
                 }
-             
+
                 waterdeptET.setText(zoo.WATER_DEPT.toString())
                 habtyetcTV.setText(zoo.HAB_TY)
-          /*      if (zoo.HAB_TY_ETC != null && zoo.HAB_TY_ETC != "") {
-                    habtyetcTV.setText(zoo.HAB_TY_ETC)
-                }*/
+                /*      if (zoo.HAB_TY_ETC != null && zoo.HAB_TY_ETC != "") {
+                          habtyetcTV.setText(zoo.HAB_TY_ETC)
+                      }*/
                 filtareaET.setText(zoo.FILT_AREA)
                 temperaturET.setText(zoo.TEMPERATUR.toString())
                 watertemET.setText(zoo.WATER_TEM.toString())
@@ -604,25 +584,25 @@ class ZoobenthosActivity : Activity() {
                 concreteET.setText(zoo.CONCRETE.toString())
                 bedroceET.setText(zoo.BED_ROCK.toString())
                 banklTV.setText(zoo.BANK_L)
-          /*      if (zoo.BANK_L_ETC != null && zoo.BANK_L_ETC != "") {
-                    banklTV.setText(zoo.BANK_L_ETC)
-                }*/
+                /*      if (zoo.BANK_L_ETC != null && zoo.BANK_L_ETC != "") {
+                          banklTV.setText(zoo.BANK_L_ETC)
+                      }*/
                 bankrTV.setText(zoo.BANK_R)
-              /*  if (zoo.BANK_R_ETC != null && zoo.BANK_R_ETC != "") {
-                    bankrTV.setText(zoo.BANK_R_ETC)
-                }*/
+                /*  if (zoo.BANK_R_ETC != null && zoo.BANK_R_ETC != "") {
+                      bankrTV.setText(zoo.BANK_R_ETC)
+                  }*/
                 baslTV.setText(zoo.BAS_L)
-             /*   if (zoo.BAS_L_ETC != null && zoo.BAS_L_ETC != "") {
-                    baslTV.setText(zoo.BAS_L_ETC)
-                }*/
+                /*   if (zoo.BAS_L_ETC != null && zoo.BAS_L_ETC != "") {
+                       baslTV.setText(zoo.BAS_L_ETC)
+                   }*/
                 basrTV.setText(zoo.BAS_R)
-         /*       if (zoo.BAS_R_ETC != null && zoo.BAS_R_ETC != "") {
-                    basrTV.setText(zoo.BAS_R_ETC)
-                }*/
+                /*       if (zoo.BAS_R_ETC != null && zoo.BAS_R_ETC != "") {
+                           basrTV.setText(zoo.BAS_R_ETC)
+                       }*/
                 distcauTV.setText(zoo.DIST_CAU)
-             /*   if (zoo.DIST_ETC != null && zoo.DIST_ETC != "") {
-                    distcauTV.setText(zoo.DIST_ETC)
-                }*/
+                /*   if (zoo.DIST_ETC != null && zoo.DIST_ETC != "") {
+                       distcauTV.setText(zoo.DIST_ETC)
+                   }*/
                 unusnoteET.setText(zoo.UNUS_NOTE)
                 specnmTV.setText(zoo.SPEC_NM)
                 faminmTV.setText(zoo.FAMI_NM)
@@ -633,7 +613,7 @@ class ZoobenthosActivity : Activity() {
 
 //                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + zoo.INV_DT + "." + zoo.INV_TM + "/images")
 //                val fileList = file.listFiles()
-                val tmpfiles =  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator)
+                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images" + File.separator + keyId + File.separator)
                 var tmpfileList = tmpfiles.listFiles()
 
 //                if (fileList != null) {
@@ -692,7 +672,7 @@ class ZoobenthosActivity : Activity() {
                         images_path!!.add(tmpfileList.get(i).path)
 
                         for (j in 0..tmpfileList.size - 1) {
-                            if (images_path!!.get(i).equals(FileFilter.img(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator,(j+1).toString()))) {
+                            if (images_path!!.get(i).equals(FileFilter.img(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "zoobenthos/images" + File.separator + keyId + File.separator, (j + 1).toString()))) {
                                 val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
                                 val v = View.inflate(context, R.layout.item_add_image, null)
                                 val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
@@ -722,17 +702,14 @@ class ZoobenthosActivity : Activity() {
 
                         dialog.cancel()
 
-                        var zoobenthos_Attribute: Zoobenthos_Attribute = Zoobenthos_Attribute(null, null, null, null, null, null, null, null, null, null, null, null, null
-                                , null, null, null, null, null, null, null, null, null, null, null,
-                                null, null, null, null, null, null, null, null, null, null, null, null, null, null,
-                                null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+                        var zoobenthos_Attribute: Zoobenthos_Attribute = null_attribute()
 
                         keyId = intent.getStringExtra("GROP_ID")
 
                         zoobenthos_Attribute.GROP_ID = keyId
 
                         val prj = prjnameET.text.toString()
-                        if (prj == prjname){
+                        if (prj == prjname) {
                             zoobenthos_Attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
                         } else {
                             zoobenthos_Attribute.PRJ_NAME = prjnameET.text.toString()
@@ -746,7 +723,7 @@ class ZoobenthosActivity : Activity() {
 //                        }
 
 //                        zoobenthos_Attribute.INV_REGION = invregionTV.text.toString()
-                        if (invregionTV.length() > 0){
+                        if (invregionTV.length() > 0) {
                             zoobenthos_Attribute.INV_REGION = invregionTV.text.toString();
                         } else {
                             zoobenthos_Attribute.INV_REGION = INV_REGION
@@ -782,14 +759,14 @@ class ZoobenthosActivity : Activity() {
                         zoobenthos_Attribute.WEATHER = weatherTV.text.toString()
                         zoobenthos_Attribute.INV_TOOL = invtoolET.text.toString()
                         zoobenthos_Attribute.AD_DIST_NM = addistnmET.text.toString()
-                        if (rivw1ET.text.isNotEmpty()&&rivw2ET.text.isNotEmpty()) {
-                            zoobenthos_Attribute.RIV_W = rivw1ET.text.toString()+"~"+rivw2ET.text.toString()
+                        if (rivw1ET.text.isNotEmpty() && rivw2ET.text.isNotEmpty()) {
+                            zoobenthos_Attribute.RIV_W = rivw1ET.text.toString() + "~" + rivw2ET.text.toString()
                         }
                         if (rivw2ET.text.isNotEmpty()) {
                             zoobenthos_Attribute.RIV_W2 = rivw2ET.text.toString().toInt()
                         }
-                        if (runrivw1ET.text.isNotEmpty()&&runrivw2ET.text.isNotEmpty()) {
-                            zoobenthos_Attribute.RUN_RIV_W = runrivw1ET.text.toString()+"~"+runrivw2ET.text.toString()
+                        if (runrivw1ET.text.isNotEmpty() && runrivw2ET.text.isNotEmpty()) {
+                            zoobenthos_Attribute.RUN_RIV_W = runrivw1ET.text.toString() + "~" + runrivw2ET.text.toString()
                         }
                         if (runrivw2ET.text.isNotEmpty()) {
                             zoobenthos_Attribute.RUN_RIV_W2 = runrivw2ET.text.toString().toInt()
@@ -851,7 +828,7 @@ class ZoobenthosActivity : Activity() {
                         zoobenthos_Attribute.GPS_LON = gpslonTV.text.toString().toFloat()
 
                         zoobenthos_Attribute.SPEC_NM = specnmTV.text.toString()
-                        if (specnmtmp.length() > 0){
+                        if (specnmtmp.length() > 0) {
                             zoobenthos_Attribute.SPEC_NM = specnmtmp.text.toString()
                         }
                         zoobenthos_Attribute.FAMI_NM = faminmTV.text.toString()
@@ -872,7 +849,7 @@ class ZoobenthosActivity : Activity() {
                                 }
 
                                 dbManager!!.updatezoobenthous_attribute(zoobenthos_Attribute, pk)
-                                dbManager!!.updatecommonzoobenthos(zoobenthos_Attribute,keyId)
+                                dbManager!!.updatecommonzoobenthos(zoobenthos_Attribute, keyId)
                             }
 
 //                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator)
@@ -918,8 +895,7 @@ class ZoobenthosActivity : Activity() {
 //
 //                            }
 
-                        }
-                        else {
+                        } else {
                             dbManager!!.insertzoobenthos(zoobenthos_Attribute);
                         }
 
@@ -946,11 +922,7 @@ class ZoobenthosActivity : Activity() {
 
                             dialog.cancel()
 
-                            var zoobenthos_Attribute: Zoobenthos_Attribute = Zoobenthos_Attribute(null, null, null, null, null, null, null, null, null, null,
-                                    null, null, null, null, null, null, null, null, null, null, null, null,
-                                    null, null, null, null, null, null, null, null, null, null, null, null
-                                    , null, null, null, null, null, null, null, null, null, null, null, null, null
-                                    , null, null, null, null, null)
+                            var zoobenthos_Attribute: Zoobenthos_Attribute = null_attribute()
 
                             if (pk != null) {
 
@@ -958,20 +930,10 @@ class ZoobenthosActivity : Activity() {
                                 while (data.moveToNext()) {
                                     chkdata = true
 
-                                    zoobenthos_Attribute =Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                            data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                                            , data.getInt(22)
-                                            , data.getInt(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27)
-                                            , data.getString(28), data.getFloat(29), data.getFloat(30), data.getFloat(31), data.getFloat(32)
-                                            , data.getFloat(33), data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getString(37)
-                                            , data.getString(38), data.getString(39), data.getString(40)
-                                            , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
-                                            , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
-                                            , data.getString(20), data.getInt(51))
+                                    zoobenthos_Attribute = export_attribute(data)
                                 }
 
-                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator)
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images" + File.separator + keyId + File.separator)
                                 val pathdir = path.listFiles()
 
                                 if (pathdir != null) {
@@ -979,7 +941,7 @@ class ZoobenthosActivity : Activity() {
 
                                         for (j in 0..pathdir.size - 1) {
 
-                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator + zoobenthos_Attribute.NUM.toString() + "_" + zoobenthos_Attribute.INV_TM +"_" + (j+1) + ".png")) {
+                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "zoobenthos/images" + File.separator + keyId + File.separator + zoobenthos_Attribute.NUM.toString() + "_" + zoobenthos_Attribute.INV_TM + "_" + (j + 1) + ".png")) {
 
                                                 pathdir.get(i).canonicalFile.delete()
 
@@ -991,14 +953,14 @@ class ZoobenthosActivity : Activity() {
                                     }
                                     val deletedir = path.listFiles()
                                     println("deletedir.size ${deletedir.size}")
-                                    if (path.isDirectory){
-                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator)
+                                    if (path.isDirectory) {
+                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images" + File.separator + keyId + File.separator)
 //                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
                                         deletepath.deleteRecursively()
                                     }
                                 } else {
-                                    if (path.isDirectory){
-                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator)
+                                    if (path.isDirectory) {
+                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images" + File.separator + keyId + File.separator)
 //                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
                                         deletepath.deleteRecursively()
                                     }
@@ -1019,17 +981,7 @@ class ZoobenthosActivity : Activity() {
 
                                         chkdata = true
 
-                                        var zoo: Zoobenthos_Attribute =Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                                data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                                                , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                                                , data.getInt(22)
-                                                , data.getInt(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27)
-                                                , data.getString(28), data.getFloat(29), data.getFloat(30), data.getFloat(31), data.getFloat(32)
-                                                , data.getFloat(33), data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getString(37)
-                                                , data.getString(38), data.getString(39), data.getString(40)
-                                                , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
-                                                , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
-                                                , data.getString(20), data.getInt(51))
+                                        var zoo: Zoobenthos_Attribute = export_attribute(data)
 
                                         dataArray.add(zoo)
 
@@ -1093,17 +1045,7 @@ class ZoobenthosActivity : Activity() {
 
                                     chkdata = true
 
-                                    var zoo: Zoobenthos_Attribute =Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                            data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                                            , data.getInt(22)
-                                            , data.getInt(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27)
-                                            , data.getString(28), data.getFloat(29), data.getFloat(30), data.getFloat(31), data.getFloat(32)
-                                            , data.getFloat(33), data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getString(37)
-                                            , data.getString(38), data.getString(39), data.getString(40)
-                                            , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
-                                            , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
-                                            , data.getString(20), data.getInt(51))
+                                    var zoo: Zoobenthos_Attribute = export_attribute(data)
 
                                 }
 
@@ -1156,17 +1098,7 @@ class ZoobenthosActivity : Activity() {
 
                         while (data.moveToNext()) {
 
-                            var zoo: Zoobenthos_Attribute =Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                    data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                                    , data.getInt(22)
-                                    , data.getInt(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27)
-                                    , data.getString(28), data.getFloat(29), data.getFloat(30), data.getFloat(31), data.getFloat(32)
-                                    , data.getFloat(33), data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getString(37)
-                                    , data.getString(38), data.getString(39), data.getString(40)
-                                    , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
-                                    , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
-                                    , data.getString(20), data.getInt(51))
+                            var zoo: Zoobenthos_Attribute = export_attribute(data)
 
 
                             dataArray.add(zoo)
@@ -1178,20 +1110,20 @@ class ZoobenthosActivity : Activity() {
                             intent.putExtra("markerid", markerid)
                             setResult(RESULT_OK, intent);
 
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator)
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images" + File.separator + keyId + File.separator)
                             val pathdir = path.listFiles()
 
                             if (pathdir != null) {
                                 val deletedir = path.listFiles()
                                 println("deletedir.size ${deletedir.size}")
-                                if (path.isDirectory){
-                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator)
+                                if (path.isDirectory) {
+                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images" + File.separator + keyId + File.separator)
 //                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
                                     deletepath.deleteRecursively()
                                 }
                             } else {
-                                if (path.isDirectory){
-                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator)
+                                if (path.isDirectory) {
+                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images" + File.separator + keyId + File.separator)
 //                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
                                     deletepath.deleteRecursively()
                                 }
@@ -1207,17 +1139,14 @@ class ZoobenthosActivity : Activity() {
         }
 
         nextTV.setOnClickListener {
-            var zoobenthos_Attribute: Zoobenthos_Attribute = Zoobenthos_Attribute(null, null, null, null, null, null, null, null, null, null, null, null, null
-                    , null, null, null, null, null, null, null, null, null, null, null,
-                    null, null, null, null, null, null, null, null, null, null, null, null, null, null,
-                    null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+            var zoobenthos_Attribute: Zoobenthos_Attribute = null_attribute()
 
             keyId = intent.getStringExtra("GROP_ID")
 
             zoobenthos_Attribute.GROP_ID = keyId
 
             val prj = prjnameET.text.toString()
-            if (prj == prjname){
+            if (prj == prjname) {
                 zoobenthos_Attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
             } else {
                 zoobenthos_Attribute.PRJ_NAME = prjnameET.text.toString()
@@ -1231,7 +1160,7 @@ class ZoobenthosActivity : Activity() {
 //            }
 
 //            zoobenthos_Attribute.INV_REGION = invregionTV.text.toString()
-            if (invregionTV.length() > 0){
+            if (invregionTV.length() > 0) {
                 zoobenthos_Attribute.INV_REGION = invregionTV.text.toString();
             } else {
                 zoobenthos_Attribute.INV_REGION = INV_REGION
@@ -1266,14 +1195,14 @@ class ZoobenthosActivity : Activity() {
             zoobenthos_Attribute.WEATHER = weatherTV.text.toString()
             zoobenthos_Attribute.INV_TOOL = invtoolET.text.toString()
             zoobenthos_Attribute.AD_DIST_NM = addistnmET.text.toString()
-            if (rivw1ET.text.isNotEmpty()&&rivw2ET.text.isNotEmpty()) {
-                zoobenthos_Attribute.RIV_W = rivw1ET.text.toString()+"~"+rivw2ET.text.toString()
+            if (rivw1ET.text.isNotEmpty() && rivw2ET.text.isNotEmpty()) {
+                zoobenthos_Attribute.RIV_W = rivw1ET.text.toString() + "~" + rivw2ET.text.toString()
             }
             if (rivw2ET.text.isNotEmpty()) {
                 zoobenthos_Attribute.RIV_W2 = rivw2ET.text.toString().toInt()
             }
-            if (runrivw1ET.text.isNotEmpty()&&runrivw2ET.text.isNotEmpty()) {
-                zoobenthos_Attribute.RUN_RIV_W = runrivw1ET.text.toString()+"~"+runrivw2ET.text.toString()
+            if (runrivw1ET.text.isNotEmpty() && runrivw2ET.text.isNotEmpty()) {
+                zoobenthos_Attribute.RUN_RIV_W = runrivw1ET.text.toString() + "~" + runrivw2ET.text.toString()
             }
             if (runrivw2ET.text.isNotEmpty()) {
                 zoobenthos_Attribute.RUN_RIV_W2 = runrivw2ET.text.toString().toInt()
@@ -1335,12 +1264,12 @@ class ZoobenthosActivity : Activity() {
             zoobenthos_Attribute.GPS_LON = gpslonTV.text.toString().toFloat()
 
             zoobenthos_Attribute.SPEC_NM = specnmTV.text.toString()
-            if (specnmtmp.length() > 0){
+            if (specnmtmp.length() > 0) {
                 zoobenthos_Attribute.SPEC_NM = specnmtmp.text.toString()
             }
             zoobenthos_Attribute.FAMI_NM = faminmTV.text.toString()
             zoobenthos_Attribute.SCIEN_NM = sciennmTV.text.toString()
-            zoobenthos_Attribute.GEOM = gpslatTV.text.toString() + " " +gpslonTV.text.toString()
+            zoobenthos_Attribute.GEOM = gpslatTV.text.toString() + " " + gpslonTV.text.toString()
 
             if (chkdata) {
 
@@ -1353,7 +1282,7 @@ class ZoobenthosActivity : Activity() {
                     }
 
                     dbManager!!.updatezoobenthous_attribute(zoobenthos_Attribute, pk)
-                    dbManager!!.updatecommonzoobenthos(zoobenthos_Attribute,keyId)
+                    dbManager!!.updatecommonzoobenthos(zoobenthos_Attribute, keyId)
                 }
 
 //                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator)
@@ -1617,12 +1546,12 @@ class ZoobenthosActivity : Activity() {
                 SET_INPUT -> {
                     var name = data!!.getStringExtra("name")
                     var text = Utils.getString(habtyetcTV)
-                    habtyetcTV.text = text+" "+name
+                    habtyetcTV.text = text + " " + name
                 }
                 SET_INPUT2 -> {
                     var name = data!!.getStringExtra("name")
                     var text = Utils.getString(banklTV)
-                    banklTV.text = text+" "+name
+                    banklTV.text = text + " " + name
                 }
                 SET_INPUT3 -> {
                     var name = data!!.getStringExtra("name");
@@ -1632,17 +1561,17 @@ class ZoobenthosActivity : Activity() {
                 SET_INPUT4 -> {
                     var name = data!!.getStringExtra("name")
                     var text = Utils.getString(baslTV)
-                    baslTV.text = text+" "+name
+                    baslTV.text = text + " " + name
                 }
                 SET_INPUT5 -> {
                     var name = data!!.getStringExtra("name")
                     var text = Utils.getString(distcauTV)
-                    distcauTV.text = text+" "+name
+                    distcauTV.text = text + " " + name
                 }
                 SET_INPUT6 -> {
                     var name = data!!.getStringExtra("name")
                     var text = Utils.getString(basrTV)
-                    basrTV.text = text+" "+name
+                    basrTV.text = text + " " + name
                 }
                 FROM_CAMERA -> {
 
@@ -1699,7 +1628,7 @@ class ZoobenthosActivity : Activity() {
                             time = timeTV.text.toString()
                             var timesplit = time.split(":")
                             invtm = timesplit.get(0) + timesplit.get(1)
-                            val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator
+                            val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images" + File.separator + keyId + File.separator
                             val outputsDir = File(outPath)
 
                             if (outputsDir.exists()) {
@@ -1720,7 +1649,7 @@ class ZoobenthosActivity : Activity() {
                             val getTime = sdf.format(date)
                             var gettimes = getTime.split("-")
 
-                            saveVitmapToFile(images!!.get(i), outPath +getTime.substring(2,8)+"_"+gettimes[1] + "_" + (i + 1) + ".png")
+                            saveVitmapToFile(images!!.get(i), outPath + getTime.substring(2, 8) + "_" + gettimes[1] + "_" + (i + 1) + ".png")
                         }
 
                         images!!.clear()
@@ -1749,7 +1678,7 @@ class ZoobenthosActivity : Activity() {
                         val str = result[i]
                         images_path!!.add(str);
                     }
-                    for (i in 0 until images_path!!.size){
+                    for (i in 0 until images_path!!.size) {
                         val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(i))
                         if (images!!.size == 0) {
                             images!!.add(add_file)
@@ -1773,7 +1702,7 @@ class ZoobenthosActivity : Activity() {
                         time = timeTV.text.toString()
                         var timesplit = time.split(":")
                         invtm = timesplit.get(0) + timesplit.get(1)
-                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator
+                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images" + File.separator + keyId + File.separator
                         val outputsDir = File(outPath)
 
                         if (outputsDir.exists()) {
@@ -1794,7 +1723,7 @@ class ZoobenthosActivity : Activity() {
                         val getTime = sdf.format(date)
                         var gettimes = getTime.split("-")
 
-                        saveVitmapToFile(images!!.get(i), outPath +getTime.substring(2,8)+"_"+gettimes[1] + "_" + (i + 1) + ".png")
+                        saveVitmapToFile(images!!.get(i), outPath + getTime.substring(2, 8) + "_" + gettimes[1] + "_" + (i + 1) + ".png")
                     }
                     images!!.clear()
 
@@ -1964,7 +1893,7 @@ class ZoobenthosActivity : Activity() {
                     var zoological = data!!.getStringExtra("zoological");
 
                     specnmTV.setText(name)
-                    if (name == "SP(미동정)"){
+                    if (name == "SP(미동정)") {
                         specnmLL.visibility = View.VISIBLE
                         specnmTV.visibility = View.GONE
                     }
@@ -2011,14 +1940,14 @@ class ZoobenthosActivity : Activity() {
         val builder = AlertDialog.Builder(context)
         builder.setMessage("삭제하시겠습니까 ? ").setCancelable(false)
                 .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images" + File.separator + keyId + File.separator
                     addPicturesLL!!.removeAllViews()
                     images!!.clear()
                     val tag = v.tag as Int
                     images_path!!.removeAt(tag)
 
                     val num = numTV.text.toString()
-                    var file = File(outPath+num + "_" + invtm+"_"+(tag+1)+".png")
+                    var file = File(outPath + num + "_" + invtm + "_" + (tag + 1) + ".png")
                     file.delete()
 
                     for (k in images_url!!.indices) {
@@ -2158,17 +2087,17 @@ class ZoobenthosActivity : Activity() {
     fun clear() {
 
 //        var num = numTV.text.toString()
-      /*  if (num.length > 7){
-            var textnum = num.substring(num.length - 2, num.length)
-            var splitnum = num.substring(0, num.length - 2)
-            var plusnum = textnum.toInt() + 1
-            numTV.setText(splitnum.toString() + plusnum.toString())
-        } else {
-            var textnum = num.substring(num.length - 1, num.length)
-            var splitnum = num.substring(0, num.length - 1)
-            var plusnum = textnum.toInt() + 1
-            numTV.setText(splitnum.toString() + plusnum.toString())
-        }*/
+        /*  if (num.length > 7){
+              var textnum = num.substring(num.length - 2, num.length)
+              var splitnum = num.substring(0, num.length - 2)
+              var plusnum = textnum.toInt() + 1
+              numTV.setText(splitnum.toString() + plusnum.toString())
+          } else {
+              var textnum = num.substring(num.length - 1, num.length)
+              var splitnum = num.substring(0, num.length - 1)
+              var plusnum = textnum.toInt() + 1
+              numTV.setText(splitnum.toString() + plusnum.toString())
+          }*/
         var c = dbManager!!.pkNum("ZoobenthosAttribute")
         numTV.text = c.toString()
 
@@ -2195,18 +2124,7 @@ class ZoobenthosActivity : Activity() {
 
         while (data.moveToNext()) {
 
-            var zoo: Zoobenthos_Attribute =Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                    data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
-                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
-                    , data.getInt(22)
-                    , data.getInt(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27)
-                    , data.getString(28), data.getFloat(29), data.getFloat(30), data.getFloat(31), data.getFloat(32)
-                    , data.getFloat(33), data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getString(37)
-                    , data.getString(38), data.getString(39), data.getString(40)
-                    , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
-                    , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
-                    , data.getString(20), data.getInt(51))
-
+            var zoo: Zoobenthos_Attribute = export_attribute(data)
 
             dataArray.add(zoo)
 
@@ -2217,21 +2135,21 @@ class ZoobenthosActivity : Activity() {
             intent.putExtra("markerid", markerid)
             setResult(RESULT_OK, intent);
 
-            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator)
+            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images" + File.separator + keyId + File.separator)
 //                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/birds/images/")
             val pathdir = path.listFiles()
 
             if (pathdir != null) {
                 val deletedir = path.listFiles()
                 println("deletedir.size ${deletedir.size}")
-                if (path.isDirectory){
-                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator)
+                if (path.isDirectory) {
+                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images" + File.separator + keyId + File.separator)
 //                                     val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
                     deletepath.deleteRecursively()
                 }
             } else {
-                if (path.isDirectory){
-                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator)
+                if (path.isDirectory) {
+                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "zoobenthos/images" + File.separator + keyId + File.separator)
 //                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
                     deletepath.deleteRecursively()
                 }
@@ -2244,7 +2162,7 @@ class ZoobenthosActivity : Activity() {
         finish()
     }
 
-    fun convertLatitud(longitude: Double) : String{
+    fun convertLatitud(longitude: Double): String {
         var result = "''"
         if (longitude != null) {
             var direction = "E"
@@ -2354,11 +2272,11 @@ class ZoobenthosActivity : Activity() {
         val dialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hour, min ->
             var hour_s = hour.toString()
             var min_s = min.toString()
-            if (min_s.length!=2){
-                min_s = "0"+min_s
+            if (min_s.length != 2) {
+                min_s = "0" + min_s
             }
-            if (hour_s.length!=2){
-                hour_s = "0"+hour_s
+            if (hour_s.length != 2) {
+                hour_s = "0" + hour_s
             }
             val msg = String.format("%s : %s", hour_s, min_s)
             timeTV.text = msg
@@ -2369,12 +2287,35 @@ class ZoobenthosActivity : Activity() {
     fun datedlg() {
         var day = Utils.todayStr()
         var days = day.split("-")
-        DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt()-1, days[2].toInt()).show()
+        DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt() - 1, days[2].toInt()).show()
     }
+
     private val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-        val msg = String.format("%d-%d-%d", year, monthOfYear+1, dayOfMonth)
+        val msg = String.format("%d-%d-%d", year, monthOfYear + 1, dayOfMonth)
         invdtTV.text = msg
     }
 
+    fun null_attribute(): Zoobenthos_Attribute {
+        var zoobenthos_Attribute: Zoobenthos_Attribute = Zoobenthos_Attribute(null, null, null, null, null, null, null, null, null, null, null, null, null
+                , null, null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+        return zoobenthos_Attribute
+    }
+
+    fun export_attribute(data: Cursor): Zoobenthos_Attribute {
+        var zoo: Zoobenthos_Attribute = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
+                , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
+                , data.getInt(22)
+                , data.getInt(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27)
+                , data.getString(28), data.getFloat(29), data.getFloat(30), data.getFloat(31), data.getFloat(32)
+                , data.getFloat(33), data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getString(37)
+                , data.getString(38), data.getString(39), data.getString(40)
+                , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
+                , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
+                , data.getString(20), data.getInt(51), data.getString(52), data.getString(53))
+        return zoo
+    }
 
 }

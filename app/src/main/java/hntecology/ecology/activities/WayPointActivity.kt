@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -35,6 +36,7 @@ import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
+import hntecology.ecology.model.Fish_attribute
 import hntecology.ecology.model.Waypoint
 import kotlinx.android.synthetic.main.activity_fish.*
 import kotlinx.android.synthetic.main.activity_way_point.*
@@ -53,8 +55,8 @@ class WayPointActivity : Activity() {
 
     private var db: SQLiteDatabase? = null
 
-    var lat:String = ""
-    var log:String = ""
+    var lat: String = ""
+    var log: String = ""
     var pk: String? = null
     var userName = "";
     var keyId = ""
@@ -63,7 +65,7 @@ class WayPointActivity : Activity() {
 
     var chkdata = false
 
-    var cameraPath:String? = null
+    var cameraPath: String? = null
 
     private var addPicturesLL: LinearLayout? = null
     private val imgSeq = 0
@@ -74,9 +76,9 @@ class WayPointActivity : Activity() {
     var images_url_remove: ArrayList<String>? = null
     var images_id: ArrayList<Int>? = null
 
-    var dataArray:ArrayList<Waypoint> = ArrayList<Waypoint>()
+    var dataArray: ArrayList<Waypoint> = ArrayList<Waypoint>()
 
-    var markerid : String? = null
+    var markerid: String? = null
 
 
     val REQUEST_FINE_LOCATION = 50
@@ -137,17 +139,17 @@ class WayPointActivity : Activity() {
         var timesplit = time.split(":")
         invtm = timesplit.get(0) + timesplit.get(1)
 
-       /* var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
+        /* var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
 
-        for (i in 1 until todays.size){
-            texttoday += todays.get(i)
-        }*/
+         for (i in 1 until todays.size){
+             texttoday += todays.get(i)
+         }*/
 //        numTV.setText(texttoday + "1")
 
         var c = dbManager!!.pkNum("Waypoint")
         numTV.text = c.toString()
 
-        if(intent.getStringExtra("markerid") != null){
+        if (intent.getStringExtra("markerid") != null) {
             markerid = intent.getStringExtra("markerid")
         }
 
@@ -191,7 +193,7 @@ class WayPointActivity : Activity() {
 
             while (data.moveToNext()) {
                 chkdata = true
-                var waypoint:Waypoint = Waypoint(data.getInt(0),data.getString(1),data.getString(2),data.getString(3),data.getString(4),data.getString(5),data.getString(6),data.getString(7),data.getFloat(8),data.getFloat(9),data.getString(10),data.getString(11))
+                var waypoint: Waypoint = export_attribute(data)
 
                 invregionTV.setText(waypoint.INV_REGION)
                 INV_REGION = waypoint.INV_REGION.toString()
@@ -206,10 +208,10 @@ class WayPointActivity : Activity() {
                 gpslonTV.setText(waypoint.GPS_LON.toString())
                 memoTV.setText(waypoint.MEMO)
 
-                val tmpfiles =  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images"+ File.separator +keyId+ File.separator)
+                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images" + File.separator + keyId + File.separator)
                 var tmpfileList = tmpfiles.listFiles()
 
-                if(tmpfileList != null){
+                if (tmpfileList != null) {
                     for (i in 0..tmpfileList.size - 1) {
 
                         val options = BitmapFactory.Options()
@@ -231,10 +233,10 @@ class WayPointActivity : Activity() {
 
                         images_path!!.add(tmpfileList.get(i).path)
 
-                        for(j in 0..tmpfileList.size - 1) {
+                        for (j in 0..tmpfileList.size - 1) {
 
 
-                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "waypoint/images"+ File.separator +keyId+ File.separator + waypoint.NUM.toString() + "_" + invtm +"_" + (j+1) + ".png")) {
+                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "waypoint/images" + File.separator + keyId + File.separator + waypoint.NUM.toString() + "_" + invtm + "_" + (j + 1) + ".png")) {
                                 val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
                                 val v = View.inflate(context, R.layout.item_add_image, null)
                                 val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
@@ -259,11 +261,11 @@ class WayPointActivity : Activity() {
 
                         dialog.cancel()
 
-                        var waypoint: Waypoint = Waypoint(null,null,null,null,null,null,null,null,null,null,null,null)
+                        var waypoint: Waypoint = null_attribute()
                         keyId = intent.getStringExtra("GROP_ID")
                         waypoint.GROP_ID = keyId
 //                        waypoint.INV_REGION = invregionTV.text.toString()
-                        if (invregionTV.length() > 0){
+                        if (invregionTV.length() > 0) {
                             waypoint.INV_REGION = invregionTV.text.toString();
                         } else {
                             waypoint.INV_REGION = INV_REGION
@@ -274,7 +276,7 @@ class WayPointActivity : Activity() {
                         waypoint.INV_PERSON = invpersonTV.text.toString()
 
                         val prj = prjnameTV.text.toString()
-                        if (prj == prjname){
+                        if (prj == prjname) {
                             waypoint.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
                         } else {
                             waypoint.PRJ_NAME = prjnameTV.text.toString()
@@ -293,8 +295,8 @@ class WayPointActivity : Activity() {
                         waypoint.GEOM = log.toString() + " " + lat.toString()
 
                         if (chkdata) {
-                            if(pk != null){
-                                dbManager!!.updatewaypoint(waypoint,pk)
+                            if (pk != null) {
+                                dbManager!!.updatewaypoint(waypoint, pk)
                             }
                         } else {
                             dbManager!!.insertWayPoint(waypoint)
@@ -325,31 +327,31 @@ class WayPointActivity : Activity() {
 
                         while (data.moveToNext()) {
 
-                            var waypoint:Waypoint = Waypoint(data.getInt(0),data.getString(1),data.getString(2),data.getString(3),data.getString(4),data.getString(5),data.getString(6),data.getString(7),data.getFloat(8),data.getFloat(9),data.getString(10),data.getString(11))
+                            var waypoint: Waypoint = export_attribute(data)
 
                             dataArray.add(waypoint)
                         }
 
-                        if (dataArray.size == 0 || intent.getStringExtra("id") == null ){
+                        if (dataArray.size == 0 || intent.getStringExtra("id") == null) {
 
                             var intent = Intent()
                             intent.putExtra("markerid", markerid)
                             setResult(RESULT_OK, intent);
 
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images"+ File.separator +keyId+ File.separator)
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images" + File.separator + keyId + File.separator)
                             val pathdir = path.listFiles()
 
                             if (pathdir != null) {
 
                                 val deletedir = path.listFiles()
                                 println("deletedir.size ${deletedir.size}")
-                                if (path.isDirectory){
-                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images"+ File.separator +keyId+ File.separator)
+                                if (path.isDirectory) {
+                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images" + File.separator + keyId + File.separator)
                                     path.deleteRecursively()
                                 }
                             } else {
-                                if (path.isDirectory){
-                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images"+ File.separator +keyId+ File.separator)
+                                if (path.isDirectory) {
+                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images" + File.separator + keyId + File.separator)
                                     path.deleteRecursively()
                                 }
                             }
@@ -372,15 +374,14 @@ class WayPointActivity : Activity() {
 
                         dialog.cancel()
 
-                        var waypoint: Waypoint = Waypoint(null,null,null,null,null,null,null,null,null,null,null,null)
-
+                        var waypoint: Waypoint = null_attribute()
                         if (pk != null) {
 
                             val data = db!!.query("Waypoint", dataList, "id = '$pk'", null, null, null, "", null)
                             while (data.moveToNext()) {
-                                var waypoint:Waypoint = Waypoint(data.getInt(0),data.getString(1),data.getString(2),data.getString(3),data.getString(4),data.getString(5),data.getString(6),data.getString(7),data.getFloat(8),data.getFloat(9),data.getString(10),data.getString(11))
+                                var waypoint: Waypoint = export_attribute(data)
                             }
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images"+ File.separator +keyId+ File.separator)
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images" + File.separator + keyId + File.separator)
                             val pathdir = path.listFiles()
 
                             if (pathdir != null) {
@@ -388,20 +389,20 @@ class WayPointActivity : Activity() {
 
                                     for (j in 0..pathdir.size - 1) {
 
-                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "waypoint/images"+ File.separator +keyId+ File.separator + waypoint.NUM.toString() + "_" + waypoint.INV_TM +"_" + (j+1) + ".png")) {
+                                        if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "waypoint/images" + File.separator + keyId + File.separator + waypoint.NUM.toString() + "_" + waypoint.INV_TM + "_" + (j + 1) + ".png")) {
                                             pathdir.get(i).canonicalFile.delete()
                                         }
                                     }
 
                                 }
                                 val deletedir = path.listFiles()
-                                if (path.isDirectory){
-                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images"+ File.separator +keyId+ File.separator)
+                                if (path.isDirectory) {
+                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images" + File.separator + keyId + File.separator)
                                     path.deleteRecursively()
                                 }
                             } else {
-                                if (path.isDirectory){
-                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images"+ File.separator +keyId+ File.separator)
+                                if (path.isDirectory) {
+                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images" + File.separator + keyId + File.separator)
                                     path.deleteRecursively()
                                 }
                             }
@@ -418,7 +419,9 @@ class WayPointActivity : Activity() {
 
                                 while (data.moveToNext()) {
                                     chkdata = true
-                                    var waypoint:Waypoint = Waypoint(data.getInt(0),data.getString(1),data.getString(2),data.getString(3),data.getString(4),data.getString(5),data.getString(6),data.getString(7),data.getFloat(8),data.getFloat(9),data.getString(10),data.getString(11))
+                                    var waypoint: Waypoint = export_attribute(data)
+
+
                                     dataArray.add(waypoint)
                                 }
 
@@ -496,6 +499,7 @@ class WayPointActivity : Activity() {
 
 
     }
+
     private fun imageFromGallery() {
 
         val intent1 = Intent(context, WriteAlbumActivity::class.java)
@@ -521,6 +525,7 @@ class WayPointActivity : Activity() {
             }
         }
     }
+
     private fun takePhoto() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (intent.resolveActivity(packageManager) != null) {
@@ -583,14 +588,14 @@ class WayPointActivity : Activity() {
         builder.setMessage("삭제하시겠습니까 ? ").setCancelable(false)
                 .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
 
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "insect/images"+ File.separator +keyId+ File.separator
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "insect/images" + File.separator + keyId + File.separator
                     addPicturesLL!!.removeAllViews()
                     images!!.clear()
                     val tag = v.tag as Int
                     images_path!!.removeAt(tag)
 
                     val num = numTV.text.toString()
-                    var file = File(outPath+num + "_" + invtmTV+"_"+(tag+1)+".png")
+                    var file = File(outPath + num + "_" + invtmTV + "_" + (tag + 1) + ".png")
                     file.delete()
 
                     for (k in images_url!!.indices) {
@@ -727,40 +732,40 @@ class WayPointActivity : Activity() {
 
     }
 
-    fun saveVitmapToFile(bitmap:Bitmap, filePath:String){
+    fun saveVitmapToFile(bitmap: Bitmap, filePath: String) {
 
         var file = File(filePath)
-        var out: OutputStream? =null
+        var out: OutputStream? = null
         try {
             file.createNewFile()
             out = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
 
-        }catch (e:Exception){
+        } catch (e: Exception) {
 
             e.printStackTrace()
-        }finally {
+        } finally {
 
             out!!.close()
         }
 
     }
 
-    fun setDirEmpty( dirName:String){
+    fun setDirEmpty(dirName: String) {
 
         var path = Environment.getExternalStorageDirectory().toString() + dirName;
 
-        val dir:File    =  File(path);
+        val dir: File = File(path);
         var childFileList = dir.listFiles()
 
-        if(dir.exists()){
-            for(childFile:File in childFileList){
+        if (dir.exists()) {
+            for (childFile: File in childFileList) {
 
-                if(childFile.isDirectory()){
+                if (childFile.isDirectory()) {
 
                     setDirEmpty(childFile.absolutePath); //하위디렉토리
 
-                } else{
+                } else {
 
                     childFile.delete(); // 하위파일
                 }
@@ -769,6 +774,7 @@ class WayPointActivity : Activity() {
             dir.delete();
         }
     }
+
     override fun onBackPressed() {
 
         val dbManager: DataBaseHelper = DataBaseHelper(this)
@@ -785,29 +791,29 @@ class WayPointActivity : Activity() {
 
         while (data.moveToNext()) {
 
-            var waypoint:Waypoint = Waypoint(data.getInt(0),data.getString(1),data.getString(2),data.getString(3),data.getString(4),data.getString(5),data.getString(6),data.getString(7),data.getFloat(8),data.getFloat(9),data.getString(10),data.getString(11))
+            var waypoint: Waypoint = export_attribute(data)
 
             dataArray.add(waypoint)
         }
 
-        if (dataArray.size == 0 || intent.getStringExtra("id") == null ){
+        if (dataArray.size == 0 || intent.getStringExtra("id") == null) {
 
             var intent = Intent()
             intent.putExtra("markerid", markerid)
             setResult(RESULT_OK, intent);
 
-            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images"+ File.separator +keyId+ File.separator)
+            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images" + File.separator + keyId + File.separator)
             val pathdir = path.listFiles()
 
             if (pathdir != null) {
                 val deletedir = path.listFiles()
-                if (path.isDirectory){
-                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images"+ File.separator +keyId+ File.separator)
+                if (path.isDirectory) {
+                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images" + File.separator + keyId + File.separator)
                     deletepath.deleteRecursively()
                 }
             } else {
-                if (path.isDirectory){
-                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images"+ File.separator +keyId+ File.separator)
+                if (path.isDirectory) {
+                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images" + File.separator + keyId + File.separator)
                     deletepath.deleteRecursively()
                 }
 
@@ -883,7 +889,7 @@ class WayPointActivity : Activity() {
                             time = invtmTV.text.toString()
                             var timesplit = time.split(":")
                             invtm = timesplit.get(0) + timesplit.get(1)
-                            val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images"+ File.separator +keyId+ File.separator
+                            val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images" + File.separator + keyId + File.separator
                             val outputsDir = File(outPath)
 
                             if (outputsDir.exists()) {
@@ -898,7 +904,7 @@ class WayPointActivity : Activity() {
                                 val made = outputsDir.mkdirs()
 
                             }
-                            saveVitmapToFile(images!!.get(i),outPath+num + "_" + invtm+"_"+(i+1)+".png")
+                            saveVitmapToFile(images!!.get(i), outPath + num + "_" + invtm + "_" + (i + 1) + ".png")
 
                         }
                         images!!.clear()
@@ -912,7 +918,7 @@ class WayPointActivity : Activity() {
                         val str = result[i]
                         images_path!!.add(str);
                     }
-                    for (i in 0 until images_path!!.size){
+                    for (i in 0 until images_path!!.size) {
                         val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(i))
                         if (images!!.size == 0) {
                             images!!.add(add_file)
@@ -936,7 +942,7 @@ class WayPointActivity : Activity() {
                         time = invtmTV.text.toString()
                         var timesplit = time.split(":")
                         invtm = timesplit.get(0) + timesplit.get(1)
-                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images"+ File.separator +keyId+ File.separator
+                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "waypoint/images" + File.separator + keyId + File.separator
                         val outputsDir = File(outPath)
 
                         if (outputsDir.exists()) {
@@ -951,7 +957,7 @@ class WayPointActivity : Activity() {
                             val made = outputsDir.mkdirs()
 
                         }
-                        saveVitmapToFile(images!!.get(i),outPath+num + "_" + invtm+"_"+(i+1)+".png")
+                        saveVitmapToFile(images!!.get(i), outPath + num + "_" + invtm + "_" + (i + 1) + ".png")
 
                     }
                     images!!.clear()
@@ -965,11 +971,11 @@ class WayPointActivity : Activity() {
         val dialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hour, min ->
             var hour_s = hour.toString()
             var min_s = min.toString()
-            if (min_s.length!=2){
-                min_s = "0"+min_s
+            if (min_s.length != 2) {
+                min_s = "0" + min_s
             }
-            if (hour_s.length!=2){
-                hour_s = "0"+hour_s
+            if (hour_s.length != 2) {
+                hour_s = "0" + hour_s
             }
             val msg = String.format("%s : %s", hour_s, min_s)
             invtmTV.text = msg
@@ -981,11 +987,29 @@ class WayPointActivity : Activity() {
     fun datedlg() {
         var day = Utils.todayStr()
         var days = day.split("-")
-        DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt()-1, days[2].toInt()).show()
+        DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt() - 1, days[2].toInt()).show()
     }
+
     private val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-        val msg = String.format("%d-%d-%d", year, monthOfYear+1, dayOfMonth)
+        val msg = String.format("%d-%d-%d", year, monthOfYear + 1, dayOfMonth)
         invdtTV.text = msg
     }
+
+    fun null_attribute(): Waypoint {
+        var waypoint: Waypoint = Waypoint(null, null, null, null,
+                null, null, null, null, null,
+                null, null, null, null, null)
+
+        return waypoint
+    }
+
+    fun export_attribute(data: Cursor): Waypoint {
+        var way_point = Waypoint(data.getInt(0), data.getString(1), data.getString(2)
+                , data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7)
+                , data.getFloat(8), data.getFloat(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13))
+
+        return way_point
+    }
+
 
 }

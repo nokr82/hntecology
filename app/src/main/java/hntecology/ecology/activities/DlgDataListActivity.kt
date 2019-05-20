@@ -581,7 +581,7 @@ class DlgDataListActivity : Activity() {
                     , data.getString(38), data.getString(39), data.getString(40)
                     , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
                     , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
-                    , data.getString(20), data.getInt(51))
+                    , data.getString(20), data.getInt(51),data.getString(52),data.getString(53))
 
             listdata.add(model)
         }

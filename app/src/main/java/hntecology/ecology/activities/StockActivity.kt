@@ -7,6 +7,7 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.location.Address
 import android.location.Geocoder
@@ -350,10 +351,7 @@ class StockActivity : Activity() {
 
             while (data.moveToNext()) {
 
-                var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                        data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
-                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                        , data.getString(22),data.getString(23),data.getString(24))
+                var stockMap = export_attribute(data)
                 invtmTV.text =  stockMap.INV_TM
                 prjnameET.setText(stockMap.PRJ_NAME)
                 if (stockMap.PRJ_NAME != "" || stockMap.PRJ_NAME != null){
@@ -515,10 +513,7 @@ class StockActivity : Activity() {
 
                             while (data.moveToNext()) {
 
-                                var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                        data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
-                                        , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                        , data.getString(22),data.getString(23),data.getString(24))
+                                var stockMap = export_attribute(data)
 
                                 dataArray.add(stockMap)
 
@@ -672,11 +667,7 @@ class StockActivity : Activity() {
 
                                         chkdata = true
 
-                                        var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                                data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
-                                                , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                                , data.getString(22),data.getString(23),data.getString(24))
-
+                                        var stockMap = export_attribute(data)
                                         dataArray.add(stockMap)
 
                                     }
@@ -723,7 +714,7 @@ class StockActivity : Activity() {
 
                 val builder = AlertDialog.Builder(context)
                 builder.setMessage("삭제하시겠습니까?").setCancelable(false)
-                        .setPositiveButton("확인", { dialog, id ->
+                        .setPositiveButton("확인") { dialog, id ->
 
                             dialog.cancel()
 
@@ -742,10 +733,7 @@ class StockActivity : Activity() {
 
                                     chkdata = true
 
-                                    var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                            data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
-                                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                            , data.getString(22), data.getString(23),data.getString(24))
+
                                 }
 
                                 if (chkdata == true) {
@@ -769,7 +757,7 @@ class StockActivity : Activity() {
                             }
 
 
-                        })
+                        }
                         .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
                 val alert = builder.create()
                 alert.show()
@@ -1080,10 +1068,7 @@ class StockActivity : Activity() {
 
                         while (data.moveToNext()) {
 
-                            var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                                    data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
-                                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                    , data.getString(22),data.getString(23), data.getString(24))
+                            var stockMap = export_attribute(data)
 
                             dataArray.add(stockMap)
 
@@ -1272,6 +1257,22 @@ class StockActivity : Activity() {
     private val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
         val msg = String.format("%d-%d-%d", year, monthOfYear+1, dayOfMonth)
         invdtTV.text = msg
+    }
+
+
+    fun null_attribute(): StockMap {
+        var reptilia_attribute: StockMap = StockMap(null, null, null, null, null, null, null, null, null
+                , null, null, null, null, null, null, null, null, null, null, null, null
+                , null, null, null, null)
+        return reptilia_attribute
+    }
+
+    fun export_attribute(data: Cursor): StockMap {
+        var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
+                , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
+                , data.getString(22),data.getString(23), data.getString(24))
+        return stockMap
     }
 
 

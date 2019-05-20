@@ -703,7 +703,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ",GPS_LON,COLL_TOOL,COLL_TOOL2,STREAM_W,WATER_W,WATER_D,WATER_CUR,RIV_STR,RIV_STR_IN,BOULDER,COBBLE,PEBBLE,GRAVEL,SEND,RIV_FORM";
         query += ",NUM,SPEC_NM,FAMI_NM,SCIEN_NM,INDI_CNT,UNIDENT,RIV_FM_CH,UN_FISH_CH,TEMP_YN,CONF_MOD,GEOM";
         query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC";
-        query += ",RIVER_BED,COLL_TIME,MAC_ADDR_CURRENT_TM";
+        query += ",RIVER_BED,COLL_TIME,MAC_ADDR,CURRENT_TM";
         query += ")";
         query += " values (";
         query += " '" + fish_attribute.getGROP_ID() + "'";

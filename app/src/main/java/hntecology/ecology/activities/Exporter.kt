@@ -1,35 +1,24 @@
 package hntecology.ecology.activities
 
-import android.graphics.Color
+import android.content.Context
 import android.os.Environment
 import android.util.Log
 import com.google.android.gms.maps.model.*
-import hntecology.ecology.activities.MainActivity.Companion.LAYER_BIOTOPE
-import hntecology.ecology.activities.MainActivity.Companion.LAYER_BIRDS
-import hntecology.ecology.activities.MainActivity.Companion.LAYER_FISH
-import hntecology.ecology.activities.MainActivity.Companion.LAYER_FLORA
-import hntecology.ecology.activities.MainActivity.Companion.LAYER_FLORA2
-import hntecology.ecology.activities.MainActivity.Companion.LAYER_INSECT
-import hntecology.ecology.activities.MainActivity.Companion.LAYER_MAMMALIA
-import hntecology.ecology.activities.MainActivity.Companion.LAYER_REPTILIA
-import hntecology.ecology.activities.MainActivity.Companion.LAYER_STOCKMAP
-import hntecology.ecology.activities.MainActivity.Companion.LAYER_WAYPOINT
-import hntecology.ecology.activities.MainActivity.Companion.LAYER_ZOOBENTHOS
-import hntecology.ecology.base.PolygonUtils
+import hntecology.ecology.base.FileFilter
 import org.gdal.ogr.Feature
 import org.gdal.ogr.FieldDefn
 import org.gdal.ogr.Geometry
 import org.gdal.ogr.ogr
 import org.gdal.osr.SpatialReference
-import org.json.JSONObject
 import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
 
 
 object Exporter {
 
-    lateinit var exportItem:ExportItem
-    lateinit var exportPointItem:ExportPointItem
+    lateinit var exportItem: ExportItem
+    lateinit var exportPointItem: ExportPointItem
 
     var leftday = ""
     var rightday = ""
@@ -41,44 +30,44 @@ object Exporter {
 //
 //    }
 
-    class ExportItem constructor(layerInt:Int, columnDefs: ArrayList<ColumnDef>,polygon : Polygon? ,points:ArrayList<LatLng>?) {
-        val layerInt:Int = layerInt
+    class ExportItem constructor(layerInt: Int, columnDefs: ArrayList<ColumnDef>, polygon: Polygon?, points: ArrayList<LatLng>?) {
+        val layerInt: Int = layerInt
         var columnDefs: ArrayList<ColumnDef> = columnDefs
-        var polygon : Polygon = polygon!!
+        var polygon: Polygon = polygon!!
         var points: ArrayList<LatLng> = points!!
-}
-
-    class ExportPointItem constructor(layerInt:Int, columnDefs: ArrayList<ColumnDef>, point : Marker) {
-        val layerInt:Int = layerInt
-        var columnDefs: ArrayList<ColumnDef> = columnDefs
-        var point : Marker = point
     }
 
-    class ExportLatLngItem constructor(layerInt:Int, columnDefs: ArrayList<ColumnDef>, latlng : LatLng) {
-        val layerInt:Int = layerInt
+    class ExportPointItem constructor(layerInt: Int, columnDefs: ArrayList<ColumnDef>, point: Marker) {
+        val layerInt: Int = layerInt
         var columnDefs: ArrayList<ColumnDef> = columnDefs
-        var latlng : LatLng = latlng
+        var point: Marker = point
+    }
+
+    class ExportLatLngItem constructor(layerInt: Int, columnDefs: ArrayList<ColumnDef>, latlng: LatLng) {
+        val layerInt: Int = layerInt
+        var columnDefs: ArrayList<ColumnDef> = columnDefs
+        var latlng: LatLng = latlng
     }
 
     class ColumnDef constructor(columnName: String, columnType: Int, columnValue: Any?) {
         val columnName = columnName
         val columnType = columnType
-        val columnValue:Any? = columnValue
+        val columnValue: Any? = columnValue
     }
 
-    fun export(exportItems:ArrayList<ExportItem>,lftday:String,rgtday:String) {
-        export(exportItems, null, null,lftday, rgtday)
+    fun export(exportItems: ArrayList<ExportItem>, lftday: String, rgtday: String, u_name: String) {
+        export(exportItems, null, null, lftday, rgtday, u_name)
     }
 
-    fun exportPoint(exportPointItems:ArrayList<ExportPointItem>,lftday:String,rgtday:String) {
-        export(null, exportPointItems, null,lftday, rgtday)
+    fun exportPoint(exportPointItems: ArrayList<ExportPointItem>, lftday: String, rgtday: String, u_name: String) {
+        export(null, exportPointItems, null, lftday, rgtday, u_name)
     }
 
-    fun exportLine(exportLineItems:ArrayList<ExportLatLngItem>) {
-        export(null, null, exportLineItems,"","")
+    fun exportLine(exportLineItems: ArrayList<ExportLatLngItem>) {
+        export(null, null, exportLineItems, "", "", "")
     }
 
-    private fun export(exportItems:ArrayList<ExportItem>?, exportPointItems:ArrayList<ExportPointItem>?, exportLineItems:ArrayList<ExportLatLngItem>?,lftday: String,rgtday: String) {
+    private fun export(exportItems: ArrayList<ExportItem>?, exportPointItems: ArrayList<ExportPointItem>?, exportLineItems: ArrayList<ExportLatLngItem>?, lftday: String, rgtday: String, u_name: String) {
 
         leftday = lftday
         rightday = rgtday
@@ -111,7 +100,7 @@ object Exporter {
 
         var layerName = "shp"
 
-        if (exportItems != null){
+        if (exportItems != null) {
             exportItem = exportItems!!.get(0)
 
             when (exportItem.layerInt) {
@@ -173,7 +162,7 @@ object Exporter {
             }
         }
 
-        if (exportPointItems != null){
+        if (exportPointItems != null) {
             exportPointItem = exportPointItems.get(0)
 
             when (exportPointItem.layerInt) {
@@ -231,7 +220,7 @@ object Exporter {
 
         }
 
-        if(exportLineItems != null) {
+        if (exportLineItems != null) {
             layerName = "tracking"
         }
 
@@ -240,12 +229,21 @@ object Exporter {
 
         // String outPath = "/data/data/com.wshunli.gdal.android.demo/outputs/";
 //        val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
-        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"  + File.separator +"data"+ File.separator + layerName + File.separator
-//        var outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"  + File.separator +"data"+ File.separator + layerName + File.separator + layerName + ".shp"
-        var outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"  + File.separator +"data"+ File.separator + layerName + File.separator + layerName + ".shp"
+        FileFilter.delete(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"  + File.separator +"data"+ File.separator + layerName,u_name)
+        val date = Date()
+        val sdf = SimpleDateFormat("yyyyMMdd-hhmmSS")
 
-        if (leftday != ""){
-            outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"  + File.separator +"data"+ File.separator + layerName + File.separator + layerName + "_"+ leftday +"_"+ rightday + ".shp"
+        val getTime = sdf.format(date)
+        var gettimes = getTime.split("-")
+
+        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + layerName + File.separator
+        var outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"  + File.separator +"data"+ File.separator + layerName + File.separator + layerName+"_"+getTime.substring(2,8)+"_"+gettimes[1]+"_"+u_name+ ".shp"
+//        var outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + layerName + File.separator + layerName + ".shp"
+
+
+
+        if (leftday != "") {
+            outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + layerName + File.separator + layerName + "_" + leftday + "_" + rightday + ".shp"
         }
 
 
@@ -270,7 +268,7 @@ object Exporter {
 
             println("made : $made")
         }
-
+//        val biotopePathDir = FileFilter.main(outPath,u_name)
         // create the data source
         val data_source = driver!!.CreateDataSource(outPathFile)
 
@@ -288,11 +286,11 @@ object Exporter {
             layerType = ogr.wkbLineString
         }
 
-        if(exportItems != null) {
+        if (exportItems != null) {
             val exportitem = exportItems.get(0)
             if (exportitem.layerInt == MainActivity.LAYER_BIOTOPE) {
                 layerType = ogr.wkbPolygon
-            } else if (exportItem.layerInt == MainActivity.LAYER_STOCKMAP){
+            } else if (exportItem.layerInt == MainActivity.LAYER_STOCKMAP) {
                 layerType = ogr.wkbPolygon
             }
         }
@@ -300,13 +298,13 @@ object Exporter {
         var layer = data_source!!.CreateLayer("volcanoes", srs, layerType)
 
         // column names
-        if(exportItems != null){
+        if (exportItems != null) {
             for (columnDef in exportItems.first().columnDefs) {
                 layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
             }
         }
 
-        if(exportPointItems != null) {
+        if (exportPointItems != null) {
             val columnDef = exportPointItems.first().columnDefs
             Log.d("쉡", columnDef.toString())
             for (columnDef in columnDef) {
@@ -315,14 +313,14 @@ object Exporter {
             }
         }
 
-        if(exportLineItems != null) {
+        if (exportLineItems != null) {
             val columnDef = exportLineItems.first().columnDefs
             for (columnDef in columnDef) {
                 layer.CreateField(FieldDefn(columnDef.columnName, columnDef.columnType))
             }
         }
 
-        if(exportItems != null) {
+        if (exportItems != null) {
             for (exportItem in exportItems) {
                 // create the feature
                 var feature: Feature = Feature(layer.GetLayerDefn()) ?: return
@@ -344,7 +342,7 @@ object Exporter {
                 val ring = Geometry(ogr.wkbLinearRing)
 
 
-                if (exportItem.points.size > 0){
+                if (exportItem.points.size > 0) {
                     var points = exportItem.points
                     for (point in points) {
                         ring.AddPoint(point.longitude, point.latitude)
@@ -366,18 +364,18 @@ object Exporter {
                 val created = layer.CreateFeature(feature)
                 println("----exportcreated ----- $created")
             }
-        } else if(exportPointItems != null) {
+        } else if (exportPointItems != null) {
             for (exportPointItem in exportPointItems) {
                 // create the feature
                 var feature: Feature = Feature(layer.GetLayerDefn()) ?: return
 
                 // Set the attributes using the values from the delimited text file
-                for(columnDef in exportPointItem.columnDefs) {
-                    if(columnDef.columnValue is Double) {
+                for (columnDef in exportPointItem.columnDefs) {
+                    if (columnDef.columnValue is Double) {
                         feature.SetField(columnDef.columnName, columnDef.columnValue)
-                    } else if(columnDef.columnValue is Int) {
+                    } else if (columnDef.columnValue is Int) {
                         feature.SetField(columnDef.columnName, columnDef.columnValue)
-                    } else if(columnDef.columnValue is String) {
+                    } else if (columnDef.columnValue is String) {
                         feature.SetField(columnDef.columnName, columnDef.columnValue)
                     }
                     println("-------export${columnDef.columnName} : ${columnDef.columnValue}")
@@ -401,18 +399,18 @@ object Exporter {
                 // Create the feature in the layer (shapefile)
                 val created = layer.CreateFeature(feature)
             }
-        } else if(exportLineItems != null) {
+        } else if (exportLineItems != null) {
 
             // create the feature
             var feature: Feature = Feature(layer.GetLayerDefn()) ?: return
 
             // Set the attributes using the values from the delimited text file
-            for(columnDef in exportLineItems.first().columnDefs) {
-                if(columnDef.columnValue is Double) {
+            for (columnDef in exportLineItems.first().columnDefs) {
+                if (columnDef.columnValue is Double) {
                     feature.SetField(columnDef.columnName, columnDef.columnValue)
-                } else if(columnDef.columnValue is Int) {
+                } else if (columnDef.columnValue is Int) {
                     feature.SetField(columnDef.columnName, columnDef.columnValue)
-                } else if(columnDef.columnValue is String) {
+                } else if (columnDef.columnValue is String) {
                     feature.SetField(columnDef.columnName, columnDef.columnValue)
                 }
             }

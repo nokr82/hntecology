@@ -120,6 +120,7 @@ class DlgLayersActivity : Activity() {
         while (data.moveToNext()) {
             val layerModel = LayerModel(data.getString(0), data.getString(1), data.getInt(2), data.getInt(3), data.getString(4), data.getString(5), data.getString(6), false);
 
+            Log.d("레이어목록",layerModel.toString())
             val zoom = intent.getFloatExtra("zoom", 0.0F)
             if (zoom > layerModel.min_scale && zoom < layerModel.max_scale) {
                 if (type == 1) {

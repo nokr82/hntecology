@@ -39,6 +39,7 @@ import com.joooonho.SelectableRoundedImageView
 import com.nostra13.universalimageloader.core.ImageLoader
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
+import hntecology.ecology.base.FileFilter
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.*
@@ -204,14 +205,14 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         }
 
         dominTV.setOnClickListener {
-            val intent = Intent(this,DlgVegetationActivity::class.java)
+            val intent = Intent(this, DlgVegetationActivity::class.java)
             intent.putExtra("title", "우점/아우점")
             intent.putExtra("table", "Vegetation")
             startActivityForResult(intent, SET_DOMIN);
         }
 
         ausTV.setOnClickListener {
-            val intent = Intent(this,DlgVegetationActivity::class.java)
+            val intent = Intent(this, DlgVegetationActivity::class.java)
             intent.putExtra("title", "우점/아우점")
             intent.putExtra("table", "Vegetation")
             startActivityForResult(intent, SET_DOMIN)
@@ -573,17 +574,18 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                         }
 
                         images_path!!.add(tmpfileList.get(i).path)
-                        println("images_path --- ${images_path!!.size}")
+                        println("images_path --- ${tmpfileList.get(i).path}")
 
                         for (j in 0..tmpfileList.size - 1) {
                             println("invtm--------$invtm")
-                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator + biotope_attribute.INV_INDEX.toString() + "_" + invtm + "_" + (j + 1) + ".png")) {
-                                val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
+                            if (images_path!!.get(i).equals(FileFilter.img(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator, (j + 1).toString()))) {
+                                val bitmap = BitmapFactory.decodeFile(tmpfileList.get(j).path, options)
+                                println("이미지$tmpfileList.get(j).path")
                                 val v = View.inflate(context, R.layout.item_add_image, null)
                                 val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
                                 val delIV = v.findViewById<View>(R.id.delIV) as ImageView
                                 imageIV.setImageBitmap(bitmap)
-                                delIV.setTag(i)
+                                delIV.setTag(j)
                                 images!!.add(bitmap)
                                 if (imgSeq == 0) {
                                     addPicturesLL!!.addView(v)
@@ -2270,7 +2272,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 , null, null, null, null, null, null, null, null, null, null, null, null
                 , null, null, null, null, null, null
                 , null, null, null, null, null, null, null, null
-                ,null,null,null
+                , null, null, null
         )
         return biotope_attribute
     }
@@ -2513,13 +2515,13 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
             biotope_attribute.HER_HET_X = Utils.getString(max6ET).toFloat();
         }
 
-        Log.d("구실",t_name)
+        Log.d("구실", t_name)
 
         var names = t_name.split("-")
-        if (names.size>1){
+        if (names.size > 1) {
             biotope_attribute.DOMIN = t_name
-        }else{
-            biotope_attribute.DOMIN = t_name+"군락"
+        } else {
+            biotope_attribute.DOMIN = t_name + "군락"
         }
 
 
@@ -2649,10 +2651,10 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         ufidTV.setText(biotope_attribute.UFID)
         checkTV.setText(biotope_attribute.CHECK)
         var domins = biotope_attribute.DOMIN!!.split("-")
-        if (domins.size>1){
+        if (domins.size > 1) {
             dominTV.text = domins[0]
             ausTV.text = domins[1]
-        }else{
+        } else {
             dominTV.text = biotope_attribute.DOMIN
         }
 
@@ -2735,11 +2737,11 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                     t_name = data!!.getStringExtra("name");
 
                     var names = t_name.split("-")
-                    if (names.size >1){
+                    if (names.size > 1) {
                         dominTV.setText(names[0])
                         ausTV.setText(names[1])
-                    }else{
-                        dominTV.setText(t_name+"군락")
+                    } else {
+                        dominTV.setText(t_name + "군락")
                         ausTV.setText("")
                     }
 
@@ -2964,7 +2966,13 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                                 val made = outputsDir.mkdirs()
 
                             }
-                            saveVitmapToFile(images!!.get(i), outPath + num + "_" + invtm + "_" + (i + 1) + ".png")
+                            val date = Date()
+                            val sdf = SimpleDateFormat("yyyyMMdd-HHmmSS")
+
+                            val getTime = sdf.format(date)
+                            var gettimes = getTime.split("-")
+
+                            saveVitmapToFile(images!!.get(i), outPath + getTime.substring(2, 8) + "_" + gettimes[1] + "_" + (i + 1) + ".png")
 
                         }
                         images!!.clear()
@@ -3019,7 +3027,14 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                             val made = outputsDir.mkdirs()
 
                         }
-                        saveVitmapToFile(images!!.get(i), outPath + num + "_" + invtm + "_" + (i + 1) + ".png")
+                        val date = Date()
+                        val sdf = SimpleDateFormat("yyyyMMdd-HHmmSS")
+
+                        val getTime = sdf.format(date)
+                        var gettimes = getTime.split("-")
+
+//                        saveVitmapToFile(images!!.get(i), outPath + num + "_" + invtm + "_" + (i + 1) + ".png")
+                        saveVitmapToFile(images!!.get(i), outPath + getTime.substring(2, 8) + "_" + gettimes[1] + "_" + (i + 1) + ".png")
 
                     }
                     images!!.clear()
@@ -3175,7 +3190,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                     images!!.clear()
                     val tag = v.tag as Int
                     images_path!!.removeAt(tag)
-                    var file = File(outPath + num + "_" + invtm + "_" + (tag + 1) + ".png")
+                    var file = File(FileFilter.img(outPath, (tag + 1).toString()))
                     file.delete()
 
                     for (k in images_url!!.indices) {

@@ -71,6 +71,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -136,12 +137,12 @@ public class Utils {
             }
 
             // 3분에서 59분일 경우 "*분 전"
-            if(diff < oneHour) {
+            if (diff < oneHour) {
                 return Math.round(diff / oneMin) + "분 전";
             }
 
             // 1시간 후 부터는 분 단위 무시하고 시간 단위만 표시
-            if(diff >= oneHour && diff <= oneHour * 3) {
+            if (diff >= oneHour && diff <= oneHour * 3) {
                 return Math.round(diff / oneHour) + "시간 전";
             }
 
@@ -181,8 +182,7 @@ public class Utils {
     /**
      * EXIF정보를 회전각도로 변환하는 메서드
      *
-     * @param exifOrientation
-     *            EXIF 회전각
+     * @param exifOrientation EXIF 회전각
      * @return 실제 각도
      */
     public static int exifOrientationToDegrees(int exifOrientation) {
@@ -239,10 +239,8 @@ public class Utils {
     /**
      * 이미지를 회전시킵니다.
      *
-     * @param bitmap
-     *            비트맵 이미지
-     * @param degrees
-     *            회전 각도
+     * @param bitmap  비트맵 이미지
+     * @param degrees 회전 각도
      * @return 회전된 이미지
      */
 
@@ -254,7 +252,7 @@ public class Utils {
             try {
 //                Bitmap converted = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true);
 //                if (bitmap != converted) {
-                    bitmap.recycle();
+                bitmap.recycle();
 //                    bitmap = converted;
 //                }
             } catch (OutOfMemoryError e) {
@@ -336,7 +334,7 @@ public class Utils {
 
             try {
                 int uid = Integer.parseInt(imageIdOrPath);
-                String[] proj = { Images.Media.DATA, Images.Media.ORIENTATION };
+                String[] proj = {Images.Media.DATA, Images.Media.ORIENTATION};
 
                 System.out.println("-------getImage");
 
@@ -399,7 +397,7 @@ public class Utils {
 
             try {
                 int uid = Integer.parseInt(imageIdOrPath);
-                String[] proj = { Images.Media.DATA, Images.Media.ORIENTATION };
+                String[] proj = {Images.Media.DATA, Images.Media.ORIENTATION};
 
                 String selection = Images.Media._ID + " = " + uid;
 
@@ -453,7 +451,6 @@ public class Utils {
     }
 
 
-
     public static Bitmap getImage(ContentResolver resolver, String imageIdOrPath, int reqSize) {
         try {
             String photoPath = null;
@@ -461,7 +458,7 @@ public class Utils {
 
             try {
                 int uid = Integer.parseInt(imageIdOrPath);
-                String[] proj = { Images.Media.DATA, Images.Media.ORIENTATION };
+                String[] proj = {Images.Media.DATA, Images.Media.ORIENTATION};
 
                 String selection = Images.Media._ID + " = " + uid;
 
@@ -520,7 +517,7 @@ public class Utils {
 
             try {
                 int uid = Integer.parseInt(imageIdOrPath);
-                String[] proj = { Images.Media.DATA, Images.Media.ORIENTATION };
+                String[] proj = {Images.Media.DATA, Images.Media.ORIENTATION};
 
                 String selection = Images.Media._ID + " = " + uid;
 
@@ -578,7 +575,7 @@ public class Utils {
         String photoPath = null;
 
         try {
-            String[] proj = { Images.Media.DATA };
+            String[] proj = {Images.Media.DATA};
 
             String selection = Images.Media._ID + " = " + imageId;
 
@@ -600,7 +597,7 @@ public class Utils {
         String photoPath = null;
         int orientation = 0;
 
-        String[] proj = { Images.Media.DATA, Images.Media.ORIENTATION };
+        String[] proj = {Images.Media.DATA, Images.Media.ORIENTATION};
 
         String selection = Images.Media._ID + " = " + uid;
 
@@ -678,7 +675,7 @@ public class Utils {
         // Store image to default external storage directory
         Uri bmpUri = null;
         try {
-            File file =  new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
             file.getParentFile().mkdirs();
             FileOutputStream out = new FileOutputStream(file);
             bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
@@ -966,7 +963,7 @@ public class Utils {
         int idx = 0;
         for (String str : strs) {
             sb.append(str);
-            if(++idx < strs.size()) {
+            if (++idx < strs.size()) {
                 sb.append(",");
             }
         }
@@ -1014,7 +1011,7 @@ public class Utils {
             return false;
     }
 
-    public static String getDeviceToken(Context context){
+    public static String getDeviceToken(Context context) {
         if (!isStrEmpty(getDeviceSerial())) {
             return getDeviceSerial();
         }
@@ -1030,16 +1027,16 @@ public class Utils {
         return null;
     }
 
-    private static String getDeviceSerial(){
+    private static String getDeviceSerial() {
         return Build.SERIAL;
     }
 
-    private static String getDeviceIMEI(Context context){
+    private static String getDeviceIMEI(Context context) {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         return tm.getDeviceId();
     }
 
-    private static String getDeviceGoogleAccount(Context context){
+    private static String getDeviceGoogleAccount(Context context) {
         AccountManager ac = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
         for (Account account : ac.getAccounts()) {
             if (account.type.equals("com.google"))
@@ -1053,8 +1050,8 @@ public class Utils {
      * Enables/Disables all child views in a view group.
      *
      * @param viewGroup the view group
-     * @param enabled <code>true</code> to enable, <code>false</code> to disable
-     * the views.
+     * @param enabled   <code>true</code> to enable, <code>false</code> to disable
+     *                  the views.
      */
     public static void enableDisableViewGroup(ViewGroup viewGroup, boolean enabled) {
         int childCount = viewGroup.getChildCount();
@@ -1086,7 +1083,7 @@ public class Utils {
     }
 
     public static DisplayImageOptions UILoptions = new DisplayImageOptions.Builder()
-        // .displayer(new RoundedBitmapDisplayer(2))
+            // .displayer(new RoundedBitmapDisplayer(2))
             // .showImageOnLoading(R.mipmap.nopics2)
             // .showImageForEmptyUri(R.mipmap.nopics2)
             // .showImageOnFail(R.mipmap.nopics2)
@@ -1160,7 +1157,7 @@ public class Utils {
                 buf = bos.toByteArray();
             }
             return buf;
-        } catch(IOException e) {
+        } catch (IOException e) {
 
         }
         return null;
@@ -1195,46 +1192,46 @@ public class Utils {
         return (int) days;
     }
 
-    public static boolean isNumeric(String s){
-        String pattern= "^[0-9]*$";
-        if(s.matches(pattern)){
+    public static boolean isNumeric(String s) {
+        String pattern = "^[0-9]*$";
+        if (s.matches(pattern)) {
             return true;
         }
         return false;
     }
 
-    public static boolean isAlphaOrNumeric(String s){
-        String pattern= "^[a-zA-Z0-9]*$";
-        if(s.matches(pattern)){
+    public static boolean isAlphaOrNumeric(String s) {
+        String pattern = "^[a-zA-Z0-9]*$";
+        if (s.matches(pattern)) {
             return true;
         }
         return false;
     }
 
-    public static boolean isAlphaAndNumeric(String s){
-        String numRegex   = ".*[0-9].*";
+    public static boolean isAlphaAndNumeric(String s) {
+        String numRegex = ".*[0-9].*";
         String alphaRegex = ".*[A-Z].*";
 
-        String pattern= "^(?=.*[A-Z])(?=.*[0-9])[A-Z0-9]+$";
-        if(s.matches(pattern)){
+        String pattern = "^(?=.*[A-Z])(?=.*[0-9])[A-Z0-9]+$";
+        if (s.matches(pattern)) {
             return true;
         }
         return false;
     }
 
-    public static boolean containsAlpha(String s){
+    public static boolean containsAlpha(String s) {
         String alphaRegex = ".*[a-zA-Z].*";
 
-        if(s.matches(alphaRegex)){
+        if (s.matches(alphaRegex)) {
             return true;
         }
         return false;
     }
 
-    public static boolean containsNumber(String s){
-        String numRegex   = ".*[0-9].*";
+    public static boolean containsNumber(String s) {
+        String numRegex = ".*[0-9].*";
 
-        if(s.matches(numRegex)){
+        if (s.matches(numRegex)) {
             return true;
         }
         return false;
@@ -1280,7 +1277,7 @@ public class Utils {
 
                 wordtoSpan.setSpan(span, idx, idx + tag.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-                if(!clickable) {
+                if (!clickable) {
                     continue;
                 }
 
@@ -1288,7 +1285,7 @@ public class Utils {
                     @Override
                     public void onClick(View textView) {
 
-                        if("타임메신".equals(tag)) {
+                        if ("타임메신".equals(tag)) {
                             return;
                         }
 
@@ -1297,6 +1294,7 @@ public class Utils {
                         // intent.putExtra("nickname", tag);
                         // context.startActivity(intent);
                     }
+
                     @Override
                     public void updateDrawState(TextPaint ds) {
                         super.updateDrawState(ds);
@@ -1321,19 +1319,20 @@ public class Utils {
 
     /**
      * 천단위로 콤마를 찍어서 리턴한다.
+     *
      * @param number
      * @return
      */
-    public static String comma(String number){
+    public static String comma(String number) {
         int len = number.length();
         int point = number.length() % 3;
         String str = number.substring(0, point);
 
-        while (point < len){
-            if(!"".equals(str))
+        while (point < len) {
+            if (!"".equals(str))
                 str += ",";
 
-            str += number.substring(point, point+3);
+            str += number.substring(point, point + 3);
             point += 3;
         }
 
@@ -1361,7 +1360,7 @@ public class Utils {
         final int firstListItemPosition = listView.getFirstVisiblePosition();
         final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
 
-        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+        if (pos < firstListItemPosition || pos > lastListItemPosition) {
             return listView.getAdapter().getView(pos, null, listView);
         } else {
             final int childIndex = pos - firstListItemPosition;
@@ -1373,7 +1372,7 @@ public class Utils {
         final int firstListItemPosition = gridView.getFirstVisiblePosition();
         final int lastListItemPosition = firstListItemPosition + gridView.getChildCount() - 1;
 
-        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+        if (pos < firstListItemPosition || pos > lastListItemPosition) {
             return gridView.getAdapter().getView(pos, null, gridView);
         } else {
             final int childIndex = pos - firstListItemPosition;
@@ -1382,40 +1381,40 @@ public class Utils {
     }
 
     // 키보드 보이기
-    public static void showKeyboard(final Context context){
+    public static void showKeyboard(final Context context) {
         InputMethodManager immhide = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
         immhide.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     // 키보드 숨기기
-    public static void hideKeyboard(final Context context){
+    public static void hideKeyboard(final Context context) {
         try {
             InputMethodManager immhide = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
             immhide.hideSoftInputFromWindow(((Activity) context).getWindow().getCurrentFocus().getWindowToken(), 0);
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
 
         }
 
     }
 
-    public static void clearApplicationCache(Context context, File dir){
-        if(dir==null) {
+    public static void clearApplicationCache(Context context, File dir) {
+        if (dir == null) {
             String dataDir = context.getFilesDir().getAbsolutePath();
             dir = new File(dataDir);
         }
 
-        if(dir==null) {
+        if (dir == null) {
             return;
         }
 
         java.io.File[] children = dir.listFiles();
-        try{
-            for(int i=0;i<children.length;i++)
-                if(children[i].isDirectory())
+        try {
+            for (int i = 0; i < children.length; i++)
+                if (children[i].isDirectory())
                     clearApplicationCache(context, children[i]);
                 else children[i].delete();
+        } catch (Exception e) {
         }
-        catch(Exception e){}
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
@@ -1470,7 +1469,7 @@ public class Utils {
         );
 
         float distance;
-        if (distanceWidth[0] < distanceHeight[0]){
+        if (distanceWidth[0] < distanceHeight[0]) {
             distance = distanceWidth[0];
         } else {
             distance = distanceHeight[0];
@@ -1480,7 +1479,7 @@ public class Utils {
     }
 
     public static int getInt(JSONObject item, String key) {
-        if(item.has(key) && !item.isNull(key)) {
+        if (item.has(key) && !item.isNull(key)) {
             try {
                 return item.getInt(key);
             } catch (JSONException e) {
@@ -1491,7 +1490,7 @@ public class Utils {
     }
 
     public static String getString(JSONObject item, String key) {
-        if(item.has(key) && !item.isNull(key)) {
+        if (item.has(key) && !item.isNull(key)) {
             try {
                 return item.getString(key);
             } catch (JSONException e) {
@@ -1502,7 +1501,7 @@ public class Utils {
     }
 
     public static boolean getBoolen(JSONObject json, String key) {
-        if(json != null && json.has(key) && !json.isNull(key)) {
+        if (json != null && json.has(key) && !json.isNull(key)) {
             try {
                 return json.getBoolean(key);
             } catch (JSONException e) {
@@ -1515,9 +1514,11 @@ public class Utils {
     public static String getString(String str) {
         return getString(str, "");
     }
+
     public static String getString(TextView textView) {
         return textView.getText().toString().trim();
     }
+
     public static String getString(EditText editText) {
         return editText.getText().toString().trim();
     }
@@ -1527,7 +1528,7 @@ public class Utils {
     }
 
     public static double getDouble(JSONObject item, String key) {
-        if(item.has(key) && !item.isNull(key)) {
+        if (item.has(key) && !item.isNull(key)) {
             try {
                 return item.getDouble(key);
             } catch (JSONException e) {
@@ -1618,9 +1619,9 @@ public class Utils {
 
         // System.out.println("taskInfo : " + taskInfo);
 
-        if(taskInfo != null && taskInfo.size() > 0) {
+        if (taskInfo != null && taskInfo.size() > 0) {
             String topClazzName = taskInfo.get(0).topActivity.getClassName();
-            if("hntecology.ecology.base.LoadingActivity".equals(topClazzName)) {
+            if ("hntecology.ecology.base.LoadingActivity".equals(topClazzName)) {
                 Intent intent = new Intent();
                 intent.setAction("HIDE_LOADING");
                 activity.sendBroadcast(intent);
@@ -1680,16 +1681,16 @@ public class Utils {
             int len;
             while ((len = in.read(ibuf)) != -1) {
                 byte[] obuf = ci.update(ibuf, 0, len);
-                if ( obuf != null ) out.write(obuf);
+                if (obuf != null) out.write(obuf);
             }
             byte[] obuf = ci.doFinal();
-            if ( obuf != null ) out.write(obuf);
+            if (obuf != null) out.write(obuf);
         }
     }
 
     public static void encrypt(String inFile, String outFile) {
         try {
-            byte[] iv = new byte[128/8];
+            byte[] iv = new byte[128 / 8];
 
             SecureRandom secureRandom = new SecureRandom();
             secureRandom.nextBytes(iv);
@@ -1697,8 +1698,6 @@ public class Utils {
 
             KeyGenerator kgen = KeyGenerator.getInstance("AES");
             SecretKey skey = kgen.generateKey();
-
-
 
 
             Cipher ci = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -1724,7 +1723,7 @@ public class Utils {
 
     public static void decrypt(String inFile, String outFile) {
         try {
-            byte[] iv = new byte[128/8];
+            byte[] iv = new byte[128 / 8];
 
             SecureRandom secureRandom = new SecureRandom();
             secureRandom.nextBytes(iv);
@@ -1753,7 +1752,6 @@ public class Utils {
             e.printStackTrace();
         }
     }
-
 
 
 }

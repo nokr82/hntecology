@@ -32,6 +32,7 @@ import com.joooonho.SelectableRoundedImageView
 import com.nostra13.universalimageloader.core.ImageLoader
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
+import hntecology.ecology.base.FileFilter
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.*
@@ -52,6 +53,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.abs
@@ -690,7 +692,7 @@ class ZoobenthosActivity : Activity() {
                         images_path!!.add(tmpfileList.get(i).path)
 
                         for (j in 0..tmpfileList.size - 1) {
-                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator + zoo.NUM.toString() + "_" + invtm +"_" + (j+1) + ".png")) {
+                            if (images_path!!.get(i).equals(FileFilter.img(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "zoobenthos/images"+ File.separator +keyId+ File.separator,(j+1).toString()))) {
                                 val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
                                 val v = View.inflate(context, R.layout.item_add_image, null)
                                 val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
@@ -1712,8 +1714,13 @@ class ZoobenthosActivity : Activity() {
                                 val made = outputsDir.mkdirs()
 
                             }
-                            saveVitmapToFile(images!!.get(i),outPath+num + "_" + invtm+"_"+(i+1)+".png")
+                            val date = Date()
+                            val sdf = SimpleDateFormat("yyyyMMdd-HHmmSS")
 
+                            val getTime = sdf.format(date)
+                            var gettimes = getTime.split("-")
+
+                            saveVitmapToFile(images!!.get(i), outPath +getTime.substring(2,8)+"_"+gettimes[1] + "_" + (i + 1) + ".png")
                         }
 
                         images!!.clear()
@@ -1781,8 +1788,13 @@ class ZoobenthosActivity : Activity() {
                             val made = outputsDir.mkdirs()
 
                         }
-                        saveVitmapToFile(images!!.get(i),outPath+num + "_" + invtm+"_"+(i+1)+".png")
+                        val date = Date()
+                        val sdf = SimpleDateFormat("yyyyMMdd-HHmmSS")
 
+                        val getTime = sdf.format(date)
+                        var gettimes = getTime.split("-")
+
+                        saveVitmapToFile(images!!.get(i), outPath +getTime.substring(2,8)+"_"+gettimes[1] + "_" + (i + 1) + ".png")
                     }
                     images!!.clear()
 

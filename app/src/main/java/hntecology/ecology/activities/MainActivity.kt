@@ -37,10 +37,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.SphericalUtil
 import hntecology.ecology.R
-import hntecology.ecology.base.DataBaseHelper
-import hntecology.ecology.base.PolygonUtils
-import hntecology.ecology.base.PrefUtils
-import hntecology.ecology.base.Utils
+import hntecology.ecology.base.*
 import hntecology.ecology.model.*
 import io.nlopez.smartlocation.OnLocationUpdatedListener
 import io.nlopez.smartlocation.SmartLocation
@@ -63,6 +60,7 @@ import java.io.File
 import java.io.FilenameFilter
 import java.io.InputStream
 import java.io.Serializable
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -304,7 +302,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             intent.putExtra("zoom", zoom)
             if (layerFileName != null) {
                 intent.putExtra("layerFileName", layerFileName)
+                Log.d("레이어",layerFileName.toString())
                 intent.putExtra("layerGropId", layerGropId)
+                Log.d("레이어",layerGropId.toString())
             }
             startActivityForResult(intent, REQUEST_LAYER)
 
@@ -1672,6 +1672,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     jsonOb = data!!.getSerializableExtra("data") as ArrayList<LayerModel>
 
+                    Log.d("제이슨",jsonOb.toString())
                     if (jsonOb.size > 0) {
 
                         if (types.size != null) {
@@ -4402,13 +4403,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
 
         val bounds = googleMap.projection.visibleRegion.latLngBounds
-        val loadLayerTask = LoadLayerTask(fileName, Type, added).execute(bounds)
+        LoadLayerTask(fileName, Type, added).execute(bounds)
 //        loadLayerTasks.add(loadLayerTask)
 
     }
 
     private inner class LoadLayerTask(layerName: String, Type: String, added: String) : AsyncTask<LatLngBounds, Any, Boolean>() {
-
         var layerName = layerName
 
         var type = Type
@@ -4436,19 +4436,24 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             mapBoundary.AddGeometry(ring)
 
             ogr.RegisterAll()
-
             // set up the shapefile driver
             val driver = ogr.GetDriverByName("ESRI Shapefile")
+            var u_name =  PrefUtils.getStringPreference(context,"name")
+            Log.d("드라이버",context.applicationInfo.dataDir.toString())
+            var shpFilePath = FileFilter.main("/storage/emulated/0/Download/ecology/data/"+type+"/",u_name)
+            //            var shpFilePath = context.applicationInfo.dataDir + File.separator + "$layerName.shp"
+            //            val biotopePathDir = FileFilter.main("/storage/emulated/0/Download/ecology/data/"+type+"/",u_name)
+//            var fileNames = biotopePathDir.listFiles(FilenameFilter { dir, name -> name.endsWith(".shp") })
 
-            var shpFilePath = context.applicationInfo.dataDir + File.separator + "$layerName.shp"
 
-            println("shpFilePath : $shpFilePath")
 
             if (added == "Y") {
-                shpFilePath = "$layerName.shp"
+//                shpFilePath = "$layerName.shp"
+//                println(" 이거냐 : $layerName")
             }
 
-            println("shpFilePath 2 : $shpFilePath")
+            println("shpFilePath 2 : $layerName")
+            println("shpFilePath아비그 : $shpFilePath")
 
             // val f = File(shpFilePath)
 
@@ -4456,7 +4461,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
             val dataSource = driver.Open(shpFilePath, 0) ?: return true
 
-            // println("dataSource : $dataSource")
+             println("dataSource : $dataSource")
 
             val layerCount = dataSource.GetLayerCount()
 
@@ -4509,7 +4514,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     val geometryType = geometryRef.GetGeometryType()
 
-                    // println("geometryType : $geometryType")
+                     println("geometryType : $geometryType")
 
                     if (geometryType == ogr.wkbPoint) {
                         val pointCount = geometryRef.GetPointCount()
@@ -6500,11 +6505,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 var leftreplace = lftday.replace(" ", "_")
                 var rightreplace = rgtday.replace(" ", "_")
+                var u_name =  PrefUtils.getStringPreference(context,"name")
                 lftday = leftreplace
                 rgtday = rightreplace
 
                 if (biotopeArray != null) {
-                    Exporter.export(biotopeArray, lftday, rgtday)
+                    Exporter.export(biotopeArray, lftday, rgtday,u_name)
                 }
 
 
@@ -6521,7 +6527,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 } else {
                     if (leftday == "") {
+
                         dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope", "비오톱", "biotope", "Y", "biotope")
+
                     }
                 }
 
@@ -6558,26 +6566,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             birdsDatas.add(birds_attribute)
 
         }
-
-//        if (datas != null) {
-//            for (i in 0..datas.size - 1) {
-//                println("-----datassize${datas.size}")
-//
-//                val item = datas.get(i)
-//
-//                val data = db!!.query("birdsAttribute", dataList, "GROP_ID = '${item.GROP_ID}'", null, null, null, "", null)
-//
-//                while (data.moveToNext()) {
-//
-//                    var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-//                            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-//                            , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21), data.getString(22)
-//                            , data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getString(28), data.getString(29), data.getString(30))
-//
-//                    birdsDatas.add(birds_attribute)
-//                }
-//            }
-//        }
 
         Log.d("버드", birdsDatas.toString())
         if (birdsDatas.size > 0) {
@@ -6730,9 +6718,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-
+            var u_name =  PrefUtils.getStringPreference(context,"name")
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray, lftday, rgtday)
+                Exporter.exportPoint(pointsArray, lftday, rgtday,u_name)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "birds" + File.separator + "birds"
@@ -6960,9 +6948,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-
+            var u_name =  PrefUtils.getStringPreference(context,"name")
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray, lftday, rgtday)
+                Exporter.exportPoint(pointsArray, lftday, rgtday,u_name)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "reptilia" + File.separator + "reptilia"
@@ -7174,9 +7162,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-
+            var u_name =  PrefUtils.getStringPreference(context,"name")
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray, lftday, rgtday)
+                Exporter.exportPoint(pointsArray, lftday, rgtday,u_name)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "mammalia" + File.separator + "mammalia"
@@ -7415,9 +7403,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-
+            var u_name =  PrefUtils.getStringPreference(context,"name")
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray, lftday, rgtday)
+                Exporter.exportPoint(pointsArray, lftday, rgtday,u_name)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "fish" + File.separator + "fish"
@@ -7629,9 +7617,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-
+            var u_name =  PrefUtils.getStringPreference(context,"name")
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray, lftday, rgtday)
+                Exporter.exportPoint(pointsArray, lftday, rgtday,u_name)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "insect" + File.separator + "insect"
@@ -7647,6 +7635,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             } else {
                 if (leftday == "") {
                     dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "insect" + File.separator + "insect", "곤충", "insect", "Y", "insect")
+                    Log.d("개꿀",Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString())
                 }
             }
 
@@ -7833,9 +7822,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-
+            var u_name =  PrefUtils.getStringPreference(context,"name")
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray, lftday, rgtday)
+                Exporter.exportPoint(pointsArray, lftday, rgtday,u_name)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora" + File.separator + "flora"
@@ -8077,9 +8066,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-
+            var u_name =  PrefUtils.getStringPreference(context,"name")
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray, lftday, rgtday)
+                Exporter.exportPoint(pointsArray, lftday, rgtday,u_name)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "zoobenthos" + File.separator + "zoobenthos"
@@ -8228,9 +8217,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-
+            var u_name =  PrefUtils.getStringPreference(context,"name")
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray, lftday, rgtday)
+                Exporter.exportPoint(pointsArray, lftday, rgtday,u_name)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "waypoint" + File.separator + "waypoint"
@@ -8438,9 +8427,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-
+            var u_name =  PrefUtils.getStringPreference(context,"name")
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray, lftday, rgtday)
+                Exporter.exportPoint(pointsArray, lftday, rgtday,u_name)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora2" + File.separator + "flora2"
@@ -8691,9 +8680,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 var rightreplace = rgtday.replace(" ", "_")
                 lftday = leftreplace
                 rgtday = rightreplace
-
+                var u_name =  PrefUtils.getStringPreference(context,"name")
                 if (stokeArray != null) {
-                    Exporter.export(stokeArray, lftday, rgtday)
+                    Exporter.export(stokeArray, lftday, rgtday,u_name)
                 }
 
                 val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap"
@@ -8945,6 +8934,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 } else {
                     dbManager!!.updatebiotope_attribute_geom(firstLayerInfo.attrubuteKey, geom)
                     exportBiotope("", "", "", "", "all")
+
                     var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope"
                     var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope", "비오톱", 1, 99, "biotope", "Y", "biotope", false)
                     var chkData = false
@@ -9631,76 +9621,73 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     }
 
 
+   /* fun searchByFilefilter(folder: FIle): Array<File> {
+        return folder.listFiles(FilenameFilter { dir, name -> name.endWith(".txt") })
+    }*/
+
     fun isFile(): Boolean {
-        val biotopePathDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope")
-        var biotopePath = null
-        val files = biotopePathDir.listFiles(FilenameFilter { file, s ->
-            return@FilenameFilter file.name.endsWith(".shp")
-        })
-        Log.d("파일",files.toString())
-        if(files != null && files.size > 0) {
-            biotopePath = files[0] as Nothing?
-        }
-        if (biotopePath != null) {
+
+        val biotopePathDir = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope",""))
+        if (!biotopePathDir.exists()) {
             dbManager!!.deletelayers("biotope")
             dbManager!!.deletebiotope_attribute_all()
         }
 
-        val bridsPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "birds" + File.separator + "birds.shp")
+        val bridsPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "birds",""))
         if (!bridsPath.exists()) {
             dbManager!!.deletelayers("birds")
             dbManager!!.deletebirds_attribute_all()
         }
 
-        val reptiliaPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "reptilia" + File.separator + "reptilia.shp")
+        val reptiliaPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "reptilia",""))
         if (!reptiliaPath.exists()) {
             dbManager!!.deletelayers("reptilia")
             dbManager!!.deletereptilia_attribute_all()
         }
 
-        val mammaliaPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "mammalia" + File.separator + "mammalia.shp")
+        val mammaliaPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "mammalia",""))
         if (!mammaliaPath.exists()) {
             dbManager!!.deletelayers("mammalia")
             dbManager!!.deletemammal_attribute_all()
         }
 
-        val fishPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "fish" + File.separator + "fish.shp")
+        val fishPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "fish",""))
         if (!fishPath.exists()) {
             dbManager!!.deletelayers("fish")
             dbManager!!.deletefish_attribute_all()
         }
 
-        val insectPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "insect" + File.separator + "insect.shp")
+        val insectPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "insect",""))
         if (!insectPath.exists()) {
             dbManager!!.deletelayers("insect")
             dbManager!!.deleteinsect_attribute_all()
         }
 
-        val floraPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora" + File.separator + "flora.shp")
+        val floraPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora",""))
         if (!floraPath.exists()) {
             dbManager!!.deletelayers("flora")
             dbManager!!.deleteflora_attribute_all()
         }
 
-        val zoobenthosPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "zoobenthos" + File.separator + "zoobenthos.shp")
+        val zoobenthosPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "zoobenthos",""))
         if (!zoobenthosPath.exists()) {
             dbManager!!.deletelayers("zoobenthos")
             dbManager!!.deletezoobenthous_attribute_all()
         }
 
-        val flora2Path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora2" + File.separator + "flora2.shp")
+        val flora2Path = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora2",""))
         if (!flora2Path.exists()) {
             dbManager!!.deletelayers("flora2")
 
         }
 
-        val trackingPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "tracking" + File.separator + "tracking.shp")
+        val trackingPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "tracking",""))
         if (!trackingPath.exists()) {
             dbManager!!.deletelayers("tracking")
             dbManager!!.deletetracking()
         }
 
-        val stockmapPath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap.shp")
+        val stockmapPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap",""))
         if (!stockmapPath.exists()) {
             dbManager!!.deletelayers("stockmap")
             dbManager!!.deletestockmap_all()

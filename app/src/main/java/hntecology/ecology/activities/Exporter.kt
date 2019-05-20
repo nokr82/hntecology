@@ -231,7 +231,7 @@ object Exporter {
 //        val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
         FileFilter.delete(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology"  + File.separator +"data"+ File.separator + layerName,u_name)
         val date = Date()
-        val sdf = SimpleDateFormat("yyyyMMdd-hhmmSS")
+        val sdf = SimpleDateFormat("yyyyMMdd-HHmmSS")
 
         val getTime = sdf.format(date)
         var gettimes = getTime.split("-")

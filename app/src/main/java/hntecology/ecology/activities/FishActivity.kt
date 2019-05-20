@@ -38,6 +38,7 @@ import com.joooonho.SelectableRoundedImageView
 import com.nostra13.universalimageloader.core.ImageLoader
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
+import hntecology.ecology.base.FileFilter
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.*
@@ -461,7 +462,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                         for(j in 0..tmpfileList.size - 1) {
 
-                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator + fish_attribute.NUM.toString() + "_" +invtm +"_" + (j+1) + ".png")) {
+                            if (images_path!!.get(i).equals(FileFilter.img(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator,(j+1).toString()))) {
  //                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/fish/images/" + fish_attribute.NUM.toString() +"_"+fish_attribute.INV_TM +"_" + (j+1) + ".png")) {
                                 val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
                                 val v = View.inflate(context, R.layout.item_add_image, null)
@@ -2291,7 +2292,13 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                                 val made = outputsDir.mkdirs()
 
                             }
-                            saveVitmapToFile(images!!.get(i),outPath+num + "_" + invtm+"_"+(i+1)+".png")
+                            val date = Date()
+                            val sdf = SimpleDateFormat("yyyyMMdd-HHmmSS")
+
+                            val getTime = sdf.format(date)
+                            var gettimes = getTime.split("-")
+
+                            saveVitmapToFile(images!!.get(i), outPath +getTime.substring(2,8)+"_"+gettimes[1] + "_" + (i + 1) + ".png")
 
                         }
 
@@ -2363,7 +2370,13 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                             val made = outputsDir.mkdirs()
 
                         }
-                        saveVitmapToFile(images!!.get(i),outPath+num + "_" + invtm+"_"+(i+1)+".png")
+                        val date = Date()
+                        val sdf = SimpleDateFormat("yyyyMMdd-HHmmSS")
+
+                        val getTime = sdf.format(date)
+                        var gettimes = getTime.split("-")
+
+                        saveVitmapToFile(images!!.get(i), outPath +getTime.substring(2,8)+"_"+gettimes[1] + "_" + (i + 1) + ".png")
 
                     }
 

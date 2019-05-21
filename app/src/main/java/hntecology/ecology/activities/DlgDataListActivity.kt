@@ -6,6 +6,7 @@ import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.util.Log
 import android.widget.ListView
 import hntecology.ecology.R
 import hntecology.ecology.adapter.*
@@ -59,7 +60,7 @@ class DlgDataListActivity : Activity() {
     var titleName:String=""
     var DlgHeight:Float=430F
     var GROP_ID:String = ""
-    var INV_TM:String = ""
+    var IT_GROP_ID:String = ""
     var markerid:String? = null
     var polygonid:String? = null
     var landuse:String? = null
@@ -140,9 +141,9 @@ class DlgDataListActivity : Activity() {
         val dataList: Array<String> = arrayOf("*");
         if(tableName.equals("biotopeAttribute")) {
 
-            INV_TM = intent.getStringExtra("INV_TM")
-
-            val biotopsdata=  db!!.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'  GROUP BY '"+INV_TM+"'",null,null,null,null,null);
+            Log.d("데이터",biotopeData.toString())
+            val biotopsdata=  db!!.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,"IT_GROP_ID",null,null,null);
+            Log.d("데이터",biotopsdata.toString())
 
             biotopesdataList(biotopeData,biotopsdata)
 
@@ -275,7 +276,7 @@ class DlgDataListActivity : Activity() {
                 val biotopedata = biotopeAdaper.getItem(position)
 
                 val intent = Intent(this, BiotopeActivity::class.java)
-
+                intent!!.putExtra("position",position)
                 intent!!.putExtra("id", biotopedata.id.toString())
                 intent.putExtra("set",3)
                 intent!!.putExtra("GROP_ID",biotopedata.GROP_ID)
@@ -462,7 +463,7 @@ class DlgDataListActivity : Activity() {
             , data.getDouble(50), data.getString(51), data.getString(52),data.getString(53),data.getString(54), data.getString(55), data.getString(56),data.getString(57)
                     , data.getFloat(58),data.getFloat(59),data.getFloat(60),data.getFloat(61),data.getFloat(62),data.getFloat(63)
                     ,data.getFloat(64),data.getFloat(65),data.getFloat(66),data.getFloat(67),data.getFloat(68),data.getFloat(69), data.getString(70)
-                    ,data.getFloat(71),data.getString(72),data.getString(73),data.getString(74))
+                    ,data.getFloat(71),data.getString(72),data.getString(73),data.getString(74),data.getString(75))
 
             listdata.add(model)
         }

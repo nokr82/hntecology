@@ -143,6 +143,19 @@
                         android:gravity="center"/>
                 </RelativeLayout>
 
+                <Switch
+                    android:id="@+id/modiSW"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="20dp"
+                    android:scaleX="1.2"
+                    android:scaleY="1.5"
+                    android:textColor="#ffffff"
+                    android:textOff="직접입력"
+                    android:textOn="선택복사"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:thumb="@drawable/swich_on" />
                 <View
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

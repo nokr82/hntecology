@@ -44,6 +44,8 @@ import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.*
 import kotlinx.android.synthetic.main.activity_biotope_ex.*
+import kotlinx.android.synthetic.main.activity_biotope_ex.ausTV
+import kotlinx.android.synthetic.main.activity_biotope_ex.dominTV
 import kotlinx.android.synthetic.main.activity_biotope_ex.etHER_COVEET
 import kotlinx.android.synthetic.main.activity_biotope_ex.etHER_FAMIET
 import kotlinx.android.synthetic.main.activity_biotope_ex.etHER_HET
@@ -66,6 +68,10 @@ import kotlinx.android.synthetic.main.activity_biotope_ex.etTRE_FAMIET
 import kotlinx.android.synthetic.main.activity_biotope_ex.etTRE_HET
 import kotlinx.android.synthetic.main.activity_biotope_ex.etTRE_SCIENET
 import kotlinx.android.synthetic.main.activity_biotope_ex.etTRE_SPECET
+import kotlinx.android.synthetic.main.activity_biotope_ex.streleftTV
+import kotlinx.android.synthetic.main.activity_biotope_ex.strepageTV
+import kotlinx.android.synthetic.main.activity_biotope_ex.strerightTV
+import kotlinx.android.synthetic.main.activity_biotope_ex.strerightpageTV
 import kotlinx.android.synthetic.main.activity_biotope_ex.treleftTV
 import kotlinx.android.synthetic.main.activity_biotope_ex.trepageTV
 import kotlinx.android.synthetic.main.activity_biotope_ex.trerightTV
@@ -160,6 +166,9 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
     var lc_type = ""
 
+    var it_index = 0
+
+
     var trepage = 1
     var strepage = 1
     var shrpage = 1
@@ -167,8 +176,8 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
     var TreDatas: ArrayList<BioTreeData> = ArrayList<BioTreeData>()
     var StreDatas: ArrayList<BioTreeData> = ArrayList<BioTreeData>()
-    var ShrDatas: ArrayList<TreeData2> = ArrayList<TreeData2>()
-    var HerDatas: ArrayList<TreeData2> = ArrayList<TreeData2>()
+    var ShrDatas: ArrayList<BioTreeData2> = ArrayList<BioTreeData2>()
+    var HerDatas: ArrayList<BioTreeData2> = ArrayList<BioTreeData2>()
 
 
     @SuppressLint("MissingPermission")
@@ -204,45 +213,104 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
             texttoday += todays.get(i)
         }
 
-        dominTV.setOnClickListener {
-            val intent = Intent(this, DlgVegetationActivity::class.java)
-            intent.putExtra("title", "우점/아우점")
-            intent.putExtra("table", "Vegetation")
-            startActivityForResult(intent, SET_DOMIN);
+
+
+        shrerightTV.setOnClickListener {
+            Log.d("클릭","클릭")
+            AddShrFlora()
+        }
+        shreleftTV.setOnClickListener {
+            var division = false
+            for (i in 0 until ShrDatas.size) {
+                if (shrpage == ShrDatas.get(i).PAGE) {
+                    division = true
+                }
+            }
+
+            if (division == false) {
+                var spec = etSHR_SPECET.text.toString()
+
+                val fami = etSHR_FAMIET.text.toString()
+                val scien = etSHR_SCIENET.text.toString()
+
+                var NS: Float = 0.0F
+
+                if (min5ET.text.isNotEmpty()) {
+                    NS = min5ET.text.toString().toFloat()
+                }
+                var S: Float = 0.0F
+
+                if (etSHR_HET.text.isNotEmpty()) {
+                    S = etSHR_HET.text.toString().toFloat()
+                }
+                var MS: Float = 0.0F
+
+                if (max5ET.text.isNotEmpty()) {
+                    MS = max5ET.text.toString().toFloat()
+                }
+
+                var PER: Float = 0.0F
+                if (etSTR_COVEET.text.isNotEmpty()) {
+                    PER = etSTR_COVEET.text.toString().toFloat()
+                }
+
+                var shrdata = BioTreeData2(-1, trepage, spec, fami, scien, NS, S, MS, PER)
+
+                ShrDatas.add(shrdata)
+            }
+
+            if (shrpage > 1) {
+
+                etSHR_SPECET.visibility = View.VISIBLE
+
+                for (i in 0 until ShrDatas.size) {
+                    if (shrpage == ShrDatas.get(i).PAGE) {
+                        ShrDatas.get(i).SPEC = etSHR_SPECET.text.toString()
+
+                        ShrDatas.get(i).SPEC2 = etSHR_FAMIET.text.toString()
+                        ShrDatas.get(i).SPEC3 = etSHR_SCIENET.text.toString()
+
+                        if (min5ET.text.isNotEmpty()) {
+                            ShrDatas.get(i).NS = min5ET.text.toString().toFloat()
+                        }
+
+                        if (etSHR_HET.text.isNotEmpty()) {
+                            ShrDatas.get(i).S = etSHR_HET.text.toString().toFloat()
+                        }
+
+                        if (max5ET.text.isNotEmpty()) {
+                            ShrDatas.get(i).MS = max5ET.text.toString().toFloat()
+                        }
+                        if (etSTR_COVEET.text.isNotEmpty()) {
+                            ShrDatas.get(i).PER = etSTR_COVEET.text.toString().toFloat()
+                        }
+
+
+                    }
+                }
+
+                shrpage = shrpage - 1
+                for (i in 0..ShrDatas.size - 1) {
+                    if (shrpage == i) {
+                        val data = ShrDatas.get(i)
+
+                        etSHR_SPECET.setText(data.SPEC)
+                        etSHR_FAMIET.setText(data.SPEC2)
+                        etSHR_SCIENET.setText(data.SPEC3)
+                        min5ET.setText(data.NS.toString())
+                        etSHR_HET.setText(data.S.toString())
+                        max5ET.setText(data.MS.toString())
+                        etSTR_COVEET.setText(data.PER.toString())
+                        val size = shrerightpageTV.text.toString().toInt()
+
+                        shrepageTV.setText(shrpage.toString())
+                        shrerightpageTV.setText(size.toString())
+                    }
+                }
+            }
         }
 
-        ausTV.setOnClickListener {
-            val intent = Intent(this, DlgVegetationActivity::class.java)
-            intent.putExtra("title", "우점/아우점")
-            intent.putExtra("table", "Vegetation")
-            startActivityForResult(intent, SET_DOMIN)
-        }
 
-
-
-        pRL.setOnClickListener {
-            set_menu()
-            lcCB.setImageResource(R.mipmap.box_check_on)
-            lc_type = "P"
-        }
-
-        iRL.setOnClickListener {
-            set_menu()
-            lc2CB.setImageResource(R.mipmap.box_check_on)
-            lc_type = "I"
-        }
-
-        gRL.setOnClickListener {
-            set_menu()
-            lc3CB.setImageResource(R.mipmap.box_check_on)
-            lc_type = "G"
-        }
-
-        wRL.setOnClickListener {
-            set_menu()
-            lc4CB.setImageResource(R.mipmap.box_check_on)
-            lc_type = "W"
-        }
 
         tvINV_IndexTV.setText(texttoday + "1")
 
@@ -263,13 +331,9 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         etINV_TMTV.setText(time)
 
 
-        etINV_TMTV.setOnClickListener {
-            timedlg()
-        }
-        etINV_DTTV.setOnClickListener {
-            datedlg()
-        }
+       it_index = intent.getIntExtra("position",0)
 
+        Log.d("인덱스",it_index.toString())
 
         if (intent.getStringExtra("polygonid") != null) {
             polygonid = intent.getStringExtra("polygonid")
@@ -294,6 +358,8 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
             geom = intent.getStringExtra("geom")
             println("---------biotopegeom $geom")
         }
+
+
 
         if (intent.getIntExtra("landuse", 0) != null) {
             val color = intent.getIntExtra("landuse", 0)
@@ -361,46 +427,6 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
         }
 
-        etLU_TY_RATEET.setOnClickListener {
-            val intent = Intent(this, DlgCommonSubActivity::class.java)
-            intent.putExtra("title", "토지이용유형(%)")
-            intent.putExtra("DlgHeight", 600f);
-            intent.putExtra("selectDlg", 500);
-
-            startActivityForResult(intent, SET_RATE);
-        }
-
-        etTRE_SPECET.setOnClickListener {
-            val intent = Intent(this, DlgVascularActivity::class.java)
-            intent.putExtra("title", "교목층")
-            intent.putExtra("table", "vascular_plant")
-            intent.putExtra("DlgHeight", 600f);
-            startActivityForResult(intent, SET_DATA2);
-        }
-
-        etSTRE_SPECET.setOnClickListener {
-            val intent = Intent(this, DlgVascularActivity::class.java)
-            intent.putExtra("title", "아교목층")
-            intent.putExtra("table", "vascular_plant")
-            intent.putExtra("DlgHeight", 600f);
-            startActivityForResult(intent, SET_DATA3);
-        }
-
-        etSHR_SPECET.setOnClickListener {
-            val intent = Intent(this, DlgVascularActivity::class.java)
-            intent.putExtra("title", "관목층")
-            intent.putExtra("table", "vascular_plant")
-            intent.putExtra("DlgHeight", 600f);
-            startActivityForResult(intent, SET_DATA4);
-        }
-
-        etHER_SPECET.setOnClickListener {
-            val intent = Intent(this, DlgVascularActivity::class.java)
-            intent.putExtra("title", "초본층")
-            intent.putExtra("table", "vascular_plant")
-            intent.putExtra("DlgHeight", 600f);
-            startActivityForResult(intent, SET_DATA5);
-        }
 
         if (intent.getStringExtra("id") != null) {
 
@@ -549,7 +575,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 load_biotope(biotope_attribute)
 
 
-                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
+                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId+it_index + File.separator)
                 var tmpfileList = tmpfiles.listFiles()
 
 
@@ -578,7 +604,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
                         for (j in 0..tmpfileList.size - 1) {
                             println("invtm--------$invtm")
-                            if (images_path!!.get(i).equals(FileFilter.img(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator, (j + 1).toString()))) {
+                            if (images_path!!.get(i).equals(FileFilter.img(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "biotope/images" + File.separator + keyId+it_index + File.separator, (j + 1).toString()))) {
                                 val bitmap = BitmapFactory.decodeFile(tmpfileList.get(j).path, options)
                                 println("이미지$tmpfileList.get(j).path")
                                 val v = View.inflate(context, R.layout.item_add_image, null)
@@ -616,7 +642,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data2 = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$grop_id'", null, null, null, "", null)
+            val data2 = db!!.query("biotopeAttribute", dataList, "IT_GROP_ID = '$keyId$it_index'", null, null, null, "id", null)
 
             while (data2.moveToNext()) {
 
@@ -685,53 +711,31 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
                 }
 
-                /*              //관목층
+                val SHPAGE= shrpage
+                val SHR_SPEC = biotope_attribute.SHR_SPEC
+                val SHR_FAMI =biotope_attribute.SHR_FAMI
+                val SHR_SCIEN = biotope_attribute.SHR_SCIEN
+                val SHR_HET_N = biotope_attribute.SHR_HET_N
+                val SHR_HET_X = biotope_attribute.SHR_HET_X
+                val SHR_H =biotope_attribute.SHR_H
+                var PER3 = biotope_attribute.STR_COVE
 
-                              val SHR_NUM = manyFloraAttribute.SHR_NUM
-                              val SHR_SPEC = manyFloraAttribute.SHR_SPEC
-                              val SHR_FAMI = manyFloraAttribute.SHR_FAMI
-                              val SHR_SCIEN = manyFloraAttribute.SHR_SCIEN
-                              val SHR_TOIL = manyFloraAttribute.SHR_TOIL
-                              val SHR_WATERWIDTH = manyFloraAttribute.SHR_WATER
-                              val SHR_UNDER = manyFloraAttribute.SHR_UNDER
+                if (STRE_SPEC!!.length > 0) {
+                    val data = BioTreeData2(dataPk, SHPAGE, SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_HET_N, SHR_H, SHR_HET_X, PER3)
+                    ShrDatas.add(data)
+                    etSHR_SPECET.setText(biotope_attribute.SHR_SPEC)
+                    etSHR_FAMIET.setText(biotope_attribute.SHR_FAMI)
+                    etSHR_SCIENET.setText(biotope_attribute.SHR_SCIEN)
+                    min5ET.setText(biotope_attribute.SHR_HET_N.toString())
+                    etSHR_HET.setText(biotope_attribute.SHR_H.toString())
+                    max5ET.setText(biotope_attribute.SHR_HET_X.toString())
+                    etSTR_COVEET.setText(biotope_attribute.STR_COVE.toString())
 
-                              println("SHR_NUM $SHR_NUM SHR_SPEC $SHR_SPEC SHR_FAMI $SHR_FAMI SHR_SCIEN $SHR_SCIEN SHR_TOIL $SHR_TOIL")
+                }
 
-                              if (SHR_SPEC!!.length > 0 || SHR_TOIL!! != 0.0f || SHR_WATERWIDTH != 0.0f) {
-                                  shrpage = manyFloraAttribute.SHR_NUM!!
-                                  val data = TreeData2(PK, SHR_NUM, SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_TOIL.toString(), SHR_WATERWIDTH.toString(), SHR_UNDER)
-                                  ShrDatas.add(data)
-                                  shrnumTV.setText(manyFloraAttribute.SHR_NUM.toString())
-                                  etSHR_SPECET.setText(manyFloraAttribute.SHR_SPEC)
-                                  etSHR_FAMIET.setText(manyFloraAttribute.SHR_FAMI)
-                                  etSHR_SCIENET.setText(manyFloraAttribute.SHR_SCIEN)
-                                  etSHR_HET.setText(manyFloraAttribute.SHR_TOIL.toString())
-                                  etSTR_COVEET.setText(manyFloraAttribute.SHR_WATER.toString())
-                                  etSHR_UNDER.setText(manyFloraAttribute.SHR_UNDER.toString())
-                              }
 
-                              val HER_NUM = manyFloraAttribute.HER_NUM
-                              val HER_SPEC = manyFloraAttribute.HER_SPEC
-                              val HER_FAMI = manyFloraAttribute.HER_FAMI
-                              val HER_SCIEN = manyFloraAttribute.HER_SCIEN
-                              val HER_DOMIN = manyFloraAttribute.HER_DOMIN
-                              val HER_GUNDO = manyFloraAttribute.HER_GUNDO
-                              val HER_HEIGHT = manyFloraAttribute.HER_HEIGHT
 
-                              println("HER_NUM $HER_NUM HER_SPEC $HER_SPEC HER_FAMI $HER_FAMI HER_SCIEN $HER_SCIEN HER_DOMIN $HER_DOMIN")
 
-                              if (HER_SPEC!!.length > 0 || HER_DOMIN!! != 0.0f || HER_GUNDO != 0.0f) {
-                                  herpage = manyFloraAttribute.HER_NUM!!
-                                  val data = TreeData2(PK, HER_NUM, HER_SPEC, HER_FAMI, HER_SCIEN, HER_DOMIN.toString(), HER_GUNDO.toString(), HER_HEIGHT.toString())
-                                  HerDatas.add(data)
-                                  hernumTV.setText(manyFloraAttribute.HER_NUM.toString())
-                                  etHER_SPECET.setText(manyFloraAttribute.HER_SPEC)
-                                  etHER_FAMIET.setText(manyFloraAttribute.HER_FAMI)
-                                  etHER_SCIENET.setText(manyFloraAttribute.HER_SCIEN)
-                                  etHER_HET.setText(manyFloraAttribute.HER_DOMIN.toString())
-                                  etHER_COVEET.setText(manyFloraAttribute.HER_GUNDO.toString())
-                                  etHER_HEIGHT.setText(manyFloraAttribute.HER_HEIGHT.toString())
-                              }*/
 
                 AllDatas.add(biotope_attribute)
 
@@ -748,914 +752,35 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
             if (StreDatas.size > 0) {
                 strepage = StreDatas.size
             }
+            if (ShrDatas.size > 0) {
+                shrpage = ShrDatas.size
+            }
 
 
             trepageTV.setText(trepage.toString())
-            trerightpageTV.setText(treDataSize.toString())
+            trerightpageTV.setText(trepage.toString())
 
             strepageTV.setText(strepage.toString())
-            strerightpageTV.setText(streDataSize.toString())
+            strerightpageTV.setText(strepage.toString())
+
+            shrepageTV.setText(shrpage.toString())
+            shrerightpageTV.setText(shrpage.toString())
+            for (i in 0 until TreDatas.size) {
+                println("TER_NUM ${TreDatas.get(i).PAGE} TER_SPEC ${TreDatas.get(i).SPEC}")
+            }
+
+            for (i in 0..StreDatas.size - 1) {
+                println("STER_NUM ${StreDatas.get(i).PAGE} STER_SPEC ${StreDatas.get(i).SPEC}")
+            }
+
+            for (i in 0..ShrDatas.size - 1) {
+                println("SHR_NUM ${ShrDatas.get(i).PAGE} SHR_SPEC ${ShrDatas.get(i).SPEC}")
+            }
+
 
             data2.close()
         }
 
-
-        bioBT.setOnClickListener {
-            val intent = Intent(this, DlgBiotopeTypeActivity::class.java)
-            intent.putExtra("title", "비오톱유형 분류")
-            intent.putExtra("table", "biotopeType")
-            intent.putExtra("DlgHeight", 600f);
-            startActivityForResult(intent, SET_DATA);
-        }
-
-        //토지이용현황 분류 버튼  높이 450f
-        btn_Dlg1.setOnClickListener {
-
-            val intent = Intent(this, DlgCommonActivity::class.java)
-            intent.putExtra("title", "토지이용유형 분류기준")
-            intent.putExtra("table", "biotopeM")
-            intent.putExtra("DlgHeight", 450f);
-//            startActivity(intent)
-            startActivityForResult(intent, SET_DATA1);
-
-        }
-        //토지피복현황 분류 버튼 사이즈 높이 600f 줄 것.
-        btn_Dlg2.setOnClickListener {
-
-            val intent = Intent(this, DlgCommonActivity::class.java)
-            intent.putExtra("title", "토지피복현황 분류기준")
-            intent.putExtra("table", "biotopeS")
-            intent.putExtra("DlgHeight", 600f);
-            startActivityForResult(intent, SET_DATA1);
-
-        }
-
-        //현존식생현황 분류 버튼
-        btn_Dlg3.setOnClickListener {
-
-            val intent = Intent(this, DlgBiotopeClassActivity::class.java)
-            intent.putExtra("title", "현존식생현황 분류기준")
-            intent.putExtra("table", "biotopeClass")
-            intent.putExtra("DlgHeight", 600f);
-
-            startActivityForResult(intent, SET_DATA6);
-
-        }
-
-        etTRE_SPECETreset.setOnClickListener {
-            etTRE_SPECETLL.visibility = View.GONE
-            etTRE_SPECETtmp.setText("")
-            etTRE_SPECET.visibility = View.VISIBLE
-        }
-
-        etSTRE_SPECETreset.setOnClickListener {
-            etSTRE_SPECETLL.visibility = View.GONE
-            etSTRE_SPECETtmp.setText("")
-            etSTRE_SPECET.visibility = View.VISIBLE
-        }
-
-        etSHR_SPECETreset.setOnClickListener {
-            etSHR_SPECETLL.visibility = View.GONE
-            etSHR_SPECETtmp.setText("")
-            etSHR_SPECET.visibility = View.VISIBLE
-        }
-
-        etHER_SPECETreset.setOnClickListener {
-            etHER_SPECETLL.visibility = View.GONE
-            etHER_SPECETtmp.setText("")
-            etHER_SPECET.visibility = View.VISIBLE
-        }
-
-        btn_biotopCancle1.setOnClickListener {
-
-            if (intent.getSerializableExtra("biotopedata") == null) {
-                val builder = AlertDialog.Builder(context)
-                builder.setMessage("작성을 취소하시겠습니까?").setCancelable(false)
-                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
-
-                            val dbManager: DataBaseHelper = DataBaseHelper(this)
-
-                            val db = dbManager.createDataBase()
-
-                            val dataList: Array<String> = arrayOf("*");
-
-                            val data2 = db.query("biotopeAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
-
-                            var dataArray: ArrayList<Biotope_attribute> = ArrayList<Biotope_attribute>()
-
-                            while (data2.moveToNext()) {
-
-                                val biotope_attribute = ps_biotope_attribute(data2)
-
-                                dataArray.add(biotope_attribute)
-
-                            }
-
-                            if (dataArray.size == 0) {
-                                var intent = Intent()
-                                intent.putExtra("polygonid", polygonid)
-                                setResult(RESULT_OK, intent);
-
-                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
-                                val pathdir = path.listFiles()
-
-                                if (pathdir != null) {
-
-                                    val deletedir = path.listFiles()
-                                    println("deletedir.size ${deletedir.size}")
-                                    if (path.isDirectory) {
-                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
-                                        path.deleteRecursively()
-                                    }
-                                } else {
-                                    if (path.isDirectory) {
-                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
-                                        path.deleteRecursively()
-                                    }
-                                }
-                            }
-
-                            finish()
-
-                        })
-                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
-                val alert = builder.create()
-                alert.show()
-            } else {
-                finish()
-            }
-        }
-
-        //sqlite 저장.
-        btn_biotopSave1.setOnClickListener {
-
-            if (TreDatas.size > 0 || StreDatas.size > 0 || ShrDatas.size > 0 || HerDatas.size > 0) {
-                val builder = AlertDialog.Builder(context)
-                builder.setMessage("저장하시겠습니까 ?").setCancelable(false)
-                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
-
-                            dialog.cancel()
-
-                            var biotope_attribute = null_biotope_attribute()
-
-                            addbiotope(biotope_attribute)
-
-                            var spec = etTRE_SPECET.text.toString()
-
-
-                            val fami = etTRE_FAMIET.text.toString()
-                            val scien = etTRE_SCIENET.text.toString()
-
-                            var NS: Float = 0.0F
-
-                            if (minET.text.isNotEmpty()) {
-                                NS = minET.text.toString().toFloat()
-                            }
-                            var S: Float = 0.0F
-
-                            if (etTRE_HET.text.isNotEmpty()) {
-                                S = etTRE_HET.text.toString().toFloat()
-                            }
-                            var MS: Float = 0.0F
-
-                            if (maxET.text.isNotEmpty()) {
-                                MS = maxET.text.toString().toFloat()
-                            }
-
-                            var NS2: Float = 0.0F
-
-                            if (min2ET.text.isNotEmpty()) {
-                                NS2 = min2ET.text.toString().toFloat()
-                            }
-
-                            var S2: Float = 0.0F
-
-                            if (etTRE_BREAET.text.isNotEmpty()) {
-                                S2 = etTRE_BREAET.text.toString().toFloat()
-                            }
-                            var MS2: Float = 0.0F
-                            if (max2ET.text.isNotEmpty()) {
-                                MS2 = max2ET.text.toString().toFloat()
-                            }
-
-                            var PER: Float = 0.0F
-                            if (etTRE_COVEET.text.isNotEmpty()) {
-                                PER = etTRE_COVEET.text.toString().toFloat()
-                            }
-
-                            println("delete-------------------- $keyId")
-                            dbManager!!.delete_biotope_attribute(biotope_attribute, keyId)
-
-                            var treChk = false
-
-                            for (i in 0 until TreDatas.size) {
-                                if (TreDatas.get(i).PAGE == trepage) {
-                                    treChk = true
-                                }
-                            }
-
-                            if (treChk == false) {
-
-                                var tredata = BioTreeData(-1, trepage, spec, fami, scien, NS, S, MS, NS2, S2, MS2, PER)
-
-                                TreDatas.add(tredata)
-                            } else {
-                                for (i in 0 until TreDatas.size) {
-
-                                    if (TreDatas.get(i).PAGE == trepage) {
-
-                                        TreDatas.get(i).SPEC = spec
-                                        TreDatas.get(i).SPEC2 = fami
-                                        TreDatas.get(i).SPEC3 = scien
-                                        TreDatas.get(i).NS = NS
-                                        TreDatas.get(i).S = S
-                                        TreDatas.get(i).MS = MS
-                                        TreDatas.get(i).NS2 = NS2
-                                        TreDatas.get(i).S2 = S2
-                                        TreDatas.get(i).MS2 = MS2
-                                        TreDatas.get(i).PER = PER
-                                        Log.d("찌즈", spec.toString())
-                                    }
-                                }
-                            }
-
-                            finishFlag = false
-                            biotope_attribute.GEOM = geom
-
-                            var MaxLength = 0
-                            var TreDataSize = TreDatas.size
-                            var StreDataSize = StreDatas.size
-                            var ShrDataSize = ShrDatas.size
-                            var HerDataSize = HerDatas.size
-
-                            println("TreDataSize : $TreDataSize StreDataSize $StreDataSize ShrDataSize : $ShrDataSize HerDataSize : $HerDataSize ")
-
-                            MaxLength = TreDatas.size
-                            if (MaxLength < StreDatas.size) {
-                                MaxLength = StreDatas.size
-                            }
-                            if (MaxLength < ShrDatas.size) {
-                                MaxLength = ShrDatas.size
-                            }
-
-                            if (MaxLength < HerDatas.size) {
-                                MaxLength = HerDatas.size
-                            }
-                            for (i in 0..MaxLength - 1) {
-                                var biotope_attribute = null_biotope_attribute()
-
-                                keyId = intent.getStringExtra("GROP_ID")
-
-                                println("insertkeyid $keyId")
-
-                                biotope_attribute.GROP_ID = keyId
-                                if (tvINV_PERSONTV.length() > 0) {
-                                    biotope_attribute.INV_REGION = tvINV_PERSONTV.text.toString();
-                                } else {
-                                    biotope_attribute.INV_REGION = INV_REGION
-                                }
-
-                                biotope_attribute.INV_DT = Utils.todayStr()
-
-                                if (tvINV_PERSONTV.text == null || tvINV_PERSONTV.text.equals("")) {
-                                    biotope_attribute.INV_PERSON = userName
-                                } else {
-                                    biotope_attribute.INV_PERSON = tvINV_PERSONTV.text.toString()
-                                }
-
-                                biotope_attribute.INV_TM = Utils.timeStr()
-
-                                biotope_attribute.TEMP_YN = "Y"
-                                biotope_attribute.CONF_MOD = "N"
-
-                                if (TreDatas != null && TreDataSize > 0) {
-                                    if (i > TreDataSize - 1) {
-                                        biotope_attribute.TRE_SPEC = ""
-                                        biotope_attribute.TRE_FAMI = ""
-                                        biotope_attribute.TRE_SCIEN = ""
-                                        biotope_attribute.TRE_H_N = 0.0f
-                                        biotope_attribute.TRE_H = 0.0f
-                                        biotope_attribute.TRE_H_X = 0.0f
-                                        biotope_attribute.TRE_BREA_N = 0.0f
-                                        biotope_attribute.TRE_BREA = 0.0f
-                                        biotope_attribute.TRE_BREA_X = 0.0f
-                                        biotope_attribute.TRE_COVE = 0.0f
-                                    }
-
-                                    if (i <= TreDataSize - 1) {
-                                        biotope_attribute.TRE_SPEC = TreDatas.get(i).SPEC
-                                        biotope_attribute.TRE_FAMI = TreDatas.get(i).SPEC2
-                                        biotope_attribute.TRE_SCIEN = TreDatas.get(i).SPEC3
-                                        biotope_attribute.TRE_H_N = TreDatas.get(i).NS
-                                        biotope_attribute.TRE_H = TreDatas.get(i).S
-                                        biotope_attribute.TRE_H_X = TreDatas.get(i).MS
-                                        biotope_attribute.TRE_BREA_N = TreDatas.get(i).NS2
-                                        biotope_attribute.TRE_BREA = TreDatas.get(i).S2
-                                        biotope_attribute.TRE_BREA_X = TreDatas.get(i).MS2
-                                        biotope_attribute.TRE_COVE = TreDatas.get(i).PER
-
-
-                                    }
-                                }
-
-                                if (StreDatas != null && StreDataSize > 0) {
-                                    if (i > StreDataSize - 1) {
-                                        biotope_attribute.STRE_SPEC = ""
-                                        biotope_attribute.STRE_FAMI = ""
-                                        biotope_attribute.STRE_SCIEN = ""
-                                        biotope_attribute.STRE_H_N = 0.0f
-                                        biotope_attribute.STRE_H = 0.0f
-                                        biotope_attribute.STRE_H_X = 0.0f
-                                        biotope_attribute.STRE_BRT_N = 0.0f
-                                        biotope_attribute.STRE_BRT = 0.0f
-                                        biotope_attribute.STRE_BRT_X = 0.0f
-                                        biotope_attribute.STRE_COVE = 0.0f
-                                    }
-
-                                    if (i <= StreDataSize - 1) {
-                                        biotope_attribute.STRE_SPEC = StreDatas.get(i).SPEC
-                                        biotope_attribute.STRE_FAMI = StreDatas.get(i).SPEC2
-                                        biotope_attribute.STRE_SCIEN = StreDatas.get(i).SPEC3
-                                        biotope_attribute.STRE_H_N = StreDatas.get(i).NS
-                                        biotope_attribute.STRE_H = StreDatas.get(i).S
-                                        biotope_attribute.STRE_H_X = StreDatas.get(i).MS
-                                        biotope_attribute.STRE_BRT_N = StreDatas.get(i).NS2
-                                        biotope_attribute.STRE_BRT = StreDatas.get(i).S2
-                                        biotope_attribute.STRE_BRT_X = StreDatas.get(i).MS2
-                                        biotope_attribute.STRE_COVE = StreDatas.get(i).PER
-                                    }
-                                }
-
-                                biotope_attribute.GEOM = geom
-
-                                dbManager!!.insertbiotope_attribute(biotope_attribute);
-                                println("insert-------22222")
-                            }
-                            var intent = Intent()
-
-                            intent.putExtra("export", 70);
-
-                            setResult(RESULT_OK, intent);
-
-                            finish()
-
-                        })
-                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
-                val alert = builder.create()
-                alert.show()
-            } else {
-                val builder = AlertDialog.Builder(context)
-                builder.setMessage("저장하시겠습니까 ?").setCancelable(false)
-                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
-
-                            dialog.cancel()
-
-                            var biotope_attribute = null_biotope_attribute()
-
-                            addbiotope(biotope_attribute)
-
-                            finishFlag = false
-
-                            var intent = Intent()
-
-                            intent.putExtra("export", 70);
-
-                            setResult(RESULT_OK, intent);
-
-                            finish()
-
-                        })
-                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
-                val alert = builder.create()
-                alert.show()
-            }
-
-
-        }
-        btn_biotopAdd.setOnClickListener {
-            var biotope_attribute = null_biotope_attribute()
-
-            addbiotope(biotope_attribute)
-
-
-        }
-        strerightTV.setOnClickListener {
-            AddStreFlora()
-        }
-        streleftTV.setOnClickListener {
-            var division = false
-            for (i in 0 until StreDatas.size) {
-                if (strepage == StreDatas.get(i).PAGE) {
-                    division = true
-                }
-            }
-
-            if (division == false) {
-                var spec = etSTRE_SPECET.text.toString()
-
-                val fami = etSTRE_FAMIET.text.toString()
-                val scien = etSTRE_SCIENET.text.toString()
-
-                var NS: Float = 0.0F
-
-                if (min3ET.text.isNotEmpty()) {
-                    NS = min3ET.text.toString().toFloat()
-                }
-                var S: Float = 0.0F
-
-                if (etSTRE_HET.text.isNotEmpty()) {
-                    S = etSTRE_HET.text.toString().toFloat()
-                }
-                var MS: Float = 0.0F
-
-                if (max3ET.text.isNotEmpty()) {
-                    MS = max3ET.text.toString().toFloat()
-                }
-
-                var NS2: Float = 0.0F
-
-                if (min4ET.text.isNotEmpty()) {
-                    NS2 = min4ET.text.toString().toFloat()
-                }
-
-                var S2: Float = 0.0F
-
-                if (etSTRE_BREAET.text.isNotEmpty()) {
-                    S2 = etSTRE_BREAET.text.toString().toFloat()
-                }
-                var MS2: Float = 0.0F
-                if (max4ET.text.isNotEmpty()) {
-                    MS2 = max4ET.text.toString().toFloat()
-                }
-
-                var PER: Float = 0.0F
-                if (etSTRE_COVEET.text.isNotEmpty()) {
-                    PER = etSTRE_COVEET.text.toString().toFloat()
-                }
-
-                var stredata = BioTreeData(-1, trepage, spec, fami, scien, NS, S, MS, NS2, S2, MS2, PER)
-
-                StreDatas.add(stredata)
-            }
-
-            if (strepage > 1) {
-
-                etSTRE_SPECET.visibility = View.VISIBLE
-
-                for (i in 0 until StreDatas.size) {
-                    if (strepage == StreDatas.get(i).PAGE) {
-                        StreDatas.get(i).SPEC = etSTRE_SPECET.text.toString()
-
-                        StreDatas.get(i).SPEC2 = etSTRE_FAMIET.text.toString()
-                        StreDatas.get(i).SPEC3 = etSTRE_SCIENET.text.toString()
-
-                        if (min3ET.text.isNotEmpty()) {
-                            StreDatas.get(i).NS = min3ET.text.toString().toFloat()
-                        }
-
-                        if (etSTRE_HET.text.isNotEmpty()) {
-                            StreDatas.get(i).S = etSTRE_HET.text.toString().toFloat()
-                        }
-
-                        if (max3ET.text.isNotEmpty()) {
-                            StreDatas.get(i).MS = max3ET.text.toString().toFloat()
-                        }
-
-
-                        if (min4ET.text.isNotEmpty()) {
-                            StreDatas.get(i).NS2 = min4ET.text.toString().toFloat()
-                        }
-
-
-                        if (etSTRE_BREAET.text.isNotEmpty()) {
-                            StreDatas.get(i).S2 = etSTRE_BREAET.text.toString().toFloat()
-                        }
-
-                        if (max4ET.text.isNotEmpty()) {
-                            StreDatas.get(i).MS2 = max4ET.text.toString().toFloat()
-                        }
-
-                        if (etSTRE_COVEET.text.isNotEmpty()) {
-                            StreDatas.get(i).PER = etSTRE_COVEET.text.toString().toFloat()
-                        }
-
-                    }
-                }
-
-                strepage = strepage - 1
-                for (i in 0..StreDatas.size - 1) {
-                    if (strepage == i) {
-                        val data = StreDatas.get(i)
-
-                        etSTRE_SPECET.setText(data.SPEC)
-                        etSTRE_FAMIET.setText(data.SPEC2)
-                        etSTRE_SCIENET.setText(data.SPEC3)
-                        min3ET.setText(data.NS.toString())
-                        etSTRE_HET.setText(data.S.toString())
-                        max3ET.setText(data.MS.toString())
-                        min4ET.setText(data.NS2.toString())
-                        etSTRE_BREAET.setText(data.S2.toString())
-                        max4ET.setText(data.MS2.toString())
-                        etSTRE_COVEET.setText(data.PER.toString())
-                        val size = strerightpageTV.text.toString().toInt()
-
-                        strepageTV.setText(strepage.toString())
-                        strerightpageTV.setText(size.toString())
-                    }
-                }
-            }
-        }
-
-
-
-        trerightTV.setOnClickListener {
-            AddTreFlora()
-        }
-        treleftTV.setOnClickListener {
-            var division = false
-            for (i in 0 until TreDatas.size) {
-                if (trepage == TreDatas.get(i).PAGE) {
-                    division = true
-                }
-            }
-
-            if (division == false) {
-                var spec = etTRE_SPECET.text.toString()
-
-                val fami = etTRE_FAMIET.text.toString()
-                val scien = etTRE_SCIENET.text.toString()
-
-                var NS: Float = 0.0F
-
-                if (minET.text.isNotEmpty()) {
-                    NS = minET.text.toString().toFloat()
-                }
-                var S: Float = 0.0F
-
-                if (etTRE_HET.text.isNotEmpty()) {
-                    S = etTRE_HET.text.toString().toFloat()
-                }
-                var MS: Float = 0.0F
-
-                if (maxET.text.isNotEmpty()) {
-                    MS = maxET.text.toString().toFloat()
-                }
-
-                var NS2: Float = 0.0F
-
-                if (min2ET.text.isNotEmpty()) {
-                    NS2 = min2ET.text.toString().toFloat()
-                }
-
-                var S2: Float = 0.0F
-
-                if (etTRE_BREAET.text.isNotEmpty()) {
-                    S2 = etTRE_BREAET.text.toString().toFloat()
-                }
-                var MS2: Float = 0.0F
-                if (max2ET.text.isNotEmpty()) {
-                    MS2 = max2ET.text.toString().toFloat()
-                }
-
-                var PER: Float = 0.0F
-                if (etTRE_COVEET.text.isNotEmpty()) {
-                    PER = etTRE_COVEET.text.toString().toFloat()
-                }
-
-                var tredata = BioTreeData(-1, trepage, spec, fami, scien, NS, S, MS, NS2, S2, MS2, PER)
-
-                TreDatas.add(tredata)
-            }
-
-            if (trepage > 1) {
-
-                etTRE_SPECET.visibility = View.VISIBLE
-
-                for (i in 0 until TreDatas.size) {
-                    if (trepage == TreDatas.get(i).PAGE) {
-                        TreDatas.get(i).SPEC = etTRE_SPECET.text.toString()
-
-                        TreDatas.get(i).SPEC2 = etTRE_FAMIET.text.toString()
-                        TreDatas.get(i).SPEC3 = etTRE_SCIENET.text.toString()
-
-                        if (minET.text.isNotEmpty()) {
-                            TreDatas.get(i).NS = minET.text.toString().toFloat()
-                        }
-
-                        if (etTRE_HET.text.isNotEmpty()) {
-                            TreDatas.get(i).S = etTRE_HET.text.toString().toFloat()
-                        }
-
-                        if (maxET.text.isNotEmpty()) {
-                            TreDatas.get(i).MS = maxET.text.toString().toFloat()
-                        }
-
-
-                        if (min2ET.text.isNotEmpty()) {
-                            TreDatas.get(i).NS2 = min2ET.text.toString().toFloat()
-                        }
-
-
-                        if (etTRE_BREAET.text.isNotEmpty()) {
-                            TreDatas.get(i).S2 = etTRE_BREAET.text.toString().toFloat()
-                        }
-
-                        if (max2ET.text.isNotEmpty()) {
-                            TreDatas.get(i).MS2 = max2ET.text.toString().toFloat()
-                        }
-
-                        if (etTRE_COVEET.text.isNotEmpty()) {
-                            TreDatas.get(i).PER = etTRE_COVEET.text.toString().toFloat()
-                        }
-
-                    }
-                }
-
-                trepage = trepage - 1
-                for (i in 0..TreDatas.size - 1) {
-                    if (trepage == i) {
-                        val data = TreDatas.get(i)
-
-                        etTRE_SPECET.setText(data.SPEC)
-                        etTRE_FAMIET.setText(data.SPEC2)
-                        etTRE_SCIENET.setText(data.SPEC3)
-                        minET.setText(data.NS.toString())
-                        etTRE_HET.setText(data.S.toString())
-                        maxET.setText(data.MS.toString())
-                        min2ET.setText(data.NS2.toString())
-                        etTRE_BREAET.setText(data.S2.toString())
-                        max2ET.setText(data.MS2.toString())
-                        etTRE_COVEET.setText(data.PER.toString())
-                        val size = trerightpageTV.text.toString().toInt()
-
-                        trepageTV.setText(trepage.toString())
-                        trerightpageTV.setText(size.toString())
-                    }
-                }
-            }
-        }
-
-        btn_biotopDelete.setOnClickListener {
-
-            if (pk != null) {
-
-                val builder = AlertDialog.Builder(context)
-                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
-                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
-
-                            dialog.cancel()
-                            var biotope_attribute = null_biotope_attribute()
-
-                            if (pk != null) {
-                                val data2 = db!!.query("biotopeAttribute", dataList, "id = '$pk'", null, null, null, "", null)
-
-                                while (data2.moveToNext()) {
-                                    val biotope_attribute = ps_biotope_attribute(data2)
-                                }
-
-                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
-//                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/biotope/images/")
-                                val pathdir = path.listFiles()
-
-                                if (pathdir != null) {
-                                    for (i in 0..pathdir.size - 1) {
-
-                                        for (j in 0..pathdir.size - 1) {
-
-                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator + biotope_attribute.INV_INDEX.toString() + "_" + invtm + "_" + (j + 1) + ".png")) {
-//                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/biotope/images/" +  biotope_attribute.INV_INDEX + "_" + biotope_attribute.INV_TM +"_" + (j+1) + ".png")) {
-
-                                                pathdir.get(i).canonicalFile.delete()
-
-                                                println("delete ===============")
-
-                                            }
-                                        }
-
-                                    }
-
-                                    val deletedir = path.listFiles()
-                                    println("deletedir.size ${deletedir.size}")
-                                    if (path.isDirectory) {
-                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
-                                        path.deleteRecursively()
-                                    }
-                                } else {
-                                    if (path.isDirectory) {
-                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
-                                        path.deleteRecursively()
-                                    }
-                                }
-
-
-                                if (intent.getStringExtra("GROP_ID") != null) {
-                                    val GROP_ID = intent.getStringExtra("GROP_ID")
-
-                                    println("GROP_ID---------------$GROP_ID")
-
-                                    val dataList: Array<String> = arrayOf("*");
-
-                                    val data2 = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
-
-                                    if (dataArray != null) {
-                                        dataArray.clear()
-                                    }
-
-                                    while (data2.moveToNext()) {
-
-                                        chkdata = true
-
-                                        val biotope_attribute = ps_biotope_attribute(data2)
-                                        dataArray.add(biotope_attribute)
-
-                                        var dataPk = biotope_attribute.id!!.toInt()
-                                        var PAGE = trepage
-                                        var SPEC = biotope_attribute.TRE_SPEC
-                                        var SPEC2 = biotope_attribute.TRE_FAMI
-                                        var SPEC3 = biotope_attribute.TRE_SCIEN
-                                        var NS = biotope_attribute.TRE_H_N
-                                        var S = biotope_attribute.TRE_H
-                                        var MS = biotope_attribute.TRE_H_X
-                                        var NS2 = biotope_attribute.TRE_BREA_N
-                                        var S2 = biotope_attribute.TRE_BREA
-                                        var MS2 = biotope_attribute.TRE_BREA_X
-                                        var PER = biotope_attribute.TRE_COVE
-
-
-                                        if (SPEC!!.length > 0) {
-                                            val data = BioTreeData(dataPk, PAGE, SPEC, SPEC2, SPEC3, NS, S, MS, NS2, S2, MS2, PER)
-                                            TreDatas.add(data)
-                                            println("TRE_NUM ADD ${data.PAGE}")
-                                            trepage = 1
-                                            etTRE_SPECET.setText(biotope_attribute.TRE_SPEC)
-                                            etTRE_FAMIET.setText(biotope_attribute.TRE_FAMI)
-                                            etTRE_SCIENET.setText(biotope_attribute.TRE_SCIEN)
-                                            minET.setText(biotope_attribute.TRE_H_N.toString())
-                                            etTRE_HET.setText(biotope_attribute.TRE_H.toString())
-                                            maxET.setText(biotope_attribute.TRE_H_X.toString())
-                                            min2ET.setText(biotope_attribute.TRE_BREA_N.toString())
-                                            etTRE_BREAET.setText(biotope_attribute.TRE_BREA.toString())
-                                            max2ET.setText(biotope_attribute.TRE_BREA_X.toString())
-                                            etTRE_COVEET.setText(biotope_attribute.TRE_COVE.toString())
-                                        }
-
-
-                                    }
-
-                                    var treDataSize = TreDatas.size + 1
-
-                                    if (TreDatas.size > 0) {
-                                        treDataSize = TreDatas.size
-                                        trepage = TreDatas.size
-                                    }
-
-                                    trepageTV.setText(trepage.toString())
-                                    trerightpageTV.setText(treDataSize.toString())
-
-                                    var intent = Intent()
-
-                                    if (dataArray.size > 1) {
-
-                                        println("pk $pk =============================================")
-
-                                        dbManager!!.deletebiotope_attribute(biotope_attribute, pk)
-
-                                        intent.putExtra("reset", 100)
-
-                                        setResult(RESULT_OK, intent);
-                                        finish()
-
-                                    }
-
-                                    if (dataArray.size == 1) {
-                                        dbManager!!.deletebiotope_attribute(biotope_attribute, pk)
-
-                                        var intent = Intent()
-
-                                        intent.putExtra("polygonid", polygonid)
-
-                                        setResult(RESULT_OK, intent);
-                                        finish()
-                                    }
-                                }
-
-                            } else {
-                                Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
-                            }
-
-                        })
-                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
-                val alert = builder.create()
-                alert.show()
-
-            }
-
-            if (pk == null) {
-
-                val builder = AlertDialog.Builder(context)
-                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
-                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
-
-                            dialog.cancel()
-
-                            val biotope_attribute = null_biotope_attribute()
-
-                            if (intent.getStringExtra("id") != null) {
-                                val id = intent.getStringExtra("id")
-                                val GROP_ID = intent.getStringExtra("GROP_ID")
-
-                                val dataList: Array<String> = arrayOf("*");
-
-                                val data2 = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
-
-                                if (dataArray != null) {
-                                    dataArray.clear()
-                                }
-
-                                while (data2.moveToNext()) {
-
-                                    chkdata = true
-
-                                    val biotope_attribute = ps_biotope_attribute(data2)
-                                    dataArray.add(biotope_attribute)
-
-                                }
-
-                                var intent = Intent()
-
-                                if (dataArray.size > 1) {
-
-                                    dbManager!!.deletebiotope_attribute(biotope_attribute, pk)
-
-                                    intent.putExtra("reset", 100)
-
-                                    setResult(RESULT_OK, intent);
-                                    finish()
-
-                                }
-
-                                if (dataArray.size == 1) {
-
-                                    var intent = Intent()
-
-                                    intent.putExtra("polygonid", polygonid)
-
-                                    dbManager!!.deletebiotope_attribute(biotope_attribute, pk)
-
-                                    setResult(RESULT_OK, intent);
-                                    finish()
-
-                                }
-
-                            }
-
-                        })
-                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
-                val alert = builder.create()
-                alert.show()
-
-            }
-        }
-        btnPIC_FOLDER.setOnClickListener {
-
-            var ListItems: List<String>
-            ListItems = ArrayList();
-            ListItems.add("카메라");
-            ListItems.add("사진");
-            ListItems.add("취소");
-
-            val items = Array<CharSequence>(ListItems.size, { i -> ListItems.get(i) })
-
-            var builder: AlertDialog.Builder = AlertDialog.Builder(this);
-            builder.setTitle("선택해 주세요");
-
-            builder.setItems(items, DialogInterface.OnClickListener { dialogInterface, i ->
-
-                when (i) {
-                    //카메라
-                    0 -> {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                            loadPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE)
-                        } else {
-                            takePhoto()
-                        }
-
-                    }
-                    //갤러리
-                    1 -> {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                            loadPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
-                        } else {
-                            imageFromGallery();
-                        }
-                    }
-                }
-
-            })
-
-            builder.show();
-
-        }
 
 
 
@@ -1806,7 +931,1003 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
 
         }
+        trerightTV.setOnClickListener {
+            AddTreFlora()
+        }
+        treleftTV.setOnClickListener {
+            var division = false
+            for (i in 0 until TreDatas.size) {
+                if (trepage == TreDatas.get(i).PAGE) {
+                    division = true
+                }
+            }
+
+            if (division == false) {
+                var spec = etTRE_SPECET.text.toString()
+
+                val fami = etTRE_FAMIET.text.toString()
+                val scien = etTRE_SCIENET.text.toString()
+
+                var NS: Float = 0.0F
+
+                if (minET.text.isNotEmpty()) {
+                    NS = minET.text.toString().toFloat()
+                }
+                var S: Float = 0.0F
+
+                if (etTRE_HET.text.isNotEmpty()) {
+                    S = etTRE_HET.text.toString().toFloat()
+                }
+                var MS: Float = 0.0F
+
+                if (maxET.text.isNotEmpty()) {
+                    MS = maxET.text.toString().toFloat()
+                }
+
+                var NS2: Float = 0.0F
+
+                if (min2ET.text.isNotEmpty()) {
+                    NS2 = min2ET.text.toString().toFloat()
+                }
+
+                var S2: Float = 0.0F
+
+                if (etTRE_BREAET.text.isNotEmpty()) {
+                    S2 = etTRE_BREAET.text.toString().toFloat()
+                }
+                var MS2: Float = 0.0F
+                if (max2ET.text.isNotEmpty()) {
+                    MS2 = max2ET.text.toString().toFloat()
+                }
+
+                var PER: Float = 0.0F
+                if (etTRE_COVEET.text.isNotEmpty()) {
+                    PER = etTRE_COVEET.text.toString().toFloat()
+                }
+
+                var tredata = BioTreeData(-1, trepage, spec, fami, scien, NS, S, MS, NS2, S2, MS2, PER)
+
+                TreDatas.add(tredata)
+            }
+
+            if (trepage > 1) {
+
+                etTRE_SPECET.visibility = View.VISIBLE
+
+                for (i in 0 until TreDatas.size) {
+                    if (trepage == TreDatas.get(i).PAGE) {
+                        TreDatas.get(i).SPEC = etTRE_SPECET.text.toString()
+
+                        TreDatas.get(i).SPEC2 = etTRE_FAMIET.text.toString()
+                        TreDatas.get(i).SPEC3 = etTRE_SCIENET.text.toString()
+
+                        if (minET.text.isNotEmpty()) {
+                            TreDatas.get(i).NS = minET.text.toString().toFloat()
+                        }
+
+                        if (etTRE_HET.text.isNotEmpty()) {
+                            TreDatas.get(i).S = etTRE_HET.text.toString().toFloat()
+                        }
+
+                        if (maxET.text.isNotEmpty()) {
+                            TreDatas.get(i).MS = maxET.text.toString().toFloat()
+                        }
+
+
+                        if (min2ET.text.isNotEmpty()) {
+                            TreDatas.get(i).NS2 = min2ET.text.toString().toFloat()
+                        }
+
+
+                        if (etTRE_BREAET.text.isNotEmpty()) {
+                            TreDatas.get(i).S2 = etTRE_BREAET.text.toString().toFloat()
+                        }
+
+                        if (max2ET.text.isNotEmpty()) {
+                            TreDatas.get(i).MS2 = max2ET.text.toString().toFloat()
+                        }
+
+                        if (etTRE_COVEET.text.isNotEmpty()) {
+                            TreDatas.get(i).PER = etTRE_COVEET.text.toString().toFloat()
+                        }
+
+                    }
+                }
+
+                trepage = trepage - 1
+                for (i in 0..TreDatas.size - 1) {
+                    if (trepage == i) {
+                        val data = TreDatas.get(i)
+
+                        etTRE_SPECET.setText(data.SPEC)
+                        etTRE_FAMIET.setText(data.SPEC2)
+                        etTRE_SCIENET.setText(data.SPEC3)
+                        minET.setText(data.NS.toString())
+                        etTRE_HET.setText(data.S.toString())
+                        maxET.setText(data.MS.toString())
+                        min2ET.setText(data.NS2.toString())
+                        etTRE_BREAET.setText(data.S2.toString())
+                        max2ET.setText(data.MS2.toString())
+                        etTRE_COVEET.setText(data.PER.toString())
+                        val size = trerightpageTV.text.toString().toInt()
+
+                        trepageTV.setText(trepage.toString())
+                        trerightpageTV.setText(size.toString())
+                    }
+                }
+            }
+        }
+
+        click()
+
     }
+
+    fun click(){
+        val userName = PrefUtils.getStringPreference(context, "name");
+        dominTV.setOnClickListener {
+            val intent = Intent(this, DlgVegetationActivity::class.java)
+            intent.putExtra("title", "우점/아우점")
+            intent.putExtra("table", "Vegetation")
+            startActivityForResult(intent, SET_DOMIN);
+        }
+
+        ausTV.setOnClickListener {
+            val intent = Intent(this, DlgVegetationActivity::class.java)
+            intent.putExtra("title", "우점/아우점")
+            intent.putExtra("table", "Vegetation")
+            startActivityForResult(intent, SET_DOMIN)
+        }
+
+
+
+        pRL.setOnClickListener {
+            set_menu()
+            lcCB.setImageResource(R.mipmap.box_check_on)
+            lc_type = "P"
+        }
+
+        iRL.setOnClickListener {
+            set_menu()
+            lc2CB.setImageResource(R.mipmap.box_check_on)
+            lc_type = "I"
+        }
+
+        gRL.setOnClickListener {
+            set_menu()
+            lc3CB.setImageResource(R.mipmap.box_check_on)
+            lc_type = "G"
+        }
+
+        wRL.setOnClickListener {
+            set_menu()
+            lc4CB.setImageResource(R.mipmap.box_check_on)
+            lc_type = "W"
+        }
+
+        etINV_TMTV.setOnClickListener {
+            timedlg()
+        }
+        etINV_DTTV.setOnClickListener {
+            datedlg()
+        }
+
+
+        bioBT.setOnClickListener {
+            val intent = Intent(this, DlgBiotopeTypeActivity::class.java)
+            intent.putExtra("title", "비오톱유형 분류")
+            intent.putExtra("table", "biotopeType")
+            intent.putExtra("DlgHeight", 600f);
+            startActivityForResult(intent, SET_DATA);
+        }
+
+        //토지이용현황 분류 버튼  높이 450f
+        btn_Dlg1.setOnClickListener {
+
+            val intent = Intent(this, DlgCommonActivity::class.java)
+            intent.putExtra("title", "토지이용유형 분류기준")
+            intent.putExtra("table", "biotopeM")
+            intent.putExtra("DlgHeight", 450f);
+//            startActivity(intent)
+            startActivityForResult(intent, SET_DATA1);
+
+        }
+        //토지피복현황 분류 버튼 사이즈 높이 600f 줄 것.
+        btn_Dlg2.setOnClickListener {
+
+            val intent = Intent(this, DlgCommonActivity::class.java)
+            intent.putExtra("title", "토지피복현황 분류기준")
+            intent.putExtra("table", "biotopeS")
+            intent.putExtra("DlgHeight", 600f);
+            startActivityForResult(intent, SET_DATA1);
+
+        }
+
+        //현존식생현황 분류 버튼
+        btn_Dlg3.setOnClickListener {
+
+            val intent = Intent(this, DlgBiotopeClassActivity::class.java)
+            intent.putExtra("title", "현존식생현황 분류기준")
+            intent.putExtra("table", "biotopeClass")
+            intent.putExtra("DlgHeight", 600f);
+
+            startActivityForResult(intent, SET_DATA6);
+
+        }
+
+        etTRE_SPECETreset.setOnClickListener {
+            etTRE_SPECETLL.visibility = View.GONE
+            etTRE_SPECETtmp.setText("")
+            etTRE_SPECET.visibility = View.VISIBLE
+        }
+
+        etSTRE_SPECETreset.setOnClickListener {
+            etSTRE_SPECETLL.visibility = View.GONE
+            etSTRE_SPECETtmp.setText("")
+            etSTRE_SPECET.visibility = View.VISIBLE
+        }
+
+        etSHR_SPECETreset.setOnClickListener {
+            etSHR_SPECETLL.visibility = View.GONE
+            etSHR_SPECETtmp.setText("")
+            etSHR_SPECET.visibility = View.VISIBLE
+        }
+
+        etHER_SPECETreset.setOnClickListener {
+            etHER_SPECETLL.visibility = View.GONE
+            etHER_SPECETtmp.setText("")
+            etHER_SPECET.visibility = View.VISIBLE
+        }
+
+        btn_biotopCancle1.setOnClickListener {
+
+            if (intent.getSerializableExtra("biotopedata") == null) {
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("작성을 취소하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
+
+                            val dbManager: DataBaseHelper = DataBaseHelper(this)
+
+                            val db = dbManager.createDataBase()
+
+                            val dataList: Array<String> = arrayOf("*");
+
+                            val data2 = db.query("biotopeAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+
+                            var dataArray: ArrayList<Biotope_attribute> = ArrayList<Biotope_attribute>()
+
+                            while (data2.moveToNext()) {
+
+                                val biotope_attribute = ps_biotope_attribute(data2)
+
+                                dataArray.add(biotope_attribute)
+
+                            }
+
+                            if (dataArray.size == 0) {
+                                var intent = Intent()
+                                intent.putExtra("polygonid", polygonid)
+                                setResult(RESULT_OK, intent);
+
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
+                                val pathdir = path.listFiles()
+
+                                if (pathdir != null) {
+
+                                    val deletedir = path.listFiles()
+                                    println("deletedir.size ${deletedir.size}")
+                                    if (path.isDirectory) {
+                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
+                                        path.deleteRecursively()
+                                    }
+                                } else {
+                                    if (path.isDirectory) {
+                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
+                                        path.deleteRecursively()
+                                    }
+                                }
+                            }
+
+                            finish()
+
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+            } else {
+                finish()
+            }
+        }
+
+        //sqlite 저장.
+        btn_biotopSave1.setOnClickListener {
+
+            if (TreDatas.size > 0 || StreDatas.size > 0 || ShrDatas.size > 0 || HerDatas.size > 0) {
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("저장하시겠습니까 ?").setCancelable(false)
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
+
+                            dialog.cancel()
+
+                            var biotope_attribute = null_biotope_attribute()
+
+                            addbiotope(biotope_attribute)
+                            var spec = etTRE_SPECET.text.toString()
+
+
+                            val fami = etTRE_FAMIET.text.toString()
+                            val scien = etTRE_SCIENET.text.toString()
+
+                            var NS: Float = 0.0F
+
+                            if (minET.text.isNotEmpty()) {
+                                NS = minET.text.toString().toFloat()
+                            }
+                            var S: Float = 0.0F
+
+                            if (etTRE_HET.text.isNotEmpty()) {
+                                S = etTRE_HET.text.toString().toFloat()
+                            }
+                            var MS: Float = 0.0F
+
+                            if (maxET.text.isNotEmpty()) {
+                                MS = maxET.text.toString().toFloat()
+                            }
+
+                            var NS2: Float = 0.0F
+
+                            if (min2ET.text.isNotEmpty()) {
+                                NS2 = min2ET.text.toString().toFloat()
+                            }
+
+                            var S2: Float = 0.0F
+
+                            if (etTRE_BREAET.text.isNotEmpty()) {
+                                S2 = etTRE_BREAET.text.toString().toFloat()
+                            }
+                            var MS2: Float = 0.0F
+                            if (max2ET.text.isNotEmpty()) {
+                                MS2 = max2ET.text.toString().toFloat()
+                            }
+
+                            var PER: Float = 0.0F
+                            if (etTRE_COVEET.text.isNotEmpty()) {
+                                PER = etTRE_COVEET.text.toString().toFloat()
+                            }
+
+                            println("delete-------------------- $keyId")
+                            dbManager!!.delete_biotope_attribute(biotope_attribute, keyId)
+
+                            var treChk = false
+
+                            for (i in 0 until TreDatas.size) {
+                                if (TreDatas.get(i).PAGE == trepage) {
+                                    treChk = true
+                                }
+                            }
+
+                            if (treChk == false) {
+
+                                var tredata = BioTreeData(-1, trepage, spec, fami, scien, NS, S, MS, NS2, S2, MS2, PER)
+
+                                TreDatas.add(tredata)
+                            } else {
+                                for (i in 0 until TreDatas.size) {
+
+                                    if (TreDatas.get(i).PAGE == trepage) {
+
+                                        TreDatas.get(i).SPEC = spec
+                                        TreDatas.get(i).SPEC2 = fami
+                                        TreDatas.get(i).SPEC3 = scien
+                                        TreDatas.get(i).NS = NS
+                                        TreDatas.get(i).S = S
+                                        TreDatas.get(i).MS = MS
+                                        TreDatas.get(i).NS2 = NS2
+                                        TreDatas.get(i).S2 = S2
+                                        TreDatas.get(i).MS2 = MS2
+                                        TreDatas.get(i).PER = PER
+                                        Log.d("찌즈", spec.toString())
+                                    }
+                                }
+                            }
+
+                            finishFlag = false
+                            biotope_attribute.GEOM = geom
+
+                            var MaxLength = 0
+                            var TreDataSize = TreDatas.size
+                            var StreDataSize = StreDatas.size
+                            var ShrDataSize = ShrDatas.size
+                            var HerDataSize = HerDatas.size
+
+                            println("TreDataSize : $TreDataSize StreDataSize $StreDataSize ShrDataSize : $ShrDataSize HerDataSize : $HerDataSize ")
+
+                            MaxLength = TreDatas.size
+                            if (MaxLength < StreDatas.size) {
+                                MaxLength = StreDatas.size
+                            }
+                            if (MaxLength < ShrDatas.size) {
+                                MaxLength = ShrDatas.size
+                            }
+                            if (MaxLength < HerDatas.size) {
+                                MaxLength = HerDatas.size
+                            }
+                            for (i in 0..MaxLength - 1) {
+                                var biotope_attribute = null_biotope_attribute()
+                                biotope_attribute.IT_GROP_ID = keyId+it_index.toString()
+                                keyId = intent.getStringExtra("GROP_ID")
+
+                                println("insertkeyid $keyId")
+//                                biotope_attribute.IT_GROP_ID = keyId
+//                                biotope_attribute.GROP_ID = keyId
+//                                if (tvINV_PERSONTV.length() > 0) {
+//                                    biotope_attribute.INV_REGION = tvINV_PERSONTV.text.toString();
+//                                } else {
+//                                    biotope_attribute.INV_REGION = INV_REGION
+//                                }
+//
+//                                biotope_attribute.INV_DT = Utils.todayStr()
+//
+//                                if (tvINV_PERSONTV.text == null || tvINV_PERSONTV.text.equals("")) {
+//                                    biotope_attribute.INV_PERSON = userName
+//                                } else {
+//                                    biotope_attribute.INV_PERSON = tvINV_PERSONTV.text.toString()
+//                                }
+//
+//                                biotope_attribute.INV_TM = Utils.timeStr()
+//
+//                                biotope_attribute.TEMP_YN = "Y"
+//                                biotope_attribute.CONF_MOD = "N"
+
+                                addbiotope2(biotope_attribute)
+
+
+                                if (TreDatas != null && TreDataSize > 0) {
+                                    if (i > TreDataSize - 1) {
+                                        biotope_attribute.TRE_SPEC = ""
+                                        biotope_attribute.TRE_FAMI = ""
+                                        biotope_attribute.TRE_SCIEN = ""
+                                        biotope_attribute.TRE_H_N = 0.0f
+                                        biotope_attribute.TRE_H = 0.0f
+                                        biotope_attribute.TRE_H_X = 0.0f
+                                        biotope_attribute.TRE_BREA_N = 0.0f
+                                        biotope_attribute.TRE_BREA = 0.0f
+                                        biotope_attribute.TRE_BREA_X = 0.0f
+                                        biotope_attribute.TRE_COVE = 0.0f
+                                    }
+
+                                    if (i <= TreDataSize - 1) {
+                                        biotope_attribute.TRE_SPEC = TreDatas.get(i).SPEC
+                                        biotope_attribute.TRE_FAMI = TreDatas.get(i).SPEC2
+                                        biotope_attribute.TRE_SCIEN = TreDatas.get(i).SPEC3
+                                        biotope_attribute.TRE_H_N = TreDatas.get(i).NS
+                                        biotope_attribute.TRE_H = TreDatas.get(i).S
+                                        biotope_attribute.TRE_H_X = TreDatas.get(i).MS
+                                        biotope_attribute.TRE_BREA_N = TreDatas.get(i).NS2
+                                        biotope_attribute.TRE_BREA = TreDatas.get(i).S2
+                                        biotope_attribute.TRE_BREA_X = TreDatas.get(i).MS2
+                                        biotope_attribute.TRE_COVE = TreDatas.get(i).PER
+
+
+                                    }
+                                }
+
+                                if (StreDatas != null && StreDataSize > 0) {
+                                    if (i > StreDataSize - 1) {
+                                        biotope_attribute.STRE_SPEC = ""
+                                        biotope_attribute.STRE_FAMI = ""
+                                        biotope_attribute.STRE_SCIEN = ""
+                                        biotope_attribute.STRE_H_N = 0.0f
+                                        biotope_attribute.STRE_H = 0.0f
+                                        biotope_attribute.STRE_H_X = 0.0f
+                                        biotope_attribute.STRE_BRT_N = 0.0f
+                                        biotope_attribute.STRE_BRT = 0.0f
+                                        biotope_attribute.STRE_BRT_X = 0.0f
+                                        biotope_attribute.STRE_COVE = 0.0f
+                                    }
+
+                                    if (i <= StreDataSize - 1) {
+                                        biotope_attribute.STRE_SPEC = StreDatas.get(i).SPEC
+                                        biotope_attribute.STRE_FAMI = StreDatas.get(i).SPEC2
+                                        biotope_attribute.STRE_SCIEN = StreDatas.get(i).SPEC3
+                                        biotope_attribute.STRE_H_N = StreDatas.get(i).NS
+                                        biotope_attribute.STRE_H = StreDatas.get(i).S
+                                        biotope_attribute.STRE_H_X = StreDatas.get(i).MS
+                                        biotope_attribute.STRE_BRT_N = StreDatas.get(i).NS2
+                                        biotope_attribute.STRE_BRT = StreDatas.get(i).S2
+                                        biotope_attribute.STRE_BRT_X = StreDatas.get(i).MS2
+                                        biotope_attribute.STRE_COVE = StreDatas.get(i).PER
+                                    }
+                                }
+
+                                biotope_attribute.GEOM = geom
+
+                                dbManager!!.insertbiotope_attribute(biotope_attribute);
+                                println("insert-------22222")
+                            }
+                            var intent = Intent()
+                            intent.putExtra("export", 70);
+                            setResult(RESULT_OK, intent);
+                            finish()
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+            } else {
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("저장하시겠습니까 ?").setCancelable(false)
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
+
+                            dialog.cancel()
+
+                            var biotope_attribute = null_biotope_attribute()
+
+                            addbiotope(biotope_attribute)
+
+                            finishFlag = false
+
+                            var intent = Intent()
+
+                            intent.putExtra("export", 70);
+
+                            setResult(RESULT_OK, intent);
+
+                            finish()
+
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+            }
+
+
+        }
+        btn_biotopAdd.setOnClickListener {
+            var biotope_attribute = null_biotope_attribute()
+            TreDatas.clear()
+            StreDatas.clear()
+            ShrDatas.clear()
+            HerDatas.clear()
+            it_index += 1
+            addbiotope(biotope_attribute)
+
+
+        }
+        strerightTV.setOnClickListener {
+            AddStreFlora()
+        }
+        streleftTV.setOnClickListener {
+            var division = false
+            for (i in 0 until StreDatas.size) {
+                if (strepage == StreDatas.get(i).PAGE) {
+                    division = true
+                }
+            }
+
+            if (division == false) {
+                var spec = etSTRE_SPECET.text.toString()
+
+                val fami = etSTRE_FAMIET.text.toString()
+                val scien = etSTRE_SCIENET.text.toString()
+
+                var NS: Float = 0.0F
+
+                if (min3ET.text.isNotEmpty()) {
+                    NS = min3ET.text.toString().toFloat()
+                }
+                var S: Float = 0.0F
+
+                if (etSTRE_HET.text.isNotEmpty()) {
+                    S = etSTRE_HET.text.toString().toFloat()
+                }
+                var MS: Float = 0.0F
+
+                if (max3ET.text.isNotEmpty()) {
+                    MS = max3ET.text.toString().toFloat()
+                }
+
+                var NS2: Float = 0.0F
+
+                if (min4ET.text.isNotEmpty()) {
+                    NS2 = min4ET.text.toString().toFloat()
+                }
+
+                var S2: Float = 0.0F
+
+                if (etSTRE_BREAET.text.isNotEmpty()) {
+                    S2 = etSTRE_BREAET.text.toString().toFloat()
+                }
+                var MS2: Float = 0.0F
+                if (max4ET.text.isNotEmpty()) {
+                    MS2 = max4ET.text.toString().toFloat()
+                }
+
+                var PER: Float = 0.0F
+                if (etSTRE_COVEET.text.isNotEmpty()) {
+                    PER = etSTRE_COVEET.text.toString().toFloat()
+                }
+
+                var stredata = BioTreeData(-1, trepage, spec, fami, scien, NS, S, MS, NS2, S2, MS2, PER)
+
+                StreDatas.add(stredata)
+            }
+
+            if (strepage > 1) {
+
+                etSTRE_SPECET.visibility = View.VISIBLE
+
+                for (i in 0 until StreDatas.size) {
+                    if (strepage == StreDatas.get(i).PAGE) {
+                        StreDatas.get(i).SPEC = etSTRE_SPECET.text.toString()
+
+                        StreDatas.get(i).SPEC2 = etSTRE_FAMIET.text.toString()
+                        StreDatas.get(i).SPEC3 = etSTRE_SCIENET.text.toString()
+
+                        if (min3ET.text.isNotEmpty()) {
+                            StreDatas.get(i).NS = min3ET.text.toString().toFloat()
+                        }
+
+                        if (etSTRE_HET.text.isNotEmpty()) {
+                            StreDatas.get(i).S = etSTRE_HET.text.toString().toFloat()
+                        }
+
+                        if (max3ET.text.isNotEmpty()) {
+                            StreDatas.get(i).MS = max3ET.text.toString().toFloat()
+                        }
+
+
+                        if (min4ET.text.isNotEmpty()) {
+                            StreDatas.get(i).NS2 = min4ET.text.toString().toFloat()
+                        }
+
+
+                        if (etSTRE_BREAET.text.isNotEmpty()) {
+                            StreDatas.get(i).S2 = etSTRE_BREAET.text.toString().toFloat()
+                        }
+
+                        if (max4ET.text.isNotEmpty()) {
+                            StreDatas.get(i).MS2 = max4ET.text.toString().toFloat()
+                        }
+
+                        if (etSTRE_COVEET.text.isNotEmpty()) {
+                            StreDatas.get(i).PER = etSTRE_COVEET.text.toString().toFloat()
+                        }
+
+                    }
+                }
+
+                strepage = strepage - 1
+                for (i in 0..StreDatas.size - 1) {
+                    if (strepage == i) {
+                        val data = StreDatas.get(i)
+
+                        etSTRE_SPECET.setText(data.SPEC)
+                        etSTRE_FAMIET.setText(data.SPEC2)
+                        etSTRE_SCIENET.setText(data.SPEC3)
+                        min3ET.setText(data.NS.toString())
+                        etSTRE_HET.setText(data.S.toString())
+                        max3ET.setText(data.MS.toString())
+                        min4ET.setText(data.NS2.toString())
+                        etSTRE_BREAET.setText(data.S2.toString())
+                        max4ET.setText(data.MS2.toString())
+                        etSTRE_COVEET.setText(data.PER.toString())
+                        val size = strerightpageTV.text.toString().toInt()
+
+                        strepageTV.setText(strepage.toString())
+                        strerightpageTV.setText(size.toString())
+                    }
+                }
+            }
+        }
+
+
+
+
+        btn_biotopDelete.setOnClickListener {
+
+            if (pk != null) {
+
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
+
+                            dialog.cancel()
+                            var biotope_attribute = null_biotope_attribute()
+                            val dataList: Array<String> = arrayOf("*");
+
+                            if (pk != null) {
+                                val data2 = db!!.query("biotopeAttribute", dataList, "id = '$pk'", null, null, null, "", null)
+
+                                while (data2.moveToNext()) {
+                                    val biotope_attribute = ps_biotope_attribute(data2)
+                                }
+
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
+//                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/biotope/images/")
+                                val pathdir = path.listFiles()
+
+                                if (pathdir != null) {
+                                    for (i in 0..pathdir.size - 1) {
+
+                                        for (j in 0..pathdir.size - 1) {
+
+                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator + biotope_attribute.INV_INDEX.toString() + "_" + invtm + "_" + (j + 1) + ".png")) {
+//                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/biotope/images/" +  biotope_attribute.INV_INDEX + "_" + biotope_attribute.INV_TM +"_" + (j+1) + ".png")) {
+
+                                                pathdir.get(i).canonicalFile.delete()
+
+                                                println("delete ===============")
+
+                                            }
+                                        }
+
+                                    }
+
+                                    val deletedir = path.listFiles()
+                                    println("deletedir.size ${deletedir.size}")
+                                    if (path.isDirectory) {
+                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
+                                        path.deleteRecursively()
+                                    }
+                                } else {
+                                    if (path.isDirectory) {
+                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
+                                        path.deleteRecursively()
+                                    }
+                                }
+
+
+                                if (intent.getStringExtra("GROP_ID") != null) {
+                                    val GROP_ID = intent.getStringExtra("GROP_ID")
+
+                                    println("GROP_ID---------------$GROP_ID")
+
+                                    val dataList: Array<String> = arrayOf("*");
+
+                                    val data2 = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+
+                                    if (dataArray != null) {
+                                        dataArray.clear()
+                                    }
+
+                                    while (data2.moveToNext()) {
+
+                                        chkdata = true
+
+                                        val biotope_attribute = ps_biotope_attribute(data2)
+                                        dataArray.add(biotope_attribute)
+
+                                        var dataPk = biotope_attribute.id!!.toInt()
+                                        var PAGE = trepage
+                                        var SPEC = biotope_attribute.TRE_SPEC
+                                        var SPEC2 = biotope_attribute.TRE_FAMI
+                                        var SPEC3 = biotope_attribute.TRE_SCIEN
+                                        var NS = biotope_attribute.TRE_H_N
+                                        var S = biotope_attribute.TRE_H
+                                        var MS = biotope_attribute.TRE_H_X
+                                        var NS2 = biotope_attribute.TRE_BREA_N
+                                        var S2 = biotope_attribute.TRE_BREA
+                                        var MS2 = biotope_attribute.TRE_BREA_X
+                                        var PER = biotope_attribute.TRE_COVE
+
+
+                                        if (SPEC!!.length > 0) {
+                                            val data = BioTreeData(dataPk, PAGE, SPEC, SPEC2, SPEC3, NS, S, MS, NS2, S2, MS2, PER)
+                                            TreDatas.add(data)
+                                            println("TRE_NUM ADD ${data.PAGE}")
+                                            trepage = 1
+                                            etTRE_SPECET.setText(biotope_attribute.TRE_SPEC)
+                                            etTRE_FAMIET.setText(biotope_attribute.TRE_FAMI)
+                                            etTRE_SCIENET.setText(biotope_attribute.TRE_SCIEN)
+                                            minET.setText(biotope_attribute.TRE_H_N.toString())
+                                            etTRE_HET.setText(biotope_attribute.TRE_H.toString())
+                                            maxET.setText(biotope_attribute.TRE_H_X.toString())
+                                            min2ET.setText(biotope_attribute.TRE_BREA_N.toString())
+                                            etTRE_BREAET.setText(biotope_attribute.TRE_BREA.toString())
+                                            max2ET.setText(biotope_attribute.TRE_BREA_X.toString())
+                                            etTRE_COVEET.setText(biotope_attribute.TRE_COVE.toString())
+                                        }
+
+
+                                    }
+
+                                    var treDataSize = TreDatas.size + 1
+
+                                    if (TreDatas.size > 0) {
+                                        treDataSize = TreDatas.size
+                                        trepage = TreDatas.size
+                                    }
+
+                                    trepageTV.setText(trepage.toString())
+                                    trerightpageTV.setText(treDataSize.toString())
+
+                                    var intent = Intent()
+
+                                    if (dataArray.size > 1) {
+
+                                        println("pk $pk =============================================")
+
+                                        dbManager!!.deleteallbiotope_attribute(biotope_attribute, keyId+it_index.toString())
+
+                                        intent.putExtra("reset", 100)
+
+                                        setResult(RESULT_OK, intent);
+                                        finish()
+
+                                    }
+
+                                    if (dataArray.size == 1) {
+                                        dbManager!!.deletebiotope_attribute(biotope_attribute, pk)
+
+                                        var intent = Intent()
+
+                                        intent.putExtra("polygonid", polygonid)
+
+                                        setResult(RESULT_OK, intent);
+                                        finish()
+                                    }
+                                }
+
+                            } else {
+                                Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
+                            }
+
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+
+            }
+
+            if (pk == null) {
+
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage("삭제하시겠습니까?").setCancelable(false)
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
+
+                            dialog.cancel()
+
+                            val biotope_attribute = null_biotope_attribute()
+
+                            if (intent.getStringExtra("id") != null) {
+                                val id = intent.getStringExtra("id")
+                                val GROP_ID = intent.getStringExtra("GROP_ID")
+
+                                val dataList: Array<String> = arrayOf("*");
+
+                                val data2 = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+
+                                if (dataArray != null) {
+                                    dataArray.clear()
+                                }
+
+                                while (data2.moveToNext()) {
+
+                                    chkdata = true
+
+                                    val biotope_attribute = ps_biotope_attribute(data2)
+                                    dataArray.add(biotope_attribute)
+
+                                }
+
+                                var intent = Intent()
+
+                                if (dataArray.size > 1) {
+
+                                    dbManager!!.deleteallbiotope_attribute(biotope_attribute, keyId+it_index.toString())
+
+                                    intent.putExtra("reset", 100)
+
+                                    setResult(RESULT_OK, intent);
+                                    finish()
+
+                                }
+
+                                if (dataArray.size == 1) {
+
+                                    var intent = Intent()
+
+                                    intent.putExtra("polygonid", polygonid)
+
+                                    dbManager!!.deletebiotope_attribute(biotope_attribute, pk)
+
+                                    setResult(RESULT_OK, intent);
+                                    finish()
+
+                                }
+
+                            }
+
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+                val alert = builder.create()
+                alert.show()
+
+            }
+        }
+        btnPIC_FOLDER.setOnClickListener {
+
+            var ListItems: List<String>
+            ListItems = ArrayList();
+            ListItems.add("카메라");
+            ListItems.add("사진");
+            ListItems.add("취소");
+
+            val items = Array<CharSequence>(ListItems.size, { i -> ListItems.get(i) })
+
+            var builder: AlertDialog.Builder = AlertDialog.Builder(this);
+            builder.setTitle("선택해 주세요");
+
+            builder.setItems(items, DialogInterface.OnClickListener { dialogInterface, i ->
+
+                when (i) {
+                    //카메라
+                    0 -> {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                            loadPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE)
+                        } else {
+                            takePhoto()
+                        }
+
+                    }
+                    //갤러리
+                    1 -> {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                            loadPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
+                        } else {
+                            imageFromGallery();
+                        }
+                    }
+                }
+
+            })
+
+            builder.show();
+
+        }
+        etLU_TY_RATEET.setOnClickListener {
+            val intent = Intent(this, DlgCommonSubActivity::class.java)
+            intent.putExtra("title", "토지이용유형(%)")
+            intent.putExtra("DlgHeight", 600f);
+            intent.putExtra("selectDlg", 500);
+
+            startActivityForResult(intent, SET_RATE);
+        }
+
+        etTRE_SPECET.setOnClickListener {
+            val intent = Intent(this, DlgVascularActivity::class.java)
+            intent.putExtra("title", "교목층")
+            intent.putExtra("table", "vascular_plant")
+            intent.putExtra("DlgHeight", 600f);
+            startActivityForResult(intent, SET_DATA2);
+        }
+
+        etSTRE_SPECET.setOnClickListener {
+            val intent = Intent(this, DlgVascularActivity::class.java)
+            intent.putExtra("title", "아교목층")
+            intent.putExtra("table", "vascular_plant")
+            intent.putExtra("DlgHeight", 600f);
+            startActivityForResult(intent, SET_DATA3);
+        }
+
+        etSHR_SPECET.setOnClickListener {
+            val intent = Intent(this, DlgVascularActivity::class.java)
+            intent.putExtra("title", "관목층")
+            intent.putExtra("table", "vascular_plant")
+            intent.putExtra("DlgHeight", 600f);
+            startActivityForResult(intent, SET_DATA4);
+        }
+
+        etHER_SPECET.setOnClickListener {
+            val intent = Intent(this, DlgVascularActivity::class.java)
+            intent.putExtra("title", "초본층")
+            intent.putExtra("table", "vascular_plant")
+            intent.putExtra("DlgHeight", 600f);
+            startActivityForResult(intent, SET_DATA5);
+        }
+
+    }
+
+
 
     fun AddTreFlora() {
 
@@ -2236,6 +2357,193 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
     }
 
+    fun AddShrFlora() {
+
+        var spec = etSHR_SPECET.text.toString()
+
+        val fami = etSHR_FAMIET.text.toString()
+        val scien = etSHR_SCIENET.text.toString()
+
+        Log.d("짜증",spec.toString())
+        var NS: Float = 0.0F
+
+        if (min5ET.text.isNotEmpty()) {
+            NS = min5ET.text.toString().toFloat()
+        }
+        var S: Float = 0.0F
+
+        if (etSHR_HET.text.isNotEmpty()) {
+            S = etSHR_HET.text.toString().toFloat()
+        }
+        var MS: Float = 0.0F
+
+        if (max5ET.text.isNotEmpty()) {
+            MS = max5ET.text.toString().toFloat()
+        }
+
+        var PER: Float = 0.0F
+        if (etSTR_COVEET.text.isNotEmpty()) {
+            PER = etSTR_COVEET.text.toString().toFloat()
+        }
+
+        println("shrpage $shrpage")
+
+        val maxsize = shrerightpageTV.text.toString().toInt()
+
+        var division = false
+
+        for (i in 0 until ShrDatas.size) {
+            if (ShrDatas.get(i).PAGE == shrpage) {
+                division = true
+            }
+        }
+
+        if (spec == "") {
+            Toast.makeText(context, "빈칸은 입력하실수 없습니다..", Toast.LENGTH_SHORT).show()
+        } else {
+
+            if (shrpage == maxsize) {
+
+                if (division == false) {
+
+                    if (shrpage > 1) {
+
+                        var shrdata = BioTreeData2(-1, strepage, spec, fami, scien, NS, S, MS, PER)
+
+                        ShrDatas.add(shrdata)
+
+                        shrpage = shrpage + 1
+
+                        val page = shrpage
+                        val size = shrerightpageTV.text.toString().toInt() + 1
+
+                        shrepageTV.setText(page.toString())
+                        shrerightpageTV.setText(size.toString())
+                        clear_shr()
+                    }
+
+                    if (shrpage == 1) {
+
+                        var shrdata = BioTreeData2(-1, trepage, spec, fami, scien, NS, S, MS, PER)
+
+                        ShrDatas.add(shrdata)
+
+                        shrpage = shrpage + 1
+
+                        val page = shrpage
+                        val size = shrerightpageTV.text.toString().toInt() + 1
+
+                        shrepageTV.setText(page.toString())
+                        shrerightpageTV.setText(size.toString())
+                        clear_shr()
+
+                    }
+                } else {
+
+                    if (shrpage > 1) {
+
+                        for (i in 0 until ShrDatas.size) {
+                            if (ShrDatas.get(i).PAGE == strepage) {
+                                ShrDatas.get(i).SPEC = spec
+                                ShrDatas.get(i).SPEC2 = fami
+                                ShrDatas.get(i).SPEC3 = scien
+                                ShrDatas.get(i).NS = NS
+                                ShrDatas.get(i).S = S
+                                ShrDatas.get(i).MS = MS
+                                ShrDatas.get(i).PER = PER
+                            }
+                        }
+
+                        shrpage = shrpage + 1
+
+                        val page = shrpage
+                        val size = shrerightpageTV.text.toString().toInt() + 1
+
+                        shrepageTV.setText(page.toString())
+                        shrerightpageTV.setText(size.toString())
+                        clear_shr()
+                    }
+
+                    if (shrpage == 1) {
+
+                        for (i in 0 until ShrDatas.size) {
+                            if (ShrDatas.get(i).PAGE == shrpage) {
+                                ShrDatas.get(i).SPEC = spec
+                                ShrDatas.get(i).SPEC2 = fami
+                                ShrDatas.get(i).SPEC3 = scien
+                                ShrDatas.get(i).NS = NS
+                                ShrDatas.get(i).S = S
+                                ShrDatas.get(i).MS = MS
+                                ShrDatas.get(i).PER = PER
+                            }
+                        }
+
+                        shrpage = shrpage + 1
+
+                        val page = shrpage
+                        val size = shrerightpageTV.text.toString().toInt() + 1
+
+                        shrepageTV.setText(page.toString())
+                        shrerightpageTV.setText(size.toString())
+                        clear_shr()
+
+                    }
+                }
+            }
+            if (shrpage < maxsize) {
+
+                for (i in 0 until ShrDatas.size) {
+                    if (ShrDatas.get(i).PAGE == shrpage) {
+                        ShrDatas.get(i).SPEC = spec
+                        ShrDatas.get(i).SPEC2 = fami
+                        ShrDatas.get(i).SPEC3 = scien
+                        ShrDatas.get(i).NS = NS
+                        ShrDatas.get(i).S = S
+                        ShrDatas.get(i).MS = MS
+                        ShrDatas.get(i).PER = PER
+                    }
+                }
+
+                shrpage = shrpage + 1
+                var chk = false
+                for (i in 0..ShrDatas.size - 1) {
+                    if (shrpage == ShrDatas.get(i).PAGE) {
+                        chk = true
+                        val data = ShrDatas.get(i)
+                        etSHR_SPECET.setText(data.SPEC)
+                        etSHR_FAMIET.setText(data.SPEC2)
+                        etSHR_SCIENET.setText(data.SPEC3)
+                        min5ET.setText(data.NS.toString())
+                        etSHR_HET.setText(data.S.toString())
+                        max5ET.setText(data.MS.toString())
+                        etSTR_COVEET.setText(data.PER.toString())
+
+                        val page = shrpage
+                        val size = shrerightpageTV.text.toString().toInt()
+
+                        shrepageTV.setText(page.toString())
+                        shrerightpageTV.setText(size.toString())
+                    }
+                }
+
+                if (chk == false) {
+                    val page = shrpage
+                    val size = shrerightpageTV.text.toString().toInt() + 1
+
+                    shrepageTV.setText(page.toString())
+                    shrerightpageTV.setText(size.toString())
+                    clear_shr()
+                }
+            }
+
+            etSHR_SPECET.visibility = View.VISIBLE
+        }
+
+    }
+
+
+
+
     fun clear_tre() {
         etTRE_SPECET.setText("")
         etTRE_FAMIET.setText("")
@@ -2261,7 +2569,15 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         max4ET.setText("")
         etSTRE_COVEET.setText("")
     }
-
+    fun clear_shr() {
+        etSHR_SPECET.setText("")
+        etSHR_FAMIET.setText("")
+        etSHR_SCIENET.setText("")
+        min5ET.setText("")
+        etSHR_HET.setText("")
+        max5ET.setText("")
+        etSTR_COVEET.setText("")
+    }
 
     fun null_biotope_attribute(): Biotope_attribute {
         val biotope_attribute: Biotope_attribute = Biotope_attribute(null, null, null, null, null, null, null
@@ -2273,7 +2589,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 , null, null, null, null, null, null, null, null, null, null, null, null
                 , null, null, null, null, null, null
                 , null, null, null, null, null, null, null, null
-                , null, null, null
+                , null, null, null,null
         )
         return biotope_attribute
     }
@@ -2289,15 +2605,216 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54), data2.getString(55), data2.getString(56), data2.getString(57)
                 , data2.getFloat(58), data2.getFloat(59), data2.getFloat(60), data2.getFloat(61), data2.getFloat(62), data2.getFloat(63)
                 , data2.getFloat(64), data2.getFloat(65), data2.getFloat(66), data2.getFloat(67), data2.getFloat(68), data2.getFloat(69), data2.getString(70), data2.getFloat(71)
-                , data2.getString(72), data2.getString(73), data2.getString(74)
+                , data2.getString(72), data2.getString(73), data2.getString(74), data2.getString(75)
         )
         return biotope_attribute
     }
+    fun addbiotope2(biotope_attribute: Biotope_attribute) {
+        keyId = intent.getStringExtra("GROP_ID")
 
+        biotope_attribute.GROP_ID = keyId
+
+
+
+
+        val prj = prjnameTV.text.toString()
+        if (prj == prjname) {
+            biotope_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
+        } else {
+            biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
+        }
+
+
+        if (etINV_REGIONET.length() > 0) {
+            biotope_attribute.INV_REGION = etINV_REGIONET.text.toString();
+        } else {
+            biotope_attribute.INV_REGION = INV_REGION
+        }
+        biotope_attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name");
+
+        if (etINV_DTTV.text == null) {
+            biotope_attribute.INV_DT = Utils.todayStr()
+        } else {
+            biotope_attribute.INV_DT = etINV_DTTV.text.toString();
+        }
+
+        if (etINV_TMTV.text == null) {
+            biotope_attribute.INV_TM = Utils.timeStr()
+        } else {
+            biotope_attribute.INV_TM = etINV_TMTV.text.toString();
+        }
+
+        if (tvINV_IndexTV.text.isNotEmpty()) {
+            biotope_attribute.INV_INDEX = tvINV_IndexTV.text.toString().toInt()
+        }
+
+        if (etLU_TY_RATEET.text.isNotEmpty()) {
+
+            biotope_attribute.LU_TY_RATE = etLU_TY_RATEET.text.toString().toFloat()
+        }
+        if (etSTAND_HET.text.isNotEmpty()) {
+
+            biotope_attribute.STAND_H = Utils.getString(etSTAND_HET).toFloat();
+        }
+
+        biotope_attribute.LU_GR_NUM = TVLU_GR_NumTV.text.toString()
+        if (ETLU_GR_NumET.text.toString() != null && ETLU_GR_NumET.text.toString() != "") {
+            biotope_attribute.LU_GR_NUM = ETLU_GR_NumET.text.toString()
+        }
+
+        biotope_attribute.LC_GR_NUM = TVLC_GR_NUMTV.text.toString()
+        if (ETlcmGR_NumET.text != null) {
+            biotope_attribute.LC_GR_NUM = ETlcmGR_NumET.text.toString()
+        }
+        biotope_attribute.TY_MARK = TVTY_MARKTV.text.toString()
+        if (ETTY_MARKET.text.toString() != null && ETTY_MARKET.text.toString() != "") {
+            biotope_attribute.TY_MARK = ETTY_MARKET.text.toString()
+        }
+
+
+        biotope_attribute.BIO_TYPE = bioTV.text.toString()
+        if (impET.text.isNotEmpty()) {
+            biotope_attribute.IMPERV = impET.text.toString().toFloat()
+        }
+
+        if (etGV_RATEET.text.isNotEmpty()) {
+
+            biotope_attribute.GV_RATE = Utils.getString(etGV_RATEET).toFloat();
+        }
+        biotope_attribute.GV_STRUCT = etGV_STRUCTET.text.toString()
+        biotope_attribute.DIS_RET = etDIS_RETET.text.toString()
+        biotope_attribute.RESTOR_POT = etRESTOR_POTET.text.toString()
+        biotope_attribute.COMP_INTA = etCOMP_INTAET.text.toString()
+        biotope_attribute.VP_INTA = etVP_INTAET.text.toString()
+        biotope_attribute.IMP_FORM = etIMP_FORMET.text.toString()
+        biotope_attribute.BREA_DIA = etBREA_DIAET.text.toString()
+        biotope_attribute.FIN_EST = etFIN_ESTET.text.toString()
+        biotope_attribute.TRE_SPEC = etTRE_SPECET.text.toString()
+
+
+
+        biotope_attribute.WILD_ANI = etWILD_ANIET.text.toString()
+        biotope_attribute.BIOTOP_POT = etBIOTOP_POTET.text.toString()
+        biotope_attribute.UNUS_NOTE = etUNUS_NOTEET.text.toString()
+        biotope_attribute.LC_TY = lc_type
+
+
+        if (etGPS_LATTV.text.toString() != "" && etGPS_LONTV.text.toString() != "") {
+
+            biotope_attribute.GPS_LAT = lat.toDouble()
+            biotope_attribute.GPS_LON = log.toDouble()
+
+        }
+
+        biotope_attribute.TEMP_YN = "Y"
+
+        biotope_attribute.CONF_MOD = "N"
+        biotope_attribute.LANDUSE = landuse
+
+        if (biotope != null) {
+            biotope_attribute.LANDUSE = biotope
+        }
+        biotope_attribute.BIO_TYPE = bioTV.text.toString()
+        if (impET.text.isNotEmpty()) {
+            biotope_attribute.IMPERV = impET.text.toString().toFloat()
+        }
+        biotope_attribute.GEOM = geom
+        biotope_attribute.UFID = ufidTV.text.toString()
+        biotope_attribute.CHECK = checkTV.text.toString()
+
+        biotope_attribute.MAC_ADDR = PrefUtils.getStringPreference(context,"mac_addr")
+        val date = Date()
+        val sdf = SimpleDateFormat("yyyyMMddHHmmSS")
+        val getTime = sdf.format(date)
+        biotope_attribute.CURRENT_TM = getTime.substring(2,14)
+
+
+        var names = t_name.split("-")
+        if (names.size > 1) {
+            biotope_attribute.DOMIN = t_name
+        } else {
+            biotope_attribute.DOMIN = t_name + "군락"
+        }
+
+
+        if (chkdata) {
+
+            if (images!!.size > 0 && biotope_attribute.PIC_FOLDER == null) {
+
+                biotope_attribute.PIC_FOLDER = getAttrubuteKey()
+            }
+
+            if (pk != null) {
+
+                val CONF_MOD = tvCONF_MOD.text.toString()
+
+                if (CONF_MOD == "N" || CONF_MOD == "C") {
+                    biotope_attribute.CONF_MOD = "M"
+                }
+
+                dbManager!!.updatebiotope_attribute(biotope_attribute, pk)
+                dbManager!!.updatecommonbiotope(biotope_attribute, keyId)
+            }
+
+
+        } else {
+
+            if (images!!.size > 0) {
+                biotope_attribute.PIC_FOLDER = getAttrubuteKey()
+            }
+
+            dbManager!!.insertbiotope_attribute(biotope_attribute);
+
+
+        }
+
+        finishFlag = false
+
+        if (intent.getStringExtra("set") != null) {
+            var intent = Intent()
+            intent.putExtra("reset", 100)
+
+            setResult(RESULT_OK, intent);
+        }
+
+        var intent = Intent()
+        intent.putExtra("export", 70)
+        setResult(RESULT_OK, intent)
+
+        btn_biotopDelete.visibility = View.GONE
+
+        if (images_path != null) {
+            images_path!!.clear()
+        }
+
+        if (images != null) {
+            images!!.clear()
+        }
+
+        if (images_url != null) {
+            images_url!!.clear()
+        }
+
+        if (images_url_remove != null) {
+            images_url_remove!!.clear()
+        }
+
+        if (images_id != null) {
+            images_id!!.clear()
+        }
+
+        clear()
+        chkdata = false
+        pk = null
+    }
     fun addbiotope(biotope_attribute: Biotope_attribute) {
         keyId = intent.getStringExtra("GROP_ID")
 
         biotope_attribute.GROP_ID = keyId
+
+        Log.d("추가인덱스",it_index.toString())
+        biotope_attribute.IT_GROP_ID = keyId+it_index.toString()
+
 
         val prj = prjnameTV.text.toString()
         if (prj == prjname) {
@@ -2959,7 +3476,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                             time = etINV_TMTV.text.toString()
                             var timesplit = time.split(":")
                             invtm = timesplit.get(0) + timesplit.get(1)
-                            val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator
+                            val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId+it_index + File.separator
                             val outputsDir = File(outPath)
 
                             if (outputsDir.exists()) {
@@ -3020,7 +3537,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                         time = etINV_TMTV.text.toString()
                         var timesplit = time.split(":")
                         invtm = timesplit.get(0) + timesplit.get(1)
-                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator
+                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId+it_index + File.separator
                         val outputsDir = File(outPath)
 
                         if (outputsDir.exists()) {
@@ -3191,7 +3708,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         val builder = AlertDialog.Builder(context)
         builder.setMessage("삭제하시겠습니까 ? ").setCancelable(false)
                 .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId+it_index + File.separator
                     val num = tvINV_IndexTV.text.toString()
 
                     addPicturesLL!!.removeAllViews()
@@ -3401,6 +3918,11 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         }
 
         etINV_TMTV.setText(Utils.timeStr())
+
+        trerightpageTV.text = "1"
+        trepageTV.text = "1"
+        strerightpageTV.text = "1"
+        strepageTV.text = "1"
 
         dominTV.setText("")
         ausTV.setText("")

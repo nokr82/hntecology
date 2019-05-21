@@ -48,7 +48,7 @@ class DataBiotopeAdapter(var context: Context, var itemList : ArrayList<Biotope_
         }
 
         var Biotope_attribute : Biotope_attribute = getItem(position)
-        if (Biotope_attribute.TRE_SPEC != null && Biotope_attribute.TRE_SPEC != ""){
+        if (Biotope_attribute.TRE_SPEC != null && Biotope_attribute.TRE_SPEC != "null"){
             viewHoldar.class_biotope_item.text = Biotope_attribute.INV_DT + " / " + Biotope_attribute.INV_TM + " / 교목층 : " + Biotope_attribute.TRE_SPEC + " 아교목층 : " + Biotope_attribute.STRE_SPEC + " 관목층 : " + Biotope_attribute.SHR_SPEC + " 초본층 : " + Biotope_attribute.HER_SPEC
         } else {
             viewHoldar.class_biotope_item.text = Biotope_attribute.INV_DT + " / " + Biotope_attribute.INV_TM

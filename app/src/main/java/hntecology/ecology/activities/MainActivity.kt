@@ -125,6 +125,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     private lateinit var mGestureDetector: GestureDetector
     private lateinit var googleMap: GoogleMap
 
+
+    var modichk = false
+
     // private var allPolygons: ArrayList<Polygon> = ArrayList<Polygon>()
     private var polygons: ArrayList<Polygon> = ArrayList<Polygon>()
     private var points = ArrayList<Marker>()
@@ -1128,6 +1131,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             if (POLYGONCOLOR.size > 0) {
                 POLYGONCOLOR.clear()
             }
+        }
+
+
+        modiSW.setOnClickListener{
+            modichk = modiSW.isChecked
+            Log.d("수정스",modichk.toString())
         }
 
         searchaddressBT.setOnClickListener {
@@ -2582,6 +2591,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var DOMIN = Utils.getString(layerInfo.metadata, "DOMIN")
                                             var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
                                             var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
+                                            var IT_GROP_ID = Utils.getString(layerInfo.metadata, "IT_GROP_ID")
 
                                             var biotope = Utils.getString(layerInfo.metadata, "biotop")
                                             if (INV_INDEX == "" || INV_INDEX == null) {
@@ -2653,7 +2663,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     STRE_BRT.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                     BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", polygon.fillColor.toString(), geom, UFID, CHECK,
                                                     TRE_H_X.toFloat(), TRE_H_N.toFloat(), TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat(), STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat()
-                                                    , SHR_HET_N.toFloat(), SHR_HET_X.toFloat(), HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM)
+                                                    , SHR_HET_N.toFloat(), SHR_HET_X.toFloat(), HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM,IT_GROP_ID)
 
                                             if (landuse != null && landuse != "") {
                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
@@ -3044,7 +3054,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                             var DOMIN = Utils.getString(layerInfo.metadata, "DOMIN")
                                                             var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
                                                             var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
-
+                                                            var IT_GROP_ID = Utils.getString(layerInfo.metadata, "IT_GROP_ID")
 
                                                             var biotope = Utils.getString(layerInfo.metadata, "biotop")
                                                             if (INV_INDEX == "" || INV_INDEX == null) {
@@ -3124,7 +3134,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                                     BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom, UFID, CHECK
                                                                     , TRE_H_N.toFloat(), TRE_H_X.toFloat(), TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat()
                                                                     , STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat(), SHR_HET_N.toFloat(), SHR_HET_X.toFloat()
-                                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM)
+                                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM,IT_GROP_ID)
 
                                                             if (LANDUSE != null && LANDUSE != "") {
                                                                 data.LANDUSE = LANDUSE
@@ -3474,6 +3484,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var DOMIN = Utils.getString(layerInfo.metadata, "DOMIN")
                                             var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
                                             var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
+                                            var IT_GROP_ID = Utils.getString(layerInfo.metadata, "IT_GROP_ID")
+
                                             var biotope = Utils.getString(layerInfo.metadata, "biotop")
                                             if (INV_INDEX == "" || INV_INDEX == null) {
                                                 INV_INDEX = "0"
@@ -3548,7 +3560,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     STRE_BRT.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                     BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom, UFID, CHECK, TRE_H_N.toFloat(), TRE_H_X.toFloat()
                                                     , TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat(), STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat(), SHR_HET_N.toFloat(), SHR_HET_X.toFloat()
-                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM)
+                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM,IT_GROP_ID)
 
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
@@ -3605,13 +3617,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 }
 
                                 if (biotopedataArray.size > 1) {
-                                    var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
                                     val intent = Intent(this, DlgDataListActivity::class.java)
                                     intent.putExtra("title", "비오톱")
                                     intent.putExtra("table", "biotopeAttribute")
                                     intent.putExtra("DlgHeight", 600f);
                                     intent.putExtra("GROP_ID", attrubuteKey)
-                                    intent.putExtra("INV_TM", INV_TM)
                                     intent.putExtra("polygonid", polygon.id)
                                     intent!!.putExtra("landuse", polygon.fillColor)
                                     intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
@@ -3946,7 +3956,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var DOMIN = Utils.getString(layerInfo.metadata, "DOMIN")
                                             var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
                                             var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
-
+                                            var IT_GROP_ID = Utils.getString(layerInfo.metadata, "IT_GROP_ID")
                                             if (INV_INDEX == "" || INV_INDEX == null) {
                                                 INV_INDEX = "0"
                                             }
@@ -4020,7 +4030,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     STRE_BRT.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                     BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom, UFID, CHECK, TRE_H_N.toFloat(), TRE_H_X.toFloat()
                                                     , TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat(), STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat(), SHR_HET_N.toFloat(), SHR_HET_X.toFloat()
-                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM)
+                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM,IT_GROP_ID)
 
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
@@ -6392,6 +6402,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("DOMIN", ogr.OFTString, biotope_attribute.DOMIN))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, biotope_attribute.MAC_ADDR))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, biotope_attribute.CURRENT_TM))
+                    BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("IT_GROP_ID", ogr.OFTString, biotope_attribute.IT_GROP_ID))
 
                     var geomsplit = biotope_attribute.GEOM!!.split(",")
                     var points: ArrayList<LatLng> = ArrayList<LatLng>()
@@ -8117,7 +8128,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         var index = 0
 
         while (data.moveToNext()) {
-            var waypoint: Waypoint = Waypoint(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7), data.getFloat(8), data.getFloat(9), data.getString(10), data.getString(11),data.getString(12),data.getString(13))
+            var waypoint: Waypoint = Waypoint(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7)
+                    , data.getFloat(8), data.getFloat(9), data.getString(10), data.getString(11),data.getString(12),data.getString(13))
             waypointDatas.add(waypoint)
         }
 
@@ -10158,7 +10170,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54), data2.getString(55), data2.getString(56), data2.getString(57)
                 , data2.getFloat(58), data2.getFloat(59), data2.getFloat(60), data2.getFloat(61), data2.getFloat(62), data2.getFloat(63)
                 , data2.getFloat(64), data2.getFloat(65), data2.getFloat(66), data2.getFloat(67), data2.getFloat(68), data2.getFloat(69), data2.getString(70), data2.getFloat(71)
-                , data2.getString(72), data2.getString(73), data2.getString(74)
+                , data2.getString(72), data2.getString(73), data2.getString(74), data2.getString(75)
         )
         return biotope_attribute
     }

@@ -14,7 +14,8 @@ class Biotope_attribute(var id:String?, var GROP_ID:String? ,var PRJ_NAME:String
                         , var  TRE_H_N:Float?, var  TRE_H_X:Float?, var  TRE_BREA_N:Float?, var  TRE_BREA_X:Float?, var  STRE_H_N:Float?, var  STRE_H_X:Float?
                         , var  STRE_BRT_N:Float?, var  STRE_BRT_X:Float?, var  SHR_HET_N:Float?, var  SHR_HET_X:Float?
                         , var  HER_HET_X:Float? , var  HER_HET_N:Float?,var BIO_TYPE:String?, var IMPERV:Float?
-                        , var  DOMIN:String? , var  MAC_ADDR:String?,var CURRENT_TM:String?,var IT_GROP_ID:String?
+                        , var  DOMIN:String? , var  MAC_ADDR:String?,var CURRENT_TM:String?,var IT_GROP_ID:String?,
+                        var  TRE_NUM:Int? , var  STRE_NUM:Int?,var SHR_NUM:Int?,var HER_NUM:Int?
 
 
 ) :Serializable {

@@ -386,7 +386,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ",VP_INTA,IMP_FORM,BREA_DIA,FIN_EST,TRE_SPEC,TRE_FAMI,TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_H,STRE_BRT,STRE_COVE,SHR_SPEC,SHR_FAMI";
         query += ",SHR_SCIEN,SHR_H,STR_COVE,HER_SPEC,HER_FAMI,HER_SCIEN,HER_H,HER_COVE,PIC_FOLDER,WILD_ANI,BIOTOP_POT,UNUS_NOTE,GPS_LAT,GPS_LON,NEED_CONF,CONF_MOD,TEMP_YN,LANDUSE,GEOM,UFID,CHECKD";
         query += ",TRE_H_N,TRE_H_X,TRE_BREA_N,TRE_BREA_X,STRE_H_N,STRE_H_X,STRE_BRT_N,STRE_BRT_X,SHR_HET_N,SHR_HET_X,HER_HET_X,HER_HET_N,BIO_TYPE,IMPERV";
-        query += ",DOMIN,MAC_ADDR,CURRENT_TM,IT_GROP_ID";
+        query += ",DOMIN,MAC_ADDR,CURRENT_TM,IT_GROP_ID,TRE_NUM,STRE_NUM,SHR_NUM,HER_NUM";
         query +=")";
                 query += " values (";
         query += " '" + biotope_attribute.getGROP_ID() + "'";
@@ -464,6 +464,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + biotope_attribute.getMAC_ADDR() + "'";
         query += ", '" + biotope_attribute.getCURRENT_TM() + "'";
         query += ", '" + biotope_attribute.getIT_GROP_ID() + "'";
+        query += ", '" + biotope_attribute.getTRE_NUM() + "'";
+        query += ", '" + biotope_attribute.getSTRE_NUM() + "'";
+        query += ", '" + biotope_attribute.getSHR_NUM() + "'";
+        query += ", '" + biotope_attribute.getHER_NUM() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -1017,7 +1021,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void insertstockmap(StockMap StockMap){
         String query = "INSERT INTO StockMap";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,NUM,FRTP_CD,KOFTR_GROUP_CD,STORUNST_CD,FROR_CD,DMCLS_CD";
-        query += ",AGCLS_CD,DNST_CD,HEIGHT,LDMARK_STNDA_CD,MAP_LABEL,MAP_LABEL2,ETC_PCMTT,GPS_LAT,GPS_LON,CONF_MOD,LANDUSE,GEOM)";
+        query += ",AGCLS_CD,DNST_CD,HEIGHT,LDMARK_STNDA_CD,MAP_LABEL,MAP_LABEL2,ETC_PCMTT,GPS_LAT,GPS_LON,CONF_MOD,LANDUSE,GEOM,PLANT_CD,PLANT_NM)";
 
         query += " values (";
         query += " '" + StockMap.getGROP_ID() + "'";
@@ -1044,6 +1048,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + StockMap.getCONF_MOD() + "'";
         query += ", '" + StockMap.getLANDUSE() + "'";
         query += ", '" + StockMap.getGEOM() + "'";
+        query += ", '" + StockMap.getPLANT_CD() + "'";
+        query += ", '" + StockMap.getPLANT_NM() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -1502,7 +1508,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",LANDUSE='" + biotope_attribute.getLANDUSE() + "'"
                 + ",BIO_TYPE='" + biotope_attribute.getBIO_TYPE() + "'"
                 + ",IMPERV='" + biotope_attribute.getIMPERV() + "'"
-                + ",DOMIN='" + biotope_attribute.getDOMIN() + "'"+
+                + ",DOMIN='" + biotope_attribute.getDOMIN() + "'"
+                + ",TRE_NUM='" + biotope_attribute.getTRE_NUM() + "'"
+                + ",STRE_NUM='" + biotope_attribute.getSTRE_NUM() + "'"
+                + ",SHR_NUM='" + biotope_attribute.getSHR_NUM() + "'"
+                + ",HER_NUM='" + biotope_attribute.getHER_NUM() + "'"+
                 "where id = '" + page + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1827,7 +1837,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",ETC_PCMTT='" + StockMap.getETC_PCMTT() + "'"
                 + ",GPS_LAT='" + StockMap.getGPS_LAT() + "'"
                 + ",GPS_LON='" + StockMap.getGPS_LON() + "'"
-                + ",CONF_MOD='" + StockMap.getCONF_MOD() + "'"+
+                + ",CONF_MOD='" + StockMap.getCONF_MOD() + "'"
+                + ",PLANT_CD='" + StockMap.getPLANT_CD() + "'"
+                + ",PLANT_NM='" + StockMap.getPLANT_NM() + "'"+
                 "where id = '" + pk + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);

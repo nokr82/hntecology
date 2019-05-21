@@ -2592,6 +2592,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
                                             var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
                                             var IT_GROP_ID = Utils.getString(layerInfo.metadata, "IT_GROP_ID")
+                                            var TRE_NUM = Utils.getString(layerInfo.metadata, "TRE_NUM")
+                                            var STRE_NUM = Utils.getString(layerInfo.metadata, "STRE_NUM")
+                                            var SHR_NUM = Utils.getString(layerInfo.metadata, "SHR_NUM")
+                                            var HER_NUM = Utils.getString(layerInfo.metadata, "HER_NUM")
 
                                             var biotope = Utils.getString(layerInfo.metadata, "biotop")
                                             if (INV_INDEX == "" || INV_INDEX == null) {
@@ -2663,7 +2667,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     STRE_BRT.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                     BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", polygon.fillColor.toString(), geom, UFID, CHECK,
                                                     TRE_H_X.toFloat(), TRE_H_N.toFloat(), TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat(), STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat()
-                                                    , SHR_HET_N.toFloat(), SHR_HET_X.toFloat(), HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM,IT_GROP_ID)
+                                                    , SHR_HET_N.toFloat(), SHR_HET_X.toFloat(), HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM,IT_GROP_ID,TRE_NUM.toInt(),STRE_NUM.toInt(),SHR_NUM.toInt(),HER_NUM.toInt())
 
                                             if (landuse != null && landuse != "") {
                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
@@ -2724,6 +2728,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                                             var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                            var PLANT_CD = Utils.getString(layerInfo.metadata, "PLANT_CD")
+                                            var PLANT_NM = Utils.getString(layerInfo.metadata, "PLANT_NM")
 
                                             if (landuse != null && landuse != "") {
                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
@@ -2736,7 +2742,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             }
 
                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString(), geom)
+                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat()
+                                                    , polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString(), geom
+                                                    ,PLANT_CD,PLANT_NM)
 
                                             dbManager!!.insertstockmap(data)
 
@@ -2792,7 +2800,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                                             var landuse = Utils.getString(layerInfo.metadata, "landuse")
-
+                                            var PLANT_CD = Utils.getString(layerInfo.metadata, "PLANT_CD")
+                                            var PLANT_NM = Utils.getString(layerInfo.metadata, "PLANT_NM")
                                             if (landuse != null && landuse != "") {
                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
                                             }
@@ -2804,7 +2813,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             }
 
                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString(), geom)
+                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString()
+                                                    , geom,PLANT_CD,PLANT_NM)
 
                                             dbManager!!.insertstockmap(data)
 
@@ -2854,6 +2864,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                                             var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                            var PLANT_CD = Utils.getString(layerInfo.metadata, "PLANT_CD")
+                                            var PLANT_NM = Utils.getString(layerInfo.metadata, "PLANT_NM")
 
                                             if (landuse != null && landuse != "") {
                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
@@ -2866,7 +2878,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             }
 
                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString(), geom)
+                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat()
+                                                    , polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString(), geom,PLANT_CD,PLANT_NM)
 
                                             dbManager!!.insertstockmap(data)
 
@@ -3055,7 +3068,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                             var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
                                                             var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
                                                             var IT_GROP_ID = Utils.getString(layerInfo.metadata, "IT_GROP_ID")
-
+                                                            var TRE_NUM = Utils.getString(layerInfo.metadata, "TRE_NUM")
+                                                            var STRE_NUM = Utils.getString(layerInfo.metadata, "STRE_NUM")
+                                                            var SHR_NUM = Utils.getString(layerInfo.metadata, "SHR_NUM")
+                                                            var HER_NUM = Utils.getString(layerInfo.metadata, "HER_NUM")
                                                             var biotope = Utils.getString(layerInfo.metadata, "biotop")
                                                             if (INV_INDEX == "" || INV_INDEX == null) {
                                                                 INV_INDEX = "0"
@@ -3134,7 +3150,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                                     BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom, UFID, CHECK
                                                                     , TRE_H_N.toFloat(), TRE_H_X.toFloat(), TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat()
                                                                     , STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat(), SHR_HET_N.toFloat(), SHR_HET_X.toFloat()
-                                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM,IT_GROP_ID)
+                                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM,IT_GROP_ID
+                                                                    ,TRE_NUM.toInt(),STRE_NUM.toInt(),SHR_NUM.toInt(),HER_NUM.toInt())
 
                                                             if (LANDUSE != null && LANDUSE != "") {
                                                                 data.LANDUSE = LANDUSE
@@ -3165,7 +3182,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                                             data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                                                             , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                                            , data.getString(22), data.getString(23), data.getString(24))
+                                                            , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26))
                                                     stockdataArray.add(stockMap)
                                                     chkdata = true
                                                 }
@@ -3197,6 +3214,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                             var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
                                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                                                             var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                                            var PLANT_CD = Utils.getString(layerInfo.metadata, "PLANT_CD")
+                                                            var PLANT_NM = Utils.getString(layerInfo.metadata, "PLANT_NM")
 
                                                             if (landuse != null && landuse != "") {
                                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
@@ -3210,7 +3229,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                             }
 
                                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom)
+                                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat()
+                                                                    , CONF_MOD, LANDUSE, geom,PLANT_CD,PLANT_NM)
 
                                                             dbManager!!.insertstockmap(data)
 
@@ -3241,7 +3261,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                                             data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                                                             , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                                            , data.getString(22), data.getString(23), data.getString(24))
+                                                            , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26))
                                                     stockdataArray.add(stockMap)
                                                     chkdata = true
                                                 }
@@ -3273,6 +3293,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                             var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
                                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                                                             var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                                            var PLANT_CD = Utils.getString(layerInfo.metadata, "PLANT_CD")
+                                                            var PLANT_NM = Utils.getString(layerInfo.metadata, "PLANT_NM")
 
                                                             var CHECK = Utils.getString(layerInfo.metadata, "CHECK")
                                                             if (landuse != null && landuse != "") {
@@ -3287,7 +3309,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                             }
 
                                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom)
+                                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat()
+                                                                    , polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom,PLANT_CD,PLANT_NM)
 
                                                             dbManager!!.insertstockmap(data)
 
@@ -3312,7 +3335,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                                             data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                                                             , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                                            , data.getString(22), data.getString(23), data.getString(24))
+                                                            , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26))
                                                     stockdataArray.add(stockMap)
                                                     chkdata = true
                                                 }
@@ -3343,6 +3366,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                             var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
                                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                                                             var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                                            var PLANT_CD = Utils.getString(layerInfo.metadata, "PLANT_CD")
+                                                            var PLANT_NM = Utils.getString(layerInfo.metadata, "PLANT_NM")
 
                                                             if (landuse != null && landuse != "") {
                                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
@@ -3356,7 +3381,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                             }
 
                                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom)
+                                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat()
+                                                                    , polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom
+                                                                    ,PLANT_CD,PLANT_NM)
 
                                                             dbManager!!.insertstockmap(data)
 
@@ -3485,7 +3512,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
                                             var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
                                             var IT_GROP_ID = Utils.getString(layerInfo.metadata, "IT_GROP_ID")
-
+                                            var TRE_NUM = Utils.getString(layerInfo.metadata, "TRE_NUM")
+                                            var STRE_NUM = Utils.getString(layerInfo.metadata, "STRE_NUM")
+                                            var SHR_NUM = Utils.getString(layerInfo.metadata, "SHR_NUM")
+                                            var HER_NUM = Utils.getString(layerInfo.metadata, "HER_NUM")
                                             var biotope = Utils.getString(layerInfo.metadata, "biotop")
                                             if (INV_INDEX == "" || INV_INDEX == null) {
                                                 INV_INDEX = "0"
@@ -3560,7 +3590,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     STRE_BRT.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                     BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom, UFID, CHECK, TRE_H_N.toFloat(), TRE_H_X.toFloat()
                                                     , TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat(), STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat(), SHR_HET_N.toFloat(), SHR_HET_X.toFloat()
-                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM,IT_GROP_ID)
+                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM,IT_GROP_ID
+                                                    ,TRE_NUM.toInt(),STRE_NUM.toInt(),SHR_NUM.toInt(),HER_NUM.toInt())
 
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
@@ -3662,7 +3693,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                     var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                             data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                                             , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                            , data.getString(22), data.getString(23), data.getString(24))
+                                            , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26))
                                     stockdataArray.add(stockMap)
                                 }
 
@@ -3696,7 +3727,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                                             var landuse = Utils.getString(layerInfo.metadata, "landuse")
-
+                                            var PLANT_CD = Utils.getString(layerInfo.metadata, "PLANT_CD")
+                                            var PLANT_NM = Utils.getString(layerInfo.metadata, "PLANT_NM")
                                             if (NUM == "" || NUM == null) {
                                                 NUM = "0"
                                             }
@@ -3706,7 +3738,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             }
 
                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom)
+                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, ""
+                                                    , ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom,PLANT_CD,PLANT_NM)
 
                                             intent!!.putExtra("stokedata", data)
                                             intent!!.putExtra("GROP_ID", attrubuteKey.toString())
@@ -3957,6 +3990,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
                                             var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
                                             var IT_GROP_ID = Utils.getString(layerInfo.metadata, "IT_GROP_ID")
+                                            var TRE_NUM = Utils.getString(layerInfo.metadata, "TRE_NUM")
+                                            var STRE_NUM = Utils.getString(layerInfo.metadata, "STRE_NUM")
+                                            var SHR_NUM = Utils.getString(layerInfo.metadata, "SHR_NUM")
+                                            var HER_NUM = Utils.getString(layerInfo.metadata, "HER_NUM")
                                             if (INV_INDEX == "" || INV_INDEX == null) {
                                                 INV_INDEX = "0"
                                             }
@@ -4030,7 +4067,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     STRE_BRT.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                     BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom, UFID, CHECK, TRE_H_N.toFloat(), TRE_H_X.toFloat()
                                                     , TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat(), STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat(), SHR_HET_N.toFloat(), SHR_HET_X.toFloat()
-                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM,IT_GROP_ID)
+                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM,IT_GROP_ID,TRE_NUM.toInt(),STRE_NUM.toInt(),SHR_NUM.toInt(),HER_NUM.toInt())
 
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
@@ -4128,7 +4165,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                     var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                                             data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                                             , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                                            , data.getString(22), data.getString(23), data.getString(24))
+                                            , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26))
                                     stockdataArray.add(stockMap)
                                 }
 
@@ -4161,13 +4198,16 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
                                             var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                            var PLANT_CD = Utils.getString(layerInfo.metadata, "PLANT_CD")
+                                            var PLANT_NM = Utils.getString(layerInfo.metadata, "PLANT_NM")
 
                                             if (NUM == "" || NUM == null) {
                                                 NUM = "0"
                                             }
 
                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom)
+                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat()
+                                                    , CONF_MOD, LANDUSE, geom,PLANT_CD,PLANT_NM)
 
                                             intent!!.putExtra("stokedata", data)
                                             intent!!.putExtra("GROP_ID", attrubuteKey.toString())
@@ -4769,7 +4809,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     if (!typeST.isChecked) {
                         domin_name = Utils.getString(metadata, "DOMIN")
                     } else {
-                        domin_name = Utils.getString(metadata, "KOFTR_GROU")
+//                        domin_name = Utils.getString(metadata, "KOFTR_GROU")
+                        domin_name = Utils.getString(metadata, "PLANT_NM")
                     }
 
                 }
@@ -6403,6 +6444,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, biotope_attribute.MAC_ADDR))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, biotope_attribute.CURRENT_TM))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("IT_GROP_ID", ogr.OFTString, biotope_attribute.IT_GROP_ID))
+                    BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_NUM", ogr.OFTString, biotope_attribute.TRE_NUM))
+                    BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_NUM", ogr.OFTString, biotope_attribute.STRE_NUM))
+                    BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_NUM", ogr.OFTString, biotope_attribute.SHR_NUM))
+                    BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_NUM", ogr.OFTString, biotope_attribute.HER_NUM))
 
                     var geomsplit = biotope_attribute.GEOM!!.split(",")
                     var points: ArrayList<LatLng> = ArrayList<LatLng>()
@@ -6504,7 +6549,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("LANDUSE", ogr.OFTString, biotope_attribute.LANDUSE))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("UFID", ogr.OFTString, biotope_attribute.UFID))
                             BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("CHECK", ogr.OFTString, biotope_attribute.CHECK))
-
+                            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_NUM", ogr.OFTString, biotope_attribute.TRE_NUM))
+                            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_NUM", ogr.OFTString, biotope_attribute.STRE_NUM))
+                            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_NUM", ogr.OFTString, biotope_attribute.SHR_NUM))
+                            BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_NUM", ogr.OFTString, biotope_attribute.HER_NUM))
                             val exporter = Exporter.ExportItem(LAYER_BIOTOPE, BIOTOPEATTRIBUTE, polygons.get(idx), ArrayList<LatLng>())
 
                             biotopeArray.add(exporter)
@@ -8577,7 +8625,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                     data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                    , data.getString(22), data.getString(23), data.getString(24))
+                    , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26))
 
             stokemapDatas.add(stockMap)
 
@@ -8637,6 +8685,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     STOKEMAP.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, stockMap.CONF_MOD))
                     STOKEMAP.add(Exporter.ColumnDef("LANDUSE", ogr.OFTString, stockMap.LANDUSE))
                     STOKEMAP.add(Exporter.ColumnDef("GEOM", ogr.OFTString, stockMap.GEOM))
+                    STOKEMAP.add(Exporter.ColumnDef("PLANT_CD", ogr.OFTString, stockMap.PLANT_CD))
+                    STOKEMAP.add(Exporter.ColumnDef("PLANT_NM", ogr.OFTString, stockMap.PLANT_NM))
                     Log.d("임상도", STOKEMAP.toString())
 
                     var geomsplit = stockMap.GEOM!!.split(",")
@@ -8691,6 +8741,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         STOKEMAP.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, stockMap.GPS_LON.toString()))
                         STOKEMAP.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, stockMap.CONF_MOD))
                         STOKEMAP.add(Exporter.ColumnDef("LANDUSE", ogr.OFTString, stockMap.LANDUSE))
+                        STOKEMAP.add(Exporter.ColumnDef("PLANT_CD", ogr.OFTString, stockMap.PLANT_CD))
+                        STOKEMAP.add(Exporter.ColumnDef("PLANT_NM", ogr.OFTString, stockMap.PLANT_NM))
 
                         val exporter = Exporter.ExportItem(LAYER_STOCKMAP, STOKEMAP, polygons.get(idx), ArrayList<LatLng>())
 
@@ -10170,7 +10222,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54), data2.getString(55), data2.getString(56), data2.getString(57)
                 , data2.getFloat(58), data2.getFloat(59), data2.getFloat(60), data2.getFloat(61), data2.getFloat(62), data2.getFloat(63)
                 , data2.getFloat(64), data2.getFloat(65), data2.getFloat(66), data2.getFloat(67), data2.getFloat(68), data2.getFloat(69), data2.getString(70), data2.getFloat(71)
-                , data2.getString(72), data2.getString(73), data2.getString(74), data2.getString(75)
+                , data2.getString(72), data2.getString(73), data2.getString(74), data2.getString(75), data2.getInt(76), data2.getInt(77), data2.getInt(78), data2.getInt(79)
         )
         return biotope_attribute
     }

@@ -463,7 +463,7 @@ class DlgDataListActivity : Activity() {
             , data.getDouble(50), data.getString(51), data.getString(52),data.getString(53),data.getString(54), data.getString(55), data.getString(56),data.getString(57)
                     , data.getFloat(58),data.getFloat(59),data.getFloat(60),data.getFloat(61),data.getFloat(62),data.getFloat(63)
                     ,data.getFloat(64),data.getFloat(65),data.getFloat(66),data.getFloat(67),data.getFloat(68),data.getFloat(69), data.getString(70)
-                    ,data.getFloat(71),data.getString(72),data.getString(73),data.getString(74),data.getString(75))
+                    ,data.getFloat(71),data.getString(72),data.getString(73),data.getString(74),data.getString(75), data.getInt(76), data.getInt(77), data.getInt(78), data.getInt(79))
 
             listdata.add(model)
         }
@@ -614,7 +614,7 @@ class DlgDataListActivity : Activity() {
             model = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                     data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                    , data.getString(22),data.getString(23),data.getString(24))
+                    , data.getString(22),data.getString(23),data.getString(24), data.getString(25), data.getString(26))
 
             listdata.add(model)
 

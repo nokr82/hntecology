@@ -741,7 +741,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data2 = db!!.query("biotopeAttribute", dataList, "IT_GROP_ID = '$keyId$it_index'", null, null, null, "id", null)
+            val data2 = db!!.query("biotopeAttribute", dataList, "IT_GROP_ID = '$keyId$it_index'", null, null, null, "id desc", null)
 
             while (data2.moveToNext()) {
 
@@ -870,10 +870,6 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                     etHER_COVEET.setText(biotope_attribute.HER_COVE.toString())
 
                 }
-
-
-
-
 
                 AllDatas.add(biotope_attribute)
 
@@ -2062,7 +2058,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
                                     val dataList: Array<String> = arrayOf("*");
 
-                                    val data2 = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "", null)
+                                    val data2 = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$GROP_ID'", null, null, null, "id desc", null)
 
                                     if (dataArray != null) {
                                         dataArray.clear()

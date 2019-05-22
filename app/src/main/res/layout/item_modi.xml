@@ -3,49 +3,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="wrap_content"
     >
 
     <LinearLayout
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/search1_item">
 
         <TextView
+            android:id="@+id/dominTV"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:textSize="25dp"
+            android:textSize="20dp"
             android:gravity="center"
             android:text="우점/아우점"/>
         <TextView
+            android:id="@+id/treTV"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:textSize="25dp"
+            android:textSize="20dp"
             android:gravity="center"
             android:text="관목층"/>
 
         <TextView
+            android:id="@+id/streTV"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:text="교목층"
-            android:textSize="25dp" />
+            android:textSize="20dp" />
         <TextView
+            android:id="@+id/shrTV"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:textSize="25dp"
+            android:textSize="20dp"
             android:gravity="center"
             android:text="아교목층"/>
         <TextView
+            android:id="@+id/herTV"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:textSize="25dp"
+            android:textSize="20dp"
             android:gravity="center"
             android:text="초본층"/>
 

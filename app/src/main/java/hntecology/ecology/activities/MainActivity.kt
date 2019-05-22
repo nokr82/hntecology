@@ -57,10 +57,8 @@ import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
 import org.opengis.feature.simple.SimpleFeature
 import java.io.File
-import java.io.FilenameFilter
 import java.io.InputStream
 import java.io.Serializable
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -305,9 +303,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             intent.putExtra("zoom", zoom)
             if (layerFileName != null) {
                 intent.putExtra("layerFileName", layerFileName)
-                Log.d("레이어",layerFileName.toString())
+                Log.d("레이어", layerFileName.toString())
                 intent.putExtra("layerGropId", layerGropId)
-                Log.d("레이어",layerGropId.toString())
+                Log.d("레이어", layerGropId.toString())
             }
             startActivityForResult(intent, REQUEST_LAYER)
 
@@ -1134,9 +1132,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
 
 
-        modiSW.setOnClickListener{
+        modiSW.setOnClickListener {
             modichk = modiSW.isChecked
-            Log.d("수정스",modichk.toString())
+            Log.d("수정스", modichk.toString())
         }
 
         searchaddressBT.setOnClickListener {
@@ -1681,7 +1679,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     jsonOb = data!!.getSerializableExtra("data") as ArrayList<LayerModel>
 
-                    Log.d("제이슨",jsonOb.toString())
+                    Log.d("제이슨", jsonOb.toString())
                     if (jsonOb.size > 0) {
 
                         if (types.size != null) {
@@ -1863,7 +1861,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                         while (data.moveToNext()) {
 
-                            var birds_attribute= ps_birds_attribute(data)
+                            var birds_attribute = ps_birds_attribute(data)
                             birdsdataArray.add(birds_attribute)
 
                         }
@@ -2128,7 +2126,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                     , data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getInt(16), data.getString(17)
                                     , data.getString(18), data.getString(19), data.getString(20), data.getString(21)
                                     , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
-                                    , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32),data.getString(33),data.getString(34))
+                                    , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32), data.getString(33), data.getString(34))
                             insectdataArray.add(insect_attribute)
                         }
 
@@ -2268,7 +2266,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                     , data.getString(38), data.getString(39), data.getString(40)
                                     , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
                                     , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
-                                    , data.getString(20), data.getInt(51),data.getString(52),data.getString(53))
+                                    , data.getString(20), data.getInt(51), data.getString(52), data.getString(53))
 
                             zoobenthosArray.add(zoo)
                         }
@@ -2392,7 +2390,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         var title = ""
 
                         while (data.moveToNext()) {
-                            var waypoint: Waypoint = Waypoint(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7), data.getFloat(8), data.getFloat(9), data.getString(10), data.getString(11),data.getString(12),data.getString(13))
+                            var waypoint: Waypoint = Waypoint(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7), data.getFloat(8), data.getFloat(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13))
                             waypointdataArray.add(waypoint)
                         }
 
@@ -2667,7 +2665,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     STRE_BRT.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                     BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", polygon.fillColor.toString(), geom, UFID, CHECK,
                                                     TRE_H_X.toFloat(), TRE_H_N.toFloat(), TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat(), STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat()
-                                                    , SHR_HET_N.toFloat(), SHR_HET_X.toFloat(), HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM,IT_GROP_ID,TRE_NUM.toInt(),STRE_NUM.toInt(),SHR_NUM.toInt(),HER_NUM.toInt())
+                                                    , SHR_HET_N.toFloat(), SHR_HET_X.toFloat(), HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM, IT_GROP_ID, TRE_NUM.toInt(), STRE_NUM.toInt(), SHR_NUM.toInt(), HER_NUM.toInt())
 
                                             if (landuse != null && landuse != "") {
                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
@@ -2744,7 +2742,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
                                                     , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat()
                                                     , polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString(), geom
-                                                    ,PLANT_CD,PLANT_NM)
+                                                    , PLANT_CD, PLANT_NM)
 
                                             dbManager!!.insertstockmap(data)
 
@@ -2814,7 +2812,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
                                                     , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString()
-                                                    , geom,PLANT_CD,PLANT_NM)
+                                                    , geom, PLANT_CD, PLANT_NM)
 
                                             dbManager!!.insertstockmap(data)
 
@@ -2879,7 +2877,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
                                                     , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat()
-                                                    , polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString(), geom,PLANT_CD,PLANT_NM)
+                                                    , polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString(), geom, PLANT_CD, PLANT_NM)
 
                                             dbManager!!.insertstockmap(data)
 
@@ -3150,8 +3148,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                                     BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom, UFID, CHECK
                                                                     , TRE_H_N.toFloat(), TRE_H_X.toFloat(), TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat()
                                                                     , STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat(), SHR_HET_N.toFloat(), SHR_HET_X.toFloat()
-                                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM,IT_GROP_ID
-                                                                    ,TRE_NUM.toInt(),STRE_NUM.toInt(),SHR_NUM.toInt(),HER_NUM.toInt())
+                                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM, IT_GROP_ID
+                                                                    , TRE_NUM.toInt(), STRE_NUM.toInt(), SHR_NUM.toInt(), HER_NUM.toInt())
 
                                                             if (LANDUSE != null && LANDUSE != "") {
                                                                 data.LANDUSE = LANDUSE
@@ -3230,7 +3228,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
                                                                     , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat()
-                                                                    , CONF_MOD, LANDUSE, geom,PLANT_CD,PLANT_NM)
+                                                                    , CONF_MOD, LANDUSE, geom, PLANT_CD, PLANT_NM)
 
                                                             dbManager!!.insertstockmap(data)
 
@@ -3310,7 +3308,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
                                                                     , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat()
-                                                                    , polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom,PLANT_CD,PLANT_NM)
+                                                                    , polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom, PLANT_CD, PLANT_NM)
 
                                                             dbManager!!.insertstockmap(data)
 
@@ -3383,7 +3381,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
                                                                     , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat()
                                                                     , polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom
-                                                                    ,PLANT_CD,PLANT_NM)
+                                                                    , PLANT_CD, PLANT_NM)
 
                                                             dbManager!!.insertstockmap(data)
 
@@ -3431,6 +3429,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                     for (i in 0..polygons.size - 1) {
                                         if (polygons.get(i).tag == polygon.tag) {
                                             println("layerinfo.metadata ${layerinfo.metadata}")
+
 
                                             intent = Intent(this, BiotopeActivity::class.java)
 
@@ -3590,8 +3589,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     STRE_BRT.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                     BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom, UFID, CHECK, TRE_H_N.toFloat(), TRE_H_X.toFloat()
                                                     , TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat(), STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat(), SHR_HET_N.toFloat(), SHR_HET_X.toFloat()
-                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM,IT_GROP_ID
-                                                    ,TRE_NUM.toInt(),STRE_NUM.toInt(),SHR_NUM.toInt(),HER_NUM.toInt())
+                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM, IT_GROP_ID
+                                                    , TRE_NUM.toInt(), STRE_NUM.toInt(), SHR_NUM.toInt(), HER_NUM.toInt())
 
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
@@ -3624,7 +3623,20 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 }
 
                                 if (biotopedataArray.size == 1) {
-                                    val intent = Intent(this, BiotopeActivity::class.java)
+                                    var intent = Intent(this, BiotopeActivity::class.java)
+
+                                    Log.d("비오어레이",biotopedataArray.toString())
+                                    if (modichk) {
+                                        intent = Intent(this, DlgModiListActivity::class.java)
+                                        intent.putExtra("size", biotopedataArray.size)
+//                                        intent.putExtra("id", biotopedataArray.get(0).id)
+//                                        intent.putExtra("region", biotopedataArray.get(3).INV_REGION)
+//                                        intent.putExtra("index", biotopedataArray.get(7).INV_INDEX)
+//                                        intent.putExtra("geom", biotopedataArray.get(55).GEOM)
+//                                        intent.putExtra("landuse", biotopedataArray.get(54).LANDUSE)
+
+                                    }
+
                                     intent.putExtra("title", "비오톱")
                                     intent.putExtra("table", "biotopeAttribute")
                                     intent.putExtra("id", biotopedataArray.get(0).id)
@@ -3648,7 +3660,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 }
 
                                 if (biotopedataArray.size > 1) {
-                                    val intent = Intent(this, DlgDataListActivity::class.java)
+                                    var intent = Intent(this, DlgDataListActivity::class.java)
+                                    Log.d("비오어레이",biotopedataArray.toString())
+                                    if (modichk) {
+                                        intent = Intent(this, DlgModiListActivity::class.java)
+                                        intent.putExtra("size", biotopedataArray.size)
+                                    }
                                     intent.putExtra("title", "비오톱")
                                     intent.putExtra("table", "biotopeAttribute")
                                     intent.putExtra("DlgHeight", 600f);
@@ -3739,7 +3756,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
                                                     , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, ""
-                                                    , ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom,PLANT_CD,PLANT_NM)
+                                                    , ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom, PLANT_CD, PLANT_NM)
 
                                             intent!!.putExtra("stokedata", data)
                                             intent!!.putExtra("GROP_ID", attrubuteKey.toString())
@@ -4067,7 +4084,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     STRE_BRT.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                     BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom, UFID, CHECK, TRE_H_N.toFloat(), TRE_H_X.toFloat()
                                                     , TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat(), STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat(), SHR_HET_N.toFloat(), SHR_HET_X.toFloat()
-                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM,IT_GROP_ID,TRE_NUM.toInt(),STRE_NUM.toInt(),SHR_NUM.toInt(),HER_NUM.toInt())
+                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM, IT_GROP_ID, TRE_NUM.toInt(), STRE_NUM.toInt(), SHR_NUM.toInt(), HER_NUM.toInt())
 
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
@@ -4207,7 +4224,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
                                                     , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat()
-                                                    , CONF_MOD, LANDUSE, geom,PLANT_CD,PLANT_NM)
+                                                    , CONF_MOD, LANDUSE, geom, PLANT_CD, PLANT_NM)
 
                                             intent!!.putExtra("stokedata", data)
                                             intent!!.putExtra("GROP_ID", attrubuteKey.toString())
@@ -4488,13 +4505,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             ogr.RegisterAll()
             // set up the shapefile driver
             val driver = ogr.GetDriverByName("ESRI Shapefile")
-            var u_name =  PrefUtils.getStringPreference(context,"name")
-            Log.d("드라이버",context.applicationInfo.dataDir.toString())
-            var shpFilePath = FileFilter.main("/storage/emulated/0/Download/ecology/data/"+type+"/",u_name)
+            var u_name = PrefUtils.getStringPreference(context, "name")
+            Log.d("드라이버", context.applicationInfo.dataDir.toString())
+            var shpFilePath = FileFilter.main("/storage/emulated/0/Download/ecology/data/" + type + "/", u_name)
             //            var shpFilePath = context.applicationInfo.dataDir + File.separator + "$layerName.shp"
             //            val biotopePathDir = FileFilter.main("/storage/emulated/0/Download/ecology/data/"+type+"/",u_name)
 //            var fileNames = biotopePathDir.listFiles(FilenameFilter { dir, name -> name.endsWith(".shp") })
-
 
 
             if (added == "Y") {
@@ -4511,7 +4527,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
             val dataSource = driver.Open(shpFilePath, 0) ?: return true
 
-             println("dataSource : $dataSource")
+            println("dataSource : $dataSource")
 
             val layerCount = dataSource.GetLayerCount()
 
@@ -4564,7 +4580,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     val geometryType = geometryRef.GetGeometryType()
 
-                     println("geometryType : $geometryType")
+                    println("geometryType : $geometryType")
 
                     if (geometryType == ogr.wkbPoint) {
                         val pointCount = geometryRef.GetPointCount()
@@ -6564,12 +6580,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 var leftreplace = lftday.replace(" ", "_")
                 var rightreplace = rgtday.replace(" ", "_")
-                var u_name =  PrefUtils.getStringPreference(context,"name")
+                var u_name = PrefUtils.getStringPreference(context, "name")
                 lftday = leftreplace
                 rgtday = rightreplace
 
                 if (biotopeArray != null) {
-                    Exporter.export(biotopeArray, lftday, rgtday,u_name)
+                    Exporter.export(biotopeArray, lftday, rgtday, u_name)
                 }
 
 
@@ -6777,9 +6793,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-            var u_name =  PrefUtils.getStringPreference(context,"name")
+            var u_name = PrefUtils.getStringPreference(context, "name")
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray, lftday, rgtday,u_name)
+                Exporter.exportPoint(pointsArray, lftday, rgtday, u_name)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "birds" + File.separator + "birds"
@@ -7007,9 +7023,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-            var u_name =  PrefUtils.getStringPreference(context,"name")
+            var u_name = PrefUtils.getStringPreference(context, "name")
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray, lftday, rgtday,u_name)
+                Exporter.exportPoint(pointsArray, lftday, rgtday, u_name)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "reptilia" + File.separator + "reptilia"
@@ -7221,9 +7237,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-            var u_name =  PrefUtils.getStringPreference(context,"name")
+            var u_name = PrefUtils.getStringPreference(context, "name")
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray, lftday, rgtday,u_name)
+                Exporter.exportPoint(pointsArray, lftday, rgtday, u_name)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "mammalia" + File.separator + "mammalia"
@@ -7462,9 +7478,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-            var u_name =  PrefUtils.getStringPreference(context,"name")
+            var u_name = PrefUtils.getStringPreference(context, "name")
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray, lftday, rgtday,u_name)
+                Exporter.exportPoint(pointsArray, lftday, rgtday, u_name)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "fish" + File.separator + "fish"
@@ -7511,7 +7527,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     , data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getInt(16), data.getString(17)
                     , data.getString(18), data.getString(19), data.getString(20), data.getString(21)
                     , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
-                    , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32),data.getString(33),data.getString(34))
+                    , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32), data.getString(33), data.getString(34))
 
             insectDatas.add(insect_attribute)
 
@@ -7676,9 +7692,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-            var u_name =  PrefUtils.getStringPreference(context,"name")
+            var u_name = PrefUtils.getStringPreference(context, "name")
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray, lftday, rgtday,u_name)
+                Exporter.exportPoint(pointsArray, lftday, rgtday, u_name)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "insect" + File.separator + "insect"
@@ -7694,7 +7710,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             } else {
                 if (leftday == "") {
                     dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "insect" + File.separator + "insect", "곤충", "insect", "Y", "insect")
-                    Log.d("개꿀",Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString())
+                    Log.d("개꿀", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString())
                 }
             }
 
@@ -7881,9 +7897,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-            var u_name =  PrefUtils.getStringPreference(context,"name")
+            var u_name = PrefUtils.getStringPreference(context, "name")
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray, lftday, rgtday,u_name)
+                Exporter.exportPoint(pointsArray, lftday, rgtday, u_name)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora" + File.separator + "flora"
@@ -7934,7 +7950,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     , data.getString(38), data.getString(39), data.getString(40)
                     , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
                     , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
-                    , data.getString(50), data.getInt(51),data.getString(52),data.getString(53))
+                    , data.getString(50), data.getInt(51), data.getString(52), data.getString(53))
 
             zoobenthousDatas.add(zoo)
 
@@ -8131,9 +8147,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-            var u_name =  PrefUtils.getStringPreference(context,"name")
+            var u_name = PrefUtils.getStringPreference(context, "name")
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray, lftday, rgtday,u_name)
+                Exporter.exportPoint(pointsArray, lftday, rgtday, u_name)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "zoobenthos" + File.separator + "zoobenthos"
@@ -8177,7 +8193,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         while (data.moveToNext()) {
             var waypoint: Waypoint = Waypoint(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7)
-                    , data.getFloat(8), data.getFloat(9), data.getString(10), data.getString(11),data.getString(12),data.getString(13))
+                    , data.getFloat(8), data.getFloat(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13))
             waypointDatas.add(waypoint)
         }
 
@@ -8287,9 +8303,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-            var u_name =  PrefUtils.getStringPreference(context,"name")
+            var u_name = PrefUtils.getStringPreference(context, "name")
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray, lftday, rgtday,u_name)
+                Exporter.exportPoint(pointsArray, lftday, rgtday, u_name)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "waypoint" + File.separator + "waypoint"
@@ -8497,9 +8513,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-            var u_name =  PrefUtils.getStringPreference(context,"name")
+            var u_name = PrefUtils.getStringPreference(context, "name")
             if (pointsArray != null) {
-                Exporter.exportPoint(pointsArray, lftday, rgtday,u_name)
+                Exporter.exportPoint(pointsArray, lftday, rgtday, u_name)
             }
 
             val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora2" + File.separator + "flora2"
@@ -8754,9 +8770,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 var rightreplace = rgtday.replace(" ", "_")
                 lftday = leftreplace
                 rgtday = rightreplace
-                var u_name =  PrefUtils.getStringPreference(context,"name")
+                var u_name = PrefUtils.getStringPreference(context, "name")
                 if (stokeArray != null) {
-                    Exporter.export(stokeArray, lftday, rgtday,u_name)
+                    Exporter.export(stokeArray, lftday, rgtday, u_name)
                 }
 
                 val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap"
@@ -9695,79 +9711,79 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     }
 
 
-   /* fun searchByFilefilter(folder: FIle): Array<File> {
-        return folder.listFiles(FilenameFilter { dir, name -> name.endWith(".txt") })
-    }*/
+    /* fun searchByFilefilter(folder: FIle): Array<File> {
+         return folder.listFiles(FilenameFilter { dir, name -> name.endWith(".txt") })
+     }*/
 
     fun isFile(): Boolean {
 
-        val biotopePathDir = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope",""))
+        val biotopePathDir = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope", ""))
         if (!biotopePathDir.exists()) {
             dbManager!!.deletelayers("biotope")
             dbManager!!.deletebiotope_attribute_all()
         }
 
-        val bridsPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "birds",""))
+        val bridsPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "birds", ""))
         if (!bridsPath.exists()) {
             dbManager!!.deletelayers("birds")
             dbManager!!.deletebirds_attribute_all()
         }
 
-        val reptiliaPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "reptilia",""))
+        val reptiliaPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "reptilia", ""))
         if (!reptiliaPath.exists()) {
             dbManager!!.deletelayers("reptilia")
             dbManager!!.deletereptilia_attribute_all()
         }
 
-        val mammaliaPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "mammalia",""))
+        val mammaliaPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "mammalia", ""))
         if (!mammaliaPath.exists()) {
             dbManager!!.deletelayers("mammalia")
             dbManager!!.deletemammal_attribute_all()
         }
 
-        val fishPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "fish",""))
+        val fishPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "fish", ""))
         if (!fishPath.exists()) {
             dbManager!!.deletelayers("fish")
             dbManager!!.deletefish_attribute_all()
         }
 
-        val insectPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "insect",""))
+        val insectPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "insect", ""))
         if (!insectPath.exists()) {
             dbManager!!.deletelayers("insect")
             dbManager!!.deleteinsect_attribute_all()
         }
 
-        val floraPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora",""))
+        val floraPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora", ""))
         if (!floraPath.exists()) {
             dbManager!!.deletelayers("flora")
             dbManager!!.deleteflora_attribute_all()
         }
 
-        val zoobenthosPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "zoobenthos",""))
+        val zoobenthosPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "zoobenthos", ""))
         if (!zoobenthosPath.exists()) {
             dbManager!!.deletelayers("zoobenthos")
             dbManager!!.deletezoobenthous_attribute_all()
         }
 
-        val flora2Path = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora2",""))
+        val flora2Path = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora2", ""))
         if (!flora2Path.exists()) {
             dbManager!!.deletelayers("flora2")
 
         }
 
-        val trackingPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "tracking",""))
+        val trackingPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "tracking", ""))
         if (!trackingPath.exists()) {
             dbManager!!.deletelayers("tracking")
             dbManager!!.deletetracking()
         }
 
-        val stockmapPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap",""))
+        val stockmapPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap", ""))
         if (!stockmapPath.exists()) {
             dbManager!!.deletelayers("stockmap")
             dbManager!!.deletestockmap_all()
         }
-            return true
-        }
+        return true
+    }
 
     override fun onDestroy() {
 
@@ -10250,7 +10266,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     }
 
     fun ps_birds_attribute(data: Cursor): Birds_attribute {
-        var birds_attribute: Birds_attribute =Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+        var birds_attribute: Birds_attribute = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                 data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                 , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20)
                 , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
@@ -10258,13 +10274,14 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         )
         return birds_attribute
     }
+
     fun ps_fish_attribute(data: Cursor): Fish_attribute {
         var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                 data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15),
                 data.getFloat(16), data.getFloat(17), data.getString(18), data.getString(19), data.getInt(20), data.getInt(21), data.getInt(22), data.getInt(23), data.getString(24), data.getString(25),
                 data.getInt(26), data.getInt(27), data.getInt(28), data.getInt(29), data.getInt(30), data.getString(31), data.getInt(32), data.getString(33), data.getString(34), data.getString(35),
                 data.getInt(36), data.getString(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getInt(43), data.getInt(44), data.getFloat(45)
-                , data.getInt(46), data.getInt(47), data.getFloat(48), data.getString(49), data.getString(50),data.getString(51),data.getString(52))
+                , data.getInt(46), data.getInt(47), data.getFloat(48), data.getString(49), data.getString(50), data.getString(51), data.getString(52))
         return fish_attribute
     }
 }

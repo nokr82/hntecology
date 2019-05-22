@@ -5,20 +5,21 @@ import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.os.Bundle
-import android.text.TextWatcher
+import android.util.Log
+import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
+import com.loopj.android.http.AsyncHttpClient.log
 import hntecology.ecology.R
-import hntecology.ecology.adapter.DlgPlantAdapter
+import hntecology.ecology.adapter.DlgModiAdapter
 import hntecology.ecology.base.DataBaseHelper
+import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
-import hntecology.ecology.model.Vegetation
-import kotlinx.android.synthetic.main.activity_dlgvegetation.*
-import java.util.ArrayList
-import android.text.Editable
-import hntecology.ecology.base.Jaso
-import hntecology.ecology.model.Endangered
-import hntecology.ecology.model.Vascular_plant
+import kotlinx.android.synthetic.main.activity_dlg_modi_list.*
+import hntecology.ecology.model.Biotope_attribute
+import kotlinx.android.synthetic.main.activity_biotope_ex.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class DlgModiListActivity : Activity() {
@@ -27,169 +28,156 @@ class DlgModiListActivity : Activity() {
 
     private lateinit var listView1: ListView
 
-    private lateinit var listdata1 : ArrayList<Vascular_plant>
-
-    private lateinit var copylistdata1 : ArrayList<Vascular_plant>
-
-    private lateinit var listAdapte1: DlgPlantAdapter;
+    private lateinit var listdata1 : ArrayList<Biotope_attribute>
+    private lateinit var listdata2 : ArrayList<Biotope_attribute>
+    private lateinit var listAdapte1: DlgModiAdapter;
 
     val dataBaseHelper = DataBaseHelper(this);
     val db = dataBaseHelper.createDataBase()
-    var tableName:String = ""
-    var titleName:String=""
     var DlgHeight:Float=430F
-
+    var dbManager: DataBaseHelper? = null
     var chkData = false
 
+    var it_index  = -1
+    var grop_id = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dlgvegetation)
+        setContentView(R.layout.activity_dlg_modi_list)
 
         context = applicationContext;
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
+        dbManager = DataBaseHelper(this)
 
-        val db = dbManager.createDataBase();
+        val db = dbManager!!.createDataBase();
 
         val intent = getIntent()
 
-        tableName = intent.getStringExtra("table");
-        titleName = intent.getStringExtra("title")
         DlgHeight = intent.getFloatExtra("DlgHeight",430F);
 
         window.setLayout(Utils.dpToPx(800F).toInt(), Utils.dpToPx(DlgHeight).toInt());
         this.setFinishOnTouchOutside(true);
 
-        dlgTitleTV.setText(titleName)
+        grop_id  = intent.getStringExtra("GROP_ID")
+        it_index = intent.getIntExtra("size",-1)
 
-        val dataList:Array<String> = arrayOf("no","taxon","zoological","name_kr","author","year","Phylum_name","Phylum_name_kr","Class_name","Class_name_kr","Order_name","Order_name_kr"
-                ,"Family_name","Family_name_kr","Genus_name","Genus_name_kr","Species_name","Species_name_kr","Subspecies_subsp","author","Subspecies_name","Subspecies_name_kr","Variety_var"
-                ,"Variety_name","Variety_name_kr","Forma_f","Forma_name","Forma_name_kr");
 
-        val data1=  db.query(tableName,dataList,null,null,"name_kr",null,null,null);
 
-        listView1 = findViewById(R.id.list_view1)
+        val dataList: Array<String> = arrayOf("*");
+
+        val data1=  db.query("biotopeAttribute",dataList,null,null,"IT_GROP_ID",null,"id asc",null);
+        val data2=  db.query("biotopeAttribute",dataList,null,null,null,null,"id asc",null);
+
+
+        listView1 = findViewById(R.id.modiLV)
 
         listdata1 = ArrayList()
+        listdata2 = ArrayList()
 
-        copylistdata1 = ArrayList()
-
-        listAdapte1 = DlgPlantAdapter(context, listdata1);
+        listAdapte1 = DlgModiAdapter(context, listdata1,listdata2);
 
         listView1.adapter = listAdapte1
 
         dataList(listdata1,data1);
-        copylistdata1.addAll(listdata1)
-
-        leftsearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
-
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-
-            }
-
-            override fun afterTextChanged(editable: Editable) {
-                val text = leftsearch.text.toString()
-                leftSearch(text)
-            }
-        });
+        dataList(listdata2,data2);
+        var biotope_attribute = null_biotope_attribute()
 
         listView1.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-
             var data =  listAdapte1.getItem(position)
 
-            listAdapte1.setItemSelect(position)
+            var domin = data.DOMIN
+            var tre_spec = data.TRE_SPEC
+            var stre_spec = data.STRE_SPEC
+            var shr_spec = data.SHR_SPEC
+            var her_spec = data.HER_SPEC
+            var region = data.INV_REGION
+            var geom = data.GEOM
+            var landuse = data.LANDUSE
 
-            var name = data.name_kr
-            var family_name = data.Family_name_kr
-            var zoological = data.zoological
-
-            val dataEndangeredList:Array<String> = arrayOf("ID","TITLE","SCIENTIFICNAME","CLASS","DANGERCLASS","CONTRYCLASS");
-
-            val EndangeredData = db.query("ENDANGERED", dataEndangeredList, "TITLE = '$name'", null, null, null, null, null);
-
-            while (EndangeredData.moveToNext()) {
-
-                var endangered = Endangered(EndangeredData.getString(0),EndangeredData.getString(1),EndangeredData.getString(2),EndangeredData.getString(3),EndangeredData.getString(4),EndangeredData.getString(5))
-
-                chkData = true
-
-            }
-
-            if(chkData){
-                val intent = Intent();
-                intent.putExtra("name",name + "(멸종 위기)")
-                intent.putExtra("family_name",family_name)
-                intent.putExtra("zoological",zoological)
-                setResult(RESULT_OK, intent);
-                finish()
-            }else {
-                val intent = Intent();
-                intent.putExtra("name",name)
-                intent.putExtra("family_name",family_name)
-                intent.putExtra("zoological",zoological)
-                setResult(RESULT_OK, intent);
-                finish()
-            }
-
-            EndangeredData.close()
+            addbiotope(biotope_attribute,domin.toString(),region.toString(),geom.toString(),landuse.toString())
 
         }
 
     }
+    fun addbiotope(biotope_attribute: Biotope_attribute,domin:String,region:String,geom:String,landuse:String) {
 
-    fun dataList(listdata:ArrayList<Vascular_plant>, data: Cursor) {
+        biotope_attribute.GROP_ID = grop_id
 
-        while (data.moveToNext()){
+        Log.d("추가인덱스", it_index.toString())
+        biotope_attribute.IT_GROP_ID = grop_id + it_index.toString()
 
-            var model : Vascular_plant;
 
-            model = Vascular_plant(data.getInt(0),data.getString(1),data.getString(2),data.getString(3),data.getString(4),data.getString(5),data.getString(6),data.getString(7),data.getString(8),data.getString(9),data.getString(10),
-                    data.getString(11),data.getString(12),data.getString(13),data.getString(14),data.getString(15),data.getString(16),data.getString(17),data.getString(18),data.getString(19),data.getString(20),data.getString(21),
-                    data.getString(22),data.getString(23),data.getString(24),data.getString(25),data.getString(26),false);
+
+        biotope_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
+
+        biotope_attribute.INV_REGION = region
+
+        biotope_attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name");
+
+        biotope_attribute.INV_DT = Utils.todayStr()
+
+        biotope_attribute.INV_TM = Utils.timeStr()
+
+//        biotope_attribute.INV_INDEX = tvINV_IndexTV.text.toString().toInt()
+
+        biotope_attribute.TEMP_YN = "Y"
+
+        biotope_attribute.CONF_MOD = "N"
+
+        biotope_attribute.LANDUSE = landuse
+
+        biotope_attribute.GEOM = geom
+
+
+        biotope_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+        val date = Date()
+        val sdf = SimpleDateFormat("yyyyMMddHHmmSS")
+        val getTime = sdf.format(date)
+        biotope_attribute.CURRENT_TM = getTime.substring(2, 14)
+
+
+        biotope_attribute.DOMIN = domin
+
+        dbManager!!.insertbiotope_attribute(biotope_attribute);
+
+    }
+    fun null_biotope_attribute(): Biotope_attribute {
+        val biotope_attribute: Biotope_attribute = Biotope_attribute(null, null, null, null, null, null, null
+                , null, null, null, null, null, null, null, null
+                , null, null, null, null, null, null, null, null
+                , null, null, null, null, null, null, null, null
+                , null, null, null, null, null, null, null
+                , null, null, null, null, null, null, null, null
+                , null, null, null, null, null, null, null, null, null, null, null, null
+                , null, null, null, null, null, null
+                , null, null, null, null, null, null, null, null
+                , null, null, null, null, null, null, null, null
+        )
+        return biotope_attribute
+    }
+
+    fun dataList(listdata:ArrayList<Biotope_attribute>, data2: Cursor) {
+
+        while (data2.moveToNext()){
+
+            var model : Biotope_attribute;
+
+            model = Biotope_attribute(data2.getString(0), data2.getString(1), data2.getString(2), data2.getString(3), data2.getString(4), data2.getString(5), data2.getString(6), data2.getInt(7),
+                    data2.getString(8), data2.getFloat(9), data2.getFloat(10), data2.getString(11), data2.getString(12), data2.getString(13), data2.getFloat(14)
+                    , data2.getString(15), data2.getString(16), data2.getString(17), data2.getString(18), data2.getString(19), data2.getString(20), data2.getString(21)
+                    , data2.getString(22), data2.getString(23), data2.getString(24), data2.getString(25), data2.getFloat(26), data2.getFloat(27), data2.getFloat(28)
+                    , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
+                    , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
+                    , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
+                    , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54), data2.getString(55), data2.getString(56), data2.getString(57)
+                    , data2.getFloat(58), data2.getFloat(59), data2.getFloat(60), data2.getFloat(61), data2.getFloat(62), data2.getFloat(63)
+                    , data2.getFloat(64), data2.getFloat(65), data2.getFloat(66), data2.getFloat(67), data2.getFloat(68), data2.getFloat(69), data2.getString(70), data2.getFloat(71)
+                    , data2.getString(72), data2.getString(73), data2.getString(74), data2.getString(75), data2.getInt(76), data2.getInt(77), data2.getInt(78), data2.getInt(79)
+            )
 
             listdata.add(model)
 
         }
     }
 
-    fun leftSearch(charText: String){
-        for(i in 0..listdata1.size-1){
-            listdata1.get(i).chkSelect = false
-        }
-
-        listdata1.clear()
-
-        if(charText.length == 0){
-
-            listdata1.addAll(copylistdata1)
-
-
-        }else {
-
-            var names:ArrayList<String> = ArrayList<String>()
-
-            for (i in 0..copylistdata1.size-1){
-
-                val name =  Utils.getString(copylistdata1.get(i).name_kr, copylistdata1.get(i).name_kr);
-
-                names.add(name)
-
-            }
-
-            for (i in 0..copylistdata1.size-1){
-
-                if (Jaso.startsWith(copylistdata1.get(i).name_kr!!, charText)
-                        ||copylistdata1.get(i).name_kr!!.toLowerCase().contains(charText)) {
-                    listdata1.add(copylistdata1.get(i))
-                }
-
-            }
-
-        }
-
-        listAdapte1.notifyDataSetChanged()
-
-    }
 
 }

@@ -29,6 +29,9 @@
         <activity android:name=".activities.DlgResearchActivity"
             android:theme="@style/full_screen_dialog1"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"  ></activity>
+        <activity android:name=".activities.DlgModiListActivity"
+            android:theme="@style/full_screen_dialog1"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"  ></activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

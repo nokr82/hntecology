@@ -3574,7 +3574,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
             if (images!!.size > 0 && biotope_attribute.PIC_FOLDER == null) {
 
-                biotope_attribute.PIC_FOLDER = getAttrubuteKey()
+                biotope_attribute.PIC_FOLDER = keyId+it_index.toString()
             }
 
             if (pk != null) {
@@ -3593,7 +3593,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         } else {
 
             if (images!!.size > 0) {
-                biotope_attribute.PIC_FOLDER = getAttrubuteKey()
+                biotope_attribute.PIC_FOLDER = keyId+it_index.toString()
             }
 
             dbManager!!.insertbiotope_attribute(biotope_attribute);

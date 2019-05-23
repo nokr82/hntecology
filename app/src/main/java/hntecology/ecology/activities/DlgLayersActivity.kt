@@ -115,7 +115,7 @@ class DlgLayersActivity : Activity() {
         val dataList: Array<String> = arrayOf("file_name", "layer_name", "min_scale", "max_scale", "type", "added", "grop_id");
 
         //대분류
-        val data = db.query("layers", dataList, null, null, null, null, "id", null);
+        val data = db.query("layers", dataList, null, null, "file_name", null, "id", null);
         adapterData.clear()
         while (data.moveToNext()) {
             val layerModel = LayerModel(data.getString(0), data.getString(1), data.getInt(2), data.getInt(3), data.getString(4), data.getString(5), data.getString(6), false);

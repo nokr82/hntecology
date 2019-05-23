@@ -4508,16 +4508,23 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var u_name = PrefUtils.getStringPreference(context, "name")
             Log.d("드라이버", context.applicationInfo.dataDir.toString())
             Log.d("타입", type.toString())
-            var shpFilePath = FileFilter.main("/storage/emulated/0/Download/ecology/data/" + type + "/", u_name)
-            //            var shpFilePath = context.applicationInfo.dataDir + File.separator + "$layerName.shp"
+//            var shpFilePath = FileFilter.main("/storage/emulated/0/Download/ecology/data/" + type + "/", u_name)
+//            var shpFilePath = ""
             //            val biotopePathDir = FileFilter.main("/storage/emulated/0/Download/ecology/data/"+type+"/",u_name)
 //            var fileNames = biotopePathDir.listFiles(FilenameFilter { dir, name -> name.endsWith(".shp") })
+            var shpFilePath = context.applicationInfo.dataDir + File.separator + "$layerName.shp"
 
 
             if (added == "Y") {
-//                shpFilePath = "$layerName.shp"
-//                println(" 이거냐 : $layerName")
+                shpFilePath = FileFilter.main("/storage/emulated/0/Download/ecology/data/" + type + "/", u_name)
+                println(" 이거냐2 : $shpFilePath")
             }
+//            if (added == "Y") {
+//                shpFilePath = FileFilter.main("/storage/emulated/0/Download/ecology/data/" + type + "/", u_name)
+////                println(" 이거냐 : $layerName")
+//            }else{
+//                shpFilePath = context.applicationInfo.dataDir + File.separator + "$layerName.shp"
+//            }
 
             println("shpFilePath 2 : $layerName")
             println("shpFilePath아비그 : $shpFilePath")

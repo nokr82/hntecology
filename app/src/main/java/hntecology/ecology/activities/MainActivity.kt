@@ -3579,7 +3579,61 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             if (GPS_LON == "" || GPS_LON == null) {
                                                 GPS_LON = "0"
                                             }
+                                            if (TRE_H_N == "" || TRE_H_N == null) {
+                                                TRE_H_N = "0"
+                                            }
+                                            if (TRE_H_X == "" || TRE_H_X == null) {
+                                                TRE_H_X = "0"
+                                            }
+                                            if (TRE_BREA_N == "" || TRE_BREA_N == null) {
+                                                TRE_BREA_N = "0"
+                                            }
+                                            if (TRE_BREA_N == "" || TRE_BREA_N == null) {
+                                                TRE_BREA_N = "0"
+                                            }
+                                            if (TRE_BREA_X == "" || TRE_BREA_X == null) {
+                                                TRE_BREA_X = "0"
+                                            }
+                                            if (STRE_H_N == "" || STRE_H_N == null) {
+                                                STRE_H_N = "0"
+                                            }
+                                            if (STRE_H_X == "" || STRE_H_X == null) {
+                                                STRE_H_X = "0"
+                                            }
+                                            if (STRE_BRT_N == "" || STRE_BRT_N == null) {
+                                                STRE_BRT_N = "0"
+                                            }
+                                            if (STRE_BRT_X == "" || STRE_BRT_X == null) {
+                                                STRE_BRT_X = "0"
+                                            }
+                                            if (SHR_HET_N == "" || SHR_HET_N == null) {
+                                                SHR_HET_N = "0"
+                                            }
+                                            if (SHR_HET_X == "" || SHR_HET_X == null) {
+                                                SHR_HET_X = "0"
+                                            }
+                                            if (HER_HET_N == "" || HER_HET_N == null) {
+                                                HER_HET_N = "0"
+                                            }
+                                            if (HER_HET_X == "" || HER_HET_X == null) {
+                                                HER_HET_X = "0"
+                                            }
+                                            if (IMPERV == "" || IMPERV == null) {
+                                                IMPERV = "0"
+                                            }
+                                            if (TRE_NUM == "" || TRE_NUM == null) {
+                                                TRE_NUM = "0"
+                                            }
 
+                                            if (STRE_NUM == "" || STRE_NUM == null) {
+                                                STRE_NUM = "0"
+                                            }
+                                            if (SHR_NUM == "" || SHR_NUM == null) {
+                                                SHR_NUM = "0"
+                                            }
+                                            if (HER_NUM == "" || HER_NUM == null) {
+                                                HER_NUM = "0"
+                                            }
                                             if (landuse != null && landuse != "") {
                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
                                             }
@@ -3587,7 +3641,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, LC_TY, TY_MARK, GV_RATE.toFloat()
                                                     , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
                                                     STRE_BRT.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
-                                                    BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom, UFID, CHECK, TRE_H_N.toFloat(), TRE_H_X.toFloat()
+                                                    BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom, UFID, CHECK
+                                                    , TRE_H_N.toFloat(), TRE_H_X.toFloat()
                                                     , TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat(), STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat(), SHR_HET_N.toFloat(), SHR_HET_X.toFloat()
                                                     , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM, IT_GROP_ID
                                                     , TRE_NUM.toInt(), STRE_NUM.toInt(), SHR_NUM.toInt(), HER_NUM.toInt())

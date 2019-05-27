@@ -2467,6 +2467,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:text="추가"
+                        android:visibility="gone"
                         android:id="@+id/btn_biotopAdd"
                         style="@style/dlgcommonButton"
                         android:layout_marginLeft="2dp"

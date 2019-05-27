@@ -20,6 +20,7 @@ public class AddressAction {
         RequestParams params = new RequestParams();
         params.put("query", keyword);
         params.put("request", "search");
+        params.put("size", "1000");
         params.put("category", "PARCEL");
         params.put("type", "address");
         params.put("key", "366D7FAA-4B63-3ACA-8C05-AAD64D7DD580");

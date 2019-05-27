@@ -27,7 +27,7 @@ class DlgLayersActivity : Activity() {
     private var adapterData: ArrayList<LayerModel> = ArrayList<LayerModel>()
 
     private lateinit var apdater: DlgLayerAdapter;
-
+    private lateinit var apdater2: DlgLayerAdapter;
     private lateinit var db: SQLiteDatabase
 
     private var data: ArrayList<LayerModel> = ArrayList<LayerModel>()
@@ -133,21 +133,24 @@ class DlgLayersActivity : Activity() {
                     }
                 }
             }
-
-            if (intent.getSerializableExtra("layerFileName") != null) {
-                var filename: ArrayList<String> = intent.getSerializableExtra("layerFileName") as ArrayList<String>
-                val gropid: ArrayList<String> = intent.getSerializableExtra("layerGropId") as ArrayList<String>
-
-                for (i in 0..gropid.size - 1) {
-                    for (j in 0..adapterData.size - 1) {
-                        if (gropid.get(i) == adapterData.get(j).grop_id) {
+        }
+        if (intent.getSerializableExtra("layerFileName") != null) {
+            var filename: ArrayList<String> = intent.getSerializableExtra("layerFileName") as ArrayList<String>
+            val gropid: ArrayList<String> = intent.getSerializableExtra("layerGropId") as ArrayList<String>
+            val type: ArrayList<String> = intent.getSerializableExtra("layerType") as ArrayList<String>
+            Log.d("그뤕",gropid.toString())
+            Log.d("그뤕",filename.toString())
+            for (i in 0..gropid.size - 1) {
+                for (j in 0..adapterData.size - 1) {
+                    if (gropid.get(i) == adapterData.get(j).grop_id) {
+                        if (type.get(i) == adapterData.get(j).type) {
                             adapterData.get(j).is_checked = true
                         }
                     }
                 }
             }
-
         }
+
         Log.d("데이터", adapterData.size.toString())
         data.close()
 

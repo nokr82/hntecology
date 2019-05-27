@@ -14,6 +14,7 @@ import android.location.Geocoder
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -193,6 +194,8 @@ class StockActivity : Activity() {
             polygonid = intent.getStringExtra("polygonid")
         }
 
+
+
         val dataList: Array<String> = arrayOf("*");
 
         var basedata = db!!.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
@@ -243,7 +246,7 @@ class StockActivity : Activity() {
         if (intent.getSerializableExtra("stokedata") != null){
 
             var stockMap = intent.getSerializableExtra("stokedata") as StockMap
-
+            Log.d("아몰랑",stockMap.toString())
             println("-----------------------------------------------------------------------------------------")
 
             val dbManager: DataBaseHelper = DataBaseHelper(this)
@@ -277,11 +280,13 @@ class StockActivity : Activity() {
 //                koftrTV.text = stockMap.PLANT_NM
             koftrTV.text = stockMap.PLANT_NM
 
-            val codedata = db!!.query("Dropsygroup", dataList, "CODE = '${stockMap.PLANT_NM}'", null, null, null, "", null)
+
+            Log.d("식물종",stockMap.PLANT_NM)
+            /*val codedata = db!!.query("Dropsygroup", dataList, "CODE = '${stockMap.PLANT_NM}'", null, null, null, "", null)
             while (codedata.moveToNext()) {
                 val item = StockMapSelect(codedata.getString(1),codedata.getString(2), codedata.getString(3),false)
                 koftrTV.setText(item.Title)
-            }
+            }*/
 
             for (i in 0 until storunstdata.size){
                 if (stockMap.STORUNST_CD == storunstdata.get(i).code){
@@ -638,6 +643,105 @@ class StockActivity : Activity() {
             alert.show()
         }
 
+        addBT.setOnClickListener {
+            var stockMap: StockMap = StockMap(null,null,null,null,null,null,null,null,null,null,
+                    null,null,null,null,null,null,null,null,null,null,null,null,
+                    null,null,null,null,null)
+
+            stockMap.GROP_ID = keyId
+
+            val prj = prjnameET.text.toString()
+            if (prj == prjname){
+                stockMap.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
+            } else {
+                stockMap.PRJ_NAME = prjnameET.text.toString()
+            }
+
+//            stockMap.PRJ_NAME = prjnameET.text.toString()
+//            if (prjnameET.length() > 0){
+//                stockMap.PRJ_NAME = prjnameET.text.toString()
+//            } else {
+//                stockMap.PRJ_NAME = prjname
+//            }
+
+//            stockMap.INV_REGION = invregionTV.text.toString()
+            if (invregionTV.length() > 0){
+                stockMap.INV_REGION = invregionTV.text.toString();
+            } else {
+                stockMap.INV_REGION = INV_REGION
+            }
+            stockMap.INV_PERSON = invpersonTV.text.toString()
+            stockMap.INV_DT =  invdtTV.text.toString()
+            stockMap.INV_TM = Utils.timeStr()
+            stockMap.NUM = numTV.text.toString().toInt()
+            stockMap.FRTP_CD = FRTP_CD_CODE
+//            stockMap.PLANT_NM = SET_FRTPCD_CODE
+            stockMap.PLANT_NM = koftrTV.text.toString()
+            if (koftrET.text.toString() != "" && koftrET.text.toString() != null){
+                stockMap.PLANT_NM = koftrET.text.toString()
+            }
+            stockMap.STORUNST_CD = STORUNST_CD_CODE
+            stockMap.FROR_CD = FROR_CD_CODE
+            stockMap.DMCLS_CD = DMCLS_CD_CODE
+            stockMap.AGCLS_CD = AGCLS_CD_CODE
+            stockMap.DNST_CD = DNST_CD_CODE
+            stockMap.HEIGHT = heightET.text.toString()
+            stockMap.LDMARK_STNDA_CD = ""
+            stockMap.MAP_LABEL = map_lableET.text.toString()
+//            stockMap.MAP_LABEL2 = map_lable2ET.text.toString()
+            stockMap.ETC_PCMTT = etcpcmttET.text.toString()
+            stockMap.GPS_LAT = gpslatTV.text.toString().toFloat()
+            stockMap.GPS_LON = gpslonTV.text.toString().toFloat()
+            stockMap.CONF_MOD = "N"
+            stockMap.GEOM = geom
+            Log.d("스톡",stockMap.GEOM.toString())
+            if (stockMap.LANDUSE != null || stockMap.LANDUSE != ""){
+
+            } else {
+                stockMap.LANDUSE = landuse
+            }
+
+            if (chkdata) {
+
+                if(pk != null){
+
+                    val CONF_MOD = confmodTV.text.toString()
+
+                    if(CONF_MOD == "C" || CONF_MOD == "N"){
+                        stockMap.CONF_MOD = "M"
+                    }
+
+
+                    stockMap.MAP_LABEL2 = map_lableET.text.toString()
+
+                    dbManager!!.updatestockmap(stockMap,pk)
+                    dbManager!!.updatecommonstockmap(stockMap,keyId)
+                }
+
+            } else {
+
+                dbManager!!.insertstockmap(stockMap);
+
+            }
+
+            if(intent.getStringExtra("set") != null){
+                var intent = Intent()
+                intent.putExtra("reset", 100)
+
+                setResult(RESULT_OK, intent);
+            }
+
+            deleteBT.visibility = View.GONE
+
+            var intent = Intent()
+            intent.putExtra("export",70)
+            setResult(RESULT_OK, intent)
+
+            clear()
+            chkdata = false
+            pk = null
+        }
+
         deleteBT.setOnClickListener {
             if (pk != null) {
                 val builder = AlertDialog.Builder(context)
@@ -765,103 +869,6 @@ class StockActivity : Activity() {
             }
         }
 
-        addBT.setOnClickListener {
-            var stockMap: StockMap = StockMap(null,null,null,null,null,null,null,null,null,null,
-                    null,null,null,null,null,null,null,null,null,null,null,null,
-                    null,null,null,null,null)
-
-            stockMap.GROP_ID = keyId
-
-            val prj = prjnameET.text.toString()
-            if (prj == prjname){
-                stockMap.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
-            } else {
-                stockMap.PRJ_NAME = prjnameET.text.toString()
-            }
-
-//            stockMap.PRJ_NAME = prjnameET.text.toString()
-//            if (prjnameET.length() > 0){
-//                stockMap.PRJ_NAME = prjnameET.text.toString()
-//            } else {
-//                stockMap.PRJ_NAME = prjname
-//            }
-
-//            stockMap.INV_REGION = invregionTV.text.toString()
-            if (invregionTV.length() > 0){
-                stockMap.INV_REGION = invregionTV.text.toString();
-            } else {
-                stockMap.INV_REGION = INV_REGION
-            }
-            stockMap.INV_PERSON = invpersonTV.text.toString()
-            stockMap.INV_DT =  invdtTV.text.toString()
-            stockMap.INV_TM = Utils.timeStr()
-            stockMap.NUM = numTV.text.toString().toInt()
-            stockMap.FRTP_CD = FRTP_CD_CODE
-//            stockMap.PLANT_NM = SET_FRTPCD_CODE
-            stockMap.PLANT_NM = koftrTV.text.toString()
-            if (koftrET.text.toString() != "" && koftrET.text.toString() != null){
-                stockMap.PLANT_NM = koftrET.text.toString()
-            }
-            stockMap.STORUNST_CD = STORUNST_CD_CODE
-            stockMap.FROR_CD = FROR_CD_CODE
-            stockMap.DMCLS_CD = DMCLS_CD_CODE
-            stockMap.AGCLS_CD = AGCLS_CD_CODE
-            stockMap.DNST_CD = DNST_CD_CODE
-            stockMap.HEIGHT = heightET.text.toString()
-            stockMap.LDMARK_STNDA_CD = ""
-            stockMap.MAP_LABEL = map_lableET.text.toString()
-//            stockMap.MAP_LABEL2 = map_lable2ET.text.toString()
-            stockMap.ETC_PCMTT = etcpcmttET.text.toString()
-            stockMap.GPS_LAT = gpslatTV.text.toString().toFloat()
-            stockMap.GPS_LON = gpslonTV.text.toString().toFloat()
-            stockMap.CONF_MOD = "N"
-            stockMap.GEOM = lat.toString() + " " + log.toString()
-            if (stockMap.LANDUSE != null || stockMap.LANDUSE != ""){
-
-            } else {
-                stockMap.LANDUSE = landuse
-            }
-
-            if (chkdata) {
-
-                if(pk != null){
-
-                    val CONF_MOD = confmodTV.text.toString()
-
-                    if(CONF_MOD == "C" || CONF_MOD == "N"){
-                        stockMap.CONF_MOD = "M"
-                    }
-
-
-                    stockMap.MAP_LABEL2 = map_lableET.text.toString()
-
-                    dbManager!!.updatestockmap(stockMap,pk)
-                    dbManager!!.updatecommonstockmap(stockMap,keyId)
-                }
-
-            } else {
-
-                dbManager!!.insertstockmap(stockMap);
-
-            }
-
-            if(intent.getStringExtra("set") != null){
-                var intent = Intent()
-                intent.putExtra("reset", 100)
-
-                setResult(RESULT_OK, intent);
-            }
-
-            deleteBT.visibility = View.GONE
-
-            var intent = Intent()
-            intent.putExtra("export",70)
-            setResult(RESULT_OK, intent)
-
-            clear()
-            chkdata = false
-            pk = null
-        }
 
     }
 

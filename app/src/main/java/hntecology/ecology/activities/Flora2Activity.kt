@@ -1592,11 +1592,6 @@ class Flora2Activity : Activity() {
                             if (etTRE_BREAET.text.isNotEmpty()) {
                                 toil = etTRE_BREAET.text.toString().toFloat()
                             }
-                            var cove = 0.0F
-
-                            if (etTRE_COVEET.text.isNotEmpty()) {
-                                cove = etTRE_COVEET.text.toString().toFloat()
-                            }
 
                             var under = etTRE_COVEET.text.toString()
                             var waterwidth = 0
@@ -1630,7 +1625,7 @@ class Flora2Activity : Activity() {
                                         TreDatas.get(i).SCIEN = scien
                                         TreDatas.get(i).DBH = dbh
                                         TreDatas.get(i).TOIL = toil
-                                        TreDatas.get(i).UNDER = cove.toString()
+                                        TreDatas.get(i).UNDER = under
                                         TreDatas.get(i).WATERWIDTH = waterwidth
                                         TreDatas.get(i).TYPE = type
                                     }

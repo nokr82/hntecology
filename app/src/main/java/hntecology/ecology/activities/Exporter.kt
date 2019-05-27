@@ -335,7 +335,7 @@ object Exporter {
                         feature.SetField(columnDef.columnName, columnDef.columnValue)
                     }
 
-                    println("-------export${columnDef.columnName} : ${columnDef.columnValue}")
+                    println("-------export잼${columnDef.columnName} : ${columnDef.columnValue}")
                 }
 
                 // create the WKT for the feature using Python string formatting
@@ -378,7 +378,7 @@ object Exporter {
                     } else if (columnDef.columnValue is String) {
                         feature.SetField(columnDef.columnName, columnDef.columnValue)
                     }
-                    println("-------export${columnDef.columnName} : ${columnDef.columnValue}")
+                    println("-------export구${columnDef.columnName} : ${columnDef.columnValue}")
 
                 }
 

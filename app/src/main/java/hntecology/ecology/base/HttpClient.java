@@ -23,7 +23,7 @@ public class HttpClient {
 
     public static void get(String url, Map<String, String> headers, RequestParams params, AsyncHttpResponseHandler responseHandler) {
 
-//         System.out.println("GET : " + Config.url + url + "?" + params);
+         System.out.println("GET : " + Config.url + url + "?" + params);
 
         client.setTimeout(60 * 1000);
 

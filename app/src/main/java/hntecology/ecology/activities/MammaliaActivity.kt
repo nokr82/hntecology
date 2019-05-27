@@ -518,6 +518,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             mammal_attribute.id = keyId + page.toString()
 
             mammal_attribute.GROP_ID = keyId
+            mammal_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr").replace(":","")
+            mammal_attribute.CURRENT_TM = Utils.current_tm()
 
             mammal_attribute.PRJ_NAME = prjnameET.text.toString()
 
@@ -623,7 +625,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         keyId = intent.getStringExtra("GROP_ID")
 
                         mammal_attribute.GROP_ID = keyId
-
+                        mammal_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr").replace(":","")
+                        mammal_attribute.CURRENT_TM = Utils.current_tm()
 
                         val prj = prjnameET.text.toString()
                         if (prj == prjname){
@@ -1200,6 +1203,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             keyId = intent.getStringExtra("GROP_ID")
 
             mammal_attribute.GROP_ID = keyId
+            mammal_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+            mammal_attribute.CURRENT_TM = Utils.current_tm()
 
             val prj = prjnameET.text.toString()
             if (prj == prjname){

@@ -711,7 +711,9 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         keyId = intent.getStringExtra("GROP_ID")
 
                         fish_attribute.GROP_ID = keyId
+                        fish_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
 
+                        fish_attribute.CURRENT_TM = Utils.current_tm()
                         val prj = prjnameET.text.toString()
                         if (prj == prjname){
                             fish_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")

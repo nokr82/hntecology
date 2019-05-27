@@ -348,7 +348,7 @@ class StockActivity : Activity() {
 
             var stockMap: StockMap = StockMap(null,null,null,null,null,null,null,null,null,null,
                     null,null,null,null,null,null,null,null,null,null,null,null,
-                    null,null,null,null,null)
+                    null,null,null,null,null,null,null)
 
             val dataList: Array<String> = arrayOf("*");
 
@@ -552,10 +552,11 @@ class StockActivity : Activity() {
 
                         var stockMap: StockMap = StockMap(null,null,null,null,null,null,null,null,null,null,
                                 null,null,null,null,null,null,null,null,null,null,null,null,
-                                null,null,null,null,null)
+                                null,null,null,null,null,null,null)
 
                         stockMap.GROP_ID = keyId
-
+                        stockMap.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+                        stockMap.CURRENT_TM = Utils.current_tm()
                         val prj = prjnameET.text.toString()
                         if (prj == prjname){
                             stockMap.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
@@ -646,9 +647,11 @@ class StockActivity : Activity() {
         addBT.setOnClickListener {
             var stockMap: StockMap = StockMap(null,null,null,null,null,null,null,null,null,null,
                     null,null,null,null,null,null,null,null,null,null,null,null,
-                    null,null,null,null,null)
+                    null,null,null,null,null,null,null)
 
             stockMap.GROP_ID = keyId
+            stockMap.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+            stockMap.CURRENT_TM = Utils.current_tm()
 
             val prj = prjnameET.text.toString()
             if (prj == prjname){
@@ -752,7 +755,7 @@ class StockActivity : Activity() {
 
                             var stockMap: StockMap = StockMap(null,null,null,null,null,null,null,null,null,null,
                                     null,null,null,null,null,null,null,null,null,null,null,null,
-                                    null,null,null,null,null)
+                                    null,null,null,null,null,null,null)
 
                             if (pk != null) {
 
@@ -1270,7 +1273,7 @@ class StockActivity : Activity() {
     fun null_attribute(): StockMap {
         var reptilia_attribute: StockMap = StockMap(null, null, null, null, null, null, null, null, null
                 , null, null, null, null, null, null, null, null, null, null, null, null
-                , null, null, null, null,null,null)
+                , null, null, null, null,null,null,null,null)
         return reptilia_attribute
     }
 
@@ -1278,7 +1281,7 @@ class StockActivity : Activity() {
         var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                 data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                 , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                , data.getString(22),data.getString(23), data.getString(24), data.getString(25), data.getString(26))
+                , data.getString(22),data.getString(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27), data.getString(28))
         return stockMap
     }
 

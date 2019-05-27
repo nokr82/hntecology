@@ -513,6 +513,8 @@ class ReptiliaActivity : Activity(), OnLocationUpdatedListener {
             reptilia_attribute.id = keyId + page.toString()
 
             reptilia_attribute.GROP_ID = keyId
+            reptilia_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+            reptilia_attribute.CURRENT_TM = Utils.current_tm()
 
             reptilia_attribute.PRJ_NAME = prjnameET.text.toString()
 
@@ -940,7 +942,8 @@ class ReptiliaActivity : Activity(), OnLocationUpdatedListener {
                         keyId = intent.getStringExtra("GROP_ID")
 
                         reptilia_attribute.GROP_ID = keyId
-
+                        reptilia_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+                        reptilia_attribute.CURRENT_TM = Utils.current_tm()
                         val prj = prjnameET.text.toString()
                         if (prj == prjname) {
                             reptilia_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
@@ -1193,7 +1196,8 @@ class ReptiliaActivity : Activity(), OnLocationUpdatedListener {
             keyId = intent.getStringExtra("GROP_ID")
 
             reptilia_attribute.GROP_ID = keyId
-
+            reptilia_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+            reptilia_attribute.CURRENT_TM = Utils.current_tm()
             val prj = prjnameET.text.toString()
             if (prj == prjname) {
                 reptilia_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")

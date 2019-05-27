@@ -707,7 +707,8 @@ class ZoobenthosActivity : Activity() {
                         keyId = intent.getStringExtra("GROP_ID")
 
                         zoobenthos_Attribute.GROP_ID = keyId
-
+                        zoobenthos_Attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+                        zoobenthos_Attribute.CURRENT_TM = Utils.current_tm()
                         val prj = prjnameET.text.toString()
                         if (prj == prjname) {
                             zoobenthos_Attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
@@ -1144,7 +1145,8 @@ class ZoobenthosActivity : Activity() {
             keyId = intent.getStringExtra("GROP_ID")
 
             zoobenthos_Attribute.GROP_ID = keyId
-
+            zoobenthos_Attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+            zoobenthos_Attribute.CURRENT_TM = Utils.current_tm()
             val prj = prjnameET.text.toString()
             if (prj == prjname) {
                 zoobenthos_Attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")

@@ -1389,7 +1389,9 @@ class Flora2Activity : Activity() {
                             println("insertkeyid $keyId")
 
                             manyFloraAttribute.GROP_ID = keyId
+                            manyFloraAttribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
 
+                            manyFloraAttribute.CURRENT_TM = Utils.current_tm()
 //                            manyFloraAttribute.INV_REGION = invregionTV.text.toString()
 
 
@@ -1817,7 +1819,9 @@ class Flora2Activity : Activity() {
                                 keyId = intent.getStringExtra("GROP_ID")
 
                                 println("insertkeyid $keyId")
+                                manyFloraAttribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
 
+                                manyFloraAttribute.CURRENT_TM = Utils.current_tm()
                                 manyFloraAttribute.GROP_ID = keyId
 
                                 manyFloraAttribute.DOMIN = t_name

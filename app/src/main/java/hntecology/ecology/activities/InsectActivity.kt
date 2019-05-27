@@ -536,6 +536,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             insect_attribute.id = keyId + page.toString()
 
             insect_attribute.GROP_ID = keyId
+            insect_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+            insect_attribute.CURRENT_TM = Utils.current_tm()
 
             insect_attribute.PRJ_NAME = prjnameET.text.toString()
 
@@ -662,6 +664,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                         keyId = intent.getStringExtra("GROP_ID")
 
                         insect_attribute.GROP_ID = keyId
+                        insect_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+                        insect_attribute.CURRENT_TM = Utils.current_tm()
 
                         val prj = prjnameET.text.toString()
                         if (prj == prjname){
@@ -1256,7 +1260,8 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             keyId = intent.getStringExtra("GROP_ID")
 
             insect_attribute.GROP_ID = keyId
-
+            insect_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+            insect_attribute.CURRENT_TM = Utils.current_tm()
 
             val prj = prjnameET.text.toString()
             if (prj == prjname){

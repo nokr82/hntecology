@@ -264,6 +264,8 @@ class WayPointActivity : Activity() {
                         var waypoint: Waypoint = null_attribute()
                         keyId = intent.getStringExtra("GROP_ID")
                         waypoint.GROP_ID = keyId
+                        waypoint.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr").replace(":","")
+                        waypoint.CURRENT_TM = Utils.current_tm()
 //                        waypoint.INV_REGION = invregionTV.text.toString()
                         if (invregionTV.length() > 0) {
                             waypoint.INV_REGION = invregionTV.text.toString();

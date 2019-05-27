@@ -290,7 +290,7 @@ class IntroActivity : Activity() {
         val secretKey = EncUtils.generateKey(wifiManager, "$macAddress:$phrase");
 
 
-        PrefUtils.setPreference(this, "mac_addr", macAddress);
+        PrefUtils.setPreference(this, "mac_addr", macAddress!!.replace(":",""));
 
         var canGo = true;
 

@@ -511,6 +511,9 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
             flora_Attribute.id = keyId + page.toString()
             flora_Attribute.GROP_ID = keyId
 
+            flora_Attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+
+            flora_Attribute.CURRENT_TM = Utils.current_tm()
             flora_Attribute.PRJ_NAME = flora_Attribute.PRJ_NAME
             flora_Attribute.INV_REGION = florainvregionET.text.toString()
 
@@ -628,7 +631,9 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
                         var flora_Attribute = null_attribute()
 
                         keyId = intent.getStringExtra("GROP_ID")
+                        flora_Attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
 
+                        flora_Attribute.CURRENT_TM = Utils.current_tm()
                         flora_Attribute.GROP_ID = keyId
 
                         val prj = prjnameET.text.toString()
@@ -1184,7 +1189,9 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
                 keyId = intent.getStringExtra("GROP_ID")
 
                 flora_Attribute.GROP_ID = keyId
+                flora_Attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
 
+                flora_Attribute.CURRENT_TM = Utils.current_tm()
                 val prj = prjnameET.text.toString()
                 if (prj == prjname) {
                     flora_Attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")

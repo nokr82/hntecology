@@ -6,6 +6,6 @@ class StockMap (
         var id: String? ,  var GROP_ID: String? , var PRJ_NAME: String? , var INV_REGION: String?, var INV_PERSON: String? ,var INV_DT:String? , var INV_TM: String? ,var NUM: Int? , var FRTP_CD: String?
         , var KOFTR_GROUP_CD: String? , var STORUNST_CD: String? , var FROR_CD: String? , var DMCLS_CD: String? , var AGCLS_CD: String? , var DNST_CD: String? , var HEIGHT: String?
         , var LDMARK_STNDA_CD: String? , var MAP_LABEL: String? , var MAP_LABEL2: String? , var ETC_PCMTT: String? , var GPS_LAT: Float? , var GPS_LON: Float?, var CONF_MOD: String?, var LANDUSE:String?
-        ,var GEOM:String?, var PLANT_CD: String? , var PLANT_NM: String?
+        ,var GEOM:String?, var PLANT_CD: String? , var PLANT_NM: String? ,var MAC_ADDR:String?, var CURRENT_TM: String?
 ): Serializable {
 }

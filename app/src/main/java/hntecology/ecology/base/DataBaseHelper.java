@@ -1021,7 +1021,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void insertstockmap(StockMap StockMap){
         String query = "INSERT INTO StockMap";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,NUM,FRTP_CD,KOFTR_GROUP_CD,STORUNST_CD,FROR_CD,DMCLS_CD";
-        query += ",AGCLS_CD,DNST_CD,HEIGHT,LDMARK_STNDA_CD,MAP_LABEL,MAP_LABEL2,ETC_PCMTT,GPS_LAT,GPS_LON,CONF_MOD,LANDUSE,GEOM,PLANT_CD,PLANT_NM)";
+        query += ",AGCLS_CD,DNST_CD,HEIGHT,LDMARK_STNDA_CD,MAP_LABEL,MAP_LABEL2,ETC_PCMTT,GPS_LAT,GPS_LON,CONF_MOD,LANDUSE,GEOM,PLANT_CD,PLANT_NM,MAC_ADDR,CURRENT_TM)";
 
         query += " values (";
         query += " '" + StockMap.getGROP_ID() + "'";
@@ -1050,6 +1050,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + StockMap.getGEOM() + "'";
         query += ", '" + StockMap.getPLANT_CD() + "'";
         query += ", '" + StockMap.getPLANT_NM() + "'";
+        query += ", '" + StockMap.getMAC_ADDR() + "'";
+        query += ", '" + StockMap.getCURRENT_TM() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();

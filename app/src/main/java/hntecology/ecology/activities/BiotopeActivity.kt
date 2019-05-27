@@ -3426,10 +3426,8 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         biotope_attribute.CHECK = checkTV.text.toString()
 
         biotope_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
-        val date = Date()
-        val sdf = SimpleDateFormat("yyyyMMddHHmmSS")
-        val getTime = sdf.format(date)
-        biotope_attribute.CURRENT_TM = getTime.substring(2, 14)
+
+        biotope_attribute.CURRENT_TM = Utils.current_tm()
 
 
         var names = t_name.split("-")
@@ -3645,10 +3643,8 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         biotope_attribute.CHECK = checkTV.text.toString()
 
         biotope_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
-        val date = Date()
-        val sdf = SimpleDateFormat("yyyyMMddHHmmSS")
-        val getTime = sdf.format(date)
-        biotope_attribute.CURRENT_TM = getTime.substring(2, 14)
+
+        biotope_attribute.CURRENT_TM = Utils.current_tm()
 
         if (minET.text.isNotEmpty()) {
             biotope_attribute.TRE_H_N = Utils.getString(minET).toFloat();

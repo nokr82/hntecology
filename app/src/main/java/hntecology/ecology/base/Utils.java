@@ -109,6 +109,14 @@ import javax.crypto.spec.IvParameterSpec;
 public class Utils {
     private static Bitmap noImageBitmap = null;
 
+    public static String current_tm() {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmSS");
+        String getTime = sdf.format(date);
+
+        return getTime.substring(2, 14);
+    }
+
     public static String since(String reg_dt) {
         if (reg_dt == null || reg_dt.trim().length() == 0) {
             return "";

@@ -588,6 +588,10 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         birds_attribute.GROP_ID = keyId
 
+                        birds_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+
+                        birds_attribute.CURRENT_TM = Utils.current_tm()
+
                         val prj = prjnameET.text.toString()
                         if (prj == prjname) {
                             birds_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")

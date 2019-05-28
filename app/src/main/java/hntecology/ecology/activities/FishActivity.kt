@@ -2626,7 +2626,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 hour_s = "0" + hour_s
             }
             val msg = String.format("%s : %s", hour_s, min_s)
-            fishinvdtET.text = msg
+            fishinvtmTV.text = msg
         }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
         dialog.show()
     }

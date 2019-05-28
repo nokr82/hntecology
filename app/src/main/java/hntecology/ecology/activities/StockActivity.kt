@@ -580,7 +580,7 @@ class StockActivity : Activity() {
                         }
                         stockMap.INV_PERSON = invpersonTV.text.toString()
                         stockMap.INV_DT = invdtTV.text.toString()
-                        stockMap.INV_TM = Utils.timeStr()
+                        stockMap.INV_TM = invtmTV.text.toString()
                         stockMap.NUM = numTV.text.toString().toInt()
                         stockMap.FRTP_CD = FRTP_CD_CODE
 //                        stockMap.PLANT_NM = SET_FRTPCD_CODE
@@ -674,7 +674,7 @@ class StockActivity : Activity() {
             }
             stockMap.INV_PERSON = invpersonTV.text.toString()
             stockMap.INV_DT =  invdtTV.text.toString()
-            stockMap.INV_TM = Utils.timeStr()
+            stockMap.INV_TM = invtmTV.text.toString()
             stockMap.NUM = numTV.text.toString().toInt()
             stockMap.FRTP_CD = FRTP_CD_CODE
 //            stockMap.PLANT_NM = SET_FRTPCD_CODE

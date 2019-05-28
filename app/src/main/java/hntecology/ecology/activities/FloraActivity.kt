@@ -2345,7 +2345,7 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
                 hour_s = "0" + hour_s
             }
             val msg = String.format("%s : %s", hour_s, min_s)
-            florainvdvET.text = msg
+            florainvtmET.text = msg
         }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
         dialog.show()
     }

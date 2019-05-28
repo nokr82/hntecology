@@ -357,6 +357,7 @@ class StockActivity : Activity() {
             while (data.moveToNext()) {
 
                 var stockMap = export_attribute(data)
+                invdtTV.text = stockMap.INV_DT
                 invtmTV.text =  stockMap.INV_TM
                 prjnameET.setText(stockMap.PRJ_NAME)
                 if (stockMap.PRJ_NAME != "" || stockMap.PRJ_NAME != null){
@@ -609,7 +610,7 @@ class StockActivity : Activity() {
 
                         }
 
-                        if (chkdata) {
+
 
                             if(pk != null){
 
@@ -624,9 +625,7 @@ class StockActivity : Activity() {
 
                                 dbManager!!.updatestockmap(stockMap,pk)
                                 dbManager!!.updatecommonstockmap(stockMap,keyId)
-                            }
-
-                        } else {
+                            }else{
 
                             dbManager!!.insertstockmap(stockMap);
 
@@ -696,7 +695,7 @@ class StockActivity : Activity() {
             stockMap.GPS_LAT = gpslatTV.text.toString().toFloat()
             stockMap.GPS_LON = gpslonTV.text.toString().toFloat()
             stockMap.CONF_MOD = "N"
-            stockMap.GEOM = geom
+            stockMap.GEOM = lat.toString() + " " + log.toString()
             Log.d("스톡",stockMap.GEOM.toString())
             if (stockMap.LANDUSE != null || stockMap.LANDUSE != ""){
 
@@ -704,7 +703,7 @@ class StockActivity : Activity() {
                 stockMap.LANDUSE = landuse
             }
 
-            if (chkdata) {
+
 
                 if(pk != null){
 
@@ -719,9 +718,7 @@ class StockActivity : Activity() {
 
                     dbManager!!.updatestockmap(stockMap,pk)
                     dbManager!!.updatecommonstockmap(stockMap,keyId)
-                }
-
-            } else {
+                }else {
 
                 dbManager!!.insertstockmap(stockMap);
 

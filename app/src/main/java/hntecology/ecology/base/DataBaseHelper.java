@@ -6,6 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -1019,6 +1020,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     public void insertstockmap(StockMap StockMap){
+        Log.d("추가","추가");
         String query = "INSERT INTO StockMap";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,NUM,FRTP_CD,KOFTR_GROUP_CD,STORUNST_CD,FROR_CD,DMCLS_CD";
         query += ",AGCLS_CD,DNST_CD,HEIGHT,LDMARK_STNDA_CD,MAP_LABEL,MAP_LABEL2,ETC_PCMTT,GPS_LAT,GPS_LON,CONF_MOD,LANDUSE,GEOM,PLANT_CD,PLANT_NM,MAC_ADDR,CURRENT_TM)";

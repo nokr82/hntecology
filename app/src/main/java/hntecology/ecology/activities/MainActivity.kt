@@ -4156,13 +4156,66 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             if (landuse != null && landuse != "") {
                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
                                             }
+                                            if (TRE_H_N == "" || TRE_H_N == null) {
+                                                TRE_H_N = "0"
+                                            }
+                                            if (TRE_H_X == "" || TRE_H_X == null) {
+                                                TRE_H_X = "0"
+                                            }
+                                            if (TRE_BREA_N == "" || TRE_BREA_N == null) {
+                                                TRE_BREA_N = "0"
+                                            }
+                                            if (TRE_BREA_X == "" || TRE_BREA_X == null) {
+                                                TRE_BREA_X = "0"
+                                            }
+                                            if (STRE_H_N == "" || STRE_H_N == null) {
+                                                STRE_H_N = "0"
+                                            }
+                                            if (STRE_H_X == "" || STRE_H_X == null) {
+                                                STRE_H_X = "0"
+                                            }
+                                            if (STRE_BRT_N == "" || STRE_BRT_N == null) {
+                                                STRE_BRT_N = "0"
+                                            }
+                                            if (STRE_BRT_X == "" || STRE_BRT_X == null) {
+                                                STRE_BRT_X = "0"
+                                            }
+                                            if (SHR_HET_N == "" || SHR_HET_N == null) {
+                                                SHR_HET_N = "0"
+                                            }
+                                            if (SHR_HET_X == "" || SHR_HET_X == null) {
+                                                SHR_HET_X = "0"
+                                            }
+                                            if (HER_HET_N == "" || HER_HET_N == null) {
+                                                HER_HET_N = "0"
+                                            }
+                                            if (HER_HET_X == "" || HER_HET_X == null) {
+                                                HER_HET_X = "0"
+                                            }
+                                            if (IMPERV == "" || IMPERV == null) {
+                                                IMPERV = "0"
+                                            }
+                                            if (TRE_NUM == "" || TRE_NUM == null) {
+                                                TRE_NUM = "1"
+                                            }
+                                            if (STRE_NUM == "" || STRE_NUM == null) {
+                                                STRE_NUM = "1"
+                                            }
+                                            if (SHR_NUM == "" || SHR_NUM == null) {
+                                                SHR_NUM = "1"
+                                            }
+                                            if (HER_NUM == "" || HER_NUM == null) {
+                                                HER_NUM = "1"
+                                            }
 
                                             val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), LC_GR_NUM, LC_TY, TY_MARK, GV_RATE.toFloat()
                                                     , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
                                                     STRE_BRT.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                     BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom, UFID, CHECK, TRE_H_N.toFloat(), TRE_H_X.toFloat()
-                                                    , TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat(), STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat(), SHR_HET_N.toFloat(), SHR_HET_X.toFloat()
-                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM, IT_GROP_ID, TRE_NUM.toInt(), STRE_NUM.toInt(), SHR_NUM.toInt(), HER_NUM.toInt())
+                                                    , TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat(), STRE_BRT_N.toFloat()
+                                                    , STRE_BRT_X.toFloat(), SHR_HET_N.toFloat(), SHR_HET_X.toFloat()
+                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat()
+                                                    , DOMIN, MAC_ADDR, CURRENT_TM, IT_GROP_ID, TRE_NUM.toInt(), STRE_NUM.toInt(), SHR_NUM.toInt(), HER_NUM.toInt())
 
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
@@ -6428,6 +6481,188 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         exportManyFloras(leftday, leftreplace, rightday, rightreplace, "time")
 
 //        googleMap.clear()
+    }
+    fun exportStockMap(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String) {
+        Log.d("구냐",leftday)
+        var stokeArray: ArrayList<Exporter.ExportItem> = ArrayList<Exporter.ExportItem>()
+        val dataList: Array<String> = arrayOf("*")
+        var lftday = leftday + lefttime
+        var rgtday = rightday + righttime
+        var data = db!!.query("StockMap", dataList, null, null, null, null, "", null)
+        if (leftday != "") {
+            data = db!!.query("StockMap", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
+        }
+//        var data = db!!.query("StockMap", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
+        var chkData = false
+
+        while (data.moveToNext()) {
+
+            var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                    data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
+                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
+                    , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27), data.getString(28))
+
+            stokemapDatas.add(stockMap)
+
+        }
+        Log.d("임상도", stokemapDatas.toString())
+
+        if (stokemapDatas.size != null) {
+
+            for (i in 0..stokemapDatas.size - 1) {
+
+                val grop_id = stokemapDatas.get(i).GROP_ID
+
+                val stockMap = stokemapDatas.get(i)
+
+                var add = false
+                var idx = 0
+
+                if (polygons.size > 0) {
+
+                    for (j in 0..polygons.size - 1) {
+                        if (polygons.get(j).tag != null) {
+
+                            Log.d("폴리건",polygons.get(j).tag.toString())
+                            val layerInfo = polygons.get(j).tag as LayerInfo
+                            var attrubuteKey = layerInfo.attrubuteKey
+                            Log.d("폴리건",attrubuteKey.toString())
+                            Log.d("폴리건",grop_id.toString())
+                            if (attrubuteKey.equals(grop_id)) {
+                                add = true
+                                idx = j
+                            }
+                        }
+                    }
+                }
+
+                if (leftday != "" && exportType == "all") {
+                    var STOKEMAP: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+
+                    STOKEMAP.add(Exporter.ColumnDef("NUM", ogr.OFTString, stockMap.NUM))
+                    STOKEMAP.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, stockMap.GROP_ID))
+                    STOKEMAP.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, stockMap.PRJ_NAME))
+                    STOKEMAP.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, stockMap.INV_REGION))
+                    STOKEMAP.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, stockMap.INV_PERSON))
+                    STOKEMAP.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, stockMap.INV_DT))
+                    STOKEMAP.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, stockMap.INV_TM))
+                    STOKEMAP.add(Exporter.ColumnDef("FRTP_CD", ogr.OFTString, stockMap.FRTP_CD))
+                    STOKEMAP.add(Exporter.ColumnDef("KOFTR_GROU", ogr.OFTString, stockMap.KOFTR_GROUP_CD.toString()))
+                    STOKEMAP.add(Exporter.ColumnDef("STORUNST", ogr.OFTString, stockMap.STORUNST_CD.toString()))
+                    STOKEMAP.add(Exporter.ColumnDef("FROR_CD", ogr.OFTString, stockMap.FROR_CD))
+                    STOKEMAP.add(Exporter.ColumnDef("DMCLS_CD", ogr.OFTString, stockMap.DMCLS_CD))
+                    STOKEMAP.add(Exporter.ColumnDef("AGCLS_CD", ogr.OFTString, stockMap.AGCLS_CD))
+                    STOKEMAP.add(Exporter.ColumnDef("DNST_CD", ogr.OFTString, stockMap.DNST_CD.toString()))
+                    STOKEMAP.add(Exporter.ColumnDef("HEIGHT", ogr.OFTString, stockMap.HEIGHT))
+                    STOKEMAP.add(Exporter.ColumnDef("LDMARK_STN", ogr.OFTString, stockMap.LDMARK_STNDA_CD.toString()))
+                    STOKEMAP.add(Exporter.ColumnDef("MAP_LABEL", ogr.OFTString, stockMap.MAP_LABEL))
+                    STOKEMAP.add(Exporter.ColumnDef("MAP_LABEL2", ogr.OFTString, stockMap.MAP_LABEL2))
+                    STOKEMAP.add(Exporter.ColumnDef("ETC_PCMTT", ogr.OFTString, stockMap.ETC_PCMTT))
+                    STOKEMAP.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, stockMap.GPS_LAT.toString()))
+                    STOKEMAP.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, stockMap.GPS_LON.toString()))
+                    STOKEMAP.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, stockMap.CONF_MOD))
+                    STOKEMAP.add(Exporter.ColumnDef("LANDUSE", ogr.OFTString, stockMap.LANDUSE))
+                    STOKEMAP.add(Exporter.ColumnDef("GEOM", ogr.OFTString, stockMap.GEOM))
+                    STOKEMAP.add(Exporter.ColumnDef("PLANT_CD", ogr.OFTString, stockMap.PLANT_CD))
+                    STOKEMAP.add(Exporter.ColumnDef("PLANT_NM", ogr.OFTString, stockMap.PLANT_NM))
+                    STOKEMAP.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, stockMap.MAC_ADDR))
+                    STOKEMAP.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, stockMap.CURRENT_TM))
+                    Log.d("임상도", STOKEMAP.toString())
+                    Log.d("임상도2", stockMap.GEOM.toString())
+
+                    var geomsplit = stockMap.GEOM!!.split(",")
+                    var points: ArrayList<LatLng> = ArrayList<LatLng>()
+
+                    val polygonOptions = PolygonOptions()
+                    polygonsetcolor(getColor, polygonOptions)
+                    polygonOptions.strokeWidth(1.0f)
+                    polygonOptions.strokeColor(Color.BLACK)
+
+
+                    for (i in 0 until geomsplit.size - 1) {
+                        var split = geomsplit.get(i).split(" ")
+                        val latlng = LatLng(split.get(1).toDouble(), split.get(0).toDouble())
+                        polygonOptions.add(LatLng(split.get(1).toDouble(), split.get(0).toDouble()))
+                        points.add(latlng)
+                    }
+
+                    var polygon: Polygon = googleMap.addPolygon(polygonOptions)
+                    polygon.zIndex = 1.0f
+
+                    var exporter = Exporter.ExportItem(LAYER_STOCKMAP, STOKEMAP, polygon, points)
+                    polygon.remove()
+
+                    stokeArray.add(exporter)
+
+
+                }
+                else if (leftday == "") {
+                    if (add) {
+                        var STOKEMAP: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
+//                                STOKEMAP.add(Exporter.ColumnDef("ID", ogr.OFTString, stockMap.id))
+                        STOKEMAP.add(Exporter.ColumnDef("NUM", ogr.OFTString, stockMap.NUM))
+                        STOKEMAP.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, stockMap.GROP_ID))
+                        STOKEMAP.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, stockMap.PRJ_NAME))
+                        STOKEMAP.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, stockMap.INV_REGION))
+                        STOKEMAP.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, stockMap.INV_PERSON))
+                        STOKEMAP.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, stockMap.INV_DT))
+                        STOKEMAP.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, stockMap.INV_TM))
+                        STOKEMAP.add(Exporter.ColumnDef("FRTP_CD", ogr.OFTString, stockMap.FRTP_CD))
+                        STOKEMAP.add(Exporter.ColumnDef("KOFTR_GROU", ogr.OFTString, stockMap.KOFTR_GROUP_CD.toString()))
+                        STOKEMAP.add(Exporter.ColumnDef("STORUNST", ogr.OFTString, stockMap.STORUNST_CD.toString()))
+                        STOKEMAP.add(Exporter.ColumnDef("FROR_CD", ogr.OFTString, stockMap.FROR_CD))
+                        STOKEMAP.add(Exporter.ColumnDef("DMCLS_CD", ogr.OFTString, stockMap.DMCLS_CD))
+                        STOKEMAP.add(Exporter.ColumnDef("AGCLS_CD", ogr.OFTString, stockMap.AGCLS_CD))
+                        STOKEMAP.add(Exporter.ColumnDef("DNST_CD", ogr.OFTString, stockMap.DNST_CD.toString()))
+                        STOKEMAP.add(Exporter.ColumnDef("HEIGHT", ogr.OFTString, stockMap.HEIGHT))
+                        STOKEMAP.add(Exporter.ColumnDef("LDMARK_STN", ogr.OFTString, stockMap.LDMARK_STNDA_CD.toString()))
+                        STOKEMAP.add(Exporter.ColumnDef("MAP_LABEL", ogr.OFTString, stockMap.MAP_LABEL))
+                        STOKEMAP.add(Exporter.ColumnDef("MAP_LABEL2", ogr.OFTString, stockMap.MAP_LABEL2))
+                        STOKEMAP.add(Exporter.ColumnDef("ETC_PCMTT", ogr.OFTString, stockMap.ETC_PCMTT))
+                        STOKEMAP.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, stockMap.GPS_LAT.toString()))
+                        STOKEMAP.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, stockMap.GPS_LON.toString()))
+                        STOKEMAP.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, stockMap.CONF_MOD))
+                        STOKEMAP.add(Exporter.ColumnDef("LANDUSE", ogr.OFTString, stockMap.LANDUSE))
+                        STOKEMAP.add(Exporter.ColumnDef("PLANT_CD", ogr.OFTString, stockMap.PLANT_CD))
+                        STOKEMAP.add(Exporter.ColumnDef("PLANT_NM", ogr.OFTString, stockMap.PLANT_NM))
+                        STOKEMAP.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, stockMap.MAC_ADDR))
+                        STOKEMAP.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, stockMap.CURRENT_TM))
+                        val exporter = Exporter.ExportItem(LAYER_STOCKMAP, STOKEMAP, polygons.get(idx), ArrayList<LatLng>())
+
+                        stokeArray.add(exporter)
+                    }
+                }
+
+                var leftreplace = lftday.replace(" ", "_")
+                var rightreplace = rgtday.replace(" ", "_")
+                lftday = leftreplace
+                rgtday = rightreplace
+                var u_name = PrefUtils.getStringPreference(context, "name")
+                if (stokeArray != null) {
+                    Exporter.export(stokeArray, lftday, rgtday, u_name)
+                }
+
+                val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap"
+
+                val layerData = db!!.query("layers", dataList, "file_name = '$file_path'", null, null, null, "", null)
+
+                while (layerData.moveToNext()) {
+                    chkData = true
+                }
+
+                if (chkData) {
+
+                } else {
+                    if (leftday == "") {
+                        dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap", "임상도", "stockmap", "Y", "stockmap")
+                    }
+                }
+
+            }
+            stokemapDatas.clear()
+            data.close()
+        }
+
     }
 
     fun exportBiotope(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String) {
@@ -8715,190 +8950,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
     }
 
-    fun exportStockMap(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String) {
-        var stokeArray: ArrayList<Exporter.ExportItem> = ArrayList<Exporter.ExportItem>()
-        val dataList: Array<String> = arrayOf("*")
-        var lftday = leftday + lefttime
-        var rgtday = rightday + righttime
-        var data = db!!.query("StockMap", dataList, null, null, null, null, "", null)
-        if (leftday != "") {
-            data = db!!.query("StockMap", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
-        }
-//        var data = db!!.query("StockMap", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
-        var chkData = false
-
-        while (data.moveToNext()) {
-
-            var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-                    data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
-                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                    , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27), data.getString(28))
-
-            stokemapDatas.add(stockMap)
-
-        }
-        Log.d("임상도", stokemapDatas.toString())
-
-        if (stokemapDatas.size != null) {
-
-            for (i in 0..stokemapDatas.size - 1) {
-
-                val grop_id = stokemapDatas.get(i).GROP_ID
-
-                val stockMap = stokemapDatas.get(i)
-
-                var add = false
-                var idx = 0
-
-                if (polygons.size > 0) {
-
-                    for (j in 0..polygons.size - 1) {
-                        if (polygons.get(j).tag != null) {
-                            val layerInfo = polygons.get(j).tag as LayerInfo
-
-                            var attrubuteKey = layerInfo.attrubuteKey
-                            if (attrubuteKey.equals(grop_id)) {
-                                add = true
-                                idx = j
-                            }
-                        }
-                    }
-                }
-
-                if (leftday != "" || exportType == "all") {
-                    var STOKEMAP: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
-
-                    STOKEMAP.add(Exporter.ColumnDef("NUM", ogr.OFTString, stockMap.NUM))
-                    STOKEMAP.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, stockMap.GROP_ID))
-                    STOKEMAP.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, stockMap.PRJ_NAME))
-                    STOKEMAP.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, stockMap.INV_REGION))
-                    STOKEMAP.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, stockMap.INV_PERSON))
-                    STOKEMAP.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, stockMap.INV_DT))
-                    STOKEMAP.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, stockMap.INV_TM))
-                    STOKEMAP.add(Exporter.ColumnDef("FRTP_CD", ogr.OFTString, stockMap.FRTP_CD))
-                    STOKEMAP.add(Exporter.ColumnDef("KOFTR_GROU", ogr.OFTString, stockMap.KOFTR_GROUP_CD.toString()))
-                    STOKEMAP.add(Exporter.ColumnDef("STORUNST", ogr.OFTString, stockMap.STORUNST_CD.toString()))
-                    STOKEMAP.add(Exporter.ColumnDef("FROR_CD", ogr.OFTString, stockMap.FROR_CD))
-                    STOKEMAP.add(Exporter.ColumnDef("DMCLS_CD", ogr.OFTString, stockMap.DMCLS_CD))
-                    STOKEMAP.add(Exporter.ColumnDef("AGCLS_CD", ogr.OFTString, stockMap.AGCLS_CD))
-                    STOKEMAP.add(Exporter.ColumnDef("DNST_CD", ogr.OFTString, stockMap.DNST_CD.toString()))
-                    STOKEMAP.add(Exporter.ColumnDef("HEIGHT", ogr.OFTString, stockMap.HEIGHT))
-                    STOKEMAP.add(Exporter.ColumnDef("LDMARK_STN", ogr.OFTString, stockMap.LDMARK_STNDA_CD.toString()))
-                    STOKEMAP.add(Exporter.ColumnDef("MAP_LABEL", ogr.OFTString, stockMap.MAP_LABEL))
-                    STOKEMAP.add(Exporter.ColumnDef("MAP_LABEL2", ogr.OFTString, stockMap.MAP_LABEL2))
-                    STOKEMAP.add(Exporter.ColumnDef("ETC_PCMTT", ogr.OFTString, stockMap.ETC_PCMTT))
-                    STOKEMAP.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, stockMap.GPS_LAT.toString()))
-                    STOKEMAP.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, stockMap.GPS_LON.toString()))
-                    STOKEMAP.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, stockMap.CONF_MOD))
-                    STOKEMAP.add(Exporter.ColumnDef("LANDUSE", ogr.OFTString, stockMap.LANDUSE))
-                    STOKEMAP.add(Exporter.ColumnDef("GEOM", ogr.OFTString, stockMap.GEOM))
-                    STOKEMAP.add(Exporter.ColumnDef("PLANT_CD", ogr.OFTString, stockMap.PLANT_CD))
-                    STOKEMAP.add(Exporter.ColumnDef("PLANT_NM", ogr.OFTString, stockMap.PLANT_NM))
-                    STOKEMAP.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, stockMap.MAC_ADDR))
-                    STOKEMAP.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, stockMap.CURRENT_TM))
-                    Log.d("임상도", STOKEMAP.toString())
-
-                    var geomsplit = stockMap.GEOM!!.split(",")
-                    var points: ArrayList<LatLng> = ArrayList<LatLng>()
-
-                    val polygonOptions = PolygonOptions()
-                    polygonsetcolor(getColor, polygonOptions)
-                    polygonOptions.strokeWidth(1.0f)
-                    polygonOptions.strokeColor(Color.BLACK)
-
-
-                    for (i in 0 until geomsplit.size - 1) {
-                        var split = geomsplit.get(i).split(" ")
-                        val latlng = LatLng(split.get(1).toDouble(), split.get(0).toDouble())
-                        polygonOptions.add(LatLng(split.get(1).toDouble(), split.get(0).toDouble()))
-                        points.add(latlng)
-                    }
-
-                    Log.d("포인트",points.toString())
-
-                    var polygon: Polygon = googleMap.addPolygon(polygonOptions)
-                    polygon.zIndex = 1.0f
-                    if (points.isEmpty()){
-                        var exporter2 = Exporter.ExportItem(LAYER_STOCKMAP, STOKEMAP, polygon,ArrayList<LatLng>())
-                        stokeArray.add(exporter2)
-                    }else{
-                        var exporter = Exporter.ExportItem(LAYER_STOCKMAP, STOKEMAP, polygon, points)
-                        stokeArray.add(exporter)
-                    }
-
-                    polygon.remove()
-
-
-
-                }
-                else if (leftday == "") {
-                    if (add) {
-                        var STOKEMAP: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
-//                                STOKEMAP.add(Exporter.ColumnDef("ID", ogr.OFTString, stockMap.id))
-                        STOKEMAP.add(Exporter.ColumnDef("NUM", ogr.OFTString, stockMap.NUM))
-                        STOKEMAP.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, stockMap.GROP_ID))
-                        STOKEMAP.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, stockMap.PRJ_NAME))
-                        STOKEMAP.add(Exporter.ColumnDef("INV_REGION", ogr.OFTString, stockMap.INV_REGION))
-                        STOKEMAP.add(Exporter.ColumnDef("INV_PERSON", ogr.OFTString, stockMap.INV_PERSON))
-                        STOKEMAP.add(Exporter.ColumnDef("INV_DT", ogr.OFTString, stockMap.INV_DT))
-                        STOKEMAP.add(Exporter.ColumnDef("INV_TM", ogr.OFTString, stockMap.INV_TM))
-                        STOKEMAP.add(Exporter.ColumnDef("FRTP_CD", ogr.OFTString, stockMap.FRTP_CD))
-                        STOKEMAP.add(Exporter.ColumnDef("KOFTR_GROU", ogr.OFTString, stockMap.KOFTR_GROUP_CD.toString()))
-                        STOKEMAP.add(Exporter.ColumnDef("STORUNST", ogr.OFTString, stockMap.STORUNST_CD.toString()))
-                        STOKEMAP.add(Exporter.ColumnDef("FROR_CD", ogr.OFTString, stockMap.FROR_CD))
-                        STOKEMAP.add(Exporter.ColumnDef("DMCLS_CD", ogr.OFTString, stockMap.DMCLS_CD))
-                        STOKEMAP.add(Exporter.ColumnDef("AGCLS_CD", ogr.OFTString, stockMap.AGCLS_CD))
-                        STOKEMAP.add(Exporter.ColumnDef("DNST_CD", ogr.OFTString, stockMap.DNST_CD.toString()))
-                        STOKEMAP.add(Exporter.ColumnDef("HEIGHT", ogr.OFTString, stockMap.HEIGHT))
-                        STOKEMAP.add(Exporter.ColumnDef("LDMARK_STN", ogr.OFTString, stockMap.LDMARK_STNDA_CD.toString()))
-                        STOKEMAP.add(Exporter.ColumnDef("MAP_LABEL", ogr.OFTString, stockMap.MAP_LABEL))
-                        STOKEMAP.add(Exporter.ColumnDef("MAP_LABEL2", ogr.OFTString, stockMap.MAP_LABEL2))
-                        STOKEMAP.add(Exporter.ColumnDef("ETC_PCMTT", ogr.OFTString, stockMap.ETC_PCMTT))
-                        STOKEMAP.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, stockMap.GPS_LAT.toString()))
-                        STOKEMAP.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, stockMap.GPS_LON.toString()))
-                        STOKEMAP.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, stockMap.CONF_MOD))
-                        STOKEMAP.add(Exporter.ColumnDef("LANDUSE", ogr.OFTString, stockMap.LANDUSE))
-                        STOKEMAP.add(Exporter.ColumnDef("PLANT_CD", ogr.OFTString, stockMap.PLANT_CD))
-                        STOKEMAP.add(Exporter.ColumnDef("PLANT_NM", ogr.OFTString, stockMap.PLANT_NM))
-                        STOKEMAP.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, stockMap.MAC_ADDR))
-                        STOKEMAP.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, stockMap.CURRENT_TM))
-                        val exporter = Exporter.ExportItem(LAYER_STOCKMAP, STOKEMAP, polygons.get(idx), ArrayList<LatLng>())
-
-                        stokeArray.add(exporter)
-                    }
-                }
-
-                var leftreplace = lftday.replace(" ", "_")
-                var rightreplace = rgtday.replace(" ", "_")
-                lftday = leftreplace
-                rgtday = rightreplace
-                var u_name = PrefUtils.getStringPreference(context, "name")
-                if (stokeArray != null) {
-                    Exporter.export(stokeArray, lftday, rgtday, u_name)
-                }
-
-                val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap"
-
-                val layerData = db!!.query("layers", dataList, "file_name = '$file_path'", null, null, null, "", null)
-
-                while (layerData.moveToNext()) {
-                    chkData = true
-                }
-
-                if (chkData) {
-
-                } else {
-                    if (leftday == "") {
-                        dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap", "임상도", "stokemap", "Y", "stokemap")
-                    }
-                }
-
-            }
-            stokemapDatas.clear()
-            data.close()
-        }
-
-    }
 
     fun export2() {
 

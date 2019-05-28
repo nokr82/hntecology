@@ -1,10 +1,7 @@
 package hntecology.ecology.activities
 
 import android.Manifest
-import android.app.Activity
-import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.app.ProgressDialog
+import android.app.*
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -162,6 +159,10 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
 
         fishinvtmTV.setText(time)
+
+        fishinvtmTV.setOnClickListener {
+            timedlg()
+        }
 
     /*    var todays = today.split("-")
 
@@ -697,7 +698,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         }
                         river_bed()
 
-                        fish_attribute.INV_DT = Utils.todayStr()
+                        fish_attribute.INV_DT = fishinvdtET.text.toString()
 
                         fish_attribute.INV_TM = fishinvtmTV.text.toString()
 
@@ -1229,7 +1230,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 fish_attribute.INV_REGION = INV_REGION
             }
 
-            fish_attribute.INV_DT = Utils.todayStr()
+            fish_attribute.INV_DT = fishinvdtET.text.toString()
 
             fish_attribute.INV_TM = fishinvtmTV.text.toString()
 
@@ -2613,4 +2614,20 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         return fish_attribute
     }
 
+    fun timedlg() {
+        val cal = Calendar.getInstance()
+        val dialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hour, min ->
+            var hour_s = hour.toString()
+            var min_s = min.toString()
+            if (min_s.length != 2) {
+                min_s = "0" + min_s
+            }
+            if (hour_s.length != 2) {
+                hour_s = "0" + hour_s
+            }
+            val msg = String.format("%s : %s", hour_s, min_s)
+            fishinvdtET.text = msg
+        }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
+        dialog.show()
+    }
 }

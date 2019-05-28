@@ -20,9 +20,10 @@ public class AddressAction {
         RequestParams params = new RequestParams();
         params.put("query", keyword);
         params.put("request", "search");
-        params.put("size", "1000");
+        params.put("size", "30");
         params.put("category", "PARCEL");
         params.put("type", "address");
+        params.put("page", page);
         params.put("key", "366D7FAA-4B63-3ACA-8C05-AAD64D7DD580");
 
 //        HttpClient.get("http://dapi.kakao.com/v2/local/search/keyword.json?query=" + keyword + "&page=" + page + "&size=" + size, headers, params, handler);

@@ -243,7 +243,7 @@ object Exporter {
 
 
         if (leftday != "") {
-            outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + layerName + File.separator + layerName + "_" + leftday + "_" + rightday + ".shp"
+            outPathFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + layerName + File.separator + "export" + File.separator + layerName + "_" + leftday + "_" + rightday + ".shp"
         }
 
 

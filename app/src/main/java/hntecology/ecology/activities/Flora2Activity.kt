@@ -30,6 +30,7 @@ import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
+import au.com.objectix.jgridshift.Util
 import com.joooonho.SelectableRoundedImageView
 import com.nostra13.universalimageloader.core.ImageLoader
 import hntecology.ecology.R
@@ -47,6 +48,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
+import java.lang.NumberFormatException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -1114,7 +1116,7 @@ class Flora2Activity : Activity() {
                 if (etTRE_BREAET.text.isNotEmpty()) {
                     waterwidth = etTRE_WATERWIDTH.text.toString().toInt()
                 }
-                var type = etTRE_TYPE.text.toString()
+                var type = Utils.getString(etTRE_TYPE)
 
                 var tredata = TreeData1(-1, trepage, spec, fami, scien, dbh, toil, under.toString(), waterwidth, type)
 
@@ -1228,7 +1230,7 @@ class Flora2Activity : Activity() {
                     waterwidth = etSTRE_WATERWIDTH.text.toString().toInt()
                 }
 
-                var type = etSTRE_TYPE.text.toString()
+                var type =  Utils.getString(etSTRE_TYPE)
 
                 var stredata = TreeData1(-1, strepage, spec, fami, scien, dbh, toil, under, waterwidth, type)
 
@@ -1597,12 +1599,16 @@ class Flora2Activity : Activity() {
                             manyFloraAttribute.SHR_FAMI = etSHR_FAMIET.text.toString()
                             manyFloraAttribute.SHR_SCIEN = etSHR_SCIENET.text.toString()
 
-                            if (etSTR_COVEET.text.isNotEmpty()) {
+                            if (etSTRE_HET.text.toString().isNotEmpty()) {
                                 manyFloraAttribute.SHR_TOIL = etSTRE_HET.text.toString().toFloat()
+                            }else{
+                                manyFloraAttribute.SHR_TOIL = 0.0f
                             }
 
-                            if (etSTR_COVEET.text.isNotEmpty()) {
+                            if (etSTR_COVEET.text.toString().isNotEmpty()) {
                                 manyFloraAttribute.SHR_WATER = etSTR_COVEET.text.toString().toFloat()
+                            }else{
+                                manyFloraAttribute.SHR_WATER =  0.0f
                             }
 
                             manyFloraAttribute.SHR_UNDER = etSHR_UNDER.text.toString()
@@ -1703,7 +1709,10 @@ class Flora2Activity : Activity() {
                             var toil = 0.0F
 
                             if (etTRE_BREAET.text.isNotEmpty()) {
-                                toil = etTRE_BREAET.text.toString().toFloat()
+                                try {
+                                    toil = etTRE_BREAET.text.toString().toFloat()
+                                } catch (e: NumberFormatException) {
+                                }
                             }
 
                             var under = etTRE_COVEET.text.toString()
@@ -1712,7 +1721,7 @@ class Flora2Activity : Activity() {
                                 waterwidth = etTRE_WATERWIDTH.text.toString().toInt()
                             }
 
-                            var type = etTRE_TYPE.text.toString()
+                            var type =  Utils.getString(etTRE_TYPE)
 
                             println("delete-------------------- $keyId")
                             dbManager!!.deleteAllManyFloraAttribute(keyId)
@@ -1762,10 +1771,10 @@ class Flora2Activity : Activity() {
                             if (etSTRE_BREAET.text.isNotEmpty()) {
                                 strebrea = etSTRE_BREAET.text.toString().toFloat()
                             }
-                            var strecove = 0.0F
+                            var strecove = ""
 
                             if (etSTRE_COVEET.text.isNotEmpty()) {
-                                strecove = etSTRE_COVEET.text.toString().toFloat()
+                                strecove = etSTRE_COVEET.text.toString()
                             }
 
                             var strewatherrwidth = 0
@@ -1796,7 +1805,7 @@ class Flora2Activity : Activity() {
                                         StreDatas.get(i).SCIEN = strescien
                                         StreDatas.get(i).DBH = streh
                                         StreDatas.get(i).TOIL = strebrea
-                                        StreDatas.get(i).UNDER = strecove.toString()
+                                        StreDatas.get(i).UNDER = strecove
                                         StreDatas.get(i).WATERWIDTH = waterwidth
                                         StreDatas.get(i).TYPE = type
 
@@ -1825,9 +1834,9 @@ class Flora2Activity : Activity() {
                                 shrcove = etSTR_COVEET.text.toString().toFloat()
                             }
 
-                            var shretc = 0.0f
+                            var shretc =""
                             if (etSHR_UNDER.text.isNotEmpty()) {
-                                shretc = etSHR_UNDER.text.toString().toFloat()
+                                shretc = etSHR_UNDER.text.toString()
                             }
 
                             for (i in 0 until ShrDatas.size) {
@@ -2591,7 +2600,7 @@ class Flora2Activity : Activity() {
         if (etTRE_BREAET.text.isNotEmpty()) {
             waterwidth = etTRE_WATERWIDTH.text.toString().toInt()
         }
-        var type = etTRE_TYPE.text.toString()
+        var type =  Utils.getString(etTRE_TYPE)
 
         var chkData = false
 
@@ -2834,7 +2843,7 @@ class Flora2Activity : Activity() {
             waterwidth = etSTRE_WATERWIDTH.text.toString().toInt()
         }
 
-        var type = etSTRE_TYPE.text.toString()
+        var type = Utils.getString(etSTRE_TYPE)
 
         var chkData = false
 

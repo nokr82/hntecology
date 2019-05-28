@@ -43,7 +43,6 @@ import io.nlopez.smartlocation.location.providers.LocationManagerProvider
 import kotlinx.android.synthetic.main.activity_birds_ex.*
 import kotlinx.android.synthetic.main.activity_birds_ex.gpslatTV
 import kotlinx.android.synthetic.main.activity_birds_ex.gpslonTV
-import kotlinx.android.synthetic.main.activity_flora2.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -331,6 +330,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 var birds_attribute = ps_birds_attribute(data)
                 invPersonTV.setText(birds_attribute.INV_PERSON)
 
+                invDtTV.text = birds_attribute.INV_DT
                 invRegionET.setText(birds_attribute.INV_REGION)
                 INV_REGION = birds_attribute.INV_REGION.toString()
 
@@ -599,14 +599,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                             birds_attribute.PRJ_NAME = prjnameET.text.toString()
                         }
 
-//                        birds_attribute.PRJ_NAME = prjnameET.text.toString()
-//                        if (prjnameET.length() > 0){
-//                            birds_attribute.PRJ_NAME = prjnameET.text.toString()
-//                        } else {
-//                            birds_attribute.PRJ_NAME = prjname
-//                        }
-
-//                        birds_attribute.INV_REGION = invRegionET.text.toString()
                         if (invRegionET.length() > 0) {
                             birds_attribute.INV_REGION = invRegionET.text.toString();
                         } else {
@@ -614,6 +606,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                         }
 
                         birds_attribute.INV_DT = invDtTV.text.toString()
+                        Log.d("시간",invDtTV.text.toString())
 
                         birds_attribute.NUM = numTV.text.toString().toInt()
 

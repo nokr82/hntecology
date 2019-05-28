@@ -1,10 +1,7 @@
 package hntecology.ecology.activities
 
 import android.Manifest
-import android.app.Activity
-import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.app.ProgressDialog
+import android.app.*
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -140,12 +137,17 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
 
 //        this.setFinishOnTouchOutside(true);
 
+
+
         florainvdvET.setText(Utils.todayStr())
         var time = Utils.timeStr()
         florainvtmET.setText(time)
         var timesplit = time.split(":")
         invtm = timesplit.get(0) + timesplit.get(1)
 
+        florainvtmET.setOnClickListener {
+            timedlg()
+        }
         userName = PrefUtils.getStringPreference(context, "name");
 
         prjnameET.setText(PrefUtils.getStringPreference(context, "prjname"))
@@ -517,7 +519,7 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
             flora_Attribute.PRJ_NAME = flora_Attribute.PRJ_NAME
             flora_Attribute.INV_REGION = florainvregionET.text.toString()
 
-            flora_Attribute.INV_DT = Utils.todayStr()
+            flora_Attribute.INV_DT = florainvdvET.text.toString()
             flora_Attribute.INV_PERSON = florainvperson.text.toString()
 
             flora_Attribute.WEATHER = floraweatherTV.text.toString()
@@ -657,7 +659,7 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
                             flora_Attribute.INV_REGION = INV_REGION
                         }
 
-                        flora_Attribute.INV_DT = Utils.todayStr()
+                        flora_Attribute.INV_DT = florainvdvET.text.toString()
 
                         if (florainvperson.text == null || florainvperson.text.equals("")) {
                             flora_Attribute.INV_PERSON = userName
@@ -1213,7 +1215,7 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
                     flora_Attribute.INV_REGION = INV_REGION
                 }
 
-                flora_Attribute.INV_DT = Utils.todayStr()
+                flora_Attribute.INV_DT =florainvdvET.text.toString()
 
                 if (florainvperson.text == null || florainvperson.text.equals("")) {
                     flora_Attribute.INV_PERSON = userName
@@ -2329,6 +2331,23 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
     private val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
         val msg = String.format("%d-%d-%d", year, monthOfYear + 1, dayOfMonth)
         florainvdvET.text = msg
+    }
+
+    fun timedlg() {
+        val cal = Calendar.getInstance()
+        val dialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hour, min ->
+            var hour_s = hour.toString()
+            var min_s = min.toString()
+            if (min_s.length != 2) {
+                min_s = "0" + min_s
+            }
+            if (hour_s.length != 2) {
+                hour_s = "0" + hour_s
+            }
+            val msg = String.format("%s : %s", hour_s, min_s)
+            florainvdvET.text = msg
+        }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
+        dialog.show()
     }
 }
 

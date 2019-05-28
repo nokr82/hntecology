@@ -754,7 +754,7 @@ class ZoobenthosActivity : Activity() {
                         if (cntET.text.isNotEmpty()) {
                             zoobenthos_Attribute.ZOO_CNT = cntET.text.toString().toInt()
                         }
-                        zoobenthos_Attribute.INV_DT = Utils.todayStr()
+                        zoobenthos_Attribute.INV_DT = invdtTV.text.toString()
                         zoobenthos_Attribute.NUM = numTV.text.toString()
                         zoobenthos_Attribute.INV_TM = timeTV.text.toString()
                         zoobenthos_Attribute.WEATHER = weatherTV.text.toString()
@@ -1191,7 +1191,7 @@ class ZoobenthosActivity : Activity() {
             if (cntET.text.isNotEmpty()) {
                 zoobenthos_Attribute.ZOO_CNT = cntET.text.toString().toInt()
             }
-            zoobenthos_Attribute.INV_DT = Utils.todayStr()
+            zoobenthos_Attribute.INV_DT = invdtTV.text.toString()
             zoobenthos_Attribute.NUM = numTV.text.toString()
             zoobenthos_Attribute.INV_TM = timeTV.text.toString()
             zoobenthos_Attribute.WEATHER = weatherTV.text.toString()

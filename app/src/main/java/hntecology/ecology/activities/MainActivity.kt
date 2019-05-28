@@ -8818,12 +8818,18 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     var polygon: Polygon = googleMap.addPolygon(polygonOptions)
                     polygon.zIndex = 1.0f
-
-                    val exporter = Exporter.ExportItem(LAYER_STOCKMAP, STOKEMAP, polygon, points)
+                    if (points.isEmpty()){
+                        var exporter2 = Exporter.ExportItem(LAYER_STOCKMAP, STOKEMAP, polygon,ArrayList<LatLng>())
+                        stokeArray.add(exporter2)
+                    }else{
+                        var exporter = Exporter.ExportItem(LAYER_STOCKMAP, STOKEMAP, polygon, points)
+                        stokeArray.add(exporter)
+                    }
 
                     polygon.remove()
 
-                    stokeArray.add(exporter)
+
+
                 }
                 else if (leftday == "") {
                     if (add) {

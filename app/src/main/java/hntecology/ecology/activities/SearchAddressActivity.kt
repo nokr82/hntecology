@@ -8,6 +8,7 @@ import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.AbsListView
 import com.loopj.android.http.JsonHttpResponseHandler
 import com.loopj.android.http.RequestParams
 import cz.msebera.android.httpclient.Header
@@ -29,6 +30,9 @@ class SearchAddressActivity : Activity() {
     private var adapterData :ArrayList<JSONObject> = ArrayList<JSONObject>()
 
     private lateinit var addressAdapter: AddressAdapter;
+    var address = ""
+    var page = 1
+    var totalpage = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,68 +59,32 @@ class SearchAddressActivity : Activity() {
 
             finish()
         }
+        var lastitemVisibleFlag = false        //화면에 리스트의 마지막 아이템이 보여지는지 체크
+        listLV.setOnScrollListener(object : AbsListView.OnScrollListener {
+            override fun onScroll(view: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
+                lastitemVisibleFlag = totalItemCount > 0 && firstVisibleItem + visibleItemCount >= totalItemCount
+            }
 
-        /*
-        var intent: Intent = getIntent()
+            override fun onScrollStateChanged(view: AbsListView, scrollState: Int) {
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && lastitemVisibleFlag) {
+                    if (totalpage > page) {
+                        page++
+                        findLocation(address)
+                    }
 
-        // var url = getIntent().getStringExtra("url")
-        // val url = "http://www.juso.go.kr/addrlink/addrCoordUrl.do?confmKey=U01TX0FVVEgyMDE4MTEyOTE1NTkzODEwODMzODg=&returnUrl=http://devstories.com&resultType=4"
-        // val url = "file:///android_asset/juso.html"
-        val url = "http://devstories.com/juso/";
+                }
+            }
 
-        webWV = findViewById(R.id.webviewWV)
+        })
 
-        webWV.settings.javaScriptEnabled = true
-        // webWV.loadUrl(url)
-        // webWV.webViewClient = InterceptingWebViewClient(this, webWV)
-        webWV.webViewClient = WebViewClientClass()
-        webWV.webChromeClient = WebChromeClientClass()
-        webWV.isVerticalScrollBarEnabled = false
-        webWV.isScrollbarFadingEnabled = true
-        webWV.settings.databaseEnabled = true
-        webWV.settings.domStorageEnabled = true
-
-        webWV.loadUrl(url);
-        */
 
         findBtn.setOnClickListener {
-            val address = Utils.getString(addressET)
+             address = Utils.getString(addressET)
             if(address.isEmpty()) {
                 Utils.alert(this, "주소를 입력해주세요.")
                 return@setOnClickListener
             }
             findLocation(address)
-        }
-
-    }
-
-    private class WebChromeClientClass : WebChromeClient() {
-
-    }
-
-
-    private inner class WebViewClientClass : WebViewClient() {
-
-        override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-
-            val url = request.url.toString()
-
-            if (url.startsWith("http://devstories.com/GET_DETAIL")) {
-                val x = Utils.getParameter(url, "x")
-                val y = Utils.getParameter(url, "y")
-
-                intent.putExtra("x", x)
-                intent.putExtra("y", y)
-                setResult(RESULT_OK, intent);
-
-                finish()
-
-                return false
-            }
-
-            return true
-
-
         }
 
     }
@@ -127,7 +95,7 @@ class SearchAddressActivity : Activity() {
 
         println(params)
 
-        AddressAction.search_map(address, 1, 30, object : JsonHttpResponseHandler() {
+        AddressAction.search_map(address, page, 30, object : JsonHttpResponseHandler() {
 
             override fun onSuccess(statusCode: Int, headers: Array<Header>?, response: JSONObject?) {
                 if (progressDialog != null) {
@@ -136,14 +104,16 @@ class SearchAddressActivity : Activity() {
 
                 println(response)
 
-                adapterData.clear()
-
+                if (page==1){
+                    adapterData.clear()
+                }
                 try {
                     if (response!!.getJSONObject("response") != null) {
                         val res = response.getJSONObject("response")
                         val result = res.getJSONObject("result")
                         val items = result.getJSONArray("items")
-
+                        val page = res.getJSONObject("page")
+                        totalpage = Utils.getInt(page,"total")
                         for(idx in 0 until items.length()) {
                             adapterData.add(items.getJSONObject(idx))
                         }

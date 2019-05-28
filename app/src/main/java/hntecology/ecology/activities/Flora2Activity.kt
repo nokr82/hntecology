@@ -1793,7 +1793,7 @@ class Flora2Activity : Activity() {
 
                             if (streChk == false) {
 
-                                var stredata = TreeData1(-1, strepageTV.text.toString().toInt(), strespec, strefami, strescien, streh, strebrea, strecove.toString(), waterwidth, type)
+                                var stredata = TreeData1(-1, strepageTV.text.toString().toInt(), strespec, strefami, strescien, streh, strebrea, strecove.toString(), waterwidth, stretype)
 
                                 StreDatas.add(stredata)
 

@@ -1,5 +1,6 @@
 package hntecology.ecology.activities
 
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -7,50 +8,47 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.location.Address
 import android.location.Geocoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
+import android.support.v4.content.FileProvider
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
+import com.joooonho.SelectableRoundedImageView
+import com.nostra13.universalimageloader.core.ImageLoader
 import hntecology.ecology.R
+import hntecology.ecology.activities.MainActivity.Companion.REQUEST_ACCESS_COARSE_LOCATION
 import hntecology.ecology.base.DataBaseHelper
+import hntecology.ecology.base.FileFilter
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.*
+import kotlinx.android.synthetic.main.activity_fish.*
 import kotlinx.android.synthetic.main.activity_flora2.*
-import kotlinx.android.synthetic.main.activity_flora2.etHER_COVEET
-import kotlinx.android.synthetic.main.activity_flora2.etHER_FAMIET
-import kotlinx.android.synthetic.main.activity_flora2.etHER_HET
-import kotlinx.android.synthetic.main.activity_flora2.etHER_SCIENET
-import kotlinx.android.synthetic.main.activity_flora2.etHER_SPECET
-import kotlinx.android.synthetic.main.activity_flora2.etSHR_FAMIET
-import kotlinx.android.synthetic.main.activity_flora2.etSHR_HET
-import kotlinx.android.synthetic.main.activity_flora2.etSHR_SCIENET
-import kotlinx.android.synthetic.main.activity_flora2.etSHR_SPECET
-import kotlinx.android.synthetic.main.activity_flora2.etSTRE_BREAET
-import kotlinx.android.synthetic.main.activity_flora2.etSTRE_COVEET
-import kotlinx.android.synthetic.main.activity_flora2.etSTRE_FAMIET
-import kotlinx.android.synthetic.main.activity_flora2.etSTRE_HET
-import kotlinx.android.synthetic.main.activity_flora2.etSTRE_SCIENET
-import kotlinx.android.synthetic.main.activity_flora2.etSTRE_SPECET
-import kotlinx.android.synthetic.main.activity_flora2.etSTR_COVEET
-import kotlinx.android.synthetic.main.activity_flora2.etTRE_BREAET
-import kotlinx.android.synthetic.main.activity_flora2.etTRE_COVEET
-import kotlinx.android.synthetic.main.activity_flora2.etTRE_FAMIET
-import kotlinx.android.synthetic.main.activity_flora2.etTRE_HET
-import kotlinx.android.synthetic.main.activity_flora2.etTRE_SCIENET
-import kotlinx.android.synthetic.main.activity_flora2.etTRE_SPECET
-import kotlinx.android.synthetic.main.activity_flora2.trecloseLL
-import kotlinx.android.synthetic.main.activity_flora2.treleftTV
-import kotlinx.android.synthetic.main.activity_flora2.trepageTV
-import kotlinx.android.synthetic.main.activity_flora2.trerightTV
-import kotlinx.android.synthetic.main.activity_flora2.trerightpageTV
+import kotlinx.android.synthetic.main.activity_flora2.addPicturesLL
+import kotlinx.android.synthetic.main.activity_flora2.btnPIC_FOLDER
+import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
-import java.util.ArrayList
+import java.io.OutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Flora2Activity : Activity() {
 
@@ -66,10 +64,31 @@ class Flora2Activity : Activity() {
     var latitude = 0.0f;
     var longitude = 0.0f;
 
+
+    var cameraPath:String? = null
+    var imageUri: Uri? = null
+
+    private val imgSeq = 0
+
+    var invtm = ""
+
+    private val REQUEST_PERMISSION_CAMERA = 3
+    private val REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 1
+    private val REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 2
+
+    var images_path: ArrayList<String>? = null
+    var images: ArrayList<Bitmap>? = null
+    var images_url: ArrayList<String>? = null
+    var images_url_remove: ArrayList<String>? = null
+    var images_id: ArrayList<Int>? = null
+
     var lat: String = ""
     var log: String = ""
 
     var dataArray: ArrayList<ManyFloraAttribute> = ArrayList<ManyFloraAttribute>()
+
+    private val FROM_CAMERA = 100
+    private val FROM_ALBUM = 101
 
     val SET_DATA2 = 2
     val SET_DATA1 = 1;
@@ -112,6 +131,10 @@ class Flora2Activity : Activity() {
 
         db = dbManager!!.createDataBase();
 
+        images_path = ArrayList();
+        images = ArrayList()
+        images_url = ArrayList()
+
         userName = PrefUtils.getStringPreference(context, "name");
         invpersonTV.setText(userName)
         invdtTV.setText(Utils.todayStr())
@@ -119,6 +142,49 @@ class Flora2Activity : Activity() {
         invdtTV.setOnClickListener {
             datedlg()
         }
+
+
+        btnPIC_FOLDER.setOnClickListener {
+
+            var ListItems: List<String>
+            ListItems = ArrayList();
+            ListItems.add("카메라");
+            ListItems.add("사진");
+            ListItems.add("취소");
+
+            val items = Array<CharSequence>(ListItems.size, { i -> ListItems.get(i) })
+
+            var builder: AlertDialog.Builder = AlertDialog.Builder(this);
+            builder.setTitle("선택해 주세요");
+
+            builder.setItems(items, DialogInterface.OnClickListener { dialogInterface, i ->
+
+                when (i) {
+                    //카메라
+                    0 -> {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                            loadPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE)
+                        } else {
+                            takePhoto()
+                        }
+
+                    }
+                    //갤러리
+                    1 -> {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                            loadPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
+                        } else {
+                            val intent1 = Intent(context, WriteAlbumActivity::class.java)
+                            startActivityForResult(intent1, FROM_ALBUM)
+                        }
+                    }
+                }
+
+            })
+            builder.show();
+
+        }
+
 
 
 
@@ -359,6 +425,51 @@ class Flora2Activity : Activity() {
             for (i in 0..HerDatas.size - 1) {
                 println("HER_NUM ${HerDatas.get(i).PAGE} HER_SPEC ${HerDatas.get(i).FAMI}")
             }
+            val tmpfiles =  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "flora2/images"+ File.separator +keyId+ File.separator)
+            var tmpfileList = tmpfiles.listFiles()
+
+
+            if(tmpfileList != null){
+                for (i in 0..tmpfileList.size - 1) {
+
+                    val options = BitmapFactory.Options()
+                    options.inJustDecodeBounds = true
+                    options.inJustDecodeBounds = false
+                    options.inSampleSize = 1
+                    if (options.outWidth > 96) {
+                        val ws = options.outWidth / 96 + 1
+                        if (ws > options.inSampleSize) {
+                            options.inSampleSize = ws
+                        }
+                    }
+                    if (options.outHeight > 96) {
+                        val hs = options.outHeight / 96 + 1
+                        if (hs > options.inSampleSize) {
+                            options.inSampleSize = hs
+                        }
+                    }
+
+                    images_path!!.add(tmpfileList.get(i).path)
+
+                    for(j in 0..tmpfileList.size - 1) {
+
+                        if (images_path!!.get(i).equals(FileFilter.img(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "flora2/images"+ File.separator +keyId+ File.separator,(j+1).toString()))) {
+                            //                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/fish/images/" + fish_attribute.NUM.toString() +"_"+fish_attribute.INV_TM +"_" + (j+1) + ".png")) {
+                            val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
+                            val v = View.inflate(context, R.layout.item_add_image, null)
+                            val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                            val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+                            imageIV.setImageBitmap(bitmap)
+                            delIV.setTag(i)
+                            images!!.add(bitmap)
+                            if (imgSeq == 0) {
+                                addPicturesLL!!.addView(v)
+                            }
+                        }
+                    }
+                }
+            }
+
             deleteBT.visibility = View.VISIBLE
 
             data.close()
@@ -2265,7 +2376,136 @@ class Flora2Activity : Activity() {
                     etHER_SCIENET.setText(zoological)
 
                 }
+                FROM_CAMERA -> {
 
+                    if (resultCode == -1) {
+
+                        addPicturesLL!!.removeAllViews()
+                        val realPathFromURI = cameraPath!!
+                        images_path!!.add(cameraPath!!)
+                        context.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://$realPathFromURI")))
+                        try {
+                            val add_file = Utils.getImages(context.contentResolver, cameraPath)
+
+                            val v = View.inflate(context, R.layout.item_add_image, null)
+                            val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                            val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+                            imageIV.setImageBitmap(add_file)
+                            delIV.setTag(images!!.size)
+                            images!!.add(add_file)
+
+                            if (imgSeq == 0) {
+                                addPicturesLL!!.addView(v)
+                            }
+
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+
+                        val child = addPicturesLL!!.getChildCount()
+                        for (i in 0 until child) {
+
+                            println("test : $i")
+
+                            val v = addPicturesLL!!.getChildAt(i)
+
+                            var time = ""
+                            time =Utils.timeStr()
+                            var timesplit = time.split(":")
+                            invtm = timesplit.get(0) + timesplit.get(1)
+                            val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "flora2/images"+ File.separator +keyId+ File.separator
+                            val outputsDir = File(outPath)
+
+                            if (outputsDir.exists()) {
+
+                                val files = outputsDir.listFiles()
+                                if (files != null) {
+                                    for (i in files.indices) {
+                                    }
+                                }
+
+                            } else {
+                                val made = outputsDir.mkdirs()
+
+                            }
+                            val date = Date()
+                            val sdf = SimpleDateFormat("yyyyMMdd-HHmmSS")
+
+                            val getTime = sdf.format(date)
+                            var gettimes = getTime.split("-")
+
+                            saveVitmapToFile(images!!.get(i), outPath +getTime.substring(2,8)+"_"+gettimes[1] + "_" + (i + 1) + ".png")
+
+                        }
+
+                        images!!.clear()
+
+
+                    }
+                }
+
+                FROM_ALBUM -> {
+
+                    addPicturesLL!!.removeAllViews()
+                    val result = data!!.getStringArrayExtra("result")
+                    for (i in result.indices) {
+                        val str = result[i]
+                        images_path!!.add(str);
+                    }
+                    for (i in 0 until images_path!!.size){
+                        val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(i))
+                        if (images!!.size == 0) {
+                            images!!.add(add_file)
+                        } else {
+                            try {
+                                images!!.set(images!!.size, add_file)
+                            } catch (e: IndexOutOfBoundsException) {
+                                images!!.add(add_file)
+                            }
+
+                        }
+                        reset(images_path!!.get(i), i)
+                    }
+
+                    val child = addPicturesLL!!.getChildCount()
+                    for (i in 0 until child) {
+
+                        println("test : $i")
+
+                        val v = addPicturesLL!!.getChildAt(i)
+
+                        var time = ""
+                        time = Utils.timeStr()
+                        var timesplit = time.split(":")
+                        invtm = timesplit.get(0) + timesplit.get(1)
+                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "flora2/images"+ File.separator +keyId+ File.separator
+                        val outputsDir = File(outPath)
+
+                        if (outputsDir.exists()) {
+
+                            val files = outputsDir.listFiles()
+                            if (files != null) {
+                                for (i in files.indices) {
+                                }
+                            }
+
+                        } else {
+                            val made = outputsDir.mkdirs()
+
+                        }
+                        val date = Date()
+                        val sdf = SimpleDateFormat("yyyyMMdd-HHmmSS")
+
+                        val getTime = sdf.format(date)
+                        var gettimes = getTime.split("-")
+
+                        saveVitmapToFile(images!!.get(i), outPath +getTime.substring(2,8)+"_"+gettimes[1] + "_" + (i + 1) + ".png")
+
+                    }
+
+                    images!!.clear()
+                }
             }
         }
     }
@@ -3375,6 +3615,163 @@ class Flora2Activity : Activity() {
 
         return manyFloraAttribute
     }
+
+    private fun loadPermissions(perm: String, requestCode: Int) {
+        if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(perm), requestCode)
+        } else {
+            if (Manifest.permission.ACCESS_FINE_LOCATION == perm) {
+                loadPermissions(Manifest.permission.ACCESS_COARSE_LOCATION, REQUEST_ACCESS_COARSE_LOCATION)
+            } else if (Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
+                val intent1 = Intent(context, WriteAlbumActivity::class.java)
+                startActivityForResult(intent1, FROM_ALBUM)
+            } else if (Manifest.permission.WRITE_EXTERNAL_STORAGE == perm) {
+                loadPermissions(Manifest.permission.CAMERA, REQUEST_PERMISSION_CAMERA)
+            } else if (Manifest.permission.CAMERA == perm) {
+                takePhoto()
+            }
+        }
+    }
+    private fun takePhoto() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (intent.resolveActivity(packageManager) != null) {
+
+            val storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+
+            try {
+                val photo = File.createTempFile(
+                        System.currentTimeMillis().toString(), /* prefix */
+                        ".jpg", /* suffix */
+                        storageDir      /* directory */
+                )
+
+                cameraPath = photo.absolutePath
+                //imageUri = Uri.fromFile(photo);
+                imageUri = FileProvider.getUriForFile(context, context.packageName + ".provider", photo)
+
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+                startActivityForResult(intent, FROM_CAMERA)
+
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+        }
+    }
+    fun saveVitmapToFile(bitmap:Bitmap, filePath:String){
+
+        var file = File(filePath)
+        var out: OutputStream? =null
+        try {
+            file.createNewFile()
+            out = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
+
+        }catch (e:Exception){
+
+            e.printStackTrace()
+        }finally {
+
+            out!!.close()
+        }
+
+    }
+    fun reset(str: String, i: Int) {
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+        BitmapFactory.decodeFile(str, options)
+        options.inJustDecodeBounds = false
+        options.inSampleSize = 1
+        if (options.outWidth > 96) {
+            val ws = options.outWidth / 96 + 1
+            if (ws > options.inSampleSize) {
+                options.inSampleSize = ws
+            }
+        }
+        if (options.outHeight > 96) {
+            val hs = options.outHeight / 96 + 1
+            if (hs > options.inSampleSize) {
+                options.inSampleSize = hs
+            }
+        }
+        val bitmap = BitmapFactory.decodeFile(str, options)
+        val v = View.inflate(context, R.layout.item_add_image, null)
+        val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+        val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+        imageIV.setImageBitmap(bitmap)
+        delIV.tag = i
+
+        if (imgSeq == 0) {
+            addPicturesLL!!.addView(v)
+        }
+    }
+
+    fun clickMethod(v: View) {
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage("삭제하시겠습니까 ? ").setCancelable(false)
+                .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "flora2/images"+ File.separator +keyId+ File.separator
+                    addPicturesLL!!.removeAllViews()
+                    images!!.clear()
+                    val tag = v.tag as Int
+                    Log.d("바바",tag.toString())
+                    Log.d("바바",images_path.toString())
+                    images_path!!.removeAt(tag)
+                    var path = FileFilter.delete_img(outPath,(tag+1).toString())
+                    Log.d("경로",path.toString())
+                    var file = File(path)
+                    file.delete()
+                    val tmpfiles =  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "flora2/images"+ File.separator +keyId+ File.separator)
+                    var tmpfileList = tmpfiles.listFiles()
+
+
+                    if(tmpfileList != null){
+                        for (i in 0..tmpfileList.size - 1) {
+
+                            val options = BitmapFactory.Options()
+                            options.inJustDecodeBounds = true
+                            options.inJustDecodeBounds = false
+                            options.inSampleSize = 1
+                            if (options.outWidth > 96) {
+                                val ws = options.outWidth / 96 + 1
+                                if (ws > options.inSampleSize) {
+                                    options.inSampleSize = ws
+                                }
+                            }
+                            if (options.outHeight > 96) {
+                                val hs = options.outHeight / 96 + 1
+                                if (hs > options.inSampleSize) {
+                                    options.inSampleSize = hs
+                                }
+                            }
+
+                            images_path!!.add(tmpfileList.get(i).path)
+
+                            for(j in 0..tmpfileList.size - 1) {
+
+                                if (images_path!!.get(i).equals(FileFilter.img(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "flora2/images"+ File.separator +keyId+ File.separator,(j+1).toString()))) {
+                                    //                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/fish/images/" + fish_attribute.NUM.toString() +"_"+fish_attribute.INV_TM +"_" + (j+1) + ".png")) {
+                                    val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
+                                    val v = View.inflate(context, R.layout.item_add_image, null)
+                                    val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                                    val delIV = v.findViewById<View>(R.id.delIV) as ImageView
+                                    imageIV.setImageBitmap(bitmap)
+                                    delIV.setTag(i)
+                                    images!!.add(bitmap)
+                                    if (imgSeq == 0) {
+                                        addPicturesLL!!.addView(v)
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                })
+                .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+        val alert = builder.create()
+        alert.show()
+    }
+
 }
 
 

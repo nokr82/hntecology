@@ -1495,6 +1495,58 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:orientation="horizontal"
+
+                >
+                <LinearLayout
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="사진번호"
+                        style="@style/BiotopeTextView"
+                        android:id="@+id/tvPIC_FOLDER_TV1"
+                        />
+
+                    <Button
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:text="추가"
+                        android:id="@+id/btnPIC_FOLDER"
+                        style="@style/dlgcommonButton"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:maxLength="200"
+                    android:id="@+id/etPIC_FOLDERET"
+                    style="@style/BiotopeEditText"
+                    />
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true"
+                    >
+                    <LinearLayout
+                        android:id="@+id/addPicturesLL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+            </LinearLayout>
 
 
             <LinearLayout

@@ -6,6 +6,24 @@ import java.io.File;
 
 
 public class FileFilter {
+    public static String delete_img(String file, String name) {
+        Log.d("파일", file);
+        File testDir = new File(file);
+        String path = null;
+        if (testDir.listFiles()!=null){
+            File[] fileNameList = testDir.listFiles((dir, name1) -> name1.endsWith(name+".png"));
+            for (File curFile : fileNameList) {
+                path = curFile.getPath();
+            }
+        }
+        if (path != null) {
+            return path;
+        } else {
+            return "";
+        }
+    }
+
+
     public static String main(String file, String name) {
         Log.d("파일", file);
         File testDir = new File(file);

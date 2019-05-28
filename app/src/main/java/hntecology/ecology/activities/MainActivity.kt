@@ -9821,7 +9821,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         val biotopePathDir = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope", ""))
         if (!biotopePathDir.exists()) {
             dbManager!!.deletelayers("biotope")
-            dbManager!!.deletebiotope_attribute_all()
+//            dbManager!!.deletebiotope_attribute_all()
         }
 
         val bridsPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "birds", ""))

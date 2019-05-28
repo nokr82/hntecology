@@ -233,8 +233,7 @@ class DlgResearchActivity : Activity() {
 
     fun biotopeSelect(biotopedata:Cursor){
         while (biotopedata.moveToNext()) {
-            var biotope_attribute: Biotope_attribute = Biotope_attribute(biotopedata.getString(0), biotopedata.getString(1), biotopedata.getString(2), biotopedata.getString(3)
-                    , biotopedata.getString(4), biotopedata.getString(5), biotopedata.getString(6), biotopedata.getInt(7),
+            val biotope_attribute = Biotope_attribute(biotopedata.getString(0), biotopedata.getString(1), biotopedata.getString(2), biotopedata.getString(3), biotopedata.getString(4), biotopedata.getString(5), biotopedata.getString(6), biotopedata.getInt(7),
                     biotopedata.getString(8), biotopedata.getFloat(9), biotopedata.getFloat(10), biotopedata.getString(11), biotopedata.getString(12), biotopedata.getString(13), biotopedata.getFloat(14)
                     , biotopedata.getString(15), biotopedata.getString(16), biotopedata.getString(17), biotopedata.getString(18), biotopedata.getString(19), biotopedata.getString(20), biotopedata.getString(21)
                     , biotopedata.getString(22), biotopedata.getString(23), biotopedata.getString(24), biotopedata.getString(25), biotopedata.getFloat(26), biotopedata.getFloat(27), biotopedata.getFloat(28)
@@ -242,9 +241,10 @@ class DlgResearchActivity : Activity() {
                     , biotopedata.getString(36), biotopedata.getString(37), biotopedata.getFloat(38), biotopedata.getFloat(39), biotopedata.getString(40), biotopedata.getString(41), biotopedata.getString(42)
                     , biotopedata.getFloat(43), biotopedata.getFloat(44), biotopedata.getString(45), biotopedata.getString(46), biotopedata.getString(47), biotopedata.getString(48), biotopedata.getDouble(49)
                     , biotopedata.getDouble(50), biotopedata.getString(51), biotopedata.getString(52), biotopedata.getString(53), biotopedata.getString(54), biotopedata.getString(55), biotopedata.getString(56), biotopedata.getString(57)
-                    , biotopedata.getFloat(58), biotopedata.getFloat(59),biotopedata.getFloat(60),biotopedata.getFloat(61),biotopedata.getFloat(62),biotopedata.getFloat(63)
-                    ,biotopedata.getFloat(64),biotopedata.getFloat(65),biotopedata.getFloat(66),biotopedata.getFloat(67),biotopedata.getFloat(68),biotopedata.getFloat(69), biotopedata.getString(70)
-                    ,biotopedata.getFloat(71),biotopedata.getString(73),biotopedata.getString(74),biotopedata.getString(75),biotopedata.getString(76), biotopedata.getInt(77), biotopedata.getInt(78), biotopedata.getInt(79), biotopedata.getInt(80))
+                    , biotopedata.getFloat(58), biotopedata.getFloat(59), biotopedata.getFloat(60), biotopedata.getFloat(61), biotopedata.getFloat(62), biotopedata.getFloat(63)
+                    , biotopedata.getFloat(64), biotopedata.getFloat(65), biotopedata.getFloat(66), biotopedata.getFloat(67), biotopedata.getFloat(68), biotopedata.getFloat(69), biotopedata.getString(70), biotopedata.getFloat(71)
+                    , biotopedata.getString(72), biotopedata.getString(73), biotopedata.getString(74), biotopedata.getString(75), biotopedata.getInt(76), biotopedata.getInt(77), biotopedata.getInt(78), biotopedata.getInt(79)
+            )
             val tmpfiles =  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images"+ File.separator +biotope_attribute.GROP_ID+ File.separator)
             var tmpfileList = tmpfiles.listFiles()
             var PICTURE_YN = "없음"
@@ -359,8 +359,6 @@ class DlgResearchActivity : Activity() {
         while (data.moveToNext()) {
 
             var mammal_attribute:
-
-
                     Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                     data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16), data.getString(17),data.getInt(18), data.getString(19), data.getString(20), data.getString(21)

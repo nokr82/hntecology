@@ -2491,11 +2491,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return num;
     }
-
-    public void updatebiotope_attribute_geom(String GROP_ID , String geom) {
+    public void updatebiotope_attribute_geom2(String GROP_ID , String geom) {
 
         String query = "UPDATE biotopeAttribute SET  " +
                 "GEOM='" + geom + "'"+
+                "where GROP_ID = '" + GROP_ID + "'";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+
+    }
+    public void updatebiotope_attribute_geom(String GROP_ID , String geom,String ufid) {
+
+        String query = "UPDATE biotopeAttribute SET  " +
+                "UFID='" + ufid + "'"+
+                ",GEOM='" + geom + "'"+
                 "where GROP_ID = '" + GROP_ID + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);

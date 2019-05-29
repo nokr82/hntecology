@@ -42,7 +42,7 @@ public class FileFilter {
         File testDir = new File(file);
         String path = null;
         if (testDir.listFiles()!=null){
-            File[] fileNameList = testDir.listFiles((dir, name1) -> name1.endsWith(".shp"));
+            File[] fileNameList = testDir.listFiles((dir, name1) -> name1.endsWith(name+".shp"));
             for (File curFile : fileNameList) {
                 path = curFile.getPath();
             }

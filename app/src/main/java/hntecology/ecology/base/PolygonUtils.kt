@@ -18,11 +18,7 @@ object PolygonUtils {
         // text size in pixels
         paint1.textSize = (14 * scale).roundToInt().toFloat()
         paint1.getTextBounds(label, 0, label.length, bounds1)
-        Log.d("너비",label)
-        Log.d("너비",bounds1.toString())
         val conf = Bitmap.Config.ARGB_8888
-        Log.d("너비2",bounds1.width().toString())
-        Log.d("너비",bounds1.height().toString())
         val bitmap = Bitmap.createBitmap(bounds1.width()+10, bounds1.height()+5, conf)
 
         val x = 0.toFloat()

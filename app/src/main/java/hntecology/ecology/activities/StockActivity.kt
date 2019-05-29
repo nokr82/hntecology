@@ -1262,8 +1262,22 @@ class StockActivity : Activity() {
         DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt()-1, days[2].toInt()).show()
     }
     private val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-        val msg = String.format("%d-%d-%d", year, monthOfYear+1, dayOfMonth)
-        invdtTV.text = msg
+        val msg = String.format("%d-%d-%d", year, monthOfYear + 1, dayOfMonth)
+        var msgs  = msg.split("-")
+        var month = ""
+        var day = ""
+        if (msgs[1].length<2){
+            month = "0"+msgs[1]
+        }else{
+            month = msgs[1]
+        }
+        if (msgs[2].length<2){
+            day = "0"+msgs[2]
+        }else{
+            day = msgs[2]
+        }
+        invdtTV.text = msgs[0]+"-"+month+"-"+day
+
     }
 
 

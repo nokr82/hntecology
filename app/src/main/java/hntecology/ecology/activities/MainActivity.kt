@@ -317,6 +317,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             if (visible_domin == -1) {
                 vegBT.text = "군락명 숨기기"
                 visible_domin = 1
+                for (i in 0 until labelMarkers.size) {
+                    Log.d("마크", labelMarkers[i].toString())
+                    labelMarkers[i].isVisible = true
+                }
             } else {
                 vegBT.text = "군락명 보기"
                 visible_domin = -1
@@ -366,7 +370,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     runOnUiThread(Runnable {
                         for (i in 0..datas.size - 1) {
                             layersDatas.add(datas.get(i))
-                            loadLayer(layersDatas.get(i).file_name, layersDatas.get(i).layer_name, layersDatas.get(i).type, layersDatas.get(i).added)
+                            loadLayer(layersDatas.get(i).file_name, layersDatas.get(i).layer_name, layersDatas.get(i).type, layersDatas.get(i).added, 1)
                         }
                     })
                 }
@@ -380,64 +384,18 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             if (visible_donum == -1) {
                 visibleBT.text = "도형번호 숨기기"
                 visible_donum = 1
+                for (i in 0 until labelMarkers.size) {
+                    Log.d("마크", labelMarkers[i].toString())
+                    labelMarkers[i].isVisible = true
+                }
             } else {
                 visibleBT.text = "도형번호 보기"
                 visible_donum = -1
-            }
-
-            for (point in points) {
-                point.remove()
-            }
-
-            points?.clear()
-            googleMap.clear()
-
-            val dataList: Array<String> = arrayOf("file_name", "layer_name", "min_scale", "max_scale", "type", "added", "grop_id");
-
-            var datas: ArrayList<LayerModel> = ArrayList<LayerModel>()
-
-            val zoom = googleMap.cameraPosition.zoom
-
-            println("zoom ${zoom.toInt()}, layersDatas : ${layersDatas.size}")
-
-            var chkData = false
-
-
-            if (layersDatas != null) {
-
-                for (i in 0..layersDatas.size - 1) {
-
-
-                    var layerdata = db!!.query("layers", dataList, "grop_id = '${layersDatas.get(i).grop_id}' and min_scale <= '${zoom.toInt()}' and max_scale >= '${zoom.toInt() + 1}'", null, null, null, null, null)
-
-                    while (layerdata.moveToNext()) {
-                        chkData = true
-
-                        val layerModel = LayerModel(layerdata.getString(0), layerdata.getString(1), layerdata.getInt(2), layerdata.getInt(3), layerdata.getString(4), layerdata.getString(5), layerdata.getString(6), false);
-
-                        datas.add(layerModel)
-                    }
-
-                    layerdata.close()
+                for (i in 0 until labelMarkers.size) {
+                    Log.d("마크", labelMarkers[i].toString())
+                    labelMarkers[i].isVisible = false
                 }
-
-                if (chkData) {
-                    layersDatas.clear()
-
-                    transparentSB.progress = 255
-
-                    runOnUiThread(Runnable {
-                        for (i in 0..datas.size - 1) {
-                            layersDatas.add(datas.get(i))
-                            loadLayer(layersDatas.get(i).file_name, layersDatas.get(i).layer_name, layersDatas.get(i).type, layersDatas.get(i).added)
-                        }
-                    })
-                }
-
-                datas.clear()
-
             }
-
 
         }
 
@@ -840,7 +798,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             layersDatas.add(datas.get(i))
                             // println(datas.get(i).file_name + ".add")
 //                             println("layersDatas.size ${layersDatas.size}")
-                            loadLayer(layersDatas.get(i).file_name, layersDatas.get(i).layer_name, layersDatas.get(i).type, layersDatas.get(i).added)
+                            loadLayer(layersDatas.get(i).file_name, layersDatas.get(i).layer_name, layersDatas.get(i).type, layersDatas.get(i).added, -1)
                         }
                     })
                 }
@@ -1218,7 +1176,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         if (layerDatas != null) {
             for (i in 0..layerDatas.size - 1) {
                 println("filename ${layerDatas.get(i).layer_name}")
-                loadLayer(layerDatas.get(i).file_name, layerDatas.get(i).layer_name, layerDatas.get(i).type, layerDatas.get(i).added)
+                loadLayer(layerDatas.get(i).file_name, layerDatas.get(i).layer_name, layerDatas.get(i).type, layerDatas.get(i).added, -1)
             }
         }
         data.close()
@@ -1364,7 +1322,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
                             } else {
-                                Log.d("익스2","")
+                                Log.d("익스2", "")
                                 exportBiotope("", "", "", "", "all")
                             }
                         }
@@ -1719,7 +1677,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                                 layerDivision = 8
 
-                                loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name, jsonOb.get(i).type, jsonOb.get(i).added)
+                                loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name, jsonOb.get(i).type, jsonOb.get(i).added, -1)
 
                                 // println("jsonOB . filename ${jsonOb.get(i).file_name}")
                                 layerFileName.add(jsonOb.get(i).file_name)
@@ -1824,6 +1782,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         // 마커클릭 이벤트 처리
         // GoogleMap 에 마커클릭 이벤트 설정 가능.
         googleMap.setOnMarkerClickListener { marker ->
+            if ( marker.tag != null){
 
             var gps_lon: ArrayList<String> = ArrayList<String>()
 
@@ -1849,10 +1808,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             if (!markerRemove) {
 
                 val layerInfo = marker.tag as LayerInfo
-                Log.d("마크", marker.tag.toString())
-                Log.d("마크",layerInfo.toString())
+                Log.d("마크2", marker.tag.toString())
+                Log.d("마크2", layerInfo.toString())
                 var myLayer = layerInfo.layer
-                Log.d("마크",myLayer.toString())
+                Log.d("마크2", myLayer.toString())
                 var attrubuteKey = layerInfo.attrubuteKey
                 var intent: Intent? = null
 
@@ -2455,6 +2414,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 //            } else {
 //                Toast.makeText(context, "17레벨 이상까지 확대해주세요.", Toast.LENGTH_SHORT).show()
 //            }
+
+            }
             false
         }
 
@@ -2671,7 +2632,64 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             if (GPS_LON == "" || GPS_LON == null) {
                                                 GPS_LON = "0"
                                             }
+                                            if (TRE_H_N == "" || TRE_H_N == null) {
+                                                TRE_H_N = "0"
+                                            }
+                                            if (TRE_H_X == "" || TRE_H_X == null) {
+                                                TRE_H_X = "0"
+                                            }
+                                            if (TRE_BREA_N == "" || TRE_BREA_N == null) {
+                                                TRE_BREA_N = "0"
+                                            }
+                                            if (TRE_BREA_N == "" || TRE_BREA_N == null) {
+                                                TRE_BREA_N = "0"
+                                            }
+                                            if (TRE_BREA_X == "" || TRE_BREA_X == null) {
+                                                TRE_BREA_X = "0"
+                                            }
+                                            if (STRE_H_N == "" || STRE_H_N == null) {
+                                                STRE_H_N = "0"
+                                            }
+                                            if (STRE_H_X == "" || STRE_H_X == null) {
+                                                STRE_H_X = "0"
+                                            }
+                                            if (STRE_BRT_N == "" || STRE_BRT_N == null) {
+                                                STRE_BRT_N = "0"
+                                            }
+                                            if (STRE_BRT_X == "" || STRE_BRT_X == null) {
+                                                STRE_BRT_X = "0"
+                                            }
+                                            if (SHR_HET_N == "" || SHR_HET_N == null) {
+                                                SHR_HET_N = "0"
+                                            }
+                                            if (SHR_HET_X == "" || SHR_HET_X == null) {
+                                                SHR_HET_X = "0"
+                                            }
+                                            if (HER_HET_N == "" || HER_HET_N == null) {
+                                                HER_HET_N = "0"
+                                            }
+                                            if (HER_HET_X == "" || HER_HET_X == null) {
+                                                HER_HET_X = "0"
+                                            }
+                                            if (IMPERV == "" || IMPERV == null) {
+                                                IMPERV = "0"
+                                            }
+                                            if (TRE_NUM == "" || TRE_NUM == null) {
+                                                TRE_NUM = "0"
+                                            }
 
+                                            if (STRE_NUM == "" || STRE_NUM == null) {
+                                                STRE_NUM = "0"
+                                            }
+                                            if (SHR_NUM == "" || SHR_NUM == null) {
+                                                SHR_NUM = "0"
+                                            }
+                                            if (HER_NUM == "" || HER_NUM == null) {
+                                                HER_NUM = "0"
+                                            }
+                                            if (landuse != null && landuse != "") {
+                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                            }
                                             val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, LC_TY, TY_MARK, GV_RATE.toFloat()
                                                     , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
                                                     STRE_BRT.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
@@ -2679,9 +2697,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     TRE_H_X.toFloat(), TRE_H_N.toFloat(), TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat(), STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat()
                                                     , SHR_HET_N.toFloat(), SHR_HET_X.toFloat(), HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM, IT_GROP_ID, TRE_NUM.toInt(), STRE_NUM.toInt(), SHR_NUM.toInt(), HER_NUM.toInt())
 
-                                            if (landuse != null && landuse != "") {
-                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
-                                            }
+
 
                                             POLYGONCOLOR.add(LANDUSE)
 
@@ -2755,7 +2771,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
                                                     , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat()
                                                     , polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString(), geom
-                                                    , PLANT_CD, PLANT_NM,MAC_ADDR,CURRENT_TM)
+                                                    , PLANT_CD, PLANT_NM, MAC_ADDR, CURRENT_TM)
 
                                             dbManager!!.insertstockmap(data)
 
@@ -2827,7 +2843,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
                                                     , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString()
-                                                    , geom, PLANT_CD, PLANT_NM,MAC_ADDR,CURRENT_TM)
+                                                    , geom, PLANT_CD, PLANT_NM, MAC_ADDR, CURRENT_TM)
 
                                             dbManager!!.insertstockmap(data)
 
@@ -2893,7 +2909,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
                                                     , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat()
-                                                    , polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString(), geom, PLANT_CD, PLANT_NM,MAC_ADDR,CURRENT_TM)
+                                                    , polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString(), geom, PLANT_CD, PLANT_NM, MAC_ADDR, CURRENT_TM)
 
                                             dbManager!!.insertstockmap(data)
 
@@ -3150,6 +3166,61 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                             if (GPS_LON == "" || GPS_LON == null) {
                                                                 GPS_LON = "0"
                                                             }
+                                                            if (TRE_H_N == "" || TRE_H_N == null) {
+                                                                TRE_H_N = "0"
+                                                            }
+                                                            if (TRE_H_X == "" || TRE_H_X == null) {
+                                                                TRE_H_X = "0"
+                                                            }
+                                                            if (TRE_BREA_N == "" || TRE_BREA_N == null) {
+                                                                TRE_BREA_N = "0"
+                                                            }
+                                                            if (TRE_BREA_N == "" || TRE_BREA_N == null) {
+                                                                TRE_BREA_N = "0"
+                                                            }
+                                                            if (TRE_BREA_X == "" || TRE_BREA_X == null) {
+                                                                TRE_BREA_X = "0"
+                                                            }
+                                                            if (STRE_H_N == "" || STRE_H_N == null) {
+                                                                STRE_H_N = "0"
+                                                            }
+                                                            if (STRE_H_X == "" || STRE_H_X == null) {
+                                                                STRE_H_X = "0"
+                                                            }
+                                                            if (STRE_BRT_N == "" || STRE_BRT_N == null) {
+                                                                STRE_BRT_N = "0"
+                                                            }
+                                                            if (STRE_BRT_X == "" || STRE_BRT_X == null) {
+                                                                STRE_BRT_X = "0"
+                                                            }
+                                                            if (SHR_HET_N == "" || SHR_HET_N == null) {
+                                                                SHR_HET_N = "0"
+                                                            }
+                                                            if (SHR_HET_X == "" || SHR_HET_X == null) {
+                                                                SHR_HET_X = "0"
+                                                            }
+                                                            if (HER_HET_N == "" || HER_HET_N == null) {
+                                                                HER_HET_N = "0"
+                                                            }
+                                                            if (HER_HET_X == "" || HER_HET_X == null) {
+                                                                HER_HET_X = "0"
+                                                            }
+                                                            if (IMPERV == "" || IMPERV == null) {
+                                                                IMPERV = "0"
+                                                            }
+                                                            if (TRE_NUM == "" || TRE_NUM == null) {
+                                                                TRE_NUM = "0"
+                                                            }
+
+                                                            if (STRE_NUM == "" || STRE_NUM == null) {
+                                                                STRE_NUM = "0"
+                                                            }
+                                                            if (SHR_NUM == "" || SHR_NUM == null) {
+                                                                SHR_NUM = "0"
+                                                            }
+                                                            if (HER_NUM == "" || HER_NUM == null) {
+                                                                HER_NUM = "0"
+                                                            }
 
                                                             if (landuse != null && landuse != "") {
                                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
@@ -3245,7 +3316,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
                                                                     , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat()
-                                                                    , CONF_MOD, LANDUSE, geom, PLANT_CD, PLANT_NM,MAC_ADDR,CURRENT_TM)
+                                                                    , CONF_MOD, LANDUSE, geom, PLANT_CD, PLANT_NM, MAC_ADDR, CURRENT_TM)
 
                                                             dbManager!!.insertstockmap(data)
 
@@ -3326,7 +3397,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
                                                                     , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat()
-                                                                    , polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom, PLANT_CD, PLANT_NM,MAC_ADDR,CURRENT_TM)
+                                                                    , polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom, PLANT_CD, PLANT_NM, MAC_ADDR, CURRENT_TM)
 
                                                             dbManager!!.insertstockmap(data)
 
@@ -3400,7 +3471,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
                                                                     , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat()
                                                                     , polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom
-                                                                    , PLANT_CD, PLANT_NM,MAC_ADDR,CURRENT_TM)
+                                                                    , PLANT_CD, PLANT_NM, MAC_ADDR, CURRENT_TM)
 
                                                             dbManager!!.insertstockmap(data)
 
@@ -3699,7 +3770,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 if (biotopedataArray.size >= 1) {
                                     var intent = Intent(this, BiotopeActivity::class.java)
 
-                                    Log.d("비오어레이",biotopedataArray.toString())
+                                    Log.d("비오어레이", biotopedataArray.toString())
                                     if (modichk) {
                                         intent = Intent(this, DlgModiListActivity::class.java)
                                         intent.putExtra("size", biotopedataArray.size)
@@ -3733,31 +3804,31 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                                 }
 
-                            /*    if (biotopedataArray.size > 1) {
-                                    var intent = Intent(this, DlgDataListActivity::class.java)
-                                    Log.d("비오어레이",biotopedataArray.toString())
-                                    if (modichk) {
-                                        intent = Intent(this, DlgModiListActivity::class.java)
-                                        intent.putExtra("size", biotopedataArray.size)
-                                    }
-                                    intent.putExtra("title", "비오톱")
-                                    intent.putExtra("table", "biotopeAttribute")
-                                    intent.putExtra("DlgHeight", 600f);
-                                    intent.putExtra("GROP_ID", attrubuteKey)
-                                    intent.putExtra("polygonid", polygon.id)
-                                    intent!!.putExtra("landuse", polygon.fillColor)
-                                    intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
-                                    intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
-                                    startActivityForResult(intent, BIOTOPE_DATA);
+                                /*    if (biotopedataArray.size > 1) {
+                                        var intent = Intent(this, DlgDataListActivity::class.java)
+                                        Log.d("비오어레이",biotopedataArray.toString())
+                                        if (modichk) {
+                                            intent = Intent(this, DlgModiListActivity::class.java)
+                                            intent.putExtra("size", biotopedataArray.size)
+                                        }
+                                        intent.putExtra("title", "비오톱")
+                                        intent.putExtra("table", "biotopeAttribute")
+                                        intent.putExtra("DlgHeight", 600f);
+                                        intent.putExtra("GROP_ID", attrubuteKey)
+                                        intent.putExtra("polygonid", polygon.id)
+                                        intent!!.putExtra("landuse", polygon.fillColor)
+                                        intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
+                                        intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
+                                        startActivityForResult(intent, BIOTOPE_DATA);
 
-                                    if (latlngs != null) {
-                                        latlngs.clear()
-                                    }
+                                        if (latlngs != null) {
+                                            latlngs.clear()
+                                        }
 
-                                    if (latlngsGPS != null) {
-                                        latlngsGPS.clear()
-                                    }
-                                }*/
+                                        if (latlngsGPS != null) {
+                                            latlngsGPS.clear()
+                                        }
+                                    }*/
 
                                 if (polygons.size == 0) {
                                     polygons.add(polygon)
@@ -3834,7 +3905,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
                                                     , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, ""
                                                     , ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, LANDUSE, geom, PLANT_CD, PLANT_NM
-                                                    ,MAC_ADDR,CURRENT_TM)
+                                                    , MAC_ADDR, CURRENT_TM)
 
                                             intent!!.putExtra("stokedata", data)
                                             intent!!.putExtra("GROP_ID", attrubuteKey.toString())
@@ -4265,28 +4336,28 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                                 }
 
-                           /*     if (biotopedataArray.size > 1) {
-                                    var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
-                                    val intent = Intent(this, DlgDataListActivity::class.java)
-                                    intent.putExtra("title", "비오톱")
-                                    intent.putExtra("table", "biotopeAttribute")
-                                    intent.putExtra("DlgHeight", 600f);
-                                    intent.putExtra("GROP_ID", attrubuteKey)
-                                    intent.putExtra("INV_TM", INV_TM)
-                                    intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
-                                    intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
-                                    intent!!.putExtra("landuse", polygon.fillColor)
-                                    intent.putExtra("polygonid", polygon.id)
-                                    startActivityForResult(intent, BIOTOPE_DATA);
+                                /*     if (biotopedataArray.size > 1) {
+                                         var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                         val intent = Intent(this, DlgDataListActivity::class.java)
+                                         intent.putExtra("title", "비오톱")
+                                         intent.putExtra("table", "biotopeAttribute")
+                                         intent.putExtra("DlgHeight", 600f);
+                                         intent.putExtra("GROP_ID", attrubuteKey)
+                                         intent.putExtra("INV_TM", INV_TM)
+                                         intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
+                                         intent!!.putExtra("longitude", polygon.points.get(0).longitude.toString())
+                                         intent!!.putExtra("landuse", polygon.fillColor)
+                                         intent.putExtra("polygonid", polygon.id)
+                                         startActivityForResult(intent, BIOTOPE_DATA);
 
-                                    if (latlngs != null) {
-                                        latlngs.clear()
-                                    }
+                                         if (latlngs != null) {
+                                             latlngs.clear()
+                                         }
 
-                                    if (latlngsGPS != null) {
-                                        latlngsGPS.clear()
-                                    }
-                                }*/
+                                         if (latlngsGPS != null) {
+                                             latlngsGPS.clear()
+                                         }
+                                     }*/
 
                                 if (polygons.size == 0) {
                                     polygons.add(polygon)
@@ -4359,7 +4430,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
                                                     , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat()
-                                                    , CONF_MOD, LANDUSE, geom, PLANT_CD, PLANT_NM,MAC_ADDR,CURRENT_TM)
+                                                    , CONF_MOD, LANDUSE, geom, PLANT_CD, PLANT_NM, MAC_ADDR, CURRENT_TM)
                                             intent!!.putExtra("EMD_NM", EMD_NM)
                                             intent!!.putExtra("stokedata", data)
                                             intent!!.putExtra("GROP_ID", attrubuteKey.toString())
@@ -4586,7 +4657,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     private var currentLayerName = ""
     private var progressDialogCnt = 0
 
-    private fun loadLayer(fileName: String, layerName: String, Type: String, added: String) {
+    private fun loadLayer(fileName: String, layerName: String, Type: String, added: String, type2: Int) {
 
         if (fileName == null || fileName.length == 0) {
             return
@@ -4605,20 +4676,20 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
 
         val bounds = googleMap.projection.visibleRegion.latLngBounds
-        LoadLayerTask(fileName, Type, added).execute(bounds)
+        LoadLayerTask(fileName, Type, added, type2).execute(bounds)
 //        loadLayerTasks.add(loadLayerTask)
 
     }
 
-    private inner class LoadLayerTask(layerName: String, Type: String, added: String) : AsyncTask<LatLngBounds, Any, Boolean>() {
+    private inner class LoadLayerTask(layerName: String, Type: String, added: String, type2: Int) : AsyncTask<LatLngBounds, Any, Boolean>() {
         var layerName = layerName
 
         var type = Type
-
+        var type2 = type2
         var added = added
 
-        override fun doInBackground(vararg latLngBounds: LatLngBounds): Boolean {
 
+        override fun doInBackground(vararg latLngBounds: LatLngBounds): Boolean {
             val northeast = latLngBounds[0].northeast
             val southwest = latLngBounds[0].southwest
 
@@ -4860,6 +4931,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
             return true
 
+
         }
 
         override fun onProgressUpdate(vararg geoms: Any?) {
@@ -4867,6 +4939,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             val metadataP = geoms[1] as String
             val metadata = JSONObject(metadataP)
 
+            Log.d("메타", metadata.toString())
 
 
             if (geoms[0] is PolygonOptions) {
@@ -4960,19 +5033,15 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 var l_name = ""
                 var domin_name = ""
-                var do_num = ""
-                if (visible_donum != -1) {
-                    do_num = Utils.getString(metadata, "UFID")
+                var domin2_name = ""
+                var do_num = Utils.getString(metadata, "UFID")
+                if (!typeST.isChecked) {
+                    domin_name = Utils.getString(metadata, "DOMIN")
+                } else {
+                    domin_name = Utils.getString(metadata, "KOFTR_GROU")
+//                        domin2_name = Utils.getString(metadata, "PLANT_NM")
                 }
-                if (visible_domin != -1) {
-                    if (!typeST.isChecked) {
-                        domin_name = Utils.getString(metadata, "DOMIN")
-                    } else {
-//                        domin_name = Utils.getString(metadata, "KOFTR_GROU")
-                        domin_name = Utils.getString(metadata, "PLANT_NM")
-                    }
 
-                }
 
                 // label
                 if (do_num == "") {
@@ -6467,7 +6536,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         val leftreplace = lefttime.replace("시", ":00")
         val rightreplace = righttime.replace("시", ":59")
 
-        Log.d("익스","")
+        Log.d("익스", "")
         exportBiotope(leftday, leftreplace, rightday, rightreplace, "time")
         exportStockMap(leftday, leftreplace, rightday, rightreplace, "time")
         exportBirds(leftday, leftreplace, rightday, rightreplace, "time")
@@ -6482,8 +6551,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
 //        googleMap.clear()
     }
+
     fun exportStockMap(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String) {
-        Log.d("구냐",leftday)
+        Log.d("구냐", leftday)
         var stokeArray: ArrayList<Exporter.ExportItem> = ArrayList<Exporter.ExportItem>()
         val dataList: Array<String> = arrayOf("*")
         var lftday = leftday + lefttime
@@ -6523,11 +6593,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     for (j in 0..polygons.size - 1) {
                         if (polygons.get(j).tag != null) {
 
-                            Log.d("폴리건",polygons.get(j).tag.toString())
+                            Log.d("폴리건", polygons.get(j).tag.toString())
                             val layerInfo = polygons.get(j).tag as LayerInfo
                             var attrubuteKey = layerInfo.attrubuteKey
-                            Log.d("폴리건",attrubuteKey.toString())
-                            Log.d("폴리건",grop_id.toString())
+                            Log.d("폴리건", attrubuteKey.toString())
+                            Log.d("폴리건", grop_id.toString())
                             if (attrubuteKey.equals(grop_id)) {
                                 add = true
                                 idx = j
@@ -6595,8 +6665,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     stokeArray.add(exporter)
 
 
-                }
-                else if (leftday == "") {
+                } else if (leftday == "") {
                     if (add) {
                         var STOKEMAP: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 //                                STOKEMAP.add(Exporter.ColumnDef("ID", ogr.OFTString, stockMap.id))
@@ -7366,7 +7435,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
             } else {
                 if (leftday == "") {
-                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "reptilia" , "양서,파충류", "reptilia", "Y", "reptilia")
+                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "reptilia", "양서,파충류", "reptilia", "Y", "reptilia")
                 }
             }
             reptiliaDatas.clear()
@@ -7580,7 +7649,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
             } else {
                 if (leftday == "") {
-                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "mammalia" , "포유류", "mammalia", "Y", "mammalia")
+                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "mammalia", "포유류", "mammalia", "Y", "mammalia")
                 }
             }
             data.close()
@@ -8035,7 +8104,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
             } else {
                 if (leftday == "") {
-                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "insect" , "곤충", "insect", "Y", "insect")
+                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "insect", "곤충", "insect", "Y", "insect")
                     Log.d("개꿀", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString())
                 }
             }
@@ -8490,7 +8559,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
             } else {
                 if (leftday == "") {
-                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "zoobenthos" , "저서무척추동물", "zoobenthos", "Y", "zoobenthos")
+                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "zoobenthos", "저서무척추동물", "zoobenthos", "Y", "zoobenthos")
                 }
             }
 
@@ -8856,7 +8925,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
             } else {
                 if (leftday == "") {
-                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora2" , "식생", "flora2", "Y", "flora2")
+                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora2", "식생", "flora2", "Y", "flora2")
                 }
             }
             data.close()
@@ -9146,11 +9215,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     dbManager!!.updatestockmap_geom(firstLayerInfo.attrubuteKey, geom)
                     exportStockMap("", "", "", "", "all")
                     var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap"
-                    var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap", "임상도", 1, 99, "stokemap", "Y", "stokemap", false)
+                    var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap", "임상도", 1, 99, "stockmap", "Y", "stockmap", false)
                     var division = false
 
                     for (i in 0 until layersDatas.size) {
-                        if (layersDatas.get(i).grop_id == "stokemap") {
+                        if (layersDatas.get(i).grop_id == "stockmap") {
                             division = true
                         }
                     }
@@ -9172,11 +9241,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     if (chkData) {
 
                     } else {
-                        dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" , "임상도", "stokemap", "Y", "stokemap")
+                        dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap", "임상도", "stockmap", "Y", "stockmap")
                     }
                 } else {
                     dbManager!!.updatebiotope_attribute_geom(firstLayerInfo.attrubuteKey, geom)
-                    Log.d("익스9","")
+                    Log.d("익스9", "")
                     exportBiotope("", "", "", "", "all")
 
                     var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope"
@@ -9266,7 +9335,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     }
 
     private fun copyRow(tableName: String, keyId: String, newKeyId: String, po: Polygon) {
-
+        Log.d("분리","")
         println("keyId : $keyId, newKeyId : $newKeyId")
 
         val dbCursor = db!!.query(tableName, null, null, null, null, null, null)
@@ -9288,7 +9357,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         while (data.moveToNext()) {
 
             for (idx in 0..(data.columnCount - 1)) {
-
+        Log.d("분리",data.toString())
                 val columnName = data.getColumnName(idx)
                 if ("id" == columnName) {
                     continue
@@ -9296,7 +9365,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 var value = data.getString(idx)
 
-                // println("value : $value")
+                 println("발류 : $value")
 
                 if ("GROP_ID" == columnName) {
                     value = newKeyId
@@ -9304,6 +9373,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 if ("LANDUSE" == columnName) {
                     value = po.fillColor.toString()
+                }
+
+                if ("UFID" == columnName) {
+                   var u_val = data.getString(idx)
+                    value = u_val.replace(u_val.substring(0,1),"9")
                 }
 
                 values.add("\"$value\"")
@@ -9394,7 +9468,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         } else {
             if (jsonOb != null) {
                 for (i in 0..jsonOb.size - 1) {
-                    loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name, jsonOb.get(i).type, jsonOb.get(i).added)
+                    loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name, jsonOb.get(i).type, jsonOb.get(i).added, -1)
                 }
             }
         }
@@ -9412,7 +9486,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE)
             } else if (android.Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
                 if (layerDivision == 0) {
-                    Log.d("익스7","")
+                    Log.d("익스7", "")
                     exportBiotope("", "", "", "", "all")
                 }
 
@@ -9446,7 +9520,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 if (layerDivision == 8) {
                     for (i in 0..jsonOb.size - 1) {
-                        loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name, jsonOb.get(i).type, jsonOb.get(i).added)
+                        loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name, jsonOb.get(i).type, jsonOb.get(i).added, -1)
                     }
                 }
 
@@ -9627,7 +9701,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             READ_EXTERNAL_STORAGE -> {
                 if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (layerDivision == 0) {
-                        Log.d("익스6","")
+                        Log.d("익스6", "")
                         exportBiotope("", "", "", "", "all")
                     }
 
@@ -9661,7 +9735,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     if (layerDivision == 8) {
                         for (i in 0..jsonOb.size - 1) {
-                            loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name, jsonOb.get(i).type, jsonOb.get(i).added)
+                            loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name, jsonOb.get(i).type, jsonOb.get(i).added, -1)
                         }
                     }
 
@@ -9748,12 +9822,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 copyRow("StockMap", oldAttributeKey, newAttributeKey, po)
                 exportStockMap("", "", "", "", "all")
                 var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap"
-                var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap", "임상도", 1, 99, "stokemap", "Y", "stokemap", false)
+                var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap", "임상도", 1, 99, "stockmap", "Y", "stockmap", false)
 
                 var division = false
 
                 for (i in 0 until layersDatas.size) {
-                    if (layersDatas.get(i).grop_id == "stokemap") {
+                    if (layersDatas.get(i).grop_id == "stockmap") {
                         division = true
                     }
                 }
@@ -9775,11 +9849,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 if (chkData) {
 
                 } else {
-                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" , "임상도", "stokemap", "Y", "stokemap")
+                    dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap", "임상도", "stockmap", "Y", "stockmap")
                 }
             } else {
                 println("-----splitbiotope")
-                Log.d("익스5","")
+                Log.d("익스5", "")
                 copyRow("biotopeAttribute", oldAttributeKey, newAttributeKey, po)
                 exportBiotope("", "", "", "", "all")
                 var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope"
@@ -9821,7 +9895,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         } else {
             deleteRow("biotopeAttribute", oldAttributeKey)
 //            export("2000-01-01", "00시", "2099-01-01", "00시")
-            Log.d("익스3","")
+            Log.d("익스3", "")
             exportBiotope("", "", "", "", "all")
         }
 

@@ -142,6 +142,9 @@ class DlgResearchActivity : Activity() {
             var leftreplace = lefttime.replace("시", ":00")
             var rightreplace = righttime.replace("시", ":59")
 
+
+
+
             var lftday = leftday + leftreplace
             var rgtday = rightday + rightreplace
             var biotopedata = db!!.query("biotopeAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)

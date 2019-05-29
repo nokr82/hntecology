@@ -6,6 +6,19 @@ import java.io.File;
 
 
 public class FileFilter {
+
+    public static void  delete_img2(String file) {
+        File testDir = new File(file);
+        if (testDir.listFiles()!=null){
+            File[] fileNameList = testDir.listFiles((dir, name1) -> name1.endsWith(".png"));
+            for (File curFile : fileNameList) {
+                File path = new File(curFile.getPath());
+                path.delete();
+            }
+        }
+
+    }
+
     public static String delete_img(String file, String name) {
         Log.d("파일", file);
         File testDir = new File(file);
@@ -65,17 +78,34 @@ public class FileFilter {
     public static void delete(String file, String name) {
         Log.d("파일", file);
         File testDir = new File(file);
-
-        if (testDir.listFiles() != null) {
-            File[] fileNameList = testDir.listFiles();
-            if (fileNameList.length > 0) {
-                for (File curFile : fileNameList) {
-                    File path = new File(curFile.getPath());
-                    path.delete();
-                }
+        if (testDir.listFiles()!=null){
+            File[] fileNameList = testDir.listFiles((dir, name1) -> name1.endsWith(name+".shp"));
+            for (File curFile : fileNameList) {
+                File path = new File(curFile.getPath());
+                path.delete();
             }
         }
-
+        if (testDir.listFiles()!=null){
+            File[] fileNameList = testDir.listFiles((dir, name1) -> name1.endsWith(name+".prj"));
+            for (File curFile : fileNameList) {
+                File path = new File(curFile.getPath());
+                path.delete();
+            }
+        }
+        if (testDir.listFiles()!=null){
+            File[] fileNameList = testDir.listFiles((dir, name1) -> name1.endsWith(name+".dbf"));
+            for (File curFile : fileNameList) {
+                File path = new File(curFile.getPath());
+                path.delete();
+            }
+        }
+        if (testDir.listFiles()!=null){
+            File[] fileNameList = testDir.listFiles((dir, name1) -> name1.endsWith(name+".shx"));
+            for (File curFile : fileNameList) {
+                File path = new File(curFile.getPath());
+                path.delete();
+            }
+        }
     }
 
 }

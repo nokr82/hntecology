@@ -1730,6 +1730,7 @@
                                     </LinearLayout>
 
                                     <LinearLayout
+                                        android:id="@+id/shrecloseLL"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentRight="true"
@@ -2019,6 +2020,7 @@
                                     </LinearLayout>
 
                                     <LinearLayout
+                                        android:id="@+id/hercloseLL"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentRight="true"

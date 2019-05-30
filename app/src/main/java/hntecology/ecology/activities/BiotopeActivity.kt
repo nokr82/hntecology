@@ -67,9 +67,11 @@ import kotlinx.android.synthetic.main.activity_biotope_ex.etTRE_FAMIET
 import kotlinx.android.synthetic.main.activity_biotope_ex.etTRE_HET
 import kotlinx.android.synthetic.main.activity_biotope_ex.etTRE_SCIENET
 import kotlinx.android.synthetic.main.activity_biotope_ex.etTRE_SPECET
+import kotlinx.android.synthetic.main.activity_biotope_ex.hercloseLL
 import kotlinx.android.synthetic.main.activity_biotope_ex.herleftTV
 import kotlinx.android.synthetic.main.activity_biotope_ex.herrightTV
 import kotlinx.android.synthetic.main.activity_biotope_ex.herrightpageTV
+import kotlinx.android.synthetic.main.activity_biotope_ex.strecloseLL
 import kotlinx.android.synthetic.main.activity_biotope_ex.streleftTV
 import kotlinx.android.synthetic.main.activity_biotope_ex.strepageTV
 import kotlinx.android.synthetic.main.activity_biotope_ex.strerightTV
@@ -79,6 +81,7 @@ import kotlinx.android.synthetic.main.activity_biotope_ex.treleftTV
 import kotlinx.android.synthetic.main.activity_biotope_ex.trepageTV
 import kotlinx.android.synthetic.main.activity_biotope_ex.trerightTV
 import kotlinx.android.synthetic.main.activity_biotope_ex.trerightpageTV
+import kotlinx.android.synthetic.main.activity_flora2.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -104,6 +107,13 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
     val SET_RATE = 7
     val SET_INPUT = 2007
     val SET_INPUT2 = 2008
+
+    val SET_INPUT3 = 2009
+    val SET_INPUT4 = 2010
+    val SET_INPUT5 = 2011
+    val SET_INPUT6 = 2012
+
+
     var t_name = ""
 
     val SET_DOMIN = 133;
@@ -493,8 +503,236 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
             println("delete-------------------------${StreDatas.size}")
 
         }
+        shrecloseLL.setOnClickListener {
 
+            etSHR_SPECET.visibility = View.VISIBLE
 
+            if (shrpage == 1) {
+                for (i in 0 until ShrDatas.size) {
+                    if (ShrDatas.get(i).PAGE == shrpage) {
+                        val data = ShrDatas.get(i)
+                        ShrDatas.removeAt(i)
+                        break
+                    }
+                }
+
+                var division = false
+
+                for (i in 0 until ShrDatas.size) {
+                    if (ShrDatas.get(i).PAGE!! > 1) {
+                        ShrDatas.get(i).PAGE = ShrDatas.get(i).PAGE!! - 1
+                    }
+                }
+
+                for (i in 0 until ShrDatas.size) {
+                    if (ShrDatas.get(i).PAGE == shrpage) {
+                        etSHR_SPECET.setText(ShrDatas.get(i).SPEC)
+                        etSHR_FAMIET.setText(ShrDatas.get(i).SPEC2)
+                        etSHR_SCIENET.setText(ShrDatas.get(i).SPEC3)
+                        min5ET.setText(ShrDatas.get(i).NS.toString())
+                        etSHR_HET.setText(ShrDatas.get(i).S.toString())
+                        max5ET.setText(ShrDatas.get(i).MS.toString())
+                        etSTR_COVEET.setText(ShrDatas.get(i).PER.toString())
+                        division = true
+                    }
+                }
+                if (division == false) {
+                    clear_shr()
+
+                }
+
+                val page = shrpage
+                var size = shrerightpageTV.text.toString().toInt()
+
+                shrepageTV.setText(page.toString())
+
+                if (size > 1) {
+                    size = size - 1
+                    shrerightpageTV.setText(size.toString())
+                }
+            }
+
+            if (shrpage > 1) {
+                if (shrpage == 2) {
+                    for (i in 0 until ShrDatas.size) {
+                        if (ShrDatas.get(i).PAGE == shrpage) {
+                            val data = ShrDatas.get(i)
+                            ShrDatas.removeAt(i)
+                            break
+                        }
+                    }
+
+                    shrpage = shrpage - 1
+
+                    for (i in 0 until ShrDatas.size) {
+                        if (ShrDatas.get(i).PAGE == shrpage) {
+                            etSHR_SPECET.setText(ShrDatas.get(i).SPEC)
+                            etSHR_FAMIET.setText(ShrDatas.get(i).SPEC2)
+                            etSHR_SCIENET.setText(ShrDatas.get(i).SPEC3)
+                            min5ET.setText(ShrDatas.get(i).NS.toString())
+                            etSHR_HET.setText(ShrDatas.get(i).S.toString())
+                            max5ET.setText(ShrDatas.get(i).MS.toString())
+                            etSTR_COVEET.setText(ShrDatas.get(i).PER.toString())
+                        }
+
+                        if (ShrDatas.get(i).PAGE!! > 1) {
+                            ShrDatas.get(i).PAGE = ShrDatas.get(i).PAGE!! - 1
+                        }
+                    }
+
+                } else if (shrpage > 2) {
+                    for (i in 0 until ShrDatas.size) {
+                        if (ShrDatas.get(i).PAGE == shrpage) {
+                            val data = ShrDatas.get(i)
+                            ShrDatas.removeAt(i)
+                            break
+                        }
+                    }
+
+                    shrpage = shrpage - 1
+
+                    for (i in 0 until ShrDatas.size) {
+                        if (ShrDatas.get(i).PAGE == shrpage) {
+                            etSHR_SPECET.setText(ShrDatas.get(i).SPEC)
+                            etSHR_FAMIET.setText(ShrDatas.get(i).SPEC2)
+                            etSHR_SCIENET.setText(ShrDatas.get(i).SPEC3)
+                            min5ET.setText(ShrDatas.get(i).NS.toString())
+                            etSHR_HET.setText(ShrDatas.get(i).S.toString())
+                            max5ET.setText(ShrDatas.get(i).MS.toString())
+                            etSTR_COVEET.setText(ShrDatas.get(i).PER.toString())
+                        }
+
+                        if (ShrDatas.get(i).PAGE!! > shrpage) {
+                            ShrDatas.get(i).PAGE = ShrDatas.get(i).PAGE!! - 1
+                        }
+                    }
+                }
+
+                val page = shrpage
+                val size = shrerightpageTV.text.toString().toInt() - 1
+
+                shrepageTV.setText(page.toString())
+                shrerightpageTV.setText(size.toString())
+            }
+
+            println("delete-------------------------${ShrDatas.size}")
+
+        }
+        hercloseLL.setOnClickListener {
+
+            etHER_SPECET.visibility = View.VISIBLE
+
+            if (herpage == 1) {
+                for (i in 0 until HerDatas.size) {
+                    if (HerDatas.get(i).PAGE == herpage) {
+                        val data = HerDatas.get(i)
+                        HerDatas.removeAt(i)
+                        break
+                    }
+                }
+
+                var division = false
+
+                for (i in 0 until HerDatas.size) {
+                    if (HerDatas.get(i).PAGE!! > 1) {
+                        HerDatas.get(i).PAGE = HerDatas.get(i).PAGE!! - 1
+                    }
+                }
+
+                for (i in 0 until HerDatas.size) {
+                    if (HerDatas.get(i).PAGE == herpage) {
+                        etHER_SPECET.setText(HerDatas.get(i).SPEC)
+                        etHER_FAMIET.setText(HerDatas.get(i).SPEC2)
+                        etHER_SCIENET.setText(HerDatas.get(i).SPEC3)
+                        min6ET.setText(HerDatas.get(i).NS.toString())
+                        etHER_HET.setText(HerDatas.get(i).S.toString())
+                        max6ET.setText(HerDatas.get(i).MS.toString())
+                        etHER_COVEET.setText(HerDatas.get(i).PER.toString())
+                        division = true
+                    }
+                }
+                if (division == false) {
+                    clear_shr()
+
+                }
+
+                val page = herpage
+                var size = herrightpageTV.text.toString().toInt()
+
+                herpageTV.setText(page.toString())
+
+                if (size > 1) {
+                    size = size - 1
+                    herrightpageTV.setText(size.toString())
+                }
+            }
+
+            if (herpage > 1) {
+                if (herpage == 2) {
+                    for (i in 0 until HerDatas.size) {
+                        if (HerDatas.get(i).PAGE == shrpage) {
+                            val data = HerDatas.get(i)
+                            HerDatas.removeAt(i)
+                            break
+                        }
+                    }
+
+                    herpage = herpage - 1
+
+                    for (i in 0 until HerDatas.size) {
+                        if (HerDatas.get(i).PAGE == herpage) {
+                            etHER_SPECET.setText(HerDatas.get(i).SPEC)
+                            etHER_FAMIET.setText(HerDatas.get(i).SPEC2)
+                            etHER_SCIENET.setText(HerDatas.get(i).SPEC3)
+                            min6ET.setText(HerDatas.get(i).NS.toString())
+                            etHER_HET.setText(HerDatas.get(i).S.toString())
+                            max6ET.setText(HerDatas.get(i).MS.toString())
+                            etHER_COVEET.setText(HerDatas.get(i).PER.toString())
+                        }
+
+                        if (HerDatas.get(i).PAGE!! > 1) {
+                            HerDatas.get(i).PAGE = HerDatas.get(i).PAGE!! - 1
+                        }
+                    }
+
+                } else if (herpage > 2) {
+                    for (i in 0 until HerDatas.size) {
+                        if (HerDatas.get(i).PAGE == herpage) {
+                            val data = HerDatas.get(i)
+                            HerDatas.removeAt(i)
+                            break
+                        }
+                    }
+
+                    herpage = herpage - 1
+
+                    for (i in 0 until HerDatas.size) {
+                        if (HerDatas.get(i).PAGE == herpage) {
+                            etHER_SPECET.setText(HerDatas.get(i).SPEC)
+                            etHER_FAMIET.setText(HerDatas.get(i).SPEC2)
+                            etHER_SCIENET.setText(HerDatas.get(i).SPEC3)
+                            min6ET.setText(HerDatas.get(i).NS.toString())
+                            etHER_HET.setText(HerDatas.get(i).S.toString())
+                            max6ET.setText(HerDatas.get(i).MS.toString())
+                            etHER_COVEET.setText(HerDatas.get(i).PER.toString())
+                        }
+
+                        if (HerDatas.get(i).PAGE!! > herpage) {
+                            HerDatas.get(i).PAGE = HerDatas.get(i).PAGE!! - 1
+                        }
+                    }
+                }
+
+                val page = herpage
+                val size = herrightpageTV.text.toString().toInt() - 1
+
+                herpageTV.setText(page.toString())
+                herrightpageTV.setText(size.toString())
+            }
+
+            println("delete-------------------------${HerDatas.size}")
+
+        }
 
 
 
@@ -768,7 +1006,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 load_biotope(biotope_attribute)
 
 
-                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + it_index + File.separator)
+                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
                 var tmpfileList = tmpfiles.listFiles()
 
 
@@ -793,18 +1031,19 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                         }
 
                         images_path!!.add(tmpfileList.get(i).path)
-                        println("images_path --- ${tmpfileList.get(i).path}")
-
+                        Log.d("바바33", images_path.toString())
                         for (j in 0..tmpfileList.size - 1) {
-                            println("invtm--------$invtm")
-                            if (images_path!!.get(i).equals(FileFilter.img(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "biotope/images" + File.separator + keyId + it_index + File.separator, (j + 1).toString()))) {
-                                val bitmap = BitmapFactory.decodeFile(tmpfileList.get(j).path, options)
-                                println("이미지$tmpfileList.get(j).path")
+
+
+                            var add_images = tmpfileList.get(j).path.split("/")
+                            if (images_path!!.get(i).equals(FileFilter.img(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator, add_images[add_images.size - 1]))) {
+                                //                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/biotope/images/" + biotope_attribute.NUM.toString() +"_"+biotope_attribute.INV_TM +"_" + (j+1) + ".png")) {
+                                val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
                                 val v = View.inflate(context, R.layout.item_add_image, null)
                                 val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
                                 val delIV = v.findViewById<View>(R.id.delIV) as ImageView
                                 imageIV.setImageBitmap(bitmap)
-                                delIV.setTag(j)
+                                delIV.setTag(i)
                                 images!!.add(bitmap)
                                 if (imgSeq == 0) {
                                     addPicturesLL!!.addView(v)
@@ -812,8 +1051,8 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                             }
                         }
                     }
+                    Log.d("바바33", images_path.toString())
                 }
-
 
             }
 
@@ -4269,13 +4508,31 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
 
                 SET_INPUT -> {
-                    var name = data!!.getStringExtra("name");
-                    dominTV.text = name
-                }
+                var name = data!!.getStringExtra("name");
+                dominTV.text = name
+            }
                 SET_INPUT2 -> {
                     var name = data!!.getStringExtra("name");
                     t_name += name
                     ausTV.text = name + "군락"
+                }
+
+
+                SET_INPUT3 -> {
+                    var name = data!!.getStringExtra("name");
+                    etTRE_SPECET.text = name
+                }
+                SET_INPUT4 -> {
+                    var name = data!!.getStringExtra("name");
+                    etSTRE_SPECET.text = name
+                }
+                SET_INPUT5 -> {
+                    var name = data!!.getStringExtra("name");
+                    etSHR_SPECET.text = name
+                }
+                SET_INPUT6 -> {
+                    var name = data!!.getStringExtra("name");
+                    etHER_SPECET.text = name
                 }
 
                 SET_DATA1 -> {
@@ -4337,8 +4594,8 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
                     etTRE_SPECET.setText(name)
                     if (name == "SP(미동정)") {
-                        etTRE_SPECETLL.visibility = View.VISIBLE
-                        etTRE_SPECET.visibility = View.GONE
+                        val intent = Intent(context, DlgInputActivity::class.java)
+                        startActivityForResult(intent, SET_INPUT3)
                     }
                     etTRE_FAMIET.setText(family_name)
                     etTRE_SCIENET.setText(zoological)
@@ -4353,8 +4610,8 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
                     etSTRE_SPECET.setText(name)
                     if (name == "SP(미동정)") {
-                        etSTRE_SPECETLL.visibility = View.VISIBLE
-                        etSTRE_SPECET.visibility = View.GONE
+                        val intent = Intent(context, DlgInputActivity::class.java)
+                        startActivityForResult(intent, SET_INPUT4)
                     }
                     etSTRE_FAMIET.setText(family_name)
                     etSTRE_SCIENET.setText(zoological)
@@ -4369,8 +4626,8 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
                     etSHR_SPECET.setText(name)
                     if (name == "SP(미동정)") {
-                        etSHR_SPECETLL.visibility = View.VISIBLE
-                        etSHR_SPECET.visibility = View.GONE
+                        val intent = Intent(context, DlgInputActivity::class.java)
+                        startActivityForResult(intent, SET_INPUT5)
                     }
                     etSHR_FAMIET.setText(family_name)
                     etSHR_SCIENET.setText(zoological)
@@ -4385,8 +4642,8 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
                     etHER_SPECET.setText(name)
                     if (name == "SP(미동정)") {
-                        etHER_SPECETLL.visibility = View.VISIBLE
-                        etHER_SPECET.visibility = View.GONE
+                        val intent = Intent(context, DlgInputActivity::class.java)
+                        startActivityForResult(intent, SET_INPUT6)
                     }
                     etHER_FAMIET.setText(family_name)
                     etHER_SCIENET.setText(zoological)
@@ -4447,41 +4704,42 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 FROM_CAMERA -> {
 
                     if (resultCode == -1) {
-
+                        val outPath2 = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId
                         addPicturesLL!!.removeAllViews()
                         val realPathFromURI = cameraPath!!
                         images_path!!.add(cameraPath!!)
                         context!!.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://$realPathFromURI")))
                         try {
-                            val add_file = Utils.getImages(context!!.contentResolver, cameraPath)
 
-                            val v = View.inflate(context, R.layout.item_add_image, null)
-                            val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
-                            val delIV = v.findViewById<View>(R.id.delIV) as ImageView
-                            imageIV.setImageBitmap(add_file)
-                            delIV.setTag(images!!.size)
-                            images!!.add(add_file)
+                            for (i in 0 until images_path!!.size) {
 
-                            if (imgSeq == 0) {
-                                addPicturesLL!!.addView(v)
+                                val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(i))
+                                if (images!!.size == 0) {
+                                    images!!.add(add_file)
+                                } else {
+                                    try {
+                                        images!!.set(images!!.size, add_file)
+                                    } catch (e: IndexOutOfBoundsException) {
+                                        images!!.add(add_file)
+                                    }
+
+                                }
+                                reset(images_path!!.get(i), i)
                             }
-
 
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
-
+                        FileFilter.removeDir(outPath2)
+                        images_path!!.clear()
                         val child = addPicturesLL!!.getChildCount()
                         for (i in 0 until child) {
 
+                            println("test : $i")
+
                             val v = addPicturesLL!!.getChildAt(i)
 
-                            val num = tvINV_IndexTV.text.toString()
-                            var time = ""
-                            time = etINV_TMTV.text.toString()
-                            var timesplit = time.split(":")
-                            invtm = timesplit.get(0) + timesplit.get(1)
-                            val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + it_index + File.separator
+                            val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator
                             val outputsDir = File(outPath)
 
                             if (outputsDir.exists()) {
@@ -4505,20 +4763,30 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                             saveVitmapToFile(images!!.get(i), outPath + getTime.substring(2, 8) + "_" + gettimes[1] + "_" + (i + 1) + ".png")
 
                         }
-                        images!!.clear()
 
+                        images!!.clear()
 
                     }
                 }
 
                 FROM_ALBUM -> {
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator
+                    val outPath2 = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId
+
                     addPicturesLL!!.removeAllViews()
+//                    images_path!!.clear()
+
                     val result = data!!.getStringArrayExtra("result")
+                    Log.d("이미지패스", images_path.toString())
                     for (i in result.indices) {
                         val str = result[i]
                         images_path!!.add(str);
                     }
+                    Log.d("이미지패스2", images_path.toString())
+                    Log.d("이미지패스3", images_path!!.size.toString())
+                    images!!.clear()
                     for (i in 0 until images_path!!.size) {
+
                         val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(i))
                         if (images!!.size == 0) {
                             images!!.add(add_file)
@@ -4532,17 +4800,25 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                         }
                         reset(images_path!!.get(i), i)
                     }
+                    FileFilter.removeDir(outPath2)
+
                     val child = addPicturesLL!!.getChildCount()
+
+                    images_path!!.clear()
+                    println("test : $images")
                     for (i in 0 until child) {
 
-                        val v = addPicturesLL!!.getChildAt(i)
+                        println("test : $i")
+/*
+//                        val v = addPicturesLL!!.getChildAt(i)
 
-                        val num = tvINV_IndexTV.text.toString()
+//                        val num = biotopenumTV.text.toString()
                         var time = ""
-                        time = etINV_TMTV.text.toString()
+                        time = biotopeinvtmTV.text.toString()
                         var timesplit = time.split(":")
                         invtm = timesplit.get(0) + timesplit.get(1)
-                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + it_index + File.separator
+
+
                         val outputsDir = File(outPath)
 
                         if (outputsDir.exists()) {
@@ -4550,6 +4826,8 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                             val files = outputsDir.listFiles()
                             if (files != null) {
                                 for (i in files.indices) {
+                                    println("파이즐"+files[i].toString())
+                                    images_path!!.add(files[i].toString())
                                 }
                             }
 
@@ -4557,18 +4835,25 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                             val made = outputsDir.mkdirs()
 
                         }
+                        */
+
+                        val outputsDir = File(outPath)
+                        if (!outputsDir.exists()) {
+                            outputsDir.mkdirs()
+                        }
+
                         val date = Date()
                         val sdf = SimpleDateFormat("yyyyMMdd-HHmmSS")
 
                         val getTime = sdf.format(date)
                         var gettimes = getTime.split("-")
 
-//                        saveVitmapToFile(images!!.get(i), outPath + num + "_" + invtm + "_" + (i + 1) + ".png")
+                        println("test : $images")
                         saveVitmapToFile(images!!.get(i), outPath + getTime.substring(2, 8) + "_" + gettimes[1] + "_" + (i + 1) + ".png")
 
                     }
-                    images!!.clear()
 
+                    images!!.clear()
                 }
 
             }
@@ -4713,56 +4998,56 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         val builder = AlertDialog.Builder(context)
         builder.setMessage("삭제하시겠습니까 ? ").setCancelable(false)
                 .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + it_index + File.separator
-                    val num = tvINV_IndexTV.text.toString()
-
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator
                     addPicturesLL!!.removeAllViews()
-                    images!!.clear()
                     val tag = v.tag as Int
-                    images_path!!.removeAt(tag)
-                    var file = File(FileFilter.img(outPath, (tag + 1).toString()))
-                    file.delete()
+                    var del_images: ArrayList<String> = ArrayList();
+                    try {
+                        images!!.clear()
+                        del_images = images_path!![tag].split("/") as ArrayList<String>
+                        images_path!!.removeAt(tag)
 
-                    for (k in images_url!!.indices) {
-                        val vv = View.inflate(context, R.layout.item_add_image, null)
-                        val imageIV = vv.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
-                        val delIV = vv.findViewById<View>(R.id.delIV) as ImageView
-                        delIV.visibility = View.GONE
-                        val del2IV = vv.findViewById<View>(R.id.del2IV) as ImageView
-                        del2IV.visibility = View.VISIBLE
-                        del2IV.tag = k
-                        ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
-                        ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
-                        if (imgSeq == 0) {
-                            addPicturesLL!!.addView(vv)
-                        }
+//                    val num = biotopenumTV.text.toString()
+                        var path = FileFilter.delete_img(outPath, del_images[del_images.size - 1])
+                        Log.d("경로", path.toString())
+                        var file = File(path)
+                        file.delete()
+
+                    } catch (e: IndexOutOfBoundsException) {
+
                     }
-                    for (j in images_path!!.indices) {
 
+                    /* for (k in images_url!!.indices) {
+                         val vv = View.inflate(context, R.layout.item_add_image, null)
+                         val imageIV = vv.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                         val delIV = vv.findViewById<View>(R.id.delIV) as ImageView
+                         delIV.visibility = View.GONE
+                         val del2IV = vv.findViewById<View>(R.id.del2IV) as ImageView
+                         del2IV.visibility = View.VISIBLE
+                         del2IV.tag = k
+                         ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
+                         ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
+                         if (imgSeq == 0) {
+                             addPicturesLL!!.addView(vv)
+                         }
+                     }*/
+                    for (j in images_path!!.indices) {
                         val paths = images_path!!.get(j).split("/")
                         val file_name = paths.get(paths.size - 1)
                         val getPk = file_name.split("_")
-
                         if (getPk.size > 2) {
-                            val pathPk = getPk.get(0)
-                            println("getPk {$getPk}")
-                            val pathPk2 = getPk.get(1)
-                            val num = tvINV_IndexTV.text.toString()
-
-                            if (pathPk == num && pathPk2 == invtm) {
-                                val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
-                                if (images!!.size == 0) {
+                            val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
+                            if (images!!.size == 0) {
+                                images!!.add(add_file)
+                            } else {
+                                try {
+                                    images!!.set(images!!.size, add_file)
+                                } catch (e: IndexOutOfBoundsException) {
                                     images!!.add(add_file)
-                                } else {
-                                    try {
-                                        images!!.set(images!!.size, add_file)
-                                    } catch (e: IndexOutOfBoundsException) {
-                                        images!!.add(add_file)
-                                    }
-
                                 }
-                                reset(images_path!!.get(j), j)
+
                             }
+                            reset(images_path!!.get(j), j)
                         } else {
                             val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
                             if (images!!.size == 0) {
@@ -4778,7 +5063,6 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                             reset(images_path!!.get(j), j)
                         }
                     }
-
                 })
                 .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
         val alert = builder.create()
@@ -4885,7 +5169,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
     }
 
     fun saveVitmapToFile(bitmap: Bitmap, filePath: String) {
-
+        Log.d("파일", filePath.toString())
         var file = File(filePath)
         var out: OutputStream? = null
         try {
@@ -4900,6 +5184,8 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
             out!!.close()
         }
+
+        images_path!!.add(filePath)
 
     }
 

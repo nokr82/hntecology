@@ -20,6 +20,7 @@ import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -41,7 +42,7 @@ import io.nlopez.smartlocation.SmartLocation
 import io.nlopez.smartlocation.location.config.LocationAccuracy
 import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
-import kotlinx.android.synthetic.main.activity_fish.*
+import kotlinx.android.synthetic.main.activity_flora.*
 import kotlinx.android.synthetic.main.activity_flora.*
 import kotlinx.android.synthetic.main.activity_flora.btnPIC_FOLDER
 import kotlinx.android.synthetic.main.activity_flora.confmodTV
@@ -354,41 +355,8 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
 //                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + flora_Attribute.INV_DT + "." + flora_Attribute.INV_TM +"."+flora_Attribute.NUM+ "/images")
 //                val fileList = file.listFiles()
                 val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "flora/images" + File.separator + keyId + File.separator)
-//                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/flora/images/")
                 var tmpfileList = tmpfiles.listFiles()
 
-//                if (fileList != null) {
-//                    for (i in 0..fileList.size - 1) {
-//                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/flora/images/"
-//                        val outputsDir = File(outPath)
-//
-//                        if (outputsDir.exists()) {
-//                            println("Exit : $outPath")
-//
-//                            val files = outputsDir.listFiles()
-//                            if (files != null) {
-//                                for (i in files.indices) {
-//                                    println("f : " + files[i])
-//                                }
-//                            }
-//
-//                        } else {
-//                            val made = outputsDir.mkdirs()
-//
-//                            println("made : $made")
-//                        }
-//
-//                        val tmpfile = fileList.get(i)
-//                        val tmpfile2 = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/flora/images" ,   flora_Attribute.NUM.toString() +"_" + flora_Attribute.INV_TM +"_"+(i+1) + ".png")
-//
-//                        if(tmpfile.exists()){
-//                            tmpfile.renameTo(tmpfile2)
-//                        }
-//
-//                        tmpfileList = tmpfiles.listFiles()
-//
-//                    }
-//                }
 
                 if (tmpfileList != null) {
                     for (i in 0..tmpfileList.size - 1) {
@@ -411,11 +379,13 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
                         }
 
                         images_path!!.add(tmpfileList.get(i).path)
-
+                        Log.d("바바33", images_path.toString())
                         for (j in 0..tmpfileList.size - 1) {
 
-                            if (images_path!!.get(i).equals(FileFilter.img(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "flora/images" + File.separator + keyId + File.separator, (j + 1).toString()))) {
-//                                if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/flora/images/" +flora_Attribute.NUM.toString() +"_" + flora_Attribute.INV_TM +"_"+(j+1) + ".png")) {
+
+                            var add_images = tmpfileList.get(j).path.split("/")
+                            if (images_path!!.get(i).equals(FileFilter.img(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "flora/images" + File.separator + keyId + File.separator, add_images[add_images.size - 1]))) {
+                                //                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/flora/images/" + flora_attribute.NUM.toString() +"_"+flora_attribute.INV_TM +"_" + (j+1) + ".png")) {
                                 val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
                                 val v = View.inflate(context, R.layout.item_add_image, null)
                                 val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
@@ -429,11 +399,9 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
                             }
                         }
                     }
+                    Log.d("바바33", images_path.toString())
                 }
-//                if (file.isDirectory){
-//                    val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + flora_Attribute.INV_DT + "." + flora_Attribute.INV_TM + "."+flora_Attribute.NUM)
-//                    path.deleteRecursively()
-//                }
+
                 data.close()
 
 
@@ -1803,56 +1771,41 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
                 FROM_CAMERA -> {
 
                     if (resultCode == -1) {
-
-                        /*  val options = BitmapFactory.Options()
-                          options.inJustDecodeBounds = true
-
-                          options.inJustDecodeBounds = false
-                          options.inSampleSize = 1
-                          if (options.outWidth > 96) {
-                              val ws = options.outWidth / 96 + 1
-                              if (ws > options.inSampleSize) {
-                                  options.inSampleSize = ws
-                              }
-                          }
-                          if (options.outHeight > 96) {
-                              val hs = options.outHeight / 96 + 1
-                              if (hs > options.inSampleSize) {
-                                  options.inSampleSize = hs
-                              }
-                          }*/
+                        val outPath2 = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "flora/images" + File.separator + keyId
                         addPicturesLL!!.removeAllViews()
                         val realPathFromURI = cameraPath!!
                         images_path!!.add(cameraPath!!)
                         context.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://$realPathFromURI")))
                         try {
-                            val add_file = Utils.getImages(context.contentResolver, cameraPath)
 
-                            val v = View.inflate(context, R.layout.item_add_image, null)
-                            val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
-                            val delIV = v.findViewById<View>(R.id.delIV) as ImageView
-                            imageIV.setImageBitmap(add_file)
-                            delIV.setTag(images!!.size)
-                            images!!.add(add_file)
+                            for (i in 0 until images_path!!.size) {
 
-                            if (imgSeq == 0) {
-                                addPicturesLL!!.addView(v)
+                                val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(i))
+                                if (images!!.size == 0) {
+                                    images!!.add(add_file)
+                                } else {
+                                    try {
+                                        images!!.set(images!!.size, add_file)
+                                    } catch (e: IndexOutOfBoundsException) {
+                                        images!!.add(add_file)
+                                    }
+
+                                }
+                                reset(images_path!!.get(i), i)
                             }
 
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
-
+                        FileFilter.removeDir(outPath2)
+                        images_path!!.clear()
                         val child = addPicturesLL!!.getChildCount()
                         for (i in 0 until child) {
 
+                            println("test : $i")
+
                             val v = addPicturesLL!!.getChildAt(i)
 
-                            val num = floranumET.text.toString()
-                            var time = ""
-                            time = florainvtmET.text.toString()
-                            var timesplit = time.split(":")
-                            invtm = timesplit.get(0) + timesplit.get(1)
                             val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "flora/images" + File.separator + keyId + File.separator
                             val outputsDir = File(outPath)
 
@@ -1874,37 +1827,33 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
                             val getTime = sdf.format(date)
                             var gettimes = getTime.split("-")
 
-                            saveVitmapToFile(images!!.get(i), outPath +getTime.substring(2,8)+"_"+gettimes[1] + "_" + (i + 1) + ".png")
+                            saveVitmapToFile(images!!.get(i), outPath + getTime.substring(2, 8) + "_" + gettimes[1] + "_" + (i + 1) + ".png")
 
                         }
 
                         images!!.clear()
 
-//                        var extras: Bundle = data!!.getExtras();
-//                        val bitmap = extras.get("data") as Bitmap
-//
-//                        val v = View.inflate(context, R.layout.item_add_image, null)
-//                        val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
-//                        val delIV = v.findViewById<View>(R.id.delIV) as ImageView
-//                        imageIV.setImageBitmap(bitmap)
-//                        images!!.add(bitmap)
-//                        delIV.setTag(images!!.size)
-//
-//                        if (imgSeq == 0) {
-//                            addPicturesLL!!.addView(v)
-//                        }
-
                     }
                 }
 
                 FROM_ALBUM -> {
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "flora/images" + File.separator + keyId + File.separator
+                    val outPath2 = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "flora/images" + File.separator + keyId
+
                     addPicturesLL!!.removeAllViews()
+//                    images_path!!.clear()
+
                     val result = data!!.getStringArrayExtra("result")
+                    Log.d("이미지패스", images_path.toString())
                     for (i in result.indices) {
                         val str = result[i]
                         images_path!!.add(str);
                     }
+                    Log.d("이미지패스2", images_path.toString())
+                    Log.d("이미지패스3", images_path!!.size.toString())
+                    images!!.clear()
                     for (i in 0 until images_path!!.size) {
+
                         val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(i))
                         if (images!!.size == 0) {
                             images!!.add(add_file)
@@ -1918,17 +1867,25 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
                         }
                         reset(images_path!!.get(i), i)
                     }
+                    FileFilter.removeDir(outPath2)
+
                     val child = addPicturesLL!!.getChildCount()
+
+                    images_path!!.clear()
+                    println("test : $images")
                     for (i in 0 until child) {
 
-                        val v = addPicturesLL!!.getChildAt(i)
+                        println("test : $i")
+/*
+//                        val v = addPicturesLL!!.getChildAt(i)
 
-                        val num = floranumET.text.toString()
+//                        val num = floranumTV.text.toString()
                         var time = ""
-                        time = florainvtmET.text.toString()
+                        time = florainvtmTV.text.toString()
                         var timesplit = time.split(":")
                         invtm = timesplit.get(0) + timesplit.get(1)
-                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "flora/images" + File.separator + keyId + File.separator
+
+
                         val outputsDir = File(outPath)
 
                         if (outputsDir.exists()) {
@@ -1936,6 +1893,8 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
                             val files = outputsDir.listFiles()
                             if (files != null) {
                                 for (i in files.indices) {
+                                    println("파이즐"+files[i].toString())
+                                    images_path!!.add(files[i].toString())
                                 }
                             }
 
@@ -1943,17 +1902,25 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
                             val made = outputsDir.mkdirs()
 
                         }
+                        */
+
+                        val outputsDir = File(outPath)
+                        if (!outputsDir.exists()) {
+                            outputsDir.mkdirs()
+                        }
+
                         val date = Date()
                         val sdf = SimpleDateFormat("yyyyMMdd-HHmmSS")
 
                         val getTime = sdf.format(date)
                         var gettimes = getTime.split("-")
 
-                        saveVitmapToFile(images!!.get(i), outPath +getTime.substring(2,8)+"_"+gettimes[1] + "_" + (i + 1) + ".png")
+                        println("test : $images")
+                        saveVitmapToFile(images!!.get(i), outPath + getTime.substring(2, 8) + "_" + gettimes[1] + "_" + (i + 1) + ".png")
+
                     }
 
                     images!!.clear()
-
                 }
             }
         }
@@ -1993,55 +1960,56 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
         val builder = AlertDialog.Builder(context)
         builder.setMessage("삭제하시겠습니까 ? ").setCancelable(false)
                 .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
-
                     val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "flora/images" + File.separator + keyId + File.separator
                     addPicturesLL!!.removeAllViews()
-                    images!!.clear()
                     val tag = v.tag as Int
-                    images_path!!.removeAt(tag)
+                    var del_images: ArrayList<String> = ArrayList();
+                    try {
+                        images!!.clear()
+                        del_images = images_path!![tag].split("/") as ArrayList<String>
+                        images_path!!.removeAt(tag)
 
-                    val num = floranumET.text.toString()
-                    var file = File(outPath + num + "_" + invtm + "_" + (tag + 1) + ".png")
-                    file.delete()
+//                    val num = floranumTV.text.toString()
+                        var path = FileFilter.delete_img(outPath, del_images[del_images.size - 1])
+                        Log.d("경로", path.toString())
+                        var file = File(path)
+                        file.delete()
 
-                    for (k in images_url!!.indices) {
-                        val vv = View.inflate(context, R.layout.item_add_image, null)
-                        val imageIV = vv.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
-                        val delIV = vv.findViewById<View>(R.id.delIV) as ImageView
-                        delIV.visibility = View.GONE
-                        val del2IV = vv.findViewById<View>(R.id.del2IV) as ImageView
-                        del2IV.visibility = View.VISIBLE
-                        del2IV.tag = k
-                        ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
-                        ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
-                        if (imgSeq == 0) {
-                            addPicturesLL!!.addView(vv)
-                        }
+                    } catch (e: IndexOutOfBoundsException) {
+
                     }
-                    for (j in images_path!!.indices) {
 
+                    /* for (k in images_url!!.indices) {
+                         val vv = View.inflate(context, R.layout.item_add_image, null)
+                         val imageIV = vv.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                         val delIV = vv.findViewById<View>(R.id.delIV) as ImageView
+                         delIV.visibility = View.GONE
+                         val del2IV = vv.findViewById<View>(R.id.del2IV) as ImageView
+                         del2IV.visibility = View.VISIBLE
+                         del2IV.tag = k
+                         ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
+                         ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
+                         if (imgSeq == 0) {
+                             addPicturesLL!!.addView(vv)
+                         }
+                     }*/
+                    for (j in images_path!!.indices) {
                         val paths = images_path!!.get(j).split("/")
                         val file_name = paths.get(paths.size - 1)
                         val getPk = file_name.split("_")
                         if (getPk.size > 2) {
-                            val pathPk = getPk.get(0)
-                            val pathPk2 = getPk.get(1)
-                            val num = floranumET.text.toString()
-
-                            if (pathPk == num && pathPk2 == invtm) {
-                                val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
-                                if (images!!.size == 0) {
+                            val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
+                            if (images!!.size == 0) {
+                                images!!.add(add_file)
+                            } else {
+                                try {
+                                    images!!.set(images!!.size, add_file)
+                                } catch (e: IndexOutOfBoundsException) {
                                     images!!.add(add_file)
-                                } else {
-                                    try {
-                                        images!!.set(images!!.size, add_file)
-                                    } catch (e: IndexOutOfBoundsException) {
-                                        images!!.add(add_file)
-                                    }
-
                                 }
-                                reset(images_path!!.get(j), j)
+
                             }
+                            reset(images_path!!.get(j), j)
                         } else {
                             val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
                             if (images!!.size == 0) {
@@ -2057,7 +2025,6 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
                             reset(images_path!!.get(j), j)
                         }
                     }
-
                 })
                 .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
         val alert = builder.create()
@@ -2139,7 +2106,7 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
     }
 
     fun saveVitmapToFile(bitmap: Bitmap, filePath: String) {
-
+        Log.d("파일", filePath.toString())
         var file = File(filePath)
         var out: OutputStream? = null
         try {
@@ -2154,6 +2121,8 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
 
             out!!.close()
         }
+
+        images_path!!.add(filePath)
 
     }
 

@@ -4,11 +4,13 @@ import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.AbsListView
+import android.widget.Toast
 import com.loopj.android.http.JsonHttpResponseHandler
 import com.loopj.android.http.RequestParams
 import cz.msebera.android.httpclient.Header
@@ -33,6 +35,8 @@ class SearchAddressActivity : Activity() {
     var address = ""
     var page = 1
     var totalpage = 1
+    var select = "PARCEL"
+    var searchck = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +45,7 @@ class SearchAddressActivity : Activity() {
         this.context = this
         progressDialog = ProgressDialog(context)
 
-        addressAdapter = AddressAdapter(this, R.layout.item_address, adapterData)
+        addressAdapter = AddressAdapter(this, R.layout.item_address,select, adapterData)
         listLV.setAdapter(addressAdapter)
         listLV.setOnItemClickListener { parent, view, position, id ->
 
@@ -59,6 +63,13 @@ class SearchAddressActivity : Activity() {
 
             finish()
         }
+
+        searchSW.setOnClickListener {
+            searchck = searchSW.isChecked
+            Log.d("수정스", searchck.toString())
+        }
+
+
         var lastitemVisibleFlag = false        //화면에 리스트의 마지막 아이템이 보여지는지 체크
         listLV.setOnScrollListener(object : AbsListView.OnScrollListener {
             override fun onScroll(view: AbsListView, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
@@ -84,6 +95,7 @@ class SearchAddressActivity : Activity() {
                 Utils.alert(this, "주소를 입력해주세요.")
                 return@setOnClickListener
             }
+            page=1
             findLocation(address)
         }
 
@@ -92,10 +104,13 @@ class SearchAddressActivity : Activity() {
     private fun findLocation(address: String) {
         val params = RequestParams()
         params.put("address", address)
+        if (searchck){
+            select = "ROAD"
+        }else{
+            select = "PARCEL"
+        }
 
-        println(params)
-
-        AddressAction.search_map(address, page, 30, object : JsonHttpResponseHandler() {
+        AddressAction.search_map(address, page, 30,select, object : JsonHttpResponseHandler() {
 
             override fun onSuccess(statusCode: Int, headers: Array<Header>?, response: JSONObject?) {
                 if (progressDialog != null) {
@@ -110,13 +125,17 @@ class SearchAddressActivity : Activity() {
                 try {
                     if (response!!.getJSONObject("response") != null) {
                         val res = response.getJSONObject("response")
-                        val result = res.getJSONObject("result")
-                        val items = result.getJSONArray("items")
-                        val page = res.getJSONObject("page")
-                        totalpage = Utils.getInt(page,"total")
-                        for(idx in 0 until items.length()) {
-                            adapterData.add(items.getJSONObject(idx))
+                        val status = Utils.getString(res,"status")
+                        if (status=="OK"){
+                            val result = res.getJSONObject("result")
+                            val items = result.getJSONArray("items")
+                            val page = res.getJSONObject("page")
+                            totalpage = Utils.getInt(page,"total")
+                            for(idx in 0 until items.length()) {
+                                adapterData.add(items.getJSONObject(idx))
+                            }
                         }
+
 
                         addressAdapter.notifyDataSetChanged()
                     }

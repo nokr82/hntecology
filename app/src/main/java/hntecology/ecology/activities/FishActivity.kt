@@ -2104,9 +2104,15 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 }
 
                 FROM_ALBUM -> {
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator
+                    val outPath2 = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images"+ File.separator +keyId
 
+                    var file = File(outPath2)
+                    file.delete()
                     addPicturesLL!!.removeAllViews()
+
                     val result = data!!.getStringArrayExtra("result")
+
                     for (i in result.indices) {
                         val str = result[i]
                         images_path!!.add(str);
@@ -2138,7 +2144,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         time = fishinvtmTV.text.toString()
                         var timesplit = time.split(":")
                         invtm = timesplit.get(0) + timesplit.get(1)
-                        val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator
                         val outputsDir = File(outPath)
 
                         if (outputsDir.exists()) {
@@ -2146,6 +2151,8 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                             val files = outputsDir.listFiles()
                             if (files != null) {
                                 for (i in files.indices) {
+                                    println("파이즐"+files[i].toString())
+                                    images_path!!.add(files[i].toString())
                                 }
                             }
 
@@ -2222,7 +2229,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                     val tag = v.tag as Int
                     Log.d("바바",tag.toString())
                     images_path!!.removeAt(tag)
-
+                    Log.d("바바",images_path.toString())
 
                     val num = fishnumTV.text.toString()
                     var path = FileFilter.delete_img(outPath,(tag+1).toString())

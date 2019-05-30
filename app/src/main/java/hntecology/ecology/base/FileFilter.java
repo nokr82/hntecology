@@ -9,13 +9,16 @@ public class FileFilter {
 
     public static void  delete_img2(String file) {
         File testDir = new File(file);
-        if (testDir.listFiles()!=null){
+        Log.d("이미지경로",file.toString());
+        Log.d("이미지경로",testDir.toString());
+        testDir.delete();
+      /*  if (testDir.listFiles()!=null){
             File[] fileNameList = testDir.listFiles((dir, name1) -> name1.endsWith(".png"));
             for (File curFile : fileNameList) {
                 File path = new File(curFile.getPath());
                 path.delete();
             }
-        }
+        }*/
 
     }
 

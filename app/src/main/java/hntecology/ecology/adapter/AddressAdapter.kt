@@ -10,10 +10,11 @@ import hntecology.ecology.base.Utils
 import kotlinx.android.synthetic.main.item_address.view.*
 import org.json.JSONObject
 
-class AddressAdapter(context:Context, view:Int, data:ArrayList<JSONObject>) : ArrayAdapter<JSONObject>(context, view, data) {
+class AddressAdapter(context:Context, view:Int,select:String, data:ArrayList<JSONObject>) : ArrayAdapter<JSONObject>(context, view, data) {
 
     private lateinit var item: ViewHolder
     var view:Int = view
+    var select:String = select
     var data:ArrayList<JSONObject> = data
 
     override fun getView(position: Int, convertView: View?, parent : ViewGroup?): View {
@@ -37,7 +38,12 @@ class AddressAdapter(context:Context, view:Int, data:ArrayList<JSONObject>) : Ar
         val item: JSONObject =  data.get(position)
 
         val address = item.getJSONObject("address")
-        retView.addreesTV.text = Utils.getString(address.getString("parcel"))
+        if (select=="PARCLE"){
+            retView.addreesTV.text = Utils.getString(address.getString("parcel"))
+        }else{
+            retView.addreesTV.text = Utils.getString(address.getString("road"))
+        }
+
 
         return retView
     }

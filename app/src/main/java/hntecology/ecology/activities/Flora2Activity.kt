@@ -253,13 +253,15 @@ class Flora2Activity : Activity() {
 
                 var manyFloraAttribute = ps_many_attribute(data)
                 // 교목층
-                t_name = manyFloraAttribute.DOMIN.toString()
-                var domins = manyFloraAttribute.DOMIN!!.split("-")
+                if (manyFloraAttribute.DOMIN.toString() != "null") {
+                    t_name =manyFloraAttribute.DOMIN.toString()
+                }
+                var domins = t_name.split("-")
                 if (domins.size>1){
                     dominTV.text = domins[0]
                     ausTV.text = domins[1]
                 }else{
-                    dominTV.text = manyFloraAttribute.DOMIN
+                    dominTV.text = t_name
                 }
                 invregionTV.setText(manyFloraAttribute.INV_REGION)
                 INV_REGION = manyFloraAttribute.INV_REGION.toString()

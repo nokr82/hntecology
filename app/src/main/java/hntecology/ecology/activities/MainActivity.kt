@@ -9334,7 +9334,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 if ("UFID" == columnName) {
                         u_val = data.getString(idx)
+                    if (u_val.substring(0,1).equals("9")){
+                        r_val = "9"+u_val
+                    }else{
                         r_val = u_val.replace(u_val.substring(0,1),"9")
+                    }
+
+
                 }
 
                 values.add("\"$value\"")

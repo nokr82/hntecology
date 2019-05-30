@@ -7,7 +7,19 @@
     tools:context=".activities.SearchAddressActivity"
     android:orientation="vertical"
     android:layout_margin="30dp">
-
+    <Switch
+        android:id="@+id/searchSW"
+        android:layout_marginBottom="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:scaleX="1.2"
+        android:scaleY="1.5"
+        android:textColor="#ffffff"
+        android:textOff="지번입력"
+        android:textOn="도로명입력"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:thumb="@drawable/swich_on" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

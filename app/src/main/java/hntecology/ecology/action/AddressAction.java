@@ -15,13 +15,13 @@ import hntecology.ecology.base.HttpClient;
 public class AddressAction {
 
     // 지도 검색 (정확도)
-    public static void search_map(String keyword, int page, int size, JsonHttpResponseHandler handler) {
+    public static void search_map(String keyword, int page, int size,String select, JsonHttpResponseHandler handler) {
         Map<String, String> headers = new HashMap<>();
         RequestParams params = new RequestParams();
         params.put("query", keyword);
         params.put("request", "search");
         params.put("size", "30");
-        params.put("category", "PARCEL");
+        params.put("category",select);
         params.put("type", "address");
         params.put("page", page);
         params.put("key", "366D7FAA-4B63-3ACA-8C05-AAD64D7DD580");

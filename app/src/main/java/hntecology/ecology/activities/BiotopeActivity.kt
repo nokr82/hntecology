@@ -81,7 +81,6 @@ import kotlinx.android.synthetic.main.activity_biotope_ex.treleftTV
 import kotlinx.android.synthetic.main.activity_biotope_ex.trepageTV
 import kotlinx.android.synthetic.main.activity_biotope_ex.trerightTV
 import kotlinx.android.synthetic.main.activity_biotope_ex.trerightpageTV
-import kotlinx.android.synthetic.main.activity_flora2.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -652,14 +651,14 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                     }
                 }
                 if (division == false) {
-                    clear_shr()
+                    clear_her()
 
                 }
 
                 val page = herpage
                 var size = herrightpageTV.text.toString().toInt()
 
-                herpageTV.setText(page.toString())
+                herleftpageTV.setText(page.toString())
 
                 if (size > 1) {
                     size = size - 1
@@ -726,7 +725,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 val page = herpage
                 val size = herrightpageTV.text.toString().toInt() - 1
 
-                herpageTV.setText(page.toString())
+                herleftpageTV.setText(page.toString())
                 herrightpageTV.setText(size.toString())
             }
 

@@ -99,6 +99,10 @@ class Flora2Activity : Activity() {
     val SET_DATA5 = 5
     val SET_DATA6 = 6
 
+    val SET_INPUT = 2007
+    val SET_INPUT2 = 2008
+
+
     var trepage = 1
     var strepage = 1
     var shrpage = 1
@@ -249,6 +253,7 @@ class Flora2Activity : Activity() {
 
                 var manyFloraAttribute = ps_many_attribute(data)
                 // 교목층
+                t_name = manyFloraAttribute.DOMIN.toString()
                 var domins = manyFloraAttribute.DOMIN!!.split("-")
                 if (domins.size>1){
                     dominTV.text = domins[0]
@@ -532,17 +537,24 @@ class Flora2Activity : Activity() {
         }
 
         dominTV.setOnClickListener {
-            val intent = Intent(this,DlgVegetationActivity::class.java)
-            intent.putExtra("title", "우점/아우점")
-            intent.putExtra("table", "Vegetation")
+            val intent = Intent(this, DlgVascularActivity::class.java)
+            intent.putExtra("title", "우점")
+            intent.putExtra("table", "vascular_plant")
+            intent.putExtra("DlgHeight", 600f);
             startActivityForResult(intent, SET_DATA1);
         }
 
         ausTV.setOnClickListener {
-            val intent = Intent(this,DlgVegetationActivity::class.java)
-            intent.putExtra("title", "우점/아우점")
-            intent.putExtra("table", "Vegetation")
-            startActivityForResult(intent, SET_DATA1)
+            if (dominTV.text.equals("")){
+                Toast.makeText(context, "우점을 먼저 선택해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val intent = Intent(this, DlgVascularActivity::class.java)
+            intent.putExtra("title", "우점")
+            intent.putExtra("table", "vascular_plant")
+            intent.putExtra("DlgHeight", 600f);
+            startActivityForResult(intent, SET_DATA6);
         }
 
         etTRE_SPECET.setOnClickListener {
@@ -1508,7 +1520,16 @@ class Flora2Activity : Activity() {
 //                            manyFloraAttribute.INV_REGION = invregionTV.text.toString()
 
 
-                            manyFloraAttribute.DOMIN = t_name
+                            var names = t_name.split("-")
+                            if (names.size > 1&&!t_name.contains("군락")) {
+                                manyFloraAttribute.DOMIN = t_name+ "군락"
+                            } else if (!t_name.contains("군락")) {
+                                if (t_name.length>0){
+                                    manyFloraAttribute.DOMIN = t_name + "군락"
+                                }
+                            } else {
+                                manyFloraAttribute.DOMIN = t_name
+                            }
 
                             if (invregionTV.length() > 0) {
                                 manyFloraAttribute.INV_REGION = invregionTV.text.toString();
@@ -1944,7 +1965,16 @@ class Flora2Activity : Activity() {
                                 manyFloraAttribute.CURRENT_TM = Utils.current_tm()
                                 manyFloraAttribute.GROP_ID = keyId
 
-                                manyFloraAttribute.DOMIN = t_name
+                                var names = t_name.split("-")
+                                if (names.size > 1&&!t_name.contains("군락")) {
+                                        manyFloraAttribute.DOMIN = t_name + "군락"
+                                } else if (!t_name.contains("군락")) {
+                                    if (t_name.length>0){
+                                        manyFloraAttribute.DOMIN = t_name + "군락"
+                                    }
+                                } else {
+                                    manyFloraAttribute.DOMIN = t_name
+                                }
 //                                    manyFloraAttribute.INV_REGION = invregionTV.text.toString()
                                 if (invregionTV.length() > 0) {
                                     manyFloraAttribute.INV_REGION = invregionTV.text.toString();
@@ -2307,21 +2337,37 @@ class Flora2Activity : Activity() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 SET_DATA1 -> {
-
-                    t_name = data!!.getStringExtra("name");
-
-                    var names = t_name.split("-")
-                    if (names.size >1){
-                        dominTV.setText(names[0])
-                        ausTV.setText(names[1])
-                    }else{
+                    if (data!!.getStringExtra("name") == "SP(미동정)") {
+                        val intent = Intent(context, DlgInputActivity::class.java)
+                        startActivityForResult(intent, SET_INPUT)
+                    } else {
+                        t_name = data!!.getStringExtra("name")
                         dominTV.setText(t_name)
-                        ausTV.setText("")
                     }
 
                 }
-
-
+                SET_DATA6 -> {
+                    t_name += "-"
+                    if (data!!.getStringExtra("name") == "SP(미동정)") {
+                        val intent = Intent(context, DlgInputActivity::class.java)
+                        startActivityForResult(intent, SET_INPUT2)
+                    } else {
+                        t_name += data!!.getStringExtra("name");
+                        var names = t_name.split("-")
+                        if (names.size > 1) {
+                            ausTV.setText(names[1]+"군락")
+                        }
+                    }
+                }
+                SET_INPUT -> {
+                    var name = data!!.getStringExtra("name");
+                    dominTV.text = name
+                }
+                SET_INPUT2 -> {
+                    var name = data!!.getStringExtra("name");
+                    t_name += name
+                    ausTV.text = name+"군락"
+                }
                 SET_DATA2 -> {
 
                     var name = data!!.getStringExtra("name");

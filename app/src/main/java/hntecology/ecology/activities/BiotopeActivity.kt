@@ -99,10 +99,12 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
     val SET_DATA5 = 5
     val SET_DATA6 = 6
     val SET_RATE = 7
-
+    val SET_INPUT = 2007
+    val SET_INPUT2 = 2008
     var t_name = ""
 
     val SET_DOMIN = 133;
+    val SET_DOMIN2 = 134;
 
     val BIOTOPE_BASE = 3000
     var keyId: String? = null;
@@ -209,7 +211,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
         var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
 
-        if (intent.getStringExtra("UFID")!=null){
+        if (intent.getStringExtra("UFID") != null) {
             ufidTV.text = intent.getStringExtra("UFID")
         }
 
@@ -598,7 +600,6 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 }
 
 
-
                 var timesplit = biotope_attribute.INV_TM!!.split(":")
                 if (timesplit.size > 1) {
                     invtm = timesplit.get(0) + timesplit.get(1)
@@ -766,7 +767,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 var PER = biotope_attribute.TRE_COVE
 
 
-                if (SPEC!!.length > 0&&SPEC2!=""&&SPEC3!="null") {
+                if (SPEC!!.length > 0 && SPEC2 != "" && SPEC3 != "null") {
                     val data = BioTreeData(dataPk, TRE_NUM, SPEC, SPEC2, SPEC3, NS, S, MS, NS2, S2, MS2, PER)
                     TreDatas.add(data)
                     println("TRE_NUM ADD ${data.PAGE}")
@@ -798,7 +799,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 val STRE_BRT = biotope_attribute.STRE_BRT
                 var PER2 = biotope_attribute.STRE_COVE
                 println("STRE_NUM $STRE_NUM STRE_SPEC $STRE_SPEC STRE_FAMI $STRE_FAMI STRE_SCIEN $STRE_SCIEN")
-                if (STRE_SPEC!!.length > 0&&STRE_SPEC!=""&&STRE_SPEC!="null") {
+                if (STRE_SPEC!!.length > 0 && STRE_SPEC != "" && STRE_SPEC != "null") {
                     val data = BioTreeData3(dataPk, STRE_NUM, SPEC, STRE_FAMI, STRE_SCIEN, STRE_H_N, STRE_H, STRE_H_X, STRE_BRT_N, STRE_BRT, STRE_BRT_X, PER2)
                     StreDatas.add(data)
                     strepage = biotope_attribute.STRE_NUM!!
@@ -827,7 +828,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 val SHR_H = biotope_attribute.SHR_H
                 var PER3 = biotope_attribute.STR_COVE
 
-                if (SHR_SPEC!!.length > 0&&SHR_SPEC!=""&&SHR_SPEC!="null") {
+                if (SHR_SPEC!!.length > 0 && SHR_SPEC != "" && SHR_SPEC != "null") {
                     val data = BioTreeData2(dataPk, SHR_NUM, SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_HET_N, SHR_H, SHR_HET_X, PER3)
                     ShrDatas.add(data)
                     shrpage = biotope_attribute.SHR_NUM!!
@@ -854,7 +855,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 val HER_H = biotope_attribute.HER_H
                 var PER4 = biotope_attribute.HER_COVE
 
-                if (HER_SPEC!!.length > 0&&HER_SPEC!=""&&HER_SPEC!="null") {
+                if (HER_SPEC!!.length > 0 && HER_SPEC != "" && HER_SPEC != "null") {
                     val data = BioTreeData4(dataPk, HER_NUM, HER_SPEC, HER_FAMI, HER_SCIEN, HER_HET_N, HER_H, HER_HET_X, PER4)
                     HerDatas.add(data)
                     herpage = biotope_attribute.HER_NUM!!
@@ -1207,17 +1208,24 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
     fun click() {
         val userName = PrefUtils.getStringPreference(context, "name");
         dominTV.setOnClickListener {
-            val intent = Intent(this, DlgVegetationActivity::class.java)
-            intent.putExtra("title", "우점/아우점")
-            intent.putExtra("table", "Vegetation")
+            val intent = Intent(this, DlgVascularActivity::class.java)
+            intent.putExtra("title", "우점")
+            intent.putExtra("table", "vascular_plant")
+            intent.putExtra("DlgHeight", 600f);
             startActivityForResult(intent, SET_DOMIN);
         }
 
         ausTV.setOnClickListener {
-            val intent = Intent(this, DlgVegetationActivity::class.java)
-            intent.putExtra("title", "우점/아우점")
-            intent.putExtra("table", "Vegetation")
-            startActivityForResult(intent, SET_DOMIN)
+            if (dominTV.text.equals("")) {
+                Toast.makeText(context, "우점을 먼저 선택해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val intent = Intent(this, DlgVascularActivity::class.java)
+            intent.putExtra("title", "아우점")
+            intent.putExtra("table", "vascular_plant")
+            intent.putExtra("DlgHeight", 600f);
+            startActivityForResult(intent, SET_DOMIN2);
         }
 
 
@@ -1397,8 +1405,6 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 //                            addbiotope2(biotope_attribute)
 
 
-
-
                             println("delete-------------------- $keyId")
 
                             var treChk = false
@@ -1455,8 +1461,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                                 var tredata = BioTreeData(-1, trepage, spec, fami, scien, NS, S, MS, NS2, S2, MS2, PER)
 
                                 TreDatas.add(tredata)
-                            }
-                            else {
+                            } else {
                                 for (i in 0 until TreDatas.size) {
 
                                     if (TreDatas.get(i).PAGE == trepage) {
@@ -3427,10 +3432,14 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
 
         var names = t_name.split("-")
-        if (names.size > 1) {
-            biotope_attribute.DOMIN = t_name
+        if (names.size > 1&&!t_name.contains("군락")) {
+            biotope_attribute.DOMIN = t_name+ "군락"
+        } else if (!t_name.contains("군락")) {
+            if (t_name.length>0){
+                biotope_attribute.DOMIN = t_name + "군락"
+            }
         } else {
-            biotope_attribute.DOMIN = t_name + "군락"
+            biotope_attribute.DOMIN = t_name
         }
 
 
@@ -3692,18 +3701,21 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         Log.d("구실", t_name)
 
         var names = t_name.split("-")
-        if (names.size > 1) {
-            biotope_attribute.DOMIN = t_name
+        if (names.size > 1&&!t_name.contains("군락")) {
+            biotope_attribute.DOMIN = t_name+ "군락"
+        } else if (!t_name.contains("군락")) {
+            if (t_name.length>0){
+                biotope_attribute.DOMIN = t_name + "군락"
+            }
         } else {
-            biotope_attribute.DOMIN = t_name + "군락"
+            biotope_attribute.DOMIN = t_name
         }
-
 
         if (chkdata) {
 
             if (images!!.size > 0 && biotope_attribute.PIC_FOLDER == null) {
 
-                biotope_attribute.PIC_FOLDER = keyId+it_index.toString()
+                biotope_attribute.PIC_FOLDER = keyId + it_index.toString()
             }
 
             if (pk != null) {
@@ -3722,7 +3734,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         } else {
 
             if (images!!.size > 0) {
-                biotope_attribute.PIC_FOLDER = keyId+it_index.toString()
+                biotope_attribute.PIC_FOLDER = keyId + it_index.toString()
             }
 
             dbManager!!.insertbiotope_attribute(biotope_attribute);
@@ -3873,7 +3885,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
             dominTV.text = domins[0]
             ausTV.text = domins[1]
         } else {
-            dominTV.text = biotope_attribute.DOMIN.toString().replace("군락", "")
+            dominTV.text = biotope_attribute.DOMIN
         }
 
         etIMP_FORMET.setText(biotope_attribute.IMP_FORM.toString())
@@ -3952,19 +3964,40 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 }
                 SET_DOMIN -> {
 
-                    t_name = data!!.getStringExtra("name");
-
-                    var names = t_name.split("-")
-                    if (names.size > 1) {
-                        dominTV.setText(names[0])
-                        ausTV.setText(names[1])
+                    if (data!!.getStringExtra("name") == "SP(미동정)") {
+                        val intent = Intent(context, DlgInputActivity::class.java)
+                        startActivityForResult(intent, SET_INPUT)
                     } else {
+                        t_name = data!!.getStringExtra("name")
                         dominTV.setText(t_name)
-                        ausTV.setText("")
                     }
 
                 }
 
+                SET_DOMIN2 -> {
+                    t_name += "-"
+                    if (data!!.getStringExtra("name") == "SP(미동정)") {
+                        val intent = Intent(context, DlgInputActivity::class.java)
+                        startActivityForResult(intent, SET_INPUT2)
+                    } else {
+                        t_name += data!!.getStringExtra("name");
+                        var names = t_name.split("-")
+                        if (names.size > 1) {
+                            ausTV.setText(names[1]+"군락")
+                        }
+                    }
+                }
+
+
+                SET_INPUT -> {
+                    var name = data!!.getStringExtra("name");
+                    dominTV.text = name
+                }
+                SET_INPUT2 -> {
+                    var name = data!!.getStringExtra("name");
+                    t_name += name
+                    ausTV.text = name+"군락"
+                }
 
                 SET_DATA1 -> {
 
@@ -4712,20 +4745,20 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
     private val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
         val msg = String.format("%d-%d-%d", year, monthOfYear + 1, dayOfMonth)
-        var msgs  = msg.split("-")
+        var msgs = msg.split("-")
         var month = ""
         var day = ""
-        if (msgs[1].length<2){
-            month = "0"+msgs[1]
-        }else{
+        if (msgs[1].length < 2) {
+            month = "0" + msgs[1]
+        } else {
             month = msgs[1]
         }
-        if (msgs[2].length<2){
-            day = "0"+msgs[2]
-        }else{
+        if (msgs[2].length < 2) {
+            day = "0" + msgs[2]
+        } else {
             day = msgs[2]
         }
-        etINV_DTTV.text = msgs[0]+"-"+month+"-"+day
+        etINV_DTTV.text = msgs[0] + "-" + month + "-" + day
     }
 
     override fun onBackPressed() {

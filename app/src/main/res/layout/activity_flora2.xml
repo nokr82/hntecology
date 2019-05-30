@@ -94,14 +94,13 @@
 
                 <TextView
                     android:id="@+id/dominTV"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:maxLength="30"
-                    android:hint="click"
-                    android:gravity="center"
                     style="@style/BiotopeTextView"
-                    />
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="click"
+                    android:maxLength="30" />
 
                 <TextView
                     android:layout_width="120dp"

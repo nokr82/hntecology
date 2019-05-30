@@ -4986,9 +4986,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 var domin_name = ""
                 var do_num = Utils.getString(metadata, "UFID")
                 if (!typeST.isChecked) {
-                    domin_name = Utils.getString(metadata, "DOMIN")
+                    domin_name += Utils.getString(metadata, "DOMIN")
+                    domin_name += Utils.getString(metadata, "PLANT_NM")
                 } else {
-                    domin_name = Utils.getString(metadata, "KOFTR_GROU")
+                    domin_name += Utils.getString(metadata, "DOMIN")
+                    domin_name += Utils.getString(metadata, "PLANT_NM")
                 }
 
 

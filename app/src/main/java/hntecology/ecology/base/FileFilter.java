@@ -7,6 +7,18 @@ import java.io.File;
 
 public class FileFilter {
 
+    public static void removeDir(String mRootPath) {
+        File testDir = new File(mRootPath);
+        if (testDir.listFiles()!=null){
+            File[] fileNameList = testDir.listFiles((dir, name1) -> name1.endsWith(".png"));
+            for (File curFile : fileNameList) {
+                File path = new File(curFile.getPath());
+                path.delete();
+            }
+        }
+
+    }
+
     public static void  delete_img2(String file) {
         File testDir = new File(file);
         Log.d("이미지경로",file.toString());
@@ -27,7 +39,7 @@ public class FileFilter {
         File testDir = new File(file);
         String path = null;
         if (testDir.listFiles()!=null){
-            File[] fileNameList = testDir.listFiles((dir, name1) -> name1.endsWith(name+".png"));
+            File[] fileNameList = testDir.listFiles((dir, name1) -> name1.endsWith(name));
             for (File curFile : fileNameList) {
                 path = curFile.getPath();
             }
@@ -62,7 +74,7 @@ public class FileFilter {
         File testDir = new File(file);
         String path = null;
         if (testDir.listFiles()!=null){
-            File[] fileNameList = testDir.listFiles((dir, name1) -> name1.endsWith(num+".png"));
+            File[] fileNameList = testDir.listFiles((dir, name1) -> name1.endsWith(num));
             for (File curFile : fileNameList) {
                 path = curFile.getPath();
                 if (path != null) {

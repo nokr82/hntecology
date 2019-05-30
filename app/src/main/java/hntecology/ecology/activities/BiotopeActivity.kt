@@ -360,6 +360,150 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
         }
 
+        strecloseLL.setOnClickListener {
+
+            etSTRE_SPECET.visibility = View.VISIBLE
+
+            if (strepage == 1) {
+                for (i in 0 until StreDatas.size) {
+                    if (StreDatas.get(i).PAGE == t_trepage) {
+                        val data = StreDatas.get(i)
+                        StreDatas.removeAt(i)
+                        break
+                    }
+                }
+
+                var division = false
+
+                for (i in 0 until StreDatas.size) {
+                    if (StreDatas.get(i).PAGE!! > 1) {
+                        StreDatas.get(i).PAGE = StreDatas.get(i).PAGE!! - 1
+                    }
+                }
+
+                for (i in 0 until StreDatas.size) {
+                    if (StreDatas.get(i).PAGE == strepage) {
+                        etSTRE_SPECET.setText(StreDatas.get(i).SPEC)
+                        etSTRE_FAMIET.setText(StreDatas.get(i).SPEC2)
+                        etSTRE_SCIENET.setText(StreDatas.get(i).SPEC3)
+                        min3ET.setText(StreDatas.get(i).NS.toString())
+                        etSTRE_HET.setText(StreDatas.get(i).S.toString())
+                        max3ET.setText(StreDatas.get(i).MS.toString())
+                        min4ET.setText(StreDatas.get(i).NS2.toString())
+                        etSTRE_BREAET.setText(StreDatas.get(i).S2.toString())
+                        max4ET.setText(StreDatas.get(i).MS2.toString())
+                        etSTRE_COVEET.setText(StreDatas.get(i).PER.toString())
+                        division = true
+                    }
+                }
+                if (division == false) {
+                    etSTRE_SPECET.setText("")
+                    etSTRE_FAMIET.setText("")
+                    etSTRE_SCIENET.setText("")
+                    min3ET.setText("")
+                    etSTRE_HET.setText("")
+                    max3ET.setText("")
+                    min4ET.setText("")
+                    etSTRE_BREAET.setText("")
+                    max4ET.setText("")
+                    etSTRE_COVEET.setText("")
+
+                }
+
+                val page = strepage
+                var size = strerightpageTV.text.toString().toInt()
+
+                strepageTV.setText(page.toString())
+
+                if (size > 1) {
+                    size = size - 1
+                    strerightpageTV.setText(size.toString())
+                }
+            }
+
+            if (strepage > 1) {
+                if (strepage == 2) {
+                    for (i in 0 until StreDatas.size) {
+                        if (StreDatas.get(i).PAGE == strepage) {
+                            val data = StreDatas.get(i)
+                            StreDatas.removeAt(i)
+                            break
+                        }
+                    }
+
+                    strepage = strepage - 1
+
+                    for (i in 0 until StreDatas.size) {
+                        if (StreDatas.get(i).PAGE == strepage) {
+                            etSTRE_SPECET.setText(StreDatas.get(i).SPEC)
+                            etSTRE_FAMIET.setText(StreDatas.get(i).SPEC2)
+                            etSTRE_SCIENET.setText(StreDatas.get(i).SPEC3)
+                            min3ET.setText(StreDatas.get(i).NS.toString())
+                            etSTRE_HET.setText(StreDatas.get(i).S.toString())
+                            max3ET.setText(StreDatas.get(i).MS.toString())
+                            min4ET.setText(StreDatas.get(i).NS2.toString())
+                            etSTRE_BREAET.setText(StreDatas.get(i).S2.toString())
+                            max4ET.setText(StreDatas.get(i).MS2.toString())
+                            etSTRE_COVEET.setText(StreDatas.get(i).PER.toString())
+                        }
+
+                        if (StreDatas.get(i).PAGE!! > 1) {
+                            StreDatas.get(i).PAGE = StreDatas.get(i).PAGE!! - 1
+                        }
+                    }
+
+                } else if (strepage > 2) {
+                    for (i in 0 until StreDatas.size) {
+                        if (StreDatas.get(i).PAGE == strepage) {
+                            val data = StreDatas.get(i)
+                            StreDatas.removeAt(i)
+                            break
+                        }
+                    }
+
+                    strepage = strepage - 1
+
+                    for (i in 0 until StreDatas.size) {
+                        if (StreDatas.get(i).PAGE == t_trepage) {
+                            etSTRE_SPECET.setText(StreDatas.get(i).SPEC)
+                            etSTRE_FAMIET.setText(StreDatas.get(i).SPEC2)
+                            etSTRE_SCIENET.setText(StreDatas.get(i).SPEC3)
+                            min3ET.setText(StreDatas.get(i).NS.toString())
+                            etSTRE_HET.setText(StreDatas.get(i).S.toString())
+                            max3ET.setText(StreDatas.get(i).MS.toString())
+                            min4ET.setText(StreDatas.get(i).NS2.toString())
+                            etSTRE_BREAET.setText(StreDatas.get(i).S2.toString())
+                            max4ET.setText(StreDatas.get(i).MS2.toString())
+                            etSTRE_COVEET.setText(StreDatas.get(i).PER.toString())
+                        }
+
+                        if (StreDatas.get(i).PAGE!! > strepage) {
+                            StreDatas.get(i).PAGE = StreDatas.get(i).PAGE!! - 1
+                        }
+                    }
+                }
+
+                val page = strepage
+                val size = strerightpageTV.text.toString().toInt() - 1
+
+                strepageTV.setText(page.toString())
+                strerightpageTV.setText(size.toString())
+            }
+
+            println("delete-------------------------${StreDatas.size}")
+
+        }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1661,7 +1805,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
 
                                 if (TreDatas != null && TreDataSize > 0) {
-                                    if (i > TreDataSize - 1) {
+                                    if (i > TreDataSize ) {
                                         biotope_attribute.TRE_NUM = 0
                                         biotope_attribute.TRE_SPEC = ""
                                         biotope_attribute.TRE_FAMI = ""
@@ -1675,7 +1819,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                                         biotope_attribute.TRE_COVE = 0.0f
                                     }
 
-                                    if (i <= TreDataSize - 1) {
+                                    if (i < TreDataSize) {
                                         biotope_attribute.TRE_NUM = TreDatas.get(i).PAGE
                                         biotope_attribute.TRE_SPEC = TreDatas.get(i).SPEC
                                         biotope_attribute.TRE_FAMI = TreDatas.get(i).SPEC2
@@ -1693,7 +1837,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                                 }
 
                                 if (StreDatas != null && StreDataSize > 0) {
-                                    if (i > StreDataSize - 1) {
+                                    if (i > StreDataSize) {
                                         biotope_attribute.STRE_NUM = 1
                                         biotope_attribute.STRE_SPEC = ""
                                         biotope_attribute.STRE_FAMI = ""
@@ -1707,7 +1851,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                                         biotope_attribute.STRE_COVE = 0.0f
                                     }
 
-                                    if (i <= StreDataSize - 1) {
+                                    if (i < StreDataSize) {
                                         biotope_attribute.STRE_NUM = StreDatas.get(i).PAGE
                                         biotope_attribute.STRE_SPEC = StreDatas.get(i).SPEC
                                         biotope_attribute.STRE_FAMI = StreDatas.get(i).SPEC2
@@ -1723,7 +1867,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                                 }
 
                                 if (ShrDatas != null && ShrDataSize > 0) {
-                                    if (i > ShrDataSize - 1) {
+                                    if (i > ShrDataSize ) {
                                         biotope_attribute.SHR_NUM = 1
                                         biotope_attribute.SHR_SPEC = ""
                                         biotope_attribute.SHR_FAMI = ""
@@ -1734,7 +1878,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                                         biotope_attribute.STR_COVE = 0.0f
                                     }
 
-                                    if (i <= ShrDataSize - 1) {
+                                    if (i < ShrDataSize ) {
                                         biotope_attribute.SHR_NUM = ShrDatas.get(i).PAGE
                                         biotope_attribute.SHR_SPEC = ShrDatas.get(i).SPEC
                                         biotope_attribute.SHR_FAMI = ShrDatas.get(i).SPEC2
@@ -1747,7 +1891,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                                 }
 
                                 if (HerDatas != null && HerDataSize > 0) {
-                                    if (i > HerDataSize - 1) {
+                                    if (i > HerDataSize) {
                                         biotope_attribute.HER_NUM = 1
                                         biotope_attribute.HER_SPEC = ""
                                         biotope_attribute.HER_FAMI = ""
@@ -1758,7 +1902,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                                         biotope_attribute.HER_COVE = 0.0f
                                     }
 
-                                    if (i <= HerDataSize - 1) {
+                                    if (i < HerDataSize ) {
                                         biotope_attribute.HER_NUM = HerDatas.get(i).PAGE
                                         biotope_attribute.HER_SPEC = HerDatas.get(i).SPEC
                                         biotope_attribute.HER_FAMI = HerDatas.get(i).SPEC2

@@ -64,7 +64,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class FishActivity : Activity() , OnLocationUpdatedListener {
+class FishActivity : Activity(), OnLocationUpdatedListener {
 
     lateinit var context: Context;
 
@@ -89,12 +89,12 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
     var pk: String? = null
 
-    var page:Int? = null
+    var page: Int? = null
 
-    var dataArray:ArrayList<Fish_attribute> = ArrayList<Fish_attribute>()
+    var dataArray: ArrayList<Fish_attribute> = ArrayList<Fish_attribute>()
 
-    var lat:String = ""
-    var log:String = ""
+    var lat: String = ""
+    var log: String = ""
 
     var basechkdata = false
 
@@ -108,9 +108,9 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
     private val FROM_CAMERA = 100
     private val FROM_ALBUM = 101
 
-    var cameraPath:String? = null
+    var cameraPath: String? = null
 
-    private var addPicturesLL: LinearLayout? = null
+    //    private var addPicturesLL: LinearLayout? = null
     private val imgSeq = 0
 
     var images_path: ArrayList<String>? = null
@@ -121,7 +121,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
     var values: java.util.ArrayList<Int> = java.util.ArrayList()
     var values_name = ""
 
-    var markerid : String? = null
+    var markerid: String? = null
 
     var dbmanager: DataBaseHelper? = null
 
@@ -130,7 +130,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
     val SET_COLL = 1000
     val SET_COLL2 = 1001
 
-    var imageUri:Uri? = null
+    var imageUri: Uri? = null
 
     var invtm = ""
 
@@ -164,16 +164,16 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             timedlg()
         }
 
-    /*    var todays = today.split("-")
+        /*    var todays = today.split("-")
 
-        var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
+            var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
 
-        for (i in 1 until todays.size){
-            texttoday += todays.get(i)
-        }
-        fishnumTV.setText(texttoday + "1")*/
+            for (i in 1 until todays.size){
+                texttoday += todays.get(i)
+            }
+            fishnumTV.setText(texttoday + "1")*/
 
-        addPicturesLL = findViewById(R.id.addPicturesLL)
+//        addPicturesLL = findViewById(R.id.addPicturesLL)
 
         images_path = ArrayList();
         images = ArrayList()
@@ -197,17 +197,17 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         var intent: Intent = getIntent();
 
-        if(intent.getStringExtra("markerid") != null){
+        if (intent.getStringExtra("markerid") != null) {
             markerid = intent.getStringExtra("markerid")
         }
 
-        if(intent.getStringExtra("latitude")!= null){
+        if (intent.getStringExtra("latitude") != null) {
             lat = intent.getStringExtra("latitude")
             fishgpslatTV.setText(lat)
             println("-----lat.......$lat")
         }
 
-        if(intent.getStringExtra("longitude")!= null){
+        if (intent.getStringExtra("longitude") != null) {
             log = intent.getStringExtra("longitude")
             fishgpslonTV.setText(log)
             println("-----lat.......$lat")
@@ -215,24 +215,24 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         keyId = intent.getStringExtra("GROP_ID")
 
-        if(intent.getStringExtra("id") != null){
+        if (intent.getStringExtra("id") != null) {
             pk = intent.getStringExtra("id")
         }
 
-        if(intent.getStringExtra("longitude") != null && intent.getStringExtra("latitude") != null){
+        if (intent.getStringExtra("longitude") != null && intent.getStringExtra("latitude") != null) {
             lat = intent.getStringExtra("latitude")
             log = intent.getStringExtra("longitude")
 
             try {
-                var geocoder:Geocoder = Geocoder(context);
+                var geocoder: Geocoder = Geocoder(context);
 
-                var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+                var list: List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
 
-                if(list.size > 0){
+                if (list.size > 0) {
 //                    fishinvregionET.setText(list.get(0).getAddressLine(0));
                     INV_REGION = list.get(0).getAddressLine(0)
                 }
-            } catch (e:IOException) {
+            } catch (e: IOException) {
                 e.printStackTrace();
             }
             convert(lat.toDouble())
@@ -241,13 +241,13 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         val dataList: Array<String> = arrayOf("*");
 
-        var basedata= db!!.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
+        var basedata = db!!.query("base_info", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
-        while(basedata.moveToNext()){
+        while (basedata.moveToNext()) {
 
             basechkdata = true
 
-            var base : Base = Base(basedata.getInt(0) , basedata.getString(1), basedata.getString(2), basedata.getString(3), basedata.getString(4), basedata.getString(5) , basedata.getString(6),basedata.getString(7))
+            var base: Base = Base(basedata.getInt(0), basedata.getString(1), basedata.getString(2), basedata.getString(3), basedata.getString(4), basedata.getString(5), basedata.getString(6), basedata.getString(7))
 
             fishinvpersonET.setText(base.INV_PERSON)
             fishinvdtET.setText(base.INV_DT)
@@ -261,27 +261,27 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             log = base.GPS_LON!!
 
             try {
-                var geocoder:Geocoder = Geocoder(context);
+                var geocoder: Geocoder = Geocoder(context);
 
-                var list:List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+                var list: List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
 
-                if(list.size > 0){
+                if (list.size > 0) {
                     System.out.println("list : " + list);
 
 //                    fishinvregionET.setText(list.get(0).getAddressLine(0));
                     INV_REGION = list.get(0).getAddressLine(0)
                 }
-            } catch (e:IOException) {
+            } catch (e: IOException) {
                 e.printStackTrace();
             }
 
         }
 
-        if(basechkdata){
+        if (basechkdata) {
 
-        }else {
+        } else {
 
-            val base : Base = Base(null,keyId,"",lat,log,fishinvpersonET.text.toString(),fishinvdtET.text.toString(),Utils.timeStr())
+            val base: Base = Base(null, keyId, "", lat, log, fishinvpersonET.text.toString(), fishinvdtET.text.toString(), Utils.timeStr())
 
             dbmanager!!.insertbase(base)
 
@@ -320,18 +320,18 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                 fishcodenumET.setText(fish_attribute.CODE_NUM)
 
-                fishrivernumET.setText(fish_attribute.RIVER_NUM.toString()+"차")
-             /*   var net_cnt = 0
-                var net_min = 0
-                net_cnt =   fish_attribute.NET_CNT!!.toInt()
-                net_min =   fish_attribute.NET_MIN!!.toInt()
-                if (net_cnt!=0&&net_min!=0){
-                    if (net_cnt > net_min){
-                        fishnetcntET.setText(net_cnt.toString()+"회")
-                    }else{
-                        fishnetminet.setText(net_min.toString()+"분")
-                    }
-                }*/
+                fishrivernumET.setText(fish_attribute.RIVER_NUM.toString() + "차")
+                /*   var net_cnt = 0
+                   var net_min = 0
+                   net_cnt =   fish_attribute.NET_CNT!!.toInt()
+                   net_min =   fish_attribute.NET_MIN!!.toInt()
+                   if (net_cnt!=0&&net_min!=0){
+                       if (net_cnt > net_min){
+                           fishnetcntET.setText(net_cnt.toString()+"회")
+                       }else{
+                           fishnetminet.setText(net_min.toString()+"분")
+                       }
+                   }*/
 
                 fishstreamwET.setText(fish_attribute.STREAM_W.toString())
                 fishwaterwET.setText(fish_attribute.WATER_W.toString())
@@ -367,7 +367,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 fishindicntET.setText(fish_attribute.INDI_CNT.toString())
 
                 fishunidentET.setText(fish_attribute.UNIDENT)
-                if(fish_attribute.UNIDENT == null){
+                if (fish_attribute.UNIDENT == null) {
                     fishunidentET.setText("")
                 }
 
@@ -390,21 +390,21 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                 val id = fish_attribute.id
 
-                if(fish_attribute.TEMP_YN.equals("N")){
-                    dbmanager!!.deletefish_attribute(fish_attribute,id)
+                if (fish_attribute.TEMP_YN.equals("N")) {
+                    dbmanager!!.deletefish_attribute(fish_attribute, id)
                 }
 
-                if(fish_attribute.TEMP_YN.equals("Y")){
+                if (fish_attribute.TEMP_YN.equals("Y")) {
                     dataArray.add(fish_attribute)
                 }
 
                 confmodTV.setText(fish_attribute.CONF_MOD)
 
-                val tmpfiles =  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator)
+                val tmpfiles = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images" + File.separator + keyId + File.separator)
                 var tmpfileList = tmpfiles.listFiles()
 
 
-                if(tmpfileList != null){
+                if (tmpfileList != null) {
                     for (i in 0..tmpfileList.size - 1) {
 
                         val options = BitmapFactory.Options()
@@ -425,11 +425,13 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         }
 
                         images_path!!.add(tmpfileList.get(i).path)
+                        Log.d("바바33", images_path.toString())
+                        for (j in 0..tmpfileList.size - 1) {
 
-                        for(j in 0..tmpfileList.size - 1) {
 
-                            if (images_path!!.get(i).equals(FileFilter.img(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator,(j+1).toString()))) {
- //                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/fish/images/" + fish_attribute.NUM.toString() +"_"+fish_attribute.INV_TM +"_" + (j+1) + ".png")) {
+                            var add_images = tmpfileList.get(j).path.split("/")
+                            if (images_path!!.get(i).equals(FileFilter.img(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "fish/images" + File.separator + keyId + File.separator, add_images[add_images.size - 1]))) {
+                                //                            if (images_path!!.get(i).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/fish/images/" + fish_attribute.NUM.toString() +"_"+fish_attribute.INV_TM +"_" + (j+1) + ".png")) {
                                 val bitmap = BitmapFactory.decodeFile(tmpfileList.get(i).path, options)
                                 val v = View.inflate(context, R.layout.item_add_image, null)
                                 val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
@@ -443,6 +445,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                             }
                         }
                     }
+                    Log.d("바바33", images_path.toString())
                 }
 
             }
@@ -462,7 +465,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             val data = db!!.query("fishAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
-            if (dataArray != null){
+            if (dataArray != null) {
                 dataArray.clear()
             }
 
@@ -475,14 +478,14 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             }
 
-            if(page == dataArray.size && page!! > 1){
+            if (page == dataArray.size && page!! > 1) {
                 page = page!! - 1
                 fishpageTV.setText(page.toString() + " / " + dataArray.size.toString())
 
                 clear()
 
                 resetPage(page!!)
-            }else if (page!! < dataArray.size && page!! > 1){
+            } else if (page!! < dataArray.size && page!! > 1) {
                 page = page!! - 1
                 fishpageTV.setText(page.toString() + " / " + dataArray.size.toString())
 
@@ -547,21 +550,21 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             fish_attribute.RIVER_NM = fishrivernmET.text.toString()
 
-       /*     if ( fishnetcntET.text.toString().replace("회","").toInt() > fishnetminet.text.toString().replace("분","").toInt()){
-                fish_attribute.NET_CNT =  fishnetcntET.text.toString().toInt()
-            }else{
-                fish_attribute.NET_MIN =  fishnetminet.text.toString().toInt()
-            }*/
-            if (fishnetcntET.text.equals("")){
+            /*     if ( fishnetcntET.text.toString().replace("회","").toInt() > fishnetminet.text.toString().replace("분","").toInt()){
+                     fish_attribute.NET_CNT =  fishnetcntET.text.toString().toInt()
+                 }else{
+                     fish_attribute.NET_MIN =  fishnetminet.text.toString().toInt()
+                 }*/
+            if (fishnetcntET.text.equals("")) {
                 fishnetcntET.setText("0")
             }
-            if (fishnetminet.text.equals("")){
+            if (fishnetminet.text.equals("")) {
                 fishnetminet.setText("0")
             }
 
-            if (fishnetcntET.text.toString().replace("회","").toInt()>fishnetminet.text.toString().replace("분","").toInt()){
+            if (fishnetcntET.text.toString().replace("회", "").toInt() > fishnetminet.text.toString().replace("분", "").toInt()) {
                 fish_attribute.COLL_TIME = fishnetcntET.text.toString()
-            }else{
+            } else {
                 fish_attribute.COLL_TIME = fishnetminet.text.toString()
             }
 
@@ -677,7 +680,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                         fish_attribute.CURRENT_TM = Utils.current_tm()
                         val prj = prjnameET.text.toString()
-                        if (prj == prjname){
+                        if (prj == prjname) {
                             fish_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
                         } else {
                             fish_attribute.PRJ_NAME = prjnameET.text.toString()
@@ -691,7 +694,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 //                        }
 
 //                        fish_attribute.INV_REGION = fishinvregionET.text.toString()
-                        if (fishinvregionET.length() > 0){
+                        if (fishinvregionET.length() > 0) {
                             fish_attribute.INV_REGION = fishinvregionET.text.toString();
                         } else {
                             fish_attribute.INV_REGION = INV_REGION
@@ -717,7 +720,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                             fish_attribute.GPSLAT_SEC = coordnsET.text.toString().toFloat()
                         }
                         if (coordedET.text.isNotEmpty()) {
-                            fish_attribute.GPSLAT_DEG  = coordedET.text.toString().toInt()
+                            fish_attribute.GPSLAT_DEG = coordedET.text.toString().toInt()
                         }
                         if (coordedET.text.isNotEmpty()) {
                             fish_attribute.GPSLON_MIN = coordedET.text.toString().toInt()
@@ -747,23 +750,23 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                         fish_attribute.RIVER_NM = fishrivernmET.text.toString()
 
-                       /* if(fishnetcntET.text.isNotEmpty()&&fishnetminet.text.isNotEmpty()){
-                            if ( fishnetcntET.text.toString().replace("회","").toInt() > fishnetminet.text.toString().replace("분","").toInt()){
-                                fish_attribute.NET_CNT =  fishnetcntET.text.toString().toInt()
-                            }else{
-                                fish_attribute.NET_MIN =  fishnetminet.text.toString().toInt()
-                            }
-                        }*/
-                        if (fishnetcntET.text.equals("")){
+                        /* if(fishnetcntET.text.isNotEmpty()&&fishnetminet.text.isNotEmpty()){
+                             if ( fishnetcntET.text.toString().replace("회","").toInt() > fishnetminet.text.toString().replace("분","").toInt()){
+                                 fish_attribute.NET_CNT =  fishnetcntET.text.toString().toInt()
+                             }else{
+                                 fish_attribute.NET_MIN =  fishnetminet.text.toString().toInt()
+                             }
+                         }*/
+                        if (fishnetcntET.text.equals("")) {
                             fishnetcntET.setText("0")
                         }
-                        if (fishnetminet.text.equals("")){
+                        if (fishnetminet.text.equals("")) {
                             fishnetminet.setText("0")
                         }
 
-                        if (fishnetcntET.text.toString().replace("회","").toInt()>fishnetminet.text.toString().replace("분","").toInt()){
+                        if (fishnetcntET.text.toString().replace("회", "").toInt() > fishnetminet.text.toString().replace("분", "").toInt()) {
                             fish_attribute.COLL_TIME = fishnetcntET.text.toString()
-                        }else{
+                        } else {
                             fish_attribute.COLL_TIME = fishnetminet.text.toString()
                         }
 
@@ -826,7 +829,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         }
 
                         fish_attribute.SPEC_NM = fishspecnmET.text.toString()
-                        if (fishspecnmtmp.length() > 0){
+                        if (fishspecnmtmp.length() > 0) {
                             fish_attribute.SPEC_NM = fishspecnmtmp.text.toString()
                         }
                         fish_attribute.FAMI_NM = fishfaminmET.text.toString()
@@ -856,16 +859,16 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                         if (chkdata) {
 
-                            if(pk != null){
+                            if (pk != null) {
 
                                 val CONF_MOD = confmodTV.text.toString()
 
-                                if(CONF_MOD == "C"  || CONF_MOD == "N"){
+                                if (CONF_MOD == "C" || CONF_MOD == "N") {
                                     fish_attribute.CONF_MOD = "M"
                                 }
 
-                                dbmanager!!.updatefish_attribute(fish_attribute,pk)
-                                dbmanager!!.updatecommonfish(fish_attribute,keyId)
+                                dbmanager!!.updatefish_attribute(fish_attribute, pk)
+                                dbmanager!!.updatecommonfish(fish_attribute, keyId)
                             }
 
 
@@ -913,24 +916,25 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                         }
 
-                        if (dataArray.size == 0 || intent.getStringExtra("id") == null){
+                        if (dataArray.size == 0 || intent.getStringExtra("id") == null) {
 
                             var intent = Intent()
                             intent.putExtra("markerid", markerid)
                             setResult(RESULT_OK, intent);
 
-                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator)
+                            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images" + File.separator + keyId + File.separator)
                             val pathdir = path.listFiles()
 
                             if (pathdir != null) {
                                 val deletedir = path.listFiles()
                                 println("deletedir.size ${deletedir.size}")
-                                if (path.isDirectory){ val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator)
+                                if (path.isDirectory) {
+                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images" + File.separator + keyId + File.separator)
 //                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX) deletepath.deleteRecursively()
                                 }
                             } else {
-                                if (path.isDirectory){
-                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator)
+                                if (path.isDirectory) {
+                                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images" + File.separator + keyId + File.separator)
 //                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
                                     deletepath.deleteRecursively()
                                 }
@@ -964,11 +968,12 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                                 val data = db!!.query("fishAttribute", dataList, "id = '$pk'", null, null, null, "", null)
 
-                                while (data.moveToNext()) { chkdata = true
-                                  fish_attribute =export_attribute(data)
+                                while (data.moveToNext()) {
+                                    chkdata = true
+                                    fish_attribute = export_attribute(data)
                                 }
 
-                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator)
+                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images" + File.separator + keyId + File.separator)
                                 val pathdir = path.listFiles()
 
                                 if (pathdir != null) {
@@ -976,7 +981,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                                         for (j in 0..pathdir.size - 1) {
 
-                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator + fish_attribute.NUM.toString() + "_" + fish_attribute.INV_TM +"_" + (j+1) + ".png")) {
+                                            if (pathdir.get(i).path.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data" + File.separator + "fish/images" + File.separator + keyId + File.separator + fish_attribute.NUM.toString() + "_" + fish_attribute.INV_TM + "_" + (j + 1) + ".png")) {
 
                                                 pathdir.get(i).canonicalFile.delete()
 
@@ -988,14 +993,14 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                                     }
                                     val deletedir = path.listFiles()
                                     println("deletedir.size ${deletedir.size}")
-                                    if (path.isDirectory){
-                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator)
+                                    if (path.isDirectory) {
+                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images" + File.separator + keyId + File.separator)
 //                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
                                         deletepath.deleteRecursively()
                                     }
                                 } else {
-                                    if (path.isDirectory){
-                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator)
+                                    if (path.isDirectory) {
+                                        val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images" + File.separator + keyId + File.separator)
 //                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
                                         deletepath.deleteRecursively()
                                     }
@@ -1060,7 +1065,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             }
 
-            if(pk == null){
+            if (pk == null) {
 
                 val builder = AlertDialog.Builder(context)
                 builder.setMessage("삭제하시겠습니까?").setCancelable(false)
@@ -1073,7 +1078,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                                 val dataList: Array<String> = arrayOf("*");
 
-                                val data= db!!.query("fishAttribute", dataList, "id = '$id'", null, null, null, "", null)
+                                val data = db!!.query("fishAttribute", dataList, "id = '$id'", null, null, null, "", null)
 
                                 if (dataArray != null) {
                                     dataArray.clear()
@@ -1210,7 +1215,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             fish_attribute.GROP_ID = keyId
 
             val prj = prjnameET.text.toString()
-            if (prj == prjname){
+            if (prj == prjname) {
                 fish_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
             } else {
                 fish_attribute.PRJ_NAME = prjnameET.text.toString()
@@ -1224,7 +1229,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 //            }
 
 //            fish_attribute.INV_REGION = fishinvregionET.text.toString()
-            if (fishinvregionET.length() > 0){
+            if (fishinvregionET.length() > 0) {
                 fish_attribute.INV_REGION = fishinvregionET.text.toString();
             } else {
                 fish_attribute.INV_REGION = INV_REGION
@@ -1255,22 +1260,22 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             }
 
             fish_attribute.RIVER_NM = fishrivernmET.text.toString()
-            if(fishnetcntET.text.isNotEmpty()&&fishnetminet.text.isNotEmpty()){
-               /* if ( fishnetcntET.text.toString().replace("회","").toInt() > fishnetminet.text.toString().replace("분","").toInt()){
-                    fish_attribute.NET_CNT =  fishnetcntET.text.toString().toInt()
-                }else{
-                    fish_attribute.NET_MIN =  fishnetminet.text.toString().toInt()
-                }*/
-                if (fishnetcntET.text.equals("")){
+            if (fishnetcntET.text.isNotEmpty() && fishnetminet.text.isNotEmpty()) {
+                /* if ( fishnetcntET.text.toString().replace("회","").toInt() > fishnetminet.text.toString().replace("분","").toInt()){
+                     fish_attribute.NET_CNT =  fishnetcntET.text.toString().toInt()
+                 }else{
+                     fish_attribute.NET_MIN =  fishnetminet.text.toString().toInt()
+                 }*/
+                if (fishnetcntET.text.equals("")) {
                     fishnetcntET.setText("0")
                 }
-                if (fishnetminet.text.equals("")){
+                if (fishnetminet.text.equals("")) {
                     fishnetminet.setText("0")
                 }
 
-                if (fishnetcntET.text.toString().replace("회","").toInt()>fishnetminet.text.toString().replace("분","").toInt()){
+                if (fishnetcntET.text.toString().replace("회", "").toInt() > fishnetminet.text.toString().replace("분", "").toInt()) {
                     fish_attribute.COLL_TIME = fishnetcntET.text.toString()
-                }else{
+                } else {
                     fish_attribute.COLL_TIME = fishnetminet.text.toString()
                 }
             }
@@ -1357,7 +1362,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             }
 
             fish_attribute.SPEC_NM = fishspecnmET.text.toString()
-            if (fishspecnmtmp.length() > 0){
+            if (fishspecnmtmp.length() > 0) {
                 fish_attribute.SPEC_NM = fishspecnmtmp.text.toString()
             }
             fish_attribute.FAMI_NM = fishfaminmET.text.toString()
@@ -1387,16 +1392,16 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             if (chkdata) {
 
-                if(pk != null){
+                if (pk != null) {
 
                     val CONF_MOD = confmodTV.text.toString()
 
-                    if(CONF_MOD == "C"  || CONF_MOD == "N"){
+                    if (CONF_MOD == "C" || CONF_MOD == "N") {
                         fish_attribute.CONF_MOD = "M"
                     }
 
-                    dbmanager!!.updatefish_attribute(fish_attribute,pk)
-                    dbmanager!!.updatecommonfish(fish_attribute,keyId)
+                    dbmanager!!.updatefish_attribute(fish_attribute, pk)
+                    dbmanager!!.updatecommonfish(fish_attribute, keyId)
                 }
 
 
@@ -1405,10 +1410,9 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 dbmanager!!.insertfish_attribute(fish_attribute);
 
 
-
             }
 
-            if(intent.getStringExtra("set") != null){
+            if (intent.getStringExtra("set") != null) {
                 intent.putExtra("reset", 100)
 
                 setResult(RESULT_OK, intent);
@@ -1417,26 +1421,26 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             btn_fishDelete.visibility = View.GONE
 
             var intent = Intent()
-            intent.putExtra("export",70)
+            intent.putExtra("export", 70)
             setResult(RESULT_OK, intent)
 
-            if (images_path != null){
+            if (images_path != null) {
                 images_path!!.clear()
             }
 
-            if (images != null){
+            if (images != null) {
                 images!!.clear()
             }
 
-            if (images_url != null){
+            if (images_url != null) {
                 images_url!!.clear()
             }
 
-            if (images_url_remove != null){
+            if (images_url_remove != null) {
                 images_url_remove!!.clear()
             }
 
-            if (images_id != null){
+            if (images_id != null) {
                 images_id!!.clear()
             }
 
@@ -1447,6 +1451,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         }
 
         btnPIC_FOLDER.setOnClickListener {
+
 
             var ListItems: List<String>
             ListItems = ArrayList();
@@ -1494,41 +1499,40 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
 
-            override fun   onTextChanged(s: CharSequence, start: Int, before: Int, count: Int){
-                var cnt = fishnetcntET.text.toString().replace("회","").toInt()
-                var min = fishnetminet.text.toString().replace("분","")
-                if (min==""){
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                var cnt = fishnetcntET.text.toString().replace("회", "").toInt()
+                var min = fishnetminet.text.toString().replace("분", "")
+                if (min == "") {
                     min = "0"
                 }
 
-                if (cnt<min.toInt()){
+                if (cnt < min.toInt()) {
                     colltoolTV.text = "족대"
-                }else{
+                } else {
                     colltoolTV.text = "투망"
                 }
             }
-            });
+        });
         fishnetminet.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
 
-            override fun  onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                var cnt = fishnetcntET.text.toString().replace("회","")
-                var min = fishnetminet.text.toString().replace("분","").toInt()
-                if (cnt==""){
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                var cnt = fishnetcntET.text.toString().replace("회", "")
+                var min = fishnetminet.text.toString().replace("분", "").toInt()
+                if (cnt == "") {
                     cnt = "0"
                 }
-                if (cnt.toInt()<min){
+                if (cnt.toInt() < min) {
                     colltoolTV.text = "족대"
-                }else{
+                } else {
                     colltoolTV.text = "투망"
                 }
             }
 
-            override fun afterTextChanged(s: Editable){
+            override fun afterTextChanged(s: Editable) {
 
             }
         })
-
 
 
         /* colltoolTV.setOnClickListener {
@@ -1576,7 +1580,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
     }
 
-    fun resetPage(page : Int){
+    fun resetPage(page: Int) {
         val dataList: Array<String> = arrayOf("*");
 
         val dbManager: DataBaseHelper = DataBaseHelper(this)
@@ -1587,9 +1591,9 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         val id = keyId + tmppages.toString()
 
-        val data= db.query("fishAttribute", dataList, "id = '$id'", null, null, null, "", null)
+        val data = db.query("fishAttribute", dataList, "id = '$id'", null, null, null, "", null)
 
-        if (dataArray != null){
+        if (dataArray != null) {
             dataArray.clear()
         }
 
@@ -1601,75 +1605,75 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
             dataArray.add(fish_attribute)
 
             fishinvregionET.setText(fish_attribute.INV_REGION)
-            if(fishinvregionET.text == null){
+            if (fishinvregionET.text == null) {
                 fishinvregionET.setText("")
             }
 
             fishinvdtET.setText(fish_attribute.INV_DT)
-            if(fishinvdtET.text == null){
+            if (fishinvdtET.text == null) {
                 fishinvdtET.setText(Utils.todayStr())
             }
 
             fishinvpersonET.setText(fish_attribute.INV_PERSON)
-            if(fishinvpersonET.text == null){
+            if (fishinvpersonET.text == null) {
                 fishinvpersonET.setText("")
             }
 
             fishweatherET.setText(fish_attribute.WEATHER)
-            if(fishinvpersonET.text == null){
+            if (fishinvpersonET.text == null) {
                 fishinvpersonET.setText("")
             }
 
             fishwindET.setText(fish_attribute.WIND)
-            if(fishwindET.text == null){
+            if (fishwindET.text == null) {
                 fishwindET.setText("")
             }
 
             fishwinddireET.setText(fish_attribute.WIND_DIRE)
-            if(fishwinddireET.text == null){
+            if (fishwinddireET.text == null) {
                 fishwinddireET.setText("")
             }
 
             fishtemperaturET.setText(fish_attribute.TEMPERATUR.toString())
-            if(fishtemperaturET.text == null){
+            if (fishtemperaturET.text == null) {
                 fishtemperaturET.setText("")
             }
 
             fishetcET.setText(fish_attribute.ETC)
-            if(fishetcET.text == null){
+            if (fishetcET.text == null) {
                 fishetcET.setText("")
             }
 
             fishmidrageET.setText(fish_attribute.MID_RAGE)
-            if(fishmidrageET.text == null){
+            if (fishmidrageET.text == null) {
                 fishmidrageET.setText("")
             }
 
             fishcodenumET.setText(fish_attribute.CODE_NUM)
-            if(fishcodenumET.text == null){
+            if (fishcodenumET.text == null) {
                 fishcodenumET.setText("")
             }
 
-            fishrivernumET.setText(fish_attribute.RIVER_NUM.toString()+"차")
+            fishrivernumET.setText(fish_attribute.RIVER_NUM.toString() + "차")
 
 
             fishgpslatTV.setText(fish_attribute.GPS_LAT.toString())
-            if(fishgpslatTV.text == null){
+            if (fishgpslatTV.text == null) {
                 initGPS()
             }
 
             fishgpslonTV.setText(fish_attribute.GPS_LON.toString())
 
             fishrivernmET.setText(fish_attribute.RIVER_NM)
-            if(fishrivernmET.text == null){
+            if (fishrivernmET.text == null) {
                 fishrivernmET.setText("")
             }
 
-           /* if (fish_attribute.NET_CNT!!.toInt() > fish_attribute.NET_MIN!!.toInt()){
-                fishnetcntET.setText(fish_attribute.NET_CNT.toString()+"회")
-            }else{
-                fishnetminet.setText(fish_attribute.NET_MIN.toString()+"분")
-            }*/
+            /* if (fish_attribute.NET_CNT!!.toInt() > fish_attribute.NET_MIN!!.toInt()){
+                 fishnetcntET.setText(fish_attribute.NET_CNT.toString()+"회")
+             }else{
+                 fishnetminet.setText(fish_attribute.NET_MIN.toString()+"분")
+             }*/
 //            fishnetcntET.setText(fish_attribute.NET_CNT.toString())
 //            if(fishnetcntET.text == null){
 //                fishnetcntET.setText("")
@@ -1681,17 +1685,17 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 //            }
 
             fishwaterwET.setText(fish_attribute.WATER_W.toString())
-            if(fishwaterwET.text == null){
+            if (fishwaterwET.text == null) {
                 fishwaterwET.setText("")
             }
 
             fishwaterdET.setText(fish_attribute.WATER_D.toString())
-            if(fishwaterdET.text == null){
+            if (fishwaterdET.text == null) {
                 fishwaterdET.setText("")
             }
 
             fishwatercurET.setText(fish_attribute.WATER_CUR.toString())
-            if(fishwatercurET.text == null){
+            if (fishwatercurET.text == null) {
                 fishwatercurET.setText("")
             }
             coordndET.setText(fish_attribute.GPSLAT_DEG.toString())
@@ -1714,72 +1718,72 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 //                detailLL.visibility = View.GONE
 //            }
 
-            if(fish_attribute.RIV_STR_IN != null && !fish_attribute.RIV_STR_IN.equals("")){
+            if (fish_attribute.RIV_STR_IN != null && !fish_attribute.RIV_STR_IN.equals("")) {
                 detailLL.visibility = View.VISIBLE
             }
 
             formTV.setText(fish_attribute.RIV_FORM)
-            if(formTV.text == null){
+            if (formTV.text == null) {
                 formTV.setText("")
             }
 
             fishnumTV.setText(fish_attribute.NUM.toString())
-            if(fishnumTV.text == null){
+            if (fishnumTV.text == null) {
                 fishnumTV.setText("")
             }
 
             fishspecnmET.setText(fish_attribute.SPEC_NM)
-            if(fishspecnmET.text == null){
+            if (fishspecnmET.text == null) {
                 fishspecnmET.setText("")
             }
 
             fishfaminmET.setText(fish_attribute.FAMI_NM)
-            if(fishfaminmET.text == null){
+            if (fishfaminmET.text == null) {
                 fishfaminmET.setText("")
             }
 
             fishsciennmET.setText(fish_attribute.SCIEN_NM)
-            if(fishsciennmET.text == null){
+            if (fishsciennmET.text == null) {
                 fishsciennmET.setText("")
             }
 
             fishindicntET.setText(fish_attribute.INDI_CNT.toString())
-            if(fishindicntET.text == null){
+            if (fishindicntET.text == null) {
                 fishindicntET.setText("")
             }
 
             fishunidentET.setText(fish_attribute.UNIDENT)
-            if(fishunidentET.text == null){
+            if (fishunidentET.text == null) {
                 fishunidentET.setText("")
             }
 
             fishtivfmchET.setText(fish_attribute.RIV_FM_CH)
-            if(fishtivfmchET.text == null){
+            if (fishtivfmchET.text == null) {
                 fishtivfmchET.setText("")
             }
 
             fishunfishchET.setText(fish_attribute.UN_FISH_CH)
-            if(fishunfishchET.text == null){
+            if (fishunfishchET.text == null) {
                 fishunfishchET.setText("")
             }
 
         }
     }
 
-    fun clear(){
+    fun clear() {
 
 //        var num = fishnumTV.text.toString()
-   /*     if (num.length > 7){
-            var textnum = num.substring(num.length - 2, num.length)
-            var splitnum = num.substring(0, num.length - 2)
-            var plusnum = textnum.toInt() + 1
-            fishnumTV.setText(splitnum.toString() + plusnum.toString())
-        } else {
-            var textnum = num.substring(num.length - 1, num.length)
-            var splitnum = num.substring(0, num.length - 1)
-            var plusnum = textnum.toInt() + 1
-            fishnumTV.setText(splitnum.toString() + plusnum.toString())
-        }*/
+        /*     if (num.length > 7){
+                 var textnum = num.substring(num.length - 2, num.length)
+                 var splitnum = num.substring(0, num.length - 2)
+                 var plusnum = textnum.toInt() + 1
+                 fishnumTV.setText(splitnum.toString() + plusnum.toString())
+             } else {
+                 var textnum = num.substring(num.length - 1, num.length)
+                 var splitnum = num.substring(0, num.length - 1)
+                 var plusnum = textnum.toInt() + 1
+                 fishnumTV.setText(splitnum.toString() + plusnum.toString())
+             }*/
         var c = dbmanager!!.pkNum("fishAttribute")
         fishnumTV.text = c.toString()
 
@@ -1806,11 +1810,11 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
     }
 
-    fun startDlgFish(){
+    fun startDlgFish() {
         val intent = Intent(context, DlgFishActivity::class.java)
-        if (fishspecnmET.text != null && fishspecnmET.text != ""){
+        if (fishspecnmET.text != null && fishspecnmET.text != "") {
             val spec = fishspecnmET.text.toString()
-            intent.putExtra("SPEC",spec)
+            intent.putExtra("SPEC", spec)
         }
         startActivityForResult(intent, SET_FISHDLG);
     }
@@ -1929,7 +1933,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
     }
 
 
-
     override fun onLocationUpdated(p0: Location?) {
 
         stopLocation()
@@ -1959,7 +1962,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        var common : common
+        var common: common
 
         var commonDivision: CommonDivision
 
@@ -1981,7 +1984,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                     var zoological = data!!.getStringExtra("zoological");
 
                     fishspecnmET.text = name
-                    if (name == "SP(미동정)"){
+                    if (name == "SP(미동정)") {
                         fishspecnmET.visibility = View.GONE
                         fishspecnmLL.visibility = View.VISIBLE
                     }
@@ -1993,61 +1996,47 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                 SET_DATA1 -> {
 
 
-                    common =data!!.getSerializableExtra("common") as common
+                    common = data!!.getSerializableExtra("common") as common
 
-                    commonDivision=data!!.getSerializableExtra("CommonDivision") as CommonDivision
+                    commonDivision = data!!.getSerializableExtra("CommonDivision") as CommonDivision
 
-                    fishmidrageET.setText(common.title+"/"+commonDivision.title + " ( " + commonDivision.code+")")
+                    fishmidrageET.setText(common.title + "/" + commonDivision.title + " ( " + commonDivision.code + ")")
 
-                    fishcodenumET.setText(commonDivision.title + " ( " + commonDivision.code+")")
+                    fishcodenumET.setText(commonDivision.title + " ( " + commonDivision.code + ")")
 
                 }
 
                 FROM_CAMERA -> {
 
                     if (resultCode == -1) {
-
-                        /*  val options = BitmapFactory.Options()
-                          options.inJustDecodeBounds = true
-
-                          options.inJustDecodeBounds = false
-                          options.inSampleSize = 1
-                          if (options.outWidth > 96) {
-                              val ws = options.outWidth / 96 + 1
-                              if (ws > options.inSampleSize) {
-                                  options.inSampleSize = ws
-                              }
-                          }
-                          if (options.outHeight > 96) {
-                              val hs = options.outHeight / 96 + 1
-                              if (hs > options.inSampleSize) {
-                                  options.inSampleSize = hs
-                              }
-                          }*/
-
+                        val outPath2 = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images" + File.separator + keyId
                         addPicturesLL!!.removeAllViews()
                         val realPathFromURI = cameraPath!!
                         images_path!!.add(cameraPath!!)
                         context.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://$realPathFromURI")))
                         try {
-                            val add_file = Utils.getImages(context.contentResolver, cameraPath)
 
-                            val v = View.inflate(context, R.layout.item_add_image, null)
-                            val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
-                            val delIV = v.findViewById<View>(R.id.delIV) as ImageView
-                            imageIV.setImageBitmap(add_file)
-                            delIV.setTag(images!!.size)
-                            images!!.add(add_file)
+                            for (i in 0 until images_path!!.size) {
 
-                            if (imgSeq == 0) {
-                                addPicturesLL!!.addView(v)
+                                val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(i))
+                                if (images!!.size == 0) {
+                                    images!!.add(add_file)
+                                } else {
+                                    try {
+                                        images!!.set(images!!.size, add_file)
+                                    } catch (e: IndexOutOfBoundsException) {
+                                        images!!.add(add_file)
+                                    }
+
+                                }
+                                reset(images_path!!.get(i), i)
                             }
-
 
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
-
+                        FileFilter.removeDir(outPath2)
+                        images_path!!.clear()
                         val child = addPicturesLL!!.getChildCount()
                         for (i in 0 until child) {
 
@@ -2055,12 +2044,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                             val v = addPicturesLL!!.getChildAt(i)
 
-                            val num = fishnumTV.text.toString()
-                            var time = ""
-                            time = fishinvtmTV.text.toString()
-                            var timesplit = time.split(":")
-                            invtm = timesplit.get(0) + timesplit.get(1)
-                            val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator
+                            val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images" + File.separator + keyId + File.separator
                             val outputsDir = File(outPath)
 
                             if (outputsDir.exists()) {
@@ -2081,43 +2065,33 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                             val getTime = sdf.format(date)
                             var gettimes = getTime.split("-")
 
-                            saveVitmapToFile(images!!.get(i), outPath +getTime.substring(2,8)+"_"+gettimes[1] + "_" + (i + 1) + ".png")
+                            saveVitmapToFile(images!!.get(i), outPath + getTime.substring(2, 8) + "_" + gettimes[1] + "_" + (i + 1) + ".png")
 
                         }
 
                         images!!.clear()
-//                        var extras: Bundle = data!!.getExtras();
-//                        val bitmap = extras.get("data") as Bitmap
-//
-//                        val v = View.inflate(context, R.layout.item_add_image, null)
-//                        val imageIV = v.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
-//                        val delIV = v.findViewById<View>(R.id.delIV) as ImageView
-//                        imageIV.setImageBitmap(bitmap)
-//                        images!!.add(bitmap)
-//                        delIV.setTag(images!!.size)
-//
-//                        if (imgSeq == 0) {
-//                            addPicturesLL!!.addView(v)
-//                        }
 
                     }
                 }
 
                 FROM_ALBUM -> {
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator
-                    val outPath2 = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images"+ File.separator +keyId
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images" + File.separator + keyId + File.separator
+                    val outPath2 = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images" + File.separator + keyId
 
-                    var file = File(outPath2)
-                    file.delete()
                     addPicturesLL!!.removeAllViews()
+//                    images_path!!.clear()
 
                     val result = data!!.getStringArrayExtra("result")
-
+                    Log.d("이미지패스", images_path.toString())
                     for (i in result.indices) {
                         val str = result[i]
                         images_path!!.add(str);
                     }
-                    for (i in 0 until images_path!!.size){
+                    Log.d("이미지패스2", images_path.toString())
+                    Log.d("이미지패스3", images_path!!.size.toString())
+                    images!!.clear()
+                    for (i in 0 until images_path!!.size) {
+
                         val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(i))
                         if (images!!.size == 0) {
                             images!!.add(add_file)
@@ -2131,19 +2105,25 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         }
                         reset(images_path!!.get(i), i)
                     }
+                    FileFilter.removeDir(outPath2)
 
                     val child = addPicturesLL!!.getChildCount()
+
+                    images_path!!.clear()
+                    println("test : $images")
                     for (i in 0 until child) {
 
                         println("test : $i")
+/*
+//                        val v = addPicturesLL!!.getChildAt(i)
 
-                        val v = addPicturesLL!!.getChildAt(i)
-
-                        val num = fishnumTV.text.toString()
+//                        val num = fishnumTV.text.toString()
                         var time = ""
                         time = fishinvtmTV.text.toString()
                         var timesplit = time.split(":")
                         invtm = timesplit.get(0) + timesplit.get(1)
+
+
                         val outputsDir = File(outPath)
 
                         if (outputsDir.exists()) {
@@ -2160,13 +2140,21 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                             val made = outputsDir.mkdirs()
 
                         }
+                        */
+
+                        val outputsDir = File(outPath)
+                        if (!outputsDir.exists()) {
+                            outputsDir.mkdirs()
+                        }
+
                         val date = Date()
                         val sdf = SimpleDateFormat("yyyyMMdd-HHmmSS")
 
                         val getTime = sdf.format(date)
                         var gettimes = getTime.split("-")
 
-                        saveVitmapToFile(images!!.get(i), outPath +getTime.substring(2,8)+"_"+gettimes[1] + "_" + (i + 1) + ".png")
+                        println("test : $images")
+                        saveVitmapToFile(images!!.get(i), outPath + getTime.substring(2, 8) + "_" + gettimes[1] + "_" + (i + 1) + ".png")
 
                     }
 
@@ -2179,11 +2167,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                     colltoolTV.setText(title + "x" + title2)
                 }
 
-                /*SET_COLL2 -> {
-                    var title = data!!.getStringExtra("num");
-                    var title2 = data!!.getStringExtra("num2");
-                    colltoolTV.setText(title + "x" + title2)
-                }*/
 
             }
         }
@@ -2223,58 +2206,56 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         val builder = AlertDialog.Builder(context)
         builder.setMessage("삭제하시겠습니까 ? ").setCancelable(false)
                 .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
-                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator
+                    val outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images" + File.separator + keyId + File.separator
                     addPicturesLL!!.removeAllViews()
-                    images!!.clear()
                     val tag = v.tag as Int
-                    Log.d("바바",tag.toString())
-                    images_path!!.removeAt(tag)
-                    Log.d("바바",images_path.toString())
+                    var del_images: ArrayList<String> = ArrayList();
+                    try {
+                        images!!.clear()
+                        del_images = images_path!![tag].split("/") as ArrayList<String>
+                        images_path!!.removeAt(tag)
 
-                    val num = fishnumTV.text.toString()
-                    var path = FileFilter.delete_img(outPath,(tag+1).toString())
-                    Log.d("경로",path.toString())
-                    var file = File(path)
-                    file.delete()
+//                    val num = fishnumTV.text.toString()
+                        var path = FileFilter.delete_img(outPath, del_images[del_images.size - 1])
+                        Log.d("경로", path.toString())
+                        var file = File(path)
+                        file.delete()
 
-                    for (k in images_url!!.indices) {
-                        val vv = View.inflate(context, R.layout.item_add_image, null)
-                        val imageIV = vv.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
-                        val delIV = vv.findViewById<View>(R.id.delIV) as ImageView
-                        delIV.visibility = View.GONE
-                        val del2IV = vv.findViewById<View>(R.id.del2IV) as ImageView
-                        del2IV.visibility = View.VISIBLE
-                        del2IV.tag = k
-                        ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
-                        ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
-                        if (imgSeq == 0) {
-                            addPicturesLL!!.addView(vv)
-                        }
+                    } catch (e: IndexOutOfBoundsException) {
+
                     }
-                    for (j in images_path!!.indices) {
 
+                    /* for (k in images_url!!.indices) {
+                         val vv = View.inflate(context, R.layout.item_add_image, null)
+                         val imageIV = vv.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
+                         val delIV = vv.findViewById<View>(R.id.delIV) as ImageView
+                         delIV.visibility = View.GONE
+                         val del2IV = vv.findViewById<View>(R.id.del2IV) as ImageView
+                         del2IV.visibility = View.VISIBLE
+                         del2IV.tag = k
+                         ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
+                         ImageLoader.getInstance().displayImage(images_url!!.get(k), imageIV, Utils.UILoptions)
+                         if (imgSeq == 0) {
+                             addPicturesLL!!.addView(vv)
+                         }
+                     }*/
+                    for (j in images_path!!.indices) {
                         val paths = images_path!!.get(j).split("/")
                         val file_name = paths.get(paths.size - 1)
                         val getPk = file_name.split("_")
                         if (getPk.size > 2) {
-                            val pathPk = getPk.get(0)
-                            val pathPk2 = getPk.get(1)
-                            val num = fishnumTV.text.toString()
-
-                            if (pathPk == num && pathPk2 == invtm) {
-                                val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
-                                if (images!!.size == 0) {
+                            val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
+                            if (images!!.size == 0) {
+                                images!!.add(add_file)
+                            } else {
+                                try {
+                                    images!!.set(images!!.size, add_file)
+                                } catch (e: IndexOutOfBoundsException) {
                                     images!!.add(add_file)
-                                } else {
-                                    try {
-                                        images!!.set(images!!.size, add_file)
-                                    } catch (e: IndexOutOfBoundsException) {
-                                        images!!.add(add_file)
-                                    }
-
                                 }
-                                reset(images_path!!.get(j), j)
+
                             }
+                            reset(images_path!!.get(j), j)
                         } else {
                             val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
                             if (images!!.size == 0) {
@@ -2290,7 +2271,6 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                             reset(images_path!!.get(j), j)
                         }
                     }
-
                 })
                 .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
         val alert = builder.create()
@@ -2304,10 +2284,12 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
                     addPicturesLL!!.removeAllViews()
                     val tag = v.tag as Int
+                    Log.d("바바23", images_url.toString())
                     images_url!!.removeAt(tag)
+                    Log.d("바바23", images_url.toString())
                     images_url_remove!!.add(images_id!!.get(tag).toString())
                     images_id!!.removeAt(tag)
-                    Log.d("바바2",tag.toString())
+                    Log.d("바바2", tag.toString())
                     for (k in images_url!!.indices) {
                         val vv = View.inflate(context, R.layout.item_add_image, null)
                         val imageIV = vv.findViewById<View>(R.id.imageIV) as SelectableRoundedImageView
@@ -2327,25 +2309,25 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
                         val file_name = paths.get(paths.size - 1)
                         val getPk = file_name.split("_")
                         if (getPk.size > 1) {
-                            val pathPk = getPk.get(0)
-                            val pathPk2 = getPk.get(1)
-                            val num = fishnumTV.text.toString()
-                            val invtm = fishinvtmTV.text.toString()
+//                            val pathPk = getPk.get(0)
+//                            val pathPk2 = getPk.get(1)
+//                            val num = fishnumTV.text.toString()
+//                            val invtm = fishinvtmTV.text.toString()
 
-                            if (pathPk == num && pathPk2 == invtm) {
-                                val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
-                                if (images!!.size == 0) {
+//                            if (pathPk == num && pathPk2 == invtm) {
+                            val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
+                            if (images!!.size == 0) {
+                                images!!.add(add_file)
+                            } else {
+                                try {
+                                    images!!.set(images!!.size, add_file)
+                                } catch (e: IndexOutOfBoundsException) {
                                     images!!.add(add_file)
-                                } else {
-                                    try {
-                                        images!!.set(images!!.size, add_file)
-                                    } catch (e: IndexOutOfBoundsException) {
-                                        images!!.add(add_file)
-                                    }
-
                                 }
-                                reset(images_path!!.get(j), j)
+
                             }
+                            reset(images_path!!.get(j), j)
+//                            }
                         } else {
                             val add_file = Utils.getImages(context!!.getContentResolver(), images_path!!.get(j))
                             if (images!!.size == 0) {
@@ -2368,6 +2350,7 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         alert.show()
 
     }
+
     fun convert(d: Double): String {
 
         var long_d = Math.abs(d)
@@ -2445,40 +2428,43 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         return s
     }
-    fun saveVitmapToFile(bitmap:Bitmap, filePath:String){
 
+    fun saveVitmapToFile(bitmap: Bitmap, filePath: String) {
+        Log.d("파일", filePath.toString())
         var file = File(filePath)
-        var out: OutputStream? =null
+        var out: OutputStream? = null
         try {
             file.createNewFile()
             out = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
 
-        }catch (e:Exception){
+        } catch (e: Exception) {
 
             e.printStackTrace()
-        }finally {
+        } finally {
 
             out!!.close()
         }
 
+        images_path!!.add(filePath)
+
     }
 
-    fun setDirEmpty( dirName:String){
+    fun setDirEmpty(dirName: String) {
 
         var path = Environment.getExternalStorageDirectory().toString() + dirName;
 
-        val dir:File    =  File(path);
+        val dir: File = File(path);
         var childFileList = dir.listFiles()
 
-        if(dir.exists()){
-            for(childFile:File in childFileList){
+        if (dir.exists()) {
+            for (childFile: File in childFileList) {
 
-                if(childFile.isDirectory()){
+                if (childFile.isDirectory()) {
 
                     setDirEmpty(childFile.absolutePath); //하위디렉토리
 
-                } else{
+                } else {
 
                     childFile.delete(); // 하위파일
                 }
@@ -2488,44 +2474,39 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         }
     }
 
-    fun river_bed(){
-        if (boulderET.text.isNotEmpty()){
+    fun river_bed() {
+        if (boulderET.text.isNotEmpty()) {
             values.add(boulderET.text.toString().toInt())
         }
-        if (cobbleET.text.isNotEmpty()){
+        if (cobbleET.text.isNotEmpty()) {
             values.add(Utils.getString(cobbleET).toInt())
         }
-        if (pebbleET.text.isNotEmpty()){
+        if (pebbleET.text.isNotEmpty()) {
             values.add(Utils.getString(pebbleET).toInt())
         }
-        if (gravelET.text.isNotEmpty()){
+        if (gravelET.text.isNotEmpty()) {
             values.add(Utils.getString(gravelET).toInt())
         }
-        if (sendET.text.isNotEmpty()){
+        if (sendET.text.isNotEmpty()) {
             values.add(Utils.getString(sendET).toInt())
         }
-        if (!(values.size <= 0 && values == null)){
+        if (!(values.size <= 0 && values == null)) {
             var max = Collections.max<Int>(values) // 100
 
-            if (max == Utils.getString(boulderET).toInt()){
+            if (max == Utils.getString(boulderET).toInt()) {
                 values_name = "Boulder"
-            }
-            else if (max == Utils.getString(cobbleET).toInt()){
+            } else if (max == Utils.getString(cobbleET).toInt()) {
                 values_name = "Cobble"
-            }
-            else if (max == Utils.getString(pebbleET).toInt()){
+            } else if (max == Utils.getString(pebbleET).toInt()) {
                 values_name = "Pebble"
-            }
-            else if (max == Utils.getString(gravelET).toInt()){
+            } else if (max == Utils.getString(gravelET).toInt()) {
                 values_name = "Gravel"
-            }
-            else if (max == Utils.getString(sendET).toInt()){
+            } else if (max == Utils.getString(sendET).toInt()) {
                 values_name = "Sand"
-            }else{
+            } else {
                 values_name = ""
             }
         }
-
 
 
     }
@@ -2559,27 +2540,27 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
 
         }
 
-        if (dataArray.size == 0 || intent.getStringExtra("id") == null){
+        if (dataArray.size == 0 || intent.getStringExtra("id") == null) {
 
             var intent = Intent()
             intent.putExtra("markerid", markerid)
             setResult(RESULT_OK, intent);
 
-            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator)
+            val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images" + File.separator + keyId + File.separator)
 //                                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data/birds/images/")
             val pathdir = path.listFiles()
 
             if (pathdir != null) {
                 val deletedir = path.listFiles()
                 println("deletedir.size ${deletedir.size}")
-                if (path.isDirectory){
-                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator)
+                if (path.isDirectory) {
+                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images" + File.separator + keyId + File.separator)
 //                                     val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
                     deletepath.deleteRecursively()
                 }
             } else {
-                if (path.isDirectory){
-                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images"+ File.separator +keyId+ File.separator)
+                if (path.isDirectory) {
+                    val deletepath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "fish/images" + File.separator + keyId + File.separator)
 //                                      val path:File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + biotope_attribute.INV_DT + "." + biotope_attribute.INV_TM + "."+biotope_attribute.INV_INDEX)
                     deletepath.deleteRecursively()
                 }
@@ -2593,44 +2574,46 @@ class FishActivity : Activity() , OnLocationUpdatedListener {
         data.close()
 
     }
+
     fun datedlg() {
         var day = Utils.todayStr()
         var days = day.split("-")
-        DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt()-1, days[2].toInt()).show()
+        DatePickerDialog(context, dateSetListener, days[0].toInt(), days[1].toInt() - 1, days[2].toInt()).show()
     }
+
     private val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
         val msg = String.format("%d-%d-%d", year, monthOfYear + 1, dayOfMonth)
-        var msgs  = msg.split("-")
+        var msgs = msg.split("-")
         var month = ""
         var day = ""
-        if (msgs[1].length<2){
-            month = "0"+msgs[1]
-        }else{
+        if (msgs[1].length < 2) {
+            month = "0" + msgs[1]
+        } else {
             month = msgs[1]
         }
-        if (msgs[2].length<2){
-            day = "0"+msgs[2]
-        }else{
+        if (msgs[2].length < 2) {
+            day = "0" + msgs[2]
+        } else {
             day = msgs[2]
         }
-        fishinvdtET.text = msgs[0]+"-"+month+"-"+day
+        fishinvdtET.text = msgs[0] + "-" + month + "-" + day
     }
 
     fun null_attribute(): Fish_attribute {
-        var fish_attribute: Fish_attribute = Fish_attribute(null,null,null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
+        var fish_attribute: Fish_attribute = Fish_attribute(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
                 , null, null, null, null, null, null, null, null, null, null, null, null, null
-                , null, null,null, null, null, null, null, null, null,null, null,null, null, null
-                , null,null,null,null,null,null,null)
+                , null, null, null, null, null, null, null, null, null, null, null, null, null, null
+                , null, null, null, null, null, null, null)
         return fish_attribute
     }
 
     fun export_attribute(data: Cursor): Fish_attribute {
         var fish_attribute: Fish_attribute = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
                 data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15),
-                data.getFloat(16), data.getFloat(17), data.getString(18),data.getString(19), data.getInt(20), data.getInt(21), data.getInt(22), data.getInt(23), data.getString(24), data.getString(25),
-                data.getInt(26),data.getInt(27),data.getInt(28),data.getInt(29),data.getInt(30), data.getString(31), data.getInt(32), data.getString(33), data.getString(34), data.getString(35),
-                data.getInt(36), data.getString(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42),data.getInt(43),data.getInt(44),data.getFloat(45)
-                ,data.getInt(46), data.getInt(47), data.getFloat(48),data.getString(49), data.getString(50), data.getString(51), data.getString(52))
+                data.getFloat(16), data.getFloat(17), data.getString(18), data.getString(19), data.getInt(20), data.getInt(21), data.getInt(22), data.getInt(23), data.getString(24), data.getString(25),
+                data.getInt(26), data.getInt(27), data.getInt(28), data.getInt(29), data.getInt(30), data.getString(31), data.getInt(32), data.getString(33), data.getString(34), data.getString(35),
+                data.getInt(36), data.getString(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getInt(43), data.getInt(44), data.getFloat(45)
+                , data.getInt(46), data.getInt(47), data.getFloat(48), data.getString(49), data.getString(50), data.getString(51), data.getString(52))
         return fish_attribute
     }
 

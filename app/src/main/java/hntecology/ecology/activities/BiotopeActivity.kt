@@ -4398,7 +4398,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 t_name = t_names[0]
                 t_name2 ="-"+ t_names[1]
             }else{
-                t_name =  biotope_attribute.DOMIN.toString()
+                t_name =  t_names[0]
             }
         }
 
@@ -4408,7 +4408,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
             dominTV.text = domins[0]
             ausTV.text = domins[1]
         } else {
-            dominTV.text = biotope_attribute.DOMIN
+            dominTV.text = domins[0]
         }
 
         etIMP_FORMET.setText(biotope_attribute.IMP_FORM.toString())

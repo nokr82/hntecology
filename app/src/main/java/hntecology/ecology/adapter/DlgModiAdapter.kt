@@ -13,7 +13,7 @@ import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.model.Biotope_attribute
 
-class DlgModiAdapter(var context: Context, var itemList : ArrayList<Biotope_attribute>, var itemList2 : ArrayList<Biotope_attribute>) : BaseAdapter() {
+class DlgModiAdapter(var context: Context, var itemList2 : ArrayList<Biotope_attribute>) : BaseAdapter() {
 
     var selectIndex:Int = 0;
     private lateinit var listdata1 : java.util.ArrayList<Biotope_attribute>
@@ -98,7 +98,7 @@ class DlgModiAdapter(var context: Context, var itemList : ArrayList<Biotope_attr
 
     override fun getItem(position: Int): Biotope_attribute {
 
-        return itemList.get(position)
+        return itemList2.get(position)
     }
 
     override fun getItemId(position: Int): Long {
@@ -108,23 +108,21 @@ class DlgModiAdapter(var context: Context, var itemList : ArrayList<Biotope_attr
 
     override fun getCount(): Int {
 
-        return itemList.count()
+        return itemList2.count()
     }
 
     fun clearItem(){
         itemList2.clear()
-        itemList.clear();
         notifyDataSetChanged();
     }
     fun addItem(Biotope_attribute: Biotope_attribute){
         itemList2.add(Biotope_attribute)
-        itemList.add(Biotope_attribute);
         notifyDataSetChanged()
     }
 
     fun removeItem(position: Int){
 
-        itemList.removeAt(position)
+        itemList2.removeAt(position)
         notifyDataSetChanged()
 
     }

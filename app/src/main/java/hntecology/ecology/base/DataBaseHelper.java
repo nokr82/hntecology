@@ -382,6 +382,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     // to you to create adapters for your views.
     public void insertbiotope_attribute(Biotope_attribute biotope_attribute) {
         //37 column
+        Log.d("인서트비오톱","추가");
         String query = "INSERT INTO biotopeAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,INV_INDEX,LU_GR_NUM,LU_TY_RATE,STAND_H,LC_GR_NUM,LC_TY,TY_MARK,GV_RATE,GV_STRUCT,DIS_RET,RESTOR_POT,COMP_INTA";
         query += ",VP_INTA,IMP_FORM,BREA_DIA,FIN_EST,TRE_SPEC,TRE_FAMI,TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_H,STRE_BRT,STRE_COVE,SHR_SPEC,SHR_FAMI";

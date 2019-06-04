@@ -723,13 +723,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 datas.clear()
                 layersDatas.clear()
 
-
-                /*        runOnUiThread(Runnable {
-                            for (i in 0..jsonOb.size - 1) {
-                                layerDivision = 8
-                                loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name, jsonOb.get(i).type, jsonOb.get(i).added, -1)
-                            }
-                        })*/
                 for (i in 0..jsonOb.size - 1) {
 
                     println("layerDatas ${jsonOb.get(i).grop_id}")
@@ -3452,7 +3445,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 Toast.makeText(context, "17레벨 이상까지 확대해주세요.", Toast.LENGTH_SHORT).show()
                                 return@setOnPolygonClickListener
                             }
-                        } else {
+                        }
+                        else {
                             val type = typeST.isChecked
 
                             println("type : $type")
@@ -3479,7 +3473,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                                     for (i in 0..polygons.size - 1) {
                                         if (polygons.get(i).tag == polygon.tag) {
-                                            println("layerinfo.metadata ${layerinfo.metadata}")
+                                            println("이것이머다냐 ${layerinfo.metadata}")
 
 
                                             intent = Intent(this, BiotopeActivity::class.java)
@@ -3703,7 +3697,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                 data.LU_GR_NUM = LANDUSE
                                                 data.LC_GR_NUM = landcover
                                             }
-
+                                            if (modichk) {
+                                                intent = Intent(this, DlgModiListActivity::class.java)
+                                            }
                                             intent!!.putExtra("biotopedata", data)
                                             intent!!.putExtra("GROP_ID", attrubuteKey.toString())
                                             intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
@@ -3734,13 +3730,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                     Log.d("비오어레이", biotopedataArray.toString())
                                     if (modichk) {
                                         intent = Intent(this, DlgModiListActivity::class.java)
-                                        intent.putExtra("size", biotopedataArray.size)
-//                                        intent.putExtra("id", biotopedataArray.get(0).id)
-//                                        intent.putExtra("region", biotopedataArray.get(3).INV_REGION)
-//                                        intent.putExtra("index", biotopedataArray.get(7).INV_INDEX)
-//                                        intent.putExtra("geom", biotopedataArray.get(55).GEOM)
-//                                        intent.putExtra("landuse", biotopedataArray.get(54).LANDUSE)
-
                                     }
 
                                     intent.putExtra("title", "비오톱")

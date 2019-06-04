@@ -1,10 +1,7 @@
 package hntecology.ecology.activities
 
 import android.Manifest
-import android.app.Activity
-import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.app.ProgressDialog
+import android.app.*
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -47,8 +44,16 @@ import io.nlopez.smartlocation.SmartLocation
 import io.nlopez.smartlocation.location.config.LocationAccuracy
 import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
+import kotlinx.android.synthetic.main.activity_flora.*
 import kotlinx.android.synthetic.main.activity_mammalia_ex.*
+import kotlinx.android.synthetic.main.activity_mammalia_ex.btnPIC_FOLDER
 import kotlinx.android.synthetic.main.activity_mammalia_ex.confmodTV
+import kotlinx.android.synthetic.main.activity_mammalia_ex.coordedET
+import kotlinx.android.synthetic.main.activity_mammalia_ex.coordemET
+import kotlinx.android.synthetic.main.activity_mammalia_ex.coordesET
+import kotlinx.android.synthetic.main.activity_mammalia_ex.coordndET
+import kotlinx.android.synthetic.main.activity_mammalia_ex.coordnmET
+import kotlinx.android.synthetic.main.activity_mammalia_ex.coordnsET
 import kotlinx.android.synthetic.main.activity_mammalia_ex.prjnameET
 import kotlinx.android.synthetic.main.activity_mammalia_ex.resetBT
 import kotlinx.android.synthetic.main.activity_stock.*
@@ -154,6 +159,10 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         maminvdtTV.setOnClickListener {
             datedlg()
+        }
+
+        mammaltimeTV.setOnClickListener {
+            timedlg()
         }
   /*      var today = Utils.todayStr();
 
@@ -2485,5 +2494,20 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         return mammal_attribute
     }
 
-
+    fun timedlg() {
+        val cal = Calendar.getInstance()
+        val dialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hour, min ->
+            var hour_s = hour.toString()
+            var min_s = min.toString()
+            if (min_s.length != 2) {
+                min_s = "0" + min_s
+            }
+            if (hour_s.length != 2) {
+                hour_s = "0" + hour_s
+            }
+            val msg = String.format("%s : %s", hour_s, min_s)
+            mammaltimeTV.text = msg
+        }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
+        dialog.show()
+    }
 }

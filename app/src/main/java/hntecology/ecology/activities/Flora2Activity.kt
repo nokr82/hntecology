@@ -1543,7 +1543,7 @@ class Flora2Activity : Activity() {
                                 manyFloraAttribute.INV_REGION = INV_REGION
                             }
 
-                            manyFloraAttribute.INV_DT = Utils.todayStr()
+                            manyFloraAttribute.INV_DT = invdtTV.text.toString()
 
                             if (invpersonTV.text == null || invpersonTV.text.equals("")) {
                                 manyFloraAttribute.INV_PERSON = userName
@@ -1988,7 +1988,7 @@ class Flora2Activity : Activity() {
                                     manyFloraAttribute.INV_REGION = INV_REGION
                                 }
 
-                                manyFloraAttribute.INV_DT = Utils.todayStr()
+                                manyFloraAttribute.INV_DT = invdtTV.text.toString()
 
                                 if (invpersonTV.text == null || invpersonTV.text.equals("")) {
                                     manyFloraAttribute.INV_PERSON = userName

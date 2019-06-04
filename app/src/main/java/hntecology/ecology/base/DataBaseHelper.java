@@ -481,7 +481,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "INSERT INTO birdsAttribute";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_DT,INV_PERSON,WEATHER,WIND,WIND_DIRE";
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,ENDANGERED,INDI_CNT,OBS_STAT";
-        query += ",USE_TAR,USE_LAYER,MJ_ACT,STANDARD,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM";
+        query += ",USE_TAR,USE_LAYER,MJ_ACT,MJ_ACT_PR,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM";
         query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC";
         query += ",MAC_ADDR,CURRENT_TM";
         query +=")";
@@ -510,7 +510,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + birds_attribute.getUSE_LAYER() + "'";
         query += ", '" + birds_attribute.getMJ_ACT() + "'";
 //        query += ", '" + birds_attribute.getMJ_ACT_PR() + "'";
-        query += ", '" + birds_attribute.getSTANDARD() + "'";
+        query += ", '" + birds_attribute.getMJ_ACT_PR() + "'";
         query += ", '" + birds_attribute.getGPS_LAT() + "'";
         query += ", '" + birds_attribute.getGPS_LON() + "'";
         query += ", '" + birds_attribute.getTEMP_YN() + "'";
@@ -1410,7 +1410,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",USE_LAYER='" + birds_attribute.getUSE_LAYER() + "'"
                 + ",MJ_ACT='" + birds_attribute.getMJ_ACT() + "'"
 //                + ",MJ_ACT_PR='" + birds_attribute.getMJ_ACT_PR() + "'"
-                + ",STANDARD='" + birds_attribute.getSTANDARD() + "'"
+                + ",MJ_ACT_PR='" + birds_attribute.getMJ_ACT_PR() + "'"
                 + ",GPS_LAT='" + birds_attribute.getGPS_LAT() + "'"
                 + ",GPS_LON='" + birds_attribute.getGPS_LON() + "'"
                 + ",TEMP_YN='" + birds_attribute.getTEMP_YN() + "'"

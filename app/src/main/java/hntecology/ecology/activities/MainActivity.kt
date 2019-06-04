@@ -695,12 +695,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 //
 //            polygons?.clear()
 
+
             for (point in points) {
                 point.remove()
             }
 
             points?.clear()
-//            polygons?.clear()
+            polygons?.clear()
             googleMap.clear()
 
 //            for (loadLayerTask in loadLayerTasks) {
@@ -733,23 +734,31 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                         val layerModel = LayerModel(layerdata.getString(0), layerdata.getString(1), layerdata.getInt(2), layerdata.getInt(3), layerdata.getString(4), layerdata.getString(5), layerdata.getString(6), false);
 
-                        datas.add(layerModel)
-                        println("dats.size ${datas.size}")
+//                        datas.add(layerModel)
+//                        println("dats.size ${datas.size}")
                     }
 
                     layerdata.close()
                 }
 
                 if (chkData) {
-                    layersDatas.clear()
+//                    layersDatas.clear()
 
                     transparentSB.progress = 255
+                   /* for (i in 0..datas.size - 1) {
+                        layersDatas.add(datas.get(i))
+                        // println(datas.get(i).file_name + ".add")
+                        // println("layersDatas.size ${layersDatas.size}")
+                        loadLayer(layersDatas.get(i).file_name, layersDatas.get(i).layer_name, layersDatas.get(i).type, layersDatas.get(i).added, -1)
+
+                    }*/
+
 
                     runOnUiThread(Runnable {
-                        for (i in 0..datas.size - 1) {
-                            layersDatas.add(datas.get(i))
-                            // println(datas.get(i).file_name + ".add")
-//                             println("layersDatas.size ${layersDatas.size}")
+
+                        println("레이어데이터사이즈 ${layersDatas.size}")
+                        for (i in 0..layersDatas.size - 1) {
+//                            layerDivision = 8
                             loadLayer(layersDatas.get(i).file_name, layersDatas.get(i).layer_name, layersDatas.get(i).type, layersDatas.get(i).added, -1)
                         }
                     })
@@ -1238,17 +1247,17 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 BIOTOPE_DATA -> {
                     if (data!!.getStringExtra("polygonid") != null) {
                         val polygonid = data!!.getStringExtra("polygonid")
-                        println("biotope_data  $polygonid")
+                        println("폴리건아이디  $polygonid")
 
                         println(polygons.size.toString() + "-----------------------------")
                         for (i in 0..polygons.size - 1) {
                             val polygon = polygons.get(i)
-                            println("polygonid : ${polygon.id}")
-                            println("polygonid : ${polygonid}")
+                            println("폴리건아이디 : ${polygon.id}")
+                            println("폴리건아이디 : ${polygonid}")
 
                             if ((polygon.id).equals(polygonid)) {
 
-                                println("ssssssssssssss : ${polygon.hashCode()}")
+                                println("폴리건아이디 : ${polygon.hashCode()}")
 
                                 val delPoly = polygons.get(i)
                                 delPoly.remove()
@@ -1258,8 +1267,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             }
                         }
 
-                        println("polygons : " + polygons)
-                        println("polygons.size : " + polygons.size)
+                        println("폴리건 : " + polygons)
+                        println("폴리건.size : " + polygons.size)
 
                     }
 
@@ -1267,8 +1276,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                         val export = data!!.getIntExtra("export", 0)
 
-                        println("----------------$export")
-
+                        println("비오톱추가 : " + export)
                         if (export == 70) {
                             layerDivision = 0
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -1630,8 +1638,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 layerDivision = 8
 
                                 loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name, jsonOb.get(i).type, jsonOb.get(i).added, -1)
-
-                                // println("jsonOB . filename ${jsonOb.get(i).file_name}")
+//                                 println("jsonOB . filename ${jsonOb.get(i).file_name}")
                                 layerFileName.add(jsonOb.get(i).file_name)
                                 layerType.add(jsonOb.get(i).type)
                                 layerGropId.add(jsonOb.get(i).grop_id!!)
@@ -2374,7 +2381,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         // 클릭시 태그 데이터 있는지 확인 없으면 바로 넘기고 있으면 있는걸로 호출.
         // tag 리절트로 가져와서 태그 설정
         googleMap.setOnPolygonClickListener { polygon ->
-
+            Log.d("폴리건클릭","클릭")
             val zoom = googleMap.cameraPosition.zoom
 
             var geom = ""
@@ -2402,6 +2409,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
             // 도형 분리 중이면.....
             if (splitRL.isSelected) {
+                Log.d("분리","분리")
                 if (zoom.toInt() >= 17) {
                     val layerInfo = polygon.tag as LayerInfo
                     var myLayer = layerInfo.layer
@@ -4900,7 +4908,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 val polygonOptions = geoms[0] as PolygonOptions
                 val polygon = googleMap.addPolygon(polygonOptions)
                 polygon.zIndex = 0.0f
-
+                println("라벨옵션$polygonOptions")
 
                 // println("layerName .layer ===== $layerName")
 
@@ -4914,6 +4922,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 layerInfo.attrubuteKey = getAttributeKey(layerInfo.layer)
                 layerInfo.layer = currentLayer
                 layerInfo.metadata = metadata
+                println("라벨데이터$metadata")
 
                 if (type == "nothing") {
                     layerInfo.layer = NOTHING
@@ -6926,15 +6935,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 }
 
 
-                var leftreplace = lftday.replace(" ", "_")
-                var rightreplace = rgtday.replace(" ", "_")
-                var u_name = PrefUtils.getStringPreference(context, "name")
-                lftday = leftreplace
-                rgtday = rightreplace
 
-                if (biotopeArray != null) {
-                    Exporter.export(biotopeArray, lftday, rgtday, u_name)
-                }
 
 
 //                val file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope"
@@ -6950,7 +6951,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 } else {
                     if (leftday == "") {
-
+//                        Log.d("비오톱추가2","추가")
                         dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope", "비오톱", "biotope", "Y", "biotope")
 
                     }
@@ -6963,7 +6964,15 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         } else {
 
         }
-
+        var leftreplace = lftday.replace(" ", "_")
+        var rightreplace = rgtday.replace(" ", "_")
+        var u_name = PrefUtils.getStringPreference(context, "name")
+        lftday = leftreplace
+        rgtday = rightreplace
+        Log.d("비오톱추가","추가")
+        if (biotopeArray != null) {
+            Exporter.export(biotopeArray, lftday, rgtday, u_name)
+        }
     }
 
     fun exportBirds(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String) {
@@ -7048,7 +7057,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 //                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_TAR_SP", ogr.OFTString, birds_attribute.USE_TAR_SP))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_LAYER", ogr.OFTString, birds_attribute.USE_LAYER))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT", ogr.OFTString, birds_attribute.MJ_ACT))
-//                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT_PR", ogr.OFTString, birds_attribute.MJ_ACT_PR))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT_PR", ogr.OFTString, birds_attribute.MJ_ACT_PR))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, birds_attribute.GPS_LAT.toString()))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, birds_attribute.GPS_LON.toString()))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("TEMP_YN", ogr.OFTString, birds_attribute.TEMP_YN))
@@ -7113,7 +7122,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 //                            BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_TAR_SP", ogr.OFTString, birds_attribute.USE_TAR_SP))
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("USE_LAYER", ogr.OFTString, birds_attribute.USE_LAYER))
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT", ogr.OFTString, birds_attribute.MJ_ACT))
-//                            BIRDSATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT_PR", ogr.OFTString, birds_attribute.MJ_ACT_PR))
+                            BIRDSATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT_PR", ogr.OFTString, birds_attribute.MJ_ACT_PR))
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LAT", ogr.OFTString, birds_attribute.GPS_LAT.toString()))
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPS_LON", ogr.OFTString, birds_attribute.GPS_LON.toString()))
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, birds_attribute.CONF_MOD))
@@ -7570,6 +7579,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             MAMMALATTRIBUTE.add(Exporter.ColumnDef("TR_EASY", ogr.OFTString, mammal_attribute.TR_EASY))
                             MAMMALATTRIBUTE.add(Exporter.ColumnDef("TR_EASY_RE", ogr.OFTString, mammal_attribute.TR_EASY_RE))
                             MAMMALATTRIBUTE.add(Exporter.ColumnDef("CONF_MOD", ogr.OFTString, mammal_attribute.CONF_MOD))
+                            MAMMALATTRIBUTE.add(Exporter.ColumnDef("MJ_ACT_PR", ogr.OFTString, mammal_attribute.MJ_ACT_PR))
                             MAMMALATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, mammal_attribute.MAC_ADDR))
                             MAMMALATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, mammal_attribute.CURRENT_TM))
                         }
@@ -9311,6 +9321,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         var chckdata = false
         val metadata = HashMap<String, Any>()
         val values = ArrayList<Any>()
+        Log.d("분리",data.count.toString())
         while (data.moveToNext()) {
 
             for (idx in 0..(data.columnCount - 1)) {
@@ -9334,19 +9345,20 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 if ("UFID" == columnName) {
                         u_val = data.getString(idx)
-                    if (u_val.substring(0,1).equals("9")){
-                        r_val = "9"+u_val
-                    }else{
-                        r_val = u_val.replace(u_val.substring(0,1),"9")
+                    if (u_val.length>1){
+                        if (u_val.substring(0,1).equals("9")){
+                            r_val = "9"+u_val
+                        }else{
+                            r_val = u_val.replaceFirst(u_val.substring(0,1),"9")
+                        }
                     }
-
-
                 }
 
                 values.add("\"$value\"")
-
                 metadata.put(columnName, "\"$value\"")
+
             }
+//            values.add("※")
 
             break
         }
@@ -9361,11 +9373,25 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         po.tag = layerInfo
 
+
+
         val qry = "INSERT INTO $tableName ($columnNamesStr) values(${values.joinToString(separator = ",")})"
 
         println(qry)
 
         db!!.execSQL(qry)
+
+
+       /*몰겟다
+        var value = values.toString().split("※")
+        for (i in 0 ..value.size-2){
+            println("----------"+value[i])
+            val qry = "INSERT INTO $tableName ($columnNamesStr) values(${value[i].substring(0,value[i].length -2).substring(1)})"
+            println(qry)
+            db!!.execSQL(qry)
+        }*/
+
+
 
         var geom = ""
 
@@ -9863,7 +9889,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         } else {
             deleteRow("biotopeAttribute", oldAttributeKey)
 //            export("2000-01-01", "00시", "2099-01-01", "00시")
-            Log.d("익스3", "")
+            Log.d("익스3", "sdsd")
             exportBiotope("", "", "", "", "all")
         }
 

@@ -114,6 +114,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
 
     var t_name = ""
+    var t_name2 = ""
 
     val SET_DOMIN = 133;
     val SET_DOMIN2 = 134;
@@ -1613,7 +1614,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                             var treChk = false
 
                             for (i in 0 until TreDatas.size) {
-                                println("끔찍-------------------- "+TreDatas.size.toString())
+                                println("끔찍-------------------- " + TreDatas.size.toString())
 
                                 if (TreDatas.get(i).PAGE == t_trepage) {
                                     println("끔찍-------------------- $t_trepage")
@@ -1666,10 +1667,9 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                                 var tredata = BioTreeData(-1, t_trepage, spec, fami, scien, NS, S, MS, NS2, S2, MS2, PER)
 
                                 TreDatas.add(tredata)
-                            }
-                            else {
+                            } else {
                                 for (i in 0 until TreDatas.size) {
-                                    println("페이지"+TreDatas.get(i).PAGE+TreDatas.get(i).SPEC)
+                                    println("페이지" + TreDatas.get(i).PAGE + TreDatas.get(i).SPEC)
                                     if (TreDatas.get(i).PAGE == t_trepage) {
                                         var spec = etTRE_SPECET.text.toString()
                                         val fami = etTRE_FAMIET.text.toString()
@@ -1732,12 +1732,12 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                             var streChk = false
 
                             for (i in 0 until StreDatas.size) {
-                                println("끔찍2-------------------- "+StreDatas.size.toString())
+                                println("끔찍2-------------------- " + StreDatas.size.toString())
                                 if (StreDatas.get(i).PAGE == strepage) {
-                                    println("끔찍2-------------------- "+strepage)
+                                    println("끔찍2-------------------- " + strepage)
                                     streChk = true
                                 }
-                                println("끔찍2-------------------- "+streChk)
+                                println("끔찍2-------------------- " + streChk)
                             }
 
                             if (streChk == false) {
@@ -2043,7 +2043,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
 
                                 if (TreDatas != null && TreDataSize > 0) {
-                                    if (i > TreDataSize ) {
+                                    if (i > TreDataSize) {
                                         biotope_attribute.TRE_NUM = 0
                                         biotope_attribute.TRE_SPEC = ""
                                         biotope_attribute.TRE_FAMI = ""
@@ -2105,7 +2105,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                                 }
 
                                 if (ShrDatas != null && ShrDataSize > 0) {
-                                    if (i > ShrDataSize ) {
+                                    if (i > ShrDataSize) {
                                         biotope_attribute.SHR_NUM = 1
                                         biotope_attribute.SHR_SPEC = ""
                                         biotope_attribute.SHR_FAMI = ""
@@ -2116,7 +2116,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                                         biotope_attribute.STR_COVE = 0.0f
                                     }
 
-                                    if (i < ShrDataSize ) {
+                                    if (i < ShrDataSize) {
                                         biotope_attribute.SHR_NUM = ShrDatas.get(i).PAGE
                                         biotope_attribute.SHR_SPEC = ShrDatas.get(i).SPEC
                                         biotope_attribute.SHR_FAMI = ShrDatas.get(i).SPEC2
@@ -2140,7 +2140,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                                         biotope_attribute.HER_COVE = 0.0f
                                     }
 
-                                    if (i < HerDataSize ) {
+                                    if (i < HerDataSize) {
                                         biotope_attribute.HER_NUM = HerDatas.get(i).PAGE
                                         biotope_attribute.HER_SPEC = HerDatas.get(i).SPEC
                                         biotope_attribute.HER_FAMI = HerDatas.get(i).SPEC2
@@ -3945,7 +3945,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
         biotope_attribute.CURRENT_TM = Utils.current_tm()
 
-
+        t_name += t_name2
         var names = t_name.split("-")
         if (names.size > 1 && !t_name.contains("군락")) {
             biotope_attribute.DOMIN = t_name + "군락"
@@ -4214,7 +4214,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         }
 
         Log.d("구실", t_name)
-
+        t_name += t_name2
         var names = t_name.split("-")
         if (names.size > 1 && !t_name.contains("군락")) {
             biotope_attribute.DOMIN = t_name + "군락"
@@ -4393,7 +4393,13 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         }
 
         if (biotope_attribute.DOMIN.toString() != "null") {
-            t_name = biotope_attribute.DOMIN.toString()
+            var t_names = biotope_attribute.DOMIN.toString().split("-")
+            if (t_names.size>1){
+                t_name = t_names[0]
+                t_name2 ="-"+ t_names[1]
+            }else{
+                t_name =  biotope_attribute.DOMIN.toString()
+            }
         }
 
 
@@ -4492,27 +4498,24 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 }
 
                 SET_DOMIN2 -> {
-                    t_name += "-"
                     if (data!!.getStringExtra("name") == "SP(미동정)") {
                         val intent = Intent(context, DlgInputActivity::class.java)
                         startActivityForResult(intent, SET_INPUT2)
                     } else {
-                        t_name += data!!.getStringExtra("name");
-                        var names = t_name.split("-")
-                        if (names.size > 1) {
-                            ausTV.setText(names[1] + "군락")
-                        }
+                        t_name2 = "-" + data!!.getStringExtra("name");
+//                        var names = t_name.split("-")
+                        ausTV.setText(t_name2.replace("-","") + "군락")
                     }
                 }
 
 
                 SET_INPUT -> {
-                var name = data!!.getStringExtra("name");
-                dominTV.text = name
-            }
+                    var name = data!!.getStringExtra("name");
+                    dominTV.text = name
+                }
                 SET_INPUT2 -> {
                     var name = data!!.getStringExtra("name");
-                    t_name += name
+                    t_name2 = "-" + name
                     ausTV.text = name + "군락"
                 }
 

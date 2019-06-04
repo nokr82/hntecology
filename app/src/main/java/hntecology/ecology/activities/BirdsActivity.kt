@@ -397,7 +397,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 }
 
                 confmodTV.setText(birds_attribute.CONF_MOD)
-                standardTV.setText(birds_attribute.STANDARD)
+                standardTV.setText(birds_attribute.MJ_ACT_PR)
 
 //                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + birds_attribute.INV_DT + "." + birds_attribute.INV_TM + "."+birds_attribute.NUM+ "/imges")
 //                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/birds/images/" + birds_attribute.INV_DT + "_" + birds_attribute.INV_TM + "_"+birds_attribute.NUM)
@@ -624,7 +624,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         birds_attribute.MJ_ACT = mjActTV.text.toString()
 //                        birds_attribute.MJ_ACT_PR = mjActPrET.text.toString()
-                        birds_attribute.STANDARD = standardTV.text.toString()
+                        birds_attribute.MJ_ACT_PR = standardTV.text.toString()
 
 
                         /*     if (gpslatTV.text.isNotEmpty()) {
@@ -1138,7 +1138,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
             birds_attribute.MJ_ACT = mjActTV.text.toString()
 //            birds_attribute.MJ_ACT_PR = mjActPrET.text.toString()
-            birds_attribute.STANDARD = standardTV.text.toString()
+            birds_attribute.MJ_ACT_PR = standardTV.text.toString()
 
             birds_attribute.GPS_LAT = lat.toFloat()
             birds_attribute.GPS_LON = log.toFloat()

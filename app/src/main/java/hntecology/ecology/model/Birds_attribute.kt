@@ -25,7 +25,7 @@ class Birds_attribute(
         var USE_TAR: String?,
         var USE_LAYER: String?,
         var MJ_ACT: String?,
-        var STANDARD: String?,
+        var MJ_ACT_PR: String?,
         var GPS_LAT: Float?,
         var GPS_LON: Float?,
         var TEMP_YN: String?,

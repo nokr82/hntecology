@@ -1074,7 +1074,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
             val dataList: Array<String> = arrayOf("*");
 
-            val data2 = db!!.query("biotopeAttribute", dataList, "IT_GROP_ID = '$keyId$it_index'", null, null, null, "id asc", null)
+            val data2 = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "id asc", null)
 
             while (data2.moveToNext()) {
 

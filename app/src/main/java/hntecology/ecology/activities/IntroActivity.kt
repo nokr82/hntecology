@@ -393,10 +393,10 @@ class IntroActivity : Activity() {
 
             println("currentDBVersion : $currentDBVersion, newDBVersion : $newDBVersion")
 
-            if(currentDBVersion < newDBVersion) {
+//            if(currentDBVersion < newDBVersion) {
                 dbManager.deleteDataBase()
                 dbManager.createDataBase()
-            }
+//            }
 
             toLogin()
         }

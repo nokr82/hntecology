@@ -2438,13 +2438,15 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 }
                                 while (data.moveToNext()) {
                                     chkData = true
+
                                 }
 
                                 if (chkData == false) {
                                     val layerinfo = polygon.tag as LayerInfo
                                     for (i in 0..polygons.size - 1) {
+                                        println("분리사이즈 ${polygons.size}")
                                         if (polygons.get(i).tag == polygon.tag) {
-                                            println("layerinfo.metadata ${layerinfo.metadata}")
+                                            println("분리각 ${layerinfo.metadata}")
                                             var GPS_LON = Utils.getString(layerInfo.metadata, "GPS_LON")
                                             var BREA_DIA = Utils.getString(layerInfo.metadata, "BREA_DIA")
                                             var HER_COVE = Utils.getString(layerInfo.metadata, "HER_COVE")
@@ -2665,7 +2667,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                 data.LU_GR_NUM = LANDUSE
                                                 data.LC_GR_NUM = landcover
                                             }
-
+                                            //여기가문제다
                                             dbManager!!.insertbiotope_attribute(data)
                                         }
                                     }
@@ -9291,26 +9293,25 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         val dataList: Array<String> = arrayOf("*");
 
-        val data = db!!.query(tableName, dataList, "GROP_ID = '$keyId'", null, null, null, "", null);
+        val data = db!!.query(tableName, dataList, "GROP_ID = '$keyId'", null, null, null, "id asc", null);
 
         var r_val = ""
         var u_val = ""
         var chckdata = false
         val metadata = HashMap<String, Any>()
         val values = ArrayList<Any>()
+
         Log.d("분리", data.count.toString())
         while (data.moveToNext()) {
 
-            for (idx in 0..(data.columnCount - 1)) {
+            for (i in 0..(data.columnCount - 1)) {
                 Log.d("분리", data.toString())
-                val columnName = data.getColumnName(idx)
+                val columnName = data.getColumnName(i)
                 if ("id" == columnName) {
                     continue
                 }
 
-                var value = data.getString(idx)
-
-                println("발류 : $value")
+                var value = data.getString(i)
 
                 if ("GROP_ID" == columnName) {
                     value = newKeyId
@@ -9321,7 +9322,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 }
 
                 if ("UFID" == columnName) {
-                    u_val = data.getString(idx)
+                    u_val = data.getString(i)
                     if (u_val.length > 1) {
                         if (u_val.substring(0, 1).equals("9")) {
                             r_val = "9" + u_val
@@ -9335,9 +9336,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 metadata.put(columnName, "\"$value\"")
 
             }
-//            values.add("※")
 
-            break
+
+            values.add("※")
+
+//            break
         }
 
         if (values.size == 0) {
@@ -9351,21 +9354,23 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         po.tag = layerInfo
 
 
-        val qry = "INSERT INTO $tableName ($columnNamesStr) values(${values.joinToString(separator = ",")})"
+       /* val qry = "INSERT INTO $tableName ($columnNamesStr) values(${values.joinToString(separator = ",")})"
 
         println(qry)
 
-        db!!.execSQL(qry)
+        db!!.execSQL(qry)*/
 
 
-        /*몰겟다
          var value = values.toString().split("※")
+
+
          for (i in 0 ..value.size-2){
-             println("----------"+value[i])
              val qry = "INSERT INTO $tableName ($columnNamesStr) values(${value[i].substring(0,value[i].length -2).substring(1)})"
-             println(qry)
+
+             print("qry ::: ${qry}")
+
              db!!.execSQL(qry)
-         }*/
+         }
 
 
         var geom = ""
@@ -9819,8 +9824,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 } else {
                     dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap", "임상도", "stockmap", "Y", "stockmap")
                 }
-            } else {
-                println("-----splitbiotope")
+            }
+            else {
+                println("-----분리비오톱")
 
                 copyRow("biotopeAttribute", oldAttributeKey, newAttributeKey, po, idx)
                 exportBiotope("", "", "", "", "all")

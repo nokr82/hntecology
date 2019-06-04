@@ -2503,6 +2503,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
     public void updatebiotope_attribute_geom(String GROP_ID , String geom,String ufid) {
 
+        System.out.println("GROP_ID:::" + GROP_ID);
+        System.out.println("UFID:::" + ufid);
+
         String query = "UPDATE biotopeAttribute SET  " +
                 "UFID='" + ufid + "'"+
                 ",GEOM='" + geom + "'"+

@@ -719,14 +719,23 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var chkData = false
 
 
-            if (layersDatas != null) {
+            if (jsonOb != null) {
+                datas.clear()
+                layersDatas.clear()
 
-                for (i in 0..layersDatas.size - 1) {
 
-                    println("layerDatas ${layersDatas.get(i).grop_id}")
+                /*        runOnUiThread(Runnable {
+                            for (i in 0..jsonOb.size - 1) {
+                                layerDivision = 8
+                                loadLayer(jsonOb.get(i).file_name, jsonOb.get(i).layer_name, jsonOb.get(i).type, jsonOb.get(i).added, -1)
+                            }
+                        })*/
+                for (i in 0..jsonOb.size - 1) {
+
+                    println("layerDatas ${jsonOb.get(i).grop_id}")
                     var layerdata: Cursor? = null
 
-                    layerdata = db!!.query("layers", dataList, "grop_id = '${layersDatas.get(i).grop_id}' and type = '${layersDatas.get(i).type}' and min_scale <= '${zoom.toInt()}' and max_scale >= '${zoom.toInt() + 1}'", null, null, null, null, null)
+                    layerdata = db!!.query("layers", dataList, "grop_id = '${jsonOb.get(i).grop_id}' and type = '${jsonOb.get(i).type}' and min_scale <= '${zoom.toInt()}' and max_scale >= '${zoom.toInt() + 1}'", null, null, null, null, null)
 
 
                     while (layerdata.moveToNext()) {
@@ -744,26 +753,17 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 }
 
                 if (chkData) {
-                    layersDatas.clear()
                     transparentSB.progress = 255
                     runOnUiThread(Runnable {
                         println("레이어데이터사이즈 ${datas.size}")
                         for (i in 0..datas.size - 1) {
+                            Log.d("지적데이터", datas.get(i).type.toString())
                             layersDatas.add(datas.get(i))
-                            // println(datas.get(i).file_name + ".add")
-                            // println("layersDatas.size ${layersDatas.size}")
                             loadLayer(layersDatas.get(i).file_name, layersDatas.get(i).layer_name, layersDatas.get(i).type, layersDatas.get(i).added, -1)
-
                         }
-                        /*    for (i in 0..layersDatas.size - 1) {
-    //                            layerDivision = 8
-                                loadLayer(layersDatas.get(i).file_name, layersDatas.get(i).layer_name, layersDatas.get(i).type, layersDatas.get(i).added, -1)
-                            }*/
                     })
                 }
                 //지적도문제
-                datas.clear()
-
 
             }
         }
@@ -7432,7 +7432,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             mammaliaDatas.add(mammal_attribute)
 
         }
-        Log.d("포유류",mammaliaDatas.size.toString())
+        Log.d("포유류", mammaliaDatas.size.toString())
 
         if (mammaliaDatas.size > 0) {
 
@@ -9354,23 +9354,23 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         po.tag = layerInfo
 
 
-       /* val qry = "INSERT INTO $tableName ($columnNamesStr) values(${values.joinToString(separator = ",")})"
+        /* val qry = "INSERT INTO $tableName ($columnNamesStr) values(${values.joinToString(separator = ",")})"
 
-        println(qry)
+         println(qry)
 
-        db!!.execSQL(qry)*/
-
-
-         var value = values.toString().split("※")
+         db!!.execSQL(qry)*/
 
 
-         for (i in 0 ..value.size-2){
-             val qry = "INSERT INTO $tableName ($columnNamesStr) values(${value[i].substring(0,value[i].length -2).substring(1)})"
+        var value = values.toString().split("※")
 
-             print("qry ::: ${qry}")
 
-             db!!.execSQL(qry)
-         }
+        for (i in 0..value.size - 2) {
+            val qry = "INSERT INTO $tableName ($columnNamesStr) values(${value[i].substring(0, value[i].length - 2).substring(1)})"
+
+            print("qry ::: ${qry}")
+
+            db!!.execSQL(qry)
+        }
 
 
         var geom = ""
@@ -9824,8 +9824,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 } else {
                     dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap", "임상도", "stockmap", "Y", "stockmap")
                 }
-            }
-            else {
+            } else {
                 println("-----분리비오톱")
 
                 copyRow("biotopeAttribute", oldAttributeKey, newAttributeKey, po, idx)

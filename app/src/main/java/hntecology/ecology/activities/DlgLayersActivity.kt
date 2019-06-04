@@ -66,13 +66,13 @@ class DlgLayersActivity : Activity() {
 //        }
         allclickTV.setOnClickListener {
 
-            if (type==1){
+            if (type == 1) {
                 for (j in 0..adapterData.size - 1) {
                     var data = adapterData.get(j)
                     data.is_checked = !data.is_checked
                 }
                 apdater.notifyDataSetChanged()
-            }else{
+            } else {
                 for (j in 0..adapterData2.size - 1) {
                     var data = adapterData2.get(j)
                     data.is_checked = !data.is_checked
@@ -101,27 +101,27 @@ class DlgLayersActivity : Activity() {
 
 
         listView.setOnItemClickListener { adapterView, view, position, l ->
-          if (type==1){
-              var data = adapterData.get(position)
+            if (type == 1) {
+                var data = adapterData.get(position)
 
-              if (!data.is_checked) {
-                  data.is_checked = true
-                  apdater.notifyDataSetChanged()
-              } else {
-                  data.is_checked = false
-                  apdater.notifyDataSetChanged()
-              }
-          }else{
-              var data = adapterData2.get(position)
+                if (!data.is_checked) {
+                    data.is_checked = true
+                    apdater.notifyDataSetChanged()
+                } else {
+                    data.is_checked = false
+                    apdater.notifyDataSetChanged()
+                }
+            } else {
+                var data = adapterData2.get(position)
 
-              if (!data.is_checked) {
-                  data.is_checked = true
-                  apdater2.notifyDataSetChanged()
-              } else {
-                  data.is_checked = false
-                  apdater2.notifyDataSetChanged()
-              }
-          }
+                if (!data.is_checked) {
+                    data.is_checked = true
+                    apdater2.notifyDataSetChanged()
+                } else {
+                    data.is_checked = false
+                    apdater2.notifyDataSetChanged()
+                }
+            }
 
         }
 
@@ -148,25 +148,26 @@ class DlgLayersActivity : Activity() {
 
         //대분류
         val data = db.query("layers", dataList, null, null, "file_name", null, "id", null);
-        Log.d("첵",check.toString())
+        Log.d("첵", check.toString())
 
-        if (!check){
+        if (!check) {
             adapterData.clear()
             adapterData2.clear()
             while (data.moveToNext()) {
                 val layerModel = LayerModel(data.getString(0), data.getString(1), data.getInt(2), data.getInt(3), data.getString(4), data.getString(5), data.getString(6), false);
 
-                Log.d("레이어목록",layerModel.toString())
+                Log.d("레이어목록", layerModel.toString())
                 val zoom = intent.getFloatExtra("zoom", 0.0F)
                 if (zoom > layerModel.min_scale && zoom < layerModel.max_scale) {
-                        if (layerModel.type != "lsmd") {
-                            adapterData.add(layerModel)
-                        }
-                        if (layerModel.type == "lsmd") {
+                    if (layerModel.type != "lsmd") {
+                        adapterData.add(layerModel)
+                    }
+                    if (layerModel.type == "lsmd") {
 //                        adapterData.add(layerModel)
-                            adapterData2.add(layerModel)
-                        }
+                        adapterData2.add(layerModel)
+                    }
                 }
+
             }
         }
 
@@ -174,8 +175,8 @@ class DlgLayersActivity : Activity() {
             var filename: ArrayList<String> = intent.getSerializableExtra("layerFileName") as ArrayList<String>
             val gropid: ArrayList<String> = intent.getSerializableExtra("layerGropId") as ArrayList<String>
             val type: ArrayList<String> = intent.getSerializableExtra("layerType") as ArrayList<String>
-            Log.d("그뤕",gropid.toString())
-            Log.d("그뤕",filename.toString())
+            Log.d("그뤕", gropid.toString())
+            Log.d("그뤕", filename.toString())
             for (i in 0..gropid.size - 1) {
                 for (j in 0..adapterData.size - 1) {
                     if (gropid.get(i) == adapterData.get(j).grop_id) {
@@ -198,8 +199,8 @@ class DlgLayersActivity : Activity() {
         data.close()
         Log.d("데이터", type.toString())
 
-            apdater.notifyDataSetChanged()
-            apdater2.notifyDataSetChanged()
+        apdater.notifyDataSetChanged()
+        apdater2.notifyDataSetChanged()
 
     }
 
@@ -248,16 +249,16 @@ class DlgLayersActivity : Activity() {
             }
 
         }
-       /* data.sortWith(object : Comparator<LayerModel> {
-            override fun compare(p1: LayerModel, p2: LayerModel): Int {
-                if (p1.type == "lsmd" && p2.type == "lsmd") {
-                    return 0
-                } else if (p1.type == "lsmd" && p2.type != "lsmd") {
-                    return 1
-                }
-                return -1
-            }
-        })*/
+        /* data.sortWith(object : Comparator<LayerModel> {
+             override fun compare(p1: LayerModel, p2: LayerModel): Int {
+                 if (p1.type == "lsmd" && p2.type == "lsmd") {
+                     return 0
+                 } else if (p1.type == "lsmd" && p2.type != "lsmd") {
+                     return 1
+                 }
+                 return -1
+             }
+         })*/
 
         for (d in data) {
             println("checkData : ${d.type}")

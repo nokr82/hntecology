@@ -1565,6 +1565,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                             if (dataArray.size == 0) {
                                 var intent = Intent()
                                 intent.putExtra("polygonid", polygonid)
+
                                 setResult(RESULT_OK, intent);
 
                                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "biotope/images" + File.separator + keyId + File.separator)
@@ -2160,6 +2161,8 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                             }
                             var intent = Intent()
                             intent.putExtra("export", 70);
+                            intent.putExtra("domin", t_name)
+                            intent.putExtra("geom", geom)
                             setResult(RESULT_OK, intent);
                             finish()
                         })
@@ -4398,7 +4401,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 t_name = t_names[0]
                 t_name2 ="-"+ t_names[1]
             }else{
-                t_name =  t_names[0]
+                t_name =  t_names[0].replace("군락","")
             }
         }
 

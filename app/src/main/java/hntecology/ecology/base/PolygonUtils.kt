@@ -15,6 +15,7 @@ object PolygonUtils {
         val paint1 = Paint()
         paint1.color = Color.WHITE
 
+        Log.d("폴리건",polygonOptions.toString())
         // text size in pixels
         paint1.textSize = (14 * scale).roundToInt().toFloat()
         paint1.getTextBounds(label, 0, label.length, bounds1)

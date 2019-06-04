@@ -147,6 +147,7 @@ class DlgModiListActivity : Activity() {
         dbManager!!.insertbiotope_attribute(biotope_attribute);
         var intent = Intent()
         intent.putExtra("export", 70);
+        intent.putExtra("geom", geom);
         setResult(RESULT_OK, intent);
         Toast.makeText(context,"복사되었습니다.",Toast.LENGTH_SHORT).show()
         finish()

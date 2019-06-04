@@ -6976,7 +6976,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         var lftday = leftday + lefttime
         var rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
-        var data = db!!.query("birdsAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var data = db!!.query("birdsAttribute", dataList, null, null, null, null, "", null)
         Log.d("버드", pointsArray.toString())
         Log.d("버드", data.toString())
         if (leftday != "") {
@@ -7180,7 +7180,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         var lftday = leftday + lefttime
         var rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
-        var reptiliadata = db!!.query("reptiliaAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var reptiliadata = db!!.query("reptiliaAttribute", dataList, null, null, null, null, "", null)
         if (leftday != "") {
             reptiliadata = db!!.query("reptiliaAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         }
@@ -7410,7 +7410,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         var lftday = leftday + lefttime
         var rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
-        var data = db!!.query("mammalAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var data = db!!.query("mammalAttribute", dataList, null, null, null, null, "", null)
         if (leftday != "") {
             data = db!!.query("mammalAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         }
@@ -7419,7 +7419,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         var datas: ArrayList<Mammal_attribute> = ArrayList<Mammal_attribute>()
         var chkData = false
         var index = 0
-
         while (data.moveToNext()) {
 
             var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
@@ -7431,25 +7430,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             mammaliaDatas.add(mammal_attribute)
 
         }
-
-//        if (datas != null) {
-//
-//            for (i in 0..datas.size - 1) {
-//                val item = datas.get(i)
-//
-//                val data = db!!.query("mammalAttribute", dataList, "GROP_ID = '${item.GROP_ID}'", null, null, null, "", null)
-//
-//                while (data.moveToNext()) {
-//
-//                    var mammal_attribute: Mammal_attribute = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-//                            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-//                            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-//                            , data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27), data.getString(28), data.getString(29), data.getString(30), data.getString(31))
-//
-//                    mammaliaDatas.add(mammal_attribute)
-//                }
-//            }
-//        }
+        Log.d("포유류",mammaliaDatas.size.toString())
 
         if (mammaliaDatas.size > 0) {
 
@@ -7625,7 +7606,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         var lftday = leftday + lefttime
         var rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
-        var data = db!!.query("fishAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var data = db!!.query("fishAttribute", dataList, null, null, null, null, "", null)
         if (leftday != "") {
             data = db!!.query("fishAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         }
@@ -7865,7 +7846,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         var lftday = leftday + lefttime
         var rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
-        var data = db!!.query("insectAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var data = db!!.query("insectAttribute", dataList, null, null, null, null, "", null)
         if (leftday != "") {
             data = db!!.query("insectAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         }
@@ -8079,7 +8060,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         val dataList: Array<String> = arrayOf("*")
         var lftday = leftday + lefttime
         var rgtday = rightday + righttime
-        var floradata = db!!.query("floraAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var floradata = db!!.query("floraAttribute", dataList, null, null, null, null, "", null)
         if (leftday != "") {
             floradata = db!!.query("floraAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         }
@@ -8283,7 +8264,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         var lftday = leftday + lefttime
         var rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
-        var data = db!!.query("ZoobenthosAttribute", dataList, null, null, "GROP_ID", null, "", null)
+        var data = db!!.query("ZoobenthosAttribute", dataList, null, null, null, null, "", null)
         if (leftday != "") {
             data = db!!.query("ZoobenthosAttribute", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         }
@@ -8536,7 +8517,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         var lftday = leftday + lefttime
         var rgtday = rightday + righttime
         val dataList: Array<String> = arrayOf("*")
-        var data = db!!.query("Waypoint", dataList, null, null, "GROP_ID", null, "", null)
+        var data = db!!.query("Waypoint", dataList, null, null, null, null, "", null)
         if (leftday != "") {
             data = db!!.query("Waypoint", dataList, "INV_DT || ' ' || INV_TM between '$lftday' and '$rgtday' ", null, null, null, "", null)
         }

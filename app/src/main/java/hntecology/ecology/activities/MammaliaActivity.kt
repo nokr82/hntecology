@@ -1407,12 +1407,13 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 setResult(RESULT_OK, intent);
             }
 
+            Log.d("추가","추가")
+
             var intent = Intent()
             intent.putExtra("export",70)
             setResult(RESULT_OK, intent)
 
             btn_mammalDelete.visibility = View.GONE
-
             if (images_path != null){
                 images_path!!.clear()
             }

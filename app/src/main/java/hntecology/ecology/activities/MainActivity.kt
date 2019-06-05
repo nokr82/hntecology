@@ -1274,7 +1274,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
                             } else {
                                 Log.d("익스2", "")
-                                exportBiotope("", "", "", "", "all",geom)
+                                exportBiotope("", "", "", "", "all", geom)
                             }
                         }
 
@@ -1547,14 +1547,14 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     if (data!!.getIntExtra("export", 0) != null) {
 
                         val export = data!!.getIntExtra("export", 0)
-
+                        val geom = data!!.getStringExtra("geom")
 
                         if (export == 70) {
                             layerDivision = 10
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                                 loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
                             } else {
-                                exportStockMap("", "", "", "", "all")
+                                exportStockMap("", "", "", "", "all",geom)
                             }
                         }
 
@@ -3444,8 +3444,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 Toast.makeText(context, "17레벨 이상까지 확대해주세요.", Toast.LENGTH_SHORT).show()
                                 return@setOnPolygonClickListener
                             }
-                        }
-                        else {
+                        } else {
                             val type = typeST.isChecked
 
                             println("type : $type")
@@ -4984,12 +4983,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 var domin_name = ""
                 var do_num = Utils.getString(metadata, "UFID")
-                if (!typeST.isChecked) {
+                if (Utils.getString(metadata, "DOMIN") != "null") {
                     domin_name += Utils.getString(metadata, "DOMIN")
-                    domin_name += Utils.getString(metadata, "PLANT_NM")
-                } else {
-                    domin_name += Utils.getString(metadata, "DOMIN")
-                    domin_name += Utils.getString(metadata, "PLANT_NM")
+                }
+                if (Utils.getString(metadata, "KOFTR_GROU") != "null") {
+                    domin_name += Utils.getString(metadata, "KOFTR_GROU")
                 }
 
 
@@ -6489,8 +6487,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         val rightreplace = righttime.replace("시", ":59")
 
         Log.d("익스", "")
-        exportBiotope(leftday, leftreplace, rightday, rightreplace, "time","")
-        exportStockMap(leftday, leftreplace, rightday, rightreplace, "time")
+        exportBiotope(leftday, leftreplace, rightday, rightreplace, "time", "")
+        exportStockMap(leftday, leftreplace, rightday, rightreplace, "time","")
         exportBirds(leftday, leftreplace, rightday, rightreplace, "time")
         exportReptilia(leftday, leftreplace, rightday, rightreplace, "time")
         exportMammal(leftday, leftreplace, rightday, rightreplace, "time")
@@ -6504,7 +6502,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 //        googleMap.clear()
     }
 
-    fun exportStockMap(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String) {
+    fun exportStockMap(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String, geom: String) {
         Log.d("구냐", leftday)
         var stokeArray: ArrayList<Exporter.ExportItem> = ArrayList<Exporter.ExportItem>()
         val dataList: Array<String> = arrayOf("*")
@@ -6558,7 +6556,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     }
                 }
 
-                if (leftday != "" && exportType == "all") {
+                if (leftday != "" || exportType == "all") {
                     var STOKEMAP: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
                     STOKEMAP.add(Exporter.ColumnDef("NUM", ogr.OFTString, stockMap.NUM))
@@ -6593,6 +6591,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     Log.d("임상도2", stockMap.GEOM.toString())
 
                     var geomsplit = stockMap.GEOM!!.split(",")
+                    if (stockMap.GEOM.toString() == "" || stockMap.GEOM.toString() == null) {
+                        geomsplit = geom.split(",")
+                    }
                     var points: ArrayList<LatLng> = ArrayList<LatLng>()
 
                     val polygonOptions = PolygonOptions()
@@ -6610,6 +6611,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     var polygon: Polygon = googleMap.addPolygon(polygonOptions)
                     polygon.zIndex = 1.0f
+
+                    export_marker(stockMap.GROP_ID.toString(), stockMap.KOFTR_GROUP_CD.toString(), polygonOptions)
 
                     var exporter = Exporter.ExportItem(LAYER_STOCKMAP, STOKEMAP, polygon, points)
                     polygon.remove()
@@ -6686,7 +6689,33 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     }
 
-    fun exportBiotope(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String,geom:String) {
+    fun export_marker(pk: String, domin: String, polygonOptions: PolygonOptions) {
+        Log.d("마커사이즈", labelMarkers2.size.toString())
+        for (i in 0..labelMarkers2.size - 1) {
+            if (labelMarkers2[i].tag == pk) {
+                labelMarkers2[i].remove()
+                Log.d("마커사이즈22", labelMarkers2[i].toString())
+                break
+            }
+        }
+        var labelMarker2 = PolygonUtils.drawTextOnPolygon(context, domin, polygonOptions, googleMap)
+        labelMarker2.tag = pk
+        if (visible_domin != -1) {
+            labelMarker2.isVisible = true
+        } else {
+            labelMarker2.isVisible = false
+        }
+
+        if (domin != "null") {
+            labelMarkers2.add(labelMarker2)
+        }
+
+//        labelMarker2.remove()
+
+    }
+
+
+    fun exportBiotope(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String, geom: String) {
         val biotopeArray: ArrayList<Exporter.ExportItem> = ArrayList<Exporter.ExportItem>()
         val dataList: Array<String> = arrayOf("*")
         var lftday = leftday + lefttime
@@ -6705,7 +6734,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
 
         if (biotopeDatas.size > 0) {
-            Log.d("비오사이즈",biotopeDatas.size.toString())
+            Log.d("비오사이즈", biotopeDatas.size.toString())
             for (i in 0..biotopeDatas.size - 1) {
 
                 val grop_id = biotopeDatas.get(i).GROP_ID
@@ -6729,10 +6758,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         }
                     }
                 }
-                Log.d("비오추가추가",add.toString())
+                Log.d("비오추가추가", add.toString())
 
                 if (exportType == "all" || leftday != "") {
-                    Log.d("비오추가","추가")
+                    Log.d("비오추가", "추가")
                     var BIOTOPEATTRIBUTE: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("GROP_ID", ogr.OFTString, biotope_attribute.GROP_ID))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("PRJ_NAME", ogr.OFTString, biotope_attribute.PRJ_NAME))
@@ -6812,10 +6841,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_NUM", ogr.OFTString, biotope_attribute.STRE_NUM))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_NUM", ogr.OFTString, biotope_attribute.SHR_NUM))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_NUM", ogr.OFTString, biotope_attribute.HER_NUM))
-                    Log.d("비오사이즈222",biotope_attribute.GEOM.toString())
-                    Log.d("비오사이즈222",geom.toString())
+                    Log.d("비오사이즈222", biotope_attribute.GEOM.toString())
+                    Log.d("비오사이즈222", geom.toString())
                     var geomsplit = biotope_attribute.GEOM!!.split(",")
-                    if (biotope_attribute.GEOM==""&&biotope_attribute.GEOM==null){
+                    if (biotope_attribute.GEOM == "" && biotope_attribute.GEOM == null) {
                         geomsplit = geom.split(",")
                     }
 
@@ -6837,19 +6866,17 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     var polygon: Polygon = googleMap.addPolygon(polygonOptions)
                     polygon.zIndex = 1.0f
 
+
+                    export_marker(biotope_attribute.GROP_ID.toString(), biotope_attribute.DOMIN.toString(), polygonOptions)
+
                     val exporter = Exporter.ExportItem(LAYER_BIOTOPE, BIOTOPEATTRIBUTE, polygon, points)
-                    //문제로다
-                    if (labelMarkers2.size>0){
-                        labelMarkers2.removeAt(labelMarkers2.size-1)
-                    }
-                    var labelMarker2 = PolygonUtils.drawTextOnPolygon(context,biotope_attribute.DOMIN.toString(),polygonOptions, googleMap)
-                    labelMarkers2.add(labelMarker2)
+
 
                     polygon.remove()
 
                     biotopeArray.add(exporter)
                 } else if (leftday == "") {
-                    Log.d("비오추가22","추가")
+                    Log.d("비오추가22", "추가")
                     if (add) {
                         var BIOTOPEATTRIBUTE: ArrayList<Exporter.ColumnDef> = ArrayList<Exporter.ColumnDef>()
 
@@ -9158,7 +9185,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 if (typeST.isChecked) {
                     dbManager!!.updatestockmap_geom(firstLayerInfo.attrubuteKey, geom)
-                    exportStockMap("", "", "", "", "all")
+                    exportStockMap("", "", "", "", "all","")
                     var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap"
                     var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap", "임상도", 1, 99, "stockmap", "Y", "stockmap", false)
                     var division = false
@@ -9191,7 +9218,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 } else {
                     dbManager!!.updatebiotope_attribute_geom2(firstLayerInfo.attrubuteKey, geom)
                     Log.d("익스9", "")
-                    exportBiotope("", "", "", "", "all","")
+                    exportBiotope("", "", "", "", "all", "")
 
                     var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope"
                     var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope", "비오톱", 1, 99, "biotope", "Y", "biotope", false)
@@ -9463,7 +9490,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             } else if (android.Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
                 if (layerDivision == 0) {
                     Log.d("익스7", "")
-                    exportBiotope("", "", "", "", "all","")
+                    exportBiotope("", "", "", "", "all", "")
                 }
 
                 if (layerDivision == 1) {
@@ -9505,7 +9532,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 }
 
                 if (layerDivision == 10) {
-                    exportStockMap("", "", "", "", "all")
+                    exportStockMap("", "", "", "", "all","")
                 }
 
                 if (layerDivision == 11) {
@@ -9678,7 +9705,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (layerDivision == 0) {
                         Log.d("익스6", "")
-                        exportBiotope("", "", "", "", "all","")
+                        exportBiotope("", "", "", "", "all", "")
                     }
 
                     if (layerDivision == 1) {
@@ -9720,7 +9747,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     }
 
                     if (layerDivision == 10) {
-                        exportStockMap("", "", "", "", "all")
+                        exportStockMap("", "", "", "", "all","")
                     }
 
                     if (layerDivision == 100) {
@@ -9796,7 +9823,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             // copy data
             if (typeST.isChecked) {
                 copyRow("StockMap", oldAttributeKey, newAttributeKey, po, idx)
-                exportStockMap("", "", "", "", "all")
+                exportStockMap("", "", "", "", "all","")
                 var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap"
                 var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap", "임상도", 1, 99, "stockmap", "Y", "stockmap", false)
 
@@ -9831,7 +9858,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 println("-----분리비오톱")
 
                 copyRow("biotopeAttribute", oldAttributeKey, newAttributeKey, po, idx)
-                exportBiotope("", "", "", "", "all","")
+                exportBiotope("", "", "", "", "all", "")
                 var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope"
                 var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope", "비오톱", 1, 99, "biotope", "Y", "biotope", false)
                 var chkData = false
@@ -9867,12 +9894,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         if (typeST.isChecked) {
             deleteRow("StockMap", oldAttributeKey)
 //            export("2000-01-01", "00시", "2099-01-01", "00시")
-            exportStockMap("", "", "", "", "all")
+            exportStockMap("", "", "", "", "all","")
         } else {
             deleteRow("biotopeAttribute", oldAttributeKey)
 //            export("2000-01-01", "00시", "2099-01-01", "00시")
             Log.d("익스3", "sdsd")
-            exportBiotope("", "", "", "", "all","")
+            exportBiotope("", "", "", "", "all", "")
         }
 
     }

@@ -4397,21 +4397,22 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
         if (biotope_attribute.DOMIN.toString() != "null") {
             var t_names = biotope_attribute.DOMIN.toString().split("-")
-            if (t_names.size>1){
+            if (t_names.size > 1) {
                 t_name = t_names[0]
-                t_name2 ="-"+ t_names[1]
-            }else{
-                t_name =  t_names[0].replace("군락","")
+                t_name2 = "-" + t_names[1]
+            } else {
+                t_name = t_names[0].replace("군락", "")
             }
         }
 
-
-        var domins = biotope_attribute.DOMIN!!.split("-")
-        if (domins.size > 1) {
-            dominTV.text = domins[0]
-            ausTV.text = domins[1]
-        } else {
-            dominTV.text = domins[0]
+        if (biotope_attribute.DOMIN.toString() != "null") {
+            var domins = biotope_attribute.DOMIN!!.split("-")
+            if (domins.size > 1) {
+                dominTV.text = domins[0]
+                ausTV.text = domins[1]
+            } else {
+                dominTV.text = domins[0]
+            }
         }
 
         etIMP_FORMET.setText(biotope_attribute.IMP_FORM.toString())
@@ -4507,7 +4508,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                     } else {
                         t_name2 = "-" + data!!.getStringExtra("name");
 //                        var names = t_name.split("-")
-                        ausTV.setText(t_name2.replace("-","") + "군락")
+                        ausTV.setText(t_name2.replace("-", "") + "군락")
                     }
                 }
 

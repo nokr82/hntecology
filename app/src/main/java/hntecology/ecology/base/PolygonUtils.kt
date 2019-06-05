@@ -13,7 +13,7 @@ object PolygonUtils {
         val scale = context.resources.displayMetrics.density
         val bounds1 = Rect()
         val paint1 = Paint()
-        paint1.color = Color.WHITE
+        paint1.color = Color.BLACK
 
         Log.d("폴리건",polygonOptions.toString())
         // text size in pixels

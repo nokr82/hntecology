@@ -278,10 +278,10 @@ class StockActivity : Activity() {
 //            }
 //            SET_FRTPCD_CODE = stockMap.PLANT_NM.toString()
 //                koftrTV.text = stockMap.PLANT_NM
-            koftrTV.text = stockMap.PLANT_NM
+            koftrTV.text = stockMap.KOFTR_GROUP_CD
 
 
-            Log.d("식물종",stockMap.PLANT_NM)
+            Log.d("식물종",stockMap.KOFTR_GROUP_CD)
             /*val codedata = db!!.query("Dropsygroup", dataList, "CODE = '${stockMap.PLANT_NM}'", null, null, null, "", null)
             while (codedata.moveToNext()) {
                 val item = StockMapSelect(codedata.getString(1),codedata.getString(2), codedata.getString(3),false)
@@ -377,14 +377,14 @@ class StockActivity : Activity() {
 //                frtpcdTV.text = stockMap.FRTP_CD
 
                 for (i in 0 until frtpcddata.size){
-                    if (stockMap.PLANT_NM == frtpcddata.get(i).code){
+                    if (stockMap.KOFTR_GROUP_CD == frtpcddata.get(i).code){
                         koftrTV.text = frtpcddata.get(i).Title
                     }
                 }
 //                SET_FRTPCD_CODE = stockMap.PLANT_NM.toString()
-                koftrTV.text = stockMap.PLANT_NM
+                koftrTV.text = stockMap.KOFTR_GROUP_CD
 
-                val codedata = db!!.query("Dropsygroup", dataList, "CODE = '${stockMap.PLANT_NM}'", null, null, null, "", null)
+                val codedata = db!!.query("Dropsygroup", dataList, "CODE = '${stockMap.KOFTR_GROUP_CD}'", null, null, null, "", null)
                 while (codedata.moveToNext()) {
                     val item = StockMapSelect(codedata.getString(1),codedata.getString(2), codedata.getString(3),false)
                     koftrTV.setText(item.Title)
@@ -584,9 +584,9 @@ class StockActivity : Activity() {
                         stockMap.NUM = numTV.text.toString().toInt()
                         stockMap.FRTP_CD = FRTP_CD_CODE
 //                        stockMap.PLANT_NM = SET_FRTPCD_CODE
-                        stockMap.PLANT_NM = koftrTV.text.toString()
+                        stockMap.KOFTR_GROUP_CD = koftrTV.text.toString()
                         if (koftrET.text.toString() != "" && koftrET.text.toString() != null){
-                            stockMap.PLANT_NM = koftrET.text.toString()
+                            stockMap.KOFTR_GROUP_CD = koftrET.text.toString()
                         }
                         stockMap.STORUNST_CD = STORUNST_CD_CODE
                         stockMap.FROR_CD = FROR_CD_CODE
@@ -633,6 +633,7 @@ class StockActivity : Activity() {
 
                         var intent = Intent()
                         intent.putExtra("export",70)
+                        intent.putExtra("geom",geom)
                         setResult(RESULT_OK, intent)
 
                         finish()
@@ -677,10 +678,10 @@ class StockActivity : Activity() {
             stockMap.INV_TM = invtmTV.text.toString()
             stockMap.NUM = numTV.text.toString().toInt()
             stockMap.FRTP_CD = FRTP_CD_CODE
-//            stockMap.PLANT_NM = SET_FRTPCD_CODE
-            stockMap.PLANT_NM = koftrTV.text.toString()
+//            stockMap.KOFTR_GROUP_CD = SET_FRTPCD_CODE
+            stockMap.KOFTR_GROUP_CD = koftrTV.text.toString()
             if (koftrET.text.toString() != "" && koftrET.text.toString() != null){
-                stockMap.PLANT_NM = koftrET.text.toString()
+                stockMap.KOFTR_GROUP_CD = koftrET.text.toString()
             }
             stockMap.STORUNST_CD = STORUNST_CD_CODE
             stockMap.FROR_CD = FROR_CD_CODE

@@ -180,7 +180,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
     var INV_REGION = ""
 
     var lc_type = ""
-
+    var modi_type = "N"
     var it_index = 0
 
 
@@ -2190,7 +2190,6 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                             var intent = Intent()
 
                             intent.putExtra("export", 70);
-
                             setResult(RESULT_OK, intent);
 
                             finish()
@@ -3929,8 +3928,14 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         }
 
         biotope_attribute.TEMP_YN = "Y"
+        val CONF_MOD = tvCONF_MOD.text.toString()
 
-        biotope_attribute.CONF_MOD = "N"
+        if (CONF_MOD == "N" || CONF_MOD == "C"|| CONF_MOD == "M") {
+            biotope_attribute.CONF_MOD = "M"
+        }else{
+            biotope_attribute.CONF_MOD = "N"
+        }
+
         biotope_attribute.LANDUSE = landuse
 
         if (biotope != null) {
@@ -4150,8 +4155,13 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         }
 
         biotope_attribute.TEMP_YN = "Y"
+        val CONF_MOD = tvCONF_MOD.text.toString()
 
-        biotope_attribute.CONF_MOD = "N"
+        if (CONF_MOD == "N" || CONF_MOD == "C"|| CONF_MOD == "M") {
+            biotope_attribute.CONF_MOD = "M"
+        }else{
+            biotope_attribute.CONF_MOD = "N"
+        }
         biotope_attribute.LANDUSE = landuse
 
         if (biotope != null) {
@@ -4240,7 +4250,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
                 val CONF_MOD = tvCONF_MOD.text.toString()
 
-                if (CONF_MOD == "N" || CONF_MOD == "C") {
+                if (CONF_MOD == "N" || CONF_MOD == "C"|| CONF_MOD == "M") {
                     biotope_attribute.CONF_MOD = "M"
                 }
 

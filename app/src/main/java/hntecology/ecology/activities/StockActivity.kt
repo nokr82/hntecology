@@ -600,7 +600,13 @@ class StockActivity : Activity() {
                         stockMap.ETC_PCMTT = etcpcmttET.text.toString()
                         stockMap.GPS_LAT = gpslatTV.text.toString().toFloat()
                         stockMap.GPS_LON = gpslonTV.text.toString().toFloat()
-                        stockMap.CONF_MOD = "N"
+                        val CONF_MOD = confmodTV.text.toString()
+
+                        if(CONF_MOD == "C" || CONF_MOD == "N"|| CONF_MOD == "M"){
+                            stockMap.CONF_MOD = "M"
+                        }else{
+                            stockMap.CONF_MOD = "N"
+                        }
                         println("stockmap.LANDUSE----${stockMap.LANDUSE}")
                         stockMap.LANDUSE = landuse
                         stockMap.GEOM = geom
@@ -616,7 +622,7 @@ class StockActivity : Activity() {
 
                                 val CONF_MOD = confmodTV.text.toString()
 
-                                if(CONF_MOD == "C" || CONF_MOD == "N"){
+                                if(CONF_MOD == "C" || CONF_MOD == "N"|| CONF_MOD == "M"){
                                     stockMap.CONF_MOD = "M"
                                 }
 
@@ -695,7 +701,13 @@ class StockActivity : Activity() {
             stockMap.ETC_PCMTT = etcpcmttET.text.toString()
             stockMap.GPS_LAT = gpslatTV.text.toString().toFloat()
             stockMap.GPS_LON = gpslonTV.text.toString().toFloat()
-            stockMap.CONF_MOD = "N"
+            val CONF_MOD = confmodTV.text.toString()
+
+            if(CONF_MOD == "C" || CONF_MOD == "N"|| CONF_MOD == "M"){
+                stockMap.CONF_MOD = "M"
+            }else{
+                stockMap.CONF_MOD = "N"
+            }
             stockMap.GEOM = lat.toString() + " " + log.toString()
             Log.d("스톡",stockMap.GEOM.toString())
             if (stockMap.LANDUSE != null || stockMap.LANDUSE != ""){
@@ -710,7 +722,7 @@ class StockActivity : Activity() {
 
                     val CONF_MOD = confmodTV.text.toString()
 
-                    if(CONF_MOD == "C" || CONF_MOD == "N"){
+                    if(CONF_MOD == "C" || CONF_MOD == "N"|| CONF_MOD == "M"){
                         stockMap.CONF_MOD = "M"
                     }
 

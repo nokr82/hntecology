@@ -4776,6 +4776,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         polygonOptions.strokeWidth(1.0f)
                         polygonOptions.strokeColor(Color.BLACK)
 
+
                         val ringCount = geometryRef.GetGeometryCount()
 
                         for (ringIdx in 0 until ringCount) {
@@ -4892,11 +4893,21 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
             Log.d("메타333", geoms[0].toString())
             if (geoms[0] is PolygonOptions) {
-
-
+                var conf_mod = Utils.getString(metadata,"CONF_MOD")
                 val polygonOptions = geoms[0] as PolygonOptions
                 val polygon = googleMap.addPolygon(polygonOptions)
                 polygon.zIndex = 0.0f
+                if (conf_mod=="M"){
+                    polygon.isClickable = true
+                    polygon.strokeColor = Color.RED
+                    polygon.strokeJointType = JointType.ROUND
+                    polygon.strokeWidth = 30f
+
+                    val strokePattern = ArrayList<PatternItem>()
+                    strokePattern.add(Dot())
+                    polygon?.strokePattern = strokePattern
+                }
+
                 println("라벨옵션$geoms[0]")
 
                 // println("layerName .layer ===== $layerName")

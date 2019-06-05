@@ -831,8 +831,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += "(GROP_ID,INV_REGION,INV_PERSON,INV_DT,INV_TM,TRE_NUM,TRE_SPEC,TRE_FAMI";
         query += ",TRE_SCIEN,TRE_DBH,TRE_TOIL,TRE_UNDER,TRE_WATER,TRE_TYPE,STRE_NUM,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_DBH,STRE_TOIL,STRE_UNDER,STRE_WATER,STRE_TYPE";
         query += ",SHR_NUM,SHR_SPEC,SHR_FAMI,SHR_SCIEN,SHR_TOIL,SHR_WATER,SHR_UNDER,HER_NUM,HER_SPEC,HER_FAMI";
-        query += ",HER_SCIEN,HER_DOMIN,HER_GUNDO,HER_HEIGHT,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM,DOMIN,MAC_ADDR,CURRENT_TM)";
-
+        query += ",HER_SCIEN,HER_DOMIN,HER_GUNDO,HER_HEIGHT,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM,DOMIN,MAC_ADDR,CURRENT_TM,PRJ_NAME";
+        query += ",M_TRE_DBH,X_TRE_DBH,M_TRE_TOIL,X_TRE_TOIL,M_TRE_UDR,X_TRE_UDR,M_TRE_WT,X_TRE_WT,M_STR_DBH,X_STR_DBH,M_STR_TOIL,X_STR_TOIL,M_STR_UDR";
+        query += ",X_STR_UDR,M_STR_WT,X_STR_WT,M_SHR_TOIL,X_SHR_TOIL,M_SHR_WT,X_SHR_WT,M_SHR_UDR,X_SHR_UDR,M_HER_HET,X_HER_HET";
+        query +=")";
         query += " values (";
         query += " '" + ManyFloraAttribute.getGROP_ID() + "'";
         query += ", '" + ManyFloraAttribute.getINV_REGION() + "'";
@@ -884,12 +886,42 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + ManyFloraAttribute.getDOMIN() + "'";
         query += ", '" + ManyFloraAttribute.getMAC_ADDR() + "'";
         query += ", '" + ManyFloraAttribute.getCURRENT_TM() + "'";
+        query += ", '" + ManyFloraAttribute.getPRJ_NAME() + "'";
+
+        query += ", '" + ManyFloraAttribute.getM_TRE_DBH() + "'";
+        query += ", '" + ManyFloraAttribute.getX_TRE_DBH() + "'";
+        query += ", '" + ManyFloraAttribute.getM_TRE_TOIL() + "'";
+        query += ", '" + ManyFloraAttribute.getX_TRE_TOIL() + "'";
+        query += ", '" + ManyFloraAttribute.getM_TRE_UDR() + "'";
+        query += ", '" + ManyFloraAttribute.getX_TRE_UDR() + "'";
+        query += ", '" + ManyFloraAttribute.getM_TRE_WT() + "'";
+
+        query += ", '" + ManyFloraAttribute.getX_TRE_WT() + "'";
+        query += ", '" + ManyFloraAttribute.getM_STR_DBH() + "'";
+        query += ", '" + ManyFloraAttribute.getX_STR_DBH() + "'";
+        query += ", '" + ManyFloraAttribute.getM_STR_TOIL() + "'";
+        query += ", '" + ManyFloraAttribute.getX_STR_TOIL() + "'";
+        query += ", '" + ManyFloraAttribute.getM_STR_UDR() + "'";
+        query += ", '" + ManyFloraAttribute.getX_STR_UDR() + "'";
+        query += ", '" + ManyFloraAttribute.getM_STR_WT() + "'";
+        query += ", '" + ManyFloraAttribute.getX_STR_WT() + "'";
+        query += ", '" + ManyFloraAttribute.getM_SHR_TOIL() + "'";
+        query += ", '" + ManyFloraAttribute.getX_SHR_TOIL() + "'";
+        query += ", '" + ManyFloraAttribute.getM_SHR_WT() + "'";
+        query += ", '" + ManyFloraAttribute.getX_SHR_WT() + "'";
+        query += ", '" + ManyFloraAttribute.getM_SHR_UDR() + "'";
+        query += ", '" + ManyFloraAttribute.getX_SHR_UDR() + "'";
+        query += ", '" + ManyFloraAttribute.getM_HER_HET() + "'";
+        query += ", '" + ManyFloraAttribute.getX_HER_HET() + "'";
+
+
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();
     }
+
 
     public void inserttracking(Tracking tracking){
         String query = "INSERT INTO tracking";

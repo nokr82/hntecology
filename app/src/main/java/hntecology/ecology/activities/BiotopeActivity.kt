@@ -243,7 +243,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
             if (t_trepage == 1) {
                 for (i in 0 until TreDatas.size) {
                     if (TreDatas.get(i).PAGE == t_trepage) {
-                        val data = TreDatas.get(i)
+//                        val data = TreDatas.get(i)
                         TreDatas.removeAt(i)
                         break
                     }
@@ -331,7 +331,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 } else if (t_trepage > 2) {
                     for (i in 0 until TreDatas.size) {
                         if (TreDatas.get(i).PAGE == t_trepage) {
-                            val data = TreDatas.get(i)
+//                            val data = TreDatas.get(i)
                             TreDatas.removeAt(i)
                             break
                         }

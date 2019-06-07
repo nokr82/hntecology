@@ -2815,17 +2815,17 @@ class Flora2Activity : Activity() {
                                             manyFloraAttribute.HER_GUNDO = HerDatas.get(i).COVE
                                         }
 
-                                        if (HerDatas.get(i).ETC != null) {
+                                        if (HerDatas.get(i).ETC != null && HerDatas.get(i).ETC != "null") {
                                             manyFloraAttribute.HER_HEIGHT = HerDatas.get(i).ETC!!.toFloat()
                                         } else {
                                             manyFloraAttribute.HER_HEIGHT = 0.0f
                                         }
-                                        if (HerDatas.get(i).M_H != null) {
+                                        if (HerDatas.get(i).M_H != null&& HerDatas.get(i).M_H != "null") {
                                             manyFloraAttribute.M_HER_HET = HerDatas.get(i).M_H!!.toFloat()
                                         } else {
                                             manyFloraAttribute.M_HER_HET = 0.0f
                                         }
-                                        if (HerDatas.get(i).X_H != null) {
+                                        if (HerDatas.get(i).X_H != null && HerDatas.get(i).X_H != "null") {
                                             manyFloraAttribute.X_HER_HET = HerDatas.get(i).X_H!!.toFloat()
                                         } else {
                                             manyFloraAttribute.X_HER_HET = 0.0f

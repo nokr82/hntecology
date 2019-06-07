@@ -38,6 +38,8 @@ class DlgLayersActivity : Activity() {
     var check = false
     val READ_EXTERNAL_STORAGE = 4
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dlg_layers)

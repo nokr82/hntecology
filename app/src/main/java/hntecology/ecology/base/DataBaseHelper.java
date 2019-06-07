@@ -1145,6 +1145,35 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
         db.close();
     }
+    public void delete_grop_reptilia_attribute(Reptilia_attribute reptilia_attribute,String GROP_ID) {
+        String query = "DELETE FROM reptiliaAttribute WHERE GROP_ID = '" + GROP_ID + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void delete_grop_mamal_attribute(Mammal_attribute mammal_attribute,String GROP_ID) {
+        String query = "DELETE FROM mammal_attribute WHERE GROP_ID = '" + GROP_ID + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+    public void delete_grop_insect_attribute(Insect_attribute insect_attribute,String GROP_ID) {
+        String query = "DELETE FROM insect_attribute WHERE GROP_ID = '" + GROP_ID + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+    public void delete_grop_fish_attribute(Fish_attribute fish_attribute,String GROP_ID) {
+        String query = "DELETE FROM fish_attribute WHERE GROP_ID = '" + GROP_ID + "'";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
 
     public void deletebirds_attribute_all() {
         String query = "DELETE FROM birdsAttribute";

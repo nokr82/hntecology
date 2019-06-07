@@ -1266,7 +1266,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     if (data!!.getIntExtra("export", 0) != null) {
                         val export = data!!.getIntExtra("export", 0)
-                        val geom = data!!.getStringExtra("geom")
+                        var geom = ""
+                        if (data!!.getStringExtra("geom") != null){
+                            geom =data!!.getStringExtra("geom")
+                        }
                         println("비오톱추가 : " + export)
                         if (export == 70) {
                             layerDivision = 0
@@ -1336,13 +1339,16 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     if (data!!.getIntExtra("export", 0) != null) {
                         val export = data!!.getIntExtra("export", 0)
-
+                        var geom = ""
+                        if (data!!.getStringExtra("geom") != null){
+                            geom =data!!.getStringExtra("geom")
+                        }
                         if (export == 70) {
                             layerDivision = 2
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,"")
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,geom)
                             } else {
-                                exportReptilia("", "", "", "", "all")
+                                exportReptilia("", "", "", "", "all",geom)
                             }
                         }
                     }
@@ -1366,13 +1372,16 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     if (data!!.getIntExtra("export", 0) != null) {
                         val export = data!!.getIntExtra("export", 0)
-
+                        var geom = ""
+                        if (data!!.getStringExtra("geom") != null){
+                            geom =data!!.getStringExtra("geom")
+                        }
                         if (export == 70) {
                             layerDivision = 3
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,"")
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,geom)
                             } else {
-                                exportMammal("", "", "", "", "all")
+                                exportMammal("", "", "", "", "all",geom)
                             }
                         }
                     }
@@ -1395,13 +1404,16 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     if (data!!.getIntExtra("export", 0) != null) {
                         val export = data!!.getIntExtra("export", 0)
-
+                        var geom = ""
+                        if (data!!.getStringExtra("geom") != null){
+                            geom =data!!.getStringExtra("geom")
+                        }
                         if (export == 70) {
                             layerDivision = 4
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,"")
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,geom)
                             } else {
-                                exportFish("", "", "", "", "all")
+                                exportFish("", "", "", "", "all",geom)
                             }
                         }
                     }
@@ -1424,13 +1436,16 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     if (data!!.getIntExtra("export", 0) != null) {
                         val export = data!!.getIntExtra("export", 0)
-
+                        var geom = ""
+                        if (data!!.getStringExtra("geom") != null){
+                            geom =data!!.getStringExtra("geom")
+                        }
                         if (export == 70) {
                             layerDivision = 5
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,"")
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,geom)
                             } else {
-                                exportInsects("", "", "", "", "all")
+                                exportInsects("", "", "", "", "all",geom)
                             }
                         }
                     }
@@ -1551,12 +1566,15 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     if (data!!.getIntExtra("export", 0) != null) {
 
                         val export = data!!.getIntExtra("export", 0)
-                        val geom = data!!.getStringExtra("geom")
+                        var geom = ""
+                        if (data!!.getStringExtra("geom") != null){
+                            geom = data!!.getStringExtra("geom")
+                        }
 
                         if (export == 70) {
                             layerDivision = 10
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,"")
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,geom)
                             } else {
                                 exportStockMap("", "", "", "", "all",geom)
                             }
@@ -1767,8 +1785,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     var myLayer = layerInfo.layer
                     Log.d("마크2", myLayer.toString())
                     var attrubuteKey = layerInfo.attrubuteKey
-                    var geom =Utils.getString(layerInfo.metadata,"GEOM")
-                    Log.d("마크333333",geom)
                     var intent: Intent? = null
 
                     when (myLayer) {
@@ -1896,13 +1912,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 if (modichk) {
                                     intent = Intent(this, DlgPointModiListActivity::class.java)
                                 }
-                                intent!!.putExtra("geom",geom)
+                                intent.putExtra("title", "양서,파충류")
+                                intent!!.putExtra("geom",reptiliadataArray.get(0).GEOM)
                                 intent!!.putExtra("id", reptiliadataArray.get(0).id)
                                 intent!!.putExtra("GROP_ID", attrubuteKey)
+                                intent.putExtra("table", "reptiliaAttribute")
                                 intent!!.putExtra("markerid", marker.id)
-
-                                startActivityForResult(intent, BIRDS_DATA)
-
+                                startActivityForResult(intent, REPTILIA_DATA)
                             }
 
                             if (reptiliadataArray.size > 1) {
@@ -1910,7 +1926,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 if (modichk) {
                                     intent = Intent(this, DlgPointModiListActivity::class.java)
                                 }
-                                intent!!.putExtra("geom",geom)
+                                intent!!.putExtra("geom",reptiliadataArray.get(0).GEOM)
                                 intent.putExtra("title", "양서,파충류")
                                 intent.putExtra("table", "reptiliaAttribute")
                                 intent.putExtra("DlgHeight", 600f);
@@ -1965,7 +1981,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                             if (mammaldataArray.size == 1) {
                                 intent = Intent(this, MammaliaActivity::class.java)
-
+                                if (modichk) {
+                                    intent = Intent(this, DlgPointModiListActivity::class.java)
+                                }
+                                intent!!.putExtra("geom",mammaldataArray.get(0).GEOM)
+                                intent.putExtra("title", "포유류")
+                                intent.putExtra("table", "mammalAttribute")
                                 intent!!.putExtra("id", mammaldataArray.get(0).id)
                                 intent!!.putExtra("GROP_ID", attrubuteKey)
                                 intent!!.putExtra("markerid", marker.id)
@@ -1974,7 +1995,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             }
 
                             if (mammaldataArray.size > 1) {
-                                val intent = Intent(this, DlgDataListActivity::class.java)
+                                var intent = Intent(this, DlgDataListActivity::class.java)
+                                if (modichk) {
+                                    intent = Intent(this, DlgPointModiListActivity::class.java)
+                                }
+                                intent!!.putExtra("geom",mammaldataArray.get(0).GEOM)
                                 intent.putExtra("title", "포유류")
                                 intent.putExtra("table", "mammalAttribute")
                                 intent.putExtra("DlgHeight", 600f);
@@ -2027,7 +2052,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             if (fishdataArray.size == 1) {
 
                                 intent = Intent(this, FishActivity::class.java)
-
+                                if (modichk) {
+                                    intent = Intent(this, DlgPointModiListActivity::class.java)
+                                }
+                                intent!!.putExtra("geom",fishdataArray.get(0).GEOM)
+                                intent.putExtra("title", "어류")
+                                intent.putExtra("table", "fishAttribute")
                                 intent!!.putExtra("id", fishdataArray.get(0).id)
                                 intent!!.putExtra("GROP_ID", attrubuteKey)
                                 intent!!.putExtra("markerid", marker.id)
@@ -2037,7 +2067,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             }
 
                             if (fishdataArray.size > 1) {
-                                val intent = Intent(this, DlgDataListActivity::class.java)
+                                var intent = Intent(this, DlgDataListActivity::class.java)
+                                if (modichk) {
+                                    intent = Intent(this, DlgPointModiListActivity::class.java)
+                                }
+                                intent!!.putExtra("geom",fishdataArray.get(0).GEOM)
                                 intent.putExtra("title", "어류")
                                 intent.putExtra("table", "fishAttribute")
                                 intent.putExtra("DlgHeight", 600f);
@@ -2079,6 +2113,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 marker.title = title
                             }
 
+
                             if (insectdataArray.size == 0) {
                                 title = "곤충"
 
@@ -2095,7 +2130,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             if (insectdataArray.size == 1) {
 
                                 intent = Intent(this, InsectActivity::class.java)
-
+                                if (modichk) {
+                                    intent = Intent(this, DlgPointModiListActivity::class.java)
+                                }
+                                intent!!.putExtra("geom",insectdataArray.get(0).GEOM)
+                                intent.putExtra("title", "곤충")
+                                intent.putExtra("table", "insectAttribute")
                                 intent!!.putExtra("id", insectdataArray.get(0).id)
                                 intent!!.putExtra("GROP_ID", attrubuteKey)
                                 intent!!.putExtra("markerid", marker.id)
@@ -2105,7 +2145,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             }
 
                             if (insectdataArray.size > 1) {
-                                val intent = Intent(this, DlgDataListActivity::class.java)
+                                var intent = Intent(this, DlgDataListActivity::class.java)
+                                if (modichk) {
+                                    intent = Intent(this, DlgPointModiListActivity::class.java)
+                                }
+                                intent!!.putExtra("geom",insectdataArray.get(0).GEOM)
                                 intent.putExtra("title", "곤충")
                                 intent.putExtra("table", "insectAttribute")
                                 intent.putExtra("DlgHeight", 600f);
@@ -4535,25 +4579,25 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     LAYER_REPTILIA -> {
                         dbManager!!.updatereptiliagps(attrubuteKey, latitude.toString(), longitude.toString())
                         dbManager!!.updatebasegps(attrubuteKey, latitude.toString(), longitude.toString())
-                        exportReptilia("", "", "", "", "all")
+                        exportReptilia("", "", "", "", "all","")
                     }
 
                     LAYER_MAMMALIA -> {
                         dbManager!!.updatemammalgps(attrubuteKey, latitude.toString(), longitude.toString())
                         dbManager!!.updatebasegps(attrubuteKey, latitude.toString(), longitude.toString())
-                        exportMammal("", "", "", "", "all")
+                        exportMammal("", "", "", "", "all","")
                     }
 
                     LAYER_FISH -> {
                         dbManager!!.updatefishgps(attrubuteKey, latitude.toString(), longitude.toString())
                         dbManager!!.updatebasegps(attrubuteKey, latitude.toString(), longitude.toString())
-                        exportFish("", "", "", "", "all")
+                      exportFish("", "", "", "", "all","")
                     }
 
                     LAYER_INSECT -> {
                         dbManager!!.updateinsectgps(attrubuteKey, latitude.toString(), longitude.toString())
                         dbManager!!.updatebasegps(attrubuteKey, latitude.toString(), longitude.toString())
-                        exportInsects("", "", "", "", "all")
+                        exportInsects("", "", "", "", "all","")
                     }
 
                     LAYER_FLORA -> {
@@ -6522,10 +6566,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         exportBiotope(leftday, leftreplace, rightday, rightreplace, "time", "")
         exportStockMap(leftday, leftreplace, rightday, rightreplace, "time","")
         exportBirds(leftday, leftreplace, rightday, rightreplace, "time","")
-        exportReptilia(leftday, leftreplace, rightday, rightreplace, "time")
-        exportMammal(leftday, leftreplace, rightday, rightreplace, "time")
-        exportFish(leftday, leftreplace, rightday, rightreplace, "time")
-        exportInsects(leftday, leftreplace, rightday, rightreplace, "time")
+        exportReptilia(leftday, leftreplace, rightday, rightreplace, "time","")
+        exportMammal(leftday, leftreplace, rightday, rightreplace, "time","")
+        exportFish(leftday, leftreplace, rightday, rightreplace, "time","")
+        exportInsects(leftday, leftreplace, rightday, rightreplace, "time","")
         exportFlora(leftday, leftreplace, rightday, rightreplace, "time")
         exportZoobenthous(leftday, leftreplace, rightday, rightreplace, "time")
         exportWaypoint(leftday, leftreplace, rightday, rightreplace, "time")
@@ -7244,7 +7288,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
     }
 
-    fun exportReptilia(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String) {
+    fun exportReptilia(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String,geom:String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
         var lftday = leftday + lefttime
         var rgtday = rightday + righttime
@@ -7369,6 +7413,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, reptilia_attribute.CURRENT_TM))
 
                     var geomsplit = reptilia_attribute.GEOM!!.split(" ")
+                    if (geomsplit.size<2) {
+                        geomsplit = geom.split(" ")
+                    }
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
 
                     val markerOptions = MarkerOptions()
@@ -7474,7 +7521,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     }
 
-    fun exportMammal(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String) {
+    fun exportMammal(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String,geom:String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
         var lftday = leftday + lefttime
         var rgtday = rightday + righttime
@@ -7575,6 +7622,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     MAMMALATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, mammal_attribute.CURRENT_TM))
 
                     var geomsplit = mammal_attribute.GEOM!!.split(" ")
+                    if (geomsplit.size<2) {
+                        geomsplit = geom.split(" ")
+                    }
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
 
                     val markerOptions = MarkerOptions()
@@ -7670,7 +7720,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
     }
 
-    fun exportFish(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String) {
+    fun exportFish(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String,geom:String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
         var lftday = leftday + lefttime
         var rgtday = rightday + righttime
@@ -7910,7 +7960,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
     }
 
-    fun exportInsects(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String) {
+    fun exportInsects(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String,geom:String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
         var lftday = leftday + lefttime
         var rgtday = rightday + righttime
@@ -9589,19 +9639,19 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 }
 
                 if (layerDivision == 2) {
-                    exportReptilia("", "", "", "", "all")
+                    exportReptilia("", "", "", "", "all",geom)
                 }
 
                 if (layerDivision == 3) {
-                    exportMammal("", "", "", "", "all")
+                    exportMammal("", "", "", "", "all",geom)
                 }
 
                 if (layerDivision == 4) {
-                    exportFish("", "", "", "", "all")
+                  exportFish("", "", "", "", "all","")
                 }
 
                 if (layerDivision == 5) {
-                    exportInsects("", "", "", "", "all")
+                    exportInsects("", "", "", "", "all","")
                 }
 
                 if (layerDivision == 6) {
@@ -9804,19 +9854,19 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     }
 
                     if (layerDivision == 2) {
-                        exportReptilia("", "", "", "", "all")
+                        exportReptilia("", "", "", "", "all","")
                     }
 
                     if (layerDivision == 3) {
-                        exportMammal("", "", "", "", "all")
+                        exportMammal("", "", "", "", "all","")
                     }
 
                     if (layerDivision == 4) {
-                        exportFish("", "", "", "", "all")
+                      exportFish("", "", "", "", "all","")
                     }
 
                     if (layerDivision == 5) {
-                        exportInsects("", "", "", "", "all")
+                        exportInsects("", "", "", "", "all","")
                     }
 
                     if (layerDivision == 6) {

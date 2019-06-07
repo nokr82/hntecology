@@ -9,13 +9,11 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
-import hntecology.ecology.model.Biotope_attribute
-import hntecology.ecology.model.Reptilia_attribute
+import hntecology.ecology.model.Fish_attribute
 
-class DlgPointModiRepterAdapter(var context: Context, var itemList: ArrayList<Reptilia_attribute>, var itemList2: ArrayList<Reptilia_attribute>) : BaseAdapter() {
+class DlgPointModiFishAdapter(var context: Context, var itemList: ArrayList<Fish_attribute>, var itemList2: ArrayList<Fish_attribute>) : BaseAdapter() {
 
     var selectIndex: Int = 0;
-    private lateinit var listdata1: java.util.ArrayList<Biotope_attribute>
     var dbManager: DataBaseHelper? = null
 
     var title_list = ArrayList<String>()
@@ -54,10 +52,10 @@ class DlgPointModiRepterAdapter(var context: Context, var itemList: ArrayList<Re
         }
         Log.d("아이템리스트", itemList2.size.toString())
 
-        var Reptilia_attribute: Reptilia_attribute = getItem(position)
-            viewHoldar.timeTV.text = Reptilia_attribute.INV_DT+"\n"+Reptilia_attribute.INV_TM;
+        var Fish_attribute: Fish_attribute = getItem(position)
+            viewHoldar.timeTV.text = Fish_attribute.INV_DT+"\n"+Fish_attribute.INV_TM;
             for (i in 0..itemList2.size - 1) {
-                if (Reptilia_attribute.GROP_ID == itemList2[i].GROP_ID) {
+                if (Fish_attribute.GROP_ID == itemList2[i].GROP_ID) {
                     if (itemList2[i].SPEC_NM.toString() != "" && itemList2[i].SPEC_NM.toString() != "null") {
                         title_list.add(itemList2[i].SPEC_NM.toString())
                     }
@@ -72,7 +70,7 @@ class DlgPointModiRepterAdapter(var context: Context, var itemList: ArrayList<Re
         return view as View
     }
 
-    override fun getItem(position: Int): Reptilia_attribute {
+    override fun getItem(position: Int): Fish_attribute {
 
         return itemList.get(position)
     }
@@ -92,7 +90,7 @@ class DlgPointModiRepterAdapter(var context: Context, var itemList: ArrayList<Re
         notifyDataSetChanged();
     }
 
-    fun addItem(Biotope_attribute: Reptilia_attribute) {
+    fun addItem(Biotope_attribute: Fish_attribute) {
         itemList.add(Biotope_attribute);
         notifyDataSetChanged()
     }

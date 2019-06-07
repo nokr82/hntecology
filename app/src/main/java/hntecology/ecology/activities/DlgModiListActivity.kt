@@ -69,12 +69,12 @@ class DlgModiListActivity : Activity() {
             println("---------점스스스 $geom")
         }
 
-//        val dataList: Array<String> = arrayOf("biotopeAttribute.*", "min(id) as minId");
-        val dataList: Array<String> = arrayOf("*");
-//        val data1=  db.query("biotopeAttribute",dataList,null,null,null,null,"id asc",null);
+        val dataList: Array<String> = arrayOf("biotopeAttribute.*", "min(id) as minId");
+        val dataList2: Array<String> = arrayOf("*");
+        val data1=  db.query("biotopeAttribute",dataList,null,null,"GROP_ID",null,"minId asc",null);
 //        val data2=  db.query("biotopeAttribute",dataList,null,null,"GROP_ID",null,"id asc",null);
-        val data1=  db.query("biotopeAttribute",dataList,null,null,"GROP_ID",null,"id asc",null);
-        val data2=  db.query("biotopeAttribute",dataList,null,null,null,null,"id asc",null);
+//        val data1=  db.query("biotopeAttribute",dataList,null,null,"GROP_ID",null,"id asc",null);
+        val data2=  db.query("biotopeAttribute",dataList2,null,null,null,null,"id asc",null);
 
 
         listView1 = findViewById(R.id.modiLV)
@@ -141,11 +141,12 @@ class DlgModiListActivity : Activity() {
         biotope_attribute.HER_SPEC = her_spec
         biotope_attribute.HER_FAMI = her_fami
         biotope_attribute.HER_SCIEN = her_scien
-        biotope_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
         val date = Date()
         val sdf = SimpleDateFormat("yyyyMMddHHmmSS")
         val getTime = sdf.format(date)
         biotope_attribute.CURRENT_TM = getTime.substring(2, 14)
+        biotope_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+
         biotope_attribute.DOMIN = domin
         dbManager!!.deletegrop_biotope(grop_id)
         dbManager!!.insertbiotope_attribute(biotope_attribute);

@@ -1763,6 +1763,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     var myLayer = layerInfo.layer
                     Log.d("마크2", myLayer.toString())
                     var attrubuteKey = layerInfo.attrubuteKey
+                    var geom =Utils.getString(layerInfo.metadata,"GEOM")
                     var intent: Intent? = null
 
                     when (myLayer) {
@@ -1812,23 +1813,29 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             if (birdsdataArray.size == 1) {
 
                                 intent = Intent(this, BirdsActivity::class.java)
-
-
+                                if (modichk) {
+                                    intent = Intent(this, DlgModiListActivity::class.java)
+                                }
                                 intent!!.putExtra("id", birdsdataArray.get(0).id)
                                 intent!!.putExtra("GROP_ID", attrubuteKey)
                                 intent!!.putExtra("markerid", marker.id)
+                                intent!!.putExtra("geom",geom)
 
                                 startActivityForResult(intent, BIRDS_DATA)
 
                             }
 
                             if (birdsdataArray.size > 1) {
-                                val intent = Intent(this, DlgDataListActivity::class.java)
+                                var intent = Intent(this, DlgDataListActivity::class.java)
+                                if (modichk) {
+                                    intent = Intent(this, DlgModiListActivity::class.java)
+                                }
                                 intent.putExtra("title", "야생조류")
                                 intent.putExtra("table", "birdsAttribute")
                                 intent.putExtra("DlgHeight", 600f);
                                 intent!!.putExtra("markerid", marker.id)
                                 intent.putExtra("GROP_ID", attrubuteKey)
+                                intent!!.putExtra("geom",geom)
                                 startActivityForResult(intent, BIRDS_DATA);
                             }
 

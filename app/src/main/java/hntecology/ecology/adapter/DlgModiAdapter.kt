@@ -60,28 +60,27 @@ class DlgModiAdapter(var context: Context, var itemList: ArrayList<Biotope_attri
             view = convertView
             viewHoldar = view.tag as ViewHoldar
         }
-        Log.d("아이템리스트", itemList2.size.toString())
+        Log.d("아이템리스트", itemList.size.toString())
 
 
         var Biotope_attribute: Biotope_attribute = getItem(position)
-        for (i in 0..itemList2.size - 1) {
-            if (Biotope_attribute.DOMIN.toString() != "" && itemList2[i].DOMIN.toString() != "null") {
-                if (Biotope_attribute.GROP_ID == itemList2[i].GROP_ID) {
-                    viewHoldar.dominTV.text = itemList2[i].DOMIN;
-                    if (itemList2[i].TRE_SPEC.toString() != "" && itemList2[i].TRE_SPEC.toString() != "null") {
-                        trespec.add(itemList2[i].TRE_SPEC.toString())
+        viewHoldar.dominTV.text = Biotope_attribute.DOMIN;
+            for (j in 0..itemList2.size - 1) {
+                if (Biotope_attribute.GROP_ID == itemList2[j].GROP_ID) {
+                    if (itemList2[j].TRE_SPEC.toString() != "" && itemList2[j].TRE_SPEC.toString() != "null") {
+                        trespec.add(itemList2[j].TRE_SPEC.toString())
                     }
-                    if (itemList2[i].STRE_SPEC.toString() != "" && itemList2[i].STRE_SPEC.toString() != "null") {
-                        strespec.add(itemList2[i].STRE_SPEC.toString())
+                    if (itemList2[j].STRE_SPEC.toString() != "" && itemList2[j].STRE_SPEC.toString() != "null") {
+                        strespec.add(itemList2[j].STRE_SPEC.toString())
                     }
-                    if (itemList2[i].SHR_SPEC.toString() != "" && itemList2[i].SHR_SPEC.toString() != "null") {
-                        shrespec.add(itemList2[i].SHR_SPEC.toString())
+                    if (itemList2[j].SHR_SPEC.toString() != "" && itemList2[j].SHR_SPEC.toString() != "null") {
+                        shrespec.add(itemList2[j].SHR_SPEC.toString())
                     }
-                    if (itemList2[i].HER_SPEC.toString() != "" && itemList2[i].HER_SPEC.toString() != "null") {
-                        herspec.add(itemList2[i].HER_SPEC.toString())
+                    if (itemList2[j].HER_SPEC.toString() != "" && itemList2[j].HER_SPEC.toString() != "null") {
+                        herspec.add(itemList2[j].HER_SPEC.toString())
                     }
                 }
-            }
+
         }
         viewHoldar.treTV.text = trespec.joinToString(",")
         viewHoldar.streTV.text = strespec.joinToString(",")
@@ -99,7 +98,7 @@ class DlgModiAdapter(var context: Context, var itemList: ArrayList<Biotope_attri
 
     override fun getItem(position: Int): Biotope_attribute {
 
-        return itemList2.get(position)
+        return itemList.get(position)
     }
 
     override fun getItemId(position: Int): Long {
@@ -109,17 +108,15 @@ class DlgModiAdapter(var context: Context, var itemList: ArrayList<Biotope_attri
 
     override fun getCount(): Int {
 
-        return itemList2.count()
+        return itemList.count()
     }
 
     fun clearItem() {
-        itemList2.clear()
         itemList.clear();
         notifyDataSetChanged();
     }
 
     fun addItem(Biotope_attribute: Biotope_attribute) {
-        itemList2.add(Biotope_attribute)
         itemList.add(Biotope_attribute);
         notifyDataSetChanged()
     }

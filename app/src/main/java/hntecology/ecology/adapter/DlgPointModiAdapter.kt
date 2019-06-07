@@ -12,8 +12,9 @@ import android.widget.TextView
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.model.Biotope_attribute
+import hntecology.ecology.model.Birds_attribute
 
-class DlgPointModiAdapter(var context: Context, var itemList: ArrayList<Biotope_attribute>, var itemList2: ArrayList<Biotope_attribute>) : BaseAdapter() {
+class DlgPointModiAdapter(var context: Context, var itemList: ArrayList<Birds_attribute>, var itemList2: ArrayList<Birds_attribute>) : BaseAdapter() {
 
     var selectIndex: Int = 0;
     private lateinit var listdata1: java.util.ArrayList<Biotope_attribute>
@@ -63,11 +64,12 @@ class DlgPointModiAdapter(var context: Context, var itemList: ArrayList<Biotope_
         Log.d("아이템리스트", itemList2.size.toString())
 
 
-        var Biotope_attribute: Biotope_attribute = getItem(position)
-        for (i in 0..itemList2.size - 1) {
-            if (Biotope_attribute.DOMIN.toString() != "" && itemList2[i].DOMIN.toString() != "null") {
+
+        var Biotope_attribute: Birds_attribute = getItem(position)
+      /*  for (i in 0..itemList.size - 1) {
+            viewHoldar.dominTV.text = itemList[i].INV_TM;
+            for (i in 0..itemList2.size - 1) {
                 if (Biotope_attribute.GROP_ID == itemList2[i].GROP_ID) {
-                    viewHoldar.dominTV.text = itemList2[i].DOMIN;
                     if (itemList2[i].TRE_SPEC.toString() != "" && itemList2[i].TRE_SPEC.toString() != "null") {
                         trespec.add(itemList2[i].TRE_SPEC.toString())
                     }
@@ -82,7 +84,8 @@ class DlgPointModiAdapter(var context: Context, var itemList: ArrayList<Biotope_
                     }
                 }
             }
-        }
+
+        }*/
         viewHoldar.treTV.text = trespec.joinToString(",")
         viewHoldar.streTV.text = strespec.joinToString(",")
         viewHoldar.shrTV.text = shrespec.joinToString(",")
@@ -97,9 +100,9 @@ class DlgPointModiAdapter(var context: Context, var itemList: ArrayList<Biotope_
         return view as View
     }
 
-    override fun getItem(position: Int): Biotope_attribute {
+    override fun getItem(position: Int): Birds_attribute {
 
-        return itemList2.get(position)
+        return itemList.get(position)
     }
 
     override fun getItemId(position: Int): Long {
@@ -109,24 +112,22 @@ class DlgPointModiAdapter(var context: Context, var itemList: ArrayList<Biotope_
 
     override fun getCount(): Int {
 
-        return itemList2.count()
+        return itemList.count()
     }
 
     fun clearItem() {
-        itemList2.clear()
         itemList.clear();
         notifyDataSetChanged();
     }
 
-    fun addItem(Biotope_attribute: Biotope_attribute) {
-        itemList2.add(Biotope_attribute)
+    fun addItem(Biotope_attribute: Birds_attribute) {
         itemList.add(Biotope_attribute);
         notifyDataSetChanged()
     }
 
     fun removeItem(position: Int) {
 
-        itemList2.removeAt(position)
+        itemList.removeAt(position)
         notifyDataSetChanged()
 
     }

@@ -14,7 +14,7 @@ import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.model.Biotope_attribute
 import hntecology.ecology.model.Birds_attribute
 
-class DlgPointModiAdapter(var context: Context, var itemList: ArrayList<Birds_attribute>, var itemList2: ArrayList<Birds_attribute>) : BaseAdapter() {
+class DlgPointModiRepterAdapter(var context: Context, var itemList: ArrayList<Birds_attribute>, var itemList2: ArrayList<Birds_attribute>) : BaseAdapter() {
 
     var selectIndex: Int = 0;
     private lateinit var listdata1: java.util.ArrayList<Biotope_attribute>

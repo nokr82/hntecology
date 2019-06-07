@@ -1078,7 +1078,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         layerDivision = 100
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, MainActivity.WRITE_EXTERNAL_STORAGE)
+            loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, MainActivity.WRITE_EXTERNAL_STORAGE,"")
         } else {
 
             val dbManager: DataBaseHelper = DataBaseHelper(this)
@@ -1271,7 +1271,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         if (export == 70) {
                             layerDivision = 0
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,geom)
                             } else {
                                 Log.d("익스2", "")
                                 exportBiotope("", "", "", "", "all", geom)
@@ -1302,13 +1302,17 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     if (data!!.getIntExtra("export", 0) != null) {
                         val export = data!!.getIntExtra("export", 0)
-
+                        var geom = ""
+                        if (data!!.getStringExtra("geom") != null){
+                            geom =data!!.getStringExtra("geom")
+                        }
+                        Log.d("버드4444444",geom)
                         if (export == 70) {
                             layerDivision = 1
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,geom)
                             } else {
-                                exportBirds("", "", "", "", "all")
+                                exportBirds("", "", "", "", "all",geom)
                             }
                         }
                     }
@@ -1336,7 +1340,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         if (export == 70) {
                             layerDivision = 2
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,"")
                             } else {
                                 exportReptilia("", "", "", "", "all")
                             }
@@ -1366,7 +1370,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         if (export == 70) {
                             layerDivision = 3
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,"")
                             } else {
                                 exportMammal("", "", "", "", "all")
                             }
@@ -1395,7 +1399,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         if (export == 70) {
                             layerDivision = 4
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,"")
                             } else {
                                 exportFish("", "", "", "", "all")
                             }
@@ -1424,7 +1428,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         if (export == 70) {
                             layerDivision = 5
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,"")
                             } else {
                                 exportInsects("", "", "", "", "all")
                             }
@@ -1453,7 +1457,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         if (export == 70) {
                             layerDivision = 6
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,"")
                             } else {
                                 exportFlora("", "", "", "", "all")
                             }
@@ -1484,7 +1488,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         if (export == 70) {
                             layerDivision = 7
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,"")
                             } else {
                                 exportZoobenthous("", "", "", "", "all")
                             }
@@ -1516,7 +1520,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         if (export == 70) {
                             layerDivision = 9
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,"")
                             } else {
                                 exportManyFloras("", "", "", "", "all")
                             }
@@ -1552,7 +1556,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         if (export == 70) {
                             layerDivision = 10
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,"")
                             } else {
                                 exportStockMap("", "", "", "", "all",geom)
                             }
@@ -1577,7 +1581,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         if (export == 70) {
                             layerDivision = 11
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,"")
                             } else {
                                 exportWaypoint("", "", "", "", "all")
                             }
@@ -1764,6 +1768,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     Log.d("마크2", myLayer.toString())
                     var attrubuteKey = layerInfo.attrubuteKey
                     var geom =Utils.getString(layerInfo.metadata,"GEOM")
+                    Log.d("마크333333",geom)
                     var intent: Intent? = null
 
                     when (myLayer) {
@@ -1814,12 +1819,14 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                                 intent = Intent(this, BirdsActivity::class.java)
                                 if (modichk) {
-                                    intent = Intent(this, DlgModiListActivity::class.java)
+                                    intent = Intent(this, DlgPointModiListActivity::class.java)
                                 }
+                                intent.putExtra("title", "야생조류")
                                 intent!!.putExtra("id", birdsdataArray.get(0).id)
                                 intent!!.putExtra("GROP_ID", attrubuteKey)
+                                intent.putExtra("table", "birdsAttribute")
                                 intent!!.putExtra("markerid", marker.id)
-                                intent!!.putExtra("geom",geom)
+                                intent!!.putExtra("geom",birdsdataArray.get(0).GEOM)
 
                                 startActivityForResult(intent, BIRDS_DATA)
 
@@ -1828,14 +1835,14 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             if (birdsdataArray.size > 1) {
                                 var intent = Intent(this, DlgDataListActivity::class.java)
                                 if (modichk) {
-                                    intent = Intent(this, DlgModiListActivity::class.java)
+                                    intent = Intent(this, DlgPointModiListActivity::class.java)
                                 }
+                                intent!!.putExtra("geom",birdsdataArray.get(0).GEOM)
                                 intent.putExtra("title", "야생조류")
                                 intent.putExtra("table", "birdsAttribute")
                                 intent.putExtra("DlgHeight", 600f);
                                 intent!!.putExtra("markerid", marker.id)
                                 intent.putExtra("GROP_ID", attrubuteKey)
-                                intent!!.putExtra("geom",geom)
                                 startActivityForResult(intent, BIRDS_DATA);
                             }
 
@@ -1886,7 +1893,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             if (reptiliadataArray.size == 1) {
 
                                 intent = Intent(this, ReptiliaActivity::class.java)
-
+                                if (modichk) {
+                                    intent = Intent(this, DlgPointModiListActivity::class.java)
+                                }
+                                intent!!.putExtra("geom",geom)
                                 intent!!.putExtra("id", reptiliadataArray.get(0).id)
                                 intent!!.putExtra("GROP_ID", attrubuteKey)
                                 intent!!.putExtra("markerid", marker.id)
@@ -1896,7 +1906,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             }
 
                             if (reptiliadataArray.size > 1) {
-                                val intent = Intent(this, DlgDataListActivity::class.java)
+                                var intent = Intent(this, DlgDataListActivity::class.java)
+                                if (modichk) {
+                                    intent = Intent(this, DlgPointModiListActivity::class.java)
+                                }
+                                intent!!.putExtra("geom",geom)
                                 intent.putExtra("title", "양서,파충류")
                                 intent.putExtra("table", "reptiliaAttribute")
                                 intent.putExtra("DlgHeight", 600f);
@@ -4515,7 +4529,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     LAYER_BIRDS -> {
                         dbManager!!.updatebirdsgps(attrubuteKey, latitude.toString(), longitude.toString())
                         dbManager!!.updatebasegps(attrubuteKey, latitude.toString(), longitude.toString())
-                        exportBirds("", "", "", "", "all")
+                        exportBirds("", "", "", "", "all","")
                     }
 
                     LAYER_REPTILIA -> {
@@ -6507,7 +6521,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         Log.d("익스", "")
         exportBiotope(leftday, leftreplace, rightday, rightreplace, "time", "")
         exportStockMap(leftday, leftreplace, rightday, rightreplace, "time","")
-        exportBirds(leftday, leftreplace, rightday, rightreplace, "time")
+        exportBirds(leftday, leftreplace, rightday, rightreplace, "time","")
         exportReptilia(leftday, leftreplace, rightday, rightreplace, "time")
         exportMammal(leftday, leftreplace, rightday, rightreplace, "time")
         exportFish(leftday, leftreplace, rightday, rightreplace, "time")
@@ -7022,7 +7036,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
     }
 
-    fun exportBirds(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String) {
+    fun exportBirds(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String,geom:String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
         var lftday = leftday + lefttime
         var rgtday = rightday + righttime
@@ -7045,6 +7059,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             birdsDatas.add(birds_attribute)
 
         }
+        Log.d("아퐁2222",geom.toString())
 
         Log.d("버드", birdsDatas.toString())
         if (birdsDatas.size > 0) {
@@ -7118,8 +7133,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, birds_attribute.GPSLON_SEC.toString()))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, birds_attribute.MAC_ADDR.toString()))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, birds_attribute.CURRENT_TM.toString()))
-
-                    val geomsplit = birds_attribute.GEOM!!.split(" ")
+                    Log.d("아퐁2222",geom.toString())
+                    var geomsplit = birds_attribute.GEOM!!.split(" ")
+                    if (geomsplit.size<2) {
+                        geomsplit = geom.split(" ")
+                    }
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
 
                     println(geomsplit)
@@ -9531,7 +9549,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     protected fun initGps() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            loadPermissions(android.Manifest.permission.ACCESS_FINE_LOCATION, REQUEST_FINE_LOCATION)
+            loadPermissions(android.Manifest.permission.ACCESS_FINE_LOCATION, REQUEST_FINE_LOCATION,"")
         } else {
             checkGPs()
         }
@@ -9539,7 +9557,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     protected fun loadLayers(jsonOb: ArrayList<LayerModel>) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE)
+            loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE,"")
         } else {
             if (jsonOb != null) {
                 for (i in 0..jsonOb.size - 1) {
@@ -9549,24 +9567,25 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
     }
 
-    private fun loadPermissions(perm: String, requestCode: Int) {
+    private fun loadPermissions(perm: String, requestCode: Int,geom:String) {
         if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(perm), requestCode)
         } else {
             if (android.Manifest.permission.ACCESS_FINE_LOCATION == perm) {
-                loadPermissions(android.Manifest.permission.ACCESS_COARSE_LOCATION, REQUEST_ACCESS_COARSE_LOCATION)
+                loadPermissions(android.Manifest.permission.ACCESS_COARSE_LOCATION, REQUEST_ACCESS_COARSE_LOCATION,geom)
             } else if (android.Manifest.permission.ACCESS_COARSE_LOCATION == perm) {
                 checkGPs()
             } else if (android.Manifest.permission.WRITE_EXTERNAL_STORAGE == perm) {
-                loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE)
+                loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE,geom)
             } else if (android.Manifest.permission.READ_EXTERNAL_STORAGE == perm) {
                 if (layerDivision == 0) {
                     Log.d("익스7", "")
-                    exportBiotope("", "", "", "", "all", "")
+                    exportBiotope("", "", "", "", "all", geom)
                 }
 
                 if (layerDivision == 1) {
-                    exportBirds("", "", "", "", "all")
+                    Log.d("점스",geom)
+                    exportBirds("", "", "", "", "all",geom)
                 }
 
                 if (layerDivision == 2) {
@@ -9758,7 +9777,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         when (requestCode) {
             REQUEST_FINE_LOCATION -> if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                loadPermissions(android.Manifest.permission.ACCESS_COARSE_LOCATION, REQUEST_ACCESS_COARSE_LOCATION)
+                loadPermissions(android.Manifest.permission.ACCESS_COARSE_LOCATION, REQUEST_ACCESS_COARSE_LOCATION,"")
             }
             REQUEST_ACCESS_COARSE_LOCATION -> if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 checkGPs()
@@ -9766,7 +9785,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             WRITE_EXTERNAL_STORAGE -> {
                 if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE)
+                    loadPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE,"")
 
                     //                export()
                 } else {
@@ -9781,7 +9800,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     }
 
                     if (layerDivision == 1) {
-                        exportBirds("", "", "", "", "all")
+                        exportBirds("", "", "", "", "all","")
                     }
 
                     if (layerDivision == 2) {

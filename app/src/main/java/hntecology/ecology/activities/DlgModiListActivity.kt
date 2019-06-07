@@ -72,8 +72,6 @@ class DlgModiListActivity : Activity() {
         val dataList: Array<String> = arrayOf("biotopeAttribute.*", "min(id) as minId");
         val dataList2: Array<String> = arrayOf("*");
         val data1=  db.query("biotopeAttribute",dataList,null,null,"GROP_ID",null,"minId asc",null);
-//        val data2=  db.query("biotopeAttribute",dataList,null,null,"GROP_ID",null,"id asc",null);
-//        val data1=  db.query("biotopeAttribute",dataList,null,null,"GROP_ID",null,"id asc",null);
         val data2=  db.query("biotopeAttribute",dataList2,null,null,null,null,"id asc",null);
 
 

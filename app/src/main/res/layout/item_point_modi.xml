@@ -15,50 +15,22 @@
         android:id="@+id/search1_item">
 
         <TextView
-            android:id="@+id/dominTV"
+            android:id="@+id/timeTV"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:textSize="20dp"
             android:gravity="center"
-            android:text=""/>
+            android:text="2019"/>
+
         <TextView
-            android:id="@+id/treTV"
+            android:id="@+id/titleTV"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:textSize="20dp"
             android:gravity="center"
-            android:text=""/>
-
-        <TextView
-            android:id="@+id/streTV"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text=""
-            android:textSize="20dp" />
-        <TextView
-            android:id="@+id/shrTV"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:textSize="20dp"
-            android:gravity="center"
-            android:text=""/>
-
-        <TextView
-            android:id="@+id/herTV"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text=""
-            android:textSize="20dp" />
-
-
-
+            android:text="원숭이"/>
 
 
     </LinearLayout>

@@ -13,7 +13,7 @@ import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.model.Biotope_attribute
 
-class DlgModiAdapter(var context: Context, var itemList: ArrayList<Biotope_attribute>, var itemList2: ArrayList<Biotope_attribute>) : BaseAdapter() {
+class DlgPointModiAdapter(var context: Context, var itemList: ArrayList<Biotope_attribute>, var itemList2: ArrayList<Biotope_attribute>) : BaseAdapter() {
 
     var selectIndex: Int = 0;
     private lateinit var listdata1: java.util.ArrayList<Biotope_attribute>

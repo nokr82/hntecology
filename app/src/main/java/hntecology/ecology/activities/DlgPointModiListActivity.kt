@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class DlgModiListActivity : Activity() {
+class DlgPointModiListActivity : Activity() {
 
     private lateinit var context: Context;
 

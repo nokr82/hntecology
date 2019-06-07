@@ -6704,6 +6704,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         Log.d("마커사이즈", labelMarkers2.size.toString())
         for (i in 0..labelMarkers2.size - 1) {
             if (labelMarkers2[i].tag == pk) {
+                labelMarkers2[i].isVisible = false
                 labelMarkers2[i].remove()
                 Log.d("마커사이즈22", labelMarkers2[i].toString())
                 break

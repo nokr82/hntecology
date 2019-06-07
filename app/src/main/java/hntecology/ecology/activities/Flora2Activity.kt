@@ -1063,7 +1063,9 @@ class Flora2Activity : Activity() {
                         etHER_SPECET.setText(HerDatas.get(i).SPEC)
                         etHER_FAMIET.setText(HerDatas.get(i).FAMI)
                         etHER_SCIENET.setText(HerDatas.get(i).SCIEN)
+                        herminET.setText(HerDatas.get(i).M_H.toString())
                         etHER_HET.setText(HerDatas.get(i).H.toString())
+                        hermaxET.setText(HerDatas.get(i).X_H.toString())
                         etHER_COVEET.setText(HerDatas.get(i).COVE.toString())
                         etHER_HEIGHT.setText(HerDatas.get(i).ETC.toString())
                         division = true
@@ -1108,9 +1110,9 @@ class Flora2Activity : Activity() {
                             etHER_SPECET.setText(HerDatas.get(i).SPEC)
                             etHER_FAMIET.setText(HerDatas.get(i).FAMI)
                             etHER_SCIENET.setText(HerDatas.get(i).SCIEN)
-                            etHER_HET.setText(HerDatas.get(i).M_H.toString())
+                            herminET.setText(HerDatas.get(i).M_H.toString())
                             etHER_HET.setText(HerDatas.get(i).H.toString())
-                            etHER_HET.setText(HerDatas.get(i).X_H.toString())
+                            hermaxET.setText(HerDatas.get(i).X_H.toString())
                             etHER_COVEET.setText(HerDatas.get(i).COVE.toString())
                             etHER_HEIGHT.setText(HerDatas.get(i).ETC.toString())
                         }
@@ -1135,9 +1137,9 @@ class Flora2Activity : Activity() {
                             etHER_SPECET.setText(HerDatas.get(i).SPEC)
                             etHER_FAMIET.setText(HerDatas.get(i).FAMI)
                             etHER_SCIENET.setText(HerDatas.get(i).SCIEN)
-                            etHER_HET.setText(HerDatas.get(i).M_H.toString())
+                            herminET.setText(HerDatas.get(i).M_H.toString())
                             etHER_HET.setText(HerDatas.get(i).H.toString())
-                            etHER_HET.setText(HerDatas.get(i).X_H.toString())
+                            hermaxET.setText(HerDatas.get(i).X_H.toString())
                             etHER_COVEET.setText(HerDatas.get(i).COVE.toString())
                             etHER_HEIGHT.setText(HerDatas.get(i).ETC.toString())
                         }
@@ -2815,7 +2817,7 @@ class Flora2Activity : Activity() {
                                             manyFloraAttribute.HER_GUNDO = HerDatas.get(i).COVE
                                         }
 
-                                        if (HerDatas.get(i).ETC != null && HerDatas.get(i).ETC != "null") {
+                                        if (HerDatas.get(i).ETC != null && HerDatas.get(i).ETC != "null"&& HerDatas.get(i).ETC != "") {
                                             manyFloraAttribute.HER_HEIGHT = HerDatas.get(i).ETC!!.toFloat()
                                         } else {
                                             manyFloraAttribute.HER_HEIGHT = 0.0f

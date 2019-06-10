@@ -1496,6 +1496,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
+
+
+
 //
 //    public void backupMember(Member member) {
 //        String query = "INSERT INTO members ( member_id, reading ) ";
@@ -1923,6 +1926,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String query = "UPDATE biotopeAttribute SET  " +
                 "PRJ_NAME='" + biotope_attribute.getPRJ_NAME() + "'"
+                +",INV_DT='" + biotope_attribute.getINV_DT() + "'"
+                + ",INV_TM='" + biotope_attribute.getINV_TM() + "'"
                 + ",INV_PERSON='" + biotope_attribute.getINV_PERSON() + "'"
                 + ",INV_PERSON='" + biotope_attribute.getINV_PERSON() + "'"+
                 "where GROP_ID = '" + GROP_ID + "'";
@@ -1935,7 +1940,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void updatecommonbirds(Birds_attribute birds_attribute,String GROP_ID) {
 
         String query = "UPDATE birdsAttribute SET  " +
-                "INV_REGION='" + birds_attribute.getINV_REGION() + "'"
+                "INV_DT='" + birds_attribute.getINV_DT() + "'"
+                + ",INV_TM='" + birds_attribute.getINV_TM() + "'"
+                + ",INV_REGION='" + birds_attribute.getINV_REGION() + "'"
                 + ",PRJ_NAME='" + birds_attribute.getPRJ_NAME() + "'"
                 + ",INV_PERSON='" + birds_attribute.getINV_PERSON() + "'"
                 + ",WEATHER='" + birds_attribute.getWEATHER() + "'"
@@ -1954,6 +1961,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String query = "UPDATE reptiliaAttribute SET  " +
                 "INV_REGION='" + reptilia_attribute.getINV_REGION() + "'"
+                +",INV_DT='" + reptilia_attribute.getINV_DT() + "'"
+                + ",INV_TM='" + reptilia_attribute.getINV_TM() + "'"
                 + ",PRJ_NAME='" + reptilia_attribute.getPRJ_NAME() + "'"
                 + ",INV_PERSON='" + reptilia_attribute.getINV_PERSON() + "'"
                 + ",WEATHER='" + reptilia_attribute.getWEATHER() + "'"
@@ -1972,6 +1981,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String query = "UPDATE mammalAttribute SET  " +
                 "INV_REGION='" + mammal_attribute.getINV_REGION() + "'"
+                +",INV_DT='" + mammal_attribute.getINV_DT() + "'"
+                + ",INV_TM='" + mammal_attribute.getINV_TM() + "'"
                 + ",INV_PERSON='" + mammal_attribute.getINV_PERSON() + "'"
                 + ",WEATHER='" + mammal_attribute.getWEATHER() + "'"
                 + ",WIND='" + mammal_attribute.getWIND() + "'"
@@ -1990,6 +2001,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String query = "UPDATE fishAttribute SET  " +
                 "INV_REGION='" + fish_attribute.getINV_REGION() + "'"
+                +",INV_DT='" + fish_attribute.getINV_DT() + "'"
+                + ",INV_TM='" + fish_attribute.getINV_TM() + "'"
                 + ",PRJ_NAME='" + fish_attribute.getPRJ_NAME() + "'"
                 + ",INV_PERSON='" + fish_attribute.getINV_PERSON() + "'"
                 + ",WEATHER='" + fish_attribute.getWEATHER() + "'"
@@ -2032,6 +2045,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String query = "UPDATE insectAttribute SET  " +
                 "INV_REGION='" + insect_attribute.getINV_REGION() + "'"
+                +",INV_DT='" + insect_attribute.getINV_DT() + "'"
+                + ",INV_TM='" + insect_attribute.getINV_TM() + "'"
                 + ",PRJ_NAME='" + insect_attribute.getPRJ_NAME() + "'"
                 + ",INV_PERSON='" + insect_attribute.getINV_PERSON() + "'"
                 + ",WEATHER='" + insect_attribute.getWEATHER() + "'"
@@ -2049,6 +2064,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String query = "UPDATE floraAttribute SET  " +
                 "INV_REGION='" + flora_attribute.getINV_REGION() + "'"
+                +",INV_DT='" + flora_attribute.getINV_DT() + "'"
+                + ",INV_TM='" + flora_attribute.getINV_TM() + "'"
                 + ",PRJ_NAME='" + flora_attribute.getPRJ_NAME() + "'"
                 + ",INV_PERSON='" + flora_attribute.getINV_PERSON() + "'"
                 + ",WEATHER='" + flora_attribute.getWEATHER() + "'"
@@ -2073,6 +2090,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String query = "UPDATE ZoobenthosAttribute SET  " +
                 "INV_MEAN='" + Zoobenthos_Attribute.getINV_MEAN() + "'"
+                +",INV_DT='" + Zoobenthos_Attribute.getINV_DT() + "'"
+                + ",INV_TM='" + Zoobenthos_Attribute.getINV_TM() + "'"
                 + ",PRJ_NAME='" + Zoobenthos_Attribute.getPRJ_NAME() + "'"
                 + ",MAP_SYS_NM='" + Zoobenthos_Attribute.getMAP_SYS_NM() + "'"
                 + ",GPSLAT_DEG='" + Zoobenthos_Attribute.getGPSLAT_DEG() + "'"
@@ -2137,6 +2156,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String query = "UPDATE StockMap SET  " +
                 "INV_REGION='" + StockMap.getINV_REGION() + "'"
+                +",INV_DT='" + StockMap.getINV_DT() + "'"
+                + ",INV_TM='" + StockMap.getINV_TM() + "'"
                 + ",PRJ_NAME='" + StockMap.getPRJ_NAME() + "'" +
                 "where GROP_ID = '" + GROP_ID + "'";
         SQLiteDatabase db = getWritableDatabase();

@@ -27,6 +27,7 @@ class DlgModiAdapter(var context: Context, var itemList: ArrayList<Biotope_attri
     private class ViewHoldar(row: View?) {
 
         var dominTV: TextView
+        var donumTV: TextView
         var treTV: TextView
         var streTV: TextView
         var shrTV: TextView
@@ -35,6 +36,7 @@ class DlgModiAdapter(var context: Context, var itemList: ArrayList<Biotope_attri
 
         init {
             this.dominTV = row?.findViewById(R.id.dominTV) as TextView
+            this.donumTV = row?.findViewById(R.id.donumTV) as TextView
             this.treTV = row?.findViewById(R.id.treTV) as TextView
             this.streTV = row?.findViewById(R.id.streTV) as TextView
             this.shrTV = row?.findViewById(R.id.shrTV) as TextView
@@ -65,6 +67,8 @@ class DlgModiAdapter(var context: Context, var itemList: ArrayList<Biotope_attri
 
         var Biotope_attribute: Biotope_attribute = getItem(position)
         viewHoldar.dominTV.text = Biotope_attribute.DOMIN;
+        viewHoldar.donumTV.text = Biotope_attribute.UFID.toString();
+        Log.d("도형번호", Biotope_attribute.UFID.toString())
             for (j in 0..itemList2.size - 1) {
                 if (Biotope_attribute.GROP_ID == itemList2[j].GROP_ID) {
                     if (itemList2[j].TRE_SPEC.toString() != "" && itemList2[j].TRE_SPEC.toString() != "null") {

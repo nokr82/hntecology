@@ -15,6 +15,14 @@
         android:id="@+id/search1_item">
 
         <TextView
+            android:id="@+id/donumTV"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:text=""/>
+        <TextView
             android:id="@+id/dominTV"
             android:layout_width="0dp"
             android:layout_weight="1"

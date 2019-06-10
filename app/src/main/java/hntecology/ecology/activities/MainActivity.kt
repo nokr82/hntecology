@@ -3541,6 +3541,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                                             intent = Intent(this, BiotopeActivity::class.java)
 
+
+
                                             var GPS_LON = Utils.getString(layerInfo.metadata, "GPS_LON")
                                             println("layerinfo.metadata.GPS_LON ${GPS_LON}")
                                             var BREA_DIA = Utils.getString(layerInfo.metadata, "BREA_DIA")
@@ -3760,8 +3762,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                 data.LU_GR_NUM = LANDUSE
                                                 data.LC_GR_NUM = landcover
                                             }
-                                            if (modichk) {
+                                            if (modichk){
                                                 intent = Intent(this, DlgModiListActivity::class.java)
+                                                intent!!.putExtra("ufid", UFID.toString())
+                                                Log.d("아이디",UFID)
                                             }
                                             intent!!.putExtra("biotopedata", data)
                                             intent!!.putExtra("GROP_ID", attrubuteKey.toString())
@@ -3798,6 +3802,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                                     intent.putExtra("title", "비오톱")
                                     intent.putExtra("table", "biotopeAttribute")
+                                    intent.putExtra("ufid", biotopedataArray.get(0).UFID)
                                     intent.putExtra("id", biotopedataArray.get(0).id)
                                     intent.putExtra("DlgHeight", 600f);
                                     intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())
@@ -4966,10 +4971,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     polygon.isClickable = true
                     polygon.strokeColor = Color.RED
                     polygon.strokeJointType = JointType.ROUND
-                    polygon.strokeWidth = 30f
+                    polygon.strokeWidth = 7f
 
                     val strokePattern = ArrayList<PatternItem>()
-                    strokePattern.add(Dot())
+                    strokePattern.add(Dash(40f))
+                    strokePattern.add(Gap(10f))
                     polygon?.strokePattern = strokePattern
                 }
 

@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.widget.AdapterView
@@ -16,6 +18,15 @@ import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.*
 import kotlinx.android.synthetic.main.activity_dlg_point_modi_list.*
+import kotlinx.android.synthetic.main.activity_fish.*
+import kotlinx.android.synthetic.main.activity_fish.coordedET
+import kotlinx.android.synthetic.main.activity_fish.coordemET
+import kotlinx.android.synthetic.main.activity_fish.coordesET
+import kotlinx.android.synthetic.main.activity_fish.coordndET
+import kotlinx.android.synthetic.main.activity_fish.coordnmET
+import kotlinx.android.synthetic.main.activity_fish.coordnsET
+import kotlinx.android.synthetic.main.activity_fish.prjnameET
+import kotlinx.android.synthetic.main.activity_insect.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -61,6 +72,18 @@ class DlgPointModiListActivity : Activity() {
     var grop_id = ""
     var table_name = ""
     var geom = ""
+
+    var lat = ""
+    var log = ""
+
+    var GPSLAT_DEG_RE = ""
+    var GPSLAT_MIN_RE = ""
+    var GPSLAT_SEC_RE = ""
+    var GPSLON_DEG_RE = ""
+    var GPSLON_MIN_RE = ""
+    var GPSLON_SEC_RE = ""
+    var r_region = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dlg_point_modi_list)
@@ -79,6 +102,18 @@ class DlgPointModiListActivity : Activity() {
         this.setFinishOnTouchOutside(true);
 
         grop_id = intent.getStringExtra("GROP_ID")
+        if (intent.getStringExtra("latitude") != null) {
+            lat = intent.getStringExtra("latitude")
+            convert(lat.toDouble())
+
+        }
+
+        if (intent.getStringExtra("longitude") != null) {
+            log = intent.getStringExtra("longitude")
+            logconvert(log.toDouble())
+
+        }
+
         if (intent.getStringExtra("polygonid") != null) {
             polygonid = intent.getStringExtra("polygonid")
 
@@ -93,11 +128,19 @@ class DlgPointModiListActivity : Activity() {
         }
         if (intent.getStringExtra("geom") != null) {
             geom = intent.getStringExtra("geom")
+            var geom_sp = geom.split(" ")
+            if (geom_sp.size > 1) {
+                lat = geom_sp[0]
+                log = geom_sp[1]
+                convert(lat.toDouble())
+                logconvert(log.toDouble())
+            }
+
             println("---------점스스스 $geom")
         }
 
 
-
+        r_region = ""
 
 
 
@@ -197,14 +240,16 @@ class DlgPointModiListActivity : Activity() {
                 dbManager!!.delete_grop_reptilia_attribute(attribute, grop_id)
                 for (i in 0..listdata_rep3.size - 1) {
                     Log.d("버드데이터", listdata_rep3[i].SPEC_NM)
-                    addrepter(attribute, listdata_rep3[i].SPEC_NM.toString()
-                            , listdata_rep3[i].FAMI_NM.toString(), listdata_rep3[i].SCIEN_NM.toString()
-                            , listdata_rep3[i].INV_REGION.toString())
+                    addrepter(attribute, listdata_rep3[i].WEATHER.toString(), listdata_rep3[i].WIND.toString(), listdata_rep3[i].WIND_DIRE.toString()
+                            , listdata_rep3[i].TEMPERATUR.toString(), listdata_rep3[i].ETC.toString(), listdata_rep3[i].NUM.toString(), listdata_rep3[i].INV_TM.toString(), listdata_rep3[i].SPEC_NM.toString(), listdata_rep3[i].FAMI_NM.toString(), listdata_rep3[i].SCIEN_NM.toString(), listdata_rep3[i].ENDANGERED.toString(), listdata_rep3[i].IN_CNT_ADU.toString(), listdata_rep3[i].IN_CNT_LAR.toString(), listdata_rep3[i].IN_CNT_EGG.toString()
+                            , listdata_rep3[i].HAB_RIVEER.toString(), listdata_rep3[i].HAB_EDGE.toString(), listdata_rep3[i].WATER_IN.toString(), listdata_rep3[i].WATER_OUT.toString(), listdata_rep3[i].WATER_CONT.toString(), listdata_rep3[i].WATER_QUAL.toString(), listdata_rep3[i].WATER_DEPT.toString()
+                            , listdata_rep3[i].HAB_AREA_W.toString(), listdata_rep3[i].HAB_AREA_H.toString(), listdata_rep3[i].GPS_LAT.toString(), listdata_rep3[i].GPS_LON.toString(), listdata_rep3[i].TEMP_YN.toString(), listdata_rep3[i].CONF_MOD.toString(), listdata_rep3[i].GEOM.toString()
+                            , listdata_rep3[i].GPSLAT_DEG.toString(), listdata_rep3[i].GPSLAT_MIN.toString(), listdata_rep3[i].GPSLAT_SEC.toString(), listdata_rep3[i].GPSLON_DEG.toString(), listdata_rep3[i].GPSLON_MIN.toString(), listdata_rep3[i].GPSLON_SEC.toString(), listdata_rep3[i].HAB_AREA.toString()
+                            , listdata_rep3[i].MAC_ADDR.toString(), listdata_rep3[i].CURRENT_TM.toString())
                 }
                 last_finish()
             }
-        }
-        else if (table_name == "mammalAttribute") {
+        } else if (table_name == "mammalAttribute") {
             dataList_mal(listdata_mal1, data1)
             dataList_mal(listdata_mal2, data2)
             listmamalAdapter = DlgPointModiMamalAdapter(context, listdata_mal1, listdata_mal2);
@@ -232,9 +277,14 @@ class DlgPointModiListActivity : Activity() {
                 dbManager!!.delete_grop_mamal_attribute(attribute, grop_id)
                 for (i in 0..listdata_mal3.size - 1) {
                     Log.d("버드데이터", listdata_mal3[i].SPEC_NM)
-                    addmamal(attribute, listdata_mal3[i].SPEC_NM.toString()
-                            , listdata_mal3[i].FAMI_NM.toString(), listdata_mal3[i].SCIEN_NM.toString()
-                            , listdata_mal3[i].INV_REGION.toString())
+                    addmamal(attribute, listdata_mal3[i].WEATHER.toString(), listdata_mal3[i].WIND.toString(), listdata_mal3[i].WIND_DIRE.toString(), listdata_mal3[i].TEMPERATUR.toString()
+                            , listdata_mal3[i].ETC.toString(), listdata_mal3[i].NUM.toString(), listdata_mal3[i].INV_TM.toString(), listdata_mal3[i].SPEC_NM.toString(), listdata_mal3[i].FAMI_NM.toString()
+                            , listdata_mal3[i].SCIEN_NM.toString(), listdata_mal3[i].ENDANGERED.toString(), listdata_mal3[i].OBS_TY.toString(), listdata_mal3[i].INDI_CNT.toString()
+                            , listdata_mal3[i].OB_PT_CHAR.toString(), listdata_mal3[i].UNUS_NOTE.toString(), listdata_mal3[i].STANDARD.toString(), listdata_mal3[i].GPS_LAT.toString(), listdata_mal3[i].GPS_LON.toString()
+                            , listdata_mal3[i].UN_SPEC.toString(), listdata_mal3[i].UN_SPEC_RE.toString(), listdata_mal3[i].TR_EASY.toString(), listdata_mal3[i].TR_EASY_RE.toString(), listdata_mal3[i].TEMP_YN.toString()
+                            , listdata_mal3[i].CONF_MOD.toString(), listdata_mal3[i].GEOM.toString(), listdata_mal3[i].GPSLAT_DEG.toString(), listdata_mal3[i].GPSLAT_MIN.toString(), listdata_mal3[i].GPSLAT_SEC.toString()
+                            , listdata_mal3[i].GPSLON_DEG.toString(), listdata_mal3[i].GPSLON_MIN.toString(), listdata_mal3[i].GPSLON_SEC.toString(), listdata_mal3[i].MJ_ACT_PR.toString()
+                            , listdata_mal3[i].MAC_ADDR.toString(), listdata_mal3[i].CURRENT_TM.toString())
                 }
                 last_finish()
             }
@@ -267,9 +317,17 @@ class DlgPointModiListActivity : Activity() {
                 dbManager!!.delete_grop_fish_attribute(attribute, grop_id)
                 for (i in 0..listdata_fish3.size - 1) {
                     Log.d("버드데이터", listdata_fish3[i].SPEC_NM)
-                    addfish(attribute, listdata_fish3[i].SPEC_NM.toString()
-                            , listdata_fish3[i].FAMI_NM.toString(), listdata_fish3[i].SCIEN_NM.toString()
-                            , listdata_fish3[i].INV_REGION.toString())
+                    addfish(attribute, listdata_fish3[i]. WEATHER.toString(), listdata_fish3[i]. WIND.toString(), listdata_fish3[i]. WIND_DIRE . toString ()
+                            , listdata_fish3[i]. TEMPERATUR . toString(), listdata_fish3[i]. ETC . toString (), listdata_fish3[i]. MID_RAGE . toString (), listdata_fish3[i]. CODE_NUM . toString (), listdata_fish3[i]. RIVER_NUM . toString ()
+                            , listdata_fish3[i]. RIVER_NM . toString (), listdata_fish3[i]. GPS_LAT . toString ()
+                            , listdata_fish3[i]. GPS_LON . toString (), listdata_fish3[i]. COLL_TOOL . toString (), listdata_fish3[i]. COLL_TOOL2 . toString (), listdata_fish3[i]. STREAM_W . toString (), listdata_fish3[i]. WATER_W . toString ()
+                            , listdata_fish3[i]. WATER_D . toString (), listdata_fish3[i]. WATER_CUR . toString (), listdata_fish3[i]. RIV_STR . toString (), listdata_fish3[i]. RIV_STR_IN . toString (), listdata_fish3[i]. BOULDER . toString ()
+                            , listdata_fish3[i]. COBBLE . toString (), listdata_fish3[i]. PEBBLE . toString (), listdata_fish3[i]. GRAVEL . toString (), listdata_fish3[i]. SEND . toString (), listdata_fish3[i]. RIV_FORM . toString ()
+                            , listdata_fish3[i]. NUM.toString(), listdata_fish3[i]. SPEC_NM . toString (), listdata_fish3[i]. FAMI_NM . toString (), listdata_fish3[i]. SCIEN_NM . toString (), listdata_fish3[i]. INDI_CNT . toString ()
+                            , listdata_fish3[i]. UNIDENT.toString (), listdata_fish3[i]. RIV_FM_CH . toString (), listdata_fish3[i]. UN_FISH_CH . toString (), listdata_fish3[i]. TEMP_YN.toString(), listdata_fish3[i]. CONF_MOD.toString()
+                            , listdata_fish3[i]. GEOM.toString(), listdata_fish3[i]. GPSLAT_DEG . toString (), listdata_fish3[i]. GPSLAT_MIN . toString (), listdata_fish3[i]. GPSLAT_SEC.toString (), listdata_fish3[i]. GPSLON_DEG . toString ()
+                            , listdata_fish3[i]. GPSLON_MIN .toString(), listdata_fish3[i]. GPSLON_SEC.toString (), listdata_fish3[i]. RIVER_BED . toString (), listdata_fish3[i]. COLL_TIME . toString ()
+                            , listdata_fish3[i]. MAC_ADDR . toString (), listdata_fish3[i]. CURRENT_TM . toString ())
                 }
                 last_finish()
             }
@@ -303,9 +361,14 @@ class DlgPointModiListActivity : Activity() {
                 dbManager!!.delete_grop_insect_attribute(attribute, grop_id)
                 for (i in 0..listdata_insect3.size - 1) {
                     Log.d("버드데이터", listdata_insect3[i].SPEC_NM)
-                    addinsect(attribute, listdata_insect3[i].SPEC_NM.toString()
-                            , listdata_insect3[i].FAMI_NM.toString(), listdata_insect3[i].SCIEN_NM.toString()
-                            , listdata_insect3[i].INV_REGION.toString())
+                    addinsect(attribute,  listdata_insect3[i]. WEATHER.toString() , listdata_insect3[i]. WIND.toString() , listdata_insect3[i]. WIND_DIRE.toString(),listdata_insect3[i]. TEMPERATUR.toString()
+                    , listdata_insect3[i]. ETC.toString() , listdata_insect3[i]. NUM.toString() , listdata_insect3[i]. INV_TM.toString() , listdata_insect3[i]. SPEC_NM.toString() , listdata_insect3[i]. FAMI_NM.toString()
+                    , listdata_insect3[i]. SCIEN_NM.toString() , listdata_insect3[i]. INDI_CNT.toString() , listdata_insect3[i]. OBS_STAT.toString() ,listdata_insect3[i]. USE_TAR.toString()
+                    , listdata_insect3[i]. MJ_ACT.toString() , listdata_insect3[i]. INV_MEAN.toString()
+                    , listdata_insect3[i]. UNUS_NOTE.toString() , listdata_insect3[i]. GPS_LAT.toString(), listdata_insect3[i]. GPS_LON.toString(),listdata_insect3[i]. TEMP_YN.toString() ,listdata_insect3[i]. CONF_MOD.toString()
+                    ,listdata_insect3[i]. GEOM.toString(),listdata_insect3[i]. GPSLAT_DEG.toString(),listdata_insect3[i]. GPSLAT_MIN.toString(),listdata_insect3[i]. GPSLAT_SEC.toString()
+                    ,listdata_insect3[i]. GPSLON_DEG.toString(),listdata_insect3[i]. GPSLON_MIN.toString(),listdata_insect3[i]. GPSLON_SEC.toString()
+                    , listdata_insect3[i]. MAC_ADDR.toString() ,listdata_insect3[i]. CURRENT_TM.toString())
                 }
                 last_finish()
             }
@@ -330,7 +393,7 @@ class DlgPointModiListActivity : Activity() {
                  , GPSLAT_MIN: String, GPSLAT_SEC: String, GPSLON_DEG: String, GPSLON_MIN: String, GPSLON_SEC: String) {
         Log.d("인서트비오톱33", geom.toString());
         attribute.GROP_ID = grop_id
-        attribute.INV_REGION = region
+        attribute.INV_REGION = r_region
         attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
         attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name");
         attribute.INV_DT = Utils.todayStr()
@@ -341,28 +404,27 @@ class DlgPointModiListActivity : Activity() {
         attribute.SPEC_NM = spec
         attribute.FAMI_NM = fami
         attribute.SCIEN_NM = scien
-
-        /*attribute.WEATHER = spec
-        attribute.WIND = fami
-        attribute.WIND_DIRE = scien
-        attribute.TEMPERATUR = spec
-        attribute.ETC = fami
-        attribute.NUM = scien
-        attribute.ENDANGERED = spec
-        attribute.INDI_CNT = fami
-        attribute.OBS_STAT = scien
-        attribute.USE_TAR = spec
-        attribute.USE_LAYER = fami
-        attribute.MJ_ACT = scien
-        attribute.MJ_ACT_PR = scien
-        attribute.GPS_LAT = spec
-        attribute.GPS_LON = fami
-        attribute.GPSLAT_DEG = scien
-        attribute.GPSLAT_MIN = scien
-        attribute.GPSLAT_SEC = spec
-        attribute.GPSLON_DEG = fami
-        attribute.GPSLON_MIN = scien
-        attribute.GPSLON_SEC = scien*/
+        attribute.WEATHER = WEATHER
+        attribute.WIND = WIND
+        attribute.WIND_DIRE = WIND_DIRE
+        attribute.TEMPERATUR = TEMPERATUR.toString().toFloat()
+        attribute.ETC = ETC
+        attribute.NUM = NUM.toInt()
+        attribute.ENDANGERED = ENDANGERED
+        attribute.INDI_CNT = INDI_CNT.toInt()
+        attribute.OBS_STAT = OBS_STAT
+        attribute.USE_TAR = USE_TAR
+        attribute.USE_LAYER = USE_LAYER
+        attribute.MJ_ACT = MJ_ACT
+        attribute.MJ_ACT_PR = MJ_ACT_PR
+        attribute.GPS_LAT = lat.toFloat()
+        attribute.GPS_LON = log.toFloat()
+        attribute.GPSLAT_DEG = GPSLAT_DEG_RE.toInt()
+        attribute.GPSLAT_MIN = GPSLAT_MIN_RE.toInt()
+        attribute.GPSLAT_SEC = GPSLAT_SEC_RE.toFloat()
+        attribute.GPSLON_DEG = GPSLON_DEG_RE.toInt()
+        attribute.GPSLON_MIN = GPSLON_MIN_RE.toInt()
+        attribute.GPSLON_SEC = GPSLON_SEC_RE.toString().toFloat()
 
         val date = Date()
         val sdf = SimpleDateFormat("yyyyMMddHHmmSS")
@@ -371,6 +433,7 @@ class DlgPointModiListActivity : Activity() {
         attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
         dbManager!!.insertbirds_attribute(attribute);
     }
+
     fun null_birds_attribute(): Birds_attribute {
         var birds_attribute: Birds_attribute = Birds_attribute(null, null, null, null, null, null, null, null, null, null,
                 null, null, null, null, null, null, null, null, null, null, null, null,
@@ -378,6 +441,7 @@ class DlgPointModiListActivity : Activity() {
 
         return birds_attribute
     }
+
     fun dataList(listdata: ArrayList<Birds_attribute>, data: Cursor) {
 
         while (data.moveToNext()) {
@@ -396,50 +460,78 @@ class DlgPointModiListActivity : Activity() {
         }
     }
 
-    fun addrepter(attribute: Reptilia_attribute, spec: String, fami: String, scien: String, region: String) {
-        Log.d("인서트비오톱33", geom.toString());
-        attribute.GROP_ID = grop_id
-        attribute.INV_REGION = region
-        attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
-        attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name");
-        attribute.INV_DT = Utils.todayStr()
-        attribute.INV_TM = Utils.timeStr()
-        attribute.TEMP_YN = "Y"
-        attribute.CONF_MOD = "M"
-        attribute.GEOM = geom
-        attribute.SPEC_NM = spec
-        attribute.FAMI_NM = fami
-        attribute.SCIEN_NM = scien
+    fun addrepter(reptilia_attribute: Reptilia_attribute, WEATHER: String?, WIND: String?, WIND_DIRE: String?
+                  , TEMPERATUR: String?, ETC: String?, NUM: String?, INV_TM: String?, SPEC_NM: String?, FAMI_NM: String?, SCIEN_NM: String?, ENDANGERED: String?, IN_CNT_ADU: String?, IN_CNT_LAR: String?, IN_CNT_EGG: String?
+                  , HAB_RIVEER: String?, HAB_EDGE: String?, WATER_IN: String?, WATER_OUT: String?, WATER_CONT: String?, WATER_QUAL: String?, WATER_DEPT: String?
+                  , HAB_AREA_W: String?, HAB_AREA_H: String?, GPS_LAT: String?, GPS_LON: String?, TEMP_YN: String?, CONF_MOD: String?, GEOM: String?
+                  , GPSLAT_DEG: String?, GPSLAT_MIN: String?, GPSLAT_SEC: String?, GPSLON_DEG: String?, GPSLON_MIN: String?, GPSLON_SEC: String?, HAB_AREA: String?
+                  , MAC_ADDR: String?, CURRENT_TM: String?) {
 
-        /*  attribute.WEATHER = spec
-          attribute.WIND = fami
-          attribute.WIND_DIRE =scien
-          attribute.TEMPERATUR = spec
-          attribute.ETC = fami
-          attribute.NUM =scien
-          attribute.ENDANGERED = spec
-          attribute.INDI_CNT = fami
-          attribute.OBS_STAT =scien
-          attribute.USE_TAR = spec
-          attribute.USE_LAYER = fami
-          attribute.MJ_ACT =scien
-          attribute.MJ_ACT_PR =scien
-          attribute.GPS_LAT = spec
-          attribute.GPS_LON = fami
-          attribute.GPSLAT_DEG =scien
-          attribute.GPSLAT_MIN =scien
-          attribute.GPSLAT_SEC = spec
-          attribute.GPSLON_DEG = fami
-          attribute.GPSLON_MIN =scien
-          attribute.GPSLON_SEC =scien*/
+        reptilia_attribute.GROP_ID = grop_id
+        reptilia_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+        reptilia_attribute.CURRENT_TM = Utils.current_tm()
 
+        reptilia_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
+
+        reptilia_attribute.INV_REGION = r_region
+        reptilia_attribute.INV_DT = Utils.todayStr()
+        reptilia_attribute.INV_TM = Utils.timeStr()
+        reptilia_attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name");
+
+        reptilia_attribute.WEATHER = WEATHER
+        reptilia_attribute.WIND = WIND
+        reptilia_attribute.WIND_DIRE = WIND_DIRE
+        reptilia_attribute.TEMPERATUR = TEMPERATUR!!.toFloat()
+
+        reptilia_attribute.ETC = ETC
+
+        reptilia_attribute.NUM = NUM!!.toInt()
+
+        reptilia_attribute.INV_TM = INV_TM
+
+        reptilia_attribute.SPEC_NM = SPEC_NM
+        reptilia_attribute.FAMI_NM = FAMI_NM
+        reptilia_attribute.SCIEN_NM = SCIEN_NM
+        reptilia_attribute.IN_CNT_ADU = IN_CNT_ADU!!.toInt()
+        reptilia_attribute.IN_CNT_LAR = IN_CNT_LAR!!.toInt()
+        reptilia_attribute.IN_CNT_EGG = IN_CNT_EGG!!.toInt()
+
+        reptilia_attribute.HAB_RIVEER = HAB_RIVEER
+        reptilia_attribute.HAB_EDGE = HAB_EDGE
+
+        reptilia_attribute.WATER_IN = WATER_IN
+        reptilia_attribute.WATER_OUT = WATER_OUT
+
+        reptilia_attribute.WATER_CONT = WATER_CONT
+        reptilia_attribute.WATER_QUAL = WATER_QUAL
+
+        reptilia_attribute.WATER_DEPT = WATER_DEPT!!.toInt()
+
+        reptilia_attribute.HAB_AREA_W = HAB_AREA_W!!.toInt()
+
+        reptilia_attribute.HAB_AREA_H = HAB_AREA_H!!.toInt()
+
+
+        reptilia_attribute.GEOM = geom
+        reptilia_attribute.CONF_MOD = "N"
+        reptilia_attribute.GPS_LAT = lat.toFloat()
+        reptilia_attribute.GPS_LON = log.toFloat()
+        reptilia_attribute.GPSLAT_DEG = GPSLAT_DEG_RE!!.toInt()
+        reptilia_attribute.GPSLAT_MIN = GPSLAT_MIN_RE!!.toInt()
+        reptilia_attribute.GPSLAT_SEC = GPSLAT_SEC_RE!!.toFloat()
+        reptilia_attribute.GPSLON_DEG = GPSLON_DEG_RE!!.toInt()
+        reptilia_attribute.GPSLON_MIN = GPSLON_MIN_RE!!.toInt()
+        reptilia_attribute.GPSLON_SEC = GPSLON_SEC_RE!!.toFloat()
+        reptilia_attribute.HAB_AREA = HAB_AREA!!.toFloat()
+        reptilia_attribute.TEMP_YN = "N"
         val date = Date()
         val sdf = SimpleDateFormat("yyyyMMddHHmmSS")
         val getTime = sdf.format(date)
-        attribute.CURRENT_TM = getTime.substring(2, 14)
-        attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
-        dbManager!!.insertreptilia_attribute(attribute);
+        reptilia_attribute.CURRENT_TM = getTime.substring(2, 14)
+        reptilia_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+        dbManager!!.insertreptilia_attribute(reptilia_attribute);
     }
+
     fun null_rep_attribute(): Reptilia_attribute {
         var reptilia_attribute: Reptilia_attribute = Reptilia_attribute(null, null, null, null, null, null, null, null, null
                 , null, null, null, null, null, null, null, null, null, null, null, null
@@ -448,6 +540,7 @@ class DlgPointModiListActivity : Activity() {
                 , null, null, null, null, null, null, null, null, null)
         return reptilia_attribute
     }
+
     fun dataList_rep(listdata: ArrayList<Reptilia_attribute>, data: Cursor) {
 
         while (data.moveToNext()) {
@@ -467,50 +560,87 @@ class DlgPointModiListActivity : Activity() {
         }
     }
 
-    fun addmamal(attribute: Mammal_attribute, spec: String, fami: String, scien: String, region: String) {
+    fun addmamal(mammal_attribute: Mammal_attribute, WEATHER: String?, WIND: String?, WIND_DIRE: String?, TEMPERATUR: String?
+                 , ETC: String?, NUM: String?, INV_TM: String?, SPEC_NM: String?, FAMI_NM: String?
+                 , SCIEN_NM: String?, ENDANGERED: String?, OBS_TY: String?, INDI_CNT: String?
+                 , OB_PT_CHAR: String?, UNUS_NOTE: String?, STANDARD: String?, GPS_LAT: String?, GPS_LON: String?
+                 , UN_SPEC: String?, UN_SPEC_RE: String?, TR_EASY: String?, TR_EASY_RE: String?, TEMP_YN: String?
+                 , CONF_MOD: String?, GEOM: String?, GPSLAT_DEG: String?, GPSLAT_MIN: String?, GPSLAT_SEC: String?
+                 , GPSLON_DEG: String?, GPSLON_MIN: String?, GPSLON_SEC: String?, MJ_ACT_PR: String?
+                 , MAC_ADDR: String?, CURRENT_TM: String?) {
         Log.d("인서트비오톱33", geom.toString());
-        attribute.GROP_ID = grop_id
-        attribute.INV_REGION = region
-        attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
-        attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name");
-        attribute.INV_DT = Utils.todayStr()
-        attribute.INV_TM = Utils.timeStr()
-        attribute.TEMP_YN = "Y"
-        attribute.CONF_MOD = "M"
-        attribute.GEOM = geom
-        attribute.SPEC_NM = spec
-        attribute.FAMI_NM = fami
-        attribute.SCIEN_NM = scien
+        mammal_attribute.GROP_ID = grop_id
+        mammal_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr").replace(":", "")
+        mammal_attribute.CURRENT_TM = Utils.current_tm()
 
-        /*  attribute.WEATHER = spec
-          attribute.WIND = fami
-          attribute.WIND_DIRE =scien
-          attribute.TEMPERATUR = spec
-          attribute.ETC = fami
-          attribute.NUM =scien
-          attribute.ENDANGERED = spec
-          attribute.INDI_CNT = fami
-          attribute.OBS_STAT =scien
-          attribute.USE_TAR = spec
-          attribute.USE_LAYER = fami
-          attribute.MJ_ACT =scien
-          attribute.MJ_ACT_PR =scien
-          attribute.GPS_LAT = spec
-          attribute.GPS_LON = fami
-          attribute.GPSLAT_DEG =scien
-          attribute.GPSLAT_MIN =scien
-          attribute.GPSLAT_SEC = spec
-          attribute.GPSLON_DEG = fami
-          attribute.GPSLON_MIN =scien
-          attribute.GPSLON_SEC =scien*/
+        mammal_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
+
+        mammal_attribute.INV_REGION = r_region
+
+        mammal_attribute.INV_DT = Utils.todayStr()
+        mammal_attribute.INV_TM = Utils.timeStr()
+        mammal_attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name");
+
+        mammal_attribute.WEATHER = WEATHER
+        mammal_attribute.WIND = WIND
+        mammal_attribute.WIND_DIRE = WIND_DIRE
+        mammal_attribute.TEMPERATUR = TEMPERATUR!!.toFloat()
+
+        mammal_attribute.ETC = ETC
+        mammal_attribute.NUM = NUM!!.toInt()
+        mammal_attribute.GPSLAT_DEG = GPSLAT_DEG_RE!!.toInt()
+        mammal_attribute.GPSLAT_MIN = GPSLAT_MIN_RE!!.toInt()
+        mammal_attribute.GPSLAT_SEC = GPSLAT_SEC_RE!!.toFloat()
+        mammal_attribute.GPSLON_DEG = GPSLON_DEG_RE!!.toInt()
+        mammal_attribute.GPSLON_MIN = GPSLON_MIN_RE!!.toInt()
+        mammal_attribute.GPSLON_SEC = GPSLON_SEC_RE!!.toFloat()
+        mammal_attribute.MJ_ACT_PR = MJ_ACT_PR
+
+
+        mammal_attribute.SPEC_NM = SPEC_NM
+        mammal_attribute.FAMI_NM = FAMI_NM
+        mammal_attribute.SCIEN_NM = SCIEN_NM
+        mammal_attribute.ENDANGERED = ENDANGERED
+
+
+        mammal_attribute.OBS_TY = OBS_TY
+
+        mammal_attribute.INDI_CNT = INDI_CNT!!.toInt()
+
+        mammal_attribute.OB_PT_CHAR = OB_PT_CHAR
+        mammal_attribute.UNUS_NOTE = UNUS_NOTE
+
+        mammal_attribute.GPS_LAT = lat.toFloat()
+        mammal_attribute.GPS_LON = log.toFloat()
+
+        mammal_attribute.GPSLAT_DEG = GPSLAT_DEG_RE!!.toInt()
+        mammal_attribute.GPSLAT_MIN = GPSLAT_MIN_RE!!.toInt()
+        mammal_attribute.GPSLAT_SEC = GPSLAT_SEC_RE!!.toFloat()
+        mammal_attribute.GPSLON_DEG = GPSLON_DEG_RE!!.toInt()
+        mammal_attribute.GPSLON_MIN = GPSLON_MIN_RE!!.toInt()
+        mammal_attribute.GPSLON_SEC = GPSLON_SEC_RE!!.toFloat()
+        mammal_attribute.UN_SPEC = UN_SPEC
+        mammal_attribute.UN_SPEC_RE = UN_SPEC_RE
+
+        mammal_attribute.STANDARD = STANDARD
+
+        mammal_attribute.TR_EASY = TR_EASY
+        mammal_attribute.TR_EASY_RE = TR_EASY_RE
+
+        mammal_attribute.TEMP_YN = "Y"
+
+        mammal_attribute.CONF_MOD = "N"
+
+        mammal_attribute.GEOM = geom
 
         val date = Date()
         val sdf = SimpleDateFormat("yyyyMMddHHmmSS")
         val getTime = sdf.format(date)
-        attribute.CURRENT_TM = getTime.substring(2, 14)
-        attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
-        dbManager!!.insertmammal_attribute(attribute);
+        mammal_attribute.CURRENT_TM = getTime.substring(2, 14)
+        mammal_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+        dbManager!!.insertmammal_attribute(mammal_attribute);
     }
+
     fun null_mal_attribute(): Mammal_attribute {
         var mammal_attribute: Mammal_attribute = Mammal_attribute(null, null, null, null, null
                 , null, null, null, null, null, null, null, null, null
@@ -521,6 +651,7 @@ class DlgPointModiListActivity : Activity() {
         )
         return mammal_attribute
     }
+
     fun dataList_mal(listdata: ArrayList<Mammal_attribute>, data: Cursor) {
 
         while (data.moveToNext()) {
@@ -540,50 +671,90 @@ class DlgPointModiListActivity : Activity() {
         }
     }
 
-    fun addfish(attribute: Fish_attribute, spec: String, fami: String, scien: String, region: String) {
+    fun addfish(fish_attribute: Fish_attribute, WEATHER: String?, WIND: String?, WIND_DIRE: String?
+                , TEMPERATUR: String?, ETC: String?, MID_RAGE: String?, CODE_NUM: String?, RIVER_NUM: String?
+                , RIVER_NM: String?, GPS_LAT: String?
+                , GPS_LON: String?, COLL_TOOL: String?, COLL_TOOL2: String?, STREAM_W: String?, WATER_W: String?
+                , WATER_D: String?, WATER_CUR: String?, RIV_STR: String?, RIV_STR_IN: String?, BOULDER: String?
+                , COBBLE: String?, PEBBLE: String?, GRAVEL: String?, SEND: String?, RIV_FORM: String?
+                , NUM: String?, SPEC_NM: String?, FAMI_NM: String?, SCIEN_NM: String?, INDI_CNT: String?
+                , UNIDENT: String?, RIV_FM_CH: String?, UN_FISH_CH: String?, TEMP_YN: String?, CONF_MOD: String?
+                , GEOM: String?, GPSLAT_DEG: String?, GPSLAT_MIN: String?, GPSLAT_SEC: String?, GPSLON_DEG: String?
+                , GPSLON_MIN: String?, GPSLON_SEC: String?, RIVER_BED: String?, COLL_TIME: String?
+                , MAC_ADDR: String?, CURRENT_TM: String?) {
         Log.d("인서트비오톱33", geom.toString());
-        attribute.GROP_ID = grop_id
-        attribute.INV_REGION = region
-        attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
-        attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name");
-        attribute.INV_DT = Utils.todayStr()
-        attribute.INV_TM = Utils.timeStr()
-        attribute.TEMP_YN = "Y"
-        attribute.CONF_MOD = "M"
-        attribute.GEOM = geom
-        attribute.SPEC_NM = spec
-        attribute.FAMI_NM = fami
-        attribute.SCIEN_NM = scien
+        fish_attribute.GROP_ID = grop_id
+        fish_attribute.INV_REGION = r_region
+        fish_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
+        fish_attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name");
+        fish_attribute.INV_DT = Utils.todayStr()
+        fish_attribute.INV_TM = Utils.timeStr()
+        fish_attribute.TEMP_YN = "Y"
+        fish_attribute.CONF_MOD = "M"
+        fish_attribute.GEOM = geom
 
-        /*  attribute.WEATHER = spec
-          attribute.WIND = fami
-          attribute.WIND_DIRE =scien
-          attribute.TEMPERATUR = spec
-          attribute.ETC = fami
-          attribute.NUM =scien
-          attribute.ENDANGERED = spec
-          attribute.INDI_CNT = fami
-          attribute.OBS_STAT =scien
-          attribute.USE_TAR = spec
-          attribute.USE_LAYER = fami
-          attribute.MJ_ACT =scien
-          attribute.MJ_ACT_PR =scien
-          attribute.GPS_LAT = spec
-          attribute.GPS_LON = fami
-          attribute.GPSLAT_DEG =scien
-          attribute.GPSLAT_MIN =scien
-          attribute.GPSLAT_SEC = spec
-          attribute.GPSLON_DEG = fami
-          attribute.GPSLON_MIN =scien
-          attribute.GPSLON_SEC =scien*/
+        fish_attribute.WEATHER = WEATHER
+        fish_attribute.WIND = WIND
+        fish_attribute.WIND_DIRE = WIND_DIRE
+
+        fish_attribute.TEMPERATUR = TEMPERATUR!!.toFloat()
+
+        fish_attribute.ETC = ETC
+
+        fish_attribute.MID_RAGE = MID_RAGE
+        fish_attribute.CODE_NUM = CODE_NUM
+
+        if (fishrivernumET.text.isNotEmpty()) {
+            fish_attribute.RIVER_NUM = fishrivernumET.text.toString()
+        }
+
+        fish_attribute.RIVER_NM = fishrivernmET.text.toString()
+
+
+        fish_attribute.COLL_TIME = COLL_TIME
+
+
+
+
+        fish_attribute.STREAM_W = STREAM_W!!.toInt()
+
+        fish_attribute.WATER_W = WATER_W!!.toInt()
+
+        fish_attribute.WATER_D = WATER_D!!.toInt()
+
+        fish_attribute.WATER_CUR = WATER_CUR!!.toInt()
+
+//            fish_attribute.RIV_STR = rivstrTV.text.toString()
+//            fish_attribute.RIV_STR_IN = rivstrdetET.text.toString()
+
+        fish_attribute.RIV_FORM = RIV_FORM
+
+        fish_attribute.NUM = NUM.toString().toInt()
+
+        fish_attribute.SPEC_NM = SPEC_NM
+        fish_attribute.FAMI_NM = FAMI_NM
+        fish_attribute.SCIEN_NM = SCIEN_NM
+        fish_attribute.INDI_CNT = INDI_CNT!!.toInt()
+
+        fish_attribute.UNIDENT = UNIDENT
+        fish_attribute.RIV_FM_CH = RIV_FM_CH
+        fish_attribute.UN_FISH_CH = UN_FISH_CH
+
+
+        fish_attribute.TEMP_YN = "N"
+
+        fish_attribute.GPS_LAT = lat.toFloat()
+        fish_attribute.GPS_LON = log.toFloat()
+
 
         val date = Date()
         val sdf = SimpleDateFormat("yyyyMMddHHmmSS")
         val getTime = sdf.format(date)
-        attribute.CURRENT_TM = getTime.substring(2, 14)
-        attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
-        dbManager!!.insertfish_attribute(attribute);
+        fish_attribute.CURRENT_TM = getTime.substring(2, 14)
+        fish_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+        dbManager!!.insertfish_attribute(fish_attribute);
     }
+
     fun null_fish_attribute(): Fish_attribute {
         var fish_attribute: Fish_attribute = Fish_attribute(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
                 , null, null, null, null, null, null, null, null, null, null, null, null, null
@@ -591,6 +762,7 @@ class DlgPointModiListActivity : Activity() {
                 , null, null, null, null, null, null, null)
         return fish_attribute
     }
+
     fun dataList_fish(listdata: ArrayList<Fish_attribute>, data: Cursor) {
 
         while (data.moveToNext()) {
@@ -609,56 +781,83 @@ class DlgPointModiListActivity : Activity() {
         }
     }
 
-    fun addinsect(attribute: Insect_attribute, spec: String, fami: String, scien: String, region: String) {
+    fun addinsect(insect_attribute: Insect_attribute, WEATHER: String? , WIND: String? , WIND_DIRE: String?,TEMPERATUR: String?
+                  , ETC: String? , NUM: String? , INV_TM: String? , SPEC_NM: String? , FAMI_NM: String?
+                  , SCIEN_NM: String? , INDI_CNT: String? , OBS_STAT: String? ,USE_TAR: String?
+                  , MJ_ACT: String? , INV_MEAN: String?
+                  , UNUS_NOTE: String? , GPS_LAT: String?, GPS_LON: String?,TEMP_YN:String? ,CONF_MOD:String?
+                  ,GEOM:String?,GPSLAT_DEG:String?,GPSLAT_MIN:String?,GPSLAT_SEC:String?
+                  ,GPSLON_DEG:String?,GPSLON_MIN:String?,GPSLON_SEC:String?
+                  , MAC_ADDR: String? ,CURRENT_TM: String?) {
         Log.d("인서트비오톱33", geom.toString());
-        attribute.GROP_ID = grop_id
-        attribute.INV_REGION = region
-        attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
-        attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name");
-        attribute.INV_DT = Utils.todayStr()
-        attribute.INV_TM = Utils.timeStr()
-        attribute.TEMP_YN = "Y"
-        attribute.CONF_MOD = "M"
-        attribute.GEOM = geom
-        attribute.SPEC_NM = spec
-        attribute.FAMI_NM = fami
-        attribute.SCIEN_NM = scien
+        insect_attribute.GROP_ID = grop_id
+        insect_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+        insect_attribute.CURRENT_TM = Utils.current_tm()
 
-        /*  attribute.WEATHER = spec
-          attribute.WIND = fami
-          attribute.WIND_DIRE =scien
-          attribute.TEMPERATUR = spec
-          attribute.ETC = fami
-          attribute.NUM =scien
-          attribute.ENDANGERED = spec
-          attribute.INDI_CNT = fami
-          attribute.OBS_STAT =scien
-          attribute.USE_TAR = spec
-          attribute.USE_LAYER = fami
-          attribute.MJ_ACT =scien
-          attribute.MJ_ACT_PR =scien
-          attribute.GPS_LAT = spec
-          attribute.GPS_LON = fami
-          attribute.GPSLAT_DEG =scien
-          attribute.GPSLAT_MIN =scien
-          attribute.GPSLAT_SEC = spec
-          attribute.GPSLON_DEG = fami
-          attribute.GPSLON_MIN =scien
-          attribute.GPSLON_SEC =scien*/
+        insect_attribute.PRJ_NAME =  PrefUtils.getStringPreference(context, "prjname")
+        insect_attribute.INV_DT = Utils.todayStr()
+        insect_attribute.INV_TM = Utils.timeStr()
+        insect_attribute.INV_PERSON =  PrefUtils.getStringPreference(this, "name")
+
+        insect_attribute.WEATHER = WEATHER
+        insect_attribute.WIND = WIND
+        insect_attribute.WIND_DIRE = WIND_DIRE
+
+            insect_attribute.TEMPERATUR = TEMPERATUR!!.toFloat()
+
+        insect_attribute.ETC = ETC
+
+            insect_attribute.NUM = NUM!!.toInt()
+
+
+        insect_attribute.SPEC_NM = SPEC_NM
+
+        insect_attribute.FAMI_NM = FAMI_NM
+        insect_attribute.SCIEN_NM = SCIEN_NM
+
+            insect_attribute.INDI_CNT = INDI_CNT!!.toInt()
+
+        insect_attribute.OBS_STAT = OBS_STAT
+
+        insect_attribute.USE_TAR = USE_TAR
+
+        insect_attribute.MJ_ACT = MJ_ACT
+
+        insect_attribute.INV_MEAN = INV_MEAN
+
+
+        insect_attribute.GPSLAT_DEG = GPSLAT_DEG_RE!!.toInt()
+        insect_attribute.GPSLAT_MIN = GPSLAT_MIN_RE!!.toInt()
+        insect_attribute.GPSLAT_SEC = GPSLAT_SEC_RE!!.toFloat()
+        insect_attribute.GPSLON_DEG = GPSLON_DEG_RE!!.toInt()
+        insect_attribute.GPSLON_MIN = GPSLON_MIN_RE!!.toInt()
+        insect_attribute.GPSLON_SEC = GPSLON_SEC_RE!!.toFloat()
+
+        insect_attribute.UNUS_NOTE = UNUS_NOTE
+
+        insect_attribute.GPS_LAT = lat.toFloat()
+        insect_attribute.GPS_LON = log.toFloat()
+
+        insect_attribute.TEMP_YN = "N"
+
+        insect_attribute.CONF_MOD = "N"
+
 
         val date = Date()
         val sdf = SimpleDateFormat("yyyyMMddHHmmSS")
         val getTime = sdf.format(date)
-        attribute.CURRENT_TM = getTime.substring(2, 14)
-        attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
-        dbManager!!.insertinsect_attribute(attribute);
+        insect_attribute.CURRENT_TM = getTime.substring(2, 14)
+        insect_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+        dbManager!!.insertinsect_attribute(insect_attribute);
     }
+
     fun null_insect_attribute(): Insect_attribute {
         var insect_attribute: Insect_attribute = Insect_attribute(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
                 , null, null, null, null, null, null, null, null, null, null, null, null, null
                 , null, null, null, null, null, null)
         return insect_attribute
     }
+
     fun dataList_insect(listdata: ArrayList<Insect_attribute>, data: Cursor) {
 
         while (data.moveToNext()) {
@@ -677,5 +876,80 @@ class DlgPointModiListActivity : Activity() {
         }
     }
 
+    fun region(): String {
+        var geocoder: Geocoder = Geocoder(context);
+        var region_ = ""
+        var list: List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+
+        if (list.size > 0) {
+            region_ = list.get(0).getAddressLine(0)
+
+        }
+        return region_
+    }
+
+    fun convert(d: Double): String {
+
+        var long_d = Math.abs(d)
+
+//        var i = d.intValue()
+        var i = long_d.toInt()
+        var s = i.toString()
+
+        GPSLAT_DEG_RE = s.toString()
+
+        long_d = long_d - i;
+        long_d = long_d * 60;
+        GPSLAT_MIN_RE = long_d.toInt().toString()
+//        i = long_d.intValue();
+        i = long_d.toInt();
+
+//        s = s + String.format(i) + '\'';
+        s = s + i.toString()
+
+        long_d = long_d - i;
+        long_d = long_d * 60;
+
+//        i = long_d.round().intValue();
+        i = Math.round(long_d.toDouble()).toInt()
+
+        GPSLAT_SEC_RE = long_d.toFloat().toString()
+
+        s = s + i.toString() + '"';
+
+        return s
+    }
+
+    fun logconvert(d: Double): String {
+
+        var long_d = Math.abs(d)
+
+//        var i = d.intValue()
+        var i = long_d.toInt()
+        var s = i.toString()
+
+        GPSLON_DEG_RE = s.toString()
+
+        long_d = long_d - i;
+        long_d = long_d * 60;
+        GPSLON_MIN_RE = long_d.toInt().toString()
+//        i = long_d.intValue();
+        i = long_d.toInt();
+
+//        s = s + String.format(i) + '\'';
+        s = s + i.toString()
+
+        long_d = long_d - i;
+        long_d = long_d * 60;
+
+//        i = long_d.round().intValue();
+        i = Math.round(long_d.toDouble()).toInt()
+
+        GPSLON_SEC_RE = long_d.toFloat().toString()
+
+        s = s + i.toString() + '"';
+
+        return s
+    }
 
 }

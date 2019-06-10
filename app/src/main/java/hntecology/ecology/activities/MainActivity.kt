@@ -1839,6 +1839,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 }
                                 intent.putExtra("title", "야생조류")
                                 intent!!.putExtra("id", birdsdataArray.get(0).id)
+                                intent!!.putExtra("latitude", birdsdataArray.get(0).GPS_LAT)
+                                intent!!.putExtra("longitude", birdsdataArray.get(0).GPS_LON)
                                 intent!!.putExtra("GROP_ID", attrubuteKey)
                                 intent.putExtra("table", "birdsAttribute")
                                 intent!!.putExtra("markerid", marker.id)
@@ -1855,6 +1857,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 }
                                 intent!!.putExtra("geom",birdsdataArray.get(0).GEOM)
                                 intent.putExtra("title", "야생조류")
+                                intent!!.putExtra("latitude", birdsdataArray.get(0).GPS_LAT)
+                                intent!!.putExtra("longitude", birdsdataArray.get(0).GPS_LON)
                                 intent.putExtra("table", "birdsAttribute")
                                 intent.putExtra("DlgHeight", 600f);
                                 intent!!.putExtra("markerid", marker.id)
@@ -1913,6 +1917,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                     intent = Intent(this, DlgPointModiListActivity::class.java)
                                 }
                                 intent.putExtra("title", "양서,파충류")
+                                intent!!.putExtra("latitude", reptiliadataArray.get(0).GPS_LAT)
+                                intent!!.putExtra("longitude", reptiliadataArray.get(0).GPS_LON)
                                 intent!!.putExtra("geom",reptiliadataArray.get(0).GEOM)
                                 intent!!.putExtra("id", reptiliadataArray.get(0).id)
                                 intent!!.putExtra("GROP_ID", attrubuteKey)
@@ -1927,6 +1933,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                     intent = Intent(this, DlgPointModiListActivity::class.java)
                                 }
                                 intent!!.putExtra("geom",reptiliadataArray.get(0).GEOM)
+                                intent!!.putExtra("latitude", reptiliadataArray.get(0).GPS_LAT)
+                                intent!!.putExtra("longitude", reptiliadataArray.get(0).GPS_LON)
                                 intent.putExtra("title", "양서,파충류")
                                 intent.putExtra("table", "reptiliaAttribute")
                                 intent.putExtra("DlgHeight", 600f);
@@ -1985,6 +1993,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                     intent = Intent(this, DlgPointModiListActivity::class.java)
                                 }
                                 intent!!.putExtra("geom",mammaldataArray.get(0).GEOM)
+                                intent!!.putExtra("latitude", mammaldataArray.get(0).GPS_LAT)
+                                intent!!.putExtra("longitude", mammaldataArray.get(0).GPS_LON)
                                 intent.putExtra("title", "포유류")
                                 intent.putExtra("table", "mammalAttribute")
                                 intent!!.putExtra("id", mammaldataArray.get(0).id)
@@ -1999,6 +2009,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 if (modichk) {
                                     intent = Intent(this, DlgPointModiListActivity::class.java)
                                 }
+                                intent!!.putExtra("latitude", mammaldataArray.get(0).GPS_LAT)
+                                intent!!.putExtra("longitude", mammaldataArray.get(0).GPS_LON)
                                 intent!!.putExtra("geom",mammaldataArray.get(0).GEOM)
                                 intent.putExtra("title", "포유류")
                                 intent.putExtra("table", "mammalAttribute")
@@ -2055,6 +2067,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 if (modichk) {
                                     intent = Intent(this, DlgPointModiListActivity::class.java)
                                 }
+                                intent!!.putExtra("latitude", fishdataArray.get(0).GPS_LAT)
+                                intent!!.putExtra("longitude", fishdataArray.get(0).GPS_LON)
                                 intent!!.putExtra("geom",fishdataArray.get(0).GEOM)
                                 intent.putExtra("title", "어류")
                                 intent.putExtra("table", "fishAttribute")
@@ -2071,6 +2085,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 if (modichk) {
                                     intent = Intent(this, DlgPointModiListActivity::class.java)
                                 }
+                                intent!!.putExtra("latitude", fishdataArray.get(0).GPS_LAT)
+                                intent!!.putExtra("longitude", fishdataArray.get(0).GPS_LON)
                                 intent!!.putExtra("geom",fishdataArray.get(0).GEOM)
                                 intent.putExtra("title", "어류")
                                 intent.putExtra("table", "fishAttribute")
@@ -2133,6 +2149,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 if (modichk) {
                                     intent = Intent(this, DlgPointModiListActivity::class.java)
                                 }
+                                intent!!.putExtra("latitude", insectdataArray.get(0).GPS_LAT)
+                                intent!!.putExtra("longitude", insectdataArray.get(0).GPS_LON)
                                 intent!!.putExtra("geom",insectdataArray.get(0).GEOM)
                                 intent.putExtra("title", "곤충")
                                 intent.putExtra("table", "insectAttribute")
@@ -2149,6 +2167,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 if (modichk) {
                                     intent = Intent(this, DlgPointModiListActivity::class.java)
                                 }
+                                intent!!.putExtra("latitude", insectdataArray.get(0).GPS_LAT)
+                                intent!!.putExtra("longitude", insectdataArray.get(0).GPS_LON)
                                 intent!!.putExtra("geom",insectdataArray.get(0).GEOM)
                                 intent.putExtra("title", "곤충")
                                 intent.putExtra("table", "insectAttribute")

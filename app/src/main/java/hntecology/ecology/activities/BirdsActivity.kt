@@ -2524,7 +2524,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             Log.d("시간",msg)
             timeTV.text = msg
         }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
-
         dialog.show()
     }
 }

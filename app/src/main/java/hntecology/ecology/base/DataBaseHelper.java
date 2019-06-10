@@ -1154,7 +1154,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     public void delete_grop_mamal_attribute(Mammal_attribute mammal_attribute,String GROP_ID) {
-        String query = "DELETE FROM mammal_attribute WHERE GROP_ID = '" + GROP_ID + "'";
+        String query = "DELETE FROM mammalAttribute WHERE GROP_ID = '" + GROP_ID + "'";
 
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);

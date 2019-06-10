@@ -2529,7 +2529,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
             if (hour_s.length!=2){
                 hour_s = "0"+hour_s
             }
-            val msg = String.format("%s : %s", hour_s, min_s)
+            val msg = String.format("%s:%s", hour_s, min_s)
             insecttimeET.text = msg
         }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
         dialog.show()

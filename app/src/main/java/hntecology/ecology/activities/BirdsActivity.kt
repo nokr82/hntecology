@@ -577,6 +577,12 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         }
 
         birdssaveBtn.setOnClickListener {
+            if (birdsTV.text==""){
+                Toast.makeText(context, "종명을 선택해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+
 
             val builder = AlertDialog.Builder(context)
             builder.setMessage("저장하시겠습니까 ?").setCancelable(false)
@@ -1098,7 +1104,10 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         }
 
         nextTV.setOnClickListener {
-
+            if (birdsTV.text==""){
+                Toast.makeText(context, "종명을 선택해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             var birds_attribute = null_birds_attribute()
             keyId = intent.getStringExtra("GROP_ID")
 

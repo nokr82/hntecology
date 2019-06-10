@@ -495,8 +495,9 @@ class DlgPointModiListActivity : Activity() {
                     , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
                     , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33), data.getString(34), data.getString(35)
             )
-
-            listdata.add(model)
+            if (model.GROP_ID!=grop_id){
+                listdata.add(model)
+            }
 
         }
     }
@@ -595,9 +596,9 @@ class DlgPointModiListActivity : Activity() {
                     , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39)
                     , data.getFloat(40), data.getString(41), data.getString(42)
             )
-
-            listdata.add(model)
-
+            if (model.GROP_ID!=grop_id){
+                listdata.add(model)
+            }
         }
     }
 
@@ -706,8 +707,9 @@ class DlgPointModiListActivity : Activity() {
                     , data.getInt(31), data.getInt(32), data.getFloat(33), data.getInt(34), data.getInt(35), data.getFloat(36), data.getString(37), data.getString(38), data.getString(39))
 
 
-
-            listdata.add(model)
+            if (model.GROP_ID!=grop_id){
+                listdata.add(model)
+            }
 
         }
     }
@@ -816,9 +818,9 @@ class DlgPointModiListActivity : Activity() {
                     data.getInt(26), data.getInt(27), data.getInt(28), data.getInt(29), data.getInt(30), data.getString(31), data.getInt(32), data.getString(33), data.getString(34), data.getString(35),
                     data.getInt(36), data.getString(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getInt(43), data.getInt(44), data.getFloat(45)
                     , data.getInt(46), data.getInt(47), data.getFloat(48), data.getString(49), data.getString(50), data.getString(51), data.getString(52))
-
-            listdata.add(model)
-
+            if (model.GROP_ID!=grop_id){
+                listdata.add(model)
+            }
         }
     }
 
@@ -912,8 +914,9 @@ class DlgPointModiListActivity : Activity() {
                     , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
                     , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32)
                     , data.getString(33), data.getString(34))
-            listdata.add(model)
-
+            if (model.GROP_ID!=grop_id){
+                listdata.add(model)
+            }
         }
     }
 
@@ -1002,9 +1005,9 @@ class DlgPointModiListActivity : Activity() {
                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
                     , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
                     , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32), data.getString(33), data.getString(34))
-
-            listdata.add(model)
-
+            if (model.GROP_ID!=grop_id){
+                listdata.add(model)
+            }
         }
     }
 
@@ -1147,7 +1150,11 @@ class DlgPointModiListActivity : Activity() {
                     , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
                     , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
                     , data.getString(20), data.getInt(51), data.getString(52), data.getString(53))
-            listdata.add(model)
+            if (model.GROP_ID!=grop_id){
+                listdata.add(model)
+            }
+
+
 
         }
     }

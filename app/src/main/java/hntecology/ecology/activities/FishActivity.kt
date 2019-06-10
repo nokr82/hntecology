@@ -668,7 +668,10 @@ class FishActivity : Activity(), OnLocationUpdatedListener {
 
 
         btn_fishSave1.setOnClickListener {
-
+            if (fishspecnmET.text==""){
+                Toast.makeText(context, "종명을 선택해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val builder = AlertDialog.Builder(context)
             builder.setMessage("저장하시겠습니까 ?").setCancelable(false)
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, id ->
@@ -1206,6 +1209,10 @@ class FishActivity : Activity(), OnLocationUpdatedListener {
         }
 
         btn_add.setOnClickListener {
+            if (fishspecnmET.text==""){
+                Toast.makeText(context, "종명을 선택해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             river_bed()
 
             var fish_attribute = null_attribute()

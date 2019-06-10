@@ -2384,7 +2384,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 marker.title = title
 
                                 intent = Intent(this, Flora2Activity::class.java)
-
+                                if (modichk) {
+                                    intent = Intent(this, DlgModiFlora2ListActivity::class.java)
+                                }
+                                intent!!.putExtra("geom",manyfloradataArray.get(0).GEOM)
                                 intent!!.putExtra("id", manyfloradataArray.get(size - 1).id)
                                 intent!!.putExtra("GROP_ID", attrubuteKey)
                                 intent!!.putExtra("markerid", marker.id)

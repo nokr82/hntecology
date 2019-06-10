@@ -7,7 +7,27 @@
     android:background="@drawable/background_round_border"
     android:orientation="vertical"
     tools:context=".activities.DlgVascularActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+       >
 
+        <TextView
+            android:id="@+id/titleTV"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="비오톱 선택복사"/>
+
+
+
+
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,6 +39,7 @@
             android:orientation="horizontal"
             android:id="@+id/search1_item">
             <TextView
+                android:id="@+id/donumTV"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"

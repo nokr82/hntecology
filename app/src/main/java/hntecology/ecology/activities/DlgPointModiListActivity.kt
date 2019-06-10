@@ -125,7 +125,7 @@ class DlgPointModiListActivity : Activity() {
             println("폴리아이디 ---------$table_name")
         }
         if (intent.getStringExtra("title") != null) {
-            titleTV.text = intent.getStringExtra("title")
+            titleTV.text = intent.getStringExtra("title")+" 선택복사"
             println("폴리아이디 ---------$table_name")
         }
         if (intent.getStringExtra("geom") != null) {

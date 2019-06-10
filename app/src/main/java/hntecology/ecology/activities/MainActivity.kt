@@ -9498,6 +9498,16 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             r_val = "9" + u_val
                         } else {
                             r_val = u_val.replaceFirst(u_val.substring(0, 1), "9")
+                            val dataList: Array<String> = arrayOf("*");
+                            var datachk = false
+                            val data = db!!.query(tableName, dataList, "UFID = '$r_val'", null, null, null, "id asc", "1");
+                            while (data.moveToNext()) {
+                                datachk = true
+                            }
+                            if (datachk){
+                                r_val = "9" + u_val
+                            }
+                            Log.d("데이터변환",datachk.toString())
                         }
                     }
                 }

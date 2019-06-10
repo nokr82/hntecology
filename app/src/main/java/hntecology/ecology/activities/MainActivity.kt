@@ -1468,13 +1468,16 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     if (data!!.getIntExtra("export", 0) != null) {
                         val export = data!!.getIntExtra("export", 0)
-
+                        var geom = ""
+                        if (data!!.getStringExtra("geom") != null){
+                            geom =data!!.getStringExtra("geom")
+                        }
                         if (export == 70) {
                             layerDivision = 6
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,"")
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,geom)
                             } else {
-                                exportFlora("", "", "", "", "all")
+                                exportFlora("", "", "", "", "all",geom)
                             }
                         }
                     }
@@ -1497,15 +1500,18 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     if (data!!.getIntExtra("export", 0) != null) {
                         val export = data!!.getIntExtra("export", 0)
-
+                        var geom = ""
+                        if (data!!.getStringExtra("geom") != null){
+                            geom =data!!.getStringExtra("geom")
+                        }
                         println("export $export ---------")
 
                         if (export == 70) {
                             layerDivision = 7
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,"")
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,geom)
                             } else {
-                                exportZoobenthous("", "", "", "", "all")
+                                exportZoobenthous("", "", "", "", "all",geom)
                             }
                         }
                     }
@@ -1529,15 +1535,18 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     if (data!!.getIntExtra("export", 0) != null) {
                         val export = data!!.getIntExtra("export", 0)
-
+                        var geom = ""
+                        if (data!!.getStringExtra("geom") != null){
+                            geom =data!!.getStringExtra("geom")
+                        }
                         println("export $export ---------")
 
                         if (export == 70) {
                             layerDivision = 9
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,"")
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,geom)
                             } else {
-                                exportManyFloras("", "", "", "", "all")
+                                exportManyFloras("", "", "", "", "all",geom)
                             }
                         }
                     }
@@ -1596,12 +1605,17 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     if (data!!.getIntExtra("export", 0) != null) {
                         val export = data!!.getIntExtra("export", 0)
+                        var geom = ""
+                        if (data!!.getStringExtra("geom") != null){
+                            geom =data!!.getStringExtra("geom")
+                        }
+                        
                         if (export == 70) {
                             layerDivision = 11
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,"")
+                                loadPermissions(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,geom)
                             } else {
-                                exportWaypoint("", "", "", "", "all")
+                                exportWaypoint("", "", "", "", "all",geom)
                             }
                         }
                     }
@@ -2224,7 +2238,14 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             if (floradataArray.size == 1) {
 
                                 intent = Intent(this, FloraActivity::class.java)
-
+                                if (modichk) {
+                                    intent = Intent(this, DlgPointModiListActivity::class.java)
+                                }
+                                intent!!.putExtra("latitude", floradataArray.get(0).GPS_LAT)
+                                intent!!.putExtra("longitude", floradataArray.get(0).GPS_LON)
+                                intent!!.putExtra("geom",floradataArray.get(0).GEOM)
+                                intent.putExtra("title", "식물")
+                                intent.putExtra("table", "floraAttribute")
                                 intent!!.putExtra("id", floradataArray.get(0).id)
                                 intent!!.putExtra("GROP_ID", attrubuteKey)
                                 intent!!.putExtra("markerid", marker.id)
@@ -2234,7 +2255,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             }
 
                             if (floradataArray.size > 1) {
-                                val intent = Intent(this, DlgDataListActivity::class.java)
+                                var intent = Intent(this, DlgDataListActivity::class.java)
+                                if (modichk) {
+                                    intent = Intent(this, DlgPointModiListActivity::class.java)
+                                }
+                                intent!!.putExtra("latitude", floradataArray.get(0).GPS_LAT)
+                                intent!!.putExtra("longitude", floradataArray.get(0).GPS_LON)
+                                intent!!.putExtra("geom",floradataArray.get(0).GEOM)
                                 intent.putExtra("title", "식물")
                                 intent.putExtra("table", "floraAttribute")
                                 intent.putExtra("DlgHeight", 600f);
@@ -2297,9 +2324,14 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 marker.title = title
 
                                 intent = Intent(this, ZoobenthosActivity::class.java)
-
-                                println("Zoobenthos${zoobenthosArray.get(0).id}")
-
+                                if (modichk) {
+                                    intent = Intent(this, DlgPointModiListActivity::class.java)
+                                }
+                                intent!!.putExtra("latitude", zoobenthosArray.get(0).GPS_LAT)
+                                intent!!.putExtra("longitude", zoobenthosArray.get(0).GPS_LON)
+                                intent!!.putExtra("geom",zoobenthosArray.get(0).GEOM)
+                                intent.putExtra("title", "저서무척추동물")
+                                intent.putExtra("table", "ZoobenthosAttribute")
                                 intent!!.putExtra("id", zoobenthosArray.get(0).id)
                                 intent!!.putExtra("GROP_ID", attrubuteKey)
                                 intent!!.putExtra("markerid", marker.id)
@@ -2308,7 +2340,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             }
 
                             if (zoobenthosArray.size > 1) {
-                                val intent = Intent(this, DlgDataListActivity::class.java)
+                                var intent = Intent(this, DlgDataListActivity::class.java)
+                                if (modichk) {
+                                    intent = Intent(this, DlgPointModiListActivity::class.java)
+                                }
+                                intent!!.putExtra("latitude", zoobenthosArray.get(0).GPS_LAT)
+                                intent!!.putExtra("longitude", zoobenthosArray.get(0).GPS_LON)
+                                intent!!.putExtra("geom",zoobenthosArray.get(0).GEOM)
                                 intent.putExtra("title", "저서무척추동물")
                                 intent.putExtra("table", "ZoobenthosAttribute")
                                 intent.putExtra("DlgHeight", 600f);
@@ -2368,14 +2406,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             }
 
                             data.close()
-
-                        }
-
-                        LAYER_MYLOCATION -> {
-
-                        }
-
-                        LAYER -> {
 
                         }
 
@@ -4628,19 +4658,19 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     LAYER_FLORA -> {
                         dbManager!!.updatefloragps(attrubuteKey, latitude.toString(), longitude.toString())
                         dbManager!!.updatebasegps(attrubuteKey, latitude.toString(), longitude.toString())
-                        exportFlora("", "", "", "", "all")
+                        exportFlora("", "", "", "", "all","")
                     }
 
                     LAYER_ZOOBENTHOS -> {
                         dbManager!!.updatezoobenthosgps(attrubuteKey, latitude.toString(), longitude.toString())
                         dbManager!!.updatebasegps(attrubuteKey, latitude.toString(), longitude.toString())
-                        exportZoobenthous("", "", "", "", "all")
+                       exportZoobenthous("", "", "", "", "all","")
                     }
 
                     LAYER_FLORA2 -> {
                         dbManager!!.updatemanyfloragps(attrubuteKey, latitude.toString(), longitude.toString())
                         dbManager!!.updatebasegps(attrubuteKey, latitude.toString(), longitude.toString())
-                        exportManyFloras("", "", "", "", "all")
+                        exportManyFloras("", "", "", "", "all","")
                     }
 
                     LAYER_MYLOCATION -> {
@@ -4658,7 +4688,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     LAYER_WAYPOINT -> {
                         dbManager!!.updatewaypointgps(attrubuteKey, latitude.toString(), longitude.toString())
                         dbManager!!.updatebasegps(attrubuteKey, latitude.toString(), longitude.toString())
-                        exportWaypoint("", "", "", "", "all")
+                        exportWaypoint("", "", "", "", "all","")
                     }
 
                 }
@@ -6596,10 +6626,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         exportMammal(leftday, leftreplace, rightday, rightreplace, "time","")
         exportFish(leftday, leftreplace, rightday, rightreplace, "time","")
         exportInsects(leftday, leftreplace, rightday, rightreplace, "time","")
-        exportFlora(leftday, leftreplace, rightday, rightreplace, "time")
-        exportZoobenthous(leftday, leftreplace, rightday, rightreplace, "time")
-        exportWaypoint(leftday, leftreplace, rightday, rightreplace, "time")
-        exportManyFloras(leftday, leftreplace, rightday, rightreplace, "time")
+        exportFlora(leftday, leftreplace, rightday, rightreplace, "time","")
+        exportZoobenthous(leftday, leftreplace, rightday, rightreplace, "time","")
+        exportWaypoint(leftday, leftreplace, rightday, rightreplace, "time","")
+        exportManyFloras(leftday, leftreplace, rightday, rightreplace, "time","")
 
 //        googleMap.clear()
     }
@@ -8200,7 +8230,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
     }
 
-    fun exportFlora(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String) {
+    fun exportFlora(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String,geom: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
         val dataList: Array<String> = arrayOf("*")
         var lftday = leftday + lefttime
@@ -8404,7 +8434,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
     }
 
-    fun exportZoobenthous(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String) {
+    fun exportZoobenthous(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String,geom: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
         var lftday = leftday + lefttime
         var rgtday = rightday + righttime
@@ -8657,7 +8687,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     }
 
-    fun exportWaypoint(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String) {
+    fun exportWaypoint(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String,geom: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
         var lftday = leftday + lefttime
         var rgtday = rightday + righttime
@@ -8811,7 +8841,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
     }
 
-    fun exportManyFloras(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String) {
+    fun exportManyFloras(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String,geom: String) {
         var pointsArray: ArrayList<Exporter.ExportPointItem> = ArrayList<Exporter.ExportPointItem>()
         var lftday = leftday + lefttime
         var rgtday = rightday + righttime
@@ -9691,11 +9721,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 }
 
                 if (layerDivision == 6) {
-                    exportFlora("", "", "", "", "all")
+                    exportFlora("", "", "", "", "all","")
                 }
 
                 if (layerDivision == 7) {
-                    exportZoobenthous("", "", "", "", "all")
+                   exportZoobenthous("", "", "", "", "all","")
                 }
 
                 if (layerDivision == 8) {
@@ -9705,7 +9735,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 }
 
                 if (layerDivision == 9) {
-                    exportManyFloras("", "", "", "", "all")
+                    exportManyFloras("", "", "", "", "all","")
                 }
 
                 if (layerDivision == 10) {
@@ -9713,7 +9743,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 }
 
                 if (layerDivision == 11) {
-                    exportWaypoint("", "", "", "", "all")
+                    exportWaypoint("", "", "", "", "all","")
                 }
 
                 if (layerDivision == 100) {
@@ -9906,11 +9936,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     }
 
                     if (layerDivision == 6) {
-                        exportFlora("", "", "", "", "all")
+                        exportFlora("", "", "", "", "all","")
                     }
 
                     if (layerDivision == 7) {
-                        exportZoobenthous("", "", "", "", "all")
+                       exportZoobenthous("", "", "", "", "all","")
                     }
 
                     if (layerDivision == 8) {
@@ -9920,7 +9950,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     }
 
                     if (layerDivision == 9) {
-                        exportManyFloras("", "", "", "", "all")
+                        exportManyFloras("", "", "", "", "all","")
                     }
 
                     if (layerDivision == 10) {

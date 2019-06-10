@@ -63,6 +63,17 @@ class DlgPointModiListActivity : Activity() {
     private lateinit var listinsectAdapter: DlgPointModiInsectAdapter
 
 
+    private lateinit var listdata_Flora1: ArrayList<Flora_Attribute>
+    private lateinit var listdata_Flora2: ArrayList<Flora_Attribute>
+    private lateinit var listdata_Flora3: ArrayList<Flora_Attribute>
+    private lateinit var listFloraAdapter: DlgPointModiFloraAdapter
+
+    private lateinit var listdata_Zoo1: ArrayList<Zoobenthos_Attribute>
+    private lateinit var listdata_Zoo2: ArrayList<Zoobenthos_Attribute>
+    private lateinit var listdata_Zoo3: ArrayList<Zoobenthos_Attribute>
+    private lateinit var listZooAdapter: DlgPointModiZooAdapter
+
+
     val dataBaseHelper = DataBaseHelper(this);
     val db = dataBaseHelper.createDataBase()
     var DlgHeight: Float = 430F
@@ -166,6 +177,14 @@ class DlgPointModiListActivity : Activity() {
         listdata_insect2 = ArrayList()
         listdata_insect3 = ArrayList()
 
+        listdata_Flora1 = ArrayList()
+        listdata_Flora2 = ArrayList()
+        listdata_Flora3 = ArrayList()
+
+        listdata_Zoo1 = ArrayList()
+        listdata_Zoo2 = ArrayList()
+        listdata_Zoo3 = ArrayList()
+
 
         val dataList: Array<String> = arrayOf("$table_name.*", "min(id) as minId");
         val dataList2: Array<String> = arrayOf("*");
@@ -182,20 +201,7 @@ class DlgPointModiListActivity : Activity() {
             listView1.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
                 var birds_data = listAdapte1.getItem(position)
                 val data = db.query(table_name, dataList2, "GROP_ID='${birds_data.GROP_ID}'", null, null, null, "id asc", null);
-                while (data.moveToNext()) {
-
-                    var model: Birds_attribute;
-
-                    model = Birds_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                            , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20)
-                            , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
-                            , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33), data.getString(34), data.getString(35)
-                    )
-
-                    listdata3.add(model)
-
-                }
+                dataList(listdata3, data)
                 dbManager!!.delete_grop_birds_attribute(attribute, grop_id)
                 for (i in 0..listdata3.size - 1) {
                     Log.d("버드데이터", listdata3[i].SPEC_NM)
@@ -222,21 +228,7 @@ class DlgPointModiListActivity : Activity() {
             listView1.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
                 var all_data = listrepAdapter.getItem(position)
                 val data = db.query(table_name, dataList2, "GROP_ID='${all_data.GROP_ID}'", null, null, null, "id asc", null);
-                while (data.moveToNext()) {
-
-                    var model: Reptilia_attribute;
-
-                    model = Reptilia_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                            , data.getString(15), data.getString(16), data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
-                            , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30), data.getString(31), data.getString(32), data.getString(33)
-                            , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39)
-                            , data.getFloat(40), data.getString(41), data.getString(42)
-                    )
-
-                    listdata_rep3.add(model)
-
-                }
+                dataList_rep(listdata_rep3, data)
                 dbManager!!.delete_grop_reptilia_attribute(attribute, grop_id)
                 for (i in 0..listdata_rep3.size - 1) {
                     Log.d("버드데이터", listdata_rep3[i].SPEC_NM)
@@ -260,20 +252,7 @@ class DlgPointModiListActivity : Activity() {
             listView1.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
                 var all_data = listmamalAdapter.getItem(position)
                 val data = db.query(table_name, dataList2, "GROP_ID='${all_data.GROP_ID}'", null, null, null, "id asc", null);
-                while (data.moveToNext()) {
-
-                    var model: Mammal_attribute;
-
-                    model = Mammal_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                            data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
-                            , data.getString(15), data.getString(16), data.getString(17), data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
-                            , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27), data.getString(28), data.getString(29), data.getString(30)
-                            , data.getInt(31), data.getInt(32), data.getFloat(33), data.getInt(34), data.getInt(35), data.getFloat(36), data.getString(37), data.getString(38), data.getString(39))
-
-
-                    listdata_mal3.add(model)
-
-                }
+                dataList_mal(listdata_mal3, data)
                 dbManager!!.delete_grop_mamal_attribute(attribute, grop_id)
                 for (i in 0..listdata_mal3.size - 1) {
                     Log.d("버드데이터", listdata_mal3[i].SPEC_NM)
@@ -300,39 +279,25 @@ class DlgPointModiListActivity : Activity() {
             listView1.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
                 var all_data = listfishAdapter.getItem(position)
                 val data = db.query(table_name, dataList2, "GROP_ID='${all_data.GROP_ID}'", null, null, null, "id asc", null);
-                while (data.moveToNext()) {
-
-                    var model: Fish_attribute;
-
-                    model = Fish_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
-                            data.getString(8), data.getString(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15),
-                            data.getFloat(16), data.getFloat(17), data.getString(18), data.getString(19), data.getInt(20), data.getInt(21), data.getInt(22), data.getInt(23), data.getString(24), data.getString(25),
-                            data.getInt(26), data.getInt(27), data.getInt(28), data.getInt(29), data.getInt(30), data.getString(31), data.getInt(32), data.getString(33), data.getString(34), data.getString(35),
-                            data.getInt(36), data.getString(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getInt(43), data.getInt(44), data.getFloat(45)
-                            , data.getInt(46), data.getInt(47), data.getFloat(48), data.getString(49), data.getString(50), data.getString(51), data.getString(52))
-
-                    listdata_fish3.add(model)
-
-                }
+                dataList_fish(listdata_fish3, data)
                 dbManager!!.delete_grop_fish_attribute(attribute, grop_id)
                 for (i in 0..listdata_fish3.size - 1) {
                     Log.d("버드데이터", listdata_fish3[i].SPEC_NM)
-                    addfish(attribute, listdata_fish3[i]. WEATHER.toString(), listdata_fish3[i]. WIND.toString(), listdata_fish3[i]. WIND_DIRE . toString ()
-                            , listdata_fish3[i]. TEMPERATUR . toString(), listdata_fish3[i]. ETC . toString (), listdata_fish3[i]. MID_RAGE . toString (), listdata_fish3[i]. CODE_NUM . toString (), listdata_fish3[i]. RIVER_NUM . toString ()
-                            , listdata_fish3[i]. RIVER_NM . toString (), listdata_fish3[i]. GPS_LAT . toString ()
-                            , listdata_fish3[i]. GPS_LON . toString (), listdata_fish3[i]. COLL_TOOL . toString (), listdata_fish3[i]. COLL_TOOL2 . toString (), listdata_fish3[i]. STREAM_W . toString (), listdata_fish3[i]. WATER_W . toString ()
-                            , listdata_fish3[i]. WATER_D . toString (), listdata_fish3[i]. WATER_CUR . toString (), listdata_fish3[i]. RIV_STR . toString (), listdata_fish3[i]. RIV_STR_IN . toString (), listdata_fish3[i]. BOULDER . toString ()
-                            , listdata_fish3[i]. COBBLE . toString (), listdata_fish3[i]. PEBBLE . toString (), listdata_fish3[i]. GRAVEL . toString (), listdata_fish3[i]. SEND . toString (), listdata_fish3[i]. RIV_FORM . toString ()
-                            , listdata_fish3[i]. NUM.toString(), listdata_fish3[i]. SPEC_NM . toString (), listdata_fish3[i]. FAMI_NM . toString (), listdata_fish3[i]. SCIEN_NM . toString (), listdata_fish3[i]. INDI_CNT . toString ()
-                            , listdata_fish3[i]. UNIDENT.toString (), listdata_fish3[i]. RIV_FM_CH . toString (), listdata_fish3[i]. UN_FISH_CH . toString (), listdata_fish3[i]. TEMP_YN.toString(), listdata_fish3[i]. CONF_MOD.toString()
-                            , listdata_fish3[i]. GEOM.toString(), listdata_fish3[i]. GPSLAT_DEG . toString (), listdata_fish3[i]. GPSLAT_MIN . toString (), listdata_fish3[i]. GPSLAT_SEC.toString (), listdata_fish3[i]. GPSLON_DEG . toString ()
-                            , listdata_fish3[i]. GPSLON_MIN .toString(), listdata_fish3[i]. GPSLON_SEC.toString (), listdata_fish3[i]. RIVER_BED . toString (), listdata_fish3[i]. COLL_TIME . toString ()
-                            , listdata_fish3[i]. MAC_ADDR . toString (), listdata_fish3[i]. CURRENT_TM . toString ())
+                    addfish(attribute, listdata_fish3[i].WEATHER.toString(), listdata_fish3[i].WIND.toString(), listdata_fish3[i].WIND_DIRE.toString()
+                            , listdata_fish3[i].TEMPERATUR.toString(), listdata_fish3[i].ETC.toString(), listdata_fish3[i].MID_RAGE.toString(), listdata_fish3[i].CODE_NUM.toString(), listdata_fish3[i].RIVER_NUM.toString()
+                            , listdata_fish3[i].RIVER_NM.toString(), listdata_fish3[i].GPS_LAT.toString()
+                            , listdata_fish3[i].GPS_LON.toString(), listdata_fish3[i].COLL_TOOL.toString(), listdata_fish3[i].COLL_TOOL2.toString(), listdata_fish3[i].STREAM_W.toString(), listdata_fish3[i].WATER_W.toString()
+                            , listdata_fish3[i].WATER_D.toString(), listdata_fish3[i].WATER_CUR.toString(), listdata_fish3[i].RIV_STR.toString(), listdata_fish3[i].RIV_STR_IN.toString(), listdata_fish3[i].BOULDER.toString()
+                            , listdata_fish3[i].COBBLE.toString(), listdata_fish3[i].PEBBLE.toString(), listdata_fish3[i].GRAVEL.toString(), listdata_fish3[i].SEND.toString(), listdata_fish3[i].RIV_FORM.toString()
+                            , listdata_fish3[i].NUM.toString(), listdata_fish3[i].SPEC_NM.toString(), listdata_fish3[i].FAMI_NM.toString(), listdata_fish3[i].SCIEN_NM.toString(), listdata_fish3[i].INDI_CNT.toString()
+                            , listdata_fish3[i].UNIDENT.toString(), listdata_fish3[i].RIV_FM_CH.toString(), listdata_fish3[i].UN_FISH_CH.toString(), listdata_fish3[i].TEMP_YN.toString(), listdata_fish3[i].CONF_MOD.toString()
+                            , listdata_fish3[i].GEOM.toString(), listdata_fish3[i].GPSLAT_DEG.toString(), listdata_fish3[i].GPSLAT_MIN.toString(), listdata_fish3[i].GPSLAT_SEC.toString(), listdata_fish3[i].GPSLON_DEG.toString()
+                            , listdata_fish3[i].GPSLON_MIN.toString(), listdata_fish3[i].GPSLON_SEC.toString(), listdata_fish3[i].RIVER_BED.toString(), listdata_fish3[i].COLL_TIME.toString()
+                            , listdata_fish3[i].MAC_ADDR.toString(), listdata_fish3[i].CURRENT_TM.toString())
                 }
                 last_finish()
             }
-        }
-        else if (table_name == "insectAttribute") {
+        } else if (table_name == "insectAttribute") {
             dataList_insect(listdata_insect1, data1)
             dataList_insect(listdata_insect2, data2)
             listinsectAdapter = DlgPointModiInsectAdapter(context, listdata_insect1, listdata_insect2);
@@ -343,37 +308,113 @@ class DlgPointModiListActivity : Activity() {
             listView1.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
                 var all_data = listinsectAdapter.getItem(position)
                 val data = db.query(table_name, dataList2, "GROP_ID='${all_data.GROP_ID}'", null, null, null, "id asc", null);
-                while (data.moveToNext()) {
-
-                    var model: Insect_attribute;
-
-                    model = Insect_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4)
-                            , data.getString(5), data.getString(6), data.getString(7), data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11)
-                            , data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getInt(16), data.getString(17)
-                            , data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-                            , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
-                            , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32)
-                            , data.getString(33), data.getString(34))
-
-                    listdata_insect3.add(model)
-
-                }
+                dataList_insect(listdata_insect3, data)
                 dbManager!!.delete_grop_insect_attribute(attribute, grop_id)
                 for (i in 0..listdata_insect3.size - 1) {
                     Log.d("버드데이터", listdata_insect3[i].SPEC_NM)
-                    addinsect(attribute,  listdata_insect3[i]. WEATHER.toString() , listdata_insect3[i]. WIND.toString() , listdata_insect3[i]. WIND_DIRE.toString(),listdata_insect3[i]. TEMPERATUR.toString()
-                    , listdata_insect3[i]. ETC.toString() , listdata_insect3[i]. NUM.toString() , listdata_insect3[i]. INV_TM.toString() , listdata_insect3[i]. SPEC_NM.toString() , listdata_insect3[i]. FAMI_NM.toString()
-                    , listdata_insect3[i]. SCIEN_NM.toString() , listdata_insect3[i]. INDI_CNT.toString() , listdata_insect3[i]. OBS_STAT.toString() ,listdata_insect3[i]. USE_TAR.toString()
-                    , listdata_insect3[i]. MJ_ACT.toString() , listdata_insect3[i]. INV_MEAN.toString()
-                    , listdata_insect3[i]. UNUS_NOTE.toString() , listdata_insect3[i]. GPS_LAT.toString(), listdata_insect3[i]. GPS_LON.toString(),listdata_insect3[i]. TEMP_YN.toString() ,listdata_insect3[i]. CONF_MOD.toString()
-                    ,listdata_insect3[i]. GEOM.toString(),listdata_insect3[i]. GPSLAT_DEG.toString(),listdata_insect3[i]. GPSLAT_MIN.toString(),listdata_insect3[i]. GPSLAT_SEC.toString()
-                    ,listdata_insect3[i]. GPSLON_DEG.toString(),listdata_insect3[i]. GPSLON_MIN.toString(),listdata_insect3[i]. GPSLON_SEC.toString()
-                    , listdata_insect3[i]. MAC_ADDR.toString() ,listdata_insect3[i]. CURRENT_TM.toString())
+                    addinsect(attribute, listdata_insect3[i].WEATHER.toString(), listdata_insect3[i].WIND.toString(), listdata_insect3[i].WIND_DIRE.toString(), listdata_insect3[i].TEMPERATUR.toString()
+                            , listdata_insect3[i].ETC.toString(), listdata_insect3[i].NUM.toString(), listdata_insect3[i].INV_TM.toString(), listdata_insect3[i].SPEC_NM.toString(), listdata_insect3[i].FAMI_NM.toString()
+                            , listdata_insect3[i].SCIEN_NM.toString(), listdata_insect3[i].INDI_CNT.toString(), listdata_insect3[i].OBS_STAT.toString(), listdata_insect3[i].USE_TAR.toString()
+                            , listdata_insect3[i].MJ_ACT.toString(), listdata_insect3[i].INV_MEAN.toString()
+                            , listdata_insect3[i].UNUS_NOTE.toString(), listdata_insect3[i].GPS_LAT.toString(), listdata_insect3[i].GPS_LON.toString(), listdata_insect3[i].TEMP_YN.toString(), listdata_insect3[i].CONF_MOD.toString()
+                            , listdata_insect3[i].GEOM.toString(), listdata_insect3[i].GPSLAT_DEG.toString(), listdata_insect3[i].GPSLAT_MIN.toString(), listdata_insect3[i].GPSLAT_SEC.toString()
+                            , listdata_insect3[i].GPSLON_DEG.toString(), listdata_insect3[i].GPSLON_MIN.toString(), listdata_insect3[i].GPSLON_SEC.toString()
+                            , listdata_insect3[i].MAC_ADDR.toString(), listdata_insect3[i].CURRENT_TM.toString())
+                }
+                last_finish()
+            }
+        } else if (table_name == "floraAttribute") {
+            dataList_flora(listdata_Flora1, data1)
+            dataList_flora(listdata_Flora2, data2)
+            listFloraAdapter = DlgPointModiFloraAdapter(context, listdata_Flora1, listdata_Flora2);
+
+            listView1.adapter = listFloraAdapter
+
+            var attribute = null_flora_attribute()
+            listView1.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+                var all_data = listFloraAdapter.getItem(position)
+                val data = db.query(table_name, dataList2, "GROP_ID='${all_data.GROP_ID}'", null, null, null, "id asc", null);
+                dataList_flora(listdata_Flora3, data)
+                dbManager!!.delete_grop_flora_attribute(attribute, grop_id)
+                for (i in 0..listdata_Flora3.size - 1) {
+                    Log.d("버드데이터", listdata_Flora3[i].SPEC_NM)
+                    addflora(attribute, listdata_Flora3[i].WEATHER.toString(), listdata_Flora3[i].WIND.toString(), listdata_Flora3[i].WIND_DIRE.toString()
+                            , listdata_Flora3[i].TEMPERATUR.toString(), listdata_Flora3[i].ETC.toString(), listdata_Flora3[i].NUM.toString(), listdata_Flora3[i].INV_TM.toString(), listdata_Flora3[i].SPEC_NM.toString(), listdata_Flora3[i].FAMI_NM.toString(), listdata_Flora3[i].SCIEN_NM.toString(), listdata_Flora3[i].FLORE_YN.toString(), listdata_Flora3[i].PLANT_YN.toString(), listdata_Flora3[i].HAB_STAT.toString()
+                            , listdata_Flora3[i].HAB_ETC.toString(), listdata_Flora3[i].COL_IN_CNT.toString(), listdata_Flora3[i].THRE_CAU.toString(), listdata_Flora3[i].GPS_LAT.toString(), listdata_Flora3[i].GPS_LON.toString(), listdata_Flora3[i].TEMP_YN.toString(), listdata_Flora3[i].CONF_MOD.toString()
+                            , listdata_Flora3[i].GEOM.toString(), listdata_Flora3[i].GPSLAT_DEG.toString(), listdata_Flora3[i].GPSLAT_MIN.toString(), listdata_Flora3[i].GPSLAT_SEC.toString(), listdata_Flora3[i].GPSLON_DEG.toString(), listdata_Flora3[i].GPSLON_MIN.toString(), listdata_Flora3[i].GPSLON_SEC.toString()
+                            , listdata_Flora3[i].MAC_ADDR.toString(), listdata_Flora3[i].CURRENT_TM.toString())
                 }
                 last_finish()
             }
         }
+        else if (table_name == "ZoobenthosAttribute") {
+            dataList_zoo(listdata_Zoo1, data1)
+            dataList_zoo(listdata_Zoo2, data2)
+            listZooAdapter = DlgPointModiZooAdapter(context, listdata_Zoo1, listdata_Zoo2);
 
+            listView1.adapter = listZooAdapter
+
+            var attribute = null_zoo_attribute()
+            listView1.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+                var all_data = listZooAdapter.getItem(position)
+                val data = db.query(table_name, dataList2, "GROP_ID='${all_data.GROP_ID}'", null, null, null, "id asc", null);
+                dataList_zoo(listdata_Zoo3, data)
+                dbManager!!.delete_grop_zoo_attribute(attribute, grop_id)
+                for (i in 0..listdata_Zoo3.size - 1) {
+                    Log.d("버드데이터", listdata_Zoo3[i].SPEC_NM)
+                    addzoo(attribute,listdata_Zoo3[i].INV_MEAN.toString(),
+                    listdata_Zoo3[i].MAP_SYS_NM.toString(),
+                    listdata_Zoo3[i].GPSLAT_DEG.toString(),
+                    listdata_Zoo3[i].GPSLAT_MIN.toString(),
+                    listdata_Zoo3[i].GPSLAT_SEC.toString(),
+                    listdata_Zoo3[i].GPSLON_DEG.toString(),
+                    listdata_Zoo3[i].GPSLON_MIN.toString(),
+                    listdata_Zoo3[i].GPSLON_SEC.toString(),
+                    listdata_Zoo3[i].INV_DT.toString(),
+                    listdata_Zoo3[i].NUM.toString(),
+                    listdata_Zoo3[i].INV_TM.toString(),
+                    listdata_Zoo3[i].WEATHER.toString(),
+                    listdata_Zoo3[i].INV_TOOL.toString(),
+                    listdata_Zoo3[i].AD_DIST_NM.toString(),
+                    listdata_Zoo3[i].RIV_W.toString(),
+                    listdata_Zoo3[i].RIV_W2.toString(),
+                    listdata_Zoo3[i].RUN_RIV_W.toString(),
+                    listdata_Zoo3[i].RUN_RIV_W2.toString(),
+                    listdata_Zoo3[i].WATER_DEPT.toString(),
+                    listdata_Zoo3[i].HAB_TY.toString(),
+                    listdata_Zoo3[i].FILT_AREA.toString(),
+                    listdata_Zoo3[i].TEMPERATUR.toString(),
+                    listdata_Zoo3[i].WATER_TEM.toString(),
+                    listdata_Zoo3[i].TURBIDITY.toString(),
+                    listdata_Zoo3[i].MUD.toString(),
+                    listdata_Zoo3[i].SAND.toString(),
+                    listdata_Zoo3[i].COR_SAND.toString(),
+                    listdata_Zoo3[i].GRAVEL.toString(),
+                    listdata_Zoo3[i].STONE_S.toString(),
+                    listdata_Zoo3[i].STONE_B.toString(),
+                    listdata_Zoo3[i].CONCRETE.toString(),
+                    listdata_Zoo3[i].BED_ROCK.toString(),
+                    listdata_Zoo3[i].BANK_L.toString(),
+                    listdata_Zoo3[i].BANK_R.toString(),
+                    listdata_Zoo3[i].BAS_L.toString(),
+                    listdata_Zoo3[i].BAS_R.toString(),
+                    listdata_Zoo3[i].DIST_CAU.toString(),
+                    listdata_Zoo3[i].UNUS_NOTE.toString(),
+                    listdata_Zoo3[i].GPS_LAT.toString(),
+                    listdata_Zoo3[i].GPS_LON.toString(),
+                    listdata_Zoo3[i].SPEC_NM.toString(),
+                    listdata_Zoo3[i].FAMI_NM.toString(),
+                    listdata_Zoo3[i].SCIEN_NM.toString(),
+                    listdata_Zoo3[i].TEMP_YN.toString(),
+                    listdata_Zoo3[i].CONF_MOD.toString(),
+                    listdata_Zoo3[i].GEOM.toString(),
+                    listdata_Zoo3[i].ZOO_CNT.toString(),
+                    listdata_Zoo3[i].MAC_ADDR.toString(),
+                    listdata_Zoo3[i].CURRENT_TM.toString())
+                }
+                last_finish()
+            }
+        }
     }
 
     fun last_finish() {
@@ -781,33 +822,33 @@ class DlgPointModiListActivity : Activity() {
         }
     }
 
-    fun addinsect(insect_attribute: Insect_attribute, WEATHER: String? , WIND: String? , WIND_DIRE: String?,TEMPERATUR: String?
-                  , ETC: String? , NUM: String? , INV_TM: String? , SPEC_NM: String? , FAMI_NM: String?
-                  , SCIEN_NM: String? , INDI_CNT: String? , OBS_STAT: String? ,USE_TAR: String?
-                  , MJ_ACT: String? , INV_MEAN: String?
-                  , UNUS_NOTE: String? , GPS_LAT: String?, GPS_LON: String?,TEMP_YN:String? ,CONF_MOD:String?
-                  ,GEOM:String?,GPSLAT_DEG:String?,GPSLAT_MIN:String?,GPSLAT_SEC:String?
-                  ,GPSLON_DEG:String?,GPSLON_MIN:String?,GPSLON_SEC:String?
-                  , MAC_ADDR: String? ,CURRENT_TM: String?) {
+    fun addinsect(insect_attribute: Insect_attribute, WEATHER: String?, WIND: String?, WIND_DIRE: String?, TEMPERATUR: String?
+                  , ETC: String?, NUM: String?, INV_TM: String?, SPEC_NM: String?, FAMI_NM: String?
+                  , SCIEN_NM: String?, INDI_CNT: String?, OBS_STAT: String?, USE_TAR: String?
+                  , MJ_ACT: String?, INV_MEAN: String?
+                  , UNUS_NOTE: String?, GPS_LAT: String?, GPS_LON: String?, TEMP_YN: String?, CONF_MOD: String?
+                  , GEOM: String?, GPSLAT_DEG: String?, GPSLAT_MIN: String?, GPSLAT_SEC: String?
+                  , GPSLON_DEG: String?, GPSLON_MIN: String?, GPSLON_SEC: String?
+                  , MAC_ADDR: String?, CURRENT_TM: String?) {
         Log.d("인서트비오톱33", geom.toString());
         insect_attribute.GROP_ID = grop_id
         insect_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
         insect_attribute.CURRENT_TM = Utils.current_tm()
 
-        insect_attribute.PRJ_NAME =  PrefUtils.getStringPreference(context, "prjname")
+        insect_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
         insect_attribute.INV_DT = Utils.todayStr()
         insect_attribute.INV_TM = Utils.timeStr()
-        insect_attribute.INV_PERSON =  PrefUtils.getStringPreference(this, "name")
+        insect_attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name")
 
         insect_attribute.WEATHER = WEATHER
         insect_attribute.WIND = WIND
         insect_attribute.WIND_DIRE = WIND_DIRE
 
-            insect_attribute.TEMPERATUR = TEMPERATUR!!.toFloat()
+        insect_attribute.TEMPERATUR = TEMPERATUR!!.toFloat()
 
         insect_attribute.ETC = ETC
 
-            insect_attribute.NUM = NUM!!.toInt()
+        insect_attribute.NUM = NUM!!.toInt()
 
 
         insect_attribute.SPEC_NM = SPEC_NM
@@ -815,7 +856,7 @@ class DlgPointModiListActivity : Activity() {
         insect_attribute.FAMI_NM = FAMI_NM
         insect_attribute.SCIEN_NM = SCIEN_NM
 
-            insect_attribute.INDI_CNT = INDI_CNT!!.toInt()
+        insect_attribute.INDI_CNT = INDI_CNT!!.toInt()
 
         insect_attribute.OBS_STAT = OBS_STAT
 
@@ -875,6 +916,242 @@ class DlgPointModiListActivity : Activity() {
 
         }
     }
+
+
+    fun addflora(flora_Attribute: Flora_Attribute, WEATHER: String?, WIND: String?, WIND_DIRE: String?
+                 , TEMPERATUR: String?, ETC: String?, NUM: String?, INV_TM: String?, SPEC_NM: String?, FAMI_NM: String?, SCIEN_NM: String?, FLORE_YN: String?, PLANT_YN: String?, HAB_STAT: String?
+                 , HAB_ETC: String?, COL_IN_CNT: String?, THRE_CAU: String?, GPS_LAT: String?, GPS_LON: String?, TEMP_YN: String?, CONF_MOD: String?
+                 , GEOM: String?, GPSLAT_DEG: String?, GPSLAT_MIN: String?, GPSLAT_SEC: String?, GPSLON_DEG: String?, GPSLON_MIN: String?, GPSLON_SEC: String?
+                 , MAC_ADDR: String?, CURRENT_TM: String?) {
+        Log.d("인서트비오톱33", geom.toString());
+        flora_Attribute.GROP_ID = grop_id
+
+        flora_Attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+
+        flora_Attribute.CURRENT_TM = Utils.current_tm()
+        flora_Attribute.PRJ_NAME = flora_Attribute.PRJ_NAME
+        flora_Attribute.INV_REGION = r_region
+
+        flora_Attribute.INV_DT = Utils.todayStr()
+        flora_Attribute.INV_TM = Utils.timeStr()
+        flora_Attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name")
+
+        flora_Attribute.WEATHER = WEATHER
+        flora_Attribute.WIND = WIND
+        flora_Attribute.WIND_DIRE = WIND_DIRE
+
+        flora_Attribute.NUM = NUM!!.toInt()
+        flora_Attribute.TEMPERATUR = TEMPERATUR!!.toFloat()
+
+        flora_Attribute.GPSLAT_DEG = GPSLAT_DEG_RE!!.toInt()
+        flora_Attribute.GPSLAT_MIN = GPSLAT_MIN_RE!!.toInt()
+        flora_Attribute.GPSLAT_SEC = GPSLAT_SEC_RE!!.toFloat()
+        flora_Attribute.GPSLON_DEG = GPSLON_DEG_RE!!.toInt()
+        flora_Attribute.GPSLON_MIN = GPSLON_MIN_RE!!.toInt()
+        flora_Attribute.GPSLON_SEC = GPSLON_SEC_RE!!.toFloat()
+        flora_Attribute.ETC = ETC
+
+
+        flora_Attribute.SPEC_NM = SPEC_NM
+        flora_Attribute.FAMI_NM = FAMI_NM
+        flora_Attribute.SCIEN_NM = SCIEN_NM
+
+        flora_Attribute.FLORE_YN = FLORE_YN
+        flora_Attribute.PLANT_YN = PLANT_YN
+
+
+        flora_Attribute.HAB_STAT = HAB_STAT
+        flora_Attribute.HAB_ETC = HAB_ETC
+
+
+        flora_Attribute.COL_IN_CNT = COL_IN_CNT!!.toInt()
+
+        flora_Attribute.THRE_CAU = THRE_CAU
+
+
+        flora_Attribute.GPS_LAT = lat.toFloat()
+        flora_Attribute.GPS_LON = log.toFloat()
+
+
+        flora_Attribute.TEMP_YN = "N"
+
+
+        val date = Date()
+        val sdf = SimpleDateFormat("yyyyMMddHHmmSS")
+        val getTime = sdf.format(date)
+        flora_Attribute.CURRENT_TM = getTime.substring(2, 14)
+        flora_Attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+        dbManager!!.insertflora_attribute(flora_Attribute);
+    }
+
+    fun null_flora_attribute(): Flora_Attribute {
+        var flora_Attribute: Flora_Attribute = Flora_Attribute(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
+                , null, null, null, null, null, null, null, null, null, null, null, null, null
+                , null, null, null, null, null, null)
+        return flora_Attribute
+    }
+
+    fun dataList_flora(listdata: ArrayList<Flora_Attribute>, data: Cursor) {
+
+        while (data.moveToNext()) {
+
+            var model: Flora_Attribute;
+
+            model = Flora_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7),
+                    data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
+                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
+                    , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
+                    , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32), data.getString(33), data.getString(34))
+
+            listdata.add(model)
+
+        }
+    }
+
+
+    fun addzoo(zoobenthos_Attribute: Zoobenthos_Attribute,
+               INV_MEAN: String?,
+               MAP_SYS_NM: String?,
+               GPSLAT_DEG: String?,
+               GPSLAT_MIN: String?,
+               GPSLAT_SEC: String?,
+               GPSLON_DEG: String?,
+               GPSLON_MIN: String?,
+               GPSLON_SEC: String?,
+               INV_DT: String?,
+               NUM: String?,
+               INV_TM: String?,
+               WEATHER: String?,
+               INV_TOOL: String?,
+               AD_DIST_NM: String?,
+               RIV_W: String?,
+               RIV_W2: String?,
+               RUN_RIV_W: String?,
+               RUN_RIV_W2: String?,
+               WATER_DEPT: String?,
+               HAB_TY: String?,
+               FILT_AREA: String?,
+               TEMPERATUR: String?,
+               WATER_TEM: String?,
+               TURBIDITY: String?,
+               MUD: String?,
+               SAND: String?,
+               COR_SAND: String?,
+               GRAVEL: String?,
+               STONE_S: String?,
+               STONE_B: String?,
+               CONCRETE: String?,
+               BED_ROCK: String?,
+               BANK_L: String?,
+               BANK_R: String?,
+               BAS_L: String?,
+               BAS_R: String?,
+               DIST_CAU: String?,
+               UNUS_NOTE: String?,
+               GPS_LAT: String?,
+               GPS_LON: String?, SPEC_NM: String?,
+               FAMI_NM: String?,
+               SCIEN_NM: String?, TEMP_YN: String?,
+               CONF_MOD: String?, GEOM: String?,
+               ZOO_CNT: String?,
+               MAC_ADDR: String?, CURRENT_TM: String?) {
+
+
+        zoobenthos_Attribute.GROP_ID = grop_id
+        zoobenthos_Attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+        zoobenthos_Attribute.CURRENT_TM = Utils.current_tm()
+        zoobenthos_Attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
+
+        zoobenthos_Attribute.INV_REGION = r_region
+        zoobenthos_Attribute.INV_MEAN = INV_MEAN
+        zoobenthos_Attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name")
+        zoobenthos_Attribute.MAP_SYS_NM = MAP_SYS_NM
+
+        zoobenthos_Attribute.GPSLAT_DEG = GPSLAT_DEG_RE!!.toInt()
+        zoobenthos_Attribute.GPSLAT_MIN = GPSLAT_MIN_RE!!.toInt()
+        zoobenthos_Attribute.GPSLAT_SEC = GPSLAT_SEC_RE!!.toFloat()
+        zoobenthos_Attribute.GPSLON_DEG = GPSLON_DEG_RE!!.toInt()
+        zoobenthos_Attribute.GPSLON_MIN = GPSLON_MIN_RE!!.toInt()
+        zoobenthos_Attribute.GPSLON_SEC = GPSLON_SEC_RE!!.toFloat()
+        zoobenthos_Attribute.ZOO_CNT = ZOO_CNT!!.toInt()
+        zoobenthos_Attribute.NUM = NUM
+
+        zoobenthos_Attribute.INV_DT = Utils.todayStr()
+        zoobenthos_Attribute.INV_TM = Utils.timeStr()
+        zoobenthos_Attribute.WEATHER = WEATHER
+        zoobenthos_Attribute.INV_TOOL = INV_TOOL
+        zoobenthos_Attribute.AD_DIST_NM = AD_DIST_NM
+        zoobenthos_Attribute.RIV_W = RIV_W
+        zoobenthos_Attribute.RIV_W2 = RIV_W2!!.toInt()
+        zoobenthos_Attribute.RUN_RIV_W = RUN_RIV_W
+        zoobenthos_Attribute.RUN_RIV_W2 = RUN_RIV_W2!!.toInt()
+        zoobenthos_Attribute.WATER_DEPT = WATER_DEPT!!.toInt()
+        zoobenthos_Attribute.HAB_TY = HAB_TY
+        zoobenthos_Attribute.FILT_AREA = FILT_AREA
+        zoobenthos_Attribute.TEMPERATUR = TEMPERATUR!!.toFloat()
+        zoobenthos_Attribute.WATER_TEM = WATER_TEM!!.toFloat()
+        zoobenthos_Attribute.TURBIDITY = TURBIDITY
+        zoobenthos_Attribute.MUD = MUD!!.toFloat()
+        zoobenthos_Attribute.SAND = SAND!!.toFloat()
+        zoobenthos_Attribute.COR_SAND = COR_SAND!!.toFloat()
+        zoobenthos_Attribute.GRAVEL = GRAVEL!!.toFloat()
+        zoobenthos_Attribute.STONE_S = STONE_S!!.toFloat()
+        zoobenthos_Attribute.STONE_B = STONE_B!!.toFloat()
+        zoobenthos_Attribute.CONCRETE = CONCRETE!!.toFloat()
+        zoobenthos_Attribute.BED_ROCK = BED_ROCK!!.toFloat()
+        zoobenthos_Attribute.BANK_L = BANK_L
+        zoobenthos_Attribute.BANK_R = BANK_R
+        zoobenthos_Attribute.BAS_L = BAS_L
+        zoobenthos_Attribute.BAS_R = BAS_R
+        zoobenthos_Attribute.DIST_CAU = DIST_CAU
+        zoobenthos_Attribute.UNUS_NOTE = UNUS_NOTE
+
+        zoobenthos_Attribute.TEMP_YN = "Y"
+
+        zoobenthos_Attribute.CONF_MOD = "N"
+
+        zoobenthos_Attribute.GPS_LAT = lat.toFloat()
+        zoobenthos_Attribute.GPS_LON = log.toFloat()
+
+        zoobenthos_Attribute.SPEC_NM = SPEC_NM
+        zoobenthos_Attribute.FAMI_NM = FAMI_NM
+        zoobenthos_Attribute.SCIEN_NM = SCIEN_NM
+        zoobenthos_Attribute.GEOM = geom
+
+
+        dbManager!!.insertzoobenthos(zoobenthos_Attribute);
+    }
+
+    fun null_zoo_attribute(): Zoobenthos_Attribute {
+        var zoobenthos_Attribute: Zoobenthos_Attribute = Zoobenthos_Attribute(null, null, null, null, null, null, null, null, null, null, null, null, null
+                , null, null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+        return zoobenthos_Attribute
+    }
+
+    fun dataList_zoo(listdata: ArrayList<Zoobenthos_Attribute>, data: Cursor) {
+
+        while (data.moveToNext()) {
+
+            var model: Zoobenthos_Attribute;
+
+            model = Zoobenthos_Attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
+                    data.getInt(8), data.getFloat(9), data.getInt(10), data.getInt(11), data.getFloat(12), data.getString(13), data.getString(14)
+                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
+                    , data.getInt(22)
+                    , data.getInt(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27)
+                    , data.getString(28), data.getFloat(29), data.getFloat(30), data.getFloat(31), data.getFloat(32)
+                    , data.getFloat(33), data.getFloat(34), data.getFloat(35), data.getFloat(36), data.getString(37)
+                    , data.getString(38), data.getString(39), data.getString(40)
+                    , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
+                    , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
+                    , data.getString(20), data.getInt(51), data.getString(52), data.getString(53))
+            listdata.add(model)
+
+        }
+    }
+
 
     fun region(): String {
         var geocoder: Geocoder = Geocoder(context);

@@ -1912,7 +1912,6 @@ class ReptiliaActivity : Activity(), OnLocationUpdatedListener {
              numET.setText(splitnum.toString() + plusnum.toString())
          }*/
 
-        invtmTV.setText(Utils.timeStr())
         specnmET.setText("")
         famiET.setText("")
         scienET.setText("")

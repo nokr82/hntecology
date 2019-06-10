@@ -10104,9 +10104,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     fun isFile(): Boolean {
 
         val biotopePathDir = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope", ""))
+        Log.d("비오추가","추가")
         if (!biotopePathDir.exists()) {
+            Log.d("비오삭제","삭제")
             dbManager!!.deletelayers("biotope")
-//            dbManager!!.deletebiotope_attribute_all()
+            dbManager!!.deletebiotope_attribute_all()
         }
 
         val bridsPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "birds", ""))
@@ -10154,7 +10156,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         val flora2Path = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "flora2", ""))
         if (!flora2Path.exists()) {
             dbManager!!.deletelayers("flora2")
-
+            dbManager!!.deleteAllManyFloraAttributeAll()
         }
 
         val trackingPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "tracking", ""))

@@ -1533,7 +1533,6 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         var c = dbManager!!.pkNum("mammalAttribute")
         mammalnumTV.text = c.toString()
 
-        mammaltimeTV.setText(Utils.timeStr())
         mamspecnmET.setText("")
         mamfaminmTV.setText("")
         mamsciennmTV.setText("")

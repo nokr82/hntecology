@@ -41,8 +41,13 @@ import io.nlopez.smartlocation.location.config.LocationAccuracy
 import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
 import kotlinx.android.synthetic.main.activity_birds_ex.*
+import kotlinx.android.synthetic.main.activity_birds_ex.confmodTV
 import kotlinx.android.synthetic.main.activity_birds_ex.gpslatTV
 import kotlinx.android.synthetic.main.activity_birds_ex.gpslonTV
+import kotlinx.android.synthetic.main.activity_birds_ex.numTV
+import kotlinx.android.synthetic.main.activity_birds_ex.prjnameET
+import kotlinx.android.synthetic.main.activity_birds_ex.resetBT
+import kotlinx.android.synthetic.main.activity_stock.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -1064,6 +1069,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             var birds_attribute = null_birds_attribute()
             keyId = intent.getStringExtra("GROP_ID")
 
+            birds_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+            birds_attribute.CURRENT_TM = Utils.current_tm()
             birds_attribute.GROP_ID = keyId
 
             val prj = prjnameET.text.toString()
@@ -1086,7 +1093,11 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             } else {
                 birds_attribute.INV_REGION = INV_REGION
             }
-            birds_attribute.INV_DT = invDtTV.text.toString()
+            var invdt = Utils.getString(invDtTV)
+            var invtm = Utils.getString(timeTV)
+
+            birds_attribute.INV_DT = invdt
+            birds_attribute.INV_TM = invtm
 
             birds_attribute.NUM = numTV.text.toString().toInt()
 
@@ -1108,7 +1119,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
             birds_attribute.ETC = etcET.text.toString()
 
-            birds_attribute.INV_TM = timeTV.text.toString()
 
             birds_attribute.SPEC_NM = birdsTV.text.toString()
             var birdsET = birdsET.text.toString()
@@ -1242,20 +1252,6 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             } else {
 
                 dbManager!!.insertbirds_attribute(birds_attribute);
-
-//                var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-//                sdPath += "/ecology/data/birds/images" + birds_attribute.INV_DT +"_"+ birds_attribute.INV_TM +"_"+birds_attribute.NUM
-//                val birds = File(sdPath)
-//                birds.mkdir();
-////                          sdPath +="/imgs"
-////                          sdPath +="/"+birds_attribute.PIC_FOLDER
-//
-//                val file = File(sdPath)
-//                file.mkdir();
-//                //이미 있다면 삭제. 후 생성
-//                setDirEmpty(sdPath)
-//
-//                sdPath+="/"
 
                 var pathArray: ArrayList<String> = ArrayList<String>()
 
@@ -2139,7 +2135,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                var plusnum = textnum.toInt() + 1
                numTV.setText(splitnum.toString() + plusnum.toString())
            }*/
-        timeTV.setText(Utils.timeStr())
+
         birdsTV.setText("")
         familyNameTV.setText("")
         zoologicalTV.setText("")
@@ -2456,11 +2452,16 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 hour_s = "0" + hour_s
             }
             val msg = String.format("%s:%s", hour_s, min_s)
+            Log.d("시간",msg)
             timeTV.text = msg
         }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
+
         dialog.show()
     }
 }
+
+
+
 
 fun null_birds_attribute(): Birds_attribute {
     var birds_attribute: Birds_attribute = Birds_attribute(null, null, null, null, null, null, null, null, null, null,

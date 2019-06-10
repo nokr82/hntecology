@@ -1160,7 +1160,6 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
 
                 flora_Attribute.GROP_ID = keyId
                 flora_Attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
-
                 flora_Attribute.CURRENT_TM = Utils.current_tm()
                 val prj = prjnameET.text.toString()
                 if (prj == prjname) {
@@ -1441,7 +1440,6 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
         var c = dbManager!!.pkNum("floraAttribute")
         floranumET.text = c.toString()
 
-        florainvtmET.setText(Utils.timeStr())
         floraspecnmET.setText("")
         florafaminmTV.setText("")
         florasciennmTV.setText("")

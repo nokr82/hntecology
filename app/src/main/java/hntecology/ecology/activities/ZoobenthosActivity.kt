@@ -2076,7 +2076,6 @@ class ZoobenthosActivity : Activity() {
 
         specnmtmp.setText("")
 
-        timeTV.setText(Utils.timeStr())
         specnmTV.setText("")
         faminmTV.setText("")
         sciennmTV.setText("")

@@ -1578,7 +1578,6 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
         var c = dbManager!!.pkNum("insectAttribute")
         insectnumET.text = c.toString()
 
-        insecttimeET.setText(Utils.timeStr())
         insectspecnmET.setText("")
         insectfaminmET.setText("")
         insectsciennmET.setText("")

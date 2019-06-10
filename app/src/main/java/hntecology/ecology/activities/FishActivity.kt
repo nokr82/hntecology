@@ -1377,6 +1377,8 @@ class FishActivity : Activity(), OnLocationUpdatedListener {
             fish_attribute.UN_FISH_CH = fishunfishchET.text.toString()
 
             fish_attribute.SPEC_NM = fishspecnmET.text.toString()
+            fish_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+            fish_attribute.CURRENT_TM = Utils.current_tm()
 
             fish_attribute.TEMP_YN = "Y"
 
@@ -1789,7 +1791,7 @@ class FishActivity : Activity(), OnLocationUpdatedListener {
 
 
 
-        fishinvtmTV.setText(Utils.timeStr())
+//        fishinvtmTV.setText(Utils.timeStr())
         fishspecnmET.setText("")
         fishfaminmET.setText("")
         fishsciennmET.setText("")

@@ -1176,14 +1176,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
     public void delete_grop_insect_attribute(Insect_attribute insect_attribute,String GROP_ID) {
-        String query = "DELETE FROM insect_attribute WHERE GROP_ID = '" + GROP_ID + "'";
+        String query = "DELETE FROM insectAttribute WHERE GROP_ID = '" + GROP_ID + "'";
 
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();
     }
     public void delete_grop_fish_attribute(Fish_attribute fish_attribute,String GROP_ID) {
-        String query = "DELETE FROM fish_attribute WHERE GROP_ID = '" + GROP_ID + "'";
+        String query = "DELETE FROM fishAttribute WHERE GROP_ID = '" + GROP_ID + "'";
 
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);

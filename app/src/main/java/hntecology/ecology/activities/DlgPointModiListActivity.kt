@@ -18,15 +18,6 @@ import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.*
 import kotlinx.android.synthetic.main.activity_dlg_point_modi_list.*
-import kotlinx.android.synthetic.main.activity_fish.*
-import kotlinx.android.synthetic.main.activity_fish.coordedET
-import kotlinx.android.synthetic.main.activity_fish.coordemET
-import kotlinx.android.synthetic.main.activity_fish.coordesET
-import kotlinx.android.synthetic.main.activity_fish.coordndET
-import kotlinx.android.synthetic.main.activity_fish.coordnmET
-import kotlinx.android.synthetic.main.activity_fish.coordnsET
-import kotlinx.android.synthetic.main.activity_fish.prjnameET
-import kotlinx.android.synthetic.main.activity_insect.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -145,13 +136,13 @@ class DlgPointModiListActivity : Activity() {
                 log = geom_sp[1]
                 convert(lat.toDouble())
                 logconvert(log.toDouble())
+                region()
             }
 
             println("---------점스스스 $geom")
         }
 
 
-        r_region = ""
 
 
 
@@ -267,8 +258,7 @@ class DlgPointModiListActivity : Activity() {
                 }
                 last_finish()
             }
-        }
-        else if (table_name == "fishAttribute") {
+        } else if (table_name == "fishAttribute") {
             dataList_fish(listdata_fish1, data1)
             dataList_fish(listdata_fish2, data2)
             listfishAdapter = DlgPointModiFishAdapter(context, listdata_fish1, listdata_fish2);
@@ -346,8 +336,7 @@ class DlgPointModiListActivity : Activity() {
                 }
                 last_finish()
             }
-        }
-        else if (table_name == "ZoobenthosAttribute") {
+        } else if (table_name == "ZoobenthosAttribute") {
             dataList_zoo(listdata_Zoo1, data1)
             dataList_zoo(listdata_Zoo2, data2)
             listZooAdapter = DlgPointModiZooAdapter(context, listdata_Zoo1, listdata_Zoo2);
@@ -362,55 +351,55 @@ class DlgPointModiListActivity : Activity() {
                 dbManager!!.delete_grop_zoo_attribute(attribute, grop_id)
                 for (i in 0..listdata_Zoo3.size - 1) {
                     Log.d("버드데이터", listdata_Zoo3[i].SPEC_NM)
-                    addzoo(attribute,listdata_Zoo3[i].INV_MEAN.toString(),
-                    listdata_Zoo3[i].MAP_SYS_NM.toString(),
-                    listdata_Zoo3[i].GPSLAT_DEG.toString(),
-                    listdata_Zoo3[i].GPSLAT_MIN.toString(),
-                    listdata_Zoo3[i].GPSLAT_SEC.toString(),
-                    listdata_Zoo3[i].GPSLON_DEG.toString(),
-                    listdata_Zoo3[i].GPSLON_MIN.toString(),
-                    listdata_Zoo3[i].GPSLON_SEC.toString(),
-                    listdata_Zoo3[i].INV_DT.toString(),
-                    listdata_Zoo3[i].NUM.toString(),
-                    listdata_Zoo3[i].INV_TM.toString(),
-                    listdata_Zoo3[i].WEATHER.toString(),
-                    listdata_Zoo3[i].INV_TOOL.toString(),
-                    listdata_Zoo3[i].AD_DIST_NM.toString(),
-                    listdata_Zoo3[i].RIV_W.toString(),
-                    listdata_Zoo3[i].RIV_W2.toString(),
-                    listdata_Zoo3[i].RUN_RIV_W.toString(),
-                    listdata_Zoo3[i].RUN_RIV_W2.toString(),
-                    listdata_Zoo3[i].WATER_DEPT.toString(),
-                    listdata_Zoo3[i].HAB_TY.toString(),
-                    listdata_Zoo3[i].FILT_AREA.toString(),
-                    listdata_Zoo3[i].TEMPERATUR.toString(),
-                    listdata_Zoo3[i].WATER_TEM.toString(),
-                    listdata_Zoo3[i].TURBIDITY.toString(),
-                    listdata_Zoo3[i].MUD.toString(),
-                    listdata_Zoo3[i].SAND.toString(),
-                    listdata_Zoo3[i].COR_SAND.toString(),
-                    listdata_Zoo3[i].GRAVEL.toString(),
-                    listdata_Zoo3[i].STONE_S.toString(),
-                    listdata_Zoo3[i].STONE_B.toString(),
-                    listdata_Zoo3[i].CONCRETE.toString(),
-                    listdata_Zoo3[i].BED_ROCK.toString(),
-                    listdata_Zoo3[i].BANK_L.toString(),
-                    listdata_Zoo3[i].BANK_R.toString(),
-                    listdata_Zoo3[i].BAS_L.toString(),
-                    listdata_Zoo3[i].BAS_R.toString(),
-                    listdata_Zoo3[i].DIST_CAU.toString(),
-                    listdata_Zoo3[i].UNUS_NOTE.toString(),
-                    listdata_Zoo3[i].GPS_LAT.toString(),
-                    listdata_Zoo3[i].GPS_LON.toString(),
-                    listdata_Zoo3[i].SPEC_NM.toString(),
-                    listdata_Zoo3[i].FAMI_NM.toString(),
-                    listdata_Zoo3[i].SCIEN_NM.toString(),
-                    listdata_Zoo3[i].TEMP_YN.toString(),
-                    listdata_Zoo3[i].CONF_MOD.toString(),
-                    listdata_Zoo3[i].GEOM.toString(),
-                    listdata_Zoo3[i].ZOO_CNT.toString(),
-                    listdata_Zoo3[i].MAC_ADDR.toString(),
-                    listdata_Zoo3[i].CURRENT_TM.toString())
+                    addzoo(attribute, listdata_Zoo3[i].INV_MEAN.toString(),
+                            listdata_Zoo3[i].MAP_SYS_NM.toString(),
+                            listdata_Zoo3[i].GPSLAT_DEG.toString(),
+                            listdata_Zoo3[i].GPSLAT_MIN.toString(),
+                            listdata_Zoo3[i].GPSLAT_SEC.toString(),
+                            listdata_Zoo3[i].GPSLON_DEG.toString(),
+                            listdata_Zoo3[i].GPSLON_MIN.toString(),
+                            listdata_Zoo3[i].GPSLON_SEC.toString(),
+                            listdata_Zoo3[i].INV_DT.toString(),
+                            listdata_Zoo3[i].NUM.toString(),
+                            listdata_Zoo3[i].INV_TM.toString(),
+                            listdata_Zoo3[i].WEATHER.toString(),
+                            listdata_Zoo3[i].INV_TOOL.toString(),
+                            listdata_Zoo3[i].AD_DIST_NM.toString(),
+                            listdata_Zoo3[i].RIV_W.toString(),
+                            listdata_Zoo3[i].RIV_W2.toString(),
+                            listdata_Zoo3[i].RUN_RIV_W.toString(),
+                            listdata_Zoo3[i].RUN_RIV_W2.toString(),
+                            listdata_Zoo3[i].WATER_DEPT.toString(),
+                            listdata_Zoo3[i].HAB_TY.toString(),
+                            listdata_Zoo3[i].FILT_AREA.toString(),
+                            listdata_Zoo3[i].TEMPERATUR.toString(),
+                            listdata_Zoo3[i].WATER_TEM.toString(),
+                            listdata_Zoo3[i].TURBIDITY.toString(),
+                            listdata_Zoo3[i].MUD.toString(),
+                            listdata_Zoo3[i].SAND.toString(),
+                            listdata_Zoo3[i].COR_SAND.toString(),
+                            listdata_Zoo3[i].GRAVEL.toString(),
+                            listdata_Zoo3[i].STONE_S.toString(),
+                            listdata_Zoo3[i].STONE_B.toString(),
+                            listdata_Zoo3[i].CONCRETE.toString(),
+                            listdata_Zoo3[i].BED_ROCK.toString(),
+                            listdata_Zoo3[i].BANK_L.toString(),
+                            listdata_Zoo3[i].BANK_R.toString(),
+                            listdata_Zoo3[i].BAS_L.toString(),
+                            listdata_Zoo3[i].BAS_R.toString(),
+                            listdata_Zoo3[i].DIST_CAU.toString(),
+                            listdata_Zoo3[i].UNUS_NOTE.toString(),
+                            listdata_Zoo3[i].GPS_LAT.toString(),
+                            listdata_Zoo3[i].GPS_LON.toString(),
+                            listdata_Zoo3[i].SPEC_NM.toString(),
+                            listdata_Zoo3[i].FAMI_NM.toString(),
+                            listdata_Zoo3[i].SCIEN_NM.toString(),
+                            listdata_Zoo3[i].TEMP_YN.toString(),
+                            listdata_Zoo3[i].CONF_MOD.toString(),
+                            listdata_Zoo3[i].GEOM.toString(),
+                            listdata_Zoo3[i].ZOO_CNT.toString(),
+                            listdata_Zoo3[i].MAC_ADDR.toString(),
+                            listdata_Zoo3[i].CURRENT_TM.toString())
                 }
                 last_finish()
             }
@@ -495,7 +484,7 @@ class DlgPointModiListActivity : Activity() {
                     , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
                     , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33), data.getString(34), data.getString(35)
             )
-            if (model.GROP_ID!=grop_id){
+            if (model.GROP_ID != grop_id) {
                 listdata.add(model)
             }
 
@@ -596,7 +585,7 @@ class DlgPointModiListActivity : Activity() {
                     , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39)
                     , data.getFloat(40), data.getString(41), data.getString(42)
             )
-            if (model.GROP_ID!=grop_id){
+            if (model.GROP_ID != grop_id) {
                 listdata.add(model)
             }
         }
@@ -707,7 +696,7 @@ class DlgPointModiListActivity : Activity() {
                     , data.getInt(31), data.getInt(32), data.getFloat(33), data.getInt(34), data.getInt(35), data.getFloat(36), data.getString(37), data.getString(38), data.getString(39))
 
 
-            if (model.GROP_ID!=grop_id){
+            if (model.GROP_ID != grop_id) {
                 listdata.add(model)
             }
 
@@ -747,11 +736,9 @@ class DlgPointModiListActivity : Activity() {
         fish_attribute.MID_RAGE = MID_RAGE
         fish_attribute.CODE_NUM = CODE_NUM
 
-        if (fishrivernumET.text.isNotEmpty()) {
-            fish_attribute.RIVER_NUM = fishrivernumET.text.toString()
-        }
+        fish_attribute.RIVER_NUM = RIVER_NUM
 
-        fish_attribute.RIVER_NM = fishrivernmET.text.toString()
+        fish_attribute.RIVER_NM = RIVER_NM
 
 
         fish_attribute.COLL_TIME = COLL_TIME
@@ -818,7 +805,7 @@ class DlgPointModiListActivity : Activity() {
                     data.getInt(26), data.getInt(27), data.getInt(28), data.getInt(29), data.getInt(30), data.getString(31), data.getInt(32), data.getString(33), data.getString(34), data.getString(35),
                     data.getInt(36), data.getString(37), data.getString(38), data.getString(39), data.getString(40), data.getString(41), data.getString(42), data.getInt(43), data.getInt(44), data.getFloat(45)
                     , data.getInt(46), data.getInt(47), data.getFloat(48), data.getString(49), data.getString(50), data.getString(51), data.getString(52))
-            if (model.GROP_ID!=grop_id){
+            if (model.GROP_ID != grop_id) {
                 listdata.add(model)
             }
         }
@@ -914,7 +901,7 @@ class DlgPointModiListActivity : Activity() {
                     , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
                     , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32)
                     , data.getString(33), data.getString(34))
-            if (model.GROP_ID!=grop_id){
+            if (model.GROP_ID != grop_id) {
                 listdata.add(model)
             }
         }
@@ -1005,7 +992,7 @@ class DlgPointModiListActivity : Activity() {
                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
                     , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
                     , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32), data.getString(33), data.getString(34))
-            if (model.GROP_ID!=grop_id){
+            if (model.GROP_ID != grop_id) {
                 listdata.add(model)
             }
         }
@@ -1150,29 +1137,26 @@ class DlgPointModiListActivity : Activity() {
                     , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
                     , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
                     , data.getString(20), data.getInt(51), data.getString(52), data.getString(53))
-            if (model.GROP_ID!=grop_id){
+            if (model.GROP_ID != grop_id) {
                 listdata.add(model)
             }
 
 
-
         }
     }
 
 
-    fun region(): String {
+    fun region() {
         var geocoder: Geocoder = Geocoder(context);
-        var region_ = ""
-        var list: List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
+        var list: List<Address> = geocoder.getFromLocation(log.toDouble(), lat.toDouble(), 1);
 
         if (list.size > 0) {
-            region_ = list.get(0).getAddressLine(0)
+            r_region = list.get(0).getAddressLine(0)
 
         }
-        return region_
     }
 
-    fun convert(d: Double): String {
+    fun convert(d: Double) {
 
         var long_d = Math.abs(d)
 
@@ -1182,6 +1166,7 @@ class DlgPointModiListActivity : Activity() {
 
         GPSLAT_DEG_RE = s.toString()
 
+        Log.d("아뵤",GPSLAT_DEG_RE)
         long_d = long_d - i;
         long_d = long_d * 60;
         GPSLAT_MIN_RE = long_d.toInt().toString()
@@ -1196,15 +1181,12 @@ class DlgPointModiListActivity : Activity() {
 
 //        i = long_d.round().intValue();
         i = Math.round(long_d.toDouble()).toInt()
-
         GPSLAT_SEC_RE = long_d.toFloat().toString()
-
         s = s + i.toString() + '"';
 
-        return s
     }
 
-    fun logconvert(d: Double): String {
+    fun logconvert(d: Double){
 
         var long_d = Math.abs(d)
 
@@ -1233,7 +1215,7 @@ class DlgPointModiListActivity : Activity() {
 
         s = s + i.toString() + '"';
 
-        return s
+
     }
 
 }

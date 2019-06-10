@@ -70,17 +70,19 @@ class DlgStandardActivity : Activity() {
         selectLL.setOnClickListener {
             var content: String = ""
             var code: ArrayList<String> = ArrayList<String>()
-
+            var r_code: ArrayList<String> = ArrayList<String>()
             if (listdata1 != null) {
                 for (i in 0..listdata1.size - 1) {
                     if (listdata1.get(i).is_checked == true) {
                         code.add(listdata1.get(i).SIGN!!+":"+listdata1.get(i).CONTENT!!)
+                        r_code.add(listdata1.get(i).SIGN!!)
                     }
                 }
             }
 
             if (code != null) {
                 intent.putExtra("code", code)
+                intent.putExtra("r_code", r_code)
             }
 
             if (code.size > 0) {
@@ -126,6 +128,7 @@ class DlgStandardActivity : Activity() {
 
 
     }
+
 
     fun addList(){
 

@@ -71,7 +71,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
     val SET_STANDARD = 6;
 
     var userName = "";
-
+    var r_code: ArrayList<String> = ArrayList<String>()
     val REQUEST_FINE_LOCATION = 100
     val REQUEST_ACCESS_COARSE_LOCATION = 101
 
@@ -86,6 +86,9 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
     private var progressDialog: ProgressDialog? = null
 
     var type = "write";
+
+
+    var mj_act_pr_ty = ""
 
     var keyId: String? = null;
 
@@ -134,6 +137,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
     var INV_REGION = ""
 
+    private lateinit var listdata1: java.util.ArrayList<EndangeredSelect>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_birds_ex)
@@ -154,6 +159,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         images_path = ArrayList();
         images = ArrayList()
         images_url = ArrayList()
+
+        listdata1 = java.util.ArrayList()
 
         invDtTV.text = today;
         timeTV.text = time;
@@ -199,6 +206,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         Log.d("데이터", c.toString())
         numTV.text = c.toString()
 
+
+        addList()
 
         var intent: Intent = getIntent();
 
@@ -381,7 +390,12 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
 
 
+
                 useLayerTV.setText(birds_attribute.USE_LAYER)
+
+
+
+
                 mjActTV.setText(birds_attribute.MJ_ACT)
 //                mjActPrET.setText(birds_attribute.MJ_ACT_PR)
                 /* if(birds_attribute.MJ_ACT_PR == null || birds_attribute.MJ_ACT_PR.equals("")){
@@ -401,8 +415,24 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                     dataArray.add(birds_attribute)
                 }
 
+
+
+                var codelist = birds_attribute.MJ_ACT_PR!!.split(",")
+                var code_content = ""
+                if (codelist.size>0){
+                    for (i in 0..codelist.size-1){
+                        for (j in 0..listdata1.size-1){
+                            if (codelist[i]==listdata1.get(j).SIGN){
+                                code_content+=codelist[i]+":"+listdata1.get(j).CONTENT+"\n"
+                                break
+                            }
+                        }
+                    }
+                }
+
+
                 confmodTV.setText(birds_attribute.CONF_MOD)
-                standardTV.setText(birds_attribute.MJ_ACT_PR)
+                standardTV.setText(code_content)
 
 //                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/tmps/" + birds_attribute.INV_DT + "." + birds_attribute.INV_TM + "."+birds_attribute.NUM+ "/imges")
 //                val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ecology/data/birds/images/" + birds_attribute.INV_DT + "_" + birds_attribute.INV_TM + "_"+birds_attribute.NUM)
@@ -570,6 +600,10 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                             birds_attribute.PRJ_NAME = prjnameET.text.toString()
                         }
 
+
+
+
+
                         if (invRegionET.length() > 0) {
                             birds_attribute.INV_REGION = invRegionET.text.toString();
                         } else {
@@ -629,8 +663,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         birds_attribute.MJ_ACT = mjActTV.text.toString()
 //                        birds_attribute.MJ_ACT_PR = mjActPrET.text.toString()
-                        birds_attribute.MJ_ACT_PR = standardTV.text.toString()
-
+                        birds_attribute.MJ_ACT_PR = r_code.joinToString(",")
 
                         /*     if (gpslatTV.text.isNotEmpty()) {
                                  Log.d("방위",gpslatTV.text.toString())
@@ -1148,7 +1181,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
             birds_attribute.MJ_ACT = mjActTV.text.toString()
 //            birds_attribute.MJ_ACT_PR = mjActPrET.text.toString()
-            birds_attribute.MJ_ACT_PR = standardTV.text.toString()
+            birds_attribute.MJ_ACT_PR = r_code.joinToString(",")
 
             birds_attribute.GPS_LAT = lat.toFloat()
             birds_attribute.GPS_LON = log.toFloat()
@@ -1685,17 +1718,14 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 }
 
                 SET_STANDARD -> {
-                    var content = ""
                     var code: ArrayList<String> = ArrayList<String>()
-
-//                    if(data!!.getStringExtra("content") != null) {
-//                        content = data!!.getStringExtra("content")
-//                        mjActTV.setText(content)
-//                    }
 
                     if (data!!.getSerializableExtra("code") != null) {
                         code = data!!.getSerializableExtra("code") as ArrayList<String>
+                        r_code = data!!.getSerializableExtra("r_code") as ArrayList<String>
                         var codeText: String = ""
+
+                        Log.d("아프다",r_code.joinToString(","))
 
                         for (i in 0..code.size - 1) {
                             codeText += code.get(i) + "\n"
@@ -2096,6 +2126,43 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
     }
 
+    fun addList(){
+
+        if (listdata1 != null){
+            listdata1.clear()
+        }
+
+        val item = EndangeredSelect("a", "성조가 둥지 또는 둥지가 있을 것으로 예상되는 장소를 3회 이상 출입하는 것을 관찰", false)
+        val item2 = EndangeredSelect("b", "성조가 포란 또는 새끼를 품고 있는 것을 관찰", false)
+        val item3 = EndangeredSelect("c", "성조가 새끼의 배설물을 운반하고 있는 것을 관찰", false)
+        val item4 = EndangeredSelect("d", "성조가 새끼에게 먹이를 운반 또는 경계하는 것을 관찰", false)
+        val item5 = EndangeredSelect("e", "의상행동을 관찰", false)
+        val item6 = EndangeredSelect("f", "교미행동을 관찰(겨울철새/통과철새는 제외)", false)
+        val item7 = EndangeredSelect("g", "당해 또는 2년 이내에 이소한 것으로 추정되는 둥지를 관찰", false)
+        val item8 = EndangeredSelect("h", "둥지 트는 행동을 관찰(둥지로 이용코자 땅 파는 행동 포함)", false)
+        val item9 = EndangeredSelect("i", "성조가 둥지를 틀 때 쓰이는 재료를 운반하는 것을 관찰", false)
+        val item10 = EndangeredSelect("j", "알이 있는 둥지를 관찰", false)
+        val item11 = EndangeredSelect("k", "성조가 앉아 있는 둥지 근처에서 그 종의 알 껍질을 관찰", false)
+        val item12 = EndangeredSelect("l", "새끼가 들어 있는 둥지를 관찰", false)
+        val item13 = EndangeredSelect("m", "둥지 근처에서 거의 이동하지 못하는 새끼를 관찰", false)
+        val item14 = EndangeredSelect("n", "새끼의 소리를 들음", false)
+
+        listdata1.add(item)
+        listdata1.add(item2)
+        listdata1.add(item3)
+        listdata1.add(item4)
+        listdata1.add(item5)
+        listdata1.add(item6)
+        listdata1.add(item7)
+        listdata1.add(item8)
+        listdata1.add(item9)
+        listdata1.add(item10)
+        listdata1.add(item11)
+        listdata1.add(item12)
+        listdata1.add(item13)
+        listdata1.add(item14)
+    }
+
     override fun onLocationUpdated(p0: Location?) {
 
         stopLocation()
@@ -2135,6 +2202,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                var plusnum = textnum.toInt() + 1
                numTV.setText(splitnum.toString() + plusnum.toString())
            }*/
+
+        r_code.clear()
 
         birdsTV.setText("")
         familyNameTV.setText("")

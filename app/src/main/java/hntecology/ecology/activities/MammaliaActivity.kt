@@ -35,10 +35,7 @@ import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.FileFilter
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
-import hntecology.ecology.model.Base
-import hntecology.ecology.model.BiotopeType
-import hntecology.ecology.model.Insect_attribute
-import hntecology.ecology.model.Mammal_attribute
+import hntecology.ecology.model.*
 import io.nlopez.smartlocation.OnLocationUpdatedListener
 import io.nlopez.smartlocation.SmartLocation
 import io.nlopez.smartlocation.location.config.LocationAccuracy
@@ -89,6 +86,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
     val SET_MAMMAL = 1
     val SET_UNSPEC = 2
     val SET_STANDARD = 500
+
+    var r_code: ArrayList<String> = ArrayList<String>()
+    private lateinit var listdata1: java.util.ArrayList<EndangeredSelect>
 
     val SET_DATA = 1000
 
@@ -146,6 +146,11 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         maminvdtTV.text = Utils.todayStr()
 
+
+
+        listdata1 = java.util.ArrayList()
+
+
         var time = Utils.timeStr()
         mammaltimeTV.setText(time)
         var timesplit = time.split(":")
@@ -156,6 +161,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         prjname = PrefUtils.getStringPreference(context, "prjname")
 
 
+        addList()
 
         maminvdtTV.setOnClickListener {
             datedlg()
@@ -345,7 +351,21 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 mamtreasyET.setText(mammal_attribute.TR_EASY)
                 mamtreasyreET.setText(mammal_attribute.TR_EASY_RE)
 
-                standardTV.setText(mammal_attribute.STANDARD)
+                var codelist = mammal_attribute.MJ_ACT_PR!!.split(",")
+                var code_content = ""
+                if (codelist.size>0){
+                    for (i in 0..codelist.size-1){
+                        for (j in 0..listdata1.size-1){
+                            if (codelist[i]==listdata1.get(j).SIGN){
+                                code_content+=codelist[i]+":"+listdata1.get(j).CONTENT+"\n"
+                                break
+                            }
+                        }
+                    }
+                }
+
+
+                standardTV.setText(code_content)
 
                 coordndET.setText(mammal_attribute.GPSLAT_DEG.toString())
                 coordnmET.setText(mammal_attribute.GPSLAT_MIN.toString())
@@ -664,7 +684,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         if (coordesET.text.isNotEmpty()) {
                             mammal_attribute.GPSLON_SEC = coordesET.text.toString().toFloat()
                         }
-                        mammal_attribute.MJ_ACT_PR = standardTV.text.toString()
+                        mammal_attribute.MJ_ACT_PR =  r_code.joinToString(",")
 
                         mammal_attribute.INV_TM = mammaltimeTV.text.toString()
 
@@ -1281,7 +1301,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             if (coordesET.text.isNotEmpty()) {
                 mammal_attribute.GPSLON_SEC = coordesET.text.toString().toFloat()
             }
-            mammal_attribute.MJ_ACT_PR = standardTV.text.toString()
+            mammal_attribute.MJ_ACT_PR =  r_code.joinToString(",")
             mammal_attribute.TR_EASY = mamtreasyET.text.toString()
             mammal_attribute.TR_EASY_RE = mamtreasyreET.text.toString()
 
@@ -1532,7 +1552,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         }*/
         var c = dbManager!!.pkNum("mammalAttribute")
         mammalnumTV.text = c.toString()
-
+        r_code.clear()
         mamspecnmET.setText("")
         mamfaminmTV.setText("")
         mamsciennmTV.setText("")
@@ -1922,10 +1942,13 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                     if(data!!.getSerializableExtra("code") != null) {
                         code = data!!.getSerializableExtra("code") as ArrayList<String>
-                        var codeText:String = ""
+                        r_code = data!!.getSerializableExtra("r_code") as ArrayList<String>
+                        var codeText: String = ""
 
-                        for (i in 0..code.size-1){
-                            codeText += code.get(i) + " "
+                        Log.d("아프다",r_code.joinToString(","))
+
+                        for (i in 0..code.size - 1) {
+                            codeText += code.get(i) + "\n"
                         }
                         standardTV.setText(codeText)
 
@@ -2510,4 +2533,44 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
         }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
         dialog.show()
     }
+
+
+    fun addList(){
+
+        if (listdata1 != null){
+            listdata1.clear()
+        }
+
+        val item = EndangeredSelect("a", "성조가 둥지 또는 둥지가 있을 것으로 예상되는 장소를 3회 이상 출입하는 것을 관찰", false)
+        val item2 = EndangeredSelect("b", "성조가 포란 또는 새끼를 품고 있는 것을 관찰", false)
+        val item3 = EndangeredSelect("c", "성조가 새끼의 배설물을 운반하고 있는 것을 관찰", false)
+        val item4 = EndangeredSelect("d", "성조가 새끼에게 먹이를 운반 또는 경계하는 것을 관찰", false)
+        val item5 = EndangeredSelect("e", "의상행동을 관찰", false)
+        val item6 = EndangeredSelect("f", "교미행동을 관찰(겨울철새/통과철새는 제외)", false)
+        val item7 = EndangeredSelect("g", "당해 또는 2년 이내에 이소한 것으로 추정되는 둥지를 관찰", false)
+        val item8 = EndangeredSelect("h", "둥지 트는 행동을 관찰(둥지로 이용코자 땅 파는 행동 포함)", false)
+        val item9 = EndangeredSelect("i", "성조가 둥지를 틀 때 쓰이는 재료를 운반하는 것을 관찰", false)
+        val item10 = EndangeredSelect("j", "알이 있는 둥지를 관찰", false)
+        val item11 = EndangeredSelect("k", "성조가 앉아 있는 둥지 근처에서 그 종의 알 껍질을 관찰", false)
+        val item12 = EndangeredSelect("l", "새끼가 들어 있는 둥지를 관찰", false)
+        val item13 = EndangeredSelect("m", "둥지 근처에서 거의 이동하지 못하는 새끼를 관찰", false)
+        val item14 = EndangeredSelect("n", "새끼의 소리를 들음", false)
+
+        listdata1.add(item)
+        listdata1.add(item2)
+        listdata1.add(item3)
+        listdata1.add(item4)
+        listdata1.add(item5)
+        listdata1.add(item6)
+        listdata1.add(item7)
+        listdata1.add(item8)
+        listdata1.add(item9)
+        listdata1.add(item10)
+        listdata1.add(item11)
+        listdata1.add(item12)
+        listdata1.add(item13)
+        listdata1.add(item14)
+    }
+
+
 }

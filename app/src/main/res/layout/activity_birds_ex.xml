@@ -655,10 +655,10 @@
                     android:id="@+id/standardTV"
                     style="@style/BiotopeTextView"
                     android:layout_width="0dp"
-                    android:hint="click"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:hint="click" />
             </LinearLayout>
 
             <LinearLayout

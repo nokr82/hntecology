@@ -253,16 +253,11 @@ class DlgModiFlora2ListActivity : Activity() {
             manyFloraAttribute.GPS_LON = log.toFloat()
 
         manyFloraAttribute.TEMP_YN = "Y"
-        manyFloraAttribute.CONF_MOD = "N"
+        manyFloraAttribute.CONF_MOD = "M"
 
         manyFloraAttribute.GEOM = geom
 
 
-        val CONF_MOD = manyFloraAttribute.CONF_MOD
-
-        if (CONF_MOD == "C" || CONF_MOD == "N") {
-            manyFloraAttribute.CONF_MOD = "M"
-        }
         manyFloraAttribute.TRE_NUM= TRE_NUM
         manyFloraAttribute.STRE_NUM= STRE_NUM
         manyFloraAttribute.SHR_NUM= SHR_NUM

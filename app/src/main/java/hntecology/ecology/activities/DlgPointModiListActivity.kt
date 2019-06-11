@@ -544,7 +544,7 @@ class DlgPointModiListActivity : Activity() {
 
 
         reptilia_attribute.GEOM = geom
-        reptilia_attribute.CONF_MOD = "N"
+        reptilia_attribute.CONF_MOD = "M"
         reptilia_attribute.GPS_LAT = lat.toFloat()
         reptilia_attribute.GPS_LON = log.toFloat()
         reptilia_attribute.GPSLAT_DEG = GPSLAT_DEG_RE!!.toInt()
@@ -660,7 +660,7 @@ class DlgPointModiListActivity : Activity() {
 
         mammal_attribute.TEMP_YN = "Y"
 
-        mammal_attribute.CONF_MOD = "N"
+        mammal_attribute.CONF_MOD = "M"
 
         mammal_attribute.GEOM = geom
 
@@ -870,7 +870,7 @@ class DlgPointModiListActivity : Activity() {
 
         insect_attribute.TEMP_YN = "N"
 
-        insect_attribute.CONF_MOD = "N"
+        insect_attribute.CONF_MOD = "M"
 
 
         val date = Date()
@@ -1098,7 +1098,7 @@ class DlgPointModiListActivity : Activity() {
 
         zoobenthos_Attribute.TEMP_YN = "Y"
 
-        zoobenthos_Attribute.CONF_MOD = "N"
+        zoobenthos_Attribute.CONF_MOD = "M"
 
         zoobenthos_Attribute.GPS_LAT = lat.toFloat()
         zoobenthos_Attribute.GPS_LON = log.toFloat()

@@ -3,11 +3,13 @@ package hntecology.ecology.activities
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.view.Gravity
 import android.widget.Toast
 import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
+import hntecology.ecology.base.EncUtils
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.GpsSet
@@ -72,6 +74,11 @@ class LoginActivity : Activity() {
                 return@setOnClickListener
             }
 
+            val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+
+
+            var macAddress = EncUtils.recupAdresseMAC(wifiManager)
+            PrefUtils.setPreference(this, "mac_addr", macAddress!!.replace(":",""));
 
             val intent: Intent = Intent(this, MainActivity::class.java);
 

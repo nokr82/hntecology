@@ -85,7 +85,7 @@ class DlgPointModiListActivity : Activity() {
     var GPSLON_MIN_RE = ""
     var GPSLON_SEC_RE = ""
     var r_region = ""
-
+    var pknum = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dlg_point_modi_list)
@@ -107,7 +107,6 @@ class DlgPointModiListActivity : Activity() {
         if (intent.getStringExtra("latitude") != null) {
             lat = intent.getStringExtra("latitude")
             convert(lat.toDouble())
-
         }
 
         if (intent.getStringExtra("longitude") != null) {
@@ -130,15 +129,16 @@ class DlgPointModiListActivity : Activity() {
         }
         if (intent.getStringExtra("geom") != null) {
             geom = intent.getStringExtra("geom")
+            println("아오짜쯔쯔쯔 ---------$geom")
+
             var geom_sp = geom.split(" ")
             if (geom_sp.size > 1) {
-                lat = geom_sp[0]
-                log = geom_sp[1]
+                log = geom_sp[0]
+                lat = geom_sp[1]
                 convert(lat.toDouble())
                 logconvert(log.toDouble())
                 region()
             }
-
             println("---------점스스스 $geom")
         }
 
@@ -422,6 +422,9 @@ class DlgPointModiListActivity : Activity() {
                  , MJ_ACT: String, MJ_ACT_PR: String, GPS_LAT: String, GPS_LON: String, GPSLAT_DEG: String
                  , GPSLAT_MIN: String, GPSLAT_SEC: String, GPSLON_DEG: String, GPSLON_MIN: String, GPSLON_SEC: String) {
         Log.d("인서트비오톱33", geom.toString());
+        pknum =  dbManager!!.pkNum("$table_name")
+
+
         attribute.GROP_ID = grop_id
         attribute.INV_REGION = r_region
         attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
@@ -439,7 +442,7 @@ class DlgPointModiListActivity : Activity() {
         attribute.WIND_DIRE = WIND_DIRE
         attribute.TEMPERATUR = TEMPERATUR.toString().toFloat()
         attribute.ETC = ETC
-        attribute.NUM = NUM.toInt()
+        attribute.NUM = pknum
         attribute.ENDANGERED = ENDANGERED
         attribute.INDI_CNT = INDI_CNT.toInt()
         attribute.OBS_STAT = OBS_STAT
@@ -497,7 +500,7 @@ class DlgPointModiListActivity : Activity() {
                   , HAB_AREA_W: String?, HAB_AREA_H: String?, GPS_LAT: String?, GPS_LON: String?, TEMP_YN: String?, CONF_MOD: String?, GEOM: String?
                   , GPSLAT_DEG: String?, GPSLAT_MIN: String?, GPSLAT_SEC: String?, GPSLON_DEG: String?, GPSLON_MIN: String?, GPSLON_SEC: String?, HAB_AREA: String?
                   , MAC_ADDR: String?, CURRENT_TM: String?) {
-
+        pknum =  dbManager!!.pkNum("$table_name")
         reptilia_attribute.GROP_ID = grop_id
         reptilia_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
         reptilia_attribute.CURRENT_TM = Utils.current_tm()
@@ -516,7 +519,7 @@ class DlgPointModiListActivity : Activity() {
 
         reptilia_attribute.ETC = ETC
 
-        reptilia_attribute.NUM = NUM!!.toInt()
+        reptilia_attribute.NUM = pknum
 
         reptilia_attribute.INV_TM = INV_TM
 
@@ -600,6 +603,8 @@ class DlgPointModiListActivity : Activity() {
                  , GPSLON_DEG: String?, GPSLON_MIN: String?, GPSLON_SEC: String?, MJ_ACT_PR: String?
                  , MAC_ADDR: String?, CURRENT_TM: String?) {
         Log.d("인서트비오톱33", geom.toString());
+
+        pknum =  dbManager!!.pkNum("$table_name")
         mammal_attribute.GROP_ID = grop_id
         mammal_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr").replace(":", "")
         mammal_attribute.CURRENT_TM = Utils.current_tm()
@@ -618,13 +623,8 @@ class DlgPointModiListActivity : Activity() {
         mammal_attribute.TEMPERATUR = TEMPERATUR!!.toFloat()
 
         mammal_attribute.ETC = ETC
-        mammal_attribute.NUM = NUM!!.toInt()
-        mammal_attribute.GPSLAT_DEG = GPSLAT_DEG_RE!!.toInt()
-        mammal_attribute.GPSLAT_MIN = GPSLAT_MIN_RE!!.toInt()
-        mammal_attribute.GPSLAT_SEC = GPSLAT_SEC_RE!!.toFloat()
-        mammal_attribute.GPSLON_DEG = GPSLON_DEG_RE!!.toInt()
-        mammal_attribute.GPSLON_MIN = GPSLON_MIN_RE!!.toInt()
-        mammal_attribute.GPSLON_SEC = GPSLON_SEC_RE!!.toFloat()
+        mammal_attribute.NUM = pknum
+
         mammal_attribute.MJ_ACT_PR = MJ_ACT_PR
 
 
@@ -715,6 +715,7 @@ class DlgPointModiListActivity : Activity() {
                 , GPSLON_MIN: String?, GPSLON_SEC: String?, RIVER_BED: String?, COLL_TIME: String?
                 , MAC_ADDR: String?, CURRENT_TM: String?) {
         Log.d("인서트비오톱33", geom.toString());
+        pknum =  dbManager!!.pkNum("$table_name")
         fish_attribute.GROP_ID = grop_id
         fish_attribute.INV_REGION = r_region
         fish_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
@@ -743,7 +744,12 @@ class DlgPointModiListActivity : Activity() {
 
         fish_attribute.COLL_TIME = COLL_TIME
 
-
+        fish_attribute.GPSLAT_DEG = GPSLAT_DEG_RE!!.toInt()
+        fish_attribute.GPSLAT_MIN = GPSLAT_MIN_RE!!.toInt()
+        fish_attribute.GPSLAT_SEC = GPSLAT_SEC_RE!!.toFloat()
+        fish_attribute.GPSLON_DEG = GPSLON_DEG_RE!!.toInt()
+        fish_attribute.GPSLON_MIN = GPSLON_MIN_RE!!.toInt()
+        fish_attribute.GPSLON_SEC = GPSLON_SEC_RE!!.toFloat()
 
 
         fish_attribute.STREAM_W = STREAM_W!!.toInt()
@@ -759,7 +765,7 @@ class DlgPointModiListActivity : Activity() {
 
         fish_attribute.RIV_FORM = RIV_FORM
 
-        fish_attribute.NUM = NUM.toString().toInt()
+        fish_attribute.NUM = pknum
 
         fish_attribute.SPEC_NM = SPEC_NM
         fish_attribute.FAMI_NM = FAMI_NM
@@ -820,10 +826,10 @@ class DlgPointModiListActivity : Activity() {
                   , GPSLON_DEG: String?, GPSLON_MIN: String?, GPSLON_SEC: String?
                   , MAC_ADDR: String?, CURRENT_TM: String?) {
         Log.d("인서트비오톱33", geom.toString());
+        pknum =  dbManager!!.pkNum("$table_name")
+        insect_attribute.GEOM = geom
         insect_attribute.GROP_ID = grop_id
-        insect_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
-        insect_attribute.CURRENT_TM = Utils.current_tm()
-
+        insect_attribute.INV_REGION = r_region
         insect_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
         insect_attribute.INV_DT = Utils.todayStr()
         insect_attribute.INV_TM = Utils.timeStr()
@@ -837,7 +843,7 @@ class DlgPointModiListActivity : Activity() {
 
         insect_attribute.ETC = ETC
 
-        insect_attribute.NUM = NUM!!.toInt()
+        insect_attribute.NUM = pknum
 
 
         insect_attribute.SPEC_NM = SPEC_NM
@@ -915,7 +921,7 @@ class DlgPointModiListActivity : Activity() {
                  , MAC_ADDR: String?, CURRENT_TM: String?) {
         Log.d("인서트비오톱33", geom.toString());
         flora_Attribute.GROP_ID = grop_id
-
+        pknum =  dbManager!!.pkNum("$table_name")
         flora_Attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
 
         flora_Attribute.CURRENT_TM = Utils.current_tm()
@@ -930,7 +936,7 @@ class DlgPointModiListActivity : Activity() {
         flora_Attribute.WIND = WIND
         flora_Attribute.WIND_DIRE = WIND_DIRE
 
-        flora_Attribute.NUM = NUM!!.toInt()
+        flora_Attribute.NUM = pknum
         flora_Attribute.TEMPERATUR = TEMPERATUR!!.toFloat()
 
         flora_Attribute.GPSLAT_DEG = GPSLAT_DEG_RE!!.toInt()
@@ -1045,7 +1051,7 @@ class DlgPointModiListActivity : Activity() {
                CONF_MOD: String?, GEOM: String?,
                ZOO_CNT: String?,
                MAC_ADDR: String?, CURRENT_TM: String?) {
-
+        pknum =  dbManager!!.pkNum("$table_name")
 
         zoobenthos_Attribute.GROP_ID = grop_id
         zoobenthos_Attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
@@ -1064,7 +1070,7 @@ class DlgPointModiListActivity : Activity() {
         zoobenthos_Attribute.GPSLON_MIN = GPSLON_MIN_RE!!.toInt()
         zoobenthos_Attribute.GPSLON_SEC = GPSLON_SEC_RE!!.toFloat()
         zoobenthos_Attribute.ZOO_CNT = ZOO_CNT!!.toInt()
-        zoobenthos_Attribute.NUM = NUM
+        zoobenthos_Attribute.NUM = pknum.toString()
 
         zoobenthos_Attribute.INV_DT = Utils.todayStr()
         zoobenthos_Attribute.INV_TM = Utils.timeStr()
@@ -1148,7 +1154,7 @@ class DlgPointModiListActivity : Activity() {
 
     fun region() {
         var geocoder: Geocoder = Geocoder(context);
-        var list: List<Address> = geocoder.getFromLocation(log.toDouble(), lat.toDouble(), 1);
+        var list: List<Address> = geocoder.getFromLocation(lat.toDouble(), log.toDouble(), 1);
 
         if (list.size > 0) {
             r_region = list.get(0).getAddressLine(0)

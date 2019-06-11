@@ -43,17 +43,7 @@ import io.nlopez.smartlocation.location.config.LocationAccuracy
 import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
 import kotlinx.android.synthetic.main.activity_flora.*
-import kotlinx.android.synthetic.main.activity_flora.*
-import kotlinx.android.synthetic.main.activity_flora.btnPIC_FOLDER
-import kotlinx.android.synthetic.main.activity_flora.confmodTV
-import kotlinx.android.synthetic.main.activity_flora.coordedET
-import kotlinx.android.synthetic.main.activity_flora.coordemET
-import kotlinx.android.synthetic.main.activity_flora.coordesET
-import kotlinx.android.synthetic.main.activity_flora.coordndET
-import kotlinx.android.synthetic.main.activity_flora.coordnmET
-import kotlinx.android.synthetic.main.activity_flora.coordnsET
-import kotlinx.android.synthetic.main.activity_flora.fishpageTV
-import kotlinx.android.synthetic.main.activity_flora.prjnameET
+
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -164,17 +154,6 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
             datedlg()
         }
 
-        /*      var today = Utils.todayStr();
-
-              var todays = today.split("-")
-
-              var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
-
-              for (i in 1 until todays.size){
-                  texttoday += todays.get(i)
-              }
-
-              floranumET.setText(texttoday + "1")*/
 
         florainvperson.setText(userName)
 
@@ -1068,105 +1047,107 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
 
                         }
 
-            florafloreyynTV.setOnClickListener {
+        }
 
-                var listItems: ArrayList<String> = ArrayList();
-                listItems.add("1");
-                listItems.add("0");
+        florafloreyynTV.setOnClickListener {
 
-                alert(listItems, "개화 여부 선택", florafloreyynTV, "floreyyn");
+            var listItems: ArrayList<String> = ArrayList();
+            listItems.add("1");
+            listItems.add("0");
 
+            alert(listItems, "개화 여부 선택", florafloreyynTV, "floreyyn");
+
+        }
+
+        floraplantynTV.setOnClickListener {
+
+            var listItems: ArrayList<String> = ArrayList();
+            listItems.add("1");
+            listItems.add("0");
+
+            alert(listItems, "식재 여부 선택", floraplantynTV, "plantyn");
+
+        }
+
+        floraweatherTV.setOnClickListener {
+
+            var listItems: ArrayList<String> = ArrayList();
+            listItems.add("맑음");
+            listItems.add("흐림");
+            listItems.add("안개");
+            listItems.add("비");
+
+            alert(listItems, "날씨", floraweatherTV, "weather");
+
+        }
+
+        florawindTV.setOnClickListener {
+
+            var listItems: ArrayList<String> = ArrayList();
+            listItems.add("강");
+            listItems.add("중");
+            listItems.add("약");
+            listItems.add("무");
+
+            alert(listItems, "바람", florawindTV, "wind");
+
+        }
+
+        florawinddireTV.setOnClickListener {
+
+            var listItems: ArrayList<String> = ArrayList();
+            listItems.add("N");
+            listItems.add("NE");
+            listItems.add("E");
+            listItems.add("SE");
+            listItems.add("S");
+            listItems.add("SW");
+            listItems.add("W");
+            listItems.add("NW");
+
+            alert(listItems, "풍향", florawinddireTV, "winddire");
+
+        }
+
+        florahabstatTV.setOnClickListener {
+
+            var listItems: ArrayList<String> = ArrayList();
+            listItems.add("산림");
+            listItems.add("공원");
+            listItems.add("초지");
+            listItems.add("하천");
+            listItems.add("저수지");
+            listItems.add("습지");
+            listItems.add("기타");
+
+            alert(listItems, "생육지 현황", florahabstatTV, "habstat");
+
+        }
+
+        floraspecnmET.setOnClickListener {
+            startDlgFlora()
+        }
+
+        floraspecnmreset.setOnClickListener {
+            floraspecnmLL.visibility = View.GONE
+            floraspecnmET.visibility = View.VISIBLE
+            floraspecnmtmp.setText("")
+        }
+
+        floraaddBT.setOnClickListener {
+            var flora_Attribute = null_attribute()
+
+            keyId = intent.getStringExtra("GROP_ID")
+
+            flora_Attribute.GROP_ID = keyId
+            flora_Attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+            flora_Attribute.CURRENT_TM = Utils.current_tm()
+            val prj = prjnameET.text.toString()
+            if (prj == prjname) {
+                flora_Attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
+            } else {
+                flora_Attribute.PRJ_NAME = prjnameET.text.toString()
             }
-
-            floraplantynTV.setOnClickListener {
-
-                var listItems: ArrayList<String> = ArrayList();
-                listItems.add("1");
-                listItems.add("0");
-
-                alert(listItems, "식재 여부 선택", floraplantynTV, "plantyn");
-
-            }
-
-            floraweatherTV.setOnClickListener {
-
-                var listItems: ArrayList<String> = ArrayList();
-                listItems.add("맑음");
-                listItems.add("흐림");
-                listItems.add("안개");
-                listItems.add("비");
-
-                alert(listItems, "날씨", floraweatherTV, "weather");
-
-            }
-
-            florawindTV.setOnClickListener {
-
-                var listItems: ArrayList<String> = ArrayList();
-                listItems.add("강");
-                listItems.add("중");
-                listItems.add("약");
-                listItems.add("무");
-
-                alert(listItems, "바람", florawindTV, "wind");
-
-            }
-
-            florawinddireTV.setOnClickListener {
-
-                var listItems: ArrayList<String> = ArrayList();
-                listItems.add("N");
-                listItems.add("NE");
-                listItems.add("E");
-                listItems.add("SE");
-                listItems.add("S");
-                listItems.add("SW");
-                listItems.add("W");
-                listItems.add("NW");
-
-                alert(listItems, "풍향", florawinddireTV, "winddire");
-
-            }
-
-            florahabstatTV.setOnClickListener {
-
-                var listItems: ArrayList<String> = ArrayList();
-                listItems.add("산림");
-                listItems.add("공원");
-                listItems.add("초지");
-                listItems.add("하천");
-                listItems.add("저수지");
-                listItems.add("습지");
-                listItems.add("기타");
-
-                alert(listItems, "생육지 현황", florahabstatTV, "habstat");
-
-            }
-
-            floraspecnmET.setOnClickListener {
-                startDlgFlora()
-            }
-
-            floraspecnmreset.setOnClickListener {
-                floraspecnmLL.visibility = View.GONE
-                floraspecnmET.visibility = View.VISIBLE
-                floraspecnmtmp.setText("")
-            }
-
-            floraaddBT.setOnClickListener {
-                var flora_Attribute = null_attribute()
-
-                keyId = intent.getStringExtra("GROP_ID")
-
-                flora_Attribute.GROP_ID = keyId
-                flora_Attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
-                flora_Attribute.CURRENT_TM = Utils.current_tm()
-                val prj = prjnameET.text.toString()
-                if (prj == prjname) {
-                    flora_Attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
-                } else {
-                    flora_Attribute.PRJ_NAME = prjnameET.text.toString()
-                }
 
 //            flora_Attribute.PRJ_NAME = prjnameET.text.toString()
 //            if (prjnameET.length() > 0){
@@ -1176,188 +1157,186 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
 //            }
 
 //            flora_Attribute.INV_REGION = florainvregionET.text.toString()
-                if (florainvregionET.length() > 0) {
-                    flora_Attribute.INV_REGION = florainvregionET.text.toString();
-                } else {
-                    flora_Attribute.INV_REGION = INV_REGION
-                }
+            if (florainvregionET.length() > 0) {
+                flora_Attribute.INV_REGION = florainvregionET.text.toString();
+            } else {
+                flora_Attribute.INV_REGION = INV_REGION
+            }
 
-                flora_Attribute.INV_DT =florainvdvET.text.toString()
+            flora_Attribute.INV_DT =florainvdvET.text.toString()
 
-                if (florainvperson.text == null || florainvperson.text.equals("")) {
-                    flora_Attribute.INV_PERSON = userName
-                } else {
-                    flora_Attribute.INV_PERSON = florainvperson.text.toString()
-                }
+            if (florainvperson.text == null || florainvperson.text.equals("")) {
+                flora_Attribute.INV_PERSON = userName
+            } else {
+                flora_Attribute.INV_PERSON = florainvperson.text.toString()
+            }
 
-                flora_Attribute.WEATHER = floraweatherTV.text.toString()
-                flora_Attribute.WIND = florawindTV.text.toString()
-                flora_Attribute.WIND_DIRE = florawinddireTV.text.toString()
-                if (coordndET.text.isNotEmpty()) {
-                    flora_Attribute.GPSLAT_DEG = coordndET.text.toString().toInt()
-                }
-                if (coordnmET.text.isNotEmpty()) {
-                    flora_Attribute.GPSLAT_MIN = coordnmET.text.toString().toInt()
-                }
-                if (coordnsET.text.isNotEmpty()) {
-                    flora_Attribute.GPSLAT_SEC = coordnsET.text.toString().toFloat()
-                }
-                if (coordedET.text.isNotEmpty()) {
-                    flora_Attribute.GPSLAT_DEG = coordedET.text.toString().toInt()
-                }
-                if (coordedET.text.isNotEmpty()) {
-                    flora_Attribute.GPSLON_MIN = coordedET.text.toString().toInt()
-                }
-                if (coordemET.text.isNotEmpty()) {
-                    flora_Attribute.GPSLON_MIN = coordemET.text.toString().toInt()
-                }
-                if (coordesET.text.isNotEmpty()) {
-                    flora_Attribute.GPSLON_SEC = coordesET.text.toString().toFloat()
-                }
-                if (floratemperaturTV.text.isNotEmpty()) {
-                    flora_Attribute.TEMPERATUR = floratemperaturTV.text.toString().toFloat()
-                }
+            flora_Attribute.WEATHER = floraweatherTV.text.toString()
+            flora_Attribute.WIND = florawindTV.text.toString()
+            flora_Attribute.WIND_DIRE = florawinddireTV.text.toString()
+            if (coordndET.text.isNotEmpty()) {
+                flora_Attribute.GPSLAT_DEG = coordndET.text.toString().toInt()
+            }
+            if (coordnmET.text.isNotEmpty()) {
+                flora_Attribute.GPSLAT_MIN = coordnmET.text.toString().toInt()
+            }
+            if (coordnsET.text.isNotEmpty()) {
+                flora_Attribute.GPSLAT_SEC = coordnsET.text.toString().toFloat()
+            }
+            if (coordedET.text.isNotEmpty()) {
+                flora_Attribute.GPSLAT_DEG = coordedET.text.toString().toInt()
+            }
+            if (coordedET.text.isNotEmpty()) {
+                flora_Attribute.GPSLON_MIN = coordedET.text.toString().toInt()
+            }
+            if (coordemET.text.isNotEmpty()) {
+                flora_Attribute.GPSLON_MIN = coordemET.text.toString().toInt()
+            }
+            if (coordesET.text.isNotEmpty()) {
+                flora_Attribute.GPSLON_SEC = coordesET.text.toString().toFloat()
+            }
+            if (floratemperaturTV.text.isNotEmpty()) {
+                flora_Attribute.TEMPERATUR = floratemperaturTV.text.toString().toFloat()
+            }
 
-                flora_Attribute.INV_TM = florainvtmET.text.toString()
+            flora_Attribute.INV_TM = florainvtmET.text.toString()
 
-                flora_Attribute.ETC = floraetcET.text.toString()
+            flora_Attribute.ETC = floraetcET.text.toString()
 
-                if (floranumET.text.isNotEmpty()) {
-                    flora_Attribute.NUM = floranumET.text.toString().toInt()
-                }
+            if (floranumET.text.isNotEmpty()) {
+                flora_Attribute.NUM = floranumET.text.toString().toInt()
+            }
 
-                flora_Attribute.SPEC_NM = floraspecnmET.text.toString()
-                if (floraspecnmtmp.length() > 0) {
-                    flora_Attribute.SPEC_NM = floraspecnmtmp.text.toString()
-                }
-                flora_Attribute.FAMI_NM = florafaminmTV.text.toString()
-                flora_Attribute.SCIEN_NM = florasciennmTV.text.toString()
+            flora_Attribute.SPEC_NM = floraspecnmET.text.toString()
+            if (floraspecnmtmp.length() > 0) {
+                flora_Attribute.SPEC_NM = floraspecnmtmp.text.toString()
+            }
+            flora_Attribute.FAMI_NM = florafaminmTV.text.toString()
+            flora_Attribute.SCIEN_NM = florasciennmTV.text.toString()
 
-                flora_Attribute.FLORE_YN = florafloreyynTV.text.toString()
-                flora_Attribute.PLANT_YN = floraplantynTV.text.toString()
+            flora_Attribute.FLORE_YN = florafloreyynTV.text.toString()
+            flora_Attribute.PLANT_YN = floraplantynTV.text.toString()
 
-                flora_Attribute.HAB_STAT = florahabstatTV.text.toString()
-                flora_Attribute.HAB_ETC = florahabstatET.text.toString()
+            flora_Attribute.HAB_STAT = florahabstatTV.text.toString()
+            flora_Attribute.HAB_ETC = florahabstatET.text.toString()
 
-                if (floracolincnt.text.isNotEmpty()) {
-                    flora_Attribute.COL_IN_CNT = floracolincnt.text.toString().toInt()
-                }
+            if (floracolincnt.text.isNotEmpty()) {
+                flora_Attribute.COL_IN_CNT = floracolincnt.text.toString().toInt()
+            }
 
-                flora_Attribute.THRE_CAU = florathrecauET.text.toString()
+            flora_Attribute.THRE_CAU = florathrecauET.text.toString()
 
-                if (floragpslatTV.text.isNotEmpty()) {
-                    flora_Attribute.GPS_LAT = lat.toFloat()
-                }
+            if (floragpslatTV.text.isNotEmpty()) {
+                flora_Attribute.GPS_LAT = lat.toFloat()
+            }
 
-                if (floragpslonTV.text.isNotEmpty()) {
-                    flora_Attribute.GPS_LON = log.toFloat()
-                }
+            if (floragpslonTV.text.isNotEmpty()) {
+                flora_Attribute.GPS_LON = log.toFloat()
+            }
 
-                flora_Attribute.TEMP_YN = "Y"
+            flora_Attribute.TEMP_YN = "Y"
 
-                flora_Attribute.CONF_MOD = "N"
+            flora_Attribute.CONF_MOD = "N"
 
-                flora_Attribute.GEOM = log.toString() + " " + lat.toString()
+            flora_Attribute.GEOM = log.toString() + " " + lat.toString()
 
-                if (chkdata) {
+            if (chkdata) {
 
-                    if (pk != null) {
+                if (pk != null) {
 
-                        val CONF_MOD = confmodTV.text.toString()
+                    val CONF_MOD = confmodTV.text.toString()
 
-                        if (CONF_MOD == "C" || CONF_MOD == "N") {
-                            flora_Attribute.CONF_MOD = "M"
-                        }
-
-                        dbManager!!.updateflora_attribute(flora_Attribute, pk)
-                        dbManager!!.updatecommonflora(flora_Attribute, keyId)
+                    if (CONF_MOD == "C" || CONF_MOD == "N") {
+                        flora_Attribute.CONF_MOD = "M"
                     }
 
-
-                } else {
-
-                    dbManager!!.insertflora_attribute(flora_Attribute);
-
-
+                    dbManager!!.updateflora_attribute(flora_Attribute, pk)
+                    dbManager!!.updatecommonflora(flora_Attribute, keyId)
                 }
 
-                if (intent.getStringExtra("set") != null) {
-                    intent.putExtra("reset", 100)
 
-                    setResult(RESULT_OK, intent);
-                }
+            } else {
 
-                floradeleteBT.visibility = View.GONE
-                dbManager!!.updatecommonflora(flora_Attribute, keyId)
-                var intent = Intent()
-                intent.putExtra("export", 70)
-                setResult(RESULT_OK, intent)
+                dbManager!!.insertflora_attribute(flora_Attribute);
 
-                if (images_path != null) {
-                    images_path!!.clear()
-                }
-
-                if (images != null) {
-                    images!!.clear()
-                }
-
-                if (images_url != null) {
-                    images_url!!.clear()
-                }
-
-                if (images_url_remove != null) {
-                    images_url_remove!!.clear()
-                }
-
-                if (images_id != null) {
-                    images_id!!.clear()
-                }
-
-                clear()
-                chkdata = false
-                pk = null
 
             }
 
-            btnPIC_FOLDER.setOnClickListener {
+            if (intent.getStringExtra("set") != null) {
+                intent.putExtra("reset", 100)
 
-                var ListItems: List<String>
-                ListItems = ArrayList();
-                ListItems.add("카메라");
-                ListItems.add("사진");
-                ListItems.add("취소");
+                setResult(RESULT_OK, intent);
+            }
 
-                val items = Array<CharSequence>(ListItems.size, { i -> ListItems.get(i) })
+            floradeleteBT.visibility = View.GONE
+            dbManager!!.updatecommonflora(flora_Attribute, keyId)
+            var intent = Intent()
+            intent.putExtra("export", 70)
+            setResult(RESULT_OK, intent)
 
-                var builder: AlertDialog.Builder = AlertDialog.Builder(this);
-                builder.setTitle("선택해 주세요");
+            if (images_path != null) {
+                images_path!!.clear()
+            }
 
-                builder.setItems(items, DialogInterface.OnClickListener { dialogInterface, i ->
+            if (images != null) {
+                images!!.clear()
+            }
 
-                    when (i) {
-                        //카메라
-                        0 -> {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE)
-                            } else {
-                                takePhoto()
-                            }
+            if (images_url != null) {
+                images_url!!.clear()
+            }
 
+            if (images_url_remove != null) {
+                images_url_remove!!.clear()
+            }
+
+            if (images_id != null) {
+                images_id!!.clear()
+            }
+
+            clear()
+            chkdata = false
+            pk = null
+
+        }
+
+        btnPIC_FOLDER.setOnClickListener {
+
+            var ListItems: List<String>
+            ListItems = ArrayList();
+            ListItems.add("카메라");
+            ListItems.add("사진");
+            ListItems.add("취소");
+
+            val items = Array<CharSequence>(ListItems.size, { i -> ListItems.get(i) })
+
+            var builder: AlertDialog.Builder = AlertDialog.Builder(this);
+            builder.setTitle("선택해 주세요");
+
+            builder.setItems(items, DialogInterface.OnClickListener { dialogInterface, i ->
+
+                when (i) {
+                    //카메라
+                    0 -> {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                            loadPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE)
+                        } else {
+                            takePhoto()
                         }
-                        //갤러리
-                        1 -> {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                loadPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
-                            } else {
-                                imageFromGallery();
-                            }
+
+                    }
+                    //갤러리
+                    1 -> {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                            loadPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
+                        } else {
+                            imageFromGallery();
                         }
                     }
+                }
 
-                })
-                builder.show();
-
-            }
+            })
+            builder.show();
 
         }
     }
@@ -1414,6 +1393,7 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
     }
 
     fun startDlgFlora() {
+        Log.d("가능성","ㅇㄴㅇ")
         val intent = Intent(context, DlgFloraActivity::class.java)
         if (floraspecnmET.text != null && floraspecnmET.text != "") {
             var SPEC = floraspecnmET.text.toString()
@@ -2175,7 +2155,7 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
             dataArray.add(flora_Attribute)
         }
 
-        if (dataArray.size == 0 || intent.getStringExtra("id") == null) {
+        if ( intent.getStringExtra("id") == null) {
 
             var intent = Intent()
 

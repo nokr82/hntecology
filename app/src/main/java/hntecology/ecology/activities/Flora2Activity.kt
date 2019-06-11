@@ -3358,7 +3358,7 @@ class Flora2Activity : Activity() {
             dataArray.add(manyFloraAttribute)
         }
 
-        if (dataArray.size == 0 || intent.getStringExtra("id") == null) {
+        if (intent.getStringExtra("id") == null) {
 
             var intent = Intent()
 

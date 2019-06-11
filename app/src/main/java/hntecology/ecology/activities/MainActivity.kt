@@ -1325,6 +1325,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 REPTILIA_DATA -> {
                     if (data!!.getStringExtra("markerid") != null) {
                         val markerid = data!!.getStringExtra("markerid")
+                        Log.d("마커",markerid)
+
                         for (i in 0..points.size - 1) {
                             if (points.get(i).id == markerid) {
                                 points.get(i).remove()
@@ -2163,9 +2165,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 if (modichk) {
                                     intent = Intent(this, DlgPointModiListActivity::class.java)
                                 }
-                                intent!!.putExtra("latitude", insectdataArray.get(0).GPS_LAT)
-                                intent!!.putExtra("longitude", insectdataArray.get(0).GPS_LON)
-                                intent!!.putExtra("geom",insectdataArray.get(0).GEOM)
+                                intent!!.putExtra("latitude", insectdataArray.get(0).GPS_LAT.toString())
+                                intent!!.putExtra("longitude", insectdataArray.get(0).GPS_LON.toString())
+                                intent!!.putExtra("geom",insectdataArray.get(0).GEOM.toString())
                                 intent.putExtra("title", "곤충")
                                 intent.putExtra("table", "insectAttribute")
                                 intent!!.putExtra("id", insectdataArray.get(0).id)
@@ -7908,6 +7910,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 //                    }
 
                     var geomsplit = fish_attribute.GEOM!!.split(" ")
+                    if (geomsplit.size<2) {
+                        geomsplit = geom.split(" ")
+                    }
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
 
                     val markerOptions = MarkerOptions()
@@ -8138,6 +8143,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     INSECTATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, insect_attribute.CURRENT_TM.toString()))
 
                     var geomsplit = insect_attribute.GEOM!!.split(" ")
+                    if (geomsplit.size<2) {
+                        geomsplit = geom.split(" ")
+                    }
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
 
                     val markerOptions = MarkerOptions()
@@ -8343,6 +8351,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     Log.d("점", flora_Attribute.GEOM)
                     var geomsplit = flora_Attribute.GEOM!!.split(" ")
+                    if (geomsplit.size<2) {
+                        geomsplit = geom.split(" ")
+                    }
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
 
                     val markerOptions = MarkerOptions()
@@ -8563,6 +8574,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     ZOOBENTHOUS.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTInteger, zoo.CURRENT_TM))
 
                     var geomsplit = zoo.GEOM!!.split(" ")
+                    if (geomsplit.size<2) {
+                        geomsplit = geom.split(" ")
+                    }
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
 
                     val markerOptions = MarkerOptions()
@@ -8974,6 +8988,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
 
                     var geomsplit = zoo.GEOM!!.split(" ")
+                    if (geomsplit.size<2) {
+                        geomsplit = geom.split(" ")
+                    }
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
 
                     val markerOptions = MarkerOptions()
@@ -9716,19 +9733,19 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 }
 
                 if (layerDivision == 4) {
-                  exportFish("", "", "", "", "all","")
+                  exportFish("", "", "", "", "all",geom)
                 }
 
                 if (layerDivision == 5) {
-                    exportInsects("", "", "", "", "all","")
+                    exportInsects("", "", "", "", "all",geom)
                 }
 
                 if (layerDivision == 6) {
-                    exportFlora("", "", "", "", "all","")
+                    exportFlora("", "", "", "", "all",geom)
                 }
 
                 if (layerDivision == 7) {
-                   exportZoobenthous("", "", "", "", "all","")
+                   exportZoobenthous("", "", "", "", "all",geom)
                 }
 
                 if (layerDivision == 8) {
@@ -9738,7 +9755,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 }
 
                 if (layerDivision == 9) {
-                    exportManyFloras("", "", "", "", "all","")
+                    exportManyFloras("", "", "", "", "all",geom)
                 }
 
                 if (layerDivision == 10) {

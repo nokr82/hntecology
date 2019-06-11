@@ -2260,7 +2260,7 @@ class ReptiliaActivity : Activity(), OnLocationUpdatedListener {
     override fun onBackPressed() {
 
         val dataList: Array<String> = arrayOf("*");
-
+        keyId = intent.getStringExtra("GROP_ID")
         val data = db!!.query("reptiliaAttribute", dataList, "GROP_ID = '$keyId'", null, null, null, "", null)
 
         if (dataArray != null) {
@@ -2275,8 +2275,10 @@ class ReptiliaActivity : Activity(), OnLocationUpdatedListener {
 
         }
 
-        if (dataArray.size == 0 || intent.getStringExtra("id") == null) {
-
+        if ( pk == null) {
+            Log.d("마크코",dataArray.size.toString())
+            Log.d("마크코",pk.toString())
+            Log.d("마크코",markerid.toString())
             var intent = Intent()
             intent.putExtra("markerid", markerid)
             setResult(RESULT_OK, intent);

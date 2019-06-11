@@ -66,7 +66,11 @@ class DlgModiAdapter(var context: Context, var itemList: ArrayList<Biotope_attri
 
 
         var Biotope_attribute: Biotope_attribute = getItem(position)
-        viewHoldar.dominTV.text = Biotope_attribute.DOMIN;
+        if (Biotope_attribute.DOMIN=="null"){
+            viewHoldar.dominTV.text = ""
+        }else{
+            viewHoldar.dominTV.text = Biotope_attribute.DOMIN
+        }
         viewHoldar.donumTV.text = Biotope_attribute.UFID.toString();
         Log.d("도형번호", Biotope_attribute.UFID.toString())
             for (j in 0..itemList2.size - 1) {

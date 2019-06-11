@@ -63,7 +63,12 @@ class DlgModiFlora2Adapter(var context: Context, var itemList: ArrayList<ManyFlo
 
         viewHoldar.donumTV.visibility = View.GONE
         var ManyFloraAttribute: ManyFloraAttribute = getItem(position)
-        viewHoldar.dominTV.text = ManyFloraAttribute.DOMIN;
+        if (ManyFloraAttribute.DOMIN=="null"){
+            viewHoldar.dominTV.text = ""
+        }else{
+            viewHoldar.dominTV.text = ManyFloraAttribute.DOMIN
+        }
+
             for (j in 0..itemList2.size - 1) {
                 if (ManyFloraAttribute.GROP_ID == itemList2[j].GROP_ID) {
                     if (itemList2[j].TRE_SPEC.toString() != "" && itemList2[j].TRE_SPEC.toString() != "null") {

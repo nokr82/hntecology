@@ -2100,7 +2100,7 @@ class ZoobenthosActivity : Activity() {
 
         }
 
-        if (dataArray.size == 0 || intent.getStringExtra("id") == null) {
+        if (intent.getStringExtra("id") == null) {
             var intent = Intent()
             intent.putExtra("markerid", markerid)
             setResult(RESULT_OK, intent);

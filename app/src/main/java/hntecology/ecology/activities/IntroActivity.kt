@@ -284,11 +284,11 @@ class IntroActivity : Activity() {
 
         val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
 
+
+
         var macAddress = EncUtils.recupAdresseMAC(wifiManager)
 
-
         val secretKey = EncUtils.generateKey(wifiManager, "$macAddress:$phrase");
-
 
         PrefUtils.setPreference(this, "mac_addr", macAddress!!.replace(":",""));
 

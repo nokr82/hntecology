@@ -9983,6 +9983,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             return
         }
 
+        if (polylineForSplitGuide == null) {
+            Toast.makeText(context, "분리선을 그려주세요", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val layerInfo = splittingPolygon?.tag as LayerInfo
 
         val oldAttributeKey = layerInfo.attrubuteKey
@@ -10229,6 +10234,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             dbManager!!.deletelayers("stockmap")
             dbManager!!.deletestockmap_all()
         }
+
+        val waymapPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "waypoint", ""))
+        if (!waymapPath.exists()) {
+            dbManager!!.deletelayers("waypoint")
+            dbManager!!.deletewaypoint_all()
+        }
+
         return true
     }
 

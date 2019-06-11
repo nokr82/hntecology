@@ -1239,8 +1239,9 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                     }
 
                     dbManager!!.updatebirds_attribute(birds_attribute, pk)
-                    dbManager!!.updatecommonbirds(birds_attribute, keyId)
+
                 }
+
                 val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "birds/images" + File.separator + keyId + File.separator)
 //                val path = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "birds/images/")
                 val pathdir = path.listFiles()
@@ -1291,7 +1292,8 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                 }
 
-            } else {
+            }
+            else {
 
                 dbManager!!.insertbirds_attribute(birds_attribute);
 
@@ -1328,7 +1330,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 }
 
             }
-
+            dbManager!!.updatecommonbirds(birds_attribute, keyId)
             if (intent.getStringExtra("set") != null) {
                 var intent = Intent()
                 intent.putExtra("reset", 100)
@@ -2533,6 +2535,9 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             Log.d("시간",msg)
             timeTV.text = msg
         }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
+        dialog.setOnDismissListener {
+
+        }
         dialog.show()
     }
 }

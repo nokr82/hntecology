@@ -802,7 +802,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
                         } else {
 
                             dbManager!!.insertinsect_attribute(insect_attribute);
-
+                            dbManager!!.updatecommoninsect(insect_attribute,keyId)
 //                            var sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
 //                            sdPath += "/ecology/tmps/" + insect_attribute.INV_DT +"."+ insect_attribute.INV_TM +"."+insect_attribute.NUM +  "/images"
 //                            val insect = File(sdPath)
@@ -1435,7 +1435,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 //                }
 
             }
-
+            dbManager!!.updatecommoninsect(insect_attribute,keyId)
             if(intent.getStringExtra("set") != null){
                 intent.putExtra("reset", 100)
 

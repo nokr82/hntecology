@@ -867,7 +867,7 @@ class ZoobenthosActivity : Activity() {
                         } else {
                             dbManager!!.insertzoobenthos(zoobenthos_Attribute);
                         }
-
+                        dbManager!!.updatecommonzoobenthos(zoobenthos_Attribute, keyId)
                         var intent = Intent()
                         intent.putExtra("export", 70)
                         setResult(RESULT_OK, intent)
@@ -1343,7 +1343,7 @@ class ZoobenthosActivity : Activity() {
 //                }
 
             }
-
+            dbManager!!.updatecommonzoobenthos(zoobenthos_Attribute, keyId)
             if (intent.getStringExtra("set") != null) {
                 var intent = Intent()
                 intent.putExtra("reset", 100)

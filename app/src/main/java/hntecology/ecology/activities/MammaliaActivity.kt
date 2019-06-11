@@ -841,7 +841,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 //                            }
 
                         }
-
+                        dbManager!!.updatecommonmammal(mammal_attribute,keyId)
                         dialog.cancel()
 
                         var intent = Intent()
@@ -1420,7 +1420,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 //                }
 
             }
-
+            dbManager!!.updatecommonmammal(mammal_attribute,keyId)
             if(intent.getStringExtra("set") != null){
                 intent.putExtra("reset", 100)
 

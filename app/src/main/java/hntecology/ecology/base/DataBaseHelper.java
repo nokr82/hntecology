@@ -1340,6 +1340,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
         db.close();
     }
+    public void deletewaypoint_all() {
+        String query = "DELETE FROM Waypoint";
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
 
     public void deletestockmap(String pk) {
         String query = "DELETE FROM StockMap WHERE id = '" + pk + "'";

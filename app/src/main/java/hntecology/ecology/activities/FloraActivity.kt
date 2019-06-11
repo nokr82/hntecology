@@ -1288,7 +1288,7 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
                 }
 
                 floradeleteBT.visibility = View.GONE
-
+                dbManager!!.updatecommonflora(flora_Attribute, keyId)
                 var intent = Intent()
                 intent.putExtra("export", 70)
                 setResult(RESULT_OK, intent)

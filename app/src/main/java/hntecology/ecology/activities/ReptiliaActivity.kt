@@ -1138,7 +1138,7 @@ class ReptiliaActivity : Activity(), OnLocationUpdatedListener {
 //                            }
 
                         }
-
+                        dbManager!!.updatecommonreptilia(reptilia_attribute, keyId)
                         var intent = Intent()
 
                         intent.putExtra("export", 70)
@@ -1388,7 +1388,7 @@ class ReptiliaActivity : Activity(), OnLocationUpdatedListener {
 //                }
 
             }
-
+            dbManager!!.updatecommonreptilia(reptilia_attribute, keyId)
             if (intent.getStringExtra("set") != null) {
                 intent.putExtra("reset", 100)
 

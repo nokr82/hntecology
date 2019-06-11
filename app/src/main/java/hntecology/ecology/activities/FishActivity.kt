@@ -1410,7 +1410,6 @@ class FishActivity : Activity(), OnLocationUpdatedListener {
                     }
 
                     dbmanager!!.updatefish_attribute(fish_attribute, pk)
-                    dbmanager!!.updatecommonfish(fish_attribute, keyId)
                 }
 
 
@@ -1418,8 +1417,8 @@ class FishActivity : Activity(), OnLocationUpdatedListener {
 
                 dbmanager!!.insertfish_attribute(fish_attribute);
 
-
             }
+            dbmanager!!.updatecommonfish(fish_attribute, keyId)
 
             if (intent.getStringExtra("set") != null) {
                 intent.putExtra("reset", 100)

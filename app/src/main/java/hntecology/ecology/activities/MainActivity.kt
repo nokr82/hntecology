@@ -1049,7 +1049,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         modiSW.setOnClickListener {
             modichk = modiSW.isChecked
-            Log.d("수정스", modichk.toString())
         }
 
         searchaddressBT.setOnClickListener {
@@ -1325,7 +1324,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 REPTILIA_DATA -> {
                     if (data!!.getStringExtra("markerid") != null) {
                         val markerid = data!!.getStringExtra("markerid")
-                        Log.d("마커",markerid)
 
                         for (i in 0..points.size - 1) {
                             if (points.get(i).id == markerid) {
@@ -1473,6 +1471,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         var geom = ""
                         if (data!!.getStringExtra("geom") != null){
                             geom =data!!.getStringExtra("geom")
+                            Log.d("아무것",geom.toString())
                         }
                         if (export == 70) {
                             layerDivision = 6
@@ -8351,9 +8350,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     Log.d("점", flora_Attribute.GEOM)
                     var geomsplit = flora_Attribute.GEOM!!.split(" ")
+
+                    print("TEST:::::::::::::::::::::::::::::::::::::$geomsplit")
+
                     if (geomsplit.size<2) {
                         geomsplit = geom.split(" ")
                     }
+                    Log.d("점", geom)
                     val latlng = LatLng(geomsplit.get(1).toDouble(), geomsplit.get(0).toDouble())
 
                     val markerOptions = MarkerOptions()

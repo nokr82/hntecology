@@ -121,15 +121,12 @@ class DlgPointModiListActivity : Activity() {
         }
         if (intent.getStringExtra("table") != null) {
             table_name = intent.getStringExtra("table")
-            println("폴리아이디 ---------$table_name")
         }
         if (intent.getStringExtra("title") != null) {
             titleTV.text = intent.getStringExtra("title")+" 선택복사"
-            println("폴리아이디 ---------$table_name")
         }
         if (intent.getStringExtra("geom") != null) {
             geom = intent.getStringExtra("geom")
-            println("아오짜쯔쯔쯔 ---------$geom")
 
             var geom_sp = geom.split(" ")
             if (geom_sp.size > 1) {
@@ -139,7 +136,6 @@ class DlgPointModiListActivity : Activity() {
                 logconvert(log.toDouble())
                 region()
             }
-            println("---------점스스스 $geom")
         }
 
 
@@ -195,7 +191,6 @@ class DlgPointModiListActivity : Activity() {
                 dataList(listdata3, data)
                 dbManager!!.delete_grop_birds_attribute(attribute, grop_id)
                 for (i in 0..listdata3.size - 1) {
-                    Log.d("버드데이터", listdata3[i].SPEC_NM)
                     addbirds(attribute, listdata3[i].SPEC_NM.toString()
                             , listdata3[i].FAMI_NM.toString(), listdata3[i].SCIEN_NM.toString()
                             , listdata3[i].INV_REGION.toString(), listdata3[i].WEATHER.toString()
@@ -222,7 +217,6 @@ class DlgPointModiListActivity : Activity() {
                 dataList_rep(listdata_rep3, data)
                 dbManager!!.delete_grop_reptilia_attribute(attribute, grop_id)
                 for (i in 0..listdata_rep3.size - 1) {
-                    Log.d("버드데이터", listdata_rep3[i].SPEC_NM)
                     addrepter(attribute, listdata_rep3[i].WEATHER.toString(), listdata_rep3[i].WIND.toString(), listdata_rep3[i].WIND_DIRE.toString()
                             , listdata_rep3[i].TEMPERATUR.toString(), listdata_rep3[i].ETC.toString(), listdata_rep3[i].NUM.toString(), listdata_rep3[i].INV_TM.toString(), listdata_rep3[i].SPEC_NM.toString(), listdata_rep3[i].FAMI_NM.toString(), listdata_rep3[i].SCIEN_NM.toString(), listdata_rep3[i].ENDANGERED.toString(), listdata_rep3[i].IN_CNT_ADU.toString(), listdata_rep3[i].IN_CNT_LAR.toString(), listdata_rep3[i].IN_CNT_EGG.toString()
                             , listdata_rep3[i].HAB_RIVEER.toString(), listdata_rep3[i].HAB_EDGE.toString(), listdata_rep3[i].WATER_IN.toString(), listdata_rep3[i].WATER_OUT.toString(), listdata_rep3[i].WATER_CONT.toString(), listdata_rep3[i].WATER_QUAL.toString(), listdata_rep3[i].WATER_DEPT.toString()
@@ -246,7 +240,6 @@ class DlgPointModiListActivity : Activity() {
                 dataList_mal(listdata_mal3, data)
                 dbManager!!.delete_grop_mamal_attribute(attribute, grop_id)
                 for (i in 0..listdata_mal3.size - 1) {
-                    Log.d("버드데이터", listdata_mal3[i].SPEC_NM)
                     addmamal(attribute, listdata_mal3[i].WEATHER.toString(), listdata_mal3[i].WIND.toString(), listdata_mal3[i].WIND_DIRE.toString(), listdata_mal3[i].TEMPERATUR.toString()
                             , listdata_mal3[i].ETC.toString(), listdata_mal3[i].NUM.toString(), listdata_mal3[i].INV_TM.toString(), listdata_mal3[i].SPEC_NM.toString(), listdata_mal3[i].FAMI_NM.toString()
                             , listdata_mal3[i].SCIEN_NM.toString(), listdata_mal3[i].ENDANGERED.toString(), listdata_mal3[i].OBS_TY.toString(), listdata_mal3[i].INDI_CNT.toString()
@@ -272,7 +265,6 @@ class DlgPointModiListActivity : Activity() {
                 dataList_fish(listdata_fish3, data)
                 dbManager!!.delete_grop_fish_attribute(attribute, grop_id)
                 for (i in 0..listdata_fish3.size - 1) {
-                    Log.d("버드데이터", listdata_fish3[i].SPEC_NM)
                     addfish(attribute, listdata_fish3[i].WEATHER.toString(), listdata_fish3[i].WIND.toString(), listdata_fish3[i].WIND_DIRE.toString()
                             , listdata_fish3[i].TEMPERATUR.toString(), listdata_fish3[i].ETC.toString(), listdata_fish3[i].MID_RAGE.toString(), listdata_fish3[i].CODE_NUM.toString(), listdata_fish3[i].RIVER_NUM.toString()
                             , listdata_fish3[i].RIVER_NM.toString(), listdata_fish3[i].GPS_LAT.toString()
@@ -301,7 +293,6 @@ class DlgPointModiListActivity : Activity() {
                 dataList_insect(listdata_insect3, data)
                 dbManager!!.delete_grop_insect_attribute(attribute, grop_id)
                 for (i in 0..listdata_insect3.size - 1) {
-                    Log.d("버드데이터", listdata_insect3[i].SPEC_NM)
                     addinsect(attribute, listdata_insect3[i].WEATHER.toString(), listdata_insect3[i].WIND.toString(), listdata_insect3[i].WIND_DIRE.toString(), listdata_insect3[i].TEMPERATUR.toString()
                             , listdata_insect3[i].ETC.toString(), listdata_insect3[i].NUM.toString(), listdata_insect3[i].INV_TM.toString(), listdata_insect3[i].SPEC_NM.toString(), listdata_insect3[i].FAMI_NM.toString()
                             , listdata_insect3[i].SCIEN_NM.toString(), listdata_insect3[i].INDI_CNT.toString(), listdata_insect3[i].OBS_STAT.toString(), listdata_insect3[i].USE_TAR.toString()
@@ -327,7 +318,6 @@ class DlgPointModiListActivity : Activity() {
                 dataList_flora(listdata_Flora3, data)
                 dbManager!!.delete_grop_flora_attribute(attribute, grop_id)
                 for (i in 0..listdata_Flora3.size - 1) {
-                    Log.d("버드데이터", listdata_Flora3[i].SPEC_NM)
                     addflora(attribute, listdata_Flora3[i].WEATHER.toString(), listdata_Flora3[i].WIND.toString(), listdata_Flora3[i].WIND_DIRE.toString()
                             , listdata_Flora3[i].TEMPERATUR.toString(), listdata_Flora3[i].ETC.toString(), listdata_Flora3[i].NUM.toString(), listdata_Flora3[i].INV_TM.toString(), listdata_Flora3[i].SPEC_NM.toString(), listdata_Flora3[i].FAMI_NM.toString(), listdata_Flora3[i].SCIEN_NM.toString(), listdata_Flora3[i].FLORE_YN.toString(), listdata_Flora3[i].PLANT_YN.toString(), listdata_Flora3[i].HAB_STAT.toString()
                             , listdata_Flora3[i].HAB_ETC.toString(), listdata_Flora3[i].COL_IN_CNT.toString(), listdata_Flora3[i].THRE_CAU.toString(), listdata_Flora3[i].GPS_LAT.toString(), listdata_Flora3[i].GPS_LON.toString(), listdata_Flora3[i].TEMP_YN.toString(), listdata_Flora3[i].CONF_MOD.toString()
@@ -350,7 +340,6 @@ class DlgPointModiListActivity : Activity() {
                 dataList_zoo(listdata_Zoo3, data)
                 dbManager!!.delete_grop_zoo_attribute(attribute, grop_id)
                 for (i in 0..listdata_Zoo3.size - 1) {
-                    Log.d("버드데이터", listdata_Zoo3[i].SPEC_NM)
                     addzoo(attribute, listdata_Zoo3[i].INV_MEAN.toString(),
                             listdata_Zoo3[i].MAP_SYS_NM.toString(),
                             listdata_Zoo3[i].GPSLAT_DEG.toString(),
@@ -408,7 +397,6 @@ class DlgPointModiListActivity : Activity() {
 
     fun last_finish() {
         var intent = Intent()
-        Log.d("점스", geom)
         intent.putExtra("export", 70);
         intent.putExtra("geom", geom);
         setResult(RESULT_OK, intent);
@@ -557,7 +545,7 @@ class DlgPointModiListActivity : Activity() {
         reptilia_attribute.GPSLON_MIN = GPSLON_MIN_RE!!.toInt()
         reptilia_attribute.GPSLON_SEC = GPSLON_SEC_RE!!.toFloat()
         reptilia_attribute.HAB_AREA = HAB_AREA!!.toFloat()
-        reptilia_attribute.TEMP_YN = "N"
+        reptilia_attribute.TEMP_YN = "Y"
         val date = Date()
         val sdf = SimpleDateFormat("yyyyMMddHHmmSS")
         val getTime = sdf.format(date)
@@ -777,7 +765,7 @@ class DlgPointModiListActivity : Activity() {
         fish_attribute.UN_FISH_CH = UN_FISH_CH
 
 
-        fish_attribute.TEMP_YN = "N"
+        fish_attribute.TEMP_YN = "Y"
 
         fish_attribute.GPS_LAT = lat.toFloat()
         fish_attribute.GPS_LON = log.toFloat()
@@ -874,7 +862,7 @@ class DlgPointModiListActivity : Activity() {
         insect_attribute.GPS_LAT = lat.toFloat()
         insect_attribute.GPS_LON = log.toFloat()
 
-        insect_attribute.TEMP_YN = "N"
+        insect_attribute.TEMP_YN = "Y"
 
         insect_attribute.CONF_MOD = "M"
 
@@ -947,7 +935,7 @@ class DlgPointModiListActivity : Activity() {
         flora_Attribute.GPSLON_SEC = GPSLON_SEC_RE!!.toFloat()
         flora_Attribute.ETC = ETC
 
-
+        flora_Attribute.GEOM = geom
         flora_Attribute.SPEC_NM = SPEC_NM
         flora_Attribute.FAMI_NM = FAMI_NM
         flora_Attribute.SCIEN_NM = SCIEN_NM
@@ -969,7 +957,7 @@ class DlgPointModiListActivity : Activity() {
         flora_Attribute.GPS_LON = log.toFloat()
 
 
-        flora_Attribute.TEMP_YN = "N"
+        flora_Attribute.TEMP_YN = "Y"
 
 
         val date = Date()

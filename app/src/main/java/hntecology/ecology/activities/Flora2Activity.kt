@@ -432,8 +432,17 @@ class Flora2Activity : Activity() {
                     etHER_SPECET.setText(manyFloraAttribute.HER_SPEC)
                     etHER_FAMIET.setText(manyFloraAttribute.HER_FAMI)
                     etHER_SCIENET.setText(manyFloraAttribute.HER_SCIEN)
-                    etHER_HET.setText(manyFloraAttribute.HER_DOMIN.toString())
-                    etHER_COVEET.setText(manyFloraAttribute.HER_GUNDO.toString())
+
+                    val etc = manyFloraAttribute.HER_DOMIN.toString()
+                    if (etc != "" && etc != null && etc.count() > 0 && etc != "null") {
+                        etHER_HET.setText(etc)
+                    }
+
+                    val cove = manyFloraAttribute.HER_GUNDO.toString()
+                    if (cove.count() > 0 && cove != "" && cove != "null" && cove != null) {
+                        etHER_COVEET.setText(cove)
+                    }
+
                     etHER_HEIGHT.setText(manyFloraAttribute.HER_HEIGHT.toString())
                     herminET.setText(manyFloraAttribute.M_HER_HET.toString())
                     hermaxET.setText(manyFloraAttribute.X_HER_HET.toString())
@@ -1067,8 +1076,17 @@ class Flora2Activity : Activity() {
                         herminET.setText(HerDatas.get(i).M_H.toString())
                         hermaxET.setText(HerDatas.get(i).X_H.toString())
                         etHER_HEIGHT.setText(HerDatas.get(i).H.toString())
-                        etHER_COVEET.setText(HerDatas.get(i).COVE.toString())
-                        etHER_HET.setText(HerDatas.get(i).ETC.toString())
+
+                        val cove = HerDatas.get(i).COVE.toString()
+                        if (cove != "" && cove != null && cove.count() > 0 && cove != "null") {
+                            etHER_COVEET.setText(cove)
+                        }
+
+                        val etc = HerDatas.get(i).ETC.toString()
+                        if (etc != "" && etc != null && etc.count() > 0 && etc != "null") {
+                            etHER_HET.setText(etc)
+                        }
+
 
                         division = true
                     }
@@ -1115,8 +1133,16 @@ class Flora2Activity : Activity() {
                             herminET.setText(HerDatas.get(i).M_H.toString())
                             etHER_HEIGHT.setText(HerDatas.get(i).H.toString())
                             hermaxET.setText(HerDatas.get(i).X_H.toString())
-                            etHER_COVEET.setText(HerDatas.get(i).COVE.toString())
-                            etHER_HET.setText(HerDatas.get(i).ETC.toString())
+
+                            val cove = HerDatas.get(i).COVE.toString()
+                            if (cove != "" && cove != null && cove != "null" && cove.count() > 0) {
+                                etHER_COVEET.setText(cove)
+                            }
+
+                            val etc = HerDatas.get(i).ETC.toString()
+                            if (etc != "" && etc != null && etc.count() > 0 && etc != "null") {
+                                etHER_HET.setText(etc)
+                            }
 
                         }
 
@@ -1143,8 +1169,16 @@ class Flora2Activity : Activity() {
                             herminET.setText(HerDatas.get(i).M_H.toString())
                             etHER_HEIGHT.setText(HerDatas.get(i).H.toString())
                             hermaxET.setText(HerDatas.get(i).X_H.toString())
-                            etHER_COVEET.setText(HerDatas.get(i).COVE.toString())
-                            etHER_HET.setText(HerDatas.get(i).ETC.toString())
+
+                            val cove = HerDatas.get(i).COVE.toString()
+                            if (cove.count() > 0 && cove != "null" && cove != null && cove != "") {
+                                etHER_COVEET.setText(cove)
+                            }
+
+                            val etc = HerDatas.get(i).ETC.toString()
+                            if (etc != "" && etc != null && etc.count() > 0 && etc != "null") {
+                                etHER_HET.setText(etc)
+                            }
 
                         }
 
@@ -1725,9 +1759,19 @@ class Flora2Activity : Activity() {
                         etHER_FAMIET.setText(data.FAMI)
                         etHER_SCIENET.setText(data.SCIEN)
                         herminET.setText(data.M_H.toString())
-                        etHER_HET.setText(data.ETC.toString())
+
+                        val etc = data.ETC.toString()
+                        if (etc != "" && etc != null && etc.count() > 0 && etc != "null") {
+                            etHER_HET.setText(etc)
+                        }
+
                         hermaxET.setText(data.X_H.toString())
-                        etHER_COVEET.setText(data.COVE.toString())
+
+                        val cove = data.COVE.toString()
+                        if (cove != "" && cove != "null" && cove != null && cove.count() > 0) {
+                            etHER_COVEET.setText(cove)
+                        }
+
                         etHER_HEIGHT.setText(data.H.toString())
 
                         val size = herrightpageTV.text.toString().toInt()
@@ -3577,9 +3621,19 @@ class Flora2Activity : Activity() {
                         etHER_FAMIET.setText(data.FAMI)
                         etHER_SCIENET.setText(data.SCIEN)
                         herminET.setText(data.M_H.toString())
-                        etHER_HET.setText(data.ETC.toString())
+
+                        val etc = data.ETC.toString()
+                        if (etc != "" && etc != null && etc.count() > 0 && etc != "null") {
+                            etHER_HET.setText(etc)
+                        }
+
                         hermaxET.setText(data.X_H.toString())
-                        etHER_COVEET.setText(data.COVE.toString())
+
+                        var cove = data.COVE.toString();
+                        if (cove.count() > 0 && cove != "" && cove != null && cove != "null") {
+                            etHER_COVEET.setText(cove)
+                        }
+
                         etHER_HEIGHT.setText(data.H.toString())
                         val page = herpage
                         val size = herrightpageTV.text.toString().toInt()

@@ -1795,10 +1795,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 if (!markerRemove) {
 
                     val layerInfo = marker.tag as LayerInfo
-                    Log.d("마크2", marker.tag.toString())
-                    Log.d("마크2", layerInfo.toString())
                     var myLayer = layerInfo.layer
-                    Log.d("마크2", myLayer.toString())
                     var attrubuteKey = layerInfo.attrubuteKey
                     var intent: Intent? = null
 

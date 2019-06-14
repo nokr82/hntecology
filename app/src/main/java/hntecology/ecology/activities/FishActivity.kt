@@ -317,7 +317,13 @@ class FishActivity : Activity(), OnLocationUpdatedListener {
 
                 fishcodenumET.setText(fish_attribute.CODE_NUM)
 
-                fishrivernumET.setText(fish_attribute.RIVER_NUM.toString() + "차")
+                val fishrivernum = fish_attribute.RIVER_NUM.toString()
+
+                if ("" != fishrivernum && fishrivernum != null && fishrivernum.length > 0 && fishrivernum != "null") {
+                    fishrivernumET.setText(fishrivernum + "차")
+                }
+
+
                 /*   var net_cnt = 0
                    var net_min = 0
                    net_cnt =   fish_attribute.NET_CNT!!.toInt()
@@ -1659,7 +1665,11 @@ class FishActivity : Activity(), OnLocationUpdatedListener {
                 fishcodenumET.setText("")
             }
 
-            fishrivernumET.setText(fish_attribute.RIVER_NUM.toString() + "차")
+            var fishrivernum = fish_attribute.RIVER_NUM.toString();
+
+            if (null != fishrivernum && fishrivernum != "" && fishrivernum.count() > 0 && fishrivernum != "null") {
+                fishrivernumET.setText(fishrivernum + "차")
+            }
 
 
             fishgpslatTV.setText(fish_attribute.GPS_LAT.toString())

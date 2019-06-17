@@ -30,6 +30,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TimePicker
 import android.widget.Toast
 import com.joooonho.SelectableRoundedImageView
 import com.nostra13.universalimageloader.core.ImageLoader
@@ -1002,6 +1003,34 @@ class WayPointActivity : Activity() {
     }
 
     fun timedlg() {
+
+        val view = View.inflate(this, R.layout.dlg_timepicker, null)
+        val timeTP: TimePicker = view.findViewById(R.id.timeTP)
+        timeTP.setIs24HourView(true)
+        timeTP.isLongClickable = true
+        timeTP.isEnabled = true
+        timeTP.descendantFocusability = TimePicker.FOCUS_BLOCK_DESCENDANTS
+
+        val dialog = AlertDialog.Builder(this)
+        dialog.setView(view)
+        dialog.setNegativeButton("취소", DialogInterface.OnClickListener { dialog, which ->
+        })
+        dialog.setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
+            var hour_s = timeTP.hour.toString()
+            var min_s = timeTP.minute.toString()
+            if (min_s.length != 2) {
+                min_s = "0" + min_s
+            }
+            if (hour_s.length != 2) {
+                hour_s = "0" + hour_s
+            }
+            val msg = String.format("%s:%s", hour_s, min_s)
+            invtmTV.text = msg
+
+        })
+        dialog.show()
+
+        /*
         val cal = Calendar.getInstance()
         val dialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hour, min ->
             var hour_s = hour.toString()
@@ -1016,6 +1045,7 @@ class WayPointActivity : Activity() {
             invtmTV.text = msg
         }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
         dialog.show()
+        */
     }
 
 

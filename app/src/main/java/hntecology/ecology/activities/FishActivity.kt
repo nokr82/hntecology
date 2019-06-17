@@ -26,10 +26,7 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import au.com.objectix.jgridshift.Util
 import com.joooonho.SelectableRoundedImageView
 import com.nostra13.universalimageloader.core.ImageLoader
@@ -320,7 +317,13 @@ class FishActivity : Activity(), OnLocationUpdatedListener {
 
                 fishcodenumET.setText(fish_attribute.CODE_NUM)
 
-                fishrivernumET.setText(fish_attribute.RIVER_NUM.toString() + "차")
+                val fishrivernum = fish_attribute.RIVER_NUM.toString()
+
+                if ("" != fishrivernum && fishrivernum != null && fishrivernum.length > 0 && fishrivernum != "null") {
+                    fishrivernumET.setText(fishrivernum + "차")
+                }
+
+
                 /*   var net_cnt = 0
                    var net_min = 0
                    net_cnt =   fish_attribute.NET_CNT!!.toInt()
@@ -1662,7 +1665,11 @@ class FishActivity : Activity(), OnLocationUpdatedListener {
                 fishcodenumET.setText("")
             }
 
-            fishrivernumET.setText(fish_attribute.RIVER_NUM.toString() + "차")
+            var fishrivernum = fish_attribute.RIVER_NUM.toString();
+
+            if (null != fishrivernum && fishrivernum != "" && fishrivernum.count() > 0 && fishrivernum != "null") {
+                fishrivernumET.setText(fishrivernum + "차")
+            }
 
 
             fishgpslatTV.setText(fish_attribute.GPS_LAT.toString())
@@ -2626,6 +2633,34 @@ class FishActivity : Activity(), OnLocationUpdatedListener {
     }
 
     fun timedlg() {
+
+        val view = View.inflate(this, R.layout.dlg_timepicker, null)
+        val timeTP: TimePicker = view.findViewById(R.id.timeTP)
+        timeTP.setIs24HourView(true)
+        timeTP.isLongClickable = true
+        timeTP.isEnabled = true
+        timeTP.descendantFocusability = TimePicker.FOCUS_BLOCK_DESCENDANTS
+
+        val dialog = AlertDialog.Builder(this)
+        dialog.setView(view)
+        dialog.setNegativeButton("취소", DialogInterface.OnClickListener { dialog, which ->
+        })
+        dialog.setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
+            var hour_s = timeTP.hour.toString()
+            var min_s = timeTP.minute.toString()
+            if (min_s.length != 2) {
+                min_s = "0" + min_s
+            }
+            if (hour_s.length != 2) {
+                hour_s = "0" + hour_s
+            }
+            val msg = String.format("%s:%s", hour_s, min_s)
+            fishinvtmTV.text = msg
+
+        })
+        dialog.show()
+
+        /*
         val cal = Calendar.getInstance()
         val dialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hour, min ->
             var hour_s = hour.toString()
@@ -2640,5 +2675,6 @@ class FishActivity : Activity(), OnLocationUpdatedListener {
             fishinvtmTV.text = msg
         }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
         dialog.show()
+        */
     }
 }

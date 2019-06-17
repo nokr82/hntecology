@@ -60,7 +60,6 @@ class DlgDataListActivity : Activity() {
     var titleName:String=""
     var DlgHeight:Float=430F
     var GROP_ID:String = ""
-    var IT_GROP_ID:String = ""
     var markerid:String? = null
     var polygonid:String? = null
     var landuse:String? = null
@@ -142,7 +141,7 @@ class DlgDataListActivity : Activity() {
         if(tableName.equals("biotopeAttribute")) {
 
             Log.d("데이터",biotopeData.toString())
-            val biotopsdata=  db!!.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,"IT_GROP_ID",null,null,null);
+            val biotopsdata=  db!!.query(tableName,dataList,"GROP_ID='"+ GROP_ID +"'",null,"GROP_ID",null,null,null);
             Log.d("데이터",biotopsdata.toString())
 
             biotopesdataList(biotopeData,biotopsdata)
@@ -454,17 +453,17 @@ class DlgDataListActivity : Activity() {
             var model : Biotope_attribute;
 
             model = Biotope_attribute(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
-            data.getString(8), data.getFloat(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getFloat(14)
-            , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
-            , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getFloat(28)
-            , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
-            , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
-            , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
-            , data.getDouble(50), data.getString(51), data.getString(52),data.getString(53),data.getString(54), data.getString(55), data.getString(56),data.getString(57)
-                    , data.getFloat(58),data.getFloat(59),data.getFloat(60),data.getFloat(61),data.getFloat(62),data.getFloat(63)
-                    ,data.getFloat(64),data.getFloat(65),data.getFloat(66),data.getFloat(67),data.getFloat(68),data.getFloat(69), data.getString(70)
-                    ,data.getFloat(71),data.getString(72),data.getString(73),data.getString(74),data.getString(75), data.getInt(76), data.getInt(77), data.getInt(78), data.getInt(79))
-
+                    data.getString(8), data.getFloat(9), data.getFloat(10), data.getString(11), data.getString(12), data.getString(13), data.getFloat(14)
+                    , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getString(20), data.getString(21)
+                    , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getFloat(26), data.getFloat(27), data.getFloat(28)
+                    , data.getString(29), data.getString(30), data.getString(31), data.getFloat(32), data.getFloat(33), data.getFloat(34), data.getString(35)
+                    , data.getString(36), data.getString(37), data.getFloat(38), data.getFloat(39), data.getString(40), data.getString(41), data.getString(42)
+                    , data.getFloat(43), data.getFloat(44), data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getDouble(49)
+                    , data.getDouble(50), data.getString(51), data.getString(52), data.getString(53), data.getString(54), data.getString(55), data.getString(56), data.getString(57)
+                    , data.getFloat(58), data.getFloat(59), data.getFloat(60), data.getFloat(61), data.getFloat(62), data.getFloat(63)
+                    , data.getFloat(64), data.getFloat(65), data.getFloat(66), data.getFloat(67), data.getFloat(68), data.getFloat(69), data.getString(70), data.getFloat(71)
+                    , data.getString(72), data.getString(73), data.getString(74), data.getInt(75), data.getInt(76), data.getInt(77), data.getInt(78)
+            )
             listdata.add(model)
         }
     }

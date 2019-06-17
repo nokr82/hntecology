@@ -388,7 +388,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ",VP_INTA,IMP_FORM,BREA_DIA,FIN_EST,TRE_SPEC,TRE_FAMI,TRE_SCIEN,TRE_H,TRE_BREA,TRE_COVE,STRE_SPEC,STRE_FAMI,STRE_SCIEN,STRE_H,STRE_BRT,STRE_COVE,SHR_SPEC,SHR_FAMI";
         query += ",SHR_SCIEN,SHR_H,STR_COVE,HER_SPEC,HER_FAMI,HER_SCIEN,HER_H,HER_COVE,PIC_FOLDER,WILD_ANI,BIOTOP_POT,UNUS_NOTE,GPS_LAT,GPS_LON,NEED_CONF,CONF_MOD,TEMP_YN,LANDUSE,GEOM,UFID,CHECKD";
         query += ",TRE_H_N,TRE_H_X,TRE_BREA_N,TRE_BREA_X,STRE_H_N,STRE_H_X,STRE_BRT_N,STRE_BRT_X,SHR_HET_N,SHR_HET_X,HER_HET_X,HER_HET_N,BIO_TYPE,IMPERV";
-        query += ",DOMIN,MAC_ADDR,CURRENT_TM,IT_GROP_ID,TRE_NUM,STRE_NUM,SHR_NUM,HER_NUM";
+        query += ",DOMIN,MAC_ADDR,CURRENT_TM,TRE_NUM,STRE_NUM,SHR_NUM,HER_NUM";
         query +=")";
                 query += " values (";
         query += " '" + biotope_attribute.getGROP_ID() + "'";
@@ -465,7 +465,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + biotope_attribute.getDOMIN() + "'";
         query += ", '" + biotope_attribute.getMAC_ADDR() + "'";
         query += ", '" + biotope_attribute.getCURRENT_TM() + "'";
-        query += ", '" + biotope_attribute.getIT_GROP_ID() + "'";
+//        query += ", '" + biotope_attribute.getIT_GROP_ID() + "'";
         query += ", '" + biotope_attribute.getTRE_NUM() + "'";
         query += ", '" + biotope_attribute.getSTRE_NUM() + "'";
         query += ", '" + biotope_attribute.getSHR_NUM() + "'";

@@ -2636,7 +2636,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var DOMIN = Utils.getString(layerInfo.metadata, "DOMIN")
                                             var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
                                             var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
-                                            var IT_GROP_ID = Utils.getString(layerInfo.metadata, "IT_GROP_ID")
                                             var TRE_NUM = Utils.getString(layerInfo.metadata, "TRE_NUM")
                                             var STRE_NUM = Utils.getString(layerInfo.metadata, "STRE_NUM")
                                             var SHR_NUM = Utils.getString(layerInfo.metadata, "SHR_NUM")
@@ -2769,7 +2768,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     STRE_BRT.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
                                                     BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", polygon.fillColor.toString(), geom, UFID, CHECK,
                                                     TRE_H_X.toFloat(), TRE_H_N.toFloat(), TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat(), STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat()
-                                                    , SHR_HET_N.toFloat(), SHR_HET_X.toFloat(), HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM, IT_GROP_ID, TRE_NUM.toInt(), STRE_NUM.toInt(), SHR_NUM.toInt(), HER_NUM.toInt())
+                                                    , SHR_HET_N.toFloat(), SHR_HET_X.toFloat(), HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM, TRE_NUM.toInt(), STRE_NUM.toInt(), SHR_NUM.toInt(), HER_NUM.toInt())
 
 
 
@@ -3171,7 +3170,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                             var DOMIN = Utils.getString(layerInfo.metadata, "DOMIN")
                                                             var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
                                                             var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
-                                                            var IT_GROP_ID = Utils.getString(layerInfo.metadata, "IT_GROP_ID")
                                                             var TRE_NUM = Utils.getString(layerInfo.metadata, "TRE_NUM")
                                                             var STRE_NUM = Utils.getString(layerInfo.metadata, "STRE_NUM")
                                                             var SHR_NUM = Utils.getString(layerInfo.metadata, "SHR_NUM")
@@ -3309,7 +3307,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                                     BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom, UFID, CHECK
                                                                     , TRE_H_N.toFloat(), TRE_H_X.toFloat(), TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat()
                                                                     , STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat(), SHR_HET_N.toFloat(), SHR_HET_X.toFloat()
-                                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM, IT_GROP_ID
+                                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM
                                                                     , TRE_NUM.toInt(), STRE_NUM.toInt(), SHR_NUM.toInt(), HER_NUM.toInt())
 
                                                             if (LANDUSE != null && LANDUSE != "") {
@@ -3676,7 +3674,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var DOMIN = Utils.getString(layerInfo.metadata, "DOMIN")
                                             var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
                                             var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
-                                            var IT_GROP_ID = Utils.getString(layerInfo.metadata, "IT_GROP_ID")
                                             var TRE_NUM = Utils.getString(layerInfo.metadata, "TRE_NUM")
                                             var STRE_NUM = Utils.getString(layerInfo.metadata, "STRE_NUM")
                                             var SHR_NUM = Utils.getString(layerInfo.metadata, "SHR_NUM")
@@ -3810,7 +3807,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     BIOTOP_POT, UNUS_NOTE, GPS_LAT.toDouble(), GPS_LON.toDouble(), NEED_CONF, CONF_MOD, "Y", LANDUSE, geom, UFID, CHECK
                                                     , TRE_H_N.toFloat(), TRE_H_X.toFloat()
                                                     , TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat(), STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat(), SHR_HET_N.toFloat(), SHR_HET_X.toFloat()
-                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM, IT_GROP_ID
+                                                    , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM
                                                     , TRE_NUM.toInt(), STRE_NUM.toInt(), SHR_NUM.toInt(), HER_NUM.toInt())
 
                                             if (LANDUSE != null && LANDUSE != "") {
@@ -4230,7 +4227,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var DOMIN = Utils.getString(layerInfo.metadata, "DOMIN")
                                             var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
                                             var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
-                                            var IT_GROP_ID = Utils.getString(layerInfo.metadata, "IT_GROP_ID")
                                             var TRE_NUM = Utils.getString(layerInfo.metadata, "TRE_NUM")
                                             var STRE_NUM = Utils.getString(layerInfo.metadata, "STRE_NUM")
                                             var SHR_NUM = Utils.getString(layerInfo.metadata, "SHR_NUM")
@@ -4361,7 +4357,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                     , TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat(), STRE_BRT_N.toFloat()
                                                     , STRE_BRT_X.toFloat(), SHR_HET_N.toFloat(), SHR_HET_X.toFloat()
                                                     , HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat()
-                                                    , DOMIN, MAC_ADDR, CURRENT_TM, IT_GROP_ID, TRE_NUM.toInt(), STRE_NUM.toInt(), SHR_NUM.toInt(), HER_NUM.toInt())
+                                                    , DOMIN, MAC_ADDR, CURRENT_TM, TRE_NUM.toInt(), STRE_NUM.toInt(), SHR_NUM.toInt(), HER_NUM.toInt())
 
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
@@ -6980,7 +6976,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("DOMIN", ogr.OFTString, biotope_attribute.DOMIN))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, biotope_attribute.MAC_ADDR))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, biotope_attribute.CURRENT_TM))
-                    BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("IT_GROP_ID", ogr.OFTString, biotope_attribute.IT_GROP_ID))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("TRE_NUM", ogr.OFTString, biotope_attribute.TRE_NUM))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("STRE_NUM", ogr.OFTString, biotope_attribute.STRE_NUM))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_NUM", ogr.OFTString, biotope_attribute.SHR_NUM))
@@ -10742,7 +10737,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54), data2.getString(55), data2.getString(56), data2.getString(57)
                 , data2.getFloat(58), data2.getFloat(59), data2.getFloat(60), data2.getFloat(61), data2.getFloat(62), data2.getFloat(63)
                 , data2.getFloat(64), data2.getFloat(65), data2.getFloat(66), data2.getFloat(67), data2.getFloat(68), data2.getFloat(69), data2.getString(70), data2.getFloat(71)
-                , data2.getString(72), data2.getString(73), data2.getString(74), data2.getString(75), data2.getInt(76), data2.getInt(77), data2.getInt(78), data2.getInt(79)
+                , data2.getString(72), data2.getString(73), data2.getString(74), data2.getInt(75), data2.getInt(76), data2.getInt(77), data2.getInt(78)
         )
         return biotope_attribute
     }

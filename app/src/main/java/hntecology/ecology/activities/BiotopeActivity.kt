@@ -3814,7 +3814,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 , null, null, null, null, null, null, null, null, null, null, null, null
                 , null, null, null, null, null, null
                 , null, null, null, null, null, null, null, null
-                , null, null, null, null, null, null, null, null
+                , null, null, null, null, null, null, null
         )
         return biotope_attribute
     }
@@ -3830,14 +3830,13 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54), data2.getString(55), data2.getString(56), data2.getString(57)
                 , data2.getFloat(58), data2.getFloat(59), data2.getFloat(60), data2.getFloat(61), data2.getFloat(62), data2.getFloat(63)
                 , data2.getFloat(64), data2.getFloat(65), data2.getFloat(66), data2.getFloat(67), data2.getFloat(68), data2.getFloat(69), data2.getString(70), data2.getFloat(71)
-                , data2.getString(72), data2.getString(73), data2.getString(74), data2.getString(75), data2.getInt(76), data2.getInt(77), data2.getInt(78), data2.getInt(79)
+                , data2.getString(72), data2.getString(73), data2.getString(74), data2.getInt(75), data2.getInt(76), data2.getInt(77), data2.getInt(78)
         )
         return biotope_attribute
     }
 
     fun addbiotope2(biotope_attribute: Biotope_attribute) {
         keyId = intent.getStringExtra("GROP_ID")
-        biotope_attribute.IT_GROP_ID = keyId + it_index.toString()
         biotope_attribute.GROP_ID = keyId
 
         val prj = prjnameTV.text.toString()
@@ -3846,7 +3845,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         } else {
             biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
         }
-
+        biotope_attribute.NEED_CONF = ""
 
         if (etINV_REGIONET.length() > 0) {
             biotope_attribute.INV_REGION = etINV_REGIONET.text.toString();
@@ -3967,9 +3966,15 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         } else if (!t_name.contains("군락")) {
             if (t_name.length > 0) {
                 biotope_attribute.DOMIN = names[0] + "군락"
+            }else{
+                biotope_attribute.DOMIN =""
             }
         } else {
-            biotope_attribute.DOMIN = names[0]
+            if (t_name.length > 0) {
+                biotope_attribute.DOMIN =names[0]
+            }else{
+                biotope_attribute.DOMIN =""
+            }
         }
 
 
@@ -4004,7 +4009,6 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         biotope_attribute.GROP_ID = keyId
 
         Log.d("추가인덱스", it_index.toString())
-        biotope_attribute.IT_GROP_ID = keyId + it_index.toString()
 
 
         val prj = prjnameTV.text.toString()
@@ -4013,7 +4017,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         } else {
             biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
         }
-
+        biotope_attribute.NEED_CONF = ""
 
         if (etINV_REGIONET.length() > 0) {
             biotope_attribute.INV_REGION = etINV_REGIONET.text.toString();
@@ -4246,9 +4250,15 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         } else if (!t_name.contains("군락")) {
             if (t_name.length > 0) {
                 biotope_attribute.DOMIN = names[0] + "군락"
+            }else{
+                biotope_attribute.DOMIN =""
             }
         } else {
-            biotope_attribute.DOMIN = names[0]
+            if (t_name.length > 0) {
+                biotope_attribute.DOMIN =names[0]
+            }else{
+                biotope_attribute.DOMIN =""
+            }
         }
 
         if (chkdata) {
@@ -4256,6 +4266,8 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
             if (images!!.size > 0 && biotope_attribute.PIC_FOLDER == null) {
 
                 biotope_attribute.PIC_FOLDER = keyId + it_index.toString()
+            }else{
+                biotope_attribute.PIC_FOLDER =""
             }
 
             if (pk != null) {
@@ -4275,6 +4287,8 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
             if (images!!.size > 0) {
                 biotope_attribute.PIC_FOLDER = keyId + it_index.toString()
+            }else{
+                biotope_attribute.PIC_FOLDER =""
             }
 
             dbManager!!.insertbiotope_attribute(biotope_attribute);

@@ -260,7 +260,7 @@ class Flora2Activity : Activity() {
 
                 var manyFloraAttribute = ps_many_attribute(data)
                 // 교목층
-                if (manyFloraAttribute.DOMIN.toString() != "null") {
+                if (manyFloraAttribute.DOMIN.toString() != "null"&&manyFloraAttribute.DOMIN.toString() != "") {
                     t_name =manyFloraAttribute.DOMIN.toString()
                 }
                 var domins = t_name.split("-")
@@ -1826,9 +1826,15 @@ class Flora2Activity : Activity() {
                             } else if (!t_name.contains("군락")) {
                                 if (t_name.length > 0) {
                                     manyFloraAttribute.DOMIN = names[0] + "군락"
+                                }else{
+                                    manyFloraAttribute.DOMIN =""
                                 }
                             } else {
-                                manyFloraAttribute.DOMIN = names[0]
+                                if (t_name.length > 0) {
+                                    manyFloraAttribute.DOMIN =names[0]
+                                }else{
+                                    manyFloraAttribute.DOMIN =""
+                                }
                             }
 
 
@@ -2046,10 +2052,14 @@ class Flora2Activity : Activity() {
 
                             if (etHER_HET.text.isNotEmpty()) {
                                 manyFloraAttribute.HER_DOMIN = etHER_HET.text.toString()
+                            }else{
+                                manyFloraAttribute.HER_DOMIN = ""
                             }
 
                             if (etHER_COVEET.text.isNotEmpty()) {
                                 manyFloraAttribute.HER_GUNDO = etHER_COVEET.text.toString()
+                            }else{
+                                manyFloraAttribute.HER_GUNDO = ""
                             }
 
                             if (etHER_HEIGHT.text.isNotEmpty()) {
@@ -2105,7 +2115,8 @@ class Flora2Activity : Activity() {
                         .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
                 val alert = builder.create()
                 alert.show()
-            } else if (TreDatas.size > 0 || StreDatas.size > 0 || ShrDatas.size > 0 || HerDatas.size > 0) {
+            }
+            else if (TreDatas.size > 0 || StreDatas.size > 0 || ShrDatas.size > 0 || HerDatas.size > 0) {
 
                 val builder = AlertDialog.Builder(context)
                 builder.setMessage("저장하시겠습니까 ?").setCancelable(false)
@@ -2667,9 +2678,15 @@ class Flora2Activity : Activity() {
                                 } else if (!t_name.contains("군락")) {
                                     if (t_name.length > 0) {
                                         manyFloraAttribute.DOMIN = names[0] + "군락"
+                                    }else{
+                                        manyFloraAttribute.DOMIN =""
                                     }
                                 } else {
-                                    manyFloraAttribute.DOMIN = names[0]
+                                    if (t_name.length > 0) {
+                                        manyFloraAttribute.DOMIN =names[0]
+                                    }else{
+                                        manyFloraAttribute.DOMIN =""
+                                    }
                                 }
 //                                    manyFloraAttribute.INV_REGION = invregionTV.text.toString()
                                 if (invregionTV.length() > 0) {

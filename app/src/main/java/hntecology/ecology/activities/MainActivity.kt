@@ -183,6 +183,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     private var showLoading = false
 
+    var u_name = ""
+
     var progressDialog: ProgressDialog? = null
 
     var biotopedataArray: ArrayList<Biotope_attribute> = ArrayList<Biotope_attribute>()
@@ -257,6 +259,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         isFile()
 
         prjname = PrefUtils.getStringPreference(context, "prjname");
+        u_name = PrefUtils.getStringPreference(context, "name");
+
+
 
         val dataList: Array<String> = arrayOf("*")
         val data = db!!.query("Projects", dataList, "prj_name = '$prjname'", null, null, null, "id desc", "1")
@@ -4785,7 +4790,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             ogr.RegisterAll()
             // set up the shapefile driver
             val driver = ogr.GetDriverByName("ESRI Shapefile")
-            var u_name = PrefUtils.getStringPreference(context, "name")
+
             Log.d("드라이버", context.applicationInfo.dataDir.toString())
             Log.d("타입", type.toString())
 //            var shpFilePath = FileFilter.main("/storage/emulated/0/Download/ecology/data/" + type + "/", u_name)
@@ -6639,6 +6644,33 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 //        googleMap.clear()
     }
 
+
+    fun export_marker(pk: String, domin: String, polygonOptions: PolygonOptions) {
+        Log.d("마커사이즈", labelMarkers2.size.toString())
+        for (i in 0..labelMarkers2.size - 1) {
+            if (labelMarkers2[i].tag == pk) {
+                labelMarkers2[i].isVisible = false
+                labelMarkers2[i].remove()
+                Log.d("마커사이즈22", labelMarkers2[i].toString())
+                break
+            }
+        }
+        var labelMarker2 = PolygonUtils.drawTextOnPolygon(context, domin, polygonOptions, googleMap)
+        labelMarker2.tag = pk
+        if (visible_domin != -1) {
+            labelMarker2.isVisible = true
+        } else {
+            labelMarker2.isVisible = false
+        }
+
+        if (domin != "null") {
+            labelMarkers2.add(labelMarker2)
+        }
+
+//        labelMarker2.remove()
+
+    }
+
     fun exportStockMap(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String, geom: String) {
         Log.d("구냐", leftday)
         var stokeArray: ArrayList<Exporter.ExportItem> = ArrayList<Exporter.ExportItem>()
@@ -6659,7 +6691,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
                     , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27), data.getString(28))
 
-            stokemapDatas.add(stockMap)
+            if(stockMap.INV_PERSON==u_name){
+                stokemapDatas.add(stockMap)
+            }
+
 
         }
         Log.d("임상도", stokemapDatas.toString())
@@ -6798,7 +6833,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 var rightreplace = rgtday.replace(" ", "_")
                 lftday = leftreplace
                 rgtday = rightreplace
-                var u_name = PrefUtils.getStringPreference(context, "name")
                 if (stokeArray != null) {
                     Exporter.export(stokeArray, lftday, rgtday, u_name)
                 }
@@ -6826,33 +6860,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     }
 
-    fun export_marker(pk: String, domin: String, polygonOptions: PolygonOptions) {
-        Log.d("마커사이즈", labelMarkers2.size.toString())
-        for (i in 0..labelMarkers2.size - 1) {
-            if (labelMarkers2[i].tag == pk) {
-                labelMarkers2[i].isVisible = false
-                labelMarkers2[i].remove()
-                Log.d("마커사이즈22", labelMarkers2[i].toString())
-                break
-            }
-        }
-        var labelMarker2 = PolygonUtils.drawTextOnPolygon(context, domin, polygonOptions, googleMap)
-        labelMarker2.tag = pk
-        if (visible_domin != -1) {
-            labelMarker2.isVisible = true
-        } else {
-            labelMarker2.isVisible = false
-        }
-
-        if (domin != "null") {
-            labelMarkers2.add(labelMarker2)
-        }
-
-//        labelMarker2.remove()
-
-    }
-
-
     fun exportBiotope(leftday: String, lefttime: String, rightday: String, righttime: String, exportType: String, geom: String) {
         val biotopeArray: ArrayList<Exporter.ExportItem> = ArrayList<Exporter.ExportItem>()
         val dataList: Array<String> = arrayOf("*")
@@ -6868,7 +6875,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         while (biotopedata.moveToNext()) {
             var biotope_attribute = ps_biotope_attribute(biotopedata)
-            biotopeDatas.add(biotope_attribute)
+            if(biotope_attribute.INV_PERSON==u_name){
+                biotopeDatas.add(biotope_attribute)
+
+            }
         }
 
         if (biotopeDatas.size > 0) {
@@ -7132,7 +7142,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
         var leftreplace = lftday.replace(" ", "_")
         var rightreplace = rgtday.replace(" ", "_")
-        var u_name = PrefUtils.getStringPreference(context, "name")
         lftday = leftreplace
         rgtday = rightreplace
         Log.d("비오톱추가", "추가")
@@ -7160,8 +7169,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             println("27 : ${data.getString(27)}")
 
             var birds_attribute = ps_birds_attribute(data)
+            if(birds_attribute.INV_PERSON==u_name){
+                birdsDatas.add(birds_attribute)
 
-            birdsDatas.add(birds_attribute)
+            }
+
 
         }
         Log.d("아퐁2222",geom.toString())
@@ -7320,7 +7332,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-            var u_name = PrefUtils.getStringPreference(context, "name")
             if (pointsArray != null) {
                 Exporter.exportPoint(pointsArray, lftday, rgtday, u_name)
             }
@@ -7371,8 +7382,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     , reptiliadata.getString(31), reptiliadata.getString(32), reptiliadata.getString(33), reptiliadata.getInt(34), reptiliadata.getInt(35), reptiliadata.getFloat(36), reptiliadata.getInt(37), reptiliadata.getInt(38), reptiliadata.getFloat(39)
                     , reptiliadata.getFloat(40), reptiliadata.getString(41), reptiliadata.getString(42)
             )
+            if(reptilia_attribute.INV_PERSON==u_name){
+                reptiliaDatas.add(reptilia_attribute)
 
-            reptiliaDatas.add(reptilia_attribute)
+            }
+
         }
 
 //        if (datas != null) {
@@ -7553,7 +7567,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-            var u_name = PrefUtils.getStringPreference(context, "name")
             if (pointsArray != null) {
                 Exporter.exportPoint(pointsArray, lftday, rgtday, u_name)
             }
@@ -7603,8 +7616,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     , data.getString(15), data.getString(16), data.getString(17), data.getInt(18), data.getString(19), data.getString(20), data.getString(21)
                     , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27), data.getString(28), data.getString(29), data.getString(30)
                     , data.getInt(31), data.getInt(32), data.getFloat(33), data.getInt(34), data.getInt(35), data.getFloat(36), data.getString(37), data.getString(38), data.getString(39))
+            if(mammal_attribute.INV_PERSON==u_name){
+                mammaliaDatas.add(mammal_attribute)
 
-            mammaliaDatas.add(mammal_attribute)
+            }
+
 
         }
         Log.d("포유류", mammaliaDatas.size.toString())
@@ -7752,7 +7768,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-            var u_name = PrefUtils.getStringPreference(context, "name")
             if (pointsArray != null) {
                 Exporter.exportPoint(pointsArray, lftday, rgtday, u_name)
             }
@@ -7798,8 +7813,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         while (data.moveToNext()) {
 
             var fish_attribute = ps_fish_attribute(data)
+            if(fish_attribute.INV_PERSON==u_name){
+                fishDatas.add(fish_attribute)
 
-            fishDatas.add(fish_attribute)
+            }
+
         }
 
 //        if (datas != null) {
@@ -7996,7 +8014,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-            var u_name = PrefUtils.getStringPreference(context, "name")
             if (pointsArray != null) {
                 Exporter.exportPoint(pointsArray, lftday, rgtday, u_name)
             }
@@ -8046,8 +8063,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     , data.getString(18), data.getString(19), data.getString(20), data.getString(21)
                     , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
                     , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32), data.getString(33), data.getString(34))
-
-            insectDatas.add(insect_attribute)
+            if(insect_attribute.INV_PERSON==u_name){
+                insectDatas.add(insect_attribute)
+            }
 
         }
 
@@ -8213,7 +8231,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-            var u_name = PrefUtils.getStringPreference(context, "name")
             if (pointsArray != null) {
                 Exporter.exportPoint(pointsArray, lftday, rgtday, u_name)
             }
@@ -8262,8 +8279,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     , floradata.getString(12), floradata.getString(13), floradata.getString(14), floradata.getString(15), floradata.getString(16), floradata.getString(17), floradata.getString(18)
                     , floradata.getString(19), floradata.getInt(20), floradata.getString(21), floradata.getFloat(22), floradata.getFloat(23), floradata.getString(24), floradata.getString(25)
                     , floradata.getString(26), floradata.getInt(27), floradata.getInt(28), floradata.getFloat(29), floradata.getInt(30), floradata.getInt(31), floradata.getFloat(32), floradata.getString(33), floradata.getString(34))
+            if(flora_Attribute.INV_PERSON==u_name){
+                floraDatas.add(flora_Attribute)
 
-            floraDatas.add(flora_Attribute)
+            }
         }
 
 //        if (datas != null) {
@@ -8421,7 +8440,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-            var u_name = PrefUtils.getStringPreference(context, "name")
             if (pointsArray != null) {
                 Exporter.exportPoint(pointsArray, lftday, rgtday, u_name)
             }
@@ -8475,8 +8493,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     , data.getString(41), data.getString(42), data.getFloat(43), data.getFloat(44)
                     , data.getString(45), data.getString(46), data.getString(47), data.getString(48), data.getString(49)
                     , data.getString(50), data.getInt(51), data.getString(52), data.getString(53))
+            if(zoo.INV_PERSON==u_name){
+                zoobenthousDatas.add(zoo)
 
-            zoobenthousDatas.add(zoo)
+            }
+
 
         }
 
@@ -8674,7 +8695,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-            var u_name = PrefUtils.getStringPreference(context, "name")
             if (pointsArray != null) {
                 Exporter.exportPoint(pointsArray, lftday, rgtday, u_name)
             }
@@ -8721,7 +8741,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         while (data.moveToNext()) {
             var waypoint: Waypoint = Waypoint(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7)
                     , data.getFloat(8), data.getFloat(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13))
-            waypointDatas.add(waypoint)
+            if(waypoint.INV_PERSON==u_name){
+                waypointDatas.add(waypoint)
+
+
+            }
         }
 
 //        if (datas != null) {
@@ -8830,7 +8854,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-            var u_name = PrefUtils.getStringPreference(context, "name")
             if (pointsArray != null) {
                 Exporter.exportPoint(pointsArray, lftday, rgtday, u_name)
             }
@@ -8875,7 +8898,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         while (data.moveToNext()) {
 
             var manyFloraAttribute = ps_many_attribute(data)
-            manyflorasDatas.add(manyFloraAttribute)
+
+            if(manyFloraAttribute.INV_PERSON==u_name){
+                manyflorasDatas.add(manyFloraAttribute)
+            }
+
 
         }
 
@@ -9096,7 +9123,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             var rightreplace = rgtday.replace(" ", "_")
             lftday = leftreplace
             rgtday = rightreplace
-            var u_name = PrefUtils.getStringPreference(context, "name")
             if (pointsArray != null) {
                 Exporter.exportPoint(pointsArray, lftday, rgtday, u_name)
             }
@@ -9150,6 +9176,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             if (i == 0) {
 
             }
+
+
             trackingDatas.add(tracking)
 
             val latlng = LatLng(tracking.LATITUDE!!, tracking.LONGITUDE!!)

@@ -527,6 +527,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + birds_attribute.getCURRENT_TM() + "'";
         query += " ); ";
 
+        Log.d("사용자",query);
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();

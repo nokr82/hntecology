@@ -3955,14 +3955,19 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
         t_name += t_name2
         var names = t_name.split("-")
-        if (names.size > 1 && !t_name.contains("군락")) {
-            biotope_attribute.DOMIN = t_name + "군락"
+        if (names.size > 1 ) {
+            if (!t_name.contains("군락")) {
+                biotope_attribute.DOMIN =names[0]+"-"+names[1] + "군락"
+            }else{
+                biotope_attribute.DOMIN =names[0]+"-"+names[1]
+            }
+
         } else if (!t_name.contains("군락")) {
             if (t_name.length > 0) {
-                biotope_attribute.DOMIN = t_name + "군락"
+                biotope_attribute.DOMIN = names[0] + "군락"
             }
         } else {
-            biotope_attribute.DOMIN = t_name
+            biotope_attribute.DOMIN = names[0]
         }
 
 
@@ -4229,14 +4234,19 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         Log.d("구실", t_name)
         t_name += t_name2
         var names = t_name.split("-")
-        if (names.size > 1 && !t_name.contains("군락")) {
-            biotope_attribute.DOMIN = t_name + "군락"
+        if (names.size > 1 ) {
+            if (!t_name.contains("군락")) {
+                biotope_attribute.DOMIN =names[0]+"-"+names[1] + "군락"
+            }else{
+                biotope_attribute.DOMIN =names[0]+"-"+names[1]
+            }
+
         } else if (!t_name.contains("군락")) {
             if (t_name.length > 0) {
-                biotope_attribute.DOMIN = t_name + "군락"
+                biotope_attribute.DOMIN = names[0] + "군락"
             }
         } else {
-            biotope_attribute.DOMIN = t_name
+            biotope_attribute.DOMIN = names[0]
         }
 
         if (chkdata) {

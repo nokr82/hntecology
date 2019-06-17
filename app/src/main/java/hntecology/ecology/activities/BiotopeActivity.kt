@@ -205,6 +205,7 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         window.setGravity(Gravity.RIGHT);
         buildGoogleApiClient();
 
+
         images_path = ArrayList();
         images = ArrayList()
         images_url = ArrayList()

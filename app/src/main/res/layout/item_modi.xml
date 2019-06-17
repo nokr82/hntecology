@@ -31,14 +31,13 @@
             android:gravity="center"
             android:text=""/>
         <TextView
-            android:id="@+id/herTV"
+            android:id="@+id/treTV"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:text=""
             android:textSize="20dp" />
-
         <TextView
             android:id="@+id/streTV"
             android:layout_width="0dp"
@@ -47,6 +46,10 @@
             android:gravity="center"
             android:text=""
             android:textSize="20dp" />
+
+
+
+
         <TextView
             android:id="@+id/shrTV"
             android:layout_width="0dp"
@@ -58,7 +61,7 @@
 
 
         <TextView
-            android:id="@+id/treTV"
+            android:id="@+id/herTV"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"

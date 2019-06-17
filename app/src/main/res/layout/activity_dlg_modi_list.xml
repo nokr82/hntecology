@@ -59,14 +59,14 @@
                 android:layout_height="match_parent"
                 android:textSize="25dp"
                 android:gravity="center"
-                android:text="관목층"/>
+                android:text="교목층"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="교목층"
+                android:text="아교목층"
                 android:textSize="25dp" />
             <TextView
                 android:layout_width="0dp"
@@ -74,7 +74,7 @@
                 android:layout_height="match_parent"
                 android:textSize="25dp"
                 android:gravity="center"
-                android:text="아교목층"/>
+                android:text="관목층"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1"

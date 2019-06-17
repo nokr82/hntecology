@@ -1394,7 +1394,7 @@ class Flora2Activity : Activity() {
 
                 var m_toil: Float = 0.0F
 
-                if (st_max_hetET.text.isNotEmpty()) {
+                if (st_br_minET.text.isNotEmpty()) {
                     m_toil = st_br_minET.text.toString().toFloat()
                 }
 
@@ -1815,15 +1815,22 @@ class Flora2Activity : Activity() {
 
 
                             var names = t_name.split("-")
-                            if (names.size > 1&&!t_name.contains("군락")) {
-                                manyFloraAttribute.DOMIN = t_name+ "군락"
+
+                            if (names.size > 1 ) {
+                                if (!t_name.contains("군락")) {
+                                    manyFloraAttribute.DOMIN =names[0]+"-"+names[1] + "군락"
+                                }else{
+                                    manyFloraAttribute.DOMIN =names[0]+"-"+names[1]
+                                }
+
                             } else if (!t_name.contains("군락")) {
-                                if (t_name.length>0){
-                                    manyFloraAttribute.DOMIN = t_name + "군락"
+                                if (t_name.length > 0) {
+                                    manyFloraAttribute.DOMIN = names[0] + "군락"
                                 }
                             } else {
-                                manyFloraAttribute.DOMIN = t_name
+                                manyFloraAttribute.DOMIN = names[0]
                             }
+
 
                             if (invregionTV.length() > 0) {
                                 manyFloraAttribute.INV_REGION = invregionTV.text.toString();
@@ -2249,7 +2256,7 @@ class Flora2Activity : Activity() {
 
                                 var m_toil: Float = 0.0F
 
-                                if (st_max_hetET.text.isNotEmpty()) {
+                                if (st_br_minET.text.isNotEmpty()) {
                                     m_toil = st_br_minET.text.toString().toFloat()
                                 }
 
@@ -2324,7 +2331,7 @@ class Flora2Activity : Activity() {
 
                                 var m_toil: Float = 0.0F
 
-                                if (st_max_hetET.text.isNotEmpty()) {
+                                if (st_br_minET.text.isNotEmpty()) {
                                     m_toil = st_br_minET.text.toString().toFloat()
                                 }
 
@@ -2649,14 +2656,20 @@ class Flora2Activity : Activity() {
                                 manyFloraAttribute.GROP_ID = keyId
 
                                 var names = t_name.split("-")
-                                if (names.size > 1&&!t_name.contains("군락")) {
-                                    manyFloraAttribute.DOMIN = t_name + "군락"
+
+                                if (names.size > 1 ) {
+                                    if (!t_name.contains("군락")) {
+                                        manyFloraAttribute.DOMIN =names[0]+"-"+names[1] + "군락"
+                                    }else{
+                                        manyFloraAttribute.DOMIN =names[0]+"-"+names[1]
+                                    }
+
                                 } else if (!t_name.contains("군락")) {
-                                    if (t_name.length>0){
-                                        manyFloraAttribute.DOMIN = t_name + "군락"
+                                    if (t_name.length > 0) {
+                                        manyFloraAttribute.DOMIN = names[0] + "군락"
                                     }
                                 } else {
-                                    manyFloraAttribute.DOMIN = t_name
+                                    manyFloraAttribute.DOMIN = names[0]
                                 }
 //                                    manyFloraAttribute.INV_REGION = invregionTV.text.toString()
                                 if (invregionTV.length() > 0) {
@@ -2789,48 +2802,48 @@ class Flora2Activity : Activity() {
                                         manyFloraAttribute.SHR_SPEC = ShrDatas.get(i).SPEC
                                         manyFloraAttribute.SHR_FAMI = ShrDatas.get(i).FAMI
                                         manyFloraAttribute.SHR_SCIEN = ShrDatas.get(i).SCIEN
-                                        if (ShrDatas.get(i).H != null) {
+                                        if (ShrDatas.get(i).H != null&& ShrDatas.get(i).H != "") {
                                             manyFloraAttribute.SHR_TOIL = ShrDatas.get(i).H!!.toFloat()
                                         } else {
                                             manyFloraAttribute.SHR_TOIL = 0.0f
                                         }
 
-                                        if (ShrDatas.get(i).COVE != null) {
+                                        if (ShrDatas.get(i).COVE != null&& ShrDatas.get(i).COVE != "") {
                                             manyFloraAttribute.SHR_WATER = ShrDatas.get(i).COVE!!.toFloat()
                                         } else {
                                             manyFloraAttribute.SHR_WATER = 0.0f
                                         }
-                                        if (ShrDatas.get(i).M_H != null) {
+                                        if (ShrDatas.get(i).M_H != null&& ShrDatas.get(i).M_H != "") {
                                             manyFloraAttribute.M_SHR_TOIL = ShrDatas.get(i).M_H!!.toFloat()
                                         } else {
                                             manyFloraAttribute.M_SHR_TOIL = 0.0f
                                         }
-                                        if (ShrDatas.get(i).X_H != null) {
+                                        if (ShrDatas.get(i).X_H != null&& ShrDatas.get(i).X_H != "") {
                                             manyFloraAttribute.X_SHR_TOIL = ShrDatas.get(i).X_H!!.toFloat()
                                         } else {
                                             manyFloraAttribute.X_SHR_TOIL = 0.0f
                                         }
-                                        if (ShrDatas.get(i).M_COVE != null) {
+                                        if (ShrDatas.get(i).M_COVE != null&& ShrDatas.get(i).M_COVE != "") {
                                             manyFloraAttribute.M_SHR_WT = ShrDatas.get(i).M_COVE!!.toFloat()
                                         } else {
                                             manyFloraAttribute.M_SHR_WT = 0.0f
                                         }
-                                        if (ShrDatas.get(i).X_COVE != null) {
+                                        if (ShrDatas.get(i).X_COVE != null&& ShrDatas.get(i).X_COVE != "") {
                                             manyFloraAttribute.X_SHR_WT = ShrDatas.get(i).X_COVE!!.toFloat()
                                         } else {
                                             manyFloraAttribute.X_SHR_WT = 0.0f
                                         }
-                                        if (ShrDatas.get(i).M_ETC != null) {
+                                        if (ShrDatas.get(i).M_ETC != null&& ShrDatas.get(i).M_ETC != "") {
                                             manyFloraAttribute.M_SHR_UDR = ShrDatas.get(i).M_ETC!!.toFloat()
                                         } else {
                                             manyFloraAttribute.M_SHR_UDR = 0.0f
                                         }
-                                        if (ShrDatas.get(i).X_ETC != null) {
+                                        if (ShrDatas.get(i).X_ETC != null&& ShrDatas.get(i).X_ETC != "") {
                                             manyFloraAttribute.X_SHR_UDR = ShrDatas.get(i).X_ETC!!.toFloat()
                                         } else {
                                             manyFloraAttribute.X_SHR_UDR = 0.0f
                                         }
-                                        if (ShrDatas.get(i).ETC != null) {
+                                        if (ShrDatas.get(i).ETC != null&& ShrDatas.get(i).ETC != "") {
                                             manyFloraAttribute.SHR_UNDER = ShrDatas.get(i).ETC!!.toFloat()
                                         } else {
                                             manyFloraAttribute.SHR_UNDER = 0.0f
@@ -2868,12 +2881,12 @@ class Flora2Activity : Activity() {
                                         if (HerDatas.get(i).H != null && HerDatas.get(i).H != "") {
                                             manyFloraAttribute.HER_HEIGHT = HerDatas.get(i).H!!.toFloat()
                                         }
-                                        if (HerDatas.get(i).M_H != null&& HerDatas.get(i).M_H != "null") {
+                                        if (HerDatas.get(i).M_H != null&& HerDatas.get(i).M_H != "null"&& HerDatas.get(i).M_H != "") {
                                             manyFloraAttribute.M_HER_HET = HerDatas.get(i).M_H!!.toFloat()
                                         } else {
                                             manyFloraAttribute.M_HER_HET = 0.0f
                                         }
-                                        if (HerDatas.get(i).X_H != null && HerDatas.get(i).X_H != "null") {
+                                        if (HerDatas.get(i).X_H != null && HerDatas.get(i).X_H != "null"&& HerDatas.get(i).X_H != "") {
                                             manyFloraAttribute.X_HER_HET = HerDatas.get(i).X_H!!.toFloat()
                                         } else {
                                             manyFloraAttribute.X_HER_HET = 0.0f
@@ -4054,7 +4067,7 @@ class Flora2Activity : Activity() {
 
         var m_toil: Float = 0.0F
 
-        if (st_max_hetET.text.isNotEmpty()) {
+        if (st_br_minET.text.isNotEmpty()) {
             m_toil = st_br_minET.text.toString().toFloat()
         }
 

@@ -943,14 +943,14 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             >
+
                             <TextView
+                                style="@style/BiotopeTextView"
                                 android:layout_width="90dp"
                                 android:layout_height="match_parent"
-                                android:gravity="center"
                                 android:layout_gravity="center"
-                                android:text="교목층"
-                                style="@style/BiotopeTextView"
-                                />
+                                android:gravity="center"
+                                android:text="교목층" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"

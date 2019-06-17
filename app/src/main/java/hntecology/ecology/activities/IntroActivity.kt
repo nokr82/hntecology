@@ -301,7 +301,6 @@ class IntroActivity : Activity() {
             val targetDirectoryFile = File("$targetDirectory${File.separator}${fileName}")
 
             println(targetDirectoryFile.absolutePath)
-
             try {
                 val decryptedBytes = EncUtils.decrypt(sourceDirectoryFile.readBytes(), secretKey)
                 targetDirectoryFile.writeBytes(decryptedBytes)

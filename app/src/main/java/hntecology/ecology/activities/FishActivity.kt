@@ -1435,7 +1435,7 @@ class FishActivity : Activity(), OnLocationUpdatedListener {
             intent.putExtra("export", 70)
             setResult(RESULT_OK, intent)
 
-            if (images_path != null) {
+          /*  if (images_path != null) {
                 images_path!!.clear()
             }
 
@@ -1453,7 +1453,7 @@ class FishActivity : Activity(), OnLocationUpdatedListener {
 
             if (images_id != null) {
                 images_id!!.clear()
-            }
+            }*/
 
             clear()
             chkdata = false
@@ -1821,7 +1821,7 @@ class FishActivity : Activity(), OnLocationUpdatedListener {
 
         confmodTV.setText("")
 
-        addPicturesLL!!.removeAllViews()
+//        addPicturesLL!!.removeAllViews()
 
     }
 

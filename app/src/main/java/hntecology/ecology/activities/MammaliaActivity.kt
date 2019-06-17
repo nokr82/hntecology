@@ -1431,7 +1431,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             setResult(RESULT_OK, intent)
 
             btn_mammalDelete.visibility = View.GONE
-            if (images_path != null){
+           /* if (images_path != null){
                 images_path!!.clear()
             }
 
@@ -1449,7 +1449,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
             if (images_id != null){
                 images_id!!.clear()
-            }
+            }*/
 
             clear()
             chkdata = false
@@ -1573,7 +1573,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
         confmodTV.setText("")
 
-        addPicturesLL!!.removeAllViews()
+//        addPicturesLL!!.removeAllViews()
 
     }
 

@@ -1325,9 +1325,9 @@ class StockActivity : Activity() {
 
 
     fun null_attribute(): StockMap {
-        var reptilia_attribute: StockMap = StockMap(null, null, null, null, null, null, null, null, null
-                , null, null, null, null, null, null, null, null, null, null, null, null
-                , null, null, null, null,null,null,null,null)
+        var reptilia_attribute: StockMap = StockMap("", "", "", "", "", "", "", null, ""
+                , "", "", "", "", "", "", "", "", "", "", "", null
+                , null, "", "", "","","","","")
         return reptilia_attribute
     }
 

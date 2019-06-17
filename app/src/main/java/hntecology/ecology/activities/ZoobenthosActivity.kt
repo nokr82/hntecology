@@ -1354,7 +1354,7 @@ class ZoobenthosActivity : Activity() {
             intent.putExtra("export", 70)
             setResult(RESULT_OK, intent)
 
-            if (images_path != null) {
+            /*if (images_path != null) {
                 images_path!!.clear()
             }
 
@@ -1372,7 +1372,7 @@ class ZoobenthosActivity : Activity() {
 
             if (images_id != null) {
                 images_id!!.clear()
-            }
+            }*/
 
             clear()
             chkdata = false
@@ -2069,7 +2069,7 @@ class ZoobenthosActivity : Activity() {
         var c = dbManager!!.pkNum("ZoobenthosAttribute")
         numTV.text = c.toString()
 
-        addPicturesLL!!.removeAllViews()
+//        addPicturesLL!!.removeAllViews()
 
         specnmtmp.setText("")
 

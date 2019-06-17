@@ -1341,7 +1341,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             intent.putExtra("export", 70)
             setResult(RESULT_OK, intent)
 
-            if (images_path != null) {
+           /* if (images_path != null) {
                 images_path!!.clear()
             }
 
@@ -1359,7 +1359,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
             if (images_id != null) {
                 images_id!!.clear()
-            }
+            }*/
 
             clear()
             chkdata = false
@@ -2229,7 +2229,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
         mjActPrET.setText("")
         confmodTV.setText("")
 
-        addPicturesLL!!.removeAllViews()
+//        addPicturesLL!!.removeAllViews()
 
     }
 

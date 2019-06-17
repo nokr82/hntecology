@@ -1596,7 +1596,7 @@ class InsectActivity : Activity() , OnLocationUpdatedListener{
 
         confmodTV.setText("")
 
-        addPicturesLL!!.removeAllViews()
+//        addPicturesLL!!.removeAllViews()
 
     }
 

@@ -1271,7 +1271,7 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
             intent.putExtra("export", 70)
             setResult(RESULT_OK, intent)
 
-            if (images_path != null) {
+            /*if (images_path != null) {
                 images_path!!.clear()
             }
 
@@ -1289,7 +1289,7 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
 
             if (images_id != null) {
                 images_id!!.clear()
-            }
+            }*/
 
             clear()
             chkdata = false
@@ -1426,7 +1426,7 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
 
         confmodTV.setText("")
 
-        addPicturesLL!!.removeAllViews()
+//        addPicturesLL!!.removeAllViews()
 
     }
 

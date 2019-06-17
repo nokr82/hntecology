@@ -10213,11 +10213,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     fun isFile(): Boolean {
 
         val biotopePathDir = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope", ""))
-        Log.d("비오추가","추가")
+        Log.d("비오추가333",biotopePathDir.length().toString())
         if (!biotopePathDir.exists()) {
-            Log.d("비오삭제","삭제")
-            dbManager!!.deletelayers("biotope")
-            dbManager!!.deletebiotope_attribute_all()
+            Log.d("비오삭제333","삭제")
+                dbManager!!.deletelayers("biotope")
+                dbManager!!.deletebiotope_attribute_all()
         }
 
         val bridsPath = File(FileFilter.main(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "birds", ""))

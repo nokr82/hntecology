@@ -45,7 +45,7 @@ class DlgModiFlora2ListActivity : Activity() {
     var geom = ""
     var lat: String = ""
     var log: String = ""
-
+    var u_name = ""
 
     var r_region = ""
 
@@ -58,7 +58,7 @@ class DlgModiFlora2ListActivity : Activity() {
         context = applicationContext;
 
         dbManager = DataBaseHelper(this)
-
+        u_name = PrefUtils.getStringPreference(context, "name");
         val db = dbManager!!.createDataBase();
 
         val intent = getIntent()
@@ -301,7 +301,7 @@ class DlgModiFlora2ListActivity : Activity() {
                     , data.getFloat(54), data.getFloat(55), data.getFloat(56), data.getFloat(57), data.getFloat(58), data.getFloat(59), data.getFloat(60)
                     , data.getFloat(61), data.getFloat(62), data.getFloat(63), data.getFloat(64), data.getFloat(65), data.getFloat(66), data.getFloat(67)
                     , data.getFloat(68), data.getFloat(69), data.getFloat(70))
-            if (model.GROP_ID!=grop_id){
+            if (model.GROP_ID!=grop_id&&model.INV_PERSON==u_name){
                 if (model.DOMIN!="null"||model.TRE_SPEC!=""||model.STRE_SPEC!=""||model.HER_SPEC!=""||model.SHR_SPEC!=""){
                     listdata.add(model)
                 }

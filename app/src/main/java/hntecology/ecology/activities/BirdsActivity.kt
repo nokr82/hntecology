@@ -414,7 +414,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
 
 
-                var codelist = birds_attribute.MJ_ACT_PR!!.split(",")
+                var codelist = birds_attribute.MJ_ACT_PR!!.split("_")
                 var code_content = ""
                 if (codelist.size>0){
                     for (i in 0..codelist.size-1){
@@ -666,7 +666,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         birds_attribute.MJ_ACT = mjActTV.text.toString()
 //                        birds_attribute.MJ_ACT_PR = mjActPrET.text.toString()
-                        birds_attribute.MJ_ACT_PR = r_code.joinToString(",")
+                        birds_attribute.MJ_ACT_PR = r_code.joinToString("_")
 
                         /*     if (gpslatTV.text.isNotEmpty()) {
                                  Log.d("방위",gpslatTV.text.toString())
@@ -1187,7 +1187,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
             birds_attribute.MJ_ACT = mjActTV.text.toString()
 //            birds_attribute.MJ_ACT_PR = mjActPrET.text.toString()
-            birds_attribute.MJ_ACT_PR = r_code.joinToString(",")
+            birds_attribute.MJ_ACT_PR = r_code.joinToString("_")
 
             birds_attribute.GPS_LAT = lat.toFloat()
             birds_attribute.GPS_LON = log.toFloat()

@@ -559,6 +559,8 @@ class StockActivity : Activity() {
                         stockMap.GROP_ID = keyId
                         stockMap.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
                         stockMap.CURRENT_TM = Utils.current_tm()
+                        stockMap.PLANT_CD = ""
+                        stockMap.PLANT_NM = ""
                         val prj = prjnameET.text.toString()
                         if (prj == prjname){
                             stockMap.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
@@ -597,7 +599,7 @@ class StockActivity : Activity() {
                         stockMap.HEIGHT = heightET.text.toString()
                         stockMap.LDMARK_STNDA_CD = ""
                         stockMap.MAP_LABEL = map_lableET.text.toString()
-//                        stockMap.MAP_LABEL2 = map_lable2ET.text.toString()
+                        stockMap.MAP_LABEL2 = ""
                         stockMap.ETC_PCMTT = etcpcmttET.text.toString()
                         stockMap.GPS_LAT = gpslatTV.text.toString().toFloat()
                         stockMap.GPS_LON = gpslonTV.text.toString().toFloat()
@@ -628,7 +630,7 @@ class StockActivity : Activity() {
                                 }
 
 
-                                stockMap.MAP_LABEL2 = map_lableET.text.toString()
+                                stockMap.MAP_LABEL2 = ""
 
                                 dbManager!!.updatestockmap(stockMap,pk)
                                 dbManager!!.updatecommonstockmap(stockMap,keyId)
@@ -683,6 +685,9 @@ class StockActivity : Activity() {
             stockMap.INV_PERSON = invpersonTV.text.toString()
             stockMap.INV_DT =  invdtTV.text.toString()
             stockMap.INV_TM = invtmTV.text.toString()
+            stockMap.PLANT_CD = ""
+            stockMap.PLANT_NM = ""
+
             stockMap.NUM = numTV.text.toString().toInt()
             stockMap.FRTP_CD = FRTP_CD_CODE
 //            stockMap.KOFTR_GROUP_CD = SET_FRTPCD_CODE
@@ -699,6 +704,7 @@ class StockActivity : Activity() {
             stockMap.LDMARK_STNDA_CD = ""
             stockMap.MAP_LABEL = map_lableET.text.toString()
 //            stockMap.MAP_LABEL2 = map_lable2ET.text.toString()
+            stockMap.MAP_LABEL2 = ""
             stockMap.ETC_PCMTT = etcpcmttET.text.toString()
             stockMap.GPS_LAT = gpslatTV.text.toString().toFloat()
             stockMap.GPS_LON = gpslonTV.text.toString().toFloat()
@@ -727,8 +733,7 @@ class StockActivity : Activity() {
                         stockMap.CONF_MOD = "M"
                     }
 
-
-                    stockMap.MAP_LABEL2 = map_lableET.text.toString()
+                    stockMap.MAP_LABEL2 = ""
 
                     dbManager!!.updatestockmap(stockMap,pk)
                     dbManager!!.updatecommonstockmap(stockMap,keyId)

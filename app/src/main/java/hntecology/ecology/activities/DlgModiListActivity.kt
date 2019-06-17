@@ -26,7 +26,7 @@ class DlgModiListActivity : Activity() {
     private lateinit var context: Context;
 
     private lateinit var listView1: ListView
-
+    var u_name = ""
     private lateinit var listdata1: ArrayList<Biotope_attribute>
     private lateinit var listdata2: ArrayList<Biotope_attribute>
     private lateinit var listdata3: ArrayList<Biotope_attribute>
@@ -51,7 +51,7 @@ class DlgModiListActivity : Activity() {
         context = applicationContext;
 
         dbManager = DataBaseHelper(this)
-
+        u_name = PrefUtils.getStringPreference(context, "name");
         val db = dbManager!!.createDataBase();
 
         val intent = getIntent()
@@ -110,27 +110,12 @@ class DlgModiListActivity : Activity() {
             var attribute = null_biotope_attribute()
             var bio_data = listAdapte1.getItem(position)
             val data = db.query("biotopeAttribute", dataList2, "GROP_ID='${bio_data.GROP_ID}'", null, null, null, "id asc", null);
-            while (data.moveToNext()) {
-
-                var model: Biotope_attribute;
-
-                model = Biotope_attribute(data2.getString(0), data2.getString(1), data2.getString(2), data2.getString(3), data2.getString(4), data2.getString(5), data2.getString(6), data2.getInt(7),
-                        data2.getString(8), data2.getFloat(9), data2.getFloat(10), data2.getString(11), data2.getString(12), data2.getString(13), data2.getFloat(14)
-                        , data2.getString(15), data2.getString(16), data2.getString(17), data2.getString(18), data2.getString(19), data2.getString(20), data2.getString(21)
-                        , data2.getString(22), data2.getString(23), data2.getString(24), data2.getString(25), data2.getFloat(26), data2.getFloat(27), data2.getFloat(28)
-                        , data2.getString(29), data2.getString(30), data2.getString(31), data2.getFloat(32), data2.getFloat(33), data2.getFloat(34), data2.getString(35)
-                        , data2.getString(36), data2.getString(37), data2.getFloat(38), data2.getFloat(39), data2.getString(40), data2.getString(41), data2.getString(42)
-                        , data2.getFloat(43), data2.getFloat(44), data2.getString(45), data2.getString(46), data2.getString(47), data2.getString(48), data2.getDouble(49)
-                        , data2.getDouble(50), data2.getString(51), data2.getString(52), data2.getString(53), data2.getString(54), data2.getString(55), data2.getString(56), data2.getString(57)
-                        , data2.getFloat(58), data2.getFloat(59), data2.getFloat(60), data2.getFloat(61), data2.getFloat(62), data2.getFloat(63)
-                        , data2.getFloat(64), data2.getFloat(65), data2.getFloat(66), data2.getFloat(67), data2.getFloat(68), data2.getFloat(69), data2.getString(70), data2.getFloat(71)
-                        , data2.getString(72), data2.getString(73), data2.getString(74), data2.getInt(75), data2.getInt(76), data2.getInt(77), data2.getInt(78)
-                )
-                listdata3.add(model)
-            }
+            dataList(listdata3, data)
             dbManager!!.deletegrop_biotope(grop_id)
+            Log.d("버드데이터", listdata3.size.toString())
+            Log.d("버드데이터", bio_data.GROP_ID.toString())
+
             for (i in 0..listdata3.size - 1) {
-                Log.d("버드데이터", listdata3[i].DOMIN)
                 addbiotope(attribute ,listdata3[i].INV_INDEX.toString(), listdata3[i].LU_GR_NUM.toString(), listdata3[i].LU_TY_RATE.toString()
                         , listdata3[i].STAND_H.toString(), listdata3[i].LC_GR_NUM.toString(), listdata3[i].LC_TY.toString()
                         , listdata3[i].TY_MARK.toString(), listdata3[i].GV_RATE.toString()
@@ -342,7 +327,7 @@ class DlgModiListActivity : Activity() {
                     , data2.getFloat(64), data2.getFloat(65), data2.getFloat(66), data2.getFloat(67), data2.getFloat(68), data2.getFloat(69), data2.getString(70), data2.getFloat(71)
                     , data2.getString(72), data2.getString(73), data2.getString(74), data2.getInt(75), data2.getInt(76), data2.getInt(77), data2.getInt(78)
             )
-            if (model.GROP_ID!=grop_id){
+            if (model.GROP_ID!=grop_id&&model.INV_PERSON ==u_name){
                 if (model.DOMIN!="null"||model.TRE_SPEC!=""||model.STRE_SPEC!=""||model.HER_SPEC!=""||model.SHR_SPEC!=""){
                     listdata.add(model)
                 }

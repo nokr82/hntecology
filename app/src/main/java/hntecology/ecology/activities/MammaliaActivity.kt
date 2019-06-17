@@ -348,7 +348,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 mamtreasyET.setText(mammal_attribute.TR_EASY)
                 mamtreasyreET.setText(mammal_attribute.TR_EASY_RE)
 
-                var codelist = mammal_attribute.MJ_ACT_PR!!.split(",")
+                var codelist = mammal_attribute.MJ_ACT_PR!!.split("_")
                 var code_content = ""
                 if (codelist.size>0){
                     for (i in 0..codelist.size-1){
@@ -681,7 +681,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         if (coordesET.text.isNotEmpty()) {
                             mammal_attribute.GPSLON_SEC = coordesET.text.toString().toFloat()
                         }
-                        mammal_attribute.MJ_ACT_PR =  r_code.joinToString(",")
+                        mammal_attribute.MJ_ACT_PR =  r_code.joinToString("_")
 
                         mammal_attribute.INV_TM = mammaltimeTV.text.toString()
 
@@ -1298,7 +1298,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             if (coordesET.text.isNotEmpty()) {
                 mammal_attribute.GPSLON_SEC = coordesET.text.toString().toFloat()
             }
-            mammal_attribute.MJ_ACT_PR =  r_code.joinToString(",")
+            mammal_attribute.MJ_ACT_PR =  r_code.joinToString("_")
             mammal_attribute.TR_EASY = mamtreasyET.text.toString()
             mammal_attribute.TR_EASY_RE = mamtreasyreET.text.toString()
 

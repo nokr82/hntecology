@@ -2476,7 +2476,10 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                 }
             }
 
+            Log.d("아니왜",herpage.toString())
+            Log.d("아니왜333",division.toString())
             if (division == false) {
+
                 var spec = etHER_SPECET.text.toString()
 
                 val fami = etHER_FAMIET.text.toString()
@@ -2510,14 +2513,14 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
             if (herpage > 1) {
 
-                etSHR_SPECET.visibility = View.VISIBLE
+                etHER_SPECET.visibility = View.VISIBLE
 
                 for (i in 0 until HerDatas.size) {
                     if (herpage == HerDatas.get(i).PAGE) {
-                        HerDatas.get(i).SPEC = etSHR_SPECET.text.toString()
+                        HerDatas.get(i).SPEC = etHER_SPECET.text.toString()
 
-                        HerDatas.get(i).SPEC2 = etSHR_FAMIET.text.toString()
-                        HerDatas.get(i).SPEC3 = etSHR_SCIENET.text.toString()
+                        HerDatas.get(i).SPEC2 = etHER_FAMIET.text.toString()
+                        HerDatas.get(i).SPEC3 = etHER_SCIENET.text.toString()
 
                         if (min6ET.text.isNotEmpty()) {
                             HerDatas.get(i).NS = min6ET.text.toString().toFloat()
@@ -2569,7 +2572,8 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                     division = true
                 }
             }
-
+            Log.d("아니왜444",herpage.toString())
+            Log.d("아니왜444",division.toString())
             if (division == false) {
                 var spec = etSHR_SPECET.text.toString()
 

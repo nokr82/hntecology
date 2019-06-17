@@ -77,7 +77,7 @@ class DlgPointModiListActivity : Activity() {
 
     var lat = ""
     var log = ""
-
+    var u_name = ""
     var GPSLAT_DEG_RE = ""
     var GPSLAT_MIN_RE = ""
     var GPSLAT_SEC_RE = ""
@@ -95,7 +95,7 @@ class DlgPointModiListActivity : Activity() {
         dbManager = DataBaseHelper(this)
 
         val db = dbManager!!.createDataBase();
-
+        u_name = PrefUtils.getStringPreference(context, "name");
         val intent = getIntent()
 
         DlgHeight = intent.getFloatExtra("DlgHeight", 430F);
@@ -175,8 +175,8 @@ class DlgPointModiListActivity : Activity() {
 
         val dataList: Array<String> = arrayOf("$table_name.*", "min(id) as minId");
         val dataList2: Array<String> = arrayOf("*");
-        val data1 = db.query(table_name, dataList, null, null, "GROP_ID", null, "minId asc", null);
-        val data2 = db.query(table_name, dataList2, null, null, null, null, "id asc", null);
+        val data1 = db.query(table_name, dataList, "INV_PERSON = '$u_name'", null, "GROP_ID", null, "minId asc", null);
+        val data2 = db.query(table_name, dataList2, "INV_PERSON = '$u_name'", null, null, null, "id asc", null);
         if (table_name == "birdsAttribute") {
             dataList(listdata1, data1)
             dataList(listdata2, data2)

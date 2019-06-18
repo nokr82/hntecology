@@ -280,7 +280,7 @@ class StockActivity : Activity() {
 //            SET_FRTPCD_CODE = stockMap.PLANT_NM.toString()
 //                koftrTV.text = stockMap.PLANT_NM
             koftrTV.text = stockMap.KOFTR_GROUP_CD
-
+            plant_nmTV.text = stockMap.PLANT_NM
 
             Log.d("식물종",stockMap.KOFTR_GROUP_CD)
             /*val codedata = db!!.query("Dropsygroup", dataList, "CODE = '${stockMap.PLANT_NM}'", null, null, null, "", null)
@@ -384,6 +384,7 @@ class StockActivity : Activity() {
                 }
 //                SET_FRTPCD_CODE = stockMap.PLANT_NM.toString()
                 koftrTV.text = stockMap.KOFTR_GROUP_CD
+                plant_nmTV.text = stockMap.PLANT_NM
 
                 val codedata = db!!.query("Dropsygroup", dataList, "CODE = '${stockMap.KOFTR_GROUP_CD}'", null, null, null, "", null)
                 while (codedata.moveToNext()) {
@@ -431,6 +432,8 @@ class StockActivity : Activity() {
                 DNST_CD_CODE = stockMap.DNST_CD.toString()
 //                dnstTV.text = stockMap.DNST_CD
 
+
+                plant_nmTV.setText(stockMap.PLANT_NM)
                 heightET.setText(stockMap.HEIGHT)
                 map_lableET.setText(stockMap.MAP_LABEL)
 //                map_lable2ET.setText(stockMap.MAP_LABEL2)
@@ -560,7 +563,7 @@ class StockActivity : Activity() {
                         stockMap.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
                         stockMap.CURRENT_TM = Utils.current_tm()
                         stockMap.PLANT_CD = ""
-                        stockMap.PLANT_NM = ""
+                        stockMap.PLANT_NM = plant_nmTV.text.toString()
                         val prj = prjnameET.text.toString()
                         if (prj == prjname){
                             stockMap.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
@@ -686,7 +689,7 @@ class StockActivity : Activity() {
             stockMap.INV_DT =  invdtTV.text.toString()
             stockMap.INV_TM = invtmTV.text.toString()
             stockMap.PLANT_CD = ""
-            stockMap.PLANT_NM = ""
+            stockMap.PLANT_NM =plant_nmTV.text.toString()
 
             stockMap.NUM = numTV.text.toString().toInt()
             stockMap.FRTP_CD = FRTP_CD_CODE

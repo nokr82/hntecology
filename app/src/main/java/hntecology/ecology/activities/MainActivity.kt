@@ -5123,7 +5123,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 if (Utils.getString(metadata, "KOFTR_GROU") != "null") {
                     domin_name += Utils.getString(metadata, "KOFTR_GROU")
                 }
-
+                if (Utils.getString(metadata, "PLANT_NM") != "null") {
+                    domin_name += "\n"+Utils.getString(metadata, "PLANT_NM")
+                }
 
                 // label
                 if (do_num == "") {

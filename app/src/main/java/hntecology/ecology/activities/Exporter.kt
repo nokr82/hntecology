@@ -52,7 +52,7 @@ object Exporter {
     class ColumnDef constructor(columnName: String, columnType: Int, columnValue: Any?) {
         val columnName = columnName
         val columnType = columnType
-        val columnValue: Any? = columnValue
+        var columnValue: Any? = columnValue
     }
 
     fun export(exportItems: ArrayList<ExportItem>, lftday: String, rgtday: String, u_name: String) {
@@ -329,11 +329,14 @@ object Exporter {
                 // Set the attributes using the values from the delimited text file
                 for (columnDef in exportItem.columnDefs) {
                     if (columnDef.columnValue is Double) {
-                        feature.SetField(columnDef.columnName, columnDef.columnValue)
+                        feature.SetField(columnDef.columnName, columnDef.columnValue as Double)
                     } else if (columnDef.columnValue is Int) {
-                        feature.SetField(columnDef.columnName, columnDef.columnValue)
+                        feature.SetField(columnDef.columnName, columnDef.columnValue as Int)
                     } else if (columnDef.columnValue is String) {
-                        feature.SetField(columnDef.columnName, columnDef.columnValue)
+                        if (columnDef.columnValue=="null"){
+                            columnDef.columnValue = ""
+                        }
+                        feature.SetField(columnDef.columnName, columnDef.columnValue as String)
                     }
 
                     println("-------export잼${columnDef.columnName} : ${columnDef.columnValue}")
@@ -373,11 +376,14 @@ object Exporter {
                 // Set the attributes using the values from the delimited text file
                 for (columnDef in exportPointItem.columnDefs) {
                     if (columnDef.columnValue is Double) {
-                        feature.SetField(columnDef.columnName, columnDef.columnValue)
+                        feature.SetField(columnDef.columnName, columnDef.columnValue as Double)
                     } else if (columnDef.columnValue is Int) {
-                        feature.SetField(columnDef.columnName, columnDef.columnValue)
+                        feature.SetField(columnDef.columnName, columnDef.columnValue as Int)
                     } else if (columnDef.columnValue is String) {
-                        feature.SetField(columnDef.columnName, columnDef.columnValue)
+                        if (columnDef.columnValue=="null"){
+                            columnDef.columnValue = ""
+                        }
+                        feature.SetField(columnDef.columnName, columnDef.columnValue as String)
                     }
                     println("-------export구${columnDef.columnName} : ${columnDef.columnValue}")
 
@@ -408,11 +414,14 @@ object Exporter {
             // Set the attributes using the values from the delimited text file
             for (columnDef in exportLineItems.first().columnDefs) {
                 if (columnDef.columnValue is Double) {
-                    feature.SetField(columnDef.columnName, columnDef.columnValue)
+                    feature.SetField(columnDef.columnName, columnDef.columnValue as Double)
                 } else if (columnDef.columnValue is Int) {
-                    feature.SetField(columnDef.columnName, columnDef.columnValue)
+                    feature.SetField(columnDef.columnName, columnDef.columnValue as Int)
                 } else if (columnDef.columnValue is String) {
-                    feature.SetField(columnDef.columnName, columnDef.columnValue)
+                    if (columnDef.columnValue=="null"){
+                        columnDef.columnValue = ""
+                    }
+                    feature.SetField(columnDef.columnName, columnDef.columnValue as String)
                 }
             }
 

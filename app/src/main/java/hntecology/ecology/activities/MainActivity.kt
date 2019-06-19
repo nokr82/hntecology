@@ -6883,7 +6883,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 val grop_id = biotopeDatas.get(i).GROP_ID
 
+
+
                 val biotope_attribute = biotopeDatas.get(i)
+
+
 
                 var add = false
                 var idx = 0

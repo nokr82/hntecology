@@ -25,10 +25,7 @@ import hntecology.ecology.R
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
-import hntecology.ecology.model.Base
-import hntecology.ecology.model.StockMap
-import hntecology.ecology.model.StockMapSelect
-import hntecology.ecology.model.Vegetation
+import hntecology.ecology.model.*
 import kotlinx.android.synthetic.main.activity_stock.*
 import java.io.File
 import java.io.IOException
@@ -44,12 +41,18 @@ class StockActivity : Activity() {
     var keyId: String? = null;
     var chkdata: Boolean = false;
     var basechkdata: Boolean = false
+    private lateinit var listdata1 : java.util.ArrayList<Koftr_group>
+
+    private var copyadapterData :ArrayList<Koftr_group> = ArrayList<Koftr_group>()
 
     var GPS_LAT: String = ""
     var GPS_LON: String = ""
 
     var lat: String = ""
     var log: String = ""
+
+    var code = ""
+
 
     var polygonid: String? = null
 
@@ -99,6 +102,8 @@ class StockActivity : Activity() {
 
         addSelectItem()
 
+
+
         invdtTV.setText(Utils.todayStr())
         invtmTV.setText(Utils.timeStr())
 
@@ -111,6 +116,16 @@ class StockActivity : Activity() {
 
         dbManager = DataBaseHelper(context);
         db = dbManager!!.createDataBase();
+
+
+
+        listdata1 = java.util.ArrayList()
+        val dataList2:Array<String> = arrayOf("*");
+        val data2 = db!!.query("KoftrGroup", dataList2, null, null, null, null, "code_name", null);
+        setDataList(listdata1,data2);
+        copyadapterData.addAll(listdata1)
+
+
 
         var today = Utils.todayStr();
 
@@ -279,7 +294,16 @@ class StockActivity : Activity() {
 //            }
 //            SET_FRTPCD_CODE = stockMap.PLANT_NM.toString()
 //                koftrTV.text = stockMap.PLANT_NM
-            koftrTV.text = stockMap.KOFTR_GROUP_CD
+
+
+            for (i in 0 until copyadapterData.size){
+                if (copyadapterData[i].code==stockMap.KOFTR_GROUP_CD!!.toInt()){
+                    koftrTV.text =copyadapterData[i].code_name
+                    break
+                }
+            }
+            code = stockMap.KOFTR_GROUP_CD.toString()
+
             plant_nmTV.text = stockMap.PLANT_NM
 
             Log.d("식물종",stockMap.KOFTR_GROUP_CD)
@@ -377,13 +401,13 @@ class StockActivity : Activity() {
                 FROR_CD_CODE = stockMap.FRTP_CD.toString()
 //                frtpcdTV.text = stockMap.FRTP_CD
 
-                for (i in 0 until frtpcddata.size){
-                    if (stockMap.KOFTR_GROUP_CD == frtpcddata.get(i).code){
-                        koftrTV.text = frtpcddata.get(i).Title
+                for (i in 0 until copyadapterData.size){
+                    if (copyadapterData[i].code==stockMap.KOFTR_GROUP_CD!!.toInt()){
+                        koftrTV.text =copyadapterData[i].code_name
+                        break
                     }
                 }
-//                SET_FRTPCD_CODE = stockMap.PLANT_NM.toString()
-                koftrTV.text = stockMap.KOFTR_GROUP_CD
+                code = stockMap.KOFTR_GROUP_CD.toString()
                 plant_nmTV.text = stockMap.PLANT_NM
 
                 val codedata = db!!.query("Dropsygroup", dataList, "CODE = '${stockMap.KOFTR_GROUP_CD}'", null, null, null, "", null)
@@ -455,8 +479,6 @@ class StockActivity : Activity() {
 
         koftrTV.setOnClickListener {
             val intent = Intent(context, DlgStockMapActivity::class.java)
-            intent.putExtra("title", "수종그룹코드 선택")
-            intent.putExtra("table", "Vegetation")
             intent.putExtra("DlgHeight", 600f);
             startActivityForResult(intent, SET_FRTPCD);
         }
@@ -590,9 +612,9 @@ class StockActivity : Activity() {
                         stockMap.NUM = numTV.text.toString().toInt()
                         stockMap.FRTP_CD = FRTP_CD_CODE
 //                        stockMap.PLANT_NM = SET_FRTPCD_CODE
-                        stockMap.KOFTR_GROUP_CD = koftrTV.text.toString()
+                        stockMap.KOFTR_GROUP_CD = code
                         if (koftrET.text.toString() != "" && koftrET.text.toString() != null){
-                            stockMap.KOFTR_GROUP_CD = koftrET.text.toString()
+                            stockMap.KOFTR_GROUP_CD =code
                         }
                         stockMap.STORUNST_CD = STORUNST_CD_CODE
                         stockMap.FROR_CD = FROR_CD_CODE
@@ -694,9 +716,9 @@ class StockActivity : Activity() {
             stockMap.NUM = numTV.text.toString().toInt()
             stockMap.FRTP_CD = FRTP_CD_CODE
 //            stockMap.KOFTR_GROUP_CD = SET_FRTPCD_CODE
-            stockMap.KOFTR_GROUP_CD = koftrTV.text.toString()
+            stockMap.KOFTR_GROUP_CD = code
             if (koftrET.text.toString() != "" && koftrET.text.toString() != null){
-                stockMap.KOFTR_GROUP_CD = koftrET.text.toString()
+                stockMap.KOFTR_GROUP_CD = code
             }
             stockMap.STORUNST_CD = STORUNST_CD_CODE
             stockMap.FROR_CD = FROR_CD_CODE
@@ -960,6 +982,7 @@ class StockActivity : Activity() {
                 SET_FRTPCD -> {
                     if (data!!.getStringExtra("name") != null) {
                         val name = data!!.getStringExtra("name")
+                        code = data!!.getStringExtra("code")
                         koftrTV.setText(name)
                         if (name == "SP(미동정)"){
                             koftrLL.visibility = View.VISIBLE
@@ -1347,6 +1370,18 @@ class StockActivity : Activity() {
         return stockMap
     }
 
+    fun setDataList(listdata: java.util.ArrayList<Koftr_group>, data: Cursor){
 
+        while (data.moveToNext()){
+
+            var model: Koftr_group;
+
+            model = Koftr_group(data.getInt(0), data.getInt(1), data.getString(2), data.getString(3));
+
+
+            listdata.add(model)
+        }
+
+    }
 
 }

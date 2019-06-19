@@ -11,32 +11,29 @@ import android.text.TextWatcher
 import android.widget.ListView
 import hntecology.ecology.R
 import hntecology.ecology.adapter.DlgFloraAdapter
+import hntecology.ecology.adapter.DlgKoftrAdapter
 import hntecology.ecology.adapter.DlgStokeMapAdapter1
 import hntecology.ecology.adapter.DlgStokeMapAdapter2
 import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.Jaso
 import hntecology.ecology.base.Utils
-import hntecology.ecology.model.Endangered
-import hntecology.ecology.model.Floras
-import hntecology.ecology.model.StockMapSelect
-import hntecology.ecology.model.Vegetation
+import hntecology.ecology.model.*
 import kotlinx.android.synthetic.main.activity_dlg_stock_map.*
 
 class DlgStockMapActivity : Activity() {
 
     private lateinit var context: Context;
 
-    private var copyadapterData :ArrayList<Floras> = ArrayList<Floras>()
 
     var tableName:String = ""
     var titleName:String=""
     var DlgHeight:Float=430F
 
     var chkData = false
-
+    private var copyadapterData :ArrayList<Koftr_group> = ArrayList<Koftr_group>()
     private lateinit var listView1: ListView
-    private lateinit var listdata1 : java.util.ArrayList<Floras>
-    private lateinit var listAdapter1: DlgFloraAdapter;
+    private lateinit var listdata1 : java.util.ArrayList<Koftr_group>
+    private lateinit var listAdapter1: DlgKoftrAdapter;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,54 +44,31 @@ class DlgStockMapActivity : Activity() {
         val dataBaseHelper = DataBaseHelper(context);
         val db = dataBaseHelper.createDataBase();
 
-        tableName = intent.getStringExtra("table");
-        titleName = intent.getStringExtra("title")
-        DlgHeight = intent.getFloatExtra("DlgHeight",430F);
+
 
         window.setLayout(Utils.dpToPx(800F).toInt(), Utils.dpToPx(DlgHeight).toInt());
         this.setFinishOnTouchOutside(true);
 
         listView1 = findViewById(R.id.listLV)
         listdata1 = java.util.ArrayList()
-        listAdapter1 = DlgFloraAdapter(context,listdata1)
+        listAdapter1 = DlgKoftrAdapter(context,listdata1)
         listView1.adapter = listAdapter1
         val dataList:Array<String> = arrayOf("*");
-        val data = db!!.query("vascular_plant", dataList, null, null, null, null, "name_kr", null);
+        val data = db!!.query("KoftrGroup", dataList, null, null, null, null, "code_name", null);
         setDataList(listdata1,data);
         copyadapterData.addAll(listdata1)
 
         listView1.setOnItemClickListener { parent, view, position, id ->
 
             var data = listdata1.get(position)
-            var name = data.name_kr
-            var family_name = data.Family_name
-            var zoological = data.zoological
+            var name = data.code_name
+            var code = data.code
 
-            val dataEndangeredList:Array<String> = arrayOf("ID","TITLE","SCIENTIFICNAME","CLASS","DANGERCLASS","CONTRYCLASS");
-
-            val EndangeredData = db!!.query("ENDANGERED", dataEndangeredList, "TITLE = '$name'", null, null, null, null, null);
-
-            while (EndangeredData.moveToNext()) {
-
-                var endangered = Endangered(EndangeredData.getString(0),EndangeredData.getString(1),EndangeredData.getString(2),EndangeredData.getString(3),EndangeredData.getString(4),EndangeredData.getString(5))
-
-                chkData = true
-
-            }
-
-            if(chkData){
-                val intent = Intent();
-                intent.putExtra("name",name + "(멸종 위기)")
-                setResult(RESULT_OK, intent);
-                finish()
-            }else {
-                val intent = Intent();
-                intent.putExtra("name",name)
-                setResult(RESULT_OK, intent);
-                finish()
-            }
-
-            EndangeredData.close()
+            val intent = Intent();
+            intent.putExtra("name",name)
+            intent.putExtra("code",code.toString())
+            setResult(RESULT_OK, intent);
+            finish()
 
         }
 
@@ -114,15 +88,13 @@ class DlgStockMapActivity : Activity() {
 
     }
 
-    fun setDataList(listdata: java.util.ArrayList<Floras>,data: Cursor){
+    fun setDataList(listdata: java.util.ArrayList<Koftr_group>,data: Cursor){
 
         while (data.moveToNext()){
 
-            var model: Floras;
+            var model: Koftr_group;
 
-            model = Floras(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getString(7), data.getString(8), data.getString(9), data.getString(10)
-                    , data.getString(11), data.getString(12), data.getString(13), data.getString(14), data.getString(15), data.getString(16), data.getString(17),  data.getString(18), data.getString(19),data.getString(20),
-                    data.getString(21),data.getString(22),data.getString(23),data.getString(24),data.getString(25),data.getString(26),false);
+            model = Koftr_group(data.getInt(0), data.getInt(1), data.getString(2), data.getString(3));
 
 
             listdata.add(model)
@@ -143,7 +115,7 @@ class DlgStockMapActivity : Activity() {
 
             for (i in 0..copyadapterData.size-1){
 
-                val name =  Utils.getString(copyadapterData.get(i).name_kr, copyadapterData.get(i).name_kr);
+                val name =  Utils.getString(copyadapterData.get(i).code_name, copyadapterData.get(i).code_name);
 
                 names.add(name)
 

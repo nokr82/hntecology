@@ -246,6 +246,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     private lateinit var locationCallback: LocationCallback
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+
+    private lateinit var listdata1 : java.util.ArrayList<Koftr_group>
+    private var copyadapterData : java.util.ArrayList<Koftr_group> = java.util.ArrayList<Koftr_group>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -260,6 +264,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         prjname = PrefUtils.getStringPreference(context, "prjname");
         u_name = PrefUtils.getStringPreference(context, "name");
+
+        listdata1 = java.util.ArrayList()
+        val dataList2:Array<String> = arrayOf("*");
+        val data2 = db!!.query("KoftrGroup", dataList2, null, null, null, null, "code_name", null);
+        setkoftr(listdata1,data2);
+        copyadapterData.addAll(listdata1)
 
 
 
@@ -5123,7 +5133,14 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     domin_name += Utils.getString(metadata, "DOMIN")
                 }
                 if (Utils.getString(metadata, "KOFTR_GROU") != "null") {
-                    domin_name += Utils.getString(metadata, "KOFTR_GROU")
+
+                    for (i in 0 until copyadapterData.size){
+                        if (copyadapterData[i].code==Utils.getInt(metadata, "KOFTR_GROU")){
+                            domin_name += copyadapterData[i].code_name
+                            break
+                        }
+                    }
+
                 }
                 if (Utils.getString(metadata, "PLANT_NM") != "null") {
                     domin_name += "\n"+Utils.getString(metadata, "PLANT_NM")
@@ -5135,6 +5152,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 }
                 var labelMarker = PolygonUtils.drawTextOnPolygon(context, do_num, polygonOptions, googleMap)
                 var labelMarker2 = PolygonUtils.drawTextOnPolygon(context, domin_name, polygonOptions, googleMap)
+                labelMarker2.tag = Utils.getString(metadata, "GROP_ID")
                 if (visible_donum != -1) {
                     labelMarker.isVisible = true
                 } else {
@@ -6779,8 +6797,14 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     var polygon: Polygon = googleMap.addPolygon(polygonOptions)
                     polygon.zIndex = 1.0f
-
-                    export_marker(stockMap.GROP_ID.toString(), stockMap.KOFTR_GROUP_CD.toString(), polygonOptions)
+                    var koftr = ""
+                    for (i in 0 until copyadapterData.size){
+                        if (copyadapterData[i].code==stockMap.KOFTR_GROUP_CD!!.toInt()){
+                            koftr = copyadapterData[i].code_name.toString()
+                            break
+                        }
+                    }
+                    export_marker(stockMap.GROP_ID.toString(), koftr, polygonOptions)
 
                     var exporter = Exporter.ExportItem(LAYER_STOCKMAP, STOKEMAP, polygon, points)
                     polygon.remove()
@@ -10795,4 +10819,21 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 , data.getInt(46), data.getInt(47), data.getFloat(48), data.getString(49), data.getString(50), data.getString(51), data.getString(52))
         return fish_attribute
     }
+
+    fun setkoftr(listdata: java.util.ArrayList<Koftr_group>, data: Cursor){
+
+        while (data.moveToNext()){
+
+            var model: Koftr_group;
+
+            model = Koftr_group(data.getInt(0), data.getInt(1), data.getString(2), data.getString(3));
+
+
+            listdata.add(model)
+        }
+
+    }
+
+
+
 }

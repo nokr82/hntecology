@@ -297,9 +297,13 @@ class StockActivity : Activity() {
 
 
             for (i in 0 until copyadapterData.size){
-                if (copyadapterData[i].code==stockMap.KOFTR_GROUP_CD!!.toInt()){
-                    koftrTV.text =copyadapterData[i].code_name
-                    break
+                try {
+                    if (stockMap.KOFTR_GROUP_CD!!.isNotEmpty() && copyadapterData[i].code == stockMap.KOFTR_GROUP_CD!!.toInt()) {
+                        koftrTV.text = copyadapterData[i].code_name
+                        break
+                    }
+                } catch (e:Exception) {
+
                 }
             }
             code = stockMap.KOFTR_GROUP_CD.toString()

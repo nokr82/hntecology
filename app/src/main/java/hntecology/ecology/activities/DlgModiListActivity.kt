@@ -44,6 +44,8 @@ class DlgModiListActivity : Activity() {
     var ufid = ""
     var lat: String = ""
     var log: String = ""
+
+    var conf_mod = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dlg_modi_list)
@@ -60,6 +62,18 @@ class DlgModiListActivity : Activity() {
 
         window.setLayout(Utils.dpToPx(800F).toInt(), Utils.dpToPx(DlgHeight).toInt());
         this.setFinishOnTouchOutside(true);
+
+        if (intent.getStringExtra("conf_mod") != null) {
+            conf_mod = intent.getStringExtra("conf_mod")
+
+        }
+        println("앙수정띠~~~~~~~~~$conf_mod")
+        if (conf_mod == ""){
+            conf_mod = "N"
+        }else{
+            conf_mod = "M"
+        }
+
 
         if (intent.getStringExtra("latitude") != null) {
             lat = intent.getStringExtra("latitude")
@@ -242,7 +256,7 @@ class DlgModiListActivity : Activity() {
         biotope_attribute.GPS_LAT = GPS_LAT.toString().toDouble()
         biotope_attribute.GPS_LON = GPS_LON.toString().toDouble()
 
-        biotope_attribute.CONF_MOD = "N"
+        biotope_attribute.CONF_MOD = conf_mod
 
         biotope_attribute.LANDUSE = LANDUSE
         biotope_attribute.GEOM = geom

@@ -3818,6 +3818,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             if (modichk){
                                                 intent = Intent(this, DlgModiListActivity::class.java)
                                                 intent!!.putExtra("ufid", UFID.toString())
+                                                intent!!.putExtra("conf_mod", CONF_MOD.toString())
                                                 Log.d("아이디",UFID)
                                             }
                                             intent!!.putExtra("biotopedata", data)
@@ -3851,6 +3852,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                     if (modichk) {
                                         intent = Intent(this, DlgModiListActivity::class.java)
                                         intent!!.putExtra("geom", geom)
+                                        intent!!.putExtra("conf_mod", biotopedataArray.get(0).CONF_MOD)
                                     }
 
                                     intent.putExtra("title", "비오톱")

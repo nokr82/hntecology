@@ -6,180 +6,137 @@ import android.content.Intent
 import android.database.Cursor
 import android.os.Bundle
 import android.text.TextWatcher
-import android.widget.AdapterView
 import android.widget.ListView
 import hntecology.ecology.R
-import hntecology.ecology.adapter.DlgPlantAdapter
-import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.Vegetation
-import kotlinx.android.synthetic.main.activity_dlgvegetation.*
 import java.util.ArrayList
 import android.text.Editable
-import hntecology.ecology.adapter.DlgVegeAdapter2
+import hntecology.ecology.adapter.DlgVegetationAdapter
+import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.Jaso
-import hntecology.ecology.model.Endangered
-import hntecology.ecology.model.Vascular_plant
+import kotlinx.android.synthetic.main.activity_dlg_stock_map.*
 
 
 class DlgVegetationActivity : Activity() {
 
-    private lateinit var context: Context;
+        private lateinit var context: Context;
 
-    private lateinit var listView1: ListView
 
-    private lateinit var listdata1 : ArrayList<Vegetation>
-    private lateinit var listAdapte1: DlgVegeAdapter2;
+        var tableName:String = ""
+        var titleName:String=""
+        var DlgHeight:Float=430F
 
-    private lateinit var copylistdata1 : ArrayList<Vegetation>
+        var chkData = false
+        private var copyadapterData :ArrayList<Vegetation> = ArrayList<Vegetation>()
+        private lateinit var listView1: ListView
+        private lateinit var listdata1 : java.util.ArrayList<Vegetation>
+        private lateinit var listAdapter1: DlgVegetationAdapter;
 
-    val dataBaseHelper = DataBaseHelper(this);
-    val db = dataBaseHelper.createDataBase()
-    var tableName:String = ""
-    var titleName:String=""
-    var DlgHeight:Float=430F
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_dlg_stock_map)
 
-    var chkData = false
+            context = this;
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dlgvegetation)
+            val dataBaseHelper = DataBaseHelper(context);
+            val db = dataBaseHelper.createDataBase();
 
-        context = applicationContext;
 
-        val dbManager: DataBaseHelper = DataBaseHelper(this)
 
-        val db = dbManager.createDataBase();
+            window.setLayout(Utils.dpToPx(800F).toInt(), Utils.dpToPx(DlgHeight).toInt());
+            this.setFinishOnTouchOutside(true);
 
-        val intent = getIntent()
+            listView1 = findViewById(R.id.listLV)
+            listdata1 = java.util.ArrayList()
+            listAdapter1 = DlgVegetationAdapter(context,listdata1)
+            listView1.adapter = listAdapter1
+            val dataList:Array<String> = arrayOf("*");
+            val data = db!!.query("Vegetation", dataList, null, null, null, null, "CORRESPONDINGNAME", null);
+            setDataList(listdata1,data);
+            copyadapterData.addAll(listdata1)
 
-        tableName = intent.getStringExtra("table");
-        titleName = intent.getStringExtra("title")
-        DlgHeight = intent.getFloatExtra("DlgHeight",430F);
+            listView1.setOnItemClickListener { parent, view, position, id ->
 
-        window.setLayout(Utils.dpToPx(800F).toInt(), Utils.dpToPx(DlgHeight).toInt());
-        this.setFinishOnTouchOutside(true);
+                var data = listdata1.get(position)
+                var name = data.CORRESPONDINGNAME
+                var code = data.SIGN
+                var cate = data.CATEGORY
+                if (cate == "식재림"){
+                    name += cate
+                }
 
-        dlgTitleTV.setText(titleName)
 
-        val dataList:Array<String> = arrayOf("CATEGORYCODE","CATEGORY","CLASSCODE","SIGN","CORRESPONDINGNAME");
-
-        val data1=  db.query(tableName,dataList,null,null,null,null,null,null);
-
-        listView1 = findViewById(R.id.list_view1)
-
-        listdata1 = ArrayList()
-
-        copylistdata1 = ArrayList()
-
-        listAdapte1 = DlgVegeAdapter2(context, listdata1);
-
-        listView1.adapter = listAdapte1
-
-        dataList(listdata1,data1);
-        copylistdata1.addAll(listdata1)
-
-        leftsearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
-
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-
-            }
-
-            override fun afterTextChanged(editable: Editable) {
-                val text = leftsearch.text.toString()
-                leftSearch(text)
-            }
-        });
-
-        listView1.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-
-            var data =  listAdapte1.getItem(position)
-
-            listAdapte1.setItemSelect(position)
-
-            var name = data.CORRESPONDINGNAME
-
-            val dataEndangeredList:Array<String> = arrayOf("ID","TITLE","SCIENTIFICNAME","CLASS","DANGERCLASS","CONTRYCLASS");
-
-            val EndangeredData = db.query("ENDANGERED", dataEndangeredList, "TITLE = '$name'", null, null, null, null, null);
-
-            while (EndangeredData.moveToNext()) {
-
-                var endangered = Endangered(EndangeredData.getString(0),EndangeredData.getString(1),EndangeredData.getString(2),EndangeredData.getString(3),EndangeredData.getString(4),EndangeredData.getString(5))
-
-                chkData = true
-
-            }
-
-            if(chkData){
                 val intent = Intent();
                 intent.putExtra("name",name)
+                intent.putExtra("code",code.toString())
                 setResult(RESULT_OK, intent);
                 finish()
+
+            }
+
+            searchET.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+
+                override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+                }
+
+                override fun afterTextChanged(editable: Editable) {
+                    val text = searchET.text.toString()
+                    search(text)
+                }
+            });
+
+
+        }
+
+        fun setDataList(listdata: java.util.ArrayList<Vegetation>, data: Cursor){
+
+            while (data.moveToNext()){
+
+                var model: Vegetation;
+
+                model = Vegetation(data.getInt(0), data.getString(1), data.getInt(2), data.getString(3), data.getString(4), false)
+
+
+                listdata.add(model)
+            }
+
+        }
+
+        fun search(charText: String){
+            listdata1.clear()
+
+            if(charText.length == 0){
+
+                listdata1.addAll(copyadapterData)
+
             }else {
-                val intent = Intent();
-                intent.putExtra("name",name)
-                setResult(RESULT_OK, intent);
-                finish()
-            }
 
-            EndangeredData.close()
+                var names:ArrayList<String> = ArrayList<String>()
 
-        }
+                for (i in 0..copyadapterData.size-1){
 
-    }
+                    val name =  Utils.getString(copyadapterData.get(i).CORRESPONDINGNAME, copyadapterData.get(i).CORRESPONDINGNAME);
 
-    fun dataList(listdata:ArrayList<Vegetation>, data: Cursor) {
+                    names.add(name)
 
-        while (data.moveToNext()){
+                }
 
-            var model : Vegetation;
+                for(i in 0..names.size-1){
 
-            model = Vegetation(data.getInt(0),data.getString(1),data.getInt(2),data.getString(3),data.getString(4),false);
+                    if (Jaso.startsWith(names.get(i), charText)
+                            || names.get(i).toLowerCase().contains(charText)) {
+                        listdata1.add(copyadapterData.get(i))
+                    }
 
-            listdata.add(model)
-
-        }
-    }
-
-    fun leftSearch(charText: String){
-        for(i in 0..listdata1.size-1){
-            listdata1.get(i).chkSelect = false
-        }
-
-        listdata1.clear()
-
-        if(charText.length == 0){
-
-            listdata1.addAll(copylistdata1)
-
-
-        }else {
-
-            var names:ArrayList<String> = ArrayList<String>()
-
-            for (i in 0..copylistdata1.size-1){
-
-                val name =  Utils.getString(copylistdata1.get(i).CORRESPONDINGNAME, copylistdata1.get(i).CORRESPONDINGNAME);
-
-                names.add(name)
-
-            }
-
-            for (i in 0..copylistdata1.size-1){
-
-                if (Jaso.startsWith(copylistdata1.get(i).CORRESPONDINGNAME!!, charText)
-                        ||copylistdata1.get(i).CORRESPONDINGNAME!!.toLowerCase().contains(charText)) {
-                    listdata1.add(copylistdata1.get(i))
                 }
 
             }
 
+            listAdapter1.notifyDataSetChanged()
+
         }
-
-        listAdapte1.notifyDataSetChanged()
-
-    }
 
 }

@@ -54,8 +54,12 @@ class StockActivity : Activity() {
     var code = ""
 
 
+    var plant_code = ""
+
+
     var polygonid: String? = null
 
+    val SET_PLANT = 505
     val FRTP_CD = 100
     val SET_FRTPCD = 101
     val STORUNST_CD = 102
@@ -405,12 +409,16 @@ class StockActivity : Activity() {
                 FROR_CD_CODE = stockMap.FRTP_CD.toString()
 //                frtpcdTV.text = stockMap.FRTP_CD
 
-                for (i in 0 until copyadapterData.size){
-                    if (copyadapterData[i].code==stockMap.KOFTR_GROUP_CD!!.toInt()){
-                        koftrTV.text =copyadapterData[i].code_name
-                        break
+                if (stockMap.KOFTR_GROUP_CD != ""){
+                    for (i in 0 until copyadapterData.size){
+                        if (copyadapterData[i].code==stockMap.KOFTR_GROUP_CD!!.toInt()){
+                            koftrTV.text =copyadapterData[i].code_name
+                            break
+                        }
                     }
                 }
+
+
                 code = stockMap.KOFTR_GROUP_CD.toString()
                 plant_nmTV.text = stockMap.PLANT_NM
 
@@ -481,11 +489,19 @@ class StockActivity : Activity() {
             startActivityForResult(intent, FRTP_CD);
         }
 
-        koftrTV.setOnClickListener {
-            val intent = Intent(context, DlgStockMapActivity::class.java)
+//        koftrTV.setOnClickListener {
+//            val intent = Intent(context, DlgStockMapActivity::class.java)
+//            intent.putExtra("DlgHeight", 600f);
+//            startActivityForResult(intent, SET_FRTPCD);
+//        }
+
+        plant_nmTV.setOnClickListener {
+            val intent = Intent(context, DlgVegetationActivity::class.java)
             intent.putExtra("DlgHeight", 600f);
-            startActivityForResult(intent, SET_FRTPCD);
+            startActivityForResult(intent, SET_PLANT);
         }
+
+
 
         storunstTV.setOnClickListener {
             val intent = Intent(context, DlgStockSelectActivity::class.java)
@@ -588,7 +604,7 @@ class StockActivity : Activity() {
                         stockMap.GROP_ID = keyId
                         stockMap.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
                         stockMap.CURRENT_TM = Utils.current_tm()
-                        stockMap.PLANT_CD = ""
+                        stockMap.PLANT_CD = plant_code
                         stockMap.PLANT_NM = plant_nmTV.text.toString()
                         val prj = prjnameET.text.toString()
                         if (prj == prjname){
@@ -714,7 +730,7 @@ class StockActivity : Activity() {
             stockMap.INV_PERSON = invpersonTV.text.toString()
             stockMap.INV_DT =  invdtTV.text.toString()
             stockMap.INV_TM = invtmTV.text.toString()
-            stockMap.PLANT_CD = ""
+            stockMap.PLANT_CD = plant_code
             stockMap.PLANT_NM =plant_nmTV.text.toString()
 
             stockMap.NUM = numTV.text.toString().toInt()
@@ -744,7 +760,7 @@ class StockActivity : Activity() {
             }else{
                 stockMap.CONF_MOD = "N"
             }
-            stockMap.GEOM = lat.toString() + " " + log.toString()
+            stockMap.GEOM = geom
             Log.d("스톡",stockMap.GEOM.toString())
             if (stockMap.LANDUSE != null || stockMap.LANDUSE != ""){
 
@@ -783,6 +799,7 @@ class StockActivity : Activity() {
 
             var intent = Intent()
             intent.putExtra("export",70)
+            intent.putExtra("geom",geom)
             setResult(RESULT_OK, intent)
 
             clear()
@@ -943,6 +960,8 @@ class StockActivity : Activity() {
         dmclscdTV.text = ""
         agclsTV.text = ""
         dnstTV.text = ""
+        plant_code = ""
+        plant_nmTV.text = ""
         heightET.setText("")
         map_lableET.setText("")
 //        map_lable2ET.setText("")
@@ -982,7 +1001,14 @@ class StockActivity : Activity() {
 //                        setCode()
                     }
                 }
+                SET_PLANT -> {
+                    if (data!!.getStringExtra("name") != null) {
+                        val name = data!!.getStringExtra("name")
+                        plant_code = data!!.getStringExtra("code")
+                        plant_nmTV.setText(name)
 
+                    }
+                }
                 SET_FRTPCD -> {
                     if (data!!.getStringExtra("name") != null) {
                         val name = data!!.getStringExtra("name")

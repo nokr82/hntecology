@@ -3578,7 +3578,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 Toast.makeText(context, "17레벨 이상까지 확대해주세요.", Toast.LENGTH_SHORT).show()
                                 return@setOnPolygonClickListener
                             }
-                        } else {
+                        }
+                        else {
                             val type = typeST.isChecked
 
                             println("type : $type")
@@ -3929,6 +3930,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                 }
                                 */
                             }
+
                             if (type == true) {
                                 val dataList: Array<String> = arrayOf("*");
 
@@ -5134,22 +5136,28 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 var domin_name = ""
                 var do_num = Utils.getString(metadata, "UFID")
-                if (Utils.getString(metadata, "DOMIN") != "null") {
-                    domin_name += Utils.getString(metadata, "DOMIN")
-                }
-                if (Utils.getString(metadata, "KOFTR_GROU") != "null") {
-
-                    for (i in 0 until copyadapterData.size){
-                        if (copyadapterData[i].code==Utils.getInt(metadata, "KOFTR_GROU")){
-                            domin_name += copyadapterData[i].code_name
-                            break
-                        }
+                if (!typeST.isChecked){
+                    if (Utils.getString(metadata, "DOMIN") != "null") {
+                        domin_name =  Utils.getString(metadata, "DOMIN")
                     }
+                }else{
+                    if (Utils.getString(metadata, "KOFTR_GROU") != "null") {
 
+                        for (i in 0 until copyadapterData.size){
+                            if (copyadapterData[i].code==Utils.getInt(metadata, "KOFTR_GROU")){
+                                domin_name += copyadapterData[i].code_name
+                                break
+                            }
+                        }
+
+                    }
+                    if (Utils.getString(metadata, "PLANT_NM") != "null") {
+                        domin_name += "\n"+Utils.getString(metadata, "PLANT_NM")
+                    }
                 }
-                if (Utils.getString(metadata, "PLANT_NM") != "null") {
-                    domin_name += "\n"+Utils.getString(metadata, "PLANT_NM")
-                }
+                Log.d("메타44444", domin_name.toString())
+
+
 
                 // label
                 if (do_num == "") {
@@ -7019,6 +7027,20 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_NUM", ogr.OFTString, biotope_attribute.HER_NUM))
                     Log.d("비오사이즈222", biotope_attribute.GEOM.toString())
                     Log.d("비오사이즈222", geom.toString())
+              /*      if (polygons.size > 0) {
+
+                        for (j in 0..polygons.size - 1) {
+                            if (polygons.get(j).tag != null) {
+                                val layerInfo = polygons.get(j).tag as LayerInfo
+                                var grop_id = Utils.getString(layerInfo.metadata,"GROP_ID")
+
+                                Log.d("폴리건태그",layerInfo.metadata.toString())
+
+                            }
+                        }
+                    }*/
+
+
                     var geomsplit = biotope_attribute.GEOM!!.split(",")
                     if (biotope_attribute.GEOM == "" && biotope_attribute.GEOM == null) {
                         geomsplit = geom.split(",")

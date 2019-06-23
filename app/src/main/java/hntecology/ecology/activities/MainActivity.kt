@@ -329,19 +329,24 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
 
         vegBT.setOnClickListener {
+
+            if (!typeST.isChecked){
+                return@setOnClickListener
+            }
+
             if (visible_domin == -1) {
                 vegBT.text = "군락명 숨기기"
                 visible_domin = 1
-                for (i in 0 until labelMarkers2.size) {
-                    Log.d("마크", labelMarkers2[i].toString())
-                    labelMarkers2[i].isVisible = true
+                for (labelMarkers in labelMarkers2) {
+                    Log.d("마크11111", labelMarkers.toString())
+                    labelMarkers.isVisible = true
                 }
             } else {
                 vegBT.text = "군락명 보기"
                 visible_domin = -1
-                for (i in 0 until labelMarkers2.size) {
-                    Log.d("마크", labelMarkers2[i].toString())
-                    labelMarkers2[i].isVisible = false
+                for (labelMarkers in labelMarkers2) {
+                    Log.d("마크11111", labelMarkers.toString())
+                    labelMarkers.isVisible = false
                 }
             }
 
@@ -703,77 +708,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         }
 
         resetTV.setOnClickListener {
-
-            //            for(polygon in polygons) {
-//                polygon.remove()
-//            }
-//
-//            polygons?.clear()
-
-
-            for (point in points) {
-                point.remove()
-            }
-
-            points?.clear()
-            polygons?.clear()
-            googleMap.clear()
-
-//            for (loadLayerTask in loadLayerTasks) {
-//                if(loadLayerTask.status !=  AsyncTask.Status.FINISHED) {
-//                    loadLayerTask.cancel(true)
-//                }
-//            }
-
-            val dataList: Array<String> = arrayOf("file_name", "layer_name", "min_scale", "max_scale", "type", "added", "grop_id");
-
-            val zoom = googleMap.cameraPosition.zoom
-
-            println("zoom ${zoom.toInt()}, layersDatas : ${layersDatas.size}")
-
-            var chkData = false
-
-
-            if (jsonOb != null) {
-                datas.clear()
-                layersDatas.clear()
-
-                for (i in 0..jsonOb.size - 1) {
-
-                    println("layerDatas ${jsonOb.get(i).grop_id}")
-                    var layerdata: Cursor? = null
-
-                    layerdata = db!!.query("layers", dataList, "grop_id = '${jsonOb.get(i).grop_id}' and type = '${jsonOb.get(i).type}' and min_scale <= '${zoom.toInt()}' and max_scale >= '${zoom.toInt() + 1}'", null, null, null, null, null)
-
-
-                    while (layerdata.moveToNext()) {
-                        chkData = true
-
-                        val layerModel = LayerModel(layerdata.getString(0), layerdata.getString(1), layerdata.getInt(2), layerdata.getInt(3), layerdata.getString(4), layerdata.getString(5), layerdata.getString(6), false);
-
-                        datas.add(layerModel)
-
-                        break
-//                        println("dats.size ${datas.size}")
-                    }
-
-                    layerdata.close()
-                }
-
-                if (chkData) {
-                    transparentSB.progress = 255
-                    runOnUiThread(Runnable {
-                        println("레이어데이터사이즈 ${datas.size}")
-                        for (i in 0..datas.size - 1) {
-                            Log.d("지적데이터", datas.get(i).type.toString())
-                            layersDatas.add(datas.get(i))
-                            loadLayer(layersDatas.get(i).file_name, layersDatas.get(i).layer_name, layersDatas.get(i).type, layersDatas.get(i).added, -1)
-                        }
-                    })
-                }
-                //지적도문제
-
-            }
+            reloadLayers()
         }
 
         btn_mygps.setOnClickListener {
@@ -1112,6 +1047,79 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
     }
 
+    private fun reloadLayers() {
+        //            for(polygon in polygons) {
+        //                polygon.remove()
+        //            }
+        //
+        //            polygons?.clear()
+
+
+        for (point in points) {
+            point.remove()
+        }
+
+        points?.clear()
+        polygons?.clear()
+        googleMap.clear()
+
+        //            for (loadLayerTask in loadLayerTasks) {
+        //                if(loadLayerTask.status !=  AsyncTask.Status.FINISHED) {
+        //                    loadLayerTask.cancel(true)
+        //                }
+        //            }
+
+        val dataList: Array<String> = arrayOf("file_name", "layer_name", "min_scale", "max_scale", "type", "added", "grop_id");
+
+        val zoom = googleMap.cameraPosition.zoom
+
+        println("zoom ${zoom.toInt()}, layersDatas : ${layersDatas.size}")
+
+        var chkData = false
+
+
+        if (jsonOb != null) {
+            datas.clear()
+            layersDatas.clear()
+
+            for (i in 0..jsonOb.size - 1) {
+
+                println("layerDatas ${jsonOb.get(i).grop_id}")
+                var layerdata: Cursor? = null
+
+                layerdata = db!!.query("layers", dataList, "grop_id = '${jsonOb.get(i).grop_id}' and type = '${jsonOb.get(i).type}' and min_scale <= '${zoom.toInt()}' and max_scale >= '${zoom.toInt() + 1}'", null, null, null, null, null)
+
+
+                while (layerdata.moveToNext()) {
+                    chkData = true
+
+                    val layerModel = LayerModel(layerdata.getString(0), layerdata.getString(1), layerdata.getInt(2), layerdata.getInt(3), layerdata.getString(4), layerdata.getString(5), layerdata.getString(6), false);
+
+                    datas.add(layerModel)
+
+                    break
+    //                        println("dats.size ${datas.size}")
+                }
+
+                layerdata.close()
+            }
+
+            if (chkData) {
+                transparentSB.progress = 255
+                runOnUiThread(Runnable {
+                    println("레이어데이터사이즈 ${datas.size}")
+                    for (i in 0..datas.size - 1) {
+                        Log.d("지적데이터", datas.get(i).type.toString())
+                        layersDatas.add(datas.get(i))
+                        loadLayer(layersDatas.get(i).file_name, layersDatas.get(i).layer_name, layersDatas.get(i).type, layersDatas.get(i).added, -1)
+                    }
+                })
+            }
+            //지적도문제
+
+        }
+    }
+
     private fun stopTracking() {
         start = false
         trackingFinish = 1
@@ -1251,8 +1259,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 }
 
                 BIOTOPE_DATA -> {
-                    if (data!!.getStringExtra("polygonid") != null) {
-                        val polygonid = data!!.getStringExtra("polygonid")
+                    val polygonid = data!!.getStringExtra("polygonid")
+                    if (polygonid != null) {
                         println("폴리건아이디  $polygonid")
 
                         println(polygons.size.toString() + "-----------------------------")
@@ -1278,8 +1286,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     }
 
-                    if (data!!.getIntExtra("export", 0) != null) {
-                        val export = data!!.getIntExtra("export", 0)
+                    val export = data!!.getIntExtra("export", 0)
+                    if (export > 0) {
                         var geom = ""
                         if (data!!.getStringExtra("geom") != null){
                             geom =data!!.getStringExtra("geom")
@@ -1295,6 +1303,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             }
                         }
 
+                    }
+
+                    if(polygonid != null || export > 0) {
+                        reloadLayers()
                     }
 
                 }
@@ -1569,9 +1581,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 }
 
                 STOCKMAP_DATA -> {
-                    if (data!!.getStringExtra("polygonid") != null) {
-                        val polygonid = data!!.getStringExtra("polygonid")
-
+                    val polygonid = data!!.getStringExtra("polygonid")
+                    if (polygonid != null) {
                         for (i in 0..polygons.size - 1) {
                             val polygon = polygons.get(i)
                             if ((polygon.id).equals(polygonid)) {
@@ -1588,9 +1599,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     }
 
-                    if (data!!.getIntExtra("export", 0) != null) {
-
-                        val export = data!!.getIntExtra("export", 0)
+                    val export = data!!.getIntExtra("export", 0)
+                    if (export > 0) {
                         var geom = ""
                         if (data!!.getStringExtra("geom") != null){
                             geom = data!!.getStringExtra("geom")
@@ -1606,6 +1616,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         }
 
                     }
+
+                    if(polygonid != null || export > 0) {
+                        reloadLayers()
+                    }
+
                 }
 
                 WAYPOINT_DATA -> {
@@ -1814,6 +1829,11 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                         var myLayer = layerInfo.layer
                         var attrubuteKey = layerInfo.attrubuteKey
                         var intent: Intent? = null
+
+                        if(myLayer == LAYER_BIOTOPE || myLayer == LAYER_STOCKMAP) {
+                            Toast.makeText(context, "라벨이 아닌 면을 선택해주세요.", Toast.LENGTH_SHORT).show()
+                            return@setOnMarkerClickListener false
+                        }
 
                         when (myLayer) {
 
@@ -5038,7 +5058,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 val polygonOptions = geoms[0] as PolygonOptions
                 val polygon = googleMap.addPolygon(polygonOptions)
                 polygon.zIndex = 0.0f
-                if (conf_mod=="M"){
+                if (conf_mod=="M" || conf_mod=="N"){
                     polygon.isClickable = true
                     polygon.strokeColor = Color.RED
                     polygon.strokeJointType = JointType.ROUND
@@ -5136,25 +5156,31 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 var domin_name = ""
                 var do_num = Utils.getString(metadata, "UFID")
+
+                /*
                 if (!typeST.isChecked){
                     if (Utils.getString(metadata, "DOMIN") != "null") {
-                        domin_name =  Utils.getString(metadata, "DOMIN")
+                        // domin_name =  Utils.getString(metadata, "DOMIN")
                     }
                 }else{
-                    if (Utils.getString(metadata, "KOFTR_GROU") != "null") {
 
-                        for (i in 0 until copyadapterData.size){
-                            if (copyadapterData[i].code==Utils.getInt(metadata, "KOFTR_GROU")){
-                                domin_name += copyadapterData[i].code_name
-                                break
-                            }
-                        }
-
-                    }
-                    if (Utils.getString(metadata, "PLANT_NM") != "null") {
-                        domin_name += "\n"+Utils.getString(metadata, "PLANT_NM")
-                    }
                 }
+                */
+
+                if (Utils.getString(metadata, "KOFTR_GROU") != "null") {
+
+                    for (i in 0 until copyadapterData.size){
+                        if (copyadapterData[i].code==Utils.getInt(metadata, "KOFTR_GROU")){
+                            domin_name += copyadapterData[i].code_name
+                            break
+                        }
+                    }
+
+                }
+                if (Utils.getString(metadata, "PLANT_NM") != "null") {
+                    domin_name += "\n"+Utils.getString(metadata, "PLANT_NM")
+                }
+
                 Log.d("메타44444", domin_name.toString())
 
 
@@ -5165,7 +5191,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 }
                 var labelMarker = PolygonUtils.drawTextOnPolygon(context, do_num, polygonOptions, googleMap)
                 var labelMarker2 = PolygonUtils.drawTextOnPolygon(context, domin_name, polygonOptions, googleMap)
-                labelMarker2.tag = Utils.getString(metadata, "GROP_ID")
                 if (visible_donum != -1) {
                     labelMarker.isVisible = true
                 } else {
@@ -5570,6 +5595,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 } else {
                     polygons.add(polygon)
                 }
+
+
+                labelMarker.tag = layerInfo
+                labelMarker2.tag = layerInfo
 
                 // allPolygons.add(polygon)
 
@@ -6817,7 +6846,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 //                            break
 //                        }
 //                    }
-                    export_marker(stockMap.GROP_ID.toString(), stockMap.PLANT_NM.toString(), polygonOptions)
+                    // export_marker(stockMap.GROP_ID.toString(), stockMap.PLANT_NM.toString(), polygonOptions)
 
                     var exporter = Exporter.ExportItem(LAYER_STOCKMAP, STOKEMAP, polygon, points)
                     polygon.remove()
@@ -7065,7 +7094,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     polygon.zIndex = 1.0f
 
 
-                    export_marker(biotope_attribute.GROP_ID.toString(), biotope_attribute.DOMIN.toString(), polygonOptions)
+                    // export_marker(biotope_attribute.GROP_ID.toString(), biotope_attribute.DOMIN.toString(), polygonOptions)
 
                     val exporter = Exporter.ExportItem(LAYER_BIOTOPE, BIOTOPEATTRIBUTE, polygon, points)
 

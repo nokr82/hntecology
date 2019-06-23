@@ -56,8 +56,9 @@ object PolygonUtils {
                 .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
                 .anchor(0.5f, 1f)
 
-        return map.addMarker(markerOptions)
+        val marker = map.addMarker(markerOptions)
 
+        return marker
     }
 
     fun getPolygonCenterPoint(polygonPointsList: List<LatLng>): LatLng {

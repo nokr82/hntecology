@@ -4937,8 +4937,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     var geometryRef = feature.GetGeometryRef()
 
-                    // println("geometryRef : $geometryRef")
-
                     if (geometryRef == null) {
                         continue
                     }
@@ -4946,6 +4944,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     if (!geometryRef.Intersects(mapBoundary)) {
                         // println("added : $added")
                         if (added == "N") {
+                            println("Not intersects and added is 'N'")
                             continue
                         }
                     }

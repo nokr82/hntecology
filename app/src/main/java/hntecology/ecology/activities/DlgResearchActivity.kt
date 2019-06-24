@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import hntecology.ecology.R
@@ -568,7 +567,7 @@ class DlgResearchActivity : Activity() {
             var stockMap: StockMap = StockMap(data.getString(0), data.getString(1), data.getString(2), data.getString(3), data.getString(4), data.getString(5), data.getString(6), data.getInt(7),
                     data.getString(8), data.getString(9), data.getString(10), data.getString(11), data.getString(12), data.getString(13), data.getString(14)
                     , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getFloat(20), data.getFloat(21)
-                    , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27), data.getString(28))
+                    , data.getString(22), data.getString(23), data.getString(24), data.getString(25), data.getString(26), data.getString(27), data.getString(28), data.getString(29))
 
             var PICTURE_YN = "-"
             var SPEC_NM = stockMap.KOFTR_GROUP_CD

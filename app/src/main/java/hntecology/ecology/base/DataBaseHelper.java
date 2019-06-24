@@ -1057,7 +1057,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Log.d("추가","추가");
         String query = "INSERT INTO StockMap";
         query += "(GROP_ID,PRJ_NAME,INV_REGION,INV_PERSON,INV_DT,INV_TM,NUM,FRTP_CD,KOFTR_GROUP_CD,STORUNST_CD,FROR_CD,DMCLS_CD";
-        query += ",AGCLS_CD,DNST_CD,HEIGHT,LDMARK_STNDA_CD,MAP_LABEL,MAP_LABEL2,ETC_PCMTT,GPS_LAT,GPS_LON,CONF_MOD,LANDUSE,GEOM,PLANT_CD,PLANT_NM,MAC_ADDR,CURRENT_TM)";
+        query += ",AGCLS_CD,DNST_CD,HEIGHT,LDMARK_STNDA_CD,MAP_LABEL,MAP_LABEL2,ETC_PCMTT,GPS_LAT,GPS_LON,CONF_MOD,LANDUSE,GEOM,PLANT_CD,PLANT_NM,MAC_ADDR,CURRENT_TM, UFID)";
 
         query += " values (";
         query += " '" + StockMap.getGROP_ID() + "'";
@@ -1088,6 +1088,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + StockMap.getPLANT_NM() + "'";
         query += ", '" + StockMap.getMAC_ADDR() + "'";
         query += ", '" + StockMap.getCURRENT_TM() + "'";
+        query += ", " + StockMap.getUFID();
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -1937,8 +1938,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",GPS_LON='" + StockMap.getGPS_LON() + "'"
                 + ",CONF_MOD='" + StockMap.getCONF_MOD() + "'"
                 + ",PLANT_CD='" + StockMap.getPLANT_CD() + "'"
-                + ",PLANT_NM='" + StockMap.getPLANT_NM() + "'"+
-                "where id = '" + pk + "'";
+                + ",PLANT_NM='" + StockMap.getPLANT_NM() + "'"
+                + ",UFID='" + StockMap.getUFID() + "'"
+                + "where id = '" + pk + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();

@@ -17,7 +17,6 @@ import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.LayerModel
 import kotlinx.android.synthetic.main.dlg_layers.*
-import kotlinx.android.synthetic.main.dlg_layers.view.*
 
 
 class DlgLayersActivity : Activity() {
@@ -155,7 +154,9 @@ class DlgLayersActivity : Activity() {
         if (!check) {
             adapterData.clear()
             adapterData2.clear()
+
             while (data.moveToNext()) {
+
                 val layerModel = LayerModel(data.getString(0), data.getString(1), data.getInt(2), data.getInt(3), data.getString(4), data.getString(5), data.getString(6), false);
 
                 Log.d("레이어목록", layerModel.toString())
@@ -165,12 +166,11 @@ class DlgLayersActivity : Activity() {
                         adapterData.add(layerModel)
                     }
                     if (layerModel.type == "lsmd") {
-//                        adapterData.add(layerModel)
                         adapterData2.add(layerModel)
                     }
                 }
-
             }
+
         }
 
         if (intent.getSerializableExtra("layerFileName") != null) {

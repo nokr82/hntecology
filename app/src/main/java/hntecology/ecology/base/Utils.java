@@ -111,7 +111,7 @@ public class Utils {
 
     public static String current_tm() {
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmSS");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String getTime = sdf.format(date);
 
         return getTime.substring(2, 14);

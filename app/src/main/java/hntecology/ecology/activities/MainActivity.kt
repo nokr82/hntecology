@@ -3694,11 +3694,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                         if (polygons.get(i).tag == polygon.tag) {
                                             println("이것이머다냐 ${layerinfo.metadata}")
 
-
-                                            intent = Intent(this, BiotopeActivity::class.java)
-
-
-
                                             var GPS_LON = Utils.getString(layerInfo.metadata, "GPS_LON")
                                             println("layerinfo.metadata.GPS_LON ${GPS_LON}")
                                             var BREA_DIA = Utils.getString(layerInfo.metadata, "BREA_DIA")
@@ -3917,12 +3912,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                 data.LU_GR_NUM = LANDUSE
                                                 data.LC_GR_NUM = landcover
                                             }
+                                            intent = Intent(this, BiotopeActivity::class.java)
                                             if (modichk){
                                                 intent = Intent(this, DlgModiListActivity::class.java)
-                                                intent!!.putExtra("ufid", UFID.toString())
                                                 intent!!.putExtra("conf_mod", CONF_MOD.toString())
-                                                Log.d("아이디",UFID)
                                             }
+                                            intent!!.putExtra("ufid", UFID.toString())
+                                            Log.d("아이디",UFID)
                                             intent!!.putExtra("biotopedata", data)
                                             intent!!.putExtra("GROP_ID", attrubuteKey.toString())
                                             intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())

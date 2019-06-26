@@ -226,8 +226,8 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
         var texttoday = todays.get(0).substring(todays.get(0).length - 2, todays.get(0).length)
 
-        if (intent.getStringExtra("UFID") != null) {
-            ufidTV.text = intent.getStringExtra("UFID")
+        if (intent.getStringExtra("ufid") != null) {
+            ufidTV.text = intent.getStringExtra("ufid")
         }
 
 

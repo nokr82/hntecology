@@ -12,6 +12,7 @@ import android.widget.Toast
 import hntecology.ecology.R
 import hntecology.ecology.adapter.DlgRobAdapter1
 import hntecology.ecology.base.Utils
+import hntecology.ecology.model.BiotopeClass
 import hntecology.ecology.model.common
 import kotlinx.android.synthetic.main.activity_dlg_rob.*
 
@@ -35,6 +36,7 @@ class DlgRobActivity : Activity() {
     var click2 = ""
     var click3 = ""
 
+    var cate = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dlg_rob)
@@ -43,6 +45,9 @@ class DlgRobActivity : Activity() {
 
         window.setLayout(Utils.dpToPx(800f).toInt(), Utils.dpToPx(255f).toInt());
         this.setFinishOnTouchOutside(true);
+
+
+
 
         listView1 = findViewById(R.id.list_view1)
         listView2 = findViewById(R.id.list_view2)
@@ -61,6 +66,15 @@ class DlgRobActivity : Activity() {
         listView1.adapter = listAdapte1
         listView2.adapter = listAdapte2
         listView3.adapter = listAdapte3
+
+        var biotopeClass: BiotopeClass
+        if (intent.getSerializableExtra("biotopeClass") != null) {
+            biotopeClass = intent.getSerializableExtra("biotopeClass") as BiotopeClass
+            cate = biotopeClass.smallcategory.toString()
+            println("=========33333==$cate")
+        }
+
+
 
         listView1.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
             var veData =  listAdapte1.getItem(position)
@@ -95,6 +109,7 @@ class DlgRobActivity : Activity() {
             intent.putExtra("code1",click1)
             intent.putExtra("code2",click2)
             intent.putExtra("code3",click3)
+            intent.putExtra("result_cate",cate)
             setResult(RESULT_OK,intent)
             finish()
         }

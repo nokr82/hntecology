@@ -993,14 +993,6 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                         if (ETlcmGR_NumET.text == null) {
                             ETlcmGR_NumET.setText("")
                         }
-
-                        var num = biotope_attribute.LC_GR_NUM
-                        var textnum = ""
-                        if (num != null && num.length > 1) {
-                            textnum = num!!.substring(0, 1)
-                        }
-
-
                     }
 
                 }
@@ -3836,174 +3828,6 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         return biotope_attribute
     }
 
-    fun addbiotope2(biotope_attribute: Biotope_attribute) {
-        keyId = intent.getStringExtra("GROP_ID")
-        biotope_attribute.GROP_ID = keyId
-
-        val prj = prjnameTV.text.toString()
-        if (prj == prjname) {
-            biotope_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
-        } else {
-            biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
-        }
-        biotope_attribute.NEED_CONF = ""
-
-        if (etINV_REGIONET.length() > 0) {
-            biotope_attribute.INV_REGION = etINV_REGIONET.text.toString();
-        } else {
-            biotope_attribute.INV_REGION = INV_REGION
-        }
-        biotope_attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name");
-
-        if (etINV_DTTV.text == null) {
-            biotope_attribute.INV_DT = Utils.todayStr()
-        } else {
-            biotope_attribute.INV_DT = etINV_DTTV.text.toString();
-        }
-
-        if (etINV_TMTV.text == null) {
-            biotope_attribute.INV_TM = Utils.timeStr()
-        } else {
-            biotope_attribute.INV_TM = etINV_TMTV.text.toString();
-        }
-
-        if (tvINV_IndexTV.text.isNotEmpty()) {
-            biotope_attribute.INV_INDEX = tvINV_IndexTV.text.toString().toInt()
-        }
-
-        if (etLU_TY_RATEET.text.isNotEmpty()) {
-
-            biotope_attribute.LU_TY_RATE = etLU_TY_RATEET.text.toString().toFloat()
-        }
-        if (etSTAND_HET.text.isNotEmpty()) {
-
-            biotope_attribute.STAND_H = Utils.getString(etSTAND_HET).toFloat();
-        }
-
-        biotope_attribute.LU_GR_NUM = TVLU_GR_NumTV.text.toString()
-        if (ETLU_GR_NumET.text.toString() != null && ETLU_GR_NumET.text.toString() != "") {
-            biotope_attribute.LU_GR_NUM = ETLU_GR_NumET.text.toString()
-        }
-
-        biotope_attribute.LC_GR_NUM = TVLC_GR_NUMTV.text.toString()
-        if (ETlcmGR_NumET.text != null) {
-            biotope_attribute.LC_GR_NUM = ETlcmGR_NumET.text.toString()
-        }
-        biotope_attribute.TY_MARK = TVTY_MARKTV.text.toString()
-        if (ETTY_MARKET.text.toString() != null && ETTY_MARKET.text.toString() != "") {
-            biotope_attribute.TY_MARK = ETTY_MARKET.text.toString()
-        }
-
-
-        biotope_attribute.BIO_TYPE = bioTV.text.toString()
-        if (impET.text.isNotEmpty()) {
-            biotope_attribute.IMPERV = impET.text.toString().toFloat()
-        }
-
-        if (etGV_RATEET.text.isNotEmpty()) {
-
-            biotope_attribute.GV_RATE = Utils.getString(etGV_RATEET).toFloat();
-        }
-        biotope_attribute.GV_STRUCT = etGV_STRUCTET.text.toString()
-        biotope_attribute.DIS_RET = etDIS_RETET.text.toString()
-        biotope_attribute.RESTOR_POT = etRESTOR_POTET.text.toString()
-        biotope_attribute.COMP_INTA = etCOMP_INTAET.text.toString()
-        biotope_attribute.VP_INTA = etVP_INTAET.text.toString()
-        biotope_attribute.IMP_FORM = etIMP_FORMET.text.toString()
-        biotope_attribute.BREA_DIA = etBREA_DIAET.text.toString()
-        biotope_attribute.FIN_EST = etFIN_ESTET.text.toString()
-        biotope_attribute.TRE_SPEC = etTRE_SPECET.text.toString()
-
-
-
-        biotope_attribute.WILD_ANI = etWILD_ANIET.text.toString()
-        biotope_attribute.BIOTOP_POT = etBIOTOP_POTET.text.toString()
-        biotope_attribute.UNUS_NOTE = etUNUS_NOTEET.text.toString()
-        biotope_attribute.LC_TY = lc_type
-
-
-        if (etGPS_LATTV.text.toString() != "" && etGPS_LONTV.text.toString() != "") {
-
-            biotope_attribute.GPS_LAT = lat.toDouble()
-            biotope_attribute.GPS_LON = log.toDouble()
-
-        }
-
-        biotope_attribute.TEMP_YN = "Y"
-        val CONF_MOD = tvCONF_MOD.text.toString()
-
-        if (CONF_MOD == "N" || CONF_MOD == "C"|| CONF_MOD == "M") {
-            biotope_attribute.CONF_MOD = "M"
-        }else{
-            biotope_attribute.CONF_MOD = "N"
-        }
-
-        biotope_attribute.LANDUSE = landuse
-
-        if (biotope != null) {
-            biotope_attribute.LANDUSE = biotope
-        }
-        biotope_attribute.BIO_TYPE = bioTV.text.toString()
-        if (impET.text.isNotEmpty()) {
-            biotope_attribute.IMPERV = impET.text.toString().toFloat()
-        }
-        biotope_attribute.GEOM = geom
-        biotope_attribute.UFID = ufidTV.text.toString()
-        biotope_attribute.CHECK = checkTV.text.toString()
-
-        biotope_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
-
-        biotope_attribute.CURRENT_TM = Utils.current_tm()
-
-        t_name += t_name2
-        var names = t_name.split("-")
-        if (names.size > 1 ) {
-            if (!t_name.contains("군락")) {
-                biotope_attribute.DOMIN =names[0]+"-"+names[1] + "군락"
-            }else{
-                biotope_attribute.DOMIN =names[0]+"-"+names[1]
-            }
-
-        } else if (!t_name.contains("군락")) {
-            if (t_name.length > 0) {
-                biotope_attribute.DOMIN = names[0] + "군락"
-            }else{
-                biotope_attribute.DOMIN =""
-            }
-        } else {
-            if (t_name.length > 0) {
-                biotope_attribute.DOMIN =names[0]
-            }else{
-                biotope_attribute.DOMIN =""
-            }
-        }
-
-
-        if (images_path != null) {
-            images_path!!.clear()
-        }
-
-        if (images != null) {
-            images!!.clear()
-        }
-
-        if (images_url != null) {
-            images_url!!.clear()
-        }
-
-        if (images_url_remove != null) {
-            images_url_remove!!.clear()
-        }
-
-        if (images_id != null) {
-            images_id!!.clear()
-        }
-
-//        clear()
-        chkdata = false
-        pk = null
-    }
-
     fun addbiotope(biotope_attribute: Biotope_attribute) {
         keyId = intent.getStringExtra("GROP_ID")
 
@@ -4052,14 +3876,15 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         }
 
         biotope_attribute.LU_GR_NUM = TVLU_GR_NumTV.text.toString()
-        if (ETLU_GR_NumET.text.toString() != null && ETLU_GR_NumET.text.toString() != "") {
-            biotope_attribute.LU_GR_NUM = ETLU_GR_NumET.text.toString()
-        }
+//        if (ETLU_GR_NumET.text.toString() != null && ETLU_GR_NumET.text.toString() != "") {
+//            biotope_attribute.LU_GR_NUM = ETLU_GR_NumET.text.toString()
+//        }
 
         biotope_attribute.LC_GR_NUM = TVLC_GR_NUMTV.text.toString()
-        if (ETlcmGR_NumET.text != null) {
-            biotope_attribute.LC_GR_NUM = ETlcmGR_NumET.text.toString()
-        }
+//        if (ETlcmGR_NumET.text != null) {
+//            biotope_attribute.LC_GR_NUM = ETlcmGR_NumET.text.toString()
+//        }
+        println("으아!!!!!!!!!!!!!!!${biotope_attribute.LC_GR_NUM}")
         biotope_attribute.TY_MARK = TVTY_MARKTV.text.toString()
         if (ETTY_MARKET.text.toString() != null && ETTY_MARKET.text.toString() != "") {
             biotope_attribute.TY_MARK = ETTY_MARKET.text.toString()
@@ -4336,6 +4161,176 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         chkdata = false
         pk = null
     }
+
+    fun addbiotope2(biotope_attribute: Biotope_attribute) {
+        keyId = intent.getStringExtra("GROP_ID")
+        biotope_attribute.GROP_ID = keyId
+
+        val prj = prjnameTV.text.toString()
+        if (prj == prjname) {
+            biotope_attribute.PRJ_NAME = PrefUtils.getStringPreference(context, "prjname")
+        } else {
+            biotope_attribute.PRJ_NAME = prjnameTV.text.toString()
+        }
+        biotope_attribute.NEED_CONF = ""
+
+        if (etINV_REGIONET.length() > 0) {
+            biotope_attribute.INV_REGION = etINV_REGIONET.text.toString();
+        } else {
+            biotope_attribute.INV_REGION = INV_REGION
+        }
+        biotope_attribute.INV_PERSON = PrefUtils.getStringPreference(this, "name");
+
+        if (etINV_DTTV.text == null) {
+            biotope_attribute.INV_DT = Utils.todayStr()
+        } else {
+            biotope_attribute.INV_DT = etINV_DTTV.text.toString();
+        }
+
+        if (etINV_TMTV.text == null) {
+            biotope_attribute.INV_TM = Utils.timeStr()
+        } else {
+            biotope_attribute.INV_TM = etINV_TMTV.text.toString();
+        }
+
+        if (tvINV_IndexTV.text.isNotEmpty()) {
+            biotope_attribute.INV_INDEX = tvINV_IndexTV.text.toString().toInt()
+        }
+
+        if (etLU_TY_RATEET.text.isNotEmpty()) {
+
+            biotope_attribute.LU_TY_RATE = etLU_TY_RATEET.text.toString().toFloat()
+        }
+        if (etSTAND_HET.text.isNotEmpty()) {
+
+            biotope_attribute.STAND_H = Utils.getString(etSTAND_HET).toFloat();
+        }
+
+        biotope_attribute.LU_GR_NUM = TVLU_GR_NumTV.text.toString()
+//        if (ETLU_GR_NumET.text.toString() != null && ETLU_GR_NumET.text.toString() != "") {
+//            biotope_attribute.LU_GR_NUM = ETLU_GR_NumET.text.toString()
+//        }
+
+        biotope_attribute.LC_GR_NUM = TVLC_GR_NUMTV.text.toString()
+//        if (ETlcmGR_NumET.text != null) {
+//            biotope_attribute.LC_GR_NUM = ETlcmGR_NumET.text.toString()
+//        }
+        println("으악!!!!!!!!!!!!!!!${biotope_attribute.LC_GR_NUM}")
+        biotope_attribute.TY_MARK = TVTY_MARKTV.text.toString()
+        if (ETTY_MARKET.text.toString() != null && ETTY_MARKET.text.toString() != "") {
+            biotope_attribute.TY_MARK = ETTY_MARKET.text.toString()
+        }
+
+
+        biotope_attribute.BIO_TYPE = bioTV.text.toString()
+        if (impET.text.isNotEmpty()) {
+            biotope_attribute.IMPERV = impET.text.toString().toFloat()
+        }
+
+        if (etGV_RATEET.text.isNotEmpty()) {
+
+            biotope_attribute.GV_RATE = Utils.getString(etGV_RATEET).toFloat();
+        }
+        biotope_attribute.GV_STRUCT = etGV_STRUCTET.text.toString()
+        biotope_attribute.DIS_RET = etDIS_RETET.text.toString()
+        biotope_attribute.RESTOR_POT = etRESTOR_POTET.text.toString()
+        biotope_attribute.COMP_INTA = etCOMP_INTAET.text.toString()
+        biotope_attribute.VP_INTA = etVP_INTAET.text.toString()
+        biotope_attribute.IMP_FORM = etIMP_FORMET.text.toString()
+        biotope_attribute.BREA_DIA = etBREA_DIAET.text.toString()
+        biotope_attribute.FIN_EST = etFIN_ESTET.text.toString()
+        biotope_attribute.TRE_SPEC = etTRE_SPECET.text.toString()
+
+
+
+        biotope_attribute.WILD_ANI = etWILD_ANIET.text.toString()
+        biotope_attribute.BIOTOP_POT = etBIOTOP_POTET.text.toString()
+        biotope_attribute.UNUS_NOTE = etUNUS_NOTEET.text.toString()
+        biotope_attribute.LC_TY = lc_type
+
+
+        if (etGPS_LATTV.text.toString() != "" && etGPS_LONTV.text.toString() != "") {
+
+            biotope_attribute.GPS_LAT = lat.toDouble()
+            biotope_attribute.GPS_LON = log.toDouble()
+
+        }
+
+        biotope_attribute.TEMP_YN = "Y"
+        val CONF_MOD = tvCONF_MOD.text.toString()
+
+        if (CONF_MOD == "N" || CONF_MOD == "C"|| CONF_MOD == "M") {
+            biotope_attribute.CONF_MOD = "M"
+        }else{
+            biotope_attribute.CONF_MOD = "N"
+        }
+
+        biotope_attribute.LANDUSE = landuse
+
+        if (biotope != null) {
+            biotope_attribute.LANDUSE = biotope
+        }
+        biotope_attribute.BIO_TYPE = bioTV.text.toString()
+        if (impET.text.isNotEmpty()) {
+            biotope_attribute.IMPERV = impET.text.toString().toFloat()
+        }
+        biotope_attribute.GEOM = geom
+        biotope_attribute.UFID = ufidTV.text.toString()
+        biotope_attribute.CHECK = checkTV.text.toString()
+
+        biotope_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
+
+        biotope_attribute.CURRENT_TM = Utils.current_tm()
+
+        t_name += t_name2
+        var names = t_name.split("-")
+        if (names.size > 1 ) {
+            if (!t_name.contains("군락")) {
+                biotope_attribute.DOMIN =names[0]+"-"+names[1] + "군락"
+            }else{
+                biotope_attribute.DOMIN =names[0]+"-"+names[1]
+            }
+
+        } else if (!t_name.contains("군락")) {
+            if (t_name.length > 0) {
+                biotope_attribute.DOMIN = names[0] + "군락"
+            }else{
+                biotope_attribute.DOMIN =""
+            }
+        } else {
+            if (t_name.length > 0) {
+                biotope_attribute.DOMIN =names[0]
+            }else{
+                biotope_attribute.DOMIN =""
+            }
+        }
+
+
+        if (images_path != null) {
+            images_path!!.clear()
+        }
+
+        if (images != null) {
+            images!!.clear()
+        }
+
+        if (images_url != null) {
+            images_url!!.clear()
+        }
+
+        if (images_url_remove != null) {
+            images_url_remove!!.clear()
+        }
+
+        if (images_id != null) {
+            images_id!!.clear()
+        }
+
+//        clear()
+        chkdata = false
+        pk = null
+    }
+
 
     fun load_biotope(biotope_attribute: Biotope_attribute) {
 
@@ -4697,11 +4692,12 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
 
                     if (data!!.getSerializableExtra("biotopeClass") != null) {
                         biotopeClass = data!!.getSerializableExtra("biotopeClass") as BiotopeClass
-
+                        if (biotopeClass.smallcategory.equals("조림지") || biotopeClass.smallcategory.equals("이차림") || biotopeClass.smallcategory.equals("자연림")){
+                            TVTY_MARKTV.setText(biotopeClass.smallcategory)
+                        }else{
+                            TVTY_MARKTV.setText(biotopeClass.sign+"("+biotopeClass.smallcategory+")")
+                        }
                         println("biotopeSize ${biotopeClass.sign}")
-
-                        TVTY_MARKTV.setText(biotopeClass.smallcategory)
-
                     }
 
                     if (data!!.getSerializableExtra("Vegetation") != null) {

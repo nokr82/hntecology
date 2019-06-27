@@ -66,6 +66,8 @@ class DlgBiotopeClassActivity : Activity() {
     var code2 = ""
     var code3 = ""
 
+    var result_cate = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dlg_biotope_class_acitivity)
@@ -148,6 +150,9 @@ class DlgBiotopeClassActivity : Activity() {
 
                         if (code3 != "") {
                             number += code3
+                        }
+                        if (result_cate != "") {
+                            number += "("+result_cate+")"
                         }
 
                         intent.putExtra("Vegetation", vegetation)
@@ -333,9 +338,9 @@ class DlgBiotopeClassActivity : Activity() {
                 listAdapte5.notifyDataSetChanged()
 
                 numdata.close()
-
+                var biotopeClass: BiotopeClass = listAdapte3.getItem(list3position)
                 val intent = Intent(this, DlgRobActivity::class.java)
-
+                intent.putExtra("biotopeClass", biotopeClass)
                 startActivityForResult(intent, GETCODE);
 
             }
@@ -467,6 +472,10 @@ class DlgBiotopeClassActivity : Activity() {
 
                     if (data!!.getStringExtra("code3") != null) {
                         code3 = data!!.getStringExtra("code3")
+                    }
+
+                    if (data!!.getStringExtra("result_cate") != null) {
+                        result_cate = data!!.getStringExtra("result_cate")
                     }
                 }
             }

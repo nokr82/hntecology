@@ -7126,6 +7126,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("SHR_NUM", ogr.OFTString, biotope_attribute.SHR_NUM))
                     BIOTOPEATTRIBUTE.add(Exporter.ColumnDef("HER_NUM", ogr.OFTString, biotope_attribute.HER_NUM))
                     Log.d("비오사이즈222", biotope_attribute.GEOM.toString())
+                    Log.d("비오사이즈222333333", biotope_attribute.LC_GR_NUM.toString())
                     Log.d("비오사이즈222", geom.toString())
               /*      if (polygons.size > 0) {
 

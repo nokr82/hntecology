@@ -1269,6 +1269,12 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
             var biotope_attribute = intent.getSerializableExtra("biotopedata") as Biotope_attribute
 
             println("biotope_attribute ${biotope_attribute.GPS_LON}")
+            println("biotope_attribute ${biotope_attribute.LU_TY_RATE}")
+            println("biotope_attribute ${biotope_attribute.STAND_H}")
+            println("biotope_attribute ${biotope_attribute.IMPERV}")
+            println("biotope_attribute ${biotope_attribute.LC_TY}")
+            println("biotope_attribute333333333333333 ${biotope_attribute.LC_GR_NUM}")
+            println("biotope_attribute4444444444444 ${biotope_attribute.LU_GR_NUM}")
             val dbManager: DataBaseHelper = DataBaseHelper(this)
 
             if (biotope_attribute.GPS_LON != 0.0 && biotope_attribute.GPS_LAT != 0.0) {
@@ -1396,15 +1402,6 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                     if (ETlcmGR_NumET.text == null) {
                         ETlcmGR_NumET.setText("")
                     }
-
-                    var num = biotope_attribute.LC_GR_NUM
-//                var textnum = num
-                    var textnum = ""
-                    if (num != null && num.length > 1) {
-                        textnum = num!!.substring(0, 1)
-                    }
-
-
                 }
                 load_biotope(biotope_attribute)
             }

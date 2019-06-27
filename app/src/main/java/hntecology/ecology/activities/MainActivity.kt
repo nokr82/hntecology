@@ -3766,7 +3766,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                                             var landuse = Utils.getString(layerInfo.metadata, "landuse")
-                                            var landcover = Utils.getString(layerInfo.metadata, "landcover")
+                                            var landcover = Utils.getString(layerInfo.metadata, "LANDCOVER")
                                             var CHECK = Utils.getString(layerInfo.metadata, "CHECK")
                                             var DOMIN = Utils.getString(layerInfo.metadata, "DOMIN")
                                             var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
@@ -3912,13 +3912,18 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                 data.LU_GR_NUM = LANDUSE
                                                 data.LC_GR_NUM = landcover
                                             }
+                                            println("랜드마크!!!!!!!!!!!!!!!!!!!!! ${LANDUSE}")
+                                            println("랜드마크!6666666666666666! ${landcover}")
+
                                             intent = Intent(this, BiotopeActivity::class.java)
                                             if (modichk){
                                                 intent = Intent(this, DlgModiListActivity::class.java)
                                                 intent!!.putExtra("conf_mod", CONF_MOD.toString())
                                             }
                                             intent!!.putExtra("ufid", UFID.toString())
+                                            intent!!.putExtra("LC_GR_NUM", LC_GR_NUM.toString())
                                             Log.d("아이디",UFID)
+                                            Log.d("LC_GR_NUM",LC_GR_NUM)
                                             intent!!.putExtra("biotopedata", data)
                                             intent!!.putExtra("GROP_ID", attrubuteKey.toString())
                                             intent!!.putExtra("latitude", polygon.points.get(0).latitude.toString())

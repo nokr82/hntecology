@@ -1266,8 +1266,23 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
             println("biotope_attribute ${biotope_attribute.IMPERV}")
             println("biotope_attribute ${biotope_attribute.LC_TY}")
             println("biotope_attribute333333333333333 ${biotope_attribute.LC_GR_NUM}")
-            println("biotope_attribute4444444444444 ${biotope_attribute.LU_GR_NUM}")
+            println("biotope_attribute4444444444444 ${biotope_attribute.TY_MARK}")
             val dbManager: DataBaseHelper = DataBaseHelper(this)
+
+
+            if (biotope_attribute.TY_MARK != null &&biotope_attribute.TY_MARK !=""){
+                val data = db!!.query("biotopeClass", dataList, "SIGN = '" + biotope_attribute.TY_MARK + "'", null, null, null, "", null);
+
+                println("---------------33333333-------$data")
+                while (data.moveToNext()) {
+                    TVTY_MARKTV.setText(data.getString(3) + "(" + data.getString(2) + ")")
+                    if (TVTY_MARKTV.text == null) {
+                        TVTY_MARKTV.setText("")
+                    }
+                }
+            }
+
+
 
             if (biotope_attribute.GPS_LON != 0.0 && biotope_attribute.GPS_LAT != 0.0) {
                 lat = biotope_attribute.GPS_LAT.toString()
@@ -1395,7 +1410,6 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                         ETlcmGR_NumET.setText("")
                     }
                 }
-                load_biotope(biotope_attribute)
             }
 
 

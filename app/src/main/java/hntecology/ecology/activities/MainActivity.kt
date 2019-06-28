@@ -3767,6 +3767,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                                             var landuse = Utils.getString(layerInfo.metadata, "landuse")
                                             var landcover = Utils.getString(layerInfo.metadata, "LANDCOVER")
+                                            var VEGETATION = Utils.getString(layerInfo.metadata, "VEGETATION")
                                             var CHECK = Utils.getString(layerInfo.metadata, "CHECK")
                                             var DOMIN = Utils.getString(layerInfo.metadata, "DOMIN")
                                             var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
@@ -3775,7 +3776,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var STRE_NUM = Utils.getString(layerInfo.metadata, "STRE_NUM")
                                             var SHR_NUM = Utils.getString(layerInfo.metadata, "SHR_NUM")
                                             var HER_NUM = Utils.getString(layerInfo.metadata, "HER_NUM")
-                                            var biotope = Utils.getString(layerInfo.metadata, "biotop")
+                                            var LU_K = Utils.getString(layerInfo.metadata, "LU_K")
+
+                                            println("--------누구$LU_K")
+                                           var biotope = Utils.getString(layerInfo.metadata, "biotop")
                                             if (INV_INDEX == "" || INV_INDEX == null) {
                                                 INV_INDEX = "0"
                                             }
@@ -3911,8 +3915,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                 data.LANDUSE = LANDUSE
                                                 data.LU_GR_NUM = LANDUSE
                                                 data.LC_GR_NUM = landcover
+                                                data.TY_MARK = VEGETATION
                                             }
                                             println("랜드마크!!!!!!!!!!!!!!!!!!!!! ${LANDUSE}")
+                                            println("랜드마크!!!4444444444444444!!!!!!!!!!!!!!!!!! ${VEGETATION}")
                                             println("랜드마크!6666666666666666! ${landcover}")
 
                                             intent = Intent(this, BiotopeActivity::class.java)

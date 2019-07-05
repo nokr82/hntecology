@@ -298,7 +298,7 @@ class ReptiliaActivity : Activity(), OnLocationUpdatedListener {
                 invregionET.setText(reptilia_attribute.INV_REGION)
                 INV_REGION = reptilia_attribute.INV_REGION.toString()
                 createdDateTV.setText(reptilia_attribute.INV_DT)
-
+                unusET.setText(reptilia_attribute.ETC_UNUS)
                 weatherTV.setText(reptilia_attribute.WEATHER)
                 windTV.setText(reptilia_attribute.WIND)
                 windDireTV.setText(reptilia_attribute.WIND_DIRE)
@@ -939,6 +939,7 @@ class ReptiliaActivity : Activity(), OnLocationUpdatedListener {
                         if (temperaturET.text.isNotEmpty()) {
                             reptilia_attribute.TEMPERATUR = temperaturET.text.toString().toFloat()
                         }
+                        reptilia_attribute.ETC_UNUS = unusET.text.toString()
 
                         reptilia_attribute.ETC = etcET.text.toString()
 
@@ -1201,7 +1202,7 @@ class ReptiliaActivity : Activity(), OnLocationUpdatedListener {
             }
 
             reptilia_attribute.INV_TM = invtmTV.text.toString()
-
+            reptilia_attribute.ETC_UNUS = unusET.text.toString()
             reptilia_attribute.SPEC_NM = specnmET.text.toString()
             var specet = specET.text.toString()
             if (specet != null && specet != "") {
@@ -2506,7 +2507,8 @@ class ReptiliaActivity : Activity(), OnLocationUpdatedListener {
                 , null, null, null, null, null, null, null, null, null, null, null, null
                 , null, null, null, null, null, null, null
                 , null, null, null, null, null, null
-                , null, null, null, null, null, null, null,null,null)
+                , null, null, null, null, null, null, null,null,null, null
+        )
         return reptilia_attribute
     }
 
@@ -2516,7 +2518,7 @@ class ReptiliaActivity : Activity(), OnLocationUpdatedListener {
                 , data.getString(15), data.getString(16), data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
                 , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30), data.getString(31), data.getString(32), data.getString(33)
                 , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39)
-                , data.getFloat(40), data.getString(41), data.getString(42)
+                , data.getFloat(40), data.getString(41), data.getString(42),data.getString(43)
         )
         return reptilia_attribute
     }

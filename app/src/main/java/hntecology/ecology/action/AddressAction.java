@@ -20,7 +20,7 @@ public class AddressAction {
         RequestParams params = new RequestParams();
         params.put("query", keyword);
         params.put("request", "search");
-        params.put("size", "30");
+        params.put("size", "20");
         params.put("category",select);
         params.put("type", "address");
         params.put("page", page);

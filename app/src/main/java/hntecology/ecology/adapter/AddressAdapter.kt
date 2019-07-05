@@ -1,6 +1,7 @@
 package hntecology.ecology.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -9,6 +10,7 @@ import hntecology.ecology.R
 import hntecology.ecology.base.Utils
 import kotlinx.android.synthetic.main.item_address.view.*
 import org.json.JSONObject
+import java.io.IOException
 
 class AddressAdapter(context:Context, view:Int,select:String, data:ArrayList<JSONObject>) : ArrayAdapter<JSONObject>(context, view, data) {
 
@@ -39,9 +41,18 @@ class AddressAdapter(context:Context, view:Int,select:String, data:ArrayList<JSO
 
         val address = item.getJSONObject("address")
         if (select=="PARCLE"){
-            retView.addreesTV.text = Utils.getString(address.getString("parcel"))
+            try {
+                retView.addreesTV.text = Utils.getString(address.getString("parcel"))+" "+Utils.getString(address.getString("bldnmdc"))
+            }catch (e: IOException){
+                e.printStackTrace();
+            }
         }else{
-            retView.addreesTV.text = Utils.getString(address.getString("road"))
+            try {
+                retView.addreesTV.text = Utils.getString(address.getString("road"))+" "+Utils.getString(address.getString("bldnm"))
+            }catch (e: IOException){
+                e.printStackTrace();
+            }
+
         }
 
 

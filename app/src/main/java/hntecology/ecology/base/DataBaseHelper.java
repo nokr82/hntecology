@@ -484,7 +484,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,ENDANGERED,INDI_CNT,OBS_STAT";
         query += ",USE_TAR,USE_LAYER,MJ_ACT,MJ_ACT_PR,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM";
         query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC";
-        query += ",MAC_ADDR,CURRENT_TM";
+        query += ",MAC_ADDR,CURRENT_TM,ETC_UNUS";
         query +=")";
         query += " values (";
         query += " '" + birds_attribute.getGROP_ID() + "'";
@@ -525,6 +525,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + birds_attribute.getGPSLON_SEC() + "'";
         query += ", '" + birds_attribute.getMAC_ADDR() + "'";
         query += ", '" + birds_attribute.getCURRENT_TM() + "'";
+        query += ", '" + birds_attribute.getETC_UNUS() + "'";
         query += " ); ";
 
         Log.d("사용자",query);
@@ -539,7 +540,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,ENDANGERED,IN_CNT_ADU,IN_CNT_LAR,IN_CNT_EGG";
         query += ",HAB_RIVEER,HAB_EDGE,WATER_IN,WATER_OUT,WATER_CONT,WATER_QUAL,WATER_DEPT";
         query += ",HAB_AREA_W,HAB_AREA_H,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM";
-        query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC,HAB_AREA,MAC_ADDR,CURRENT_TM";
+        query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC,HAB_AREA,MAC_ADDR,CURRENT_TM,ETC_UNUS";
         query += ")";
 
 
@@ -586,7 +587,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + reptilia_attribute.getHAB_AREA() + "'";
         query += ", '" + reptilia_attribute.getMAC_ADDR() + "'";
         query += ", '" + reptilia_attribute.getCURRENT_TM() + "'";
-
+        query += ", '" + reptilia_attribute.getETC_UNUS() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -782,7 +783,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ",TEMPERATUR,ETC,NUM,INV_TM,SPEC_NM,FAMI_NM,SCIEN_NM,FLORE_YN,PLANT_YN,HAB_STAT";
         query += ",HAB_ETC,COL_IN_CNT,THRE_CAU,GPS_LAT,GPS_LON,TEMP_YN,CONF_MOD,GEOM";
         query += ",GPSLAT_DEG,GPSLAT_MIN,GPSLAT_SEC,GPSLON_DEG,GPSLON_MIN,GPSLON_SEC";
-        query += ",MAC_ADDR,CURRENT_TM";
+        query += ",MAC_ADDR,CURRENT_TM,ETC_UNUS";
         query +=")";
 
         query += " values (";
@@ -820,6 +821,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         query += ", '" + flora_Attribute.getGPSLON_SEC() + "'";
         query += ", '" + flora_Attribute.getMAC_ADDR() + "'";
         query += ", '" + flora_Attribute.getCURRENT_TM() + "'";
+        query += ", '" + flora_Attribute.getETC_UNUS() + "'";
         query += " ); ";
 
         SQLiteDatabase db = getWritableDatabase();
@@ -1470,7 +1472,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",GPSLON_DEG='" + reptilia_attribute.getGPSLON_DEG() + "'"
                 + ",GPSLON_MIN='" + reptilia_attribute.getGPSLON_MIN() + "'"
                 + ",GPSLON_SEC='" + reptilia_attribute.getGPSLON_SEC() + "'"
-                + ",HAB_AREA='" + reptilia_attribute.getHAB_AREA() + "'"+
+                + ",HAB_AREA='" + reptilia_attribute.getHAB_AREA() + "'"
+                + ",ETC_UNUS='" + reptilia_attribute.getETC_UNUS() + "'"+
                 "where id = '" + pk + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
@@ -1512,7 +1515,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",GPSLAT_SEC='" + birds_attribute.getGPSLAT_SEC() + "'"
                 + ",GPSLON_DEG='" + birds_attribute.getGPSLON_DEG() + "'"
                 + ",GPSLON_MIN='" + birds_attribute.getGPSLON_MIN() + "'"
-                + ",GPSLON_SEC='" + birds_attribute.getGPSLON_SEC() + "'"+
+                + ",GPSLON_SEC='" + birds_attribute.getGPSLON_SEC() + "'"
+                + ",ETC_UNUS='" + birds_attribute.getETC_UNUS() + "'"+
                 "where id = '" + pk + "'";
                 SQLiteDatabase db = getWritableDatabase();
                 db.execSQL(query);
@@ -1786,7 +1790,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + ",GPSLAT_SEC='" + flora_attribute.getGPSLAT_SEC() + "'"
                 + ",GPSLON_DEG='" + flora_attribute.getGPSLON_DEG() + "'"
                 + ",GPSLON_MIN='" + flora_attribute.getGPSLON_MIN() + "'"
-                + ",GPSLON_SEC='" + flora_attribute.getGPSLON_SEC() + "'"+
+                + ",GPSLON_SEC='" + flora_attribute.getGPSLON_SEC() + "'"
+                + ",ETC_UNUS='" + flora_attribute.getETC_UNUS() + "'"+
                 "where id = '" + pk + "'";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);

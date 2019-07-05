@@ -124,6 +124,7 @@ class SearchAddressActivity : Activity() {
                 }
                 try {
                     if (response!!.getJSONObject("response") != null) {
+                        Log.d("지도검색지도검색",response.toString())
                         val res = response.getJSONObject("response")
                         val status = Utils.getString(res,"status")
                         if (status=="OK"){
@@ -134,10 +135,9 @@ class SearchAddressActivity : Activity() {
                             for(idx in 0 until items.length()) {
                                 adapterData.add(items.getJSONObject(idx))
                             }
+                            addressAdapter.notifyDataSetChanged()
                         }
 
-
-                        addressAdapter.notifyDataSetChanged()
                     }
 
                 } catch (e: JSONException) {

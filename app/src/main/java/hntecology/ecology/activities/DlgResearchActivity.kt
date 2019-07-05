@@ -289,6 +289,7 @@ class DlgResearchActivity : Activity() {
                     , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20)
                     , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
                     , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33), data.getString(34), data.getString(35)
+                    ,data.getString(36)
             )
 
             val tmpfiles =  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "birds/images"+ File.separator +birds_attribute.GROP_ID+ File.separator)
@@ -319,7 +320,7 @@ class DlgResearchActivity : Activity() {
                     , reptiliadata.getString(15), reptiliadata.getString(16), reptiliadata.getInt(17), reptiliadata.getInt(18), reptiliadata.getInt(19), reptiliadata.getString(20), reptiliadata.getString(21), reptiliadata.getString(22)
                     , reptiliadata.getString(23), reptiliadata.getString(24), reptiliadata.getString(25), reptiliadata.getInt(26), reptiliadata.getInt(27), reptiliadata.getInt(28), reptiliadata.getFloat(29), reptiliadata.getFloat(30)
                     , reptiliadata.getString(31), reptiliadata.getString(32), reptiliadata.getString(33) , reptiliadata.getInt(34), reptiliadata.getInt(35), reptiliadata.getFloat(36), reptiliadata.getInt(37), reptiliadata.getInt(38), reptiliadata.getFloat(39)
-                    , reptiliadata.getFloat(39), reptiliadata.getString(40), reptiliadata.getString(41)
+                    , reptiliadata.getFloat(39), reptiliadata.getString(40), reptiliadata.getString(41),reptiliadata.getString(42)
             )
             val tmpfiles =  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "reptilia/images"+ File.separator +reptilia_attribute.GROP_ID+ File.separator)
             var tmpfileList = tmpfiles.listFiles()
@@ -448,7 +449,9 @@ class DlgResearchActivity : Activity() {
                     , floradata.getString(12), floradata.getString(13), floradata.getString(14), floradata.getString(15), floradata.getString(16), floradata.getString(17), floradata.getString(18)
                     , floradata.getString(19), floradata.getInt(20), floradata.getString(21), floradata.getFloat(22), floradata.getFloat(23), floradata.getString(24), floradata.getString(25),floradata.getString(26)
                         , floradata.getInt(27), floradata.getInt(28), floradata.getFloat(29), floradata.getInt(30)
-                    , floradata.getInt(31), floradata.getFloat(32), floradata.getString(33), floradata.getString(34))
+                    , floradata.getInt(31), floradata.getFloat(32), floradata.getString(33), floradata.getString(34), floradata.getString(35)
+
+            )
 
             val tmpfiles =  File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology/data" + File.separator + "flora/images"+ File.separator +flora_Attribute.GROP_ID+ File.separator)
             var tmpfileList = tmpfiles.listFiles()

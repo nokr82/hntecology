@@ -349,7 +349,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
                 btn2.setText(birds_attribute.WIND)          //바람
                 btn3.setText(birds_attribute.WIND_DIRE)     //풍향
 
-
+                unusET.setText(birds_attribute.ETC_UNUS)
                 temperatureET.setText(birds_attribute.TEMPERATUR.toString())       //기온
 
                 etcET.setText(birds_attribute.ETC)
@@ -589,7 +589,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 
                         var birds_attribute = null_birds_attribute()
                         keyId = intent.getStringExtra("GROP_ID")
-
+                        birds_attribute.ETC_UNUS = unusET.text.toString()
                         birds_attribute.GROP_ID = keyId
 
                         birds_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
@@ -1107,7 +1107,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
             }
             var birds_attribute = null_birds_attribute()
             keyId = intent.getStringExtra("GROP_ID")
-
+            birds_attribute.ETC_UNUS = unusET.text.toString()
             birds_attribute.MAC_ADDR = PrefUtils.getStringPreference(context, "mac_addr")
             birds_attribute.CURRENT_TM = Utils.current_tm()
             birds_attribute.GROP_ID = keyId
@@ -2212,7 +2212,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
            }*/
 
         r_code.clear()
-
+        unusET.setText("")
         birdsTV.setText("")
         familyNameTV.setText("")
         zoologicalTV.setText("")
@@ -2577,8 +2577,7 @@ class BirdsActivity : Activity(), OnLocationUpdatedListener {
 fun null_birds_attribute(): Birds_attribute {
     var birds_attribute: Birds_attribute = Birds_attribute(null, null, null, null, null, null, null, null, null, null,
             null, null, null, null, null, null, null, null, null, null, null, null,
-            null, null, null, null, null, null, null, null, null, null, null, null, null, null)
-
+            null, null, null, null, null, null, null, null, null, null, null, null, null, null,null)
     return birds_attribute
 }
 
@@ -2587,7 +2586,8 @@ fun ps_birds_attribute(data: Cursor): Birds_attribute {
             data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
             , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20)
             , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
-            , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33), data.getString(34), data.getString(35)
+            , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33), data.getString(34), data.getString(35),
+            data.getString(36)
     )
     return birds_attribute
 }

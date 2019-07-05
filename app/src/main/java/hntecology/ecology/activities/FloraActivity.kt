@@ -127,6 +127,7 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
 
 
 
+
         florainvdvET.setText(Utils.todayStr())
         var time = Utils.timeStr()
         florainvtmET.setText(time)
@@ -273,6 +274,7 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
                 florainvregionET.setText(flora_Attribute.INV_REGION)
                 INV_REGION = flora_Attribute.INV_REGION.toString()
                 florainvdvET.setText(flora_Attribute.INV_DT)
+                unusET.setText(flora_Attribute.ETC_UNUS)
                 florainvperson.setText(flora_Attribute.INV_PERSON)
                 prjnameET.setText(flora_Attribute.PRJ_NAME)
 
@@ -551,7 +553,7 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
                         data2.getString(8), data2.getFloat(9), data2.getString(10), data2.getInt(11), data2.getString(12), data2.getString(13), data2.getString(14)
                         , data2.getString(15), data2.getString(16), data2.getString(17), data2.getString(18), data2.getString(19), data2.getInt(20), data2.getString(21)
                         , data2.getFloat(22), data2.getFloat(23), data2.getString(24), data.getString(25), data.getString(26)
-                        , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32),data.getString(33),data.getString(34))
+                        , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32),data.getString(33),data.getString(34),data.getString(35))
 
                 dataArray.add(flora_Attribute)
             }
@@ -588,6 +590,7 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
                         } else {
                             flora_Attribute.PRJ_NAME = prjnameET.text.toString()
                         }
+                        flora_Attribute.ETC_UNUS = unusET.text.toString()
 
 //                        flora_Attribute.PRJ_NAME = prjnameET.text.toString()
 //                        if (prjnameET.length() > 0){
@@ -1341,7 +1344,7 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
     fun null_attribute(): Flora_Attribute {
         var flora_Attribute: Flora_Attribute = Flora_Attribute(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
                 , null, null, null, null, null, null, null, null, null, null, null, null, null
-                , null, null, null, null, null, null)
+                , null, null, null, null, null, null,null)
         return flora_Attribute
     }
 
@@ -1350,7 +1353,9 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
                 data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                 , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
                 , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26)
-                , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32), data.getString(33), data.getString(34))
+                , data.getInt(27), data.getInt(28), data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32), data.getString(33), data.getString(34)
+                , data.getString(35)
+        )
         return flora_Attribute
     }
 
@@ -1417,6 +1422,7 @@ class FloraActivity : Activity(), OnLocationUpdatedListener {
         var c = dbManager!!.pkNum("floraAttribute")
         floranumET.text = c.toString()
 
+        unusET.setText("")
         floraspecnmET.setText("")
         florafaminmTV.setText("")
         florasciennmTV.setText("")

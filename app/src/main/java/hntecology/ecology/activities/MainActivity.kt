@@ -1992,7 +1992,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                             , data.getString(15), data.getString(16), data.getInt(17), data.getInt(18), data.getInt(19), data.getString(20), data.getString(21), data.getString(22)
                                             , data.getString(23), data.getString(24), data.getString(25), data.getInt(26), data.getInt(27), data.getInt(28), data.getFloat(29), data.getFloat(30), data.getString(31), data.getString(32), data.getString(33)
-                                            , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39), data.getFloat(40), data.getString(41), data.getString(42)
+                                            , data.getInt(34), data.getInt(35), data.getFloat(36), data.getInt(37), data.getInt(38), data.getFloat(39), data.getFloat(40), data.getString(41), data.getString(42), data.getString(43)
                                     )
 
 
@@ -2306,7 +2306,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             data.getString(8), data.getFloat(9), data.getString(10), data.getInt(11), data.getString(12), data.getString(13), data.getString(14)
                                             , data.getString(15), data.getString(16), data.getString(17), data.getString(18), data.getString(19), data.getInt(20), data.getString(21)
                                             , data.getFloat(22), data.getFloat(23), data.getString(24), data.getString(25), data.getString(26), data.getInt(27), data.getInt(28)
-                                            , data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32), data.getString(33), data.getString(34))
+                                            , data.getFloat(29), data.getInt(30), data.getInt(31), data.getFloat(32), data.getString(33), data.getString(34), data.getString(35))
                                     floradataArray.add(flora_attribute)
                                 }
 
@@ -7407,6 +7407,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, birds_attribute.GPSLON_SEC.toString()))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, birds_attribute.MAC_ADDR.toString()))
                     BIRDSATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, birds_attribute.CURRENT_TM.toString()))
+                    BIRDSATTRIBUTE.add(Exporter.ColumnDef("ETC_UNUS", ogr.OFTString, birds_attribute.ETC_UNUS))
                     Log.d("아퐁2222",geom.toString())
                     var geomsplit = birds_attribute.GEOM!!.split(" ")
                     if (geomsplit.size<2) {
@@ -7473,6 +7474,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, birds_attribute.GPSLON_SEC.toString()))
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, birds_attribute.MAC_ADDR.toString()))
                             BIRDSATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, birds_attribute.CURRENT_TM.toString()))
+                            BIRDSATTRIBUTE.add(Exporter.ColumnDef("ETC_UNUS", ogr.OFTString, birds_attribute.ETC_UNUS.toString()))
                         }
 
                         val exporter = Exporter.ExportPointItem(LAYER_BIRDS, BIRDSATTRIBUTE, points.get(idx))
@@ -7537,7 +7539,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     , reptiliadata.getString(15), reptiliadata.getString(16), reptiliadata.getInt(17), reptiliadata.getInt(18), reptiliadata.getInt(19), reptiliadata.getString(20), reptiliadata.getString(21), reptiliadata.getString(22)
                     , reptiliadata.getString(23), reptiliadata.getString(24), reptiliadata.getString(25), reptiliadata.getInt(26), reptiliadata.getInt(27), reptiliadata.getInt(28), reptiliadata.getFloat(29), reptiliadata.getFloat(30)
                     , reptiliadata.getString(31), reptiliadata.getString(32), reptiliadata.getString(33), reptiliadata.getInt(34), reptiliadata.getInt(35), reptiliadata.getFloat(36), reptiliadata.getInt(37), reptiliadata.getInt(38), reptiliadata.getFloat(39)
-                    , reptiliadata.getFloat(40), reptiliadata.getString(41), reptiliadata.getString(42)
+                    , reptiliadata.getFloat(40), reptiliadata.getString(41), reptiliadata.getString(42), reptiliadata.getString(43)
             )
             if(reptilia_attribute.INV_PERSON==u_name){
                 reptiliaDatas.add(reptilia_attribute)
@@ -7643,6 +7645,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA", ogr.OFTString, reptilia_attribute.HAB_AREA.toString()))
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, reptilia_attribute.MAC_ADDR))
                     REPTILIAATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, reptilia_attribute.CURRENT_TM))
+                    REPTILIAATTRIBUTE.add(Exporter.ColumnDef("ETC_UNUS", ogr.OFTString, reptilia_attribute.ETC_UNUS))
 
                     var geomsplit = reptilia_attribute.GEOM!!.split(" ")
                     if (geomsplit.size<2) {
@@ -7709,6 +7712,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             REPTILIAATTRIBUTE.add(Exporter.ColumnDef("HAB_AREA", ogr.OFTString, reptilia_attribute.HAB_AREA.toString()))
                             REPTILIAATTRIBUTE.add(Exporter.ColumnDef("MAC_ADDR", ogr.OFTString, reptilia_attribute.MAC_ADDR))
                             REPTILIAATTRIBUTE.add(Exporter.ColumnDef("CURRENT_TM", ogr.OFTString, reptilia_attribute.CURRENT_TM))
+                            REPTILIAATTRIBUTE.add(Exporter.ColumnDef("ETC_UNUS", ogr.OFTString, reptilia_attribute.ETC_UNUS))
                         }
 
                         val exporter = Exporter.ExportPointItem(LAYER_REPTILIA, REPTILIAATTRIBUTE, points.get(idx))
@@ -8435,7 +8439,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     , floradata.getString(5), floradata.getString(6), floradata.getString(7), floradata.getString(8), floradata.getFloat(9), floradata.getString(10), floradata.getInt(11)
                     , floradata.getString(12), floradata.getString(13), floradata.getString(14), floradata.getString(15), floradata.getString(16), floradata.getString(17), floradata.getString(18)
                     , floradata.getString(19), floradata.getInt(20), floradata.getString(21), floradata.getFloat(22), floradata.getFloat(23), floradata.getString(24), floradata.getString(25)
-                    , floradata.getString(26), floradata.getInt(27), floradata.getInt(28), floradata.getFloat(29), floradata.getInt(30), floradata.getInt(31), floradata.getFloat(32), floradata.getString(33), floradata.getString(34))
+                    , floradata.getString(26), floradata.getInt(27), floradata.getInt(28), floradata.getFloat(29), floradata.getInt(30), floradata.getInt(31), floradata.getFloat(32), floradata.getString(33), floradata.getString(34), floradata.getString(35))
             if(flora_Attribute.INV_PERSON==u_name){
                 floraDatas.add(flora_Attribute)
 
@@ -8524,6 +8528,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_DEG", ogr.OFTString, flora_Attribute.GPSLON_DEG))
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_MIN", ogr.OFTString, flora_Attribute.GPSLON_MIN))
                     FLORAATTRIBUTE.add(Exporter.ColumnDef("GPSLON_SEC", ogr.OFTString, flora_Attribute.GPSLON_SEC.toString()))
+                    FLORAATTRIBUTE.add(Exporter.ColumnDef("ETC_UNUS", ogr.OFTString, flora_Attribute.ETC_UNUS))
 
                     Log.d("점", flora_Attribute.GEOM)
                     var geomsplit = flora_Attribute.GEOM!!.split(" ")
@@ -9714,6 +9719,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     private fun copyRow(tableName: String, keyId: String, newKeyId: String, po: Polygon, idx: Int) {
         Log.d("분리", idx.toString())
         println("keyId : $keyId, newKeyId : $newKeyId")
+        println("테블네임 : $tableName")
 
         var r_idx = idx
         val dbCursor = db!!.query(tableName, null, null, null, null, null, null)
@@ -9729,7 +9735,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         val dataList: Array<String> = arrayOf("*");
 
         val data = db!!.query(tableName, dataList, "GROP_ID = '$keyId'", null, null, null, "id asc", null);
-
+        println("테블네임 : $data")
         var r_val = ""
         var u_val = ""
         var chckdata = false
@@ -9799,12 +9805,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         po.tag = layerInfo
 
 
-        /* val qry = "INSERT INTO $tableName ($columnNamesStr) values(${values.joinToString(separator = ",")})"
-
-         println(qry)
-
-         db!!.execSQL(qry)*/
-
 
         var value = values.toString().split("※")
 
@@ -9837,26 +9837,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             }
         }
 
-//        val userName =  PrefUtils.getStringPreference(context, "name");
-//        val num = dbManager!!.biotopesNextNum()
-//        var region = ""
-//
-//        var geocoder: Geocoder = Geocoder(context);
-//
-//        var list:List<Address> = geocoder.getFromLocation(po.points.get(0).latitude, po.points.get(0).longitude, 1);
-//
-//        if(list.size > 0){
-//            System.out.println("list : " + list);
-//
-//            region = (list.get(0).getAddressLine(0));
-//        }
-//        var biotopedata = Biotope_attribute("0",keyId,"",region,userName,Utils.todayStr(),Utils.timeStr(),num,"",0.0f,0.0f
-//                ,"","","",0.0f,"","","","","","","",""
-//                ,"","","",0.0f,0.0f,0.0f,"","","",0.0f,0.0f,0.0f,""
-//                ,"","",0.0f,0.0f,"","","",0.0f,0.0f,"","","",""
-//                ,po.points.get(0).latitude,po.points.get(0).longitude,"","N","Y")
-//
-//        dbManager!!.insertbiotope_attribute(biotopedata)
+
 
     }
 
@@ -10275,11 +10256,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 } else {
                     dbManager!!.insertlayers(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap", "임상도", "stockmap", "Y", "stockmap")
                 }
-            } else {
+            }
+            else {
                 println("-----분리비오톱")
 
                 copyRow("biotopeAttribute", oldAttributeKey, newAttributeKey, po, idx)
                 exportBiotope("", "", "", "", "all", "")
+                //문제발견
                 var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope"
                 var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope", "비오톱", 1, 99, "biotope", "Y", "biotope", false)
                 var chkData = false
@@ -10314,12 +10297,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         if (typeST.isChecked) {
             deleteRow("StockMap", oldAttributeKey)
-//            export("2000-01-01", "00시", "2099-01-01", "00시")
             exportStockMap("", "", "", "", "all","")
         } else {
             deleteRow("biotopeAttribute", oldAttributeKey)
-//            export("2000-01-01", "00시", "2099-01-01", "00시")
-            Log.d("익스3", "sdsd")
             exportBiotope("", "", "", "", "all", "")
         }
 
@@ -10940,6 +10920,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 , data.getString(15), data.getString(16), data.getInt(17), data.getString(18), data.getString(19), data.getString(20)
                 , data.getString(21), data.getString(22), data.getFloat(23), data.getFloat(24), data.getString(25), data.getString(26), data.getString(27)
                 , data.getInt(28), data.getInt(29), data.getFloat(30), data.getInt(31), data.getInt(32), data.getFloat(33), data.getString(34), data.getString(35)
+                , data.getString(36)
         )
         return birds_attribute
     }

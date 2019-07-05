@@ -105,9 +105,9 @@ class SearchAddressActivity : Activity() {
         val params = RequestParams()
         params.put("address", address)
         if (searchck){
-            select = "ROAD"
-        }else{
             select = "PARCEL"
+        }else{
+            select = "ROAD"
         }
 
         AddressAction.search_map(address, page, 30,select, object : JsonHttpResponseHandler() {

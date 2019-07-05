@@ -40,19 +40,11 @@ class AddressAdapter(context:Context, view:Int,select:String, data:ArrayList<JSO
         val item: JSONObject =  data.get(position)
 
         val address = item.getJSONObject("address")
-        if (select=="PARCLE"){
-            try {
-                retView.addreesTV.text = Utils.getString(address.getString("parcel"))+" "+Utils.getString(address.getString("bldnmdc"))
-            }catch (e: IOException){
-                e.printStackTrace();
-            }
+        val category = Utils.getString(address.getString("category"))
+        if (category=="PARCEL"){
+                retView.addreesTV.text = Utils.getString(address.getString("parcel"))+" "+Utils.getString(address.getString("bldnm"))
         }else{
-            try {
-                retView.addreesTV.text = Utils.getString(address.getString("road"))+" "+Utils.getString(address.getString("bldnm"))
-            }catch (e: IOException){
-                e.printStackTrace();
-            }
-
+                retView.addreesTV.text = Utils.getString(address.getString("road"))+" "+Utils.getString(address.getString("bldnmdc"))
         }
 
 

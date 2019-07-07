@@ -2591,29 +2591,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             Log.d("폴리건클릭", "클릭")
             val zoom = googleMap.cameraPosition.zoom
 
-            var geom = ""
-
-            for (i in 0 until polygon.points.size) {
-                if (i == polygon.points.size) {
-                    geom += polygon.points.get(i).longitude.toString() + " " + polygon.points.get(i).latitude.toString()
-                } else {
-                    geom += polygon.points.get(i).longitude.toString() + " " + polygon.points.get(i).latitude.toString() + ","
-                }
-            }
-
-            println("----click geom : $geom")
-
-//            if (zoom.toInt() >= 17) {
-
-
-//                if (getColor == ""){
-//                    polygongetcolor(polygon)
-//                } else {
-//                    getColor = ""
-//                }
-
-//                POLYGONCOLOR.add(polygon.fillColor.toString())
-
             // 도형 분리 중이면.....
             if (splitRL.isSelected) {
                 Log.d("분리", "분리")
@@ -2630,466 +2607,6 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                     Utils.alert(context, "분리선을 추가해 주세요.");
 
-                    val type = typeST.isChecked
-                    var chkData = false
-
-                    if (!typeST.isChecked) {
-                        when (myLayer) {
-
-                            LAYER_BIOTOPE -> {
-                                val dataList: Array<String> = arrayOf("*");
-
-                                val data = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                                if (biotopedataArray != null) {
-                                    biotopedataArray.clear()
-                                }
-                                while (data.moveToNext()) {
-                                    chkData = true
-
-                                }
-
-                                if (chkData == false) {
-                                    val layerinfo = polygon.tag as LayerInfo
-                                    for (i in 0..polygons.size - 1) {
-                                        println("분리사이즈 ${polygons.size}")
-                                        if (polygons.get(i).tag == polygon.tag) {
-                                            println("분리각 ${layerinfo.metadata}")
-                                            var GPS_LON = Utils.getString(layerInfo.metadata, "GPS_LON")
-                                            var BREA_DIA = Utils.getString(layerInfo.metadata, "BREA_DIA")
-                                            var HER_COVE = Utils.getString(layerInfo.metadata, "HER_COVE")
-                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
-                                            var IMP_FORM = Utils.getString(layerInfo.metadata, "IMP_FORM")
-                                            var LU_GR_NUM = Utils.getString(layerInfo.metadata, "LU_GR_NUM")
-                                            var UNUS_NOTE = Utils.getString(layerInfo.metadata, "UNUS_NOTE")
-                                            var TRE_H = Utils.getString(layerInfo.metadata, "TRE_H")
-                                            var TRE_H_N = Utils.getString(layerInfo.metadata, "TRE_H_N")
-                                            var TRE_H_X = Utils.getString(layerInfo.metadata, "TRE_H_X")
-                                            var TRE_BREA_N = Utils.getString(layerInfo.metadata, "TRE_BREA_N")
-                                            var TRE_BREA_X = Utils.getString(layerInfo.metadata, "TRE_BREA_X")
-                                            var STRE_H_N = Utils.getString(layerInfo.metadata, "STRE_H_N")
-                                            var STRE_H_X = Utils.getString(layerInfo.metadata, "STRE_H_X")
-                                            var STRE_BRT_N = Utils.getString(layerInfo.metadata, "STRE_BRT_N")
-                                            var STRE_BRT_X = Utils.getString(layerInfo.metadata, "STRE_BRT_X")
-                                            var SHR_HET_N = Utils.getString(layerInfo.metadata, "SHR_HET_N")
-                                            var SHR_HET_X = Utils.getString(layerInfo.metadata, "SHR_HET_X")
-                                            var HER_HET_N = Utils.getString(layerInfo.metadata, "HER_HET_N")
-                                            var HER_HET_X = Utils.getString(layerInfo.metadata, "HER_HET_X")
-                                            var BIO_TYPE = Utils.getString(layerInfo.metadata, "BIO_TYPE")
-                                            var IMPERV = Utils.getString(layerInfo.metadata, "IMPERV")
-                                            var LC_TY = Utils.getString(layerInfo.metadata, "LC_TY")
-                                            var TY_MARK = Utils.getString(layerInfo.metadata, "TY_MARK")
-                                            var HER_SCIEN = Utils.getString(layerInfo.metadata, "HER_SCIEN")
-                                            var PIC_FOLDER = Utils.getString(layerInfo.metadata, "PIC_FOLDER")
-                                            var LU_k = Utils.getString(layerInfo.metadata, "LU_k")
-                                            var COMP_INTA = Utils.getString(layerInfo.metadata, "COMP_INTA")
-                                            var DIS_RET = Utils.getString(layerInfo.metadata, "DIS_RET")
-                                            var WILD_ANI = Utils.getString(layerInfo.metadata, "WILD_ANI")
-                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CONF_MOD")
-                                            var SHR_SPEC = Utils.getString(layerInfo.metadata, "SHR_SPEC")
-                                            var STAND_H = Utils.getString(layerInfo.metadata, "STAND_H")
-                                            var SHR_FAMI = Utils.getString(layerInfo.metadata, "SHR_FAMI")
-                                            var EMD_CD = Utils.getString(layerInfo.metadata, "EMD_CD")
-                                            var BIOTOP_POT = Utils.getString(layerInfo.metadata, "BIOTOP_POT")
-                                            var TRE_FAMI = Utils.getString(layerInfo.metadata, "TRE_FAMI")
-                                            var LU_TY_RATE = Utils.getString(layerInfo.metadata, "LU_TY_RATE")
-                                            var HER_SPEC = Utils.getString(layerInfo.metadata, "HER_SPEC")
-                                            var STRE_BRT = Utils.getString(layerInfo.metadata, "STRE_BRT")
-                                            var STR_COVE = Utils.getString(layerInfo.metadata, "STR_COVE")
-                                            var STRE_H = Utils.getString(layerInfo.metadata, "STRE_H")
-                                            var RESTOR_POT = Utils.getString(layerInfo.metadata, "RESTOR_POT")
-                                            var STRE_SCIEN = Utils.getString(layerInfo.metadata, "STRE_SCIEN")
-                                            var TRE_SPEC = Utils.getString(layerInfo.metadata, "TRE_SPEC")
-                                            var SHR_H = Utils.getString(layerInfo.metadata, "SHR_H")
-                                            var UFID = Utils.getString(layerInfo.metadata, "UFID")
-                                            var GV_RATE = Utils.getString(layerInfo.metadata, "GV_RATE")
-                                            var STRE_COVE = Utils.getString(layerInfo.metadata, "STRE_COVE")
-                                            var NEED_CONF = Utils.getString(layerInfo.metadata, "NEED_CONF")
-                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                            var SHR_SCIEN = Utils.getString(layerInfo.metadata, "SHR_SCIEN")
-                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
-                                            var STRE_SPEC = Utils.getString(layerInfo.metadata, "STRE_SPEC")
-                                            var LC_GR_NUM = Utils.getString(layerInfo.metadata, "LC_GR_NUM")
-                                            var TRE_COVE = Utils.getString(layerInfo.metadata, "TRE_COVE")
-                                            var HER_H = Utils.getString(layerInfo.metadata, "HER_H")
-                                            var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
-                                            var TRE_SCIEN = Utils.getString(layerInfo.metadata, "TRE_SCIEN")
-                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
-                                            var GV_STRUCT = Utils.getString(layerInfo.metadata, "GV_STRUCT")
-                                            var GPS_LAT = Utils.getString(layerInfo.metadata, "GPS_LAT")
-                                            var TRE_BREA = Utils.getString(layerInfo.metadata, "TRE_BREA")
-                                            var FIN_EST = Utils.getString(layerInfo.metadata, "FIN_EST")
-                                            var VP_INTA = Utils.getString(layerInfo.metadata, "VP_INTA")
-                                            var HER_FAMI = Utils.getString(layerInfo.metadata, "HER_FAMI")
-                                            var INV_INDEX = Utils.getString(layerInfo.metadata, "INV_INDEX")
-                                            var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
-                                            var CHECK = Utils.getString(layerInfo.metadata, "CHECK")
-                                            var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
-                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
-                                            var landcover = Utils.getString(layerInfo.metadata, "landcover")
-                                            var DOMIN = Utils.getString(layerInfo.metadata, "DOMIN")
-                                            var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
-                                            var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
-                                            var TRE_NUM = Utils.getString(layerInfo.metadata, "TRE_NUM")
-                                            var STRE_NUM = Utils.getString(layerInfo.metadata, "STRE_NUM")
-                                            var SHR_NUM = Utils.getString(layerInfo.metadata, "SHR_NUM")
-                                            var HER_NUM = Utils.getString(layerInfo.metadata, "HER_NUM")
-
-                                            var biotope = Utils.getString(layerInfo.metadata, "biotop")
-                                            if (INV_INDEX == "" || INV_INDEX == null) {
-                                                INV_INDEX = "0"
-                                            }
-
-                                            if (LU_TY_RATE == "" || LU_TY_RATE == null) {
-                                                LU_TY_RATE = "0"
-                                            }
-
-                                            if (STAND_H == "" || STAND_H == null) {
-                                                STAND_H = "0"
-                                            }
-
-                                            if (GV_RATE == "" || GV_RATE == null) {
-                                                GV_RATE = "0"
-                                            }
-
-                                            if (TRE_H == "" || TRE_H == null) {
-                                                TRE_H = "0"
-                                            }
-
-                                            if (TRE_BREA == "" || TRE_BREA == null) {
-                                                TRE_BREA = "0"
-                                            }
-
-                                            if (TRE_COVE == "" || TRE_COVE == null) {
-                                                TRE_COVE = "0"
-                                            }
-
-                                            if (STRE_H == "" || STRE_H == null) {
-                                                STRE_H = "0"
-                                            }
-
-                                            if (STRE_BRT == "" || STRE_BRT == null) {
-                                                STRE_BRT = "0"
-                                            }
-
-                                            if (STRE_COVE == "" || STRE_COVE == null) {
-                                                STRE_COVE = "0"
-                                            }
-
-                                            if (SHR_H == "" || SHR_H == null) {
-                                                SHR_H = "0"
-                                            }
-
-                                            if (STR_COVE == "" || STR_COVE == null) {
-                                                STR_COVE = "0"
-                                            }
-
-                                            if (HER_H == "" || HER_H == null) {
-                                                HER_H = "0"
-                                            }
-
-                                            if (HER_COVE == "" || HER_COVE == null) {
-                                                HER_COVE = "0"
-                                            }
-
-                                            if (GPS_LAT == "" || GPS_LAT == null) {
-                                                GPS_LAT = "0"
-                                            }
-
-                                            if (GPS_LON == "" || GPS_LON == null) {
-                                                GPS_LON = "0"
-                                            }
-                                            if (TRE_H_N == "" || TRE_H_N == null) {
-                                                TRE_H_N = "0"
-                                            }
-                                            if (TRE_H_X == "" || TRE_H_X == null) {
-                                                TRE_H_X = "0"
-                                            }
-                                            if (TRE_BREA_N == "" || TRE_BREA_N == null) {
-                                                TRE_BREA_N = "0"
-                                            }
-                                            if (TRE_BREA_N == "" || TRE_BREA_N == null) {
-                                                TRE_BREA_N = "0"
-                                            }
-                                            if (TRE_BREA_X == "" || TRE_BREA_X == null) {
-                                                TRE_BREA_X = "0"
-                                            }
-                                            if (STRE_H_N == "" || STRE_H_N == null) {
-                                                STRE_H_N = "0"
-                                            }
-                                            if (STRE_H_X == "" || STRE_H_X == null) {
-                                                STRE_H_X = "0"
-                                            }
-                                            if (STRE_BRT_N == "" || STRE_BRT_N == null) {
-                                                STRE_BRT_N = "0"
-                                            }
-                                            if (STRE_BRT_X == "" || STRE_BRT_X == null) {
-                                                STRE_BRT_X = "0"
-                                            }
-                                            if (SHR_HET_N == "" || SHR_HET_N == null) {
-                                                SHR_HET_N = "0"
-                                            }
-                                            if (SHR_HET_X == "" || SHR_HET_X == null) {
-                                                SHR_HET_X = "0"
-                                            }
-                                            if (HER_HET_N == "" || HER_HET_N == null) {
-                                                HER_HET_N = "0"
-                                            }
-                                            if (HER_HET_X == "" || HER_HET_X == null) {
-                                                HER_HET_X = "0"
-                                            }
-                                            if (IMPERV == "" || IMPERV == null) {
-                                                IMPERV = "0"
-                                            }
-                                            if (TRE_NUM == "" || TRE_NUM == null) {
-                                                TRE_NUM = "0"
-                                            }
-
-                                            if (STRE_NUM == "" || STRE_NUM == null) {
-                                                STRE_NUM = "0"
-                                            }
-                                            if (SHR_NUM == "" || SHR_NUM == null) {
-                                                SHR_NUM = "0"
-                                            }
-                                            if (HER_NUM == "" || HER_NUM == null) {
-                                                HER_NUM = "0"
-                                            }
-                                            if (landuse != null && landuse != "") {
-                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
-                                            }
-                                            val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, LC_TY, TY_MARK, GV_RATE.toFloat()
-                                                    , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
-                                                    STRE_BRT.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
-                                                    BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", polygon.fillColor.toString(), geom, UFID, CHECK,
-                                                    TRE_H_X.toFloat(), TRE_H_N.toFloat(), TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat(), STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat()
-                                                    , SHR_HET_N.toFloat(), SHR_HET_X.toFloat(), HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM, TRE_NUM.toInt(), STRE_NUM.toInt(), SHR_NUM.toInt(), HER_NUM.toInt())
-
-
-
-                                            POLYGONCOLOR.add(LANDUSE)
-
-                                            if (LANDUSE != null && LANDUSE != "") {
-                                                data.LANDUSE = LANDUSE
-                                                data.LU_GR_NUM = LANDUSE
-                                                data.LC_GR_NUM = landcover
-                                            }
-                                            //여기가문제다
-                                            dbManager!!.insertbiotope_attribute(data)
-                                        }
-                                    }
-                                }
-                            }
-
-                            LAYER_STOCKMAP -> {
-                                var chkdata = false
-                                val dataList: Array<String> = arrayOf("*");
-
-                                val stockdata = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                                if (stockdataArray != null) {
-                                    stockdataArray.clear()
-                                }
-
-                                while (stockdata.moveToNext()) {
-                                    chkdata = true
-                                }
-
-                                if (chkdata == false) {
-                                    val layerinfo = polygon.tag as LayerInfo
-
-                                    for (i in 0..polygons.size - 1) {
-                                        if (polygons.get(i).tag == polygon.tag) {
-                                            println("layerinfo.metadata ${layerinfo.metadata}")
-
-                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                            var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
-                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
-                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
-                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
-                                            var NUM = Utils.getString(layerInfo.metadata, "NUM")
-                                            var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
-                                            var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
-                                            var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
-                                            var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
-                                            var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
-                                            var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
-                                            var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
-                                            var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
-                                            var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
-                                            var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
-                                            var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
-                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
-                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
-                                            var PLANT_CD = Utils.getString(layerInfo.metadata, "PLANT_CD")
-                                            var PLANT_NM = Utils.getString(layerInfo.metadata, "PLANT_NM")
-                                            var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
-                                            var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
-                                            if (landuse != null && landuse != "") {
-                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
-                                            }
-                                            var UFID = Utils.getString(layerInfo.metadata, "UFID")
-
-                                            POLYGONCOLOR.add(LANDUSE)
-
-                                            if (NUM == "" || NUM == null) {
-                                                NUM = "0"
-                                            }
-
-                                            val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat()
-                                                    , polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString(), geom
-                                                    , PLANT_CD, PLANT_NM, MAC_ADDR, CURRENT_TM, UFID)
-
-                                            dbManager!!.insertstockmap(data)
-
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                    } else {
-                        when (myLayer) {
-
-                            LAYER_BIOTOPE -> {
-                                val dataList: Array<String> = arrayOf("*");
-
-
-                                var chkdata = false
-
-                                val stockdata = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                                if (stockdataArray != null) {
-                                    stockdataArray.clear()
-                                }
-
-                                while (stockdata.moveToNext()) {
-                                    chkdata = true
-                                }
-
-                                if (chkdata == false) {
-                                    val layerinfo = polygon.tag as LayerInfo
-
-                                    for (i in 0..polygons.size - 1) {
-                                        if (polygons.get(i).tag == polygon.tag) {
-                                            println("layerinfo.metadata.stockmap----------${layerinfo.metadata}")
-
-                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                            var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
-                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
-                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
-                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
-                                            var NUM = Utils.getString(layerInfo.metadata, "NUM")
-                                            var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
-                                            var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
-                                            var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
-                                            var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
-                                            var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
-                                            var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
-                                            var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
-                                            var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
-                                            var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
-                                            var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
-                                            var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
-                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
-                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
-                                            var PLANT_CD = Utils.getString(layerInfo.metadata, "PLANT_CD")
-                                            var PLANT_NM = Utils.getString(layerInfo.metadata, "PLANT_NM")
-                                            var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
-                                            var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
-                                            if (landuse != null && landuse != "") {
-                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
-                                            }
-                                            var UFID = Utils.getString(layerInfo.metadata, "UFID")
-
-                                            POLYGONCOLOR.add(LANDUSE)
-
-                                            if (NUM == "" || NUM == null) {
-                                                NUM = "0"
-                                            }
-
-                                            val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString()
-                                                    , geom, PLANT_CD, PLANT_NM, MAC_ADDR, CURRENT_TM, UFID)
-
-                                            dbManager!!.insertstockmap(data)
-
-                                        }
-                                    }
-                                }
-                            }
-
-                            LAYER_STOCKMAP -> {
-                                var chkdata = false
-                                val dataList: Array<String> = arrayOf("*");
-
-                                val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
-
-                                if (stockdataArray != null) {
-                                    stockdataArray.clear()
-                                }
-
-                                while (data.moveToNext()) {
-                                    chkdata = true
-                                }
-
-                                if (chkdata == false) {
-                                    val layerinfo = polygon.tag as LayerInfo
-
-                                    for (i in 0..polygons.size - 1) {
-                                        if (polygons.get(i).tag == polygon.tag) {
-                                            println("layerinfo.stock-----metadata ${layerinfo.metadata}")
-
-                                            var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
-                                            var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
-                                            var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
-                                            var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
-                                            var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
-                                            var NUM = Utils.getString(layerInfo.metadata, "NUM")
-                                            var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
-                                            var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
-                                            var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
-                                            var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
-                                            var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
-                                            var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
-                                            var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
-                                            var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
-                                            var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
-                                            var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
-                                            var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
-                                            var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
-                                            var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
-                                            var PLANT_CD = Utils.getString(layerInfo.metadata, "PLANT_CD")
-                                            var PLANT_NM = Utils.getString(layerInfo.metadata, "PLANT_NM")
-                                            var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
-                                            var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
-                                            if (landuse != null && landuse != "") {
-                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
-                                            }
-                                            var UFID = Utils.getString(layerInfo.metadata, "UFID")
-
-                                            POLYGONCOLOR.add(LANDUSE)
-
-                                            if (NUM == "" || NUM == null) {
-                                                NUM = "0"
-                                            }
-
-                                            val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
-                                                    , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat()
-                                                    , polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString(), geom, PLANT_CD, PLANT_NM, MAC_ADDR, CURRENT_TM, UFID)
-
-                                            dbManager!!.insertstockmap(data)
-
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
                     return@setOnPolygonClickListener
 
                 } else {
@@ -3114,7 +2631,19 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 alert.show()
             }
 
-            if (polygonRemove == false) {
+            if (!polygonRemove) {
+
+
+                var geom = ""
+
+                for (i in 0 until polygon.points.size) {
+                    if (i == polygon.points.size) {
+                        geom += polygon.points.get(i).longitude.toString() + " " + polygon.points.get(i).latitude.toString()
+                    } else {
+                        geom += polygon.points.get(i).longitude.toString() + " " + polygon.points.get(i).latitude.toString() + ","
+                    }
+                }
+
 
                 println("click -------------------------${polygon.id}")
 
@@ -3262,8 +2791,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                             var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
                                                             var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
                                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
-                                                            var landcover = Utils.getString(layerInfo.metadata, "landcover")
+                                                            // var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                                            var LANDCOVER = Utils.getString(layerInfo.metadata, "LANDCOVER")
                                                             var CHECK = Utils.getString(layerInfo.metadata, "CHECK")
                                                             var DOMIN = Utils.getString(layerInfo.metadata, "DOMIN")
                                                             var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
@@ -3392,8 +2921,18 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                                 HER_NUM = "0"
                                                             }
 
+                                                            /*
                                                             if (landuse != null && landuse != "") {
                                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                                            }
+                                                            */
+
+                                                            if (PRJ_NAME == null || PRJ_NAME.isEmpty()) {
+                                                                PRJ_NAME = PrefUtils.getStringPreference(context, "prjname");
+                                                            }
+
+                                                            if (INV_PERSON == null || INV_PERSON.isEmpty()) {
+                                                                INV_PERSON = PrefUtils.getStringPreference(context, "name");
                                                             }
 
                                                             POLYGONCOLOR.add(LANDUSE)
@@ -3411,7 +2950,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                             if (LANDUSE != null && LANDUSE != "") {
                                                                 data.LANDUSE = LANDUSE
                                                                 data.LU_GR_NUM = LANDUSE
-                                                                data.LC_GR_NUM = landcover
+                                                            }
+
+                                                            if (LANDCOVER != null && LANDCOVER != "") {
+                                                                data.LC_GR_NUM = LANDCOVER
                                                             }
 
                                                             dbManager!!.insertbiotope_attribute(data)
@@ -3468,15 +3010,27 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                             var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
                                                             var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
                                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                                            // var landuse = Utils.getString(layerInfo.metadata, "landuse")
                                                             var PLANT_CD = Utils.getString(layerInfo.metadata, "PLANT_CD")
                                                             var PLANT_NM = Utils.getString(layerInfo.metadata, "PLANT_NM")
                                                             var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
                                                             var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
+
+                                                            /*
                                                             if (landuse != null && landuse != "") {
                                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
                                                             }
+                                                            */
+
                                                             var UFID = Utils.getString(layerInfo.metadata, "UFID")
+
+                                                            if (PRJ_NAME == null || PRJ_NAME.isEmpty()) {
+                                                                PRJ_NAME = PrefUtils.getStringPreference(context, "prjname");
+                                                            }
+
+                                                            if (INV_PERSON == null || INV_PERSON.isEmpty()) {
+                                                                INV_PERSON = PrefUtils.getStringPreference(context, "name");
+                                                            }
 
                                                             POLYGONCOLOR.add(LANDUSE)
                                                             getColor = LANDUSE
@@ -3549,17 +3103,31 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                             var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
                                                             var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
                                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                                            // var landuse = Utils.getString(layerInfo.metadata, "landuse")
                                                             var PLANT_CD = Utils.getString(layerInfo.metadata, "PLANT_CD")
                                                             var PLANT_NM = Utils.getString(layerInfo.metadata, "PLANT_NM")
                                                             var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
                                                             var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
                                                             var CHECK = Utils.getString(layerInfo.metadata, "CHECK")
+
+                                                            /*
                                                             if (landuse != null && landuse != "") {
                                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
                                                                 getColor = LANDUSE
                                                             }
+                                                            */
+
                                                             var UFID = Utils.getString(layerInfo.metadata, "UFID")
+
+                                                            getColor = LANDUSE
+
+                                                            if (PRJ_NAME == null || PRJ_NAME.isEmpty()) {
+                                                                PRJ_NAME = PrefUtils.getStringPreference(context, "prjname");
+                                                            }
+
+                                                            if (INV_PERSON == null || INV_PERSON.isEmpty()) {
+                                                                INV_PERSON = PrefUtils.getStringPreference(context, "name");
+                                                            }
 
                                                             POLYGONCOLOR.add(LANDUSE)
 
@@ -3624,21 +3192,35 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                             var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
                                                             var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
                                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                                            // var landuse = Utils.getString(layerInfo.metadata, "landuse")
                                                             var PLANT_CD = Utils.getString(layerInfo.metadata, "PLANT_CD")
                                                             var PLANT_NM = Utils.getString(layerInfo.metadata, "PLANT_NM")
                                                             var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
                                                             var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
+
+                                                            /*
                                                             if (landuse != null && landuse != "") {
                                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
                                                                 getColor = LANDUSE
                                                             }
+                                                            */
+
                                                             var UFID = Utils.getString(layerInfo.metadata, "UFID")
+
+                                                            getColor = LANDUSE
 
                                                             POLYGONCOLOR.add(LANDUSE)
 
                                                             if (NUM == "" || NUM == null) {
                                                                 NUM = "0"
+                                                            }
+
+                                                            if (PRJ_NAME == null || PRJ_NAME.isEmpty()) {
+                                                                PRJ_NAME = PrefUtils.getStringPreference(context, "prjname");
+                                                            }
+
+                                                            if (INV_PERSON == null || INV_PERSON.isEmpty()) {
+                                                                INV_PERSON = PrefUtils.getStringPreference(context, "name");
                                                             }
 
                                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
@@ -3765,8 +3347,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
                                             var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
-                                            var landcover = Utils.getString(layerInfo.metadata, "LANDCOVER")
+                                            // var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                            var LANDCOVER = Utils.getString(layerInfo.metadata, "LANDCOVER")
                                             var VEGETATION = Utils.getString(layerInfo.metadata, "VEGETATION")
                                             var CHECK = Utils.getString(layerInfo.metadata, "CHECK")
                                             var DOMIN = Utils.getString(layerInfo.metadata, "DOMIN")
@@ -3898,9 +3480,20 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             if (HER_NUM == "" || HER_NUM == null) {
                                                 HER_NUM = "0"
                                             }
+
+                                            if (PRJ_NAME == null || PRJ_NAME.isEmpty()) {
+                                                PRJ_NAME = PrefUtils.getStringPreference(context, "prjname");
+                                            }
+
+                                            if (INV_PERSON == null || INV_PERSON.isEmpty()) {
+                                                INV_PERSON = PrefUtils.getStringPreference(context, "name");
+                                            }
+
+                                            /*
                                             if (landuse != null && landuse != "") {
                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
                                             }
+                                            */
 
                                             val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), biotope, LC_TY, TY_MARK, GV_RATE.toFloat()
                                                     , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
@@ -3914,12 +3507,19 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
                                                 data.LU_GR_NUM = LANDUSE
-                                                data.LC_GR_NUM = landcover
+                                            }
+
+                                            if (LANDCOVER != null && LANDCOVER != "") {
+                                                data.LC_GR_NUM = LANDCOVER
+                                            }
+
+                                            if (VEGETATION != null && VEGETATION != "") {
                                                 data.TY_MARK = VEGETATION
                                             }
+
                                             println("랜드마크!!!!!!!!!!!!!!!!!!!!! ${LANDUSE}")
                                             println("랜드마크!!!4444444444444444!!!!!!!!!!!!!!!!!! ${VEGETATION}")
-                                            println("랜드마크!6666666666666666! ${landcover}")
+                                            println("랜드마크!6666666666666666! ${LANDCOVER}")
 
                                             intent = Intent(this, BiotopeActivity::class.java)
                                             if (modichk){
@@ -4072,7 +3672,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
                                             var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                            // var landuse = Utils.getString(layerInfo.metadata, "landuse")
                                             var PLANT_CD = Utils.getString(layerInfo.metadata, "PLANT_CD")
                                             var PLANT_NM = Utils.getString(layerInfo.metadata, "PLANT_NM")
 
@@ -4083,9 +3683,19 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             }
                                             var UFID = Utils.getString(layerInfo.metadata, "UFID")
 
+                                            if (PRJ_NAME == null || PRJ_NAME.isEmpty()) {
+                                                PRJ_NAME = PrefUtils.getStringPreference(context, "prjname");
+                                            }
+
+                                            if (INV_PERSON == null || INV_PERSON.isEmpty()) {
+                                                INV_PERSON = PrefUtils.getStringPreference(context, "name");
+                                            }
+
+                                            /*
                                             if (landuse != null && landuse != "") {
                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
                                             }
+                                            */
 
                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
                                                     , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, ""
@@ -4334,8 +3944,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
                                             var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
                                             var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
-                                            var landuse = Utils.getString(layerInfo.metadata, "landuse")
-                                            var landcover = Utils.getString(layerInfo.metadata, "landcover")
+                                            // var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                            var LANDCOVER = Utils.getString(layerInfo.metadata, "LANDCOVER")
                                             var CHECK = Utils.getString(layerInfo.metadata, "CHECK")
                                             var DOMIN = Utils.getString(layerInfo.metadata, "DOMIN")
                                             var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
@@ -4408,9 +4018,12 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                 GPS_LON = "0"
                                             }
 
+                                            /*
                                             if (landuse != null && landuse != "") {
                                                 LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
                                             }
+                                            */
+
                                             if (TRE_H_N == "" || TRE_H_N == null) {
                                                 TRE_H_N = "0"
                                             }
@@ -4463,6 +4076,14 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                                 HER_NUM = "1"
                                             }
 
+                                            if (PRJ_NAME == null || PRJ_NAME.isEmpty()) {
+                                                PRJ_NAME = PrefUtils.getStringPreference(context, "prjname");
+                                            }
+
+                                            if (INV_PERSON == null || INV_PERSON.isEmpty()) {
+                                                INV_PERSON = PrefUtils.getStringPreference(context, "name");
+                                            }
+
                                             val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), LC_GR_NUM, LC_TY, TY_MARK, GV_RATE.toFloat()
                                                     , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
                                                     STRE_BRT.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
@@ -4475,7 +4096,10 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                                             if (LANDUSE != null && LANDUSE != "") {
                                                 data.LANDUSE = LANDUSE
                                                 data.LU_GR_NUM = LANDUSE
-                                                data.LC_GR_NUM = landcover
+                                            }
+
+                                            if (LANDCOVER != null && LANDCOVER != "") {
+                                                data.LC_GR_NUM = LANDCOVER
                                             }
 
                                             intent!!.putExtra("biotopedata", data)
@@ -4611,6 +4235,14 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                                             if (NUM == "" || NUM == null) {
                                                 NUM = "0"
+                                            }
+
+                                            if (PRJ_NAME == null || PRJ_NAME.isEmpty()) {
+                                                PRJ_NAME = PrefUtils.getStringPreference(context, "prjname");
+                                            }
+
+                                            if (INV_PERSON == null || INV_PERSON.isEmpty()) {
+                                                INV_PERSON = PrefUtils.getStringPreference(context, "name");
                                             }
 
                                             val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
@@ -4816,6 +4448,546 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
             }
         })
+    }
+
+    private fun importPolygonToInternalDB(polygon: Polygon) {
+
+        var geom = ""
+
+        for (i in 0 until polygon.points.size) {
+            if (i == polygon.points.size) {
+                geom += polygon.points.get(i).longitude.toString() + " " + polygon.points.get(i).latitude.toString()
+            } else {
+                geom += polygon.points.get(i).longitude.toString() + " " + polygon.points.get(i).latitude.toString() + ","
+            }
+        }
+
+        val layerInfo = polygon.tag as LayerInfo
+        var myLayer = layerInfo.layer
+        var attrubuteKey = layerInfo.attrubuteKey
+
+        var chkData = false
+
+        if (!typeST.isChecked) {
+            when (myLayer) {
+
+                LAYER_BIOTOPE -> {
+                    val dataList: Array<String> = arrayOf("*");
+
+                    val data = db!!.query("biotopeAttribute", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                    if (biotopedataArray != null) {
+                        biotopedataArray.clear()
+                    }
+
+                    while (data.moveToNext()) {
+
+                        println("1 : ${data.getString(0)}")
+                        println("2 : ${data.getString(1)}")
+                        println("3 : ${data.getString(2)}")
+                        println("4 : ${data.getString(3)}")
+                        println("5 : ${data.getString(4)}")
+                        println("6 : ${data.getString(5)}")
+                        println("7 : ${data.getString(6)}")
+                        println("8 : ${data.getString(7)}")
+
+                        chkData = true
+                    }
+
+                    if (!chkData) {
+                        val layerinfo = polygon.tag as LayerInfo
+                        for (i in 0..polygons.size - 1) {
+                            println("분리사이즈 ${polygons.size}")
+                            if (polygons.get(i).tag == polygon.tag) {
+                                println("분리각 ${layerinfo.metadata}")
+                                var GPS_LON = Utils.getString(layerInfo.metadata, "GPS_LON")
+                                var BREA_DIA = Utils.getString(layerInfo.metadata, "BREA_DIA")
+                                var HER_COVE = Utils.getString(layerInfo.metadata, "HER_COVE")
+                                var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                var IMP_FORM = Utils.getString(layerInfo.metadata, "IMP_FORM")
+                                var LU_GR_NUM = Utils.getString(layerInfo.metadata, "LU_GR_NUM")
+                                var UNUS_NOTE = Utils.getString(layerInfo.metadata, "UNUS_NOTE")
+                                var TRE_H = Utils.getString(layerInfo.metadata, "TRE_H")
+                                var TRE_H_N = Utils.getString(layerInfo.metadata, "TRE_H_N")
+                                var TRE_H_X = Utils.getString(layerInfo.metadata, "TRE_H_X")
+                                var TRE_BREA_N = Utils.getString(layerInfo.metadata, "TRE_BREA_N")
+                                var TRE_BREA_X = Utils.getString(layerInfo.metadata, "TRE_BREA_X")
+                                var STRE_H_N = Utils.getString(layerInfo.metadata, "STRE_H_N")
+                                var STRE_H_X = Utils.getString(layerInfo.metadata, "STRE_H_X")
+                                var STRE_BRT_N = Utils.getString(layerInfo.metadata, "STRE_BRT_N")
+                                var STRE_BRT_X = Utils.getString(layerInfo.metadata, "STRE_BRT_X")
+                                var SHR_HET_N = Utils.getString(layerInfo.metadata, "SHR_HET_N")
+                                var SHR_HET_X = Utils.getString(layerInfo.metadata, "SHR_HET_X")
+                                var HER_HET_N = Utils.getString(layerInfo.metadata, "HER_HET_N")
+                                var HER_HET_X = Utils.getString(layerInfo.metadata, "HER_HET_X")
+                                var BIO_TYPE = Utils.getString(layerInfo.metadata, "BIO_TYPE")
+                                var IMPERV = Utils.getString(layerInfo.metadata, "IMPERV")
+                                var LC_TY = Utils.getString(layerInfo.metadata, "LC_TY")
+                                var TY_MARK = Utils.getString(layerInfo.metadata, "TY_MARK")
+                                var HER_SCIEN = Utils.getString(layerInfo.metadata, "HER_SCIEN")
+                                var PIC_FOLDER = Utils.getString(layerInfo.metadata, "PIC_FOLDER")
+                                var LU_k = Utils.getString(layerInfo.metadata, "LU_k")
+                                var COMP_INTA = Utils.getString(layerInfo.metadata, "COMP_INTA")
+                                var DIS_RET = Utils.getString(layerInfo.metadata, "DIS_RET")
+                                var WILD_ANI = Utils.getString(layerInfo.metadata, "WILD_ANI")
+                                var CONF_MOD = Utils.getString(layerInfo.metadata, "CONF_MOD")
+                                var SHR_SPEC = Utils.getString(layerInfo.metadata, "SHR_SPEC")
+                                var STAND_H = Utils.getString(layerInfo.metadata, "STAND_H")
+                                var SHR_FAMI = Utils.getString(layerInfo.metadata, "SHR_FAMI")
+                                var EMD_CD = Utils.getString(layerInfo.metadata, "EMD_CD")
+                                var BIOTOP_POT = Utils.getString(layerInfo.metadata, "BIOTOP_POT")
+                                var TRE_FAMI = Utils.getString(layerInfo.metadata, "TRE_FAMI")
+                                var LU_TY_RATE = Utils.getString(layerInfo.metadata, "LU_TY_RATE")
+                                var HER_SPEC = Utils.getString(layerInfo.metadata, "HER_SPEC")
+                                var STRE_BRT = Utils.getString(layerInfo.metadata, "STRE_BRT")
+                                var STR_COVE = Utils.getString(layerInfo.metadata, "STR_COVE")
+                                var STRE_H = Utils.getString(layerInfo.metadata, "STRE_H")
+                                var RESTOR_POT = Utils.getString(layerInfo.metadata, "RESTOR_POT")
+                                var STRE_SCIEN = Utils.getString(layerInfo.metadata, "STRE_SCIEN")
+                                var TRE_SPEC = Utils.getString(layerInfo.metadata, "TRE_SPEC")
+                                var SHR_H = Utils.getString(layerInfo.metadata, "SHR_H")
+                                var UFID = Utils.getString(layerInfo.metadata, "UFID")
+                                var GV_RATE = Utils.getString(layerInfo.metadata, "GV_RATE")
+                                var STRE_COVE = Utils.getString(layerInfo.metadata, "STRE_COVE")
+                                var NEED_CONF = Utils.getString(layerInfo.metadata, "NEED_CONF")
+                                var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                var SHR_SCIEN = Utils.getString(layerInfo.metadata, "SHR_SCIEN")
+                                var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                var STRE_SPEC = Utils.getString(layerInfo.metadata, "STRE_SPEC")
+                                var LC_GR_NUM = Utils.getString(layerInfo.metadata, "LC_GR_NUM")
+                                var TRE_COVE = Utils.getString(layerInfo.metadata, "TRE_COVE")
+                                var HER_H = Utils.getString(layerInfo.metadata, "HER_H")
+                                var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
+                                var TRE_SCIEN = Utils.getString(layerInfo.metadata, "TRE_SCIEN")
+                                var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                var GV_STRUCT = Utils.getString(layerInfo.metadata, "GV_STRUCT")
+                                var GPS_LAT = Utils.getString(layerInfo.metadata, "GPS_LAT")
+                                var TRE_BREA = Utils.getString(layerInfo.metadata, "TRE_BREA")
+                                var FIN_EST = Utils.getString(layerInfo.metadata, "FIN_EST")
+                                var VP_INTA = Utils.getString(layerInfo.metadata, "VP_INTA")
+                                var HER_FAMI = Utils.getString(layerInfo.metadata, "HER_FAMI")
+                                var INV_INDEX = Utils.getString(layerInfo.metadata, "INV_INDEX")
+                                var STRE_FAMI = Utils.getString(layerInfo.metadata, "STRE_FAMI")
+                                var CHECK = Utils.getString(layerInfo.metadata, "CHECK")
+                                var EMD_NM = Utils.getString(layerInfo.metadata, "EMD_NM")
+                                var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                // var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                var LANDCOVER = Utils.getString(layerInfo.metadata, "LANDCOVER")
+                                var DOMIN = Utils.getString(layerInfo.metadata, "DOMIN")
+                                var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
+                                var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
+                                var TRE_NUM = Utils.getString(layerInfo.metadata, "TRE_NUM")
+                                var STRE_NUM = Utils.getString(layerInfo.metadata, "STRE_NUM")
+                                var SHR_NUM = Utils.getString(layerInfo.metadata, "SHR_NUM")
+                                var HER_NUM = Utils.getString(layerInfo.metadata, "HER_NUM")
+
+                                // var biotope3 = Utils.getString(layerInfo.metadata, "biotop")
+                                if (INV_INDEX == "" || INV_INDEX == null) {
+                                    INV_INDEX = "0"
+                                }
+
+                                if (LU_TY_RATE == "" || LU_TY_RATE == null) {
+                                    LU_TY_RATE = "0"
+                                }
+
+                                if (STAND_H == "" || STAND_H == null) {
+                                    STAND_H = "0"
+                                }
+
+                                if (GV_RATE == "" || GV_RATE == null) {
+                                    GV_RATE = "0"
+                                }
+
+                                if (TRE_H == "" || TRE_H == null) {
+                                    TRE_H = "0"
+                                }
+
+                                if (TRE_BREA == "" || TRE_BREA == null) {
+                                    TRE_BREA = "0"
+                                }
+
+                                if (TRE_COVE == "" || TRE_COVE == null) {
+                                    TRE_COVE = "0"
+                                }
+
+                                if (STRE_H == "" || STRE_H == null) {
+                                    STRE_H = "0"
+                                }
+
+                                if (STRE_BRT == "" || STRE_BRT == null) {
+                                    STRE_BRT = "0"
+                                }
+
+                                if (STRE_COVE == "" || STRE_COVE == null) {
+                                    STRE_COVE = "0"
+                                }
+
+                                if (SHR_H == "" || SHR_H == null) {
+                                    SHR_H = "0"
+                                }
+
+                                if (STR_COVE == "" || STR_COVE == null) {
+                                    STR_COVE = "0"
+                                }
+
+                                if (HER_H == "" || HER_H == null) {
+                                    HER_H = "0"
+                                }
+
+                                if (HER_COVE == "" || HER_COVE == null) {
+                                    HER_COVE = "0"
+                                }
+
+                                if (GPS_LAT == "" || GPS_LAT == null) {
+                                    GPS_LAT = "0"
+                                }
+
+                                if (GPS_LON == "" || GPS_LON == null) {
+                                    GPS_LON = "0"
+                                }
+                                if (TRE_H_N == "" || TRE_H_N == null) {
+                                    TRE_H_N = "0"
+                                }
+                                if (TRE_H_X == "" || TRE_H_X == null) {
+                                    TRE_H_X = "0"
+                                }
+                                if (TRE_BREA_N == "" || TRE_BREA_N == null) {
+                                    TRE_BREA_N = "0"
+                                }
+                                if (TRE_BREA_N == "" || TRE_BREA_N == null) {
+                                    TRE_BREA_N = "0"
+                                }
+                                if (TRE_BREA_X == "" || TRE_BREA_X == null) {
+                                    TRE_BREA_X = "0"
+                                }
+                                if (STRE_H_N == "" || STRE_H_N == null) {
+                                    STRE_H_N = "0"
+                                }
+                                if (STRE_H_X == "" || STRE_H_X == null) {
+                                    STRE_H_X = "0"
+                                }
+                                if (STRE_BRT_N == "" || STRE_BRT_N == null) {
+                                    STRE_BRT_N = "0"
+                                }
+                                if (STRE_BRT_X == "" || STRE_BRT_X == null) {
+                                    STRE_BRT_X = "0"
+                                }
+                                if (SHR_HET_N == "" || SHR_HET_N == null) {
+                                    SHR_HET_N = "0"
+                                }
+                                if (SHR_HET_X == "" || SHR_HET_X == null) {
+                                    SHR_HET_X = "0"
+                                }
+                                if (HER_HET_N == "" || HER_HET_N == null) {
+                                    HER_HET_N = "0"
+                                }
+                                if (HER_HET_X == "" || HER_HET_X == null) {
+                                    HER_HET_X = "0"
+                                }
+                                if (IMPERV == "" || IMPERV == null) {
+                                    IMPERV = "0"
+                                }
+                                if (TRE_NUM == "" || TRE_NUM == null) {
+                                    TRE_NUM = "0"
+                                }
+
+                                if (STRE_NUM == "" || STRE_NUM == null) {
+                                    STRE_NUM = "0"
+                                }
+                                if (SHR_NUM == "" || SHR_NUM == null) {
+                                    SHR_NUM = "0"
+                                }
+                                if (HER_NUM == "" || HER_NUM == null) {
+                                    HER_NUM = "0"
+                                }
+
+                                if (PRJ_NAME == null || PRJ_NAME.isEmpty()) {
+                                    PRJ_NAME = PrefUtils.getStringPreference(context, "prjname");
+                                }
+
+                                if (INV_PERSON == null || INV_PERSON.isEmpty()) {
+                                    INV_PERSON = PrefUtils.getStringPreference(context, "name");
+                                }
+
+                                /*
+                                            if (landuse != null && landuse != "") {
+                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                            }
+                                            */
+
+                                val data = Biotope_attribute(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, INV_INDEX.toInt(), LU_GR_NUM, LU_TY_RATE.toFloat(), STAND_H.toFloat(), "", LC_TY, TY_MARK, GV_RATE.toFloat()
+                                        , GV_STRUCT, DIS_RET, RESTOR_POT, COMP_INTA, VP_INTA, IMP_FORM, BREA_DIA, FIN_EST, TRE_SPEC, TRE_FAMI, TRE_SCIEN, TRE_H.toFloat(), TRE_BREA.toFloat(), TRE_COVE.toFloat(), STRE_SPEC, STRE_FAMI, STRE_SCIEN, STRE_H.toFloat(),
+                                        STRE_BRT.toFloat(), STRE_COVE.toFloat(), SHR_SPEC, SHR_FAMI, SHR_SCIEN, SHR_H.toFloat(), STR_COVE.toFloat(), HER_SPEC, HER_FAMI, HER_SCIEN, HER_H.toFloat(), HER_COVE.toFloat(), PIC_FOLDER, WILD_ANI,
+                                        BIOTOP_POT, UNUS_NOTE, polygon.points.get(0).latitude.toDouble(), polygon.points.get(0).longitude.toDouble(), NEED_CONF, CONF_MOD, "Y", polygon.fillColor.toString(), geom, UFID, CHECK,
+                                        TRE_H_X.toFloat(), TRE_H_N.toFloat(), TRE_BREA_N.toFloat(), TRE_BREA_X.toFloat(), STRE_H_N.toFloat(), STRE_H_X.toFloat(), STRE_BRT_N.toFloat(), STRE_BRT_X.toFloat()
+                                        , SHR_HET_N.toFloat(), SHR_HET_X.toFloat(), HER_HET_N.toFloat(), HER_HET_X.toFloat(), BIO_TYPE, IMPERV.toFloat(), DOMIN, MAC_ADDR, CURRENT_TM, TRE_NUM.toInt(), STRE_NUM.toInt(), SHR_NUM.toInt(), HER_NUM.toInt())
+
+
+
+                                POLYGONCOLOR.add(LANDUSE)
+
+                                if (LANDUSE != null && LANDUSE != "") {
+                                    data.LANDUSE = LANDUSE
+                                    data.LU_GR_NUM = LANDUSE
+                                }
+
+                                if (LANDCOVER != null && LANDCOVER != "") {
+                                    data.LC_GR_NUM = LANDCOVER
+                                }
+
+                                //여기가문제다
+                                dbManager!!.insertbiotope_attribute(data)
+                            }
+                        }
+                    }
+                }
+
+                LAYER_STOCKMAP -> {
+                    var chkdata = false
+                    val dataList: Array<String> = arrayOf("*");
+
+                    val stockdata = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                    if (stockdataArray != null) {
+                        stockdataArray.clear()
+                    }
+
+                    while (stockdata.moveToNext()) {
+                        chkdata = true
+                    }
+
+                    if (chkdata == false) {
+                        val layerinfo = polygon.tag as LayerInfo
+
+                        for (i in 0..polygons.size - 1) {
+                            if (polygons.get(i).tag == polygon.tag) {
+                                println("layerinfo.metadata ${layerinfo.metadata}")
+
+                                var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
+                                var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                var NUM = Utils.getString(layerInfo.metadata, "NUM")
+                                var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
+                                var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
+                                var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
+                                var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
+                                var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
+                                var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
+                                var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
+                                var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
+                                var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
+                                var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
+                                var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
+                                var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
+                                var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                // var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                var PLANT_CD = Utils.getString(layerInfo.metadata, "PLANT_CD")
+                                var PLANT_NM = Utils.getString(layerInfo.metadata, "PLANT_NM")
+                                var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
+                                var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
+
+                                /*
+                                            if (landuse != null && landuse != "") {
+                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                            }
+                                            */
+
+                                var UFID = Utils.getString(layerInfo.metadata, "UFID")
+
+                                POLYGONCOLOR.add(LANDUSE)
+
+                                if (NUM == "" || NUM == null) {
+                                    NUM = "0"
+                                }
+
+                                if (PRJ_NAME == null || PRJ_NAME.isEmpty()) {
+                                    PRJ_NAME = PrefUtils.getStringPreference(context, "prjname");
+                                }
+
+                                if (INV_PERSON == null || INV_PERSON.isEmpty()) {
+                                    INV_PERSON = PrefUtils.getStringPreference(context, "name");
+                                }
+
+                                val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
+                                        , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat()
+                                        , polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString(), geom
+                                        , PLANT_CD, PLANT_NM, MAC_ADDR, CURRENT_TM, UFID)
+
+                                dbManager!!.insertstockmap(data)
+
+                            }
+                        }
+                    }
+                }
+            }
+
+        } else {
+            when (myLayer) {
+
+                LAYER_BIOTOPE -> {
+                    val dataList: Array<String> = arrayOf("*");
+
+
+                    var chkdata = false
+
+                    val stockdata = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                    if (stockdataArray != null) {
+                        stockdataArray.clear()
+                    }
+
+                    while (stockdata.moveToNext()) {
+                        chkdata = true
+                    }
+
+                    if (chkdata == false) {
+                        val layerinfo = polygon.tag as LayerInfo
+
+                        for (i in 0..polygons.size - 1) {
+                            if (polygons.get(i).tag == polygon.tag) {
+                                println("layerinfo.metadata.stockmap----------${layerinfo.metadata}")
+
+                                var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
+                                var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                var NUM = Utils.getString(layerInfo.metadata, "NUM")
+                                var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
+                                var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
+                                var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
+                                var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
+                                var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
+                                var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
+                                var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
+                                var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
+                                var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
+                                var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
+                                var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
+                                var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
+                                var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                // var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                var PLANT_CD = Utils.getString(layerInfo.metadata, "PLANT_CD")
+                                var PLANT_NM = Utils.getString(layerInfo.metadata, "PLANT_NM")
+                                var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
+                                var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
+
+                                /*
+                                            if (landuse != null && landuse != "") {
+                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                            }
+                                            */
+
+                                var UFID = Utils.getString(layerInfo.metadata, "UFID")
+
+                                POLYGONCOLOR.add(LANDUSE)
+
+                                if (NUM == "" || NUM == null) {
+                                    NUM = "0"
+                                }
+
+                                if (PRJ_NAME == null || PRJ_NAME.isEmpty()) {
+                                    PRJ_NAME = PrefUtils.getStringPreference(context, "prjname");
+                                }
+
+                                if (INV_PERSON == null || INV_PERSON.isEmpty()) {
+                                    INV_PERSON = PrefUtils.getStringPreference(context, "name");
+                                }
+
+                                val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
+                                        , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat(), polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString()
+                                        , geom, PLANT_CD, PLANT_NM, MAC_ADDR, CURRENT_TM, UFID)
+
+                                dbManager!!.insertstockmap(data)
+
+                            }
+                        }
+                    }
+                }
+
+                LAYER_STOCKMAP -> {
+                    var chkdata = false
+                    val dataList: Array<String> = arrayOf("*");
+
+                    val data = db!!.query("StockMap", dataList, "GROP_ID = '$attrubuteKey'", null, null, null, "", null)
+
+                    if (stockdataArray != null) {
+                        stockdataArray.clear()
+                    }
+
+                    while (data.moveToNext()) {
+                        chkdata = true
+                    }
+
+                    if (chkdata == false) {
+                        val layerinfo = polygon.tag as LayerInfo
+
+                        for (i in 0..polygons.size - 1) {
+                            if (polygons.get(i).tag == polygon.tag) {
+                                println("layerinfo.stock-----metadata ${layerinfo.metadata}")
+
+                                var PRJ_NAME = Utils.getString(layerInfo.metadata, "PRJ_NAME")
+                                var INV_REGION = Utils.getString(layerInfo.metadata, "INV_REGION")
+                                var INV_PERSON = Utils.getString(layerInfo.metadata, "INV_PERSON")
+                                var INV_DT = Utils.getString(layerInfo.metadata, "INV_DT")
+                                var INV_TM = Utils.getString(layerInfo.metadata, "INV_TM")
+                                var NUM = Utils.getString(layerInfo.metadata, "NUM")
+                                var FRTP_CD = Utils.getString(layerInfo.metadata, "FRTP_CD")
+                                var KOFTR_GROUP_CD = Utils.getString(layerInfo.metadata, "KOFTR_GROU")
+                                var STORUNST_CD = Utils.getString(layerInfo.metadata, "STORUNST")
+                                var FROR_CD = Utils.getString(layerInfo.metadata, "FROR_CD")
+                                var DMCLS_CD = Utils.getString(layerInfo.metadata, "DMCLS_CD")
+                                var AGCLS_CD = Utils.getString(layerInfo.metadata, "AGCLS_CD")
+                                var DNST_CD = Utils.getString(layerInfo.metadata, "DNST_CD")
+                                var HEIGHT = Utils.getString(layerInfo.metadata, "HEIGHT")
+                                var LDMARK_STNDA_CD = Utils.getString(layerInfo.metadata, "LDMARK_STNDA")
+                                var MAP_LABEL = Utils.getString(layerInfo.metadata, "MAP_LABEL")
+                                var ETC_PCMTT = Utils.getString(layerInfo.metadata, "ETC_PCMTT")
+                                var CONF_MOD = Utils.getString(layerInfo.metadata, "CHECK")
+                                var LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
+                                // var landuse = Utils.getString(layerInfo.metadata, "landuse")
+                                var PLANT_CD = Utils.getString(layerInfo.metadata, "PLANT_CD")
+                                var PLANT_NM = Utils.getString(layerInfo.metadata, "PLANT_NM")
+                                var MAC_ADDR = Utils.getString(layerInfo.metadata, "MAC_ADDR")
+                                var CURRENT_TM = Utils.getString(layerInfo.metadata, "CURRENT_TM")
+
+                                /*
+                                            if (landuse != null && landuse != "") {
+                                                LANDUSE = Utils.getString(layerInfo.metadata, "landuse")
+                                            }
+                                            */
+
+                                var UFID = Utils.getString(layerInfo.metadata, "UFID")
+
+                                POLYGONCOLOR.add(LANDUSE)
+
+                                if (NUM == "" || NUM == null) {
+                                    NUM = "0"
+                                }
+
+                                if (PRJ_NAME == null || PRJ_NAME.isEmpty()) {
+                                    PRJ_NAME = PrefUtils.getStringPreference(context, "prjname");
+                                }
+
+                                if (INV_PERSON == null || INV_PERSON.isEmpty()) {
+                                    INV_PERSON = PrefUtils.getStringPreference(context, "name");
+                                }
+
+                                val data = StockMap(null, attrubuteKey, PRJ_NAME, INV_REGION, INV_PERSON, INV_DT, INV_TM, NUM.toInt(), FRTP_CD, KOFTR_GROUP_CD, STORUNST_CD, FROR_CD, DMCLS_CD
+                                        , AGCLS_CD, DNST_CD, HEIGHT, LDMARK_STNDA_CD, MAP_LABEL, "", ETC_PCMTT, polygon.points.get(0).latitude.toFloat()
+                                        , polygon.points.get(0).longitude.toFloat(), CONF_MOD, polygon.fillColor.toString(), geom, PLANT_CD, PLANT_NM, MAC_ADDR, CURRENT_TM, UFID)
+
+                                dbManager!!.insertstockmap(data)
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     private var parsed: Boolean = false
@@ -5170,7 +5342,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     polygon.isClickable = true
                 }
 
-                val landuse = Utils.getString(layerInfo.metadata, "landuse")
+                // val landuse = Utils.getString(layerInfo.metadata, "landuse")
                 val LANDUSE = Utils.getString(layerInfo.metadata, "LANDUSE")
                 // println("polygon.tag : ${polygon.tag}")
 
@@ -5487,6 +5659,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     println("grop_id $grop_id")
                 }
 
+                /*
                 if (landuse != null) {
 
                     if (landuse == "A11") {
@@ -5654,6 +5827,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     }
 
                 }
+                */
+
                 // println("polygon.tag ${polygon.tag}")
 
                 println("type : $type")
@@ -5748,9 +5923,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 // metadata
                 layerInfo.metadata = metadata
 
-                val id = Utils.getString(layerInfo.metadata, "ID")
+                // val id = Utils.getString(layerInfo.metadata, "ID")
                 val grop_id = Utils.getString(layerInfo.metadata, "GROP_ID")
-                val landuse = Utils.getString(layerInfo.metadata, "landuse")
+                // val landuse = Utils.getString(layerInfo.metadata, "landuse")
 
                 if (grop_id != null) {
                     layerInfo.attrubuteKey = grop_id
@@ -7042,9 +7217,13 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                             val layerInfo = polygons.get(j).tag as LayerInfo
 
                             var attrubuteKey = layerInfo.attrubuteKey
+
+                            println("attrubuteKey : $attrubuteKey, grop_id : $grop_id")
+
                             if (attrubuteKey.equals(grop_id)) {
                                 add = true
                                 idx = j
+                                break
                             }
                         }
                     }
@@ -9478,7 +9657,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
         val geometries = Array<Geometry?>(polygonsToUnion.size) { null }
 
-        for (idx in 0..(polygonsToUnion.size - 1)) {
+        for (idx in 0 until polygonsToUnion.size) {
             val polygon = polygonsToUnion.get(idx)
             geometries[idx] = toJTSPolygon(polygon)
         }
@@ -9513,12 +9692,14 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
             if ("Polygon" == unioned.geometryType) {
 
+                importPolygonToInternalDB(polygonsToUnion[0])
+
                 val firstLayerInfo = polygonsToUnion.get(0).tag as LayerInfo
 
                 println("firstLayerInfo : ${firstLayerInfo.attrubuteKey}")
 
                 // delete row
-                for (idx in 1..(polygonsToUnion.size - 1)) {
+                for (idx in 1 until polygonsToUnion.size) {
                     val polygon = polygonsToUnion.get(idx)
                     val layerInfo = polygon.tag as LayerInfo
 
@@ -9541,7 +9722,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 val polygonOptions = PolygonOptions()
 //                polygonOptions.fillColor(polygoncolor)
-                println("합치기 color $getColor")
+                // println("합치기 color $getColor")
                 polygonsetcolor(getColor, polygonOptions)
                 polygonOptions.strokeWidth(1.0f)
                 polygonOptions.strokeColor(Color.BLACK)
@@ -9555,7 +9736,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 editingPolygon?.tag = firstLayerInfo
                 editingPolygon?.isClickable = true
 
-                val test = editingPolygon?.tag as LayerInfo
+                // val test = editingPolygon?.tag as LayerInfo
 
                 var geom = ""
 
@@ -9595,7 +9776,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 if (typeST.isChecked) {
                     dbManager!!.updatestockmap_geom(firstLayerInfo.attrubuteKey, geom)
+
                     exportStockMap("", "", "", "", "all","")
+
                     var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap"
                     var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap", "임상도", 1, 99, "stockmap", "Y", "stockmap", false)
                     var division = false
@@ -9627,7 +9810,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                     }
                 } else {
                     dbManager!!.updatebiotope_attribute_geom2(firstLayerInfo.attrubuteKey, geom)
-                    Log.d("익스9", "")
+                    // Log.d("익스9", "")
+
                     exportBiotope("", "", "", "", "all", "")
 
                     var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope"
@@ -9735,7 +9919,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         val dataList: Array<String> = arrayOf("*");
 
         val data = db!!.query(tableName, dataList, "GROP_ID = '$keyId'", null, null, null, "id asc", null);
-        println("테블네임 : $data")
+
         var r_val = ""
         var u_val = ""
         var chckdata = false
@@ -9745,8 +9929,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         Log.d("분리", data.count.toString())
         while (data.moveToNext()) {
 
-            for (i in 0..(data.columnCount - 1)) {
-                Log.d("분리", data.toString())
+            for (i in 0 until data.columnCount) {
+
                 val columnName = data.getColumnName(i)
                 if ("id" == columnName) {
                     continue
@@ -9754,8 +9938,18 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
 
                 var value = data.getString(i)
 
+                println("columnName : $columnName, value : $value")
+
                 if ("GROP_ID" == columnName) {
                     value = newKeyId
+                }
+
+                if ("PRJ_NAME" == columnName) {
+                    value = PrefUtils.getStringPreference(context, "prjname");
+                }
+
+                if ("INV_PERSON" == columnName) {
+                    value = PrefUtils.getStringPreference(context, "name");
                 }
 
                 if ("LANDUSE" == columnName) {
@@ -10175,6 +10369,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             return
         }
 
+        importPolygonToInternalDB(splittingPolygon!!)
+
         val layerInfo = splittingPolygon?.tag as LayerInfo
 
         val oldAttributeKey = layerInfo.attrubuteKey
@@ -10190,7 +10386,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
         splittingPolygon?.remove()
         splittingPolygon = null
 
-        for (idx in 0..(splited.numGeometries - 1)) {
+        for (idx in 0 until splited.numGeometries) {
             var polygon = splited.getGeometryN(idx)
             // polygon = polygon.buffer(-0.00002)
 
@@ -10225,7 +10421,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
             // copy data
             if (typeST.isChecked) {
                 copyRow("StockMap", oldAttributeKey, newAttributeKey, po, idx)
-                exportStockMap("", "", "", "", "all","")
+                // exportStockMap("", "", "", "", "all","")
                 var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap"
                 var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "stockmap" + File.separator + "stockmap", "임상도", 1, 99, "stockmap", "Y", "stockmap", false)
 
@@ -10261,7 +10457,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
                 println("-----분리비오톱")
 
                 copyRow("biotopeAttribute", oldAttributeKey, newAttributeKey, po, idx)
-                exportBiotope("", "", "", "", "all", "")
+                // exportBiotope("", "", "", "", "all", "")
                 //문제발견
                 var file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope"
                 var model = LayerModel(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "ecology" + File.separator + "data" + File.separator + "biotope" + File.separator + "biotope", "비오톱", 1, 99, "biotope", "Y", "biotope", false)
@@ -10317,11 +10513,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback, GoogleMap.OnCameraI
     }
 
     fun chkDivision(clickLayer: Int): Boolean {
-        if (clickLayer == currentLayer) {
-            return true
-        } else {
-            return false
-        }
+        return clickLayer == currentLayer
     }
 
     fun alert(ListItems: java.util.ArrayList<String>, title: String, textView: TextView, type: String) {

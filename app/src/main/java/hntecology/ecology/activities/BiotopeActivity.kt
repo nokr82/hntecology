@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -39,49 +38,12 @@ import com.google.android.gms.location.LocationServices
 import com.joooonho.SelectableRoundedImageView
 import com.nostra13.universalimageloader.core.ImageLoader
 import hntecology.ecology.R
-import hntecology.ecology.base.*
+import hntecology.ecology.base.DataBaseHelper
+import hntecology.ecology.base.FileFilter
+import hntecology.ecology.base.PrefUtils
+import hntecology.ecology.base.Utils
 import hntecology.ecology.model.*
 import kotlinx.android.synthetic.main.activity_biotope_ex.*
-import kotlinx.android.synthetic.main.activity_biotope_ex.ausTV
-import kotlinx.android.synthetic.main.activity_biotope_ex.btnPIC_FOLDER
-import kotlinx.android.synthetic.main.activity_biotope_ex.dominTV
-import kotlinx.android.synthetic.main.activity_biotope_ex.etHER_COVEET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etHER_FAMIET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etHER_HET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etHER_SCIENET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etHER_SPECET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etPIC_FOLDERET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etSHR_FAMIET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etSHR_HET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etSHR_SCIENET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etSHR_SPECET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etSTRE_BREAET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etSTRE_COVEET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etSTRE_FAMIET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etSTRE_HET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etSTRE_SCIENET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etSTRE_SPECET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etSTR_COVEET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etTRE_BREAET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etTRE_COVEET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etTRE_FAMIET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etTRE_HET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etTRE_SCIENET
-import kotlinx.android.synthetic.main.activity_biotope_ex.etTRE_SPECET
-import kotlinx.android.synthetic.main.activity_biotope_ex.hercloseLL
-import kotlinx.android.synthetic.main.activity_biotope_ex.herleftTV
-import kotlinx.android.synthetic.main.activity_biotope_ex.herrightTV
-import kotlinx.android.synthetic.main.activity_biotope_ex.herrightpageTV
-import kotlinx.android.synthetic.main.activity_biotope_ex.strecloseLL
-import kotlinx.android.synthetic.main.activity_biotope_ex.streleftTV
-import kotlinx.android.synthetic.main.activity_biotope_ex.strepageTV
-import kotlinx.android.synthetic.main.activity_biotope_ex.strerightTV
-import kotlinx.android.synthetic.main.activity_biotope_ex.strerightpageTV
-import kotlinx.android.synthetic.main.activity_biotope_ex.trecloseLL
-import kotlinx.android.synthetic.main.activity_biotope_ex.treleftTV
-import kotlinx.android.synthetic.main.activity_biotope_ex.trepageTV
-import kotlinx.android.synthetic.main.activity_biotope_ex.trerightTV
-import kotlinx.android.synthetic.main.activity_biotope_ex.trerightpageTV
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -204,7 +166,6 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
         this.context = this
         window.setGravity(Gravity.RIGHT);
         buildGoogleApiClient();
-
 
         images_path = ArrayList();
         images = ArrayList()
@@ -1411,6 +1372,8 @@ class BiotopeActivity : Activity(), com.google.android.gms.location.LocationList
                     }
                 }
             }
+
+            checkTV.setText(biotope_attribute.CHECK.toString())
 
 
         }

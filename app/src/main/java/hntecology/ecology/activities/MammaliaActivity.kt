@@ -1,7 +1,10 @@
 package hntecology.ecology.activities
 
 import android.Manifest
-import android.app.*
+import android.app.Activity
+import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -32,25 +35,16 @@ import hntecology.ecology.base.DataBaseHelper
 import hntecology.ecology.base.FileFilter
 import hntecology.ecology.base.PrefUtils
 import hntecology.ecology.base.Utils
-import hntecology.ecology.model.*
+import hntecology.ecology.model.Base
+import hntecology.ecology.model.BiotopeType
+import hntecology.ecology.model.EndangeredSelect
+import hntecology.ecology.model.Mammal_attribute
 import io.nlopez.smartlocation.OnLocationUpdatedListener
 import io.nlopez.smartlocation.SmartLocation
 import io.nlopez.smartlocation.location.config.LocationAccuracy
 import io.nlopez.smartlocation.location.config.LocationParams
 import io.nlopez.smartlocation.location.providers.LocationManagerProvider
-import kotlinx.android.synthetic.main.activity_flora.*
 import kotlinx.android.synthetic.main.activity_mammalia_ex.*
-import kotlinx.android.synthetic.main.activity_mammalia_ex.btnPIC_FOLDER
-import kotlinx.android.synthetic.main.activity_mammalia_ex.confmodTV
-import kotlinx.android.synthetic.main.activity_mammalia_ex.coordedET
-import kotlinx.android.synthetic.main.activity_mammalia_ex.coordemET
-import kotlinx.android.synthetic.main.activity_mammalia_ex.coordesET
-import kotlinx.android.synthetic.main.activity_mammalia_ex.coordndET
-import kotlinx.android.synthetic.main.activity_mammalia_ex.coordnmET
-import kotlinx.android.synthetic.main.activity_mammalia_ex.coordnsET
-import kotlinx.android.synthetic.main.activity_mammalia_ex.prjnameET
-import kotlinx.android.synthetic.main.activity_mammalia_ex.resetBT
-import kotlinx.android.synthetic.main.activity_stock.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -130,7 +124,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
     var INV_REGION = ""
 
-
+    var MJ_ACT_PR:String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -328,7 +322,12 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
 
                 mammalnumTV.setText(mammal_attribute.NUM.toString())
 
-                mamspecnmET.setText(mammal_attribute.SPEC_NM)
+                val SPEC_NM = mammal_attribute.SPEC_NM
+                if(SPEC_NM != null) {
+                    mam_name = SPEC_NM.replace("(멸종위기)", "")
+                    mamspecnmET.setText(SPEC_NM)
+                }
+
                 mamfaminmTV.setText(mammal_attribute.FAMI_NM)
                 mamsciennmTV.setText(mammal_attribute.SCIEN_NM)
                 endangeredTV.setText(mammal_attribute.ENDANGERED)
@@ -350,6 +349,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                 mamtreasyET.setText(mammal_attribute.TR_EASY)
                 mamtreasyreET.setText(mammal_attribute.TR_EASY_RE)
 
+                MJ_ACT_PR = mammal_attribute.MJ_ACT_PR
+
                 var codelist = mammal_attribute.MJ_ACT_PR!!.split("_")
                 var code_content = ""
                 if (codelist.size>0){
@@ -363,11 +364,13 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                     }
                 }
 
+                /*
                 if (code_content!=""){
                     standardLL.visibility = View.VISIBLE
                 }else{
                     standardLL.visibility = View.GONE
                 }
+                */
 
                 standardTV.setText(code_content)
 
@@ -1194,6 +1197,7 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
             val intent = Intent(context, DlgStandardActivity::class.java)
             intent.putExtra("type", "mammal")
             intent.putExtra("mam_name", mam_name)
+            intent.putExtra("MJ_ACT_PR", MJ_ACT_PR)
             startActivityForResult(intent, SET_STANDARD);
         }
 
@@ -1910,11 +1914,13 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                         name += "(멸종위기)"
                     }
 
+                    /*
                     if (mam_name=="수달"||mam_name=="삵"||mam_name=="하늘다람쥐"||mam_name=="담비"||mam_name=="검은담비"){
                         standardLL.visibility = View.VISIBLE
                     }else{
                         standardLL.visibility = View.GONE
                     }
+                    */
 
 
 //                    var code:ArrayList<String> = ArrayList<String>()
@@ -1941,6 +1947,9 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                     mamfaminmTV.text = family_name
                     mamsciennmTV.text = zoological
 
+
+                    standardTV.text = ""
+                    MJ_ACT_PR = ""
                 };
 
                 SET_UNSPEC -> {
@@ -1963,6 +1972,8 @@ class MammaliaActivity : Activity(), OnLocationUpdatedListener {
                             codeText += code.get(i) + "\n"
                         }
                         standardTV.setText(codeText)
+
+                        MJ_ACT_PR = r_code.joinToString("_")
 
                     }
                 }

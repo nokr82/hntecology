@@ -5,15 +5,12 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.database.sqlite.SQLiteDatabase
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ListView
 import hntecology.ecology.R
 import hntecology.ecology.adapter.DlgBirdsAdapter2
-import hntecology.ecology.adapter.DlgStandardAdapter
 import hntecology.ecology.base.DataBaseHelper
-import hntecology.ecology.base.RootActivity
 import hntecology.ecology.base.Utils
 import hntecology.ecology.model.EndangeredSelect
 import kotlinx.android.synthetic.main.activity_dlg_standard.*
@@ -40,6 +37,7 @@ class DlgStandardActivity : Activity() {
     var mam_name = ""
     private lateinit var listView1: ListView
 
+    var MJ_ACT_PR:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +69,9 @@ class DlgStandardActivity : Activity() {
 
         if (type == "mammal"){
             mam_name= intent.getStringExtra("mam_name")
+
+            MJ_ACT_PR = intent.getStringExtra("MJ_ACT_PR")
+
             addList2()
         }else{
             addList()
@@ -144,47 +145,73 @@ class DlgStandardActivity : Activity() {
             listdata1.clear()
         }
 
+        var mj_act_prs:List<String>? = ArrayList<String>()
+        if(MJ_ACT_PR != null) {
+            mj_act_prs = MJ_ACT_PR!!.split("_")
+        }
+
+        val item = EndangeredSelect("A", "동일 지역(격자)에서 사용하고 있는 보금자리가 발견되고 실체가 1회 이상 확인됨", false)
+        val item2 = EndangeredSelect("B", "동일 지역(격자)에서 배설물(오래된 것, 신선한 것 2개 이상)이 2회 이상 발 견됨 ", false)
+        val item3 = EndangeredSelect("C", "동일 지역(격자)에서 발자국이 2회 이상 발견됨", false)
+        val item4 = EndangeredSelect("D", "동일 지역(격자)에서 실체가 2회 이상 발견됨", false)
+        val item5 = EndangeredSelect("E", "하천에서 어린 새끼와 어미가 함께 활동하는 모습이 관찰되는 지역(번식활 동이 이루어지는 지역)", false)
+        val item6 = EndangeredSelect("F", "장기적 사용 흔적(실체, 최근 이용 배설물 다수)이 있는 보금자리가 존재할 경우(하천경계부에서 20m 이내)", false)
+        val item7 = EndangeredSelect("G", "산림이 우수한 지역의 5m 이내에 변색된 배설물(서식흔적)과 신선한 배설물 이 3곳 이상에서 관찰됨", false)
+        val item8 = EndangeredSelect("H", "실체가 1회 이상 확인되고, 주변에 다수의 배설물이 산재한 지역", false)
+
+
+        if(mj_act_prs!!.contains("A")) {
+            item.is_checked = true
+        }
+
+        if(mj_act_prs!!.contains("B")) {
+            item2.is_checked = true
+        }
+
+        if(mj_act_prs!!.contains("C")) {
+            item3.is_checked = true
+        }
+
+        if(mj_act_prs!!.contains("D")) {
+            item4.is_checked = true
+        }
+
+        if(mj_act_prs!!.contains("E")) {
+            item5.is_checked = true
+        }
+
+        if(mj_act_prs!!.contains("F")) {
+            item6.is_checked = true
+        }
+
+        if(mj_act_prs!!.contains("G")) {
+            item7.is_checked = true
+        }
+
+        if(mj_act_prs!!.contains("H")) {
+            item8.is_checked = true
+        }
+
         if (mam_name=="수달"){
-            val item = EndangeredSelect("A", "동일 지역(격자)에서 사용하고 있는 보금자리가 발견되고 실체가 1회 이상 확인됨", false)
-            val item2 = EndangeredSelect("B", "동일 지역(격자)에서 배설물(오래된 것, 신선한 것 2개 이상)이 2회 이상 발 견됨 ", false)
-            val item3 = EndangeredSelect("C", "동일 지역(격자)에서 발자국이 2회 이상 발견됨", false)
-            val item4 = EndangeredSelect("D", "동일 지역(격자)에서 실체가 2회 이상 발견됨", false)
-            val item5 = EndangeredSelect("E", "하천에서 어린 새끼와 어미가 함께 활동하는 모습이 관찰되는 지역(번식활 동이 이루어지는 지역)", false)
-            val item6 = EndangeredSelect("F", "장기적 사용 흔적(실체, 최근 이용 배설물 다수)이 있는 보금자리가 존재할 경우(하천경계부에서 20m 이내)", false)
+
             listdata1.add(item)
             listdata1.add(item2)
             listdata1.add(item3)
             listdata1.add(item4)
             listdata1.add(item5)
             listdata1.add(item6)
-
-            listAdapter1.notifyDataSetChanged()
         }else if (mam_name=="담비"||mam_name=="검은담비"){
-            val item = EndangeredSelect("A", "동일 지역(격자)에서 사용하고 있는 보금자리가 발견되고 실체가 1회 이상 확인됨", false)
-            val item2 = EndangeredSelect("B", "동일 지역(격자)에서 배설물(오래된 것, 신선한 것 2개 이상)이 2회 이상 발 견됨 ", false)
-            val item3 = EndangeredSelect("C", "동일 지역(격자)에서 발자국이 2회 이상 발견됨", false)
-            val item4 = EndangeredSelect("D", "동일 지역(격자)에서 실체가 2회 이상 발견됨", false)
             listdata1.add(item)
             listdata1.add(item2)
             listdata1.add(item3)
             listdata1.add(item4)
         }else if (mam_name=="삵"){
-            val item = EndangeredSelect("A", "동일 지역(격자)에서 사용하고 있는 보금자리가 발견되고 실체가 1회 이상 확인됨", false)
-            val item2 = EndangeredSelect("B", "동일 지역(격자)에서 배설물(오래된 것, 신선한 것 2개 이상)이 2회 이상 발 견됨 ", false)
-            val item3 = EndangeredSelect("C", "동일 지역(격자)에서 발자국이 2회 이상 발견됨", false)
-            val item4 = EndangeredSelect("D", "동일 지역(격자)에서 실체가 2회 이상 발견됨", false)
-            val item7 = EndangeredSelect("G", "산림이 우수한 지역의 5m 이내에 변색된 배설물(서식흔적)과 신선한 배설물 이 3곳 이상에서 관찰됨", false)
             listdata1.add(item)
             listdata1.add(item2)
             listdata1.add(item3)
             listdata1.add(item4)
             listdata1.add(item7)
         }else if (mam_name=="하늘다람쥐"){
-            val item = EndangeredSelect("A", "동일 지역(격자)에서 사용하고 있는 보금자리가 발견되고 실체가 1회 이상 확인됨", false)
-            val item2 = EndangeredSelect("B", "동일 지역(격자)에서 배설물(오래된 것, 신선한 것 2개 이상)이 2회 이상 발 견됨 ", false)
-            val item3 = EndangeredSelect("C", "동일 지역(격자)에서 발자국이 2회 이상 발견됨", false)
-            val item4 = EndangeredSelect("D", "동일 지역(격자)에서 실체가 2회 이상 발견됨", false)
-            val item8 = EndangeredSelect("H", "실체가 1회 이상 확인되고, 주변에 다수의 배설물이 산재한 지역", false)
             listdata1.add(item)
             listdata1.add(item2)
             listdata1.add(item3)
@@ -192,9 +219,7 @@ class DlgStandardActivity : Activity() {
             listdata1.add(item8)
         }
 
-
-
-
+        listAdapter1.notifyDataSetChanged()
 
     }
 
